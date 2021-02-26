@@ -133,7 +133,37 @@ class LaminasDbSqlRepository implements TestRepositoryInterface
      * @param  int $id Identifier of the test to return.
      * @return Test
      */
+//    public function findTest($id)
+//    {
+//    }
+    
     public function findTest($id)
     {
-    }
+        $sql       = new Sql($this->db);
+        $select    = $sql->select('test');
+        $select->where(['id = ?' => $id]);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result    = $statement->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            throw new RuntimeException(sprintf(
+                'Failed retrieving test with identifier "%s"; unknown database error.',
+                $id
+            ));
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
+        $resultSet->initialize($result);
+        $post = $resultSet->current();
+
+        if (! $post) {
+            throw new InvalidArgumentException(sprintf(
+                'Test with identifier "%s" not found.',
+                $id
+            ));
+        }
+
+        return $post;
+    }    
 }

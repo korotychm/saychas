@@ -42,19 +42,20 @@ class IndexController extends AbstractActionController
             'password' => 'saychas_z',
         ]);
         
-        $sql    = new Sql($adapter);
-        $select = $sql->select();
-        $select->from('test');
-        $select->where(['id' => 2]);
-
-        $selectString = $sql->buildSqlString($select);
-        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-        
-        foreach($results as $r) {
-            print_r($r);
-        }
+//        $sql    = new Sql($adapter);
+//        $select = $sql->select();
+//        $select->from('test');
+//        $select->where(['id' => 2]);
+//
+//        $selectString = $sql->buildSqlString($select);
+//        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+//        
+//        foreach($results as $r) {
+//            print_r($r);
+//        }
         return new ViewModel([
             'tests' => $this->testRepository->findAllTests(),
+            'first' => $this->testRepository->findTest(4),
         ]);
     }
 }
