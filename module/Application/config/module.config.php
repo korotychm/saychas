@@ -12,7 +12,11 @@ namespace Application;
 
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
-use Laminas\ServiceManager\Factory\InvokableFactory;
+//use Laminas\ServiceManager\Factory\InvokableFactory;
+//use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
+use Application\Controller\Factory\IndexControllerFactory;
+//use Laminas\ServiceManager\Factory\InvokableFactory;
+//use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 
 return [
     'router' => [
@@ -41,8 +45,25 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+//            Controller\IndexController::class => InvokableFactory::class,
+            Controller\IndexController::class => IndexControllerFactory::class,
         ],
+    ],
+    'service_manager' => [
+        'aliases' => [
+            //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
+            \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
+        ],
+        'factories' => [
+            //\Application\Model\TestRepository::class => InvokableFactory::class,
+            //Laminas\Db\Adapter\AdapterInterface::class => Laminas\Db\Adapter\Adapter::class,
+            \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
+        ],
+        
+//        'factories' => [
+//            'Laminas\Db\Adapter\Adapter' => Laminas\Db\Adapter\AdapterServiceFactory::class,
+//            //Laminas\Db\Adapter\Adapter::class,
+//        ],        
     ],
     'view_manager' => [
         'display_not_found_reason' => true,

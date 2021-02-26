@@ -3,6 +3,12 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 ?>
+<?php foreach ($this->tests as $test): ?>
+<article>
+  <h1 id="test<?= $test->getId() ?>"><?= $test->getName() ?></h1>
+</article>
+<?php endforeach ?>
+
 <div class="jumbotron">
     <h1 class="display-4">Welcome to<br>Laminas MVC Skeleton Application</h1>
 
