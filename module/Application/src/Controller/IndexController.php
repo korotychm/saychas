@@ -35,12 +35,12 @@ class IndexController extends AbstractActionController
 //            echo "{$test->getId()} : {$test->getName()}<br/>";
 //        }
         
-        $adapter = new Adapter([
-            'driver'   => 'Pdo_Mysql',
-            'database' => 'saychas_z',
-            'username' => 'saychas_z',
-            'password' => 'saychas_z',
-        ]);
+//        $adapter = new Adapter([
+//            'driver'   => 'Pdo_Mysql',
+//            'database' => 'saychas_z',
+//            'username' => 'saychas_z',
+//            'password' => 'saychas_z',
+//        ]);
         
 //        $sql    = new Sql($adapter);
 //        $select = $sql->select();

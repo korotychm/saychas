@@ -51,6 +51,8 @@ class LaminasDbSqlRepositoryFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        //$config = $container->get('config');
+        
         $adapter = new Adapter([
             'driver'   => 'Pdo_Mysql',
             'database' => 'saychas_z',
@@ -60,6 +62,7 @@ class LaminasDbSqlRepositoryFactory implements FactoryInterface
         return new LaminasDbSqlRepository(
 //            $container->get(AdapterInterface::class),
             $adapter,
+//            new $requestedName($config[0]['adapters']['Application\Db\WriteAdapter']),
             new ReflectionHydrator(),
             new Test('', '')
         );
