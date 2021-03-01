@@ -3,6 +3,7 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 ?>
+<?php if(false) : ?>
 <?php foreach ($this->tests as $test): ?>
 <article>
   <h1 id="test<?= $test->getId() ?>"><?= $test->getName() ?></h1>
@@ -10,6 +11,7 @@
 <?php endforeach ?>
 
 <h1>First: <?= $first->getId() ?><?= $first->getName() ?> </h1>
+<?php endif; ?>
 
 <div class="jumbotron">
     <h1 class="display-4">Welcome to<br>Laminas MVC Skeleton Application</h1>
