@@ -18,8 +18,8 @@ return [
             'driver'   => 'Pdo_Sqlite',
             'database' => 'data/db/users.db',
         ],
-        //'Application\Db\Writeable' => [
-        'default_db' => [
+        'Application\Db\WriteAdapter' => [
+//        'default_db' => [
             'driver'   => 'Pdo_Mysql',
             'database' => 'saychas_z',
             'username' => 'saychas_z',
