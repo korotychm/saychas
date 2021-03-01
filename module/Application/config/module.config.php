@@ -55,6 +55,7 @@ return [
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
         ],
         'factories' => [
+            //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             //\Application\Model\TestRepository::class => InvokableFactory::class,
             //Laminas\Db\Adapter\AdapterInterface::class => Laminas\Db\Adapter\Adapter::class,
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
