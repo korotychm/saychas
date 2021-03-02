@@ -11,3 +11,9 @@
     background-color: var(--brand-color);
     border-color: var(--brand-color);
 }
+
+.blok, blokr, .blokc {display:block; clear:both; text-align:left}
+.blokr {text-align:right}
+.blokc {text-align:center}
+.iblok {display:inline-block; }
+.mini {font-size:80%}
