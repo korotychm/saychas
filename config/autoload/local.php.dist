@@ -13,4 +13,11 @@
  */
 
 return [
+    'view_manager' => [
+        'display_exceptions' => true,
+    ],
+    'db' => [
+        'username' => 'saychas_z',
+        'password' => 'saychas_z',
+    ],
 ];

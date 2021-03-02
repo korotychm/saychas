@@ -58,4 +58,9 @@ class IndexController extends AbstractActionController
             'first' => $this->testRepository->findTest(4),
         ]);
     }
+    
+    public function previewAction()
+    {
+        return new ViewModel();
+    }
 }
