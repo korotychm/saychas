@@ -11,9 +11,10 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Sql\Sql;
+//use Laminas\Db\Adapter\Adapter;
+//use Laminas\Db\Sql\Sql;
 use Application\Model\TestRepositoryInterface;
+use Application\Model\CategoryRepositoryInterface;
 
 class IndexController extends AbstractActionController
 {
@@ -21,14 +22,26 @@ class IndexController extends AbstractActionController
      * @var TestRepositoryInterface
      */
     private $testRepository;
+    private $categoryRepository;
 
-    public function __construct(TestRepositoryInterface $testRepository)
+    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository)
     {
         $this->testRepository = $testRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function indexAction()
     {
+        echo '<pre>';
+        //print_r($this->categoryRepository->findAllCategories());
+        $categories = $this->categoryRepository->findAllCategories();
+        print_r($categories);
+//        foreach($categories as $category) {
+//            print_r($category);
+//        }
+                
+        echo '</pre>';
+        exit;
 //        $tests = $this->testRepository->findAllTests();
 //        
 //        foreach($tests as $test) {

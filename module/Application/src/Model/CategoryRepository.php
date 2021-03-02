@@ -18,7 +18,7 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 
-class CagegoryRepository implements CategoryRepositoryInterface
+class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
      * @var AdapterInterface
@@ -53,20 +53,48 @@ class CagegoryRepository implements CategoryRepositoryInterface
      *
      * @return Category[]
      */
-    public function findAllCategories()
+    public function findAllCategories1()
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('category');
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
+        
+        return $result;
 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
+//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+//            return [];
+//        }
+//
+//        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
+//        $resultSet->initialize($result);
+//        return $resultSet;
+        
+    }
+    
+    public function findAllCategories($echo = '', $i = 0, $idActive = false)
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select();
+        $select->from('category');
+        $select->where(['parent' => $i ]);
+        
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        
+        if ($i) $echo.="<ul>";
+        foreach($results as $result) {
+            if (true /**|| pubtv(id_1C_group) */) // если в ветке есть хоть один товар, надо функцию сделать тоже такую
+            {
+                $groupName=stripslashes($result['group_name']);
+                $echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
+                        $echo=$this->findAllCategories($echo, $result['id_1C_group'],$idActive);
+                $echo.="</li>";
+            }
         }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
-        $resultSet->initialize($result);
-        return $resultSet;
+        if ($i) $echo .= "</ul>";
+        
+        return $echo;
     }
 
     /**
@@ -78,31 +106,31 @@ class CagegoryRepository implements CategoryRepositoryInterface
     
     public function findCategory($id)
     {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select('category');
-        $select->where(['id = ?' => $id]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
-        $resultSet->initialize($result);
-        $post = $resultSet->current();
-
-        if (! $post) {
-            throw new InvalidArgumentException(sprintf(
-                'Category with identifier "%s" not found.',
-                $id
-            ));
-        }
-
-        return $post;
+//        $sql       = new Sql($this->db);
+//        $select    = $sql->select('category');
+//        $select->where(['id = ?' => $id]);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $result    = $statement->execute();
+//
+//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+//            throw new RuntimeException(sprintf(
+//                'Failed retrieving test with identifier "%s"; unknown database error.',
+//                $id
+//            ));
+//        }
+//
+//        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
+//        $resultSet->initialize($result);
+//        $post = $resultSet->current();
+//
+//        if (! $post) {
+//            throw new InvalidArgumentException(sprintf(
+//                'Category with identifier "%s" not found.',
+//                $id
+//            ));
+//        }
+//
+//        return $post;
     }    
 }

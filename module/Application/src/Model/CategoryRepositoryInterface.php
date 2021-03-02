@@ -10,7 +10,7 @@ interface CategoryRepositoryInterface
      *
      * @return Category[]
      */
-    public function findAllCategories();
+    public function findAllCategories($echo='', $i=0, $idActive);
 
     /**
      * Return a single application test.

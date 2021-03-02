@@ -63,12 +63,14 @@ return [
         'aliases' => [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
+            \Application\Model\CategoryRepositoryInterface::class => \Application\Model\CategoryRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             //\Application\Model\TestRepository::class => InvokableFactory::class,
             \Laminas\Db\Adapter\AdapterInterface::class => \Laminas\Db\Adapter\Adapter::class,
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
+            \Application\Model\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
         ],
         
 //        'factories' => [
