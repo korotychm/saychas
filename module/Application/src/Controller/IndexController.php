@@ -62,7 +62,28 @@ class IndexController extends AbstractActionController
     public function previewAction()
     {
         $this->layout()->setTemplate('layout/preview');
-
-        return new ViewModel();
+        $menu = <<<EOL
+<ul>
+  <li>Microsoft</li>
+  <li>Google
+  <ul>
+  <li>Microsoft</li>
+  <li>Google
+  <ul>
+  <li>Microsoft</li>
+  <li>Google</li>
+  <li>Apple</li>
+  <li>IBM</li>
+</ul></li>
+  <li>Apple</li>
+  <li>IBM</li>
+</ul></li>
+  <li>Apple</li>
+  <li>IBM</li>
+</ul>                
+EOL;
+        return new ViewModel([
+            'menu' => $menu,
+        ]);
     }
 }
