@@ -61,6 +61,8 @@ class IndexController extends AbstractActionController
     
     public function previewAction()
     {
+        $this->layout()->setTemplate('layout/preview');
+
         return new ViewModel();
     }
 }

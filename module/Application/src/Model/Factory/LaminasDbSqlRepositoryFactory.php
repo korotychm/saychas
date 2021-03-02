@@ -42,7 +42,7 @@ namespace Application\Model\Factory;
 use Interop\Container\ContainerInterface;
 use Application\Model\Test;
 use Application\Model\LaminasDbSqlRepository;
-use Laminas\Db\Adapter\AdapterInterface;
+use \Laminas\Db\Adapter\AdapterInterface;
 //use \Laminas\Db\Adapter\Adapter;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -52,21 +52,22 @@ class LaminasDbSqlRepositoryFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         
-        if($requestedName instanceof OrderManager){
-            throw new Exception("not instanceof OrderManager");
-        }
+//        if($requestedName instanceof OrderManager){
+//            throw new Exception("not instanceof OrderManager");
+//        }
 
 //        $config = $container->get('Config');
 //        return  new $requestedName($config);
 
         
-        $config = $container->get('Config');
+        $config = $container->get('config');
         $adapter = $container->get(AdapterInterface::class);
 //        echo '<pre>';
 //        echo 'banzaii<br/>';
 //        print_r($config);
 //        echo 'vonzaii<br/>';
 //        echo '</pre>';
+//        exit;
 //        
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
