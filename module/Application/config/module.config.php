@@ -31,6 +31,16 @@ return [
                     ],
                 ],
             ],
+            'preview' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/preview',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'preview',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -57,7 +67,7 @@ return [
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             //\Application\Model\TestRepository::class => InvokableFactory::class,
-            //Laminas\Db\Adapter\AdapterInterface::class => Laminas\Db\Adapter\Adapter::class,
+            \Laminas\Db\Adapter\AdapterInterface::class => \Laminas\Db\Adapter\Adapter::class,
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
         ],
         

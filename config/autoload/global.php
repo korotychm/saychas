@@ -12,19 +12,42 @@
  * file.
  */
 
+use Laminas\Db\Adapter;
+
 return [
-    ['adapters' => [
-        'Application\Db\ReadOnly' => [
-            'driver'   => 'Pdo_Sqlite',
-            'database' => 'data/db/users.db',
+    'service_manager' => [
+        'abstract_factories' => [
+            Adapter\AdapterAbstractServiceFactory::class,
         ],
-        'Application\Db\WriteAdapter' => [
-//        'default_db' => [
-            'driver'   => 'Pdo_Mysql',
-            'database' => 'saychas_z',
-            'username' => 'saychas_z',
-            'password' => 'saychas_z',
+        'factories' => [
+            Adapter\AdapterInterface::class => Adapter\AdapterServiceFactory::class,
         ],
-    ]],
-    
+        'aliases' => [
+            Adapter\Adapter::class => Adapter\AdapterInterface::class
+        ]
+    ],
+    'db' => [
+        'driver' => 'Pdo_Mysql',
+        'dsn' => 'mysql:dbname=saychas_z;hostname=localhost',
+        'driver_options' => [
+            PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES \'UTF8\'',
+        ],
+    ]
 ];
+
+//return [
+//    ['adapters' => [
+//        'Application\Db\ReadOnly' => [
+//            'driver'   => 'Pdo_Sqlite',
+//            'database' => 'data/db/users.db',
+//        ],
+//        'Application\Db\WriteAdapter' => [
+////        'default_db' => [
+//            'driver'   => 'Pdo_Mysql',
+//            'database' => 'saychas_z',
+//            'username' => 'saychas_z',
+//            'password' => 'saychas_z',
+//        ],
+//    ]],
+//    
+//];
