@@ -5,6 +5,7 @@
 .navbar {
     background-color: var(--brand-color);
 }
+.navbar h1 {color:#fff}
 
 .btn-primary {
     background-color: var(--brand-color);
