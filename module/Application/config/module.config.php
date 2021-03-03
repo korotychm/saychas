@@ -83,10 +83,6 @@ return [
             \Application\Model\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
         ],
         
-//        'factories' => [
-//            'Laminas\Db\Adapter\Adapter' => Laminas\Db\Adapter\AdapterServiceFactory::class,
-//            //Laminas\Db\Adapter\Adapter::class,
-//        ],        
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
