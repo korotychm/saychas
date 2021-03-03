@@ -33,17 +33,17 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @var Post
      */
-    private $postPrototype;
+    private $categoryPrototype;
 
     public function __construct(
 //        AdapterInterface $db,
         Adapter $db,
         HydratorInterface $hydrator,
-        Category $postPrototype
+        Category $categoryPrototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->postPrototype = $postPrototype;
+        $this->categoryPrototype = $categoryPrototype;
     }
 
     /**
@@ -66,12 +66,17 @@ class CategoryRepository implements CategoryRepositoryInterface
 //            return [];
 //        }
 //
-//        $resultSet = new HydratingResultSet($this->hydrator, $this->postPrototype);
+//        $resultSet = new HydratingResultSet($this->hydrator, $this->categoryPrototype);
 //        $resultSet->initialize($result);
 //        return $resultSet;
         
     }
     
+    /**
+     * Return a html(ul) list of categories
+     *
+     * @return string
+     */
     public function findAllCategories($echo = '', $i = 0, $idActive = false)
     {
         $sql = new Sql($this->db);
@@ -82,7 +87,9 @@ class CategoryRepository implements CategoryRepositoryInterface
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
         
-        if ($i) $echo.="<ul>";
+        if ($i) {
+            $echo.="<ul>";
+        }
         foreach($results as $result) {
             if (true /**|| pubtv(id_1C_group) */) // если в ветке есть хоть один товар, надо функцию сделать тоже такую
             {
@@ -92,7 +99,9 @@ class CategoryRepository implements CategoryRepositoryInterface
                 $echo.="</li>";
             }
         }
-        if ($i) $echo .= "</ul>";
+        if ($i) {
+            $echo .= "</ul>";
+        }
         
         return $echo;
     }
