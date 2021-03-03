@@ -10,6 +10,7 @@ namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
 use Application\Model\Category;
+use Application\Model\Test;
 use Application\Model\CategoryRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
@@ -37,7 +38,8 @@ class CategoryRepositoryFactory implements FactoryInterface
         return new CategoryRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Category(0, '', 0, 0, null, null)
+            new Category(0, '', 0, 0, null, null),
+            new Test('', '')
         );
     }
 }

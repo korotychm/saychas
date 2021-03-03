@@ -74,12 +74,17 @@ class IndexController extends AbstractActionController
         $this->layout()->setTemplate('layout/preview');
 
         //$category = $this->categoryRepository->findCategory(276745);
-        $test = $this->categoryRepository->findTest(4);
+//        $test = $this->categoryRepository->findTest(4);
 
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
             'menu' => $categories,
-            'first' => $test
+//            'first' => $test
         ]);
+    }
+    
+    public function ajaxAction()
+    {
+        return json_encode(['banzaii' => 'vonzaii']);
     }
 }
