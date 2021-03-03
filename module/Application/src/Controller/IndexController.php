@@ -32,16 +32,13 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        echo '<pre>';
-        //print_r($this->categoryRepository->findAllCategories());
-        $categories = $this->categoryRepository->findAllCategories();
-        print_r($categories);
-//        foreach($categories as $category) {
-//            print_r($category);
-//        }
-                
-        echo '</pre>';
-        exit;
+//        echo '<pre>';
+//        //print_r($this->categoryRepository->findAllCategories());
+//        $categories = $this->categoryRepository->findAllCategories();
+//        print_r($categories);
+//                
+//        echo '</pre>';
+//        exit;
 //        $tests = $this->testRepository->findAllTests();
 //        
 //        foreach($tests as $test) {
@@ -75,28 +72,9 @@ class IndexController extends AbstractActionController
     public function previewAction()
     {
         $this->layout()->setTemplate('layout/preview');
-        $menu = <<<EOL
-<ul>
-  <li>Microsoft</li>
-  <li>Google
-  <ul>
-  <li>Microsoft</li>
-  <li>Google
-  <ul>
-  <li>Microsoft</li>
-  <li>Google</li>
-  <li>Apple</li>
-  <li>IBM</li>
-</ul></li>
-  <li>Apple</li>
-  <li>IBM</li>
-</ul></li>
-  <li>Apple</li>
-  <li>IBM</li>
-</ul>                
-EOL;
+        $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
-            'menu' => $menu,
+            'menu' => $categories,
         ]);
     }
 }

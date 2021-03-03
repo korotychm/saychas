@@ -73,7 +73,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
     
     /**
-     * Return a html(ul) list of categories
+     * Return a string that contains html ul list
      *
      * @return string
      */
