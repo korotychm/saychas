@@ -5,3 +5,6 @@ data/cache/*
 !data/cache/.gitkeep
 phpunit.xml
 .phpunit.result.cache
+nbproject/*
+nbproject/**
+nbproject/private/private.xml
