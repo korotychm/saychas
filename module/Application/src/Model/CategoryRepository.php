@@ -103,7 +103,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             $echo .= "</ul>";
         }
         
-        return $echo;
+        return str_replace("<ul></ul>","",$echo);
     }
 
     /**
