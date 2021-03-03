@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS `category` (
   `group_name` text NOT NULL,
   `parent` int(11) NOT NULL,
   `comment` text NOT NULL,
-  `id_1C_group` int(11) NOT NULL
+  `id_1C_group` int(11) NOT NULL,
+  `icon`	text
 ) ENGINE=MyISAM AUTO_INCREMENT=277038 DEFAULT CHARSET=utf8 COMMENT='РўР°Р±Р»РёС†Р° РіСЂСѓРїРї С‚РѕРІР°СЂРѕРІ';
 
 --

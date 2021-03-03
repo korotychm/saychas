@@ -10,15 +10,23 @@ namespace Application\Model;
 
 class Category
 {
+//+-------------+---------+------+-----+---------+----------------+
+//| id_group    | int(11) | NO   | PRI | NULL    | auto_increment |
+//| group_name  | text    | NO   |     | NULL    |                |
+//| parent      | int(11) | NO   |     | NULL    |                |
+//| comment     | text    | NO   |     | NULL    |                |
+//| id_1C_group | int(11) | NO   | UNI | NULL    |                |
+//+
+    
     /**
      * @var int
      */
-    private $idGroup;
+    private $id_group;
 
     /**
      * @var string
      */
-    private $groupName;
+    private $group_name;
 
     /**
      * @var int
@@ -28,7 +36,7 @@ class Category
     /**
      * @var int
      */
-    private $id1cGroup;
+    private $id_1C_group;
 
     /**
      * @var string
@@ -45,11 +53,11 @@ class Category
      */
     public function __construct($idGroup, $groupName, $id1cGroup, $parent, $icon = null, $comment = null)
     {
-        $this->groupName = $groupName;
-        $this->idGroup = $idGroup;
+        $this->group_name = $groupName;
+        $this->id_group = $idGroup;
         $this->parent = $parent;
         $this->comment = $comment;
-        $this->id1cGroup = $id1cGroup;
+        $this->id_1C_group = $id1cGroup;
         $this->icon = $icon;
     }
 
@@ -58,7 +66,7 @@ class Category
      */
     public function getId()
     {
-        return $this->idGroup;
+        return $this->id_group;
     }
 
     /**
@@ -66,7 +74,7 @@ class Category
      */
     public function getName()
     {
-        return $this->groupName;
+        return $this->group_name;
     }
 
     /**
@@ -74,14 +82,14 @@ class Category
      */
     public function getId1cGroup()
     {
-        return $this->id1cGroup;
+        return $this->id_1C_group;
     }
     /**
      * @return int
      */
     public function getParent()
     {
-        return $this->id1cGroup;
+        return $this->parent;
     }
 
     /**

@@ -39,6 +39,13 @@
 // In /module/Blog/src/Factory/LaminasDbSqlRepositoryFactory.php
 namespace Application\Model\Factory;
 
+//use Interop\Container\ContainerInterface;
+//use Application\Model\Test;
+//use Application\Model\LaminasDbSqlRepository;
+//use \Laminas\Db\Adapter\AdapterInterface;
+////use \Laminas\Db\Adapter\Adapter;
+//use Laminas\Hydrator\ReflectionHydrator;
+//use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Application\Model\Test;
 use Application\Model\LaminasDbSqlRepository;

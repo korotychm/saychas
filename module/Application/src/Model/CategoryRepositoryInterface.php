@@ -19,4 +19,6 @@ interface CategoryRepositoryInterface
      * @return Category
      */
     public function findCategory($id);
+    
+    public function findTest($id);
 }
