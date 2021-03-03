@@ -13,29 +13,52 @@ class Category
     /**
      * @var int
      */
-    private $id;
+    private $idGroup;
 
     /**
      * @var string
      */
-    private $name;
+    private $groupName;
 
     /**
-     * @param string $name
-     * @param int|null $id
+     * @var int
      */
-    public function __construct($name, $id = null)
+    private $parent;
+    
+    /**
+     * @var int
+     */
+    private $id1cGroup;
+
+    /**
+     * @var string
+     */
+    private $comment;
+
+    /**
+     * @param int         $idGroup
+     * @param string      $groupName
+     * @param int         $id1cGroup
+     * @param int         $parent
+     * @param string|null $icon
+     * @param string|null $comment
+     */
+    public function __construct($idGroup, $groupName, $id1cGroup, $parent, $icon = null, $comment = null)
     {
-        $this->name = $name;
-        $this->id = $id;
+        $this->groupName = $groupName;
+        $this->idGroup = $idGroup;
+        $this->parent = $parent;
+        $this->comment = $comment;
+        $this->id1cGroup = $id1cGroup;
+        $this->icon = $icon;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
     public function getId()
     {
-        return $this->id;
+        return $this->idGroup;
     }
 
     /**
@@ -43,6 +66,37 @@ class Category
      */
     public function getName()
     {
-        return $this->name;
+        return $this->groupName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId1cGroup()
+    {
+        return $this->id1cGroup;
+    }
+    /**
+     * @return int
+     */
+    public function getParent()
+    {
+        return $this->id1cGroup;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }
