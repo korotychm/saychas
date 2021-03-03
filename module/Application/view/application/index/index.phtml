@@ -3,7 +3,8 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 ?>
-<?php if(true) : ?>
+<?php print_r($this->tests); ?>
+<?php if(false) : ?>
 <?php foreach ($this->tests as $test): ?>
 <article>
   <h1 id="test<?= $test->getId() ?>"><?= $test->getName() ?></h1>

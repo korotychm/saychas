@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
-use Laminas\Db\Adapter\AdapterInterface;
+//use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;

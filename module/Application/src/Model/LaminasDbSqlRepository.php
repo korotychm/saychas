@@ -132,11 +132,7 @@ class LaminasDbSqlRepository implements TestRepositoryInterface
      *
      * @param  int $id Identifier of the test to return.
      * @return Test
-     */
-//    public function findTest($id)
-//    {
-//    }
-    
+     */    
     public function findTest($id)
     {
         $sql       = new Sql($this->db);
