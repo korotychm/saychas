@@ -19,11 +19,6 @@ class Category
 //+
     
     /**
-     * @var int
-     */
-    private $id_group;
-
-    /**
      * @var string
      */
     private $group_name;
@@ -44,29 +39,19 @@ class Category
     private $comment;
 
     /**
-     * @param int         $idGroup
      * @param string      $groupName
      * @param int         $id1cGroup
      * @param int         $parent
      * @param string|null $icon
      * @param string|null $comment
      */
-    public function __construct($idGroup, $groupName, $id1cGroup, $parent, $icon = null, $comment = null)
+    public function __construct($groupName, $id1cGroup, $parent, $icon = null, $comment = null)
     {
         $this->group_name = $groupName;
-        $this->id_group = $idGroup;
         $this->parent = $parent;
         $this->comment = $comment;
         $this->id_1C_group = $id1cGroup;
         $this->icon = $icon;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id_group;
     }
 
     /**
@@ -80,7 +65,7 @@ class Category
     /**
      * @return int
      */
-    public function getId1cGroup()
+    public function getId()
     {
         return $this->id_1C_group;
     }

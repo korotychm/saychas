@@ -28,7 +28,7 @@ class CategoryRepositoryFactory implements FactoryInterface
         return new CategoryRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Category(0, '', 0, 0, null, null)
+            new Category('', 0, 0, null, null)
         );
     }
 }

@@ -49,7 +49,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->db            = $db;
         $this->hydrator      = $hydrator;
         $this->categoryPrototype = $categoryPrototype;
-        $this->postPrototype = $postPrototype;
+        //$this->postPrototype = $postPrototype;
     }
 
     /**
@@ -70,6 +70,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         if ($i) {
             $echo.="<ul>";
         }
+        /** TODO: to be fixed later */
         foreach($results as $result) {
             if (true /**|| pubtv(id_1C_group) */) // если в ветке есть хоть один товар, надо функцию сделать тоже такую
             {
@@ -96,7 +97,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('category');
-        $select->where(['id_group = ?' => $id]);
+        $select->where(['id_1c_group = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
