@@ -13,6 +13,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 //use Laminas\Db\Adapter\Adapter;
 //use Laminas\Db\Sql\Sql;
+use Laminas\Mvc\MvcEvent;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\CategoryRepositoryInterface;
 
@@ -30,6 +31,23 @@ class IndexController extends AbstractActionController
         $this->categoryRepository = $categoryRepository;
     }
 
+    public function onDispatch(MvcEvent $e) 
+    {
+        // Call the base class' onDispatch() first and grab the response
+        $response = parent::onDispatch($e);
+        
+        $servicemanager = $e->getApplication()->getServiceManager();
+
+        $categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
+        
+        $category = $this->categoryRepository->findCategory(29);
+        
+        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
+
+        // Return the response
+        return $response;
+    }
+    
     public function indexAction()
     {
         
