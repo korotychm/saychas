@@ -32,18 +32,6 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-//        echo '<pre>';
-//        //print_r($this->categoryRepository->findAllCategories());
-//        $categories = $this->categoryRepository->findAllCategories();
-//        print_r($categories);
-//                
-//        echo '</pre>';
-//        exit;
-//        $tests = $this->testRepository->findAllTests();
-//        
-//        foreach($tests as $test) {
-//            echo "{$test->getId()} : {$test->getName()}<br/>";
-//        }
         
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
@@ -59,10 +47,6 @@ class IndexController extends AbstractActionController
 //
 //        $selectString = $sql->buildSqlString($select);
 //        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
-//        
-//        foreach($results as $r) {
-//            print_r($r);
-//        }
         return new ViewModel([
             'tests' => $this->testRepository->findAllTests(),
             'first' => $this->testRepository->findTest(4),
@@ -73,13 +57,12 @@ class IndexController extends AbstractActionController
     {
         $this->layout()->setTemplate('layout/preview');
 
-        //$category = $this->categoryRepository->findCategory(276745);
-        //$test = $this->categoryRepository->findTest(4);
+        $category = $this->categoryRepository->findCategory(276745);
 
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
             'menu' => $categories,
-            'first' => $test
+            'first' => $category
         ]);
     }
     

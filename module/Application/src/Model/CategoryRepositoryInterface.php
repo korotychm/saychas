@@ -20,5 +20,4 @@ interface CategoryRepositoryInterface
      */
     public function findCategory($id);
     
-    public function findTest($id);
 }
