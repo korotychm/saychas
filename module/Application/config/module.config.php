@@ -15,6 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 
@@ -78,6 +79,7 @@ return [
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             //\Application\Model\TestRepository::class => InvokableFactory::class,
+            'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             \Laminas\Db\Adapter\AdapterInterface::class => \Laminas\Db\Adapter\Adapter::class,
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
             \Application\Model\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,

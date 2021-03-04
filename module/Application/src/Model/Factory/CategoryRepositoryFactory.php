@@ -24,7 +24,9 @@ class CategoryRepositoryFactory implements FactoryInterface
         }
 
         $adapter = $container->get(AdapterInterface::class);
-                     
+        
+        $adp = $container->get('Application\Db\WriteAdapter');
+        
         return new CategoryRepository(
             $adapter,
             new ReflectionHydrator(),
