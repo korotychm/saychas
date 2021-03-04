@@ -28,12 +28,11 @@
         
         <nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">
             <div class="container">
-                <?php echo $this->category->getName(); ?>
                 <div class="navbar-header">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <h1>Saychas.ru</h1>
+                    <h1>Saychas.ru<?php echo $this->category->getName(); ?></h1>
                 </div>
                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">

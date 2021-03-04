@@ -75,12 +75,9 @@ class IndexController extends AbstractActionController
     {
         $this->layout()->setTemplate('layout/preview');
 
-        $category = $this->categoryRepository->findCategory(29);
-
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
-            'menu' => $categories,
-            'first' => $category
+            'menu' => $categories
         ]);
     }
     
