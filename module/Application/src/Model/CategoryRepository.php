@@ -1,4 +1,5 @@
 <?php
+// src/ModelCategoryRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -16,6 +17,8 @@ use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
 
 //use Laminas\Db\ResultSet\ResultSet;
 
@@ -59,6 +62,13 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function findAllCategories($echo = '', $i = 0, $idActive = false)
     {
+        
+        //$em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        $em = $this->getServiceLocator()->get(\Doctrine\ORM\EntityManager::class);
+        
+        print_r($em);
+        exit;
+        
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
