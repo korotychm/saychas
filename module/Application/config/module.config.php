@@ -103,6 +103,12 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'parameters' => [
+        '1c_auth' => [
+            'username' => 'administrator',
+            'password' => 'w48Es4562',
+        ],
+    ],
 //    'driver' => [
 //        __NAMESPACE__ . '_driver' => [
 //            'class' => AnnotationDriver::class,
