@@ -38,7 +38,7 @@ class IndexController extends AbstractActionController
         
         $servicemanager = $e->getApplication()->getServiceManager();
 
-        $categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
+        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
         
         $category = $this->categoryRepository->findCategory(29);
         

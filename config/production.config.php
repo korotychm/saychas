@@ -8,21 +8,21 @@
 //echo 'development.config.php';
 //exit;
 return [
-    'view_manager' => [
-        'display_exceptions' => true,
-    ],
-    'db' => [
-        'username' => 'saychas_z',
-        'password' => 'saychas_z',
-    ],
+//    'view_manager' => [
+//        'display_exceptions' => true,
+//    ],
+//    'db' => [
+//        'username' => 'saychas_z',
+//        'password' => 'saychas_z',
+//    ],
     // Additional modules to include when in development mode
-    'modules' => [
-    ],
+//    'modules' => [
+//    ],
     // Configuration overrides during development mode
     'module_listener_options' => [
-        'config_glob_paths' => [realpath(__DIR__) . '/autoload/{,*.}{global,local}-development.php'],
+        'config_glob_paths' => [realpath(__DIR__) . '/autoload/{,*.}{global,local}-production.php'],
         //realpath(__DIR__) . sprintf('/autoload/{,*.}{global,%s,local}.php', getenv('APP_ENV') ?: 'production'),
         'config_cache_enabled' => false,
-        'module_map_cache_enabled' => false,
+        'module_map_cache_enabled' => true,
     ],
 ];
