@@ -50,6 +50,7 @@ return [
             PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES \'UTF8\'',
         ],
     ],
+    /**
     'doctrine' => [        
         // migrations configuration
 //        'migrations_configuration' => [
@@ -107,6 +108,8 @@ return [
         ],
         'directory' => 'data/DoctrineORMModule/Proxy',
     ],
+     * 
+     */
         
 ];
 

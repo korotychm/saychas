@@ -64,10 +64,10 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         
         //$em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-        $em = $this->getServiceLocator()->get(\Doctrine\ORM\EntityManager::class);
+        //$em = $this->getServiceLocator()->get(\Doctrine\ORM\EntityManager::class);
         
-        print_r($em);
-        exit;
+//        print_r($em);
+//        exit;
         
         $sql = new Sql($this->db);
         $select = $sql->select();
