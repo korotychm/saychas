@@ -29,10 +29,9 @@ use Laminas\Db\Sql\Sql;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * 
-     * @var AdapterInterface
+     * @var Adapter
      */
-    private $db;
+    private Adapter $db;
 
     /**
      * @var HydratorInterface
