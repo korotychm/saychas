@@ -3,30 +3,24 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Controller/IndexController.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Category.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/LaminasDbSqlRepository.php</file>
-            <file>file:/home/alex/www/saychas-z.local/config/application.config.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/view/application/index/index.phtml</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Test.php</file>
-            <file>file:/home/alex/www/saychas-z.local/config/development.config.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/view/layout/layout.phtml</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/CategoryRepository.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/view/application/index/preview.phtml</file>
-            <file>file:/home/alex/www/saychas-z.local/config/modules.config.php</file>
-            <file>file:/home/alex/www/saychas-z.local/config/autoload/global.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Controller/Factory/IndexControllerFactory.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/config/module.config.php</file>
-            <file>file:/home/alex/www/saychas-z.local/config/autoload/local.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/CategoryRepositoryInterface.php</file>
-            <file>file:/home/alex/www/saychas-z.local/config/development.config.php.dist</file>
-            <file>file:/home/alex/www/saychas-z.local/config/autoload/local.php.dist</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/TestRepositoryInterface.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/TestRepository.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Factory/CategoryRepositoryFactory.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/view/layout/menu.phtml</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Module.php</file>
-            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Factory/LaminasDbSqlRepositoryFactory.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/config/autoload/local.php.dist</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/src/Model/Factory/LaminasDbSqlRepositoryFactory.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/src/Model/Factory/CategoryRepositoryFactory.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/config/module.config.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/public/js/jquery-3.5.1.min.js</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/config/autoload/local.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/config/autoload/development.local.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/view/layout/layout.phtml</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/config/autoload/global.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/src/Controller/IndexController.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/view/application/index/index.phtml</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/config/autoload/development.local.php.dist</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/view/application/index/preview.phtml</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/public/css/style.css</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/view/application/index/banzaii.phtml</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/public/css/dadata/suggestions.css</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/src/Module.php</file>
+            <file>file:/C:/Users/sizovdm1/Documents/www/saychas-z.local/module/Application/view/layout/menu.phtml</file>
         </group>
     </open-files>
 </project-private>
