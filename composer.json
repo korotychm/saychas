@@ -12,7 +12,6 @@
     "require": {
         "php": "^7.3",
         "laminas/laminas-component-installer": "^1.0 || ^2.1",
-        "laminas/laminas-development-mode": "^3.2",
         "laminas/laminas-skeleton-installer": "^0.2 || ^1.0",
         "laminas/laminas-mvc": "^3.1.1",
         "laminas/laminas-db": "^2.12",
@@ -63,5 +62,8 @@
     },
 	 "config": {
 		"process-timeout":0
-	}
+	},
+    "require-dev": {
+        "laminas/laminas-development-mode": " ^3.2"
+    }
 }
