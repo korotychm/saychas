@@ -8,8 +8,8 @@ use Application\Model;
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use Exception;
-//use Laminas\Uri\Exception\InvalidArgumentException;
+use InvalidArgumentException;
+use RuntimeException;
 
 class ReceivingController extends AbstractActionController
 {
@@ -32,24 +32,19 @@ class ReceivingController extends AbstractActionController
     /**
      * Receives data from 1c and distributes them among repositories
      * @return ViewModel
-     * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function receiveAction()
     {
-        $request = $this->getRequest();
-        $post = $request->getPost();
-        
-        $category = $post['value'];
-        //$category = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
-        //print_r($category);
-        print_r(json_decode($category, true));
-        exit;
+        $json = $this->getRequest()->getPost()['value'];
+        $result = json_decode($json, true);
+                
         $categoryRepository = $this->container->get(\Application\Model\CategoryRepositoryInterface::class);
         if(! $categoryRepository instanceof Model\CategoryRepositoryInterface) {
-            throw new Exception('Wrong repository');
+            throw new InvalidArgumentException('Wrong repository');
         }
-        $categories = $categoryRepository->findAllCategories();
-        return new ViewModel(['categories' => $categories]);
+        $returnCode = $categoryRepository->addCategories($result);
+        return new ViewModel(['returnCode' => $returnCode]);
     }
-    
+
 }
