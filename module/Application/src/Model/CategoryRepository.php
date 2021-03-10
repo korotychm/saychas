@@ -147,5 +147,15 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $category;
     }
     
+    /**
+     * Adds given array of categories into repository
+     * @param array $categories
+     */
+    public function addCategories(array $categories)
+    {
+        echo 'adding categories';
+        exit;
+    }
+    
     
 }
