@@ -44,9 +44,9 @@ return [
                 ],
             ],
             'receive' => [
-                'type'    => Literal::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/receive',
+                    'route'    => '/receive[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
                         'action'     => 'receive',
