@@ -22,6 +22,8 @@ class CategoryRepositoryFactory implements FactoryInterface
         if($requestedName instanceof CategoryRepository){
             throw new Exception("not instanceof CategoryRepository");
         }
+        
+        $config = $container->get('Config');
 
         $adapter = $container->get(AdapterInterface::class);
         
@@ -30,7 +32,9 @@ class CategoryRepositoryFactory implements FactoryInterface
         return new CategoryRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Category('', 0, 0, null, null)
+            new Category('', 0, 0, null, null),
+            $config['parameters']['1c_auth']['username'],
+            $config['parameters']['1c_auth']['password']
         );
     }
 }

@@ -14,6 +14,11 @@ class Module
 {
     public function getConfig() : array
     {
+//        $v = include __DIR__ . '/../config/module.config.php';
+//        echo '<pre>';
+//        print_r($v);
+//        echo '</pre>';
+//        exit;
         return include __DIR__ . '/../config/module.config.php';
     }
 }

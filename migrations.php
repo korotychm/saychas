@@ -13,6 +13,7 @@ return [
         'SaychasProjectZ\Migrations' => '/data/doctrine/migrations',
         //'SaychasProjectZ\Component\Migrations' => './Component/SaychasProjectZ/Migrations',
     ],
+    'directory' => '/',
 
     'all_or_nothing' => true,
     'check_database_platform' => true,

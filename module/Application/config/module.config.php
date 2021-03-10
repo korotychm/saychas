@@ -15,6 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
@@ -39,6 +40,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'preview',
+                    ],
+                ],
+            ],
+            'receive' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/receive',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receive',
                     ],
                 ],
             ],
@@ -68,6 +79,7 @@ return [
         'factories' => [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
+            Controller\ReceivingController::class => ReceivingControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -103,4 +115,22 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'parameters' => [
+        '1c_auth' => [
+            'username' => 'administrator',
+            'password' => 'w48Es4562',
+        ],
+    ],
+//    'driver' => [
+//        __NAMESPACE__ . '_driver' => [
+//            'class' => AnnotationDriver::class,
+//            'cache' => 'array',
+//            'paths' => [__DIR__ . '/../src/Entity']
+//        ],
+//        'orm_default' => [
+//            'drivers' => [
+//                __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+//            ],
+//        ],
+//    ],
 ];

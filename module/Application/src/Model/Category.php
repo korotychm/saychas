@@ -10,14 +10,6 @@ namespace Application\Model;
 
 class Category
 {
-//+-------------+---------+------+-----+---------+----------------+
-//| id_group    | int(11) | NO   | PRI | NULL    | auto_increment |
-//| group_name  | text    | NO   |     | NULL    |                |
-//| parent      | int(11) | NO   |     | NULL    |                |
-//| comment     | text    | NO   |     | NULL    |                |
-//| id_1C_group | int(11) | NO   | UNI | NULL    |                |
-//+
-    
     /**
      * @var string
      */

@@ -11,12 +11,26 @@
  * in laminas-mvc-skeleton. This is a good practice, as it prevents sensitive
  * credentials from accidentally being committed into version control.
  */
+//
+//return [
+//    'view_manager' => [
+//        'display_exceptions' => true,
+//    ],
+//    'db' => [
+//        'username' => 'saychas_z',
+//        'password' => 'saychas_z',
+//    ],
+//];
 
 return [
     'view_manager' => [
         'display_exceptions' => true,
     ],
     'db' => [
+        'adapters' => [
+            'username' => 'saychas_z',
+            'password' => 'saychas_z',
+        ],
         'username' => 'saychas_z',
         'password' => 'saychas_z',
     ],

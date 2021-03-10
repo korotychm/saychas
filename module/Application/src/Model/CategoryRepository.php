@@ -1,4 +1,5 @@
 <?php
+// src/ModelCategoryRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -16,6 +17,8 @@ use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
+//use Doctrine\ORM\Mapping as ORM;
+//use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
 
 //use Laminas\Db\ResultSet\ResultSet;
 
@@ -26,30 +29,51 @@ use Laminas\Db\Sql\Sql;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var Adapter
      */
-    private $db;
+    private Adapter $db;
 
     /**
      * @var HydratorInterface
      */
-    private $hydrator;
+    private HydratorInterface $hydrator;
 
     /**
      * @var Category
      */
-    private $categoryPrototype;
+    private Category $categoryPrototype;
     
+    /**
+     * @var string
+     */
+    private string $username;
+
+    /**
+     * 
+     * @var string
+     */
+    private string $password;
+
+    /**
+     * @param Adapter $db
+     * @param HydratorInterface $hydrator
+     * @param Category $categoryPrototype
+     * @param string $username
+     * @param string $password
+     */
     public function __construct(
 //        AdapterInterface $db,
         Adapter $db,
         HydratorInterface $hydrator,
-        Category $categoryPrototype
+        Category $categoryPrototype,
+        string $username,
+        string $password
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
         $this->categoryPrototype = $categoryPrototype;
-        //$this->postPrototype = $postPrototype;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -121,6 +145,16 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
 
         return $category;
+    }
+    
+    /**
+     * Adds given array of categories into repository
+     * @param array $categories
+     */
+    public function addCategories(array $categories)
+    {
+        echo 'adding categories';
+        exit;
     }
     
     
