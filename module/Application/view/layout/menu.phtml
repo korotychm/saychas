@@ -102,6 +102,19 @@
                  </div>  
           </div>  
         <div class="card">
+        <h2 class="card-header">Test POST 1C=>Site</h2>
+        <div class="card-body">
+            <div class="container" >
+		 <div id="ajaxanswer2"></div>
+                 <form method="post" id="formajax2"  ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
+                 <textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ></textarea> 
+				 </form>
+                 <input type="button" id="sendajax2"   class="btn btn-primary" value='иммитировать запрос из  1C' />
+            </div>  
+        </div>
+        </div>
+		
+		<div class="card">
         <h2 class="card-header">Test POST Site=>1C </h2>
         <div class="card-body">
             <div class="container" >
@@ -111,7 +124,9 @@
                  <input type="button" id="sendajax"   class="btn btn-primary" value='отправить запрос в 1C' />
             </div>  
         </div>
-        </div><!-- comment -->
+        </div>
+		
+		<!-- comment -->
      
 
 </div>
@@ -200,6 +215,27 @@
 		}
             })
        })
+	   
+	   
+	   $("#sendajax2").click(function(){
+            var dataString = $("#formajax2").serialize();
+            $.ajax({	
+               // beforeSend : function (){ $("#overload").stop().show(); },
+               
+            url: "/receive/",
+               // url: "http://SRV02:8000/sc/hs/site/get_product",
+		type:'POST', 
+		cache: false,	
+		data: dataString,
+		success: function(data){
+                    $("#ajaxanswer2").html(data);
+		},
+                error: function (xhr, ajaxOptions, thrownError) {
+			$("#ajaxanswer2").html("Ошибка соединения, попробуйте повториить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );
+		}
+            })
+       })
+	   
         
         
     });
