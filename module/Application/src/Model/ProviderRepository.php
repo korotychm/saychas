@@ -102,24 +102,17 @@ class ProviderRepository implements ProviderRepositoryInterface
      */
     public function replace($content)
     {
-        // replace INTO `graf_goods_group`( `group_name`, `parent`, `comment`, `id_1C_group`, `icon`) 
         $result = json_decode($content, true);
-        echo "replacing providers\n";
-        
-        //$s = "";
         foreach($result as $row) {
             foreach($row as $r) {
-                //$sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ({$r['id']}, '{$r['title']}', '{$r['description']}', '{$r['icon']}' )";
-                $sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( 5, 'title1', 'description1', 'icon1' )";
-                //echo $sql . "\n";
+                $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $r['id'], $r['title'], $r['description'], $r['icon']);
+                echo $sql."\n";
+                //$sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( 5, 'title1', 'description1', 'icon1' )";
                 $query = $this->db->query($sql);
                 $query->execute();
-                //$s .= "{$r['id']} {$r['title']} {$r['description']} {$r['icon']}\n";
             }
         }
-//        echo $s;
         return ['code' => '200', 'shmode' => '300'];
-//        return new JsonModel(['banzaii' => 'vonzaii']);
     }
     
     
