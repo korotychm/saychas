@@ -53,23 +53,23 @@ return [
                     ],
                 ],
             ],
-            'receive-provider' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/receive-provider[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveProvider',
-                    ],
-                ],
-            ],
+//            'receive-provider' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/receive-provider[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'receiveProvider',
+//                    ],
+//                ],
+//            ],
             'receive' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/receive[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receive',
+                        'action'     => 'receiveProvider',
                     ],
                 ],
             ],

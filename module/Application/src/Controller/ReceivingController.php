@@ -79,8 +79,11 @@ class ReceivingController extends AbstractActionController
     {
         $request = $this->getRequest();
         $post = $request->getPost();
-        print_r($post);
-        echo 'banzaii';
+        $content = $request->getContent();
+        
+        echo $content;
+        
+        echo json_encode(['Banzaii' => 'Vonzaii', 'timestamp' => date('r')]);
         //mail('alex@localhost', 'test', print_r($post, true));
         exit;
     }
