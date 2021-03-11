@@ -9,32 +9,26 @@
 namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
-use Application\Model\Category;
-use Application\Model\CategoryRepository;
+use Application\Model\Provider;
+use Application\Model\ProviderRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class CategoryRepositoryFactory implements FactoryInterface
+class ProviderRepositoryFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {        
-        if($requestedName instanceof CategoryRepository){
-            throw new Exception("not instanceof CategoryRepository");
+        if($requestedName instanceof ProviderRepository){
+            throw new Exception("not instanceof ProviderRepository");
         }
         
-        $config = $container->get('Config');
-
         $adapter = $container->get(AdapterInterface::class);
         
-        $adp = $container->get('Application\Db\WriteAdapter');
-        
-        return new CategoryRepository(
+        return new ProviderRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Category('', 0, 0, null, null),
-            $config['parameters']['1c_auth']['username'],
-            $config['parameters']['1c_auth']['password']
+            new Provider('', 0, 0, null, null)
         );
     }
 }

@@ -15,6 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
@@ -39,6 +40,36 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'preview',
+                    ],
+                ],
+            ],
+            'show-provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/show-provider[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'showProvider',
+                    ],
+                ],
+            ],
+            'receive-provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-provider[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveProvider',
+                    ],
+                ],
+            ],
+            'receive' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receive',
                     ],
                 ],
             ],
@@ -68,6 +99,7 @@ return [
         'factories' => [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
+            Controller\ReceivingController::class => ReceivingControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -75,6 +107,7 @@ return [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
             \Application\Model\CategoryRepositoryInterface::class => \Application\Model\CategoryRepository::class,
+            \Application\Model\ProviderRepositoryInterface::class => \Application\Model\ProviderRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -83,6 +116,7 @@ return [
             \Laminas\Db\Adapter\AdapterInterface::class => \Laminas\Db\Adapter\Adapter::class,
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
             \Application\Model\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
+            \Application\Model\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
         ],
         
     ],
@@ -101,6 +135,12 @@ return [
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
+        ],
+    ],
+    'parameters' => [
+        '1c_auth' => [
+            'username' => 'administrator',
+            'password' => 'w48Es4562',
         ],
     ],
 //    'driver' => [

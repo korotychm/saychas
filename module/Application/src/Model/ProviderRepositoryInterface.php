@@ -1,29 +1,27 @@
 <?php
 namespace Application\Model;
 
-interface CategoryRepositoryInterface
+interface ProviderRepositoryInterface
 {
     /**
      * Return a set of all application tests that we can iterate over.
      *
      * Each entry should be a Test instance.
      *
-     * @return Category[]
+     * @return Provider[]
      */
-    public function findAllCategories($echo='', $i=0, $idActive);
+    public function findAll();
 
     /**
      * Return a single application test.
      *
      * @param  int $id Identifier of the test to return.
-     * @return Category
+     * @return Provider
      */
-    public function findCategory($id);
+    public function find($id);
     
     /**
-     * Return void
-     * @param array categories
+     * @param Provider $provider
      */
-    public function addCategories(array $categories);
-    
+    public function replace(Provider $provider);
 }
