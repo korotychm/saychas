@@ -80,7 +80,7 @@ class ReceivingController extends AbstractActionController
         $request = $this->getRequest();
         $content = $request->getContent();
         
-        echo $content . ',' . json_encode(['timestamp' => date('r')]);
+        echo $content;
         
         exit;
     }
