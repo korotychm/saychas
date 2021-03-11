@@ -16,8 +16,8 @@
         <!-- Le styles -->
         <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
             ->prependStylesheet($this->basePath('css/style.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+            //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+            ->prependStylesheet($this->basePath('css/bs.css'))
             ->prependStylesheet($this->basePath('css/treeview.css'))
             ->prependStylesheet($this->basePath('/css/dadata/suggestions.css'))
         
@@ -93,14 +93,7 @@
     </div>        
  <p><hr/></p>
 <div class="card-deck">        
-         <div class="card">
-             <h2 class="card-header">Каталог</h2>
-             <div class="container">
-		 <ul id="tree">
-                     <?= $this->content ?>
-		 </ul>	
-                 </div>  
-          </div>  
+      
         <div class="card">
         <h2 class="card-header">Test POST 1C=>Site</h2>
         <div class="card-body">
@@ -125,114 +118,109 @@
             </div>  
         </div>
         </div>
-		
-		<!-- comment -->
-     
+	</div>
+<div class="card-deck"> 	
+	   <div class="card">
+             <h2 class="card-header">Каталог</h2>
+             <div class="container">
+		 <ul id="tree">
+                     <?= $this->content ?>
+		 </ul>	
+                 </div>  
+          </div>  
 
+        <div class="card">
+        <h2 class="card-header">Test providers</h2>
+        <div class="card-body">
+            <div class="container" >
+		 <div id="ajaxanswer3"></div>
+                 <form method="post" id="formajax3"  >
+				 <!-- input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
+                 <textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ></textarea --> 
+				 </form>
+                 <input type="button" id="sendajax3"   class="btn btn-primary" value='Получить список постащиков' />
+            </div>  
+        </div>
+        </div>
 </div>
-</div>    
-            <hr>
-            <footer>
+	</div>    
+    <hr>
+    <footer>
                 <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
-            </footer>
+    </footer>
         
         <?= $this->inlineScript()
         ->prependFile($this->basePath('js/jquery.treeview.js'))	
         ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))	
         ->prependFile($this->basePath('js/jquery.treeview.async.js'))	
-	->prependFile($this->basePath('js/bootstrap.min.js'))
+		//->prependFile($this->basePath('js/bootstrap.min.js'))
         ->prependFile($this->basePath('js/jquery-3.5.1.min.js'))
         ?>
         <script type="text/javascript">
             
         
-   $(function() {
-	   
-	                            
-       //$(document).mousedown(function(){return false});
+   $(function() { //$(document).mousedown(function(){return false});
        $("#dadataanswer").slideUp();
        $("#address").click(function(){$("#dadataanswer").slideUp(); $("#ycard").fadeOut();})
        $("#address").suggestions({
-                            token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-                            type: "ADDRESS",
-                            /* Вызывается, когда пользователь выбирает одну из подсказок */
-                            onSelect: function(suggestion) {
-                             
-                             $("#ycard").fadeIn();
-                             $("#dadataanswer").stop().html("<pre>"+print_r(suggestion)+"</pre>").slideDown();
-                             myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
-							 //var myCollection = new ymaps.GeoObjectCollection({}, {preset: "'islands#redPersonIcon'",    strokeWidth: 4,    geodesic: false	});
-                            
-		 
-                             //ymaps.removeAllOverlays();//
-							//clearOverlays(placemark);
-						   //myMap.geoObjects.remove(placemark);
-							 //myMap.geoObjects.add(placemark);
-                            // myMap.geoObjects.add(myCollection);
-						   
-						   var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
-						   
-						   myMap.geoObjects.each(function (geoObject) {
-									if (geoObject instanceof ymaps.Placemark) {
-										myMap.geoObjects.remove(geoObject);  
-									//console.log(geoObject.geometry.getCoorditanes())
-								}
-							});
-						   
-						    myMap.geoObjects.add(placemark);  
-						   //myCollection.removeAll(); 
-						   //myCollection.add(placemark);
-					  //console.log(myCollection);
-						   
-                  $("#geocoords").html(suggestion.data.geo_lat+","+suggestion.data.geo_lon);
-                              //console.log(suggestion.data.geo_lat);
-                              //console.log(suggestion.data.geo_lon);
-                            }
-             });
-                        
-            $("#tree").treeview({
-                  persist: "location",
-                  collapsed: true,
-                animated: "medium",
-                
-            });
+             token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+             type: "ADDRESS",
+             /* Вызывается, когда пользователь выбирает одну из подсказок */
+             onSelect: function(suggestion) {
+				$("#ycard").fadeIn();
+				$("#dadataanswer").stop().html("<pre>"+print_r(suggestion)+"</pre>").slideDown();
+				myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
+				var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
+				myMap.geoObjects.each(function (geoObject) {
+					if (geoObject instanceof ymaps.Placemark) {
+						myMap.geoObjects.remove(geoObject);  
+					}
+				});
+				myMap.geoObjects.add(placemark);  
+				$("#geocoords").html(suggestion.data.geo_lat+","+suggestion.data.geo_lon);
+			}
+        });
+
+        $("#tree").treeview({
+			persist: "location",
+			collapsed: true,
+			animated: "medium",
+         });
            
         $("#sendajax").click(function(){
             var dataString = $("#formajax").serialize();
             $.ajax({	
-               // beforeSend : function (){ $("#overload").stop().show(); },
-               
-            url: "/ajax/",
-               // url: "http://SRV02:8000/sc/hs/site/get_product",
-		type:'POST', 
-		cache: false,	
-		data: dataString,
-		success: function(data){
-                    $("#ajaxanswer").html(data);
-		},
-                error: function (xhr, ajaxOptions, thrownError) {
-			$("#ajaxanswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );
-		}
+            // beforeSend : function (){ $("#overload").stop().show(); },
+            url: "/ajax/?id=1",
+           	type:'POST', 
+			cache: false,	
+			data: dataString,
+			success: function(data){ $("#ajaxanswer").html(data);},
+            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
             })
-       })
-	   
+		})
 	   
 	   $("#sendajax2").click(function(){
             var dataString = $("#formajax2").serialize();
             $.ajax({	
-               // beforeSend : function (){ $("#overload").stop().show(); },
-               
             url: "/receive",
-               // url: "http://SRV02:8000/sc/hs/site/get_product",
-		type:'POST', 
-		cache: false,	
-		data: dataString,
-		success: function(data){
-                    $("#ajaxanswer2").html(data);
-		},
-                error: function (xhr, ajaxOptions, thrownError) {
-			$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );
-		}
+			type:'POST', 
+			cache: false,	
+			data: dataString,
+			success: function(data){ $("#ajaxanswer2").html(data);},
+                error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
+            })
+       })
+	   
+	   $("#sendajax3").click(function(){
+            var dataString = $("#formajax3").serialize();
+            $.ajax({	
+            url: "/ajax/?id=2",
+			type:'POST', 
+			cache: false,	
+			data: dataString,
+			success: function(data){ $("#ajaxanswer3").html(data);},
+                error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer3").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
             })
        })
 	   
@@ -258,8 +246,9 @@
 
     else  print_red_text = "===>"+arr+"<===("+typeof(arr)+")";
     return print_red_text;
-}
+	}
     
 	</script>
+
     </body>
 </html>
