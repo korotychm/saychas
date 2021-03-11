@@ -79,7 +79,9 @@ class ReceivingController extends AbstractActionController
     {
         $request = $this->getRequest();
         $post = $request->getPost();
-        mail('alex@localhost', 'test', print_r($post, true));
+        print_r($post);
+        echo 'banzaii';
+        //mail('alex@localhost', 'test', print_r($post, true));
         exit;
     }
     
