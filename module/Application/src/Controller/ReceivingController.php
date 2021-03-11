@@ -8,6 +8,9 @@ use Application\Model;
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
+use InvalidArgumentException;
+use RuntimeException;
 use Exception;
 //use Laminas\Uri\Exception\InvalidArgumentException;
 
@@ -42,14 +45,39 @@ class ReceivingController extends AbstractActionController
         $category = $post['value'];
         //$category = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
         //print_r($category);
-        print_r(json_decode($category, true));
-        exit;
+//        print_r(json_decode($category, true));
+//        exit;
         $categoryRepository = $this->container->get(\Application\Model\CategoryRepositoryInterface::class);
         if(! $categoryRepository instanceof Model\CategoryRepositoryInterface) {
             throw new Exception('Wrong repository');
         }
         $categories = $categoryRepository->findAllCategories();
         return new ViewModel(['categories' => $categories]);
+    }
+    
+    public function showProviderAction()
+    {
+        $id = $this->params()->fromRoute('id' , '1');
+        $providerRepository = $this->container->get(\Application\Model\ProviderRepositoryInterface::class);
+        
+        try {
+            $provider = $providerRepository->find($id);
+            echo $provider->getId(). '<br/>';
+            echo $provider->getTitle(). '<br/>';
+            echo $provider->getDescription(). '<br/>';
+            echo $provider->getIcon(). '<br/>';
+            exit;
+        }catch(InvalidArgumentException $e){
+            print_r($e->getMessage());
+        }        
+    }
+    
+    public function receiveProviderAction()
+    {
+        $request = $this->getRequest();
+        $post = $request->getPost();
+        mail('alex@localhost', 'test', print_r($post));
+        exit;
     }
     
 }

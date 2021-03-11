@@ -1,14 +1,14 @@
 <?php
 namespace Application\Model;
 
-interface RepositoryInterface
+interface ProviderRepositoryInterface
 {
     /**
      * Return a set of all application tests that we can iterate over.
      *
      * Each entry should be a Test instance.
      *
-     * @return Entity[]
+     * @return Provider[]
      */
     public function findAll();
 
@@ -16,14 +16,12 @@ interface RepositoryInterface
      * Return a single application test.
      *
      * @param  int $id Identifier of the test to return.
-     * @return Entity
+     * @return Provider
      */
     public function find($id);
     
     /**
-     * Return void
-     * @param Entity
+     * @param Provider $provider
      */
-    public function replace($entity);
-    
+    public function replace(Provider $provider);
 }

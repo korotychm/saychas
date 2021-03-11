@@ -13,7 +13,7 @@ use InvalidArgumentException;
 use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
-//use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
@@ -29,9 +29,9 @@ use Laminas\Db\Sql\Sql;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
-     * @var Adapter
+     * @var AdapterInterface
      */
-    private Adapter $db;
+    private AdapterInterface $db;
 
     /**
      * @var HydratorInterface
@@ -63,7 +63,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function __construct(
 //        AdapterInterface $db,
-        Adapter $db,
+        AdapterInterface $db,
         HydratorInterface $hydrator,
         Category $categoryPrototype,
         string $username,
