@@ -106,16 +106,18 @@ class ProviderRepository implements ProviderRepositoryInterface
         $result = json_decode($content, true);
         echo "replacing providers\n";
         
-        $s = "";
+        //$s = "";
         foreach($result as $row) {
             foreach($row as $r) {
-                $query = $this->db->query("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ({$r['id']}, '{$r['title']}', '{$r['description']}', '{$r['icon']}' )");
+                $sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ({$r['id']}, '{$r['title']}', '{$r['description']}', '{$r['icon']}' )";
+                //echo $sql . "\n";
+                $query = $this->db->query($sql);
                 $query->execute();
-                $s .= "{$r['id']} {$r['title']} {$r['description']} {$r['icon']}\n";
+                //$s .= "{$r['id']} {$r['title']} {$r['description']} {$r['icon']}\n";
             }
         }
-        echo $s;
-        exit;
+//        echo $s;
+        return ['code' => '200', 'shmode' => '300'];
 //        return new JsonModel(['banzaii' => 'vonzaii']);
     }
     

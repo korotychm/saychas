@@ -78,8 +78,7 @@ class ReceivingController extends AbstractActionController
     
     public function receiveProviderAction()
     {
-        $request = $this->getRequest();
-        $content = $request->getContent();
+        $content = $this->getRequest()->getContent();
         
         $providerRepository = $this->container->get(\Application\Model\ProviderRepositoryInterface::class);
         
