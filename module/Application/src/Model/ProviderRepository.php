@@ -109,7 +109,8 @@ class ProviderRepository implements ProviderRepositoryInterface
         //$s = "";
         foreach($result as $row) {
             foreach($row as $r) {
-                $sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ({$r['id']}, '{$r['title']}', '{$r['description']}', '{$r['icon']}' )";
+                //$sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ({$r['id']}, '{$r['title']}', '{$r['description']}', '{$r['icon']}' )";
+                $sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( 5, 'title1', 'description1', 'icon1' )";
                 //echo $sql . "\n";
                 $query = $this->db->query($sql);
                 $query->execute();
