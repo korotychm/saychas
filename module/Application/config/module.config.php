@@ -56,7 +56,7 @@ return [
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/ajax[/:action]',
+                    'route'    => '/ajax[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'ajax',

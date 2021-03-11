@@ -83,6 +83,53 @@ class IndexController extends AbstractActionController
     
     public function ajaxAction()
     {
-        return json_encode(['banzaii' => 'vonzaii']);
+        //exit(print_r($this->params()->fromRoute()->id));
+        $id=$this->params()->fromRoute('id', '');
+        $post = $this->getRequest()->getPost();
+        //$id=$this->getRequest()->getQuery('id', 0);
+        /*$category = $this->categoryRepository->findCategory(302);
+        $id = $category->getId();
+        $name = $category->getName();
+        //$name = $category->
+        $categories = $this->categoryRepository->findAllCategories();
+        echo $name.$categories;
+        exit;
+        return json_encode(['banzaii' => 'vonzaii']);*/
+        if ($id=="toweb"){
+            $url="http://SRV02:8000/SC/hs/site/get_product";
+            /*$headers=get_headers($url);
+             * if ($headersss[0] != "HTTP/1.0 200 OK")	{ echo "<pre>" ; exit (print_r($headers));} 
+             /**/
+            $params = array('name' => 'value');
+            $result = file_get_contents(
+                    $url, 
+                    false, 
+                    stream_context_create(array(
+            'http' => array(
+            'method'  => 'POST',
+            'header'  => 'Content-type: application/x-www-form-urlencoded',
+            'content' => http_build_query($params))	
+                    )));
+            $return.="<pre>";
+            $return.= date("r")."\n" ;
+            // if($result) print_r(json_decode($result));
+            $return.="{$post -> name} => {$post -> value}";
+            $return.="</pre>";
+             exit ($return);
+        }
+        if ($id=="to1c"){
+                
+                //$provider = $this->providerRepository->findAll();
+                if (!$list or !is_object($list)) exit(date("r")."<h3>Объект provider не&nbsp;получен</h3>"); 
+                $return.=date("r");	
+                $return.="<ul>";
+                foreach ($list as $row)
+                    $return.="<li><a href=# rel='{$row -> id}' class=providers-list >'{$row -> title}'</a></li>";
+                $return.="</ul>";
+                exit ($return);
+        }	
+    
+        //header('HTTP/1.0 404 Not Found');
+        exit(); 
     }
 }
