@@ -35,7 +35,7 @@ class ReceivingController extends AbstractActionController
     /**
      * Receives data from 1c and distributes them among repositories
      * @return ViewModel
-     * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function receiveAction()
     {
@@ -47,12 +47,15 @@ class ReceivingController extends AbstractActionController
         //print_r($category);
 //        print_r(json_decode($category, true));
 //        exit;
+        $json = $this->getRequest()->getPost()['value'];
+        $result = json_decode($json, true);
+
         $categoryRepository = $this->container->get(\Application\Model\CategoryRepositoryInterface::class);
         if(! $categoryRepository instanceof Model\CategoryRepositoryInterface) {
-            throw new Exception('Wrong repository');
+            throw new InvalidArgumentException('Wrong repository');
         }
-        $categories = $categoryRepository->findAllCategories();
-        return new ViewModel(['categories' => $categories]);
+        $returnCode = $categoryRepository->addCategories($result);
+        return new ViewModel(['returnCode' => $returnCode]);
     }
     
     public function showProviderAction()
@@ -76,7 +79,7 @@ class ReceivingController extends AbstractActionController
     {
         $request = $this->getRequest();
         $post = $request->getPost();
-        mail('alex@localhost', 'test', print_r($post));
+        mail('alex@localhost', 'test', print_r($post, true));
         exit;
     }
     
