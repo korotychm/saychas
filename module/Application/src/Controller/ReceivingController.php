@@ -12,6 +12,7 @@ use Laminas\View\Model\JsonModel;
 use InvalidArgumentException;
 use RuntimeException;
 use Exception;
+use Laminas\Db\ResultSet\HydratingResultSet;
 //use Laminas\Uri\Exception\InvalidArgumentException;
 
 class ReceivingController extends AbstractActionController
@@ -80,9 +81,11 @@ class ReceivingController extends AbstractActionController
         $request = $this->getRequest();
         $content = $request->getContent();
         
-        echo $content;
+        $providerRepository = $this->container->get(\Application\Model\ProviderRepositoryInterface::class);
         
-        exit;
+        $arr = $providerRepository->replace($content);
+        
+        return new JsonModel($arr);
     }
     
 }

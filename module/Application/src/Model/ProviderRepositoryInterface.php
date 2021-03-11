@@ -21,7 +21,7 @@ interface ProviderRepositoryInterface
     public function find($id);
     
     /**
-     * @param Provider $provider
+     * @param json
      */
-    public function replace(Provider $provider);
+    public function replace($provider);
 }

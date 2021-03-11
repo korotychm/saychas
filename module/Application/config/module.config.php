@@ -136,6 +136,7 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => ['ViewJsonStrategy',],
     ],
     'parameters' => [
         '1c_auth' => [

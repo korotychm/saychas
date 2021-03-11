@@ -98,13 +98,25 @@ class ProviderRepository implements ProviderRepositoryInterface
     
     /**
      * Adds given provider into repository
-     * @param Provider
+     * @param json
      */
-    public function replace(Provider $provider)
+    public function replace($content)
     {
-        echo 'replacing providers<br/>';
-        print_r($provider);
+        // replace INTO `graf_goods_group`( `group_name`, `parent`, `comment`, `id_1C_group`, `icon`) 
+        $result = json_decode($content, true);
+        echo "replacing providers\n";
+        
+        $s = "";
+        foreach($result as $row) {
+            foreach($row as $r) {
+                $query = $this->db->query("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ({$r['id']}, '{$r['title']}', '{$r['description']}', '{$r['icon']}' )");
+                $query->execute();
+                $s .= "{$r['id']} {$r['title']} {$r['description']} {$r['icon']}\n";
+            }
+        }
+        echo $s;
         exit;
+//        return new JsonModel(['banzaii' => 'vonzaii']);
     }
     
     
