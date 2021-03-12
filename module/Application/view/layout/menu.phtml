@@ -1,8 +1,4 @@
-<?php
-/**
- * @var Laminas\View\Renderer\PhpRenderer $this
- */
-?><?= $this->doctype() ?>
+<?= $this->doctype() ?>
 <html lang="ru">
     <head>
         <meta charset="utf-8">
@@ -18,16 +14,11 @@
             ->prependStylesheet($this->basePath('css/bs.css'))
             ->prependStylesheet($this->basePath('css/treeview.css'))
             ->prependStylesheet($this->basePath('/css/dadata/suggestions.css'))
-        
-        
-        	
         ?>
-
-        <!-- Scripts -->
+    <!-- Scripts -->
         <?= $this->headScript() ?>
     </head>
     <body>
-        
         <nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -42,19 +33,17 @@
                         
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">
-                        <li class="nav-item "><a class="nav-link" href="<?= $this->url('home') ?>">Home</a></li>
-                        <li class="nav-item active"><a class="nav-link active" href="<?= $this->url('preview') ?>">Меню</a></li>
-                         <li class="nav-item active"><a class="nav-link active" href="http://localhost/phpmyadmin">pma</a></li>
-                       
-       
-                    </ul>
+                        <li class="nav-item  "><a class="nav-link" href="<?= $this->url('home') ?>">Home</a></li>
+                        <li class="nav-item active"><a class="nav-link " href="<?= $this->url('preview') ?>">Меню</a></li>
+                        <li class="nav-item "><a class="nav-link" href="<?= $this->url('provider') ?>" >Магазины</a></li>
+                         <li class="nav-item "><a class="nav-link" href="http://localhost/phpmyadmin">pma</a></li>
+                      </ul>
                     </div>    
                     </ul>
                     </div>    
             </div>
-            
-        </nav>
-<div class="container" styele="max-width:1200px">	
+         </nav>
+<div class="container" styele="max-width:1400px">	
     <div class="card-deck"> 
        <div class="card">
         <h2 class="card-header">Test Dadata</h2>
@@ -100,7 +89,7 @@
                  <!-- form method="post" id="formajax2"  ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px" --><br/>
                  <textarea ID=textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px; width:96%; display:block" >[{"id": "00003","name": "Xiaomi "},{"id": "00003","name": "Xiaomi "}]</textarea> 
 				 </form>
-                 <input type="button" id="sendajax2"   class="btn btn-primary" value='иммитировать запрос из  1C' />
+                 <input type="button" id="sendajax2"   class="btn btn-primary" value='Иммитировать запрос из  1C' />
             </div>  
         </div>
         </div>
@@ -112,7 +101,7 @@
 		 <div id="ajaxanswer"></div>
                  <form method="post" id="formajax" ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
                  <input name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ><br/> </form>
-                 <input type="button" id="sendajax"   class="btn btn-primary" value='отправить запрос в 1C' />
+                 <input type="button" id="sendajax"   class="btn btn-primary" value='Отправить запрос в 1C' />
             </div>  
         </div>
         </div>
@@ -127,126 +116,21 @@
                  </div>  
           </div>  
 
-        <div class="card">
-        <h2 class="card-header">Test providers</h2>
-        <div class="card-body">
-            <div class="container" >
-		 <div id="ajaxanswer3"></div>
-                 <form method="post" id="formajax3"  >
-				 <!-- input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
-                 <textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ></textarea --> 
-				 </form>
-                 <input type="button" id="sendajax3"   class="btn btn-primary" value='Получить список постащиков' />
-            </div>  
-        </div>
-        </div>
+ 
 </div>
 	</div>    
     <hr>
     <footer>
-                <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
+     <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
     </footer>
         
         <?= $this->inlineScript()
         ->prependFile($this->basePath('js/jquery.treeview.js'))	
+        ->prependFile($this->basePath('js/saychas_z.js'))
         ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))	
         ->prependFile($this->basePath('js/jquery.treeview.async.js'))	
 		//->prependFile($this->basePath('js/bootstrap.min.js'))
-        ->prependFile($this->basePath('js/jquery-3.5.1.min.js'))
+        ->prependFile($this->basePath('js/jquery.js'))
         ?>
-        <script type="text/javascript">
-            
-        
-   $(function() { //$(document).mousedown(function(){return false});
-       $("#dadataanswer").slideUp();
-       $("#address").click(function(){$("#dadataanswer").slideUp(); $("#ycard").fadeOut();})
-       $("#address").suggestions({
-             token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-             type: "ADDRESS",
-             /* Вызывается, когда пользователь выбирает одну из подсказок */
-             onSelect: function(suggestion) {
-				$("#ycard").fadeIn();
-				$("#dadataanswer").stop().html("<pre>"+print_r(suggestion)+"</pre>").slideDown();
-				myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
-				var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
-				myMap.geoObjects.each(function (geoObject) {
-					if (geoObject instanceof ymaps.Placemark) {
-						myMap.geoObjects.remove(geoObject);  
-					}
-				});
-				myMap.geoObjects.add(placemark);  
-				$("#geocoords").html(suggestion.data.geo_lat+","+suggestion.data.geo_lon);
-			}
-        });
-
-        $("#tree").treeview({
-			persist: "location",
-			collapsed: true,
-			animated: "medium",
-         });
-           
-        $("#sendajax").click(function(){
-            var dataString = $("#formajax").serialize();
-            $.ajax({	
-            // beforeSend : function (){ $("#overload").stop().show(); },
-            url: "/ajax/toweb",
-           	type:'POST', 
-			cache: false,	
-			data: dataString,
-			success: function(data){ $("#ajaxanswer").html(data);},
-            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
-            })
-		})
-	   
-	   $("#sendajax2").click(function(){
-            var dataString = $("#textarea").text();
-            $.ajax({	
-            url: "/receive",
-			type:'POST', 
-			cache: false,	
-			data: dataString,
-			success: function(data){ $("#ajaxanswer2").html(data);},
-                error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
-            })
-       })
-	   
-	   $("#sendajax3").click(function(){
-            var dataString = $("#formajax3").serialize();
-            $.ajax({	
-            url: "/ajax/to1c",
-			type:'POST', 
-			cache: false,	
-			data: dataString,
-			success: function(data){ $("#ajaxanswer3").html(data);},
-                error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer3").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
-            })
-       })
-	   
-        
-        
-    });
-    function print_r(arr, level) {
-    var print_red_text = "";
-    if(!level) level = 0;
-    var level_padding = "";
-    for(var j=0; j<level+1; j++) level_padding += "    ";
-    if(typeof(arr) == 'object') {
-        for(var item in arr) {
-            var value = arr[item];
-            if(typeof(value) == 'object') {
-                print_red_text += level_padding + "'" + item + "' :\n";
-                print_red_text += print_r(value,level+1);
-    } 
-            else 
-                print_red_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-        }
-    } 
-
-    else  print_red_text = "===>"+arr+"<===("+typeof(arr)+")";
-    return print_red_text;
-	}
-    
-	</script>
-
     </body>
 </html>

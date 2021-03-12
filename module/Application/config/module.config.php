@@ -53,6 +53,16 @@ return [
                     ],
                 ],
             ],
+            'provider' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/provider',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'provider',
+                    ],
+                ],
+            ],
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [

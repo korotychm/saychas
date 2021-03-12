@@ -97,9 +97,6 @@ class IndexController extends AbstractActionController
         return json_encode(['banzaii' => 'vonzaii']);*/
         if ($id=="toweb"){
             $url="http://SRV02:8000/SC/hs/site/get_product";
-            /*$headers=get_headers($url);
-             * if ($headersss[0] != "HTTP/1.0 200 OK")	{ echo "<pre>" ; exit (print_r($headers));} 
-             /**/
             $params = array('name' => 'value');
             $result = file_get_contents(
                     $url, 
@@ -117,19 +114,46 @@ class IndexController extends AbstractActionController
             $return.="</pre>";
              exit ($return);
         }
-        if ($id=="to1c"){
-                
-                //$provider = $this->providerRepository->findAll();
-                if (!$list or !is_object($list)) exit(date("r")."<h3>Объект provider не&nbsp;получен</h3>"); 
+        if ($id=="to1c"){                
+            //$provider = $this->providerRepository->findAll();
+            if (!$list or !is_object($list)) exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
                 $return.=date("r");	
-                $return.="<ul>";
-                foreach ($list as $row)
-                    $return.="<li><a href=# rel='{$row -> id}' class=providers-list >'{$row -> title}'</a></li>";
-                $return.="</ul>";
-                exit ($return);
+            $return.="<ul>";
+            foreach ($list as $row)
+                $return.="<li><a href=# rel='{$row -> id}' class=provider-list >'{$row -> title}'</a></li>";
+            $return.="</ul>";
+            exit ($return);
+        }	
+        if ($id=="getshops"){
+            //$provider = $this->providerRepository->findAll();
+            
+            if (!$list or !is_object($list)) exit(date("r")."<h3>Объект shop не&nbsp;получен</h3> <a href=# rel='666' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
+                $return.=date("r");	
+            $return.="<ul>";
+            foreach ($list as $row)
+                $return.="<li><a href=# rel='{$row -> id}' class=shop-list title='{$row -> adress } \r\n {$row -> geox },{$row -> geoy } ' >'{$row -> title}'</a></li>";
+            $return.="</ul>";
+            exit ($return);
+        }	
+        if ($id=="getproducts"){
+            //$provider = $this->storeRepository->findAll();
+            
+            if (!$list or !is_object($list)) exit(date("r")."<h3>Объект product не&nbsp;получен</h3> "); 
+                $return.=date("r");	
+            $return.="<ul>";
+            foreach ($list as $row)
+                $return.="<li><a href=# rel='{$row -> id}' class=shop-list title='{$row -> adress } \r\n {$row -> geox },{$row -> geoy } ' >'{$row -> title}'</a></li>";
+            $return.="</ul>";
+            exit ($return);
         }	
     
-        //header('HTTP/1.0 404 Not Found');
+        header('HTTP/1.0 404 Not Found');
         exit(); 
+    }
+    public function providerAction()
+    {
+        $this->layout()->setTemplate('layout/provider');
+        return new ViewModel([]);
+        
     }
 }
