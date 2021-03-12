@@ -9,6 +9,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
+use Laminas\Http\Response;
 use InvalidArgumentException;
 use RuntimeException;
 use Exception;
@@ -83,6 +84,15 @@ class ReceivingController extends AbstractActionController
         $providerRepository = $this->container->get(\Application\Model\ProviderRepositoryInterface::class);
         
         $arr = $providerRepository->replace($content);
+        
+//        $response = new Response();
+//        $response->setStatusCode(Response::STATUS_CODE_200);
+//        $response->getHeaders()->addHeaders([
+//            'HeaderField1' => 'header-field-value',
+//            'HeaderField2' => 'header-field-value2',
+//        ]);
+        
+//        return $response;
         
         return new JsonModel($arr);
     }

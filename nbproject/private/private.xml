@@ -8,9 +8,11 @@
             <file>file:/home/alex/www/saychas-z.local/module/Application/view/application/index/index.phtml</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Test.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/view/layout/layout.phtml</file>
+            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/ProviderRepositoryInterface.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/CategoryRepository.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/view/application/index/preview.phtml</file>
             <file>file:/home/alex/www/saychas-z.local/config/autoload/global.php</file>
+            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/ProviderRepository.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/TestRepositoryInterface.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Factory/CategoryRepositoryFactory.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Entity/Category.php</file>
@@ -18,9 +20,11 @@
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Controller/ReceivingController.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/LaminasDbSqlRepository.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Controller/Factory/ReceivingControllerFactory.php</file>
+            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Factory/ProviderRepositoryFactory.php</file>
             <file>file:/home/alex/www/saychas-z.local/config/development.config.php</file>
             <file>file:/home/alex/www/saychas-z.local/public/index.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/RepositoryInterface.php</file>
+            <file>file:/home/alex/www/saychas-z.local/module/Application/src/Model/Provider.php</file>
             <file>file:/home/alex/www/saychas-z.local/config/modules.config.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/src/Controller/Factory/IndexControllerFactory.php</file>
             <file>file:/home/alex/www/saychas-z.local/module/Application/view/application/receiving/receive.phtml</file>

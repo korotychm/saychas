@@ -15,6 +15,8 @@ use RuntimeException;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
+use Laminas\Db\ResultSet\ResultSet;
+use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 
@@ -51,17 +53,32 @@ class ProviderRepository implements ProviderRepositoryInterface
     }
 
     /**
-     * Return a string that contains html ul list
+     * Returns a list of providers
      *
      * @return Provider[]
      */
     public function findAll()
     {
-        return [];
+        $sql    = new Sql($this->db);
+        $select = $sql->select('provider');
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+ 
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->providerPrototype
+        );
+        $resultSet->initialize($result);
+        return $resultSet;
     }
 
     /**
-     * Return a single provider.
+     * Returns a single provider.
      *
      * @param  int $id Identifier of the provider to return.
      * @return Provider
@@ -97,7 +114,7 @@ class ProviderRepository implements ProviderRepositoryInterface
     }
     
     /**
-     * Adds given provider into repository
+     * Adds given provider into it's repository
      * @param json
      */
     public function replace($content)
@@ -106,13 +123,15 @@ class ProviderRepository implements ProviderRepositoryInterface
         foreach($result as $row) {
             foreach($row as $r) {
                 $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $r['id'], $r['title'], $r['description'], $r['icon']);
-                echo $sql."\n";
-                //$sql = "replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( 5, 'title1', 'description1', 'icon1' )";
-                $query = $this->db->query($sql);
-                $query->execute();
+                try {
+                    $query = $this->db->query($sql);
+                    $query->execute();
+                }catch(Exception $e){
+                    return ['error' => $e->getMessage(), 'description' => "error executing $sql"];
+                }
             }
         }
-        return ['code' => '200', 'shmode' => '300'];
+        return ['error' => '0', 'description' => 'relax now'];
     }
     
     
