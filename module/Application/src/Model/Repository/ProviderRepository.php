@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-namespace Application\Model;
+namespace Application\Model\Repository;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -20,6 +20,8 @@ use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use Application\Model\Entity\Provider;
+use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 class ProviderRepository implements ProviderRepositoryInterface
 {
@@ -122,7 +124,7 @@ class ProviderRepository implements ProviderRepositoryInterface
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
+            $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( '%s', '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -130,7 +132,7 @@ class ProviderRepository implements ProviderRepositoryInterface
                 return ['result' => false, 'description' => "error executing $sql"];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => $result];
     }
     
     

@@ -9,8 +9,8 @@
 namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
-use Application\Model\Category;
-use Application\Model\CategoryRepository;
+use Application\Model\Entity\Category;
+use Application\Model\Repository\CategoryRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;

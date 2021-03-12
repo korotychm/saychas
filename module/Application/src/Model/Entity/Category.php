@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace Application\Model;
+namespace Application\Model\Entity;
 
 class Category
 {

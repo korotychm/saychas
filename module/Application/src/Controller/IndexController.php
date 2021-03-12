@@ -15,8 +15,8 @@ use Laminas\View\Model\ViewModel;
 //use Laminas\Db\Sql\Sql;
 use Laminas\Mvc\MvcEvent;
 use Application\Model\TestRepositoryInterface;
-use Application\Model\CategoryRepositoryInterface;
-use Application\Model\ProviderRepositoryInterface;
+use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
+use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 class IndexController extends AbstractActionController
 {

@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-namespace Application\Model;
+namespace Application\Model\Repository;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -17,8 +17,9 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
-
+use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Laminas\Db\TableGateway\TableGateway;
+use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Ddl;
 

@@ -63,7 +63,7 @@ class ReceivingController extends AbstractActionController
     public function showProviderAction()
     {
         $id = $this->params()->fromRoute('id' , '1');
-        $providerRepository = $this->container->get(\Application\Model\ProviderRepositoryInterface::class);
+        $providerRepository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
         
         try {
             $provider = $providerRepository->find($id);
@@ -81,18 +81,18 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $providerRepository = $this->container->get(\Application\Model\ProviderRepositoryInterface::class);
+        $providerRepository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
         
         $arr = $providerRepository->replace($content);
         
-//        $response = new Response();
-//        $response->setStatusCode(Response::STATUS_CODE_200);
-//        $response->getHeaders()->addHeaders([
-//            'HeaderField1' => 'header-field-value',
-//            'HeaderField2' => 'header-field-value2',
-//        ]);
-        
-//        return $response;
+////        $response = new Response();
+////        $response->setStatusCode(Response::STATUS_CODE_200);
+////        $response->getHeaders()->addHeaders([
+////            'HeaderField1' => 'header-field-value',
+////            'HeaderField2' => 'header-field-value2',
+////        ]);
+//        
+////        return $response;
         
         return new JsonModel($arr);
     }
