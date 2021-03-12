@@ -19,6 +19,7 @@ use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 
 class ProviderRepository implements ProviderRepositoryInterface
 {
@@ -121,17 +122,17 @@ class ProviderRepository implements ProviderRepositoryInterface
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-            foreach($row as $r) {
-                $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $r['id'], $r['title'], $r['description'], $r['icon']);
+//            foreach($row as $r) {
+                $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
                 try {
                     $query = $this->db->query($sql);
                     $query->execute();
-                }catch(Exception $e){
-                    return ['error' => $e->getMessage(), 'description' => "error executing $sql"];
+                }catch(InvalidQueryException $e){
+                    return ['result' => false, 'description' => "error executing $sql"];
                 }
-            }
+//            }
         }
-        return ['error' => '0', 'description' => 'relax now'];
+        return ['result' => true, 'description' => ''];
     }
     
     

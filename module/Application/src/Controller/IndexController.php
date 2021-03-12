@@ -71,7 +71,7 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'tests' => $this->testRepository->findAllTests(),
             'first' => $this->testRepository->findTest(4),
-            'provider' => $this->providerRepository->find(4),
+            //'provider' => $this->providerRepository->find(4),
             'providers' => $this->providerRepository->findAll(),
         ]);
     }
