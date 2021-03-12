@@ -122,15 +122,13 @@ class ProviderRepository implements ProviderRepositoryInterface
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-//            foreach($row as $r) {
-                $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
-                try {
-                    $query = $this->db->query($sql);
-                    $query->execute();
-                }catch(InvalidQueryException $e){
-                    return ['result' => false, 'description' => "error executing $sql"];
-                }
-//            }
+            $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( %u, '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+            }catch(InvalidQueryException $e){
+                return ['result' => false, 'description' => "error executing $sql"];
+            }
         }
         return ['result' => true, 'description' => ''];
     }
