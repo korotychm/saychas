@@ -132,7 +132,7 @@ class ProviderRepository implements ProviderRepositoryInterface
                 return ['result' => false, 'description' => "error executing $sql"];
             }
         }
-        return ['result' => true, 'description' => $result];
+        return ['result' => true, 'description' => ''];
     }
     
     
