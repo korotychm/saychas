@@ -43,13 +43,33 @@ return [
                     ],
                 ],
             ],
-            'receive' => [
-                'type'    => Literal::class,
+            'show-provider' => [
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/receive',
+                    'route'    => '/show-provider[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receive',
+                        'action'     => 'showProvider',
+                    ],
+                ],
+            ],
+//            'receive-provider' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/receive-provider[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'receiveProvider',
+//                    ],
+//                ],
+//            ],
+            'receive' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveProvider',
                     ],
                 ],
             ],
@@ -96,7 +116,8 @@ return [
         'aliases' => [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
-            \Application\Model\CategoryRepositoryInterface::class => \Application\Model\CategoryRepository::class,
+            \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class => \Application\Model\Repository\CategoryRepository::class,
+            \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class => \Application\Model\Repository\ProviderRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -104,7 +125,8 @@ return [
             'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             \Laminas\Db\Adapter\AdapterInterface::class => \Laminas\Db\Adapter\Adapter::class,
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
-            \Application\Model\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
+            \Application\Model\Repository\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
+            \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
         ],
         
     ],
@@ -124,6 +146,7 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => ['ViewJsonStrategy',],
     ],
     'parameters' => [
         '1c_auth' => [

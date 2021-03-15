@@ -15,7 +15,8 @@ use Laminas\View\Model\ViewModel;
 //use Laminas\Db\Sql\Sql;
 use Laminas\Mvc\MvcEvent;
 use Application\Model\TestRepositoryInterface;
-use Application\Model\CategoryRepositoryInterface;
+use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
+use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 class IndexController extends AbstractActionController
 {
@@ -24,11 +25,13 @@ class IndexController extends AbstractActionController
      */
     private $testRepository;
     private $categoryRepository;
+    private $providerRepository;
 
-    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository, ProviderRepositoryInterface $providerRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->providerRepository = $providerRepository;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -68,6 +71,8 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'tests' => $this->testRepository->findAllTests(),
             'first' => $this->testRepository->findTest(4),
+            //'provider' => $this->providerRepository->find(4),
+            'providers' => $this->providerRepository->findAll(),
         ]);
     }
     

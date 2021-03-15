@@ -1,5 +1,5 @@
 <?php
-namespace Application\Model;
+namespace Application\Model\RepositoryInterface;
 
 interface RepositoryInterface
 {
@@ -8,7 +8,7 @@ interface RepositoryInterface
      *
      * Each entry should be a Test instance.
      *
-     * @return Category[]
+     * @return Entity[]
      */
     public function findAll();
 
@@ -16,14 +16,14 @@ interface RepositoryInterface
      * Return a single application test.
      *
      * @param  int $id Identifier of the test to return.
-     * @return Category
+     * @return Entity
      */
     public function find($id);
     
     /**
      * Return void
-     * @param Category[]
+     * @param Entity
      */
-    public function add($categories);
+    public function replace($entity);
     
 }

@@ -27,6 +27,15 @@
 
     <a class="btn btn-primary btn-lg" href="https://github.com/laminas" target="_blank">Check Laminas on GitHub &raquo;</a>
 </div>
+<?php if(true) : ?>
+<?php // echo $provider->getTitle() ?>
+<?php
+    foreach($providers as $provider) {
+        var_dump($provider);
+    }
+?>
+
+<?php endif; ?>
 
 <div class="card-deck">
     <div class="card">
