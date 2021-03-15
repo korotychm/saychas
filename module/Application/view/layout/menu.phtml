@@ -115,6 +115,14 @@
 		 </ul>	
                  </div>  
           </div>  
+        <div class="card">
+            <h2 class="card-header">Телефон</h2>
+            <div class="card-body">  
+             <div class="container">
+                 <p><input name=phonesend  val=""  id="phonesend" class="phoneinput" placeholder="+7-999-999-9999" style="margin:5px 0;padding:4px" ></p>
+                 </div>  
+            </div> 
+        </div> 
 
  
 </div>
@@ -126,6 +134,7 @@
         
         <?= $this->inlineScript()
         ->prependFile($this->basePath('js/jquery.treeview.js'))	
+        ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))	
         ->prependFile($this->basePath('js/saychas_z.js'))
         ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))	
         ->prependFile($this->basePath('js/jquery.treeview.async.js'))	

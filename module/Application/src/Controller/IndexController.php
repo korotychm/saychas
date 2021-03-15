@@ -120,34 +120,36 @@ class IndexController extends AbstractActionController
              exit ($return);
         }
         if ($id=="to1c"){                
-            //$provider = $this->providerRepository->findAll();
-            if (!$list or !is_object($list)) exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
-                $return.=date("r");	
+       
+            $providers = $this->providerRepository->findAll();
+              
+          //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
+            $return.=date("r");	
             $return.="<ul>";
-            foreach ($list as $row)
-                $return.="<li><a href=# rel='{$row -> id}' class=provider-list >'{$row -> title}'</a></li>";
+            foreach ($providers as $row)
+                $return.="<li><a href=# rel='{$row -> getId()}' class=provider-list >{$row -> getTitle()}</a></li>";
             $return.="</ul>";
             exit ($return);
         }	
         if ($id=="getshops"){
-            //$provider = $this->providerRepository->findAll();
-            
-            if (!$list or !is_object($list)) exit(date("r")."<h3>Объект shop не&nbsp;получен</h3> <a href=# rel='666' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
+      
+            //$stors = $this->storeRepository->findAll();
+            if (! $stors ) exit(date("r")."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='666' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
                 $return.=date("r");	
             $return.="<ul>";
-            foreach ($list as $row)
-                $return.="<li><a href=# rel='{$row -> id}' class=shop-list title='{$row -> adress } \r\n {$row -> geox },{$row -> geoy } ' >'{$row -> title}'</a></li>";
+            foreach ( $stors as $row)
+                $return.="<li><a href=# rel='{$row -> getId()}' class=shop-list title='{$row -> getAdress() } \r\n {$row -> getGeox() },{$row -> getGeoy() } ' >{$row -> getTitle()}</a></li>";
             $return.="</ul>";
             exit ($return);
         }	
         if ($id=="getproducts"){
-            //$provider = $this->storeRepository->findAll();
+            //$products = $this->productRepository->findAll();
             
-            if (!$list or !is_object($list)) exit(date("r")."<h3>Объект product не&nbsp;получен</h3> "); 
+            if (!$products) exit(date("r")."<h3>Объект product не&nbsp;получен</h3> "); 
                 $return.=date("r");	
             $return.="<ul>";
-            foreach ($list as $row)
-                $return.="<li><a href=# rel='{$row -> id}' class=shop-list title='{$row -> adress } \r\n {$row -> geox },{$row -> geoy } ' >'{$row -> title}'</a></li>";
+            foreach ($products as $row)
+                $return.="<li><a href=# rel='{$row -> getId()}' >{$row -> getTitle()}</a></li>";
             $return.="</ul>";
             exit ($return);
         }	
@@ -158,7 +160,12 @@ class IndexController extends AbstractActionController
     public function providerAction()
     {
         $this->layout()->setTemplate('layout/provider');
-        return new ViewModel([]);
+        $this->providerRepository->findAll();
+        return new ViewModel([
+            "providers" => $this->providerRepository->findAll(),
+        ]);
+        
+        
         
     }
 }
