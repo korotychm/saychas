@@ -12,4 +12,5 @@ namespace Application\Model\RepositoryInterface;
  * @author alex
  */
 interface StoreRepositoryInterface extends RepositoryInterface {
+    public function findStoresByProviderId($provider_id);
 }

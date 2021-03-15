@@ -167,8 +167,9 @@ class IndexController extends AbstractActionController
     
     public function storeAction()
     {
+        $this->storeRepository->findStoresByProviderIdAndExtraCondition();
+        $stores = $this->storeRepository->findStoresByProviderId('provider1');
         
-        $stores = $this->storeRepository->findAll();
         foreach ($stores as $store) {
             echo $store->getId() . ' ' . $store->getTitle() . '<br/>';
         }

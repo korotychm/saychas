@@ -18,6 +18,7 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Store;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 
@@ -113,6 +114,86 @@ class StoreRepository implements StoreRepositoryInterface
 
         return $store;
     }
+    
+    public function findStoresByProviderId($provider_id)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select('store')->where(['provider_id' => $provider_id] );
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->storePrototype
+        );
+        $resultSet->initialize($result);
+        return $resultSet;
+    }
+    //SELECT * FROM `store` WHERE `provider_id`=1  and `id` in (1,2);
+    
+    public function findStoresByProviderIdAndExtraCondition1()
+    {
+        //SELECT * FROM `store` WHERE `provider_id`=$id  and `id` in ($res)
+        
+        $select = new \Laminas\Db\Sql\Select();// new Sql($this->db);
+        $sql = new Sql($this->db);
+        
+        //$select->columns(['id' => new \Laminas\Db\Sql\Expression('?', [(new \laminas\Db\Sql\Select())->where('id=3')]), 'title', 'description'])->from('store');
+        
+        $select->columns(["id", "title", "description"])->from("store")->where(["id in ?" => (new \Laminas\Db\Sql\Select())->columns(["id"])->from("provider")->where(["id" => 3])]);
+        $selectString = $sql->buildSqlString($select);
+        
+        
+            //new \Laminas\Db\Sql\Expression('?', (new \Laminas\Db\Sql\Select())->columns(['id'])->from('provider')->where(['id' => 3])->limit(1) )]);
+//        $select->columns([
+//            'id' => new \Laminas\Db\Sql\Expression('?', [
+//                (new \Laminas\Db\Sql\Select())->where('id=3')
+//            ])
+//        ])->from('store');
+        print_r($selectString);
+//        print_r($select->getSqlString());
+//        $sql->select($select);
+//        $stmt   = $sql->prepareStatementForSqlObject($select);
+//        $result = $stmt->execute();
+        
+        
+//        echo '<pre>';
+//        print_r($select);
+//        echo '</pre>';
+//        $stmt   = $sql->prepareStatementForSqlObject($select);
+//        $result = $stmt->execute();
+        
+        exit;
+//        $select->columns([
+//            'id' => new Expression('?', [
+//                (new Select())->columns(['id'=>1])
+//            ]),
+//        ]);
+
+        
+    }
+    
+    public function findStoresByProviderIdAndExtraCondition()
+    {
+        //SELECT `id`, ` category_id`, `title` FROM `product` WHERE `provider_id` in (SELECT  `provider_id` FROM `store` WHERE `id`=1  and `id` in (1,2));
+        
+        $select = new \Laminas\Db\Sql\Select();
+        $sql = new Sql($this->db);
+        
+        $select->columns(["id", "category_id", "title"])->from("product")->where(["provider_id in ?" => (new \Laminas\Db\Sql\Select())->columns(["provider_id"])->from("store")->where(["id" => 1, "id in ?" => '(1,2)' ])]);
+        $selectString = $sql->buildSqlString($select);
+        
+        print_r($selectString);
+        
+        
+        exit;
+        
+    }
+    
     
     /**
      * Adds given store into it's repository
