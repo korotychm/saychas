@@ -485,6 +485,7 @@ CREATE TABLE IF NOT EXISTS `param_value` (
 
 DROP TABLE IF EXISTS `price`;
 CREATE TABLE IF NOT EXISTS `price` (
+  `id`	       int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `reserve` int(11) NOT NULL,
   `store_id` int(11) NOT NULL,
@@ -501,7 +502,7 @@ DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
   `id` int(11) NOT NULL,
   `provider_id` int(11) NOT NULL,
-  ` category_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `title` text COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `vendor_code` varchar(11) COLLATE utf8_unicode_ci NOT NULL
@@ -529,6 +530,7 @@ CREATE TABLE IF NOT EXISTS `provider` (
 
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE IF NOT EXISTS `stock_balance` (
+  `id`	       int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `rest` int(11) NOT NULL,
   `store_id` int(11) NOT NULL
@@ -546,7 +548,7 @@ CREATE TABLE IF NOT EXISTS `store` (
   `provider_id` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
   `title` text COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `adress` text COLLATE utf8_unicode_ci NOT NULL,
+  `address` text COLLATE utf8_unicode_ci NOT NULL,
   `geox` text COLLATE utf8_unicode_ci NOT NULL,
   `geoy` text COLLATE utf8_unicode_ci NOT NULL,
   `icon` text COLLATE utf8_unicode_ci NOT NULL
@@ -590,6 +592,9 @@ ALTER TABLE `param_value`
 -- Индексы таблицы `price`
 --
 ALTER TABLE `price`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `price`
   ADD UNIQUE KEY `id_product` (`product_id`,`store_id`);
 
 --
@@ -602,11 +607,21 @@ ALTER TABLE `provider`
 -- Индексы таблицы `stock_balance`
 --
 ALTER TABLE `stock_balance`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `stock_balance`
   ADD UNIQUE KEY `product_id` (`product_id`,`store_id`);
+
 
 --
 -- Индексы таблицы `store`
 --
 ALTER TABLE `store`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Интексы таблицы `product`
+--
+ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 

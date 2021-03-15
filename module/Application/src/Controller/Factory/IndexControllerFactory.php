@@ -7,6 +7,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
+use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Controller\IndexController;
 
 /**
@@ -26,7 +27,8 @@ class IndexControllerFactory implements FactoryInterface
         $test = $container->get(/**\Application\Model\*/TestRepositoryInterface::class);
         $category = $container->get(CategoryRepositoryInterface::class);
         $provider = $container->get(ProviderRepositoryInterface::class);
-        return new IndexController($test, $category, $provider);
+        $store =    $container->get(StoreRepositoryInterface::class);
+        return new IndexController($test, $category, $provider, $store);
     }
 }
 

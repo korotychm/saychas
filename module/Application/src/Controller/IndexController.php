@@ -17,6 +17,7 @@ use Laminas\Mvc\MvcEvent;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
+use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 
 class IndexController extends AbstractActionController
 {
@@ -26,12 +27,14 @@ class IndexController extends AbstractActionController
     private $testRepository;
     private $categoryRepository;
     private $providerRepository;
+    private $storeRepository;
 
-    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository, ProviderRepositoryInterface $providerRepository)
+    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository, ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
+        $this->storeRepository = $storeRepository;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -159,6 +162,17 @@ class IndexController extends AbstractActionController
     {
         $this->layout()->setTemplate('layout/provider');
         return new ViewModel([]);
+        
+    }
+    
+    public function storeAction()
+    {
+        
+        $stores = $this->storeRepository->findAll();
+        foreach ($stores as $store) {
+            echo $store->getId() . ' ' . $store->getTitle() . '<br/>';
+        }
+        exit;
         
     }
 }

@@ -83,6 +83,16 @@ return [
                     ],
                 ],
             ],
+            'store' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/store',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'store',
+                    ],
+                ],
+            ],
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -118,6 +128,7 @@ return [
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
             \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class => \Application\Model\Repository\CategoryRepository::class,
             \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class => \Application\Model\Repository\ProviderRepository::class,
+            \Application\Model\RepositoryInterface\StoreRepositoryInterface::class => \Application\Model\Repository\StoreRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -127,6 +138,7 @@ return [
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
             \Application\Model\Repository\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
+            \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
         ],
         
     ],
