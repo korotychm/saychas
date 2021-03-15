@@ -93,6 +93,16 @@ return [
                     ],
                 ],
             ],
+            'replace-store' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/replace-store[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'replaceStore',
+                    ],
+                ],
+            ],
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
