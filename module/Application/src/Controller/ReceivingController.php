@@ -97,4 +97,15 @@ class ReceivingController extends AbstractActionController
         return new JsonModel($arr);
     }
     
+    public function replaceStoreAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $storeRepository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
+        
+        $arr = $storeRepository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+    
 }

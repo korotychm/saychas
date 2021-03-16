@@ -17,6 +17,8 @@ use Laminas\Mvc\MvcEvent;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
+use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
 class IndexController extends AbstractActionController
 {
@@ -26,12 +28,18 @@ class IndexController extends AbstractActionController
     private $testRepository;
     private $categoryRepository;
     private $providerRepository;
+    private $storeRepository;
+    private $productRepository;
 
-    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository, ProviderRepositoryInterface $providerRepository)
+    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
+                ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
+                ProductRepositoryInterface $productRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
+        $this->storeRepository = $storeRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -167,5 +175,24 @@ class IndexController extends AbstractActionController
         
         
         
+    }
+    
+    public function storeAction()
+    {
+        //$this->storeRepository->findProductsByProviderIdAndExtraCondition(1, [1, 2]);
+        //$stores = $this->storeRepository->findStoresByProviderId('provider1');
+        
+        exit;
+        
+    }
+    
+    public function showProductAction()
+    {
+        $products = $this->productRepository->findProductsByProviderIdAndExtraCondition(1, [1, 2]);
+        
+        foreach ($products as $product) {
+            echo $product->getId() . ' ' . $product->getTitle() . '<br/>';
+        }
+        exit;
     }
 }

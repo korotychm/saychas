@@ -53,6 +53,16 @@ return [
                     ],
                 ],
             ],
+            'show-product' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/show-product[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'showProduct',
+                    ],
+                ],
+            ],
 //            'receive-provider' => [
 //                'type'    => Segment::class,
 //                'options' => [
@@ -80,6 +90,26 @@ return [
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'provider',
+                    ],
+                ],
+            ],
+            'store' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/store',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'store',
+                    ],
+                ],
+            ],
+            'replace-store' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/replace-store[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'replaceStore',
                     ],
                 ],
             ],
@@ -118,6 +148,8 @@ return [
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
             \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class => \Application\Model\Repository\CategoryRepository::class,
             \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class => \Application\Model\Repository\ProviderRepository::class,
+            \Application\Model\RepositoryInterface\StoreRepositoryInterface::class => \Application\Model\Repository\StoreRepository::class,
+            \Application\Model\RepositoryInterface\ProductRepositoryInterface::class => \Application\Model\Repository\ProductRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -127,6 +159,8 @@ return [
             \Application\Model\LaminasDbSqlRepository::class => \Application\Model\Factory\LaminasDbSqlRepositoryFactory::class,
             \Application\Model\Repository\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
+            \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
+            \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
         ],
         
     ],
