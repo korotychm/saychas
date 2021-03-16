@@ -119,7 +119,7 @@ class IndexController extends AbstractActionController
             $return.="</pre>";
              exit ($return);
         }
-        if ($id=="to1c"){                
+        if ($id=="getproviders"){                
        
             $providers = $this->providerRepository->findAll();
               
@@ -132,7 +132,7 @@ class IndexController extends AbstractActionController
             exit ($return);
         }	
         if ($id=="getshops"){
-      
+            sleep(1);
             //$stors = $this->storeRepository->findAll();
             if (! $stors ) exit(date("r")."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='666' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
                 $return.=date("r");	
@@ -144,7 +144,7 @@ class IndexController extends AbstractActionController
         }	
         if ($id=="getproducts"){
             //$products = $this->productRepository->findAll();
-            
+            sleep(1);
             if (!$products) exit(date("r")."<h3>Объект product не&nbsp;получен</h3> "); 
                 $return.=date("r");	
             $return.="<ul>";

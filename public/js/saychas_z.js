@@ -55,46 +55,53 @@ $(function() {
    })
 	   
     $("#sendajaxprovider").click(function(){
+        $("#waitprovider").fadeIn();
             $.ajax({	
-            url: "/ajax/to1c",
-            cache: false,	
-        //    data: dataString,
-            success: function(data){ $("#provideranswer").html(data);},
-            type:'POST', 
-            error: function (xhr, ajaxOptions, thrownError) {$("#provideranswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
+            url: "/ajax/getproviders",
+            cache: false,
+            type:'POST',             
+            success: function(data){ $("#provideranswer").html(data); $(".waiting").hide();},
+            error: function (xhr, ajaxOptions, thrownError) {$("#provideranswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );  $(".waiting").hide(); }
             })
     });
     
     $(".provider-list").live("click", function(){
+        $("#products").hide();
+        $("#shops").show();
+         $("#waitprovider").fadeIn();
+        $("#waitshops").fadeIn();
         var providderId=$(this).attr("rel");
+        $("#providershop").html($(this).text());
         $.ajax({	
             url: "/ajax/getshops",
             cache: false,	
+            type:'POST',
             data: {'provider': providderId },
             success: function(data){ 
                 $("#shopsanswer").html(data);
-                $("#shops").show();
                 $("#productsanswer").empty()
-                $("#products").hide();
+                $(".waiting").hide();
                 return false;
              },
-            type:'POST', 
-            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer3").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return false; }
+            error: function (xhr, ajaxOptions, thrownError) {$("#shopsanswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); $(".waiting").hide(); return false; }
         });
     });
     $(".shop-list").live("click", function(){
+        $("#waitproduct").fadeIn();
+        $("#waitshops").fadeIn();
+          $("#products").show();
         var providderId=$(this).attr("rel");
         $.ajax({	
             url: "/ajax/getproducts",
             cache: false,	
+            type:'POST', 
             data: {'provider': providderId },
             success: function(data){ 
                 $("#productsanswer").html(data);
-                $("#products").show();
+                $(".waiting").hide();
                 return false;
              },
-            type:'POST', 
-            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer3").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return false; }
+            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer3").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); $(".waiting").hide(); return false; }
         });
     });       
 });

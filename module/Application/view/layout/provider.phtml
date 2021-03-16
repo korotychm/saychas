@@ -43,13 +43,18 @@
             </div>
          </nav>
 <div class="container" styele="max-width:1400px">	
+   <p>серверные срипты выполняются с иммитацией задежки на 1 сек. </p>
     <div class="card-deck"> 
        <div class="card">
+           
          <h2 class="card-header">Поставщики</h2>
         <div class="card-body">
+            <div class="waitcover waiting" style="display:none"  id="waitprovider"></div>
             <div class="container" >
                 <div id="provideranswer">
-                    <?php // print_r($this->provider) ?>
+                    <?php  //print_r($this->provider);
+                     //print_r(json_encode();//
+                    ?>
                     
                 </div>
                  
@@ -58,17 +63,19 @@
         </div>
        </div> 
     <div class="card" id="shops" style="display:none;">
-        <h2 class="card-header">Магазины поставщика</h2>
+        <h2 class="card-header">Магазины <div id="providershop">поставщика</div></h2>
         <div class="card-body">
+            <div class="waitcover waiting" style="display:none"  id="waitshops"></div>
             <div class="container" >
-        <div id="shopsanswer"></div>
-      </div> 
-     </div>	   <!-- /div--> 
+                <div id="shopsanswer"></div>
+            </div> 
+        </div>	   <!-- /div--> 
     </div>  
         
      <div class="card" id="products" style="display:none;">
         <h2 class="card-header">Товары магазина </h2>
         <div class="card-body">
+            <div class="waitcover waiting" style="display:none"  id="waitproduct"></div>
             <div class="container" >
         <div id="productsanswer"></div>
       </div> 
@@ -87,6 +94,7 @@
 <?= $this->inlineScript()
 ->prependFile($this->basePath('js/jquery.treeview.js'))	
 ->prependFile($this->basePath('js/saychas_z.js'))	
+->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
 ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))	
 ->prependFile($this->basePath('js/jquery.treeview.async.js'))	
 //->prependFile($this->basePath('js/bootstrap.min.js'))
