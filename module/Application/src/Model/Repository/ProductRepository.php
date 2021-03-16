@@ -1,5 +1,5 @@
 <?php
-// src/StoreRepository.php
+// src/ProductRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -18,18 +18,12 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-//use Laminas\Db\TableGateway\TableGateway;
-//use Laminas\Db\Sql\ExpressionInterface;
-//use Laminas\Db\Sql\Predicate;
-//use Laminas\Db\Sql\Predicate\PredicateSet;
-//use Laminas\Db\Sql\Predicate\In;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
-use Application\Model\Entity\Store;
 use Application\Model\Entity\Product;
-use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
-class StoreRepository implements StoreRepositoryInterface
+class ProductRepository implements ProductRepositoryInterface
 {
     /**
      * @var AdapterInterface
@@ -42,34 +36,34 @@ class StoreRepository implements StoreRepositoryInterface
     private HydratorInterface $hydrator;
 
     /**
-     * @var Store
+     * @var Product
      */
-    private Store $storePrototype;
+    private Product $productPrototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Store $StorePrototype
+     * @param Product $productPrototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Store $storePrototype
+        Product $productPrototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->storePrototype = $storePrototype;
+        $this->productPrototype = $productPrototype;
     }
 
     /**
-     * Returns a list of stores
+     * Returns a list of products
      *
-     * @return Store[]
+     * @return Product[]
      */
     public function findAll()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('store');
+        $select = $sql->select('product');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -80,22 +74,22 @@ class StoreRepository implements StoreRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->storePrototype
+            $this->productPrototype
         );
         $resultSet->initialize($result);
         return $resultSet;
     }
 
     /**
-     * Returns a single store.
+     * Returns a single product.
      *
-     * @param  int $id Identifier of the store to return.
-     * @return Store
+     * @param  int $id Identifier of the product to return.
+     * @return Product
      */    
     public function find($id)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('store');
+        $select    = $sql->select('product');
         $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -108,65 +102,75 @@ class StoreRepository implements StoreRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->storePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->productPrototype);
         $resultSet->initialize($result);
-        $store = $resultSet->current();
+        $product = $resultSet->current();
 
-        if (! $store) {
+        if (! $product) {
             throw new InvalidArgumentException(sprintf(
-                'Store with identifier "%s" not found.',
+                'Product with identifier "%s" not found.',
                 $id
             ));
         }
 
-        return $store;
+        return $product;
     }
     
-    public function findStoresByProviderId($provider_id)
+    /**
+     * Function obtains products from specified store that belongs to a specified provider.
+     * The store is also listed as accessible
+     * @param int $id
+     * @param array $param
+     */
+    public function findProductsByProviderIdAndExtraCondition($storeId, $param)
     {
-        $sql    = new Sql($this->db);
-        $select = $sql->select('store')->where(['provider_id' => $provider_id] );
+        //SELECT `id`, ` category_id`, `title` FROM `product` WHERE `provider_id` in (SELECT  `provider_id` FROM `store` WHERE `id`=1  and `id` in (1,2));
+                
+        $sql = new Sql($this->db);
+        
+        $where = new Where();
+        $where->equalTo('id', $storeId);
+        $where->in('id', $param);
+        
+        $select = $sql->select()->from('product')->columns(["id", "category_id", "title"])->from("product")->
+                where(["provider_id in ?" => (new Select())->columns(["provider_id"])->from("store")->
+                        where($where)]);
+        
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
+//        $selectString = $sql->buildSqlString($select);
+        
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->storePrototype
+            new \Application\Model\Entity\Product(0, 0, 0, '', '', '')
         );
         $resultSet->initialize($result);
+//        foreach($resultSet as $r){
+//            echo '<pre>';
+//            print_r($r);
+//            echo '</pre>';
+//        }
+//        exit;
         return $resultSet;
+        
     }
-    //SELECT * FROM `store` WHERE `provider_id`=1  and `id` in (1,2);
     
-    public function findStoresByProviderIdAndExtraCondition()
-    {
-        //SELECT * FROM `store` WHERE `provider_id`=$id  and `id` in ($res)
-        
-        $select = new \Laminas\Db\Sql\Select();// new Sql($this->db);
-        $sql = new Sql($this->db);
-        
-        $select->columns(["id", "title", "description"])->from("store")->where(["id in ?" => (new \Laminas\Db\Sql\Select())->columns(["id"])->from("provider")->where(["id" => 3])]);
-        $selectString = $sql->buildSqlString($select);
-                
-        print_r($selectString);
-        exit;
-
-    }    
     
     /**
-     * Adds given store into it's repository
+     * Adds given product into it's repository
      * @param json
      */
     public function replace($content)
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%u', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
+            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( %u, %u, %u, '%s', '%s', '%s' )",
+                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

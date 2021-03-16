@@ -11,9 +11,10 @@ namespace Application\Model\RepositoryInterface;
 /**
  * @author alex
  */
-interface StoreRepositoryInterface extends RepositoryInterface {
+interface ProductRepositoryInterface extends RepositoryInterface {
     /**
-     * @param int $provider_id
+     * @param int $storeId
+     * @param array $param
      */
-    public function findStoresByProviderId($provider_id);
+    public function findProductsByProviderIdAndExtraCondition($storeId, $param);
 }
