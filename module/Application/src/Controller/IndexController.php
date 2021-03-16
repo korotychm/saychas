@@ -98,12 +98,12 @@ class IndexController extends AbstractActionController
     public function ajaxAction(){   
         $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
-        $paramp=array();   
-                $paramp[]=1;     
-                $paramp[]=2;
-                $paramp[]=3;
-                $paramp[]=4;
-                $paramp[]=5;
+        $param=array();   
+                $param[]=1;     
+                $param[]=2;
+                $param[]=3;
+                $param[]=4;
+                $param[]=5;
         if ($id=="toweb"){
             $url="http://SRV02:8000/SC/hs/site/get_product";
             $params = array('name' => 'value');
@@ -136,7 +136,7 @@ class IndexController extends AbstractActionController
         }	
         if ($id=="getshops"){
             //sleep(1);
-            $stores = $this->storeRepository->findStoresByProviderIdAndExtraCondition($post -> provider, $paramp) ;
+            $stores = $this->storeRepository->findStoresByProviderIdAndExtraCondition($post -> provider, $param) ;
             $return.=date("r")."<br>";	
             $return.="id постащика: {$post -> provider}<hr>" ;
             if (! $stores ) exit($return."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a>"); 
@@ -144,8 +144,7 @@ class IndexController extends AbstractActionController
             foreach ( $stores as $row)
                // exit(print_r($row));
                 $return.="<li><a href=# rel='{$row -> getId()}' class=shop-list title='{$row->getAddress()} \r\n  {$row->getGeox()} , {$row -> getGeoy()} ' >"
-               ."{$row -> getTitle()}</a><br>"
-               . "{$row->getAddress()} \r\n  {$row->getGeox()} , {$row -> getGeoy()} "
+               ."{$row -> getTitle()}</a>"
                ."</li>";
             $return.="</ul>";
             
@@ -155,7 +154,7 @@ class IndexController extends AbstractActionController
         if ($id=="getproducts"){
             //$products = $this->productRepository->findAll();
             
-            $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $paramp );
+            $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $param );
             //sleep(1);
             $str = StringResource::PRODUCT_FAILURE_MESSAGE;
             
