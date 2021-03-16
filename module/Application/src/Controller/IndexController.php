@@ -131,8 +131,9 @@ class IndexController extends AbstractActionController
         if ($id=="getshops"){
             //sleep(1);
             //$stors = $this->storeRepository->findAll();
-            if (! $stors ) exit(date("r")."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
-            $return.=date("r");	
+            $return.=date("r")."<br>";	
+            $return.="id постащика: {$post -> provider}<hr>" ;
+            if (! $stors ) exit($return."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a>"); 
             $return.="<ul>";
             foreach ( $stors as $row)
                 $return.="<li><a href=# rel='{$row -> getId()}' class=shop-list title='{$row -> getAdress() } \r\n {$row -> getGeox() },{$row -> getGeoy() } ' >{$row -> getTitle()}</a></li>";
@@ -148,10 +149,11 @@ class IndexController extends AbstractActionController
             $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $paramp );
             //sleep(1);
             $str = StringResource::PRODUCT_FAILURE_MESSAGE;
-            $return.=$post -> shop ;
+            
             //exit($str);
             if (!count($products)) exit(date("r")."<h3>для магазина id:{$post -> shop} товаров не найдено</h3> "); 
-            $return.=date("r");	
+            $return.=date("r")."<br>";	
+            $return.="id магазина: {$post -> shop}<hr>" ;
             $return.="<ul>";
             foreach ($products as $row)
                 $return.="<li><a href=# rel='{$row -> getId()}' >{$row -> getTitle()}</a></li>";
