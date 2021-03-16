@@ -10,4 +10,8 @@ class CategoryFillerService
 {
     
 }
+class MenuAjaxService
+{
+    
+}
 

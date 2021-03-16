@@ -90,12 +90,12 @@ $(function() {
         $("#waitproduct").fadeIn();
         $("#waitshops").fadeIn();
           $("#products").show();
-        var providderId=$(this).attr("rel");
+        var shopId=$(this).attr("rel");
         $.ajax({	
             url: "/ajax/getproducts",
             cache: false,	
             type:'POST', 
-            data: {'provider': providderId },
+            data: {'shop': shopId },
             success: function(data){ 
                 $("#productsanswer").html(data);
                 $(".waiting").hide();

@@ -124,7 +124,7 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function findProductsByProviderIdAndExtraCondition($storeId, $param)
     {
-        //SELECT `id`, ` category_id`, `title` FROM `product` WHERE `provider_id` in (SELECT  `provider_id` FROM `store` WHERE `id`=1  and `id` in (1,2));
+        //SELECT `id`, ` category_id`, `title` FROM `product` WHERE `provider_id` in (SELECT  `provider_id` FROM `store` WHERE `id`=1  and `id` in (1,2)) order by id group by provider;
                 
         $sql = new Sql($this->db);
         

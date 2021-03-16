@@ -19,6 +19,7 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Application\Resource\StringResource;
 
 class IndexController extends AbstractActionController
 {
@@ -94,43 +95,31 @@ class IndexController extends AbstractActionController
         ]);
     }
     
-    public function ajaxAction()
-    {
-        //exit(print_r($this->params()->fromRoute()->id));
+    public function ajaxAction(){   
         $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
-        //$id=$this->getRequest()->getQuery('id', 0);
-        /*$category = $this->categoryRepository->findCategory(302);
-        $id = $category->getId();
-        $name = $category->getName();
-        //$name = $category->
-        $categories = $this->categoryRepository->findAllCategories();
-        echo $name.$categories;
-        exit;
-        return json_encode(['banzaii' => 'vonzaii']);*/
         if ($id=="toweb"){
             $url="http://SRV02:8000/SC/hs/site/get_product";
             $params = array('name' => 'value');
             $result = file_get_contents(
-                    $url, 
-                    false, 
-                    stream_context_create(array(
-            'http' => array(
-            'method'  => 'POST',
-            'header'  => 'Content-type: application/x-www-form-urlencoded',
-            'content' => http_build_query($params))	
-                    )));
+                $url, 
+                false, 
+                stream_context_create(array(
+                    'http' => array(
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => http_build_query($params))	
+                ))
+             );
             $return.="<pre>";
             $return.= date("r")."\n" ;
             // if($result) print_r(json_decode($result));
             $return.="{$post -> name} => {$post -> value}";
             $return.="</pre>";
-             exit ($return);
+            exit ($return);
         }
         if ($id=="getproviders"){                
-       
             $providers = $this->providerRepository->findAll();
-              
           //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
             $return.=date("r");	
             $return.="<ul>";
@@ -140,10 +129,10 @@ class IndexController extends AbstractActionController
             exit ($return);
         }	
         if ($id=="getshops"){
-            sleep(1);
+            //sleep(1);
             //$stors = $this->storeRepository->findAll();
-            if (! $stors ) exit(date("r")."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='666' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
-                $return.=date("r");	
+            if (! $stors ) exit(date("r")."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a> <hr/>"); 
+            $return.=date("r");	
             $return.="<ul>";
             foreach ( $stors as $row)
                 $return.="<li><a href=# rel='{$row -> getId()}' class=shop-list title='{$row -> getAdress() } \r\n {$row -> getGeox() },{$row -> getGeoy() } ' >{$row -> getTitle()}</a></li>";
@@ -152,16 +141,23 @@ class IndexController extends AbstractActionController
         }	
         if ($id=="getproducts"){
             //$products = $this->productRepository->findAll();
-            sleep(1);
-            if (!$products) exit(date("r")."<h3>Объект product не&nbsp;получен</h3> "); 
-                $return.=date("r");	
+            $paramp=array();   
+                $paramp[]=1;     
+                $paramp[]=2;
+                $paramp[]=3;
+            $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $paramp );
+            //sleep(1);
+            $str = StringResource::PRODUCT_FAILURE_MESSAGE;
+            $return.=$post -> shop ;
+            //exit($str);
+            if (!count($products)) exit(date("r")."<h3>для магазина id:{$post -> shop} товаров не найдено</h3> "); 
+            $return.=date("r");	
             $return.="<ul>";
             foreach ($products as $row)
                 $return.="<li><a href=# rel='{$row -> getId()}' >{$row -> getTitle()}</a></li>";
             $return.="</ul>";
             exit ($return);
         }	
-    
         header('HTTP/1.0 404 Not Found');
         exit(); 
     }
