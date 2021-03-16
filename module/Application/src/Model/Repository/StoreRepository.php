@@ -1,5 +1,5 @@
 <?php
-// src/StoreRepository.php
+// src/Model/Repository/StoreRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -23,10 +23,8 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\Sql\Predicate;
 //use Laminas\Db\Sql\Predicate\PredicateSet;
 //use Laminas\Db\Sql\Predicate\In;
-use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\Store;
-use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 
 class StoreRepository implements StoreRepositoryInterface
@@ -49,7 +47,7 @@ class StoreRepository implements StoreRepositoryInterface
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Store $StorePrototype
+     * @param Store $storePrototype
      */
     public function __construct(
         AdapterInterface $db,
@@ -122,6 +120,13 @@ class StoreRepository implements StoreRepositoryInterface
         return $store;
     }
     
+    /**
+     * Function finds available stores of a specific provider
+     * 
+     * @param int $providerId
+     * @param array $param
+     * @return Store[]
+     */
     public function findStoresByProviderIdAndExtraCondition($providerId, $param)
     {
         $sql = new Sql($this->db);
@@ -147,28 +152,12 @@ class StoreRepository implements StoreRepositoryInterface
         );
         $resultSet->initialize($result);
         return $resultSet;
-        
 
     }
-    //SELECT * FROM `store` WHERE `provider_id`=1  and `id` in (1,2);
-    
-    public function findStoresByProviderId()
-    {
-        //SELECT * FROM `store` WHERE `provider_id`=$id  and `id` in ($res)
-        
-        $select = new \Laminas\Db\Sql\Select();// new Sql($this->db);
-        $sql = new Sql($this->db);
-        
-        $select->columns(["id", "title", "description"])->from("store")->where(["id in ?" => (new \Laminas\Db\Sql\Select())->columns(["id"])->from("provider")->where(["id" => 3])]);
-        $selectString = $sql->buildSqlString($select);
-                
-        print_r($selectString);
-        exit;
-
-    }    
     
     /**
      * Adds given store into it's repository
+     * 
      * @param json
      */
     public function replace($content)

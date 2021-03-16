@@ -1,5 +1,5 @@
 <?php
-// src/ProductRepository.php
+// src/Model/Repository/ProductRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -119,8 +119,10 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Function obtains products from specified store that belongs to a specified provider.
      * The store is also listed as accessible
-     * @param int $id
+     * 
+     * @param int $storeId
      * @param array $param
+     * @return Product[]
      */
     public function findProductsByProviderIdAndExtraCondition($storeId, $param)
     {
@@ -158,6 +160,7 @@ class ProductRepository implements ProductRepositoryInterface
     
     /**
      * Adds given product into it's repository
+     * 
      * @param json
      */
     public function replace($content)
