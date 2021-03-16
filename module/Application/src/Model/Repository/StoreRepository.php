@@ -127,7 +127,7 @@ class StoreRepository implements StoreRepositoryInterface
         $sql = new Sql($this->db);
         
         $where = new Where();
-        $where->equalTo('id', $providerId);
+        $where->equalTo('provider_id', $providerId);
         $where->in('id', $param);
 
         $select = $sql->select()->from('store')->columns(["id", "provider_id", "title", "description", "address", "geox", "geoy", "icon"])->where($where);
