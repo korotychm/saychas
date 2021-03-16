@@ -170,10 +170,16 @@ class IndexController extends AbstractActionController
         
     }
     
-    public function storeAction()
+    public function showStoreAction()
     {
         //$this->storeRepository->findProductsByProviderIdAndExtraCondition(1, [1, 2]);
-        //$stores = $this->storeRepository->findStoresByProviderId('provider1');
+        $stores = $this->storeRepository->findStoresByProviderIdAndExtraCondition('1', [1,2]);
+        
+        foreach($stores as $store) {
+            echo '<pre>';
+            print_r($store);
+            echo '</pre>';
+        }
         
         exit;
         
