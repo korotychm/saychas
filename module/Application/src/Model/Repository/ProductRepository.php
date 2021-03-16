@@ -147,15 +147,10 @@ class ProductRepository implements ProductRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            new \Application\Model\Entity\Product(0, 0, 0, '', '', '')
+            $this->productPrototype
         );
         $resultSet->initialize($result);
-//        foreach($resultSet as $r){
-//            echo '<pre>';
-//            print_r($r);
-//            echo '</pre>';
-//        }
-//        exit;
+
         return $resultSet;
         
     }

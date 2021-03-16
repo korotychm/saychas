@@ -93,13 +93,13 @@ return [
                     ],
                 ],
             ],
-            'store' => [
+            'show-store' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/store',
+                    'route'    => '/show-store',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'store',
+                        'action'     => 'showStore',
                     ],
                 ],
             ],

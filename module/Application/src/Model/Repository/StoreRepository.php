@@ -122,13 +122,21 @@ class StoreRepository implements StoreRepositoryInterface
         return $store;
     }
     
-    public function findStoresByProviderId($provider_id)
+    public function findStoresByProviderIdAndExtraCondition($providerId, $param)
     {
-        $sql    = new Sql($this->db);
-        $select = $sql->select('store')->where(['provider_id' => $provider_id] );
+        $sql = new Sql($this->db);
+        
+        $where = new Where();
+        $where->equalTo('id', $providerId);
+        $where->in('id', $param);
+
+        $select = $sql->select()->from('store')->columns(["id", "provider_id", "title", "description", "address", "geox", "geoy", "icon"])->where($where);
+        
+//        $selectString = $sql->buildSqlString($select);
+        
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-
+        
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
@@ -139,10 +147,12 @@ class StoreRepository implements StoreRepositoryInterface
         );
         $resultSet->initialize($result);
         return $resultSet;
+        
+
     }
     //SELECT * FROM `store` WHERE `provider_id`=1  and `id` in (1,2);
     
-    public function findStoresByProviderIdAndExtraCondition()
+    public function findStoresByProviderId()
     {
         //SELECT * FROM `store` WHERE `provider_id`=$id  and `id` in ($res)
         

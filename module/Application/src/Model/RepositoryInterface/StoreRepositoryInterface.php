@@ -15,5 +15,5 @@ interface StoreRepositoryInterface extends RepositoryInterface {
     /**
      * @param int $provider_id
      */
-    public function findStoresByProviderId($provider_id);
+    public function findStoresByProviderIdAndExtraCondition($provider_id, $param);
 }
