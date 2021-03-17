@@ -56,14 +56,17 @@ class ProviderRepository implements ProviderRepositoryInterface
     }
 
     /**
-     * Returns a list of providers
+     * Returns a list of providers width limit and order
      *
      * @return Provider[]
      */
-    public function findAll()
+    public function findAll($order="id ASC", $limit=100, $offset=0  )
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('provider');
+        $select ->order($order);
+        $select ->limit($limit);
+        $select ->offset($offset);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -79,7 +82,48 @@ class ProviderRepository implements ProviderRepositoryInterface
         $resultSet->initialize($result);
         return $resultSet;
     }
-
+    
+     /**
+     * Returns a list of providers from only availble stores,  width limit and order
+     *
+     * @return Provider[]
+     */
+   public function findAvailableProviders ($param,$order="id ASC", $limit=100, $offset=0 )
+   {
+        $sql    = new Sql($this->db);
+        
+        $subSelectAvailbleStore = $sql->select('store');
+        $subSelectAvailbleStore ->columns(['provider_id']);
+        $subSelectAvailbleStore ->where->in('id', $param);
+        
+        $select = $sql->select('provider');
+        $select ->columns(['*']);
+        $select ->
+                where->in('id', $subSelectAvailbleStore);
+        
+        //$select -> where(["id in ?" => (new Select())->columns(["provider_id"])->from("store")->where($where)]);
+        
+        $select ->order($order);
+        $select ->limit($limit);
+        $select ->offset($offset);
+        
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+//        $selectString = $sql->buildSqlString($select);
+        $result = $stmt->execute();
+     
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {return [];}
+         $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->productPrototype
+        );
+        $resultSet->initialize($result);
+        
+        
+        return $resultSet;
+        
+    }
+    
+    /**/
     /**
      * Returns a single provider.
      *

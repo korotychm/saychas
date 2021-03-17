@@ -98,12 +98,8 @@ class IndexController extends AbstractActionController
     public function ajaxAction(){   
         $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
-        $param=array();   
-                $param[]=1;     
-                $param[]=2;
-                $param[]=3;
-                $param[]=4;
-                $param[]=5;
+        $param=array(1,2,3,4,5);   
+        
         if ($id=="toweb"){
             $url="http://SRV02:8000/SC/hs/site/get_product";
             $params = array('name' => 'value');
@@ -125,13 +121,19 @@ class IndexController extends AbstractActionController
             exit ($return);
         }
         if ($id=="getproviders"){                
+          
+            $providers = $this->providerRepository->findAvailableProviders($param);
             $providers = $this->providerRepository->findAll();
-          //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
+  //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
             $return.=date("r");	
             $return.="<ul>";
-            foreach ($providers as $row)
+            foreach ($providers as $row){
+                //echo date("r")."<pre>";
+               // exit (print_r($row));/**/
                 $return.="<li><a href=# rel='{$row -> getId()}' class=provider-list >{$row -> getTitle()}</a></li>";
-            $return.="</ul>";
+                //$return.="<li><a href=# rel='#' class=provider-list >----</a></li>";
+            }
+             $return.="</ul>";
             exit ($return);
         }	
         if ($id=="getshops"){
@@ -152,10 +154,10 @@ class IndexController extends AbstractActionController
             exit ($return);
         }	
         if ($id=="getproducts"){
-            //$products = $this->productRepository->findAll();
-            
+            //$products = $this->productRepository->findAll(10,5);
             $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $param );
-            //sleep(1);
+            //exit ("<pre>".print_r($products, true)."</pre>");
+//sleep(1);
             $str = StringResource::PRODUCT_FAILURE_MESSAGE;
             
             //exit($str);

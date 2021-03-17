@@ -9,7 +9,7 @@ $(function() {
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
         type: "ADDRESS",
         onSelect: function(suggestion) {
-           $("#ycard").fadeIn();
+           $("#ycard").show();
            $("#dadataanswer").stop().html("<pre>"+print_r(suggestion)+"</pre>").slideDown();
            myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
            var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
@@ -55,7 +55,7 @@ $(function() {
    })
 	   
     $("#sendajaxprovider").click(function(){
-        $("#waitprovider").fadeIn();
+        $("#waitprovider").show();
             $.ajax({	
             url: "/ajax/getproviders",
             cache: false,
@@ -68,8 +68,8 @@ $(function() {
     $(".provider-list").live("click", function(){
         $("#products").hide();
         $("#shops").show();
-         $("#waitprovider").fadeIn();
-        $("#waitshops").fadeIn();
+         $("#waitprovider").show();
+        $("#waitshops").show();
         var providderId=$(this).attr("rel");
         $("#providershop").html($(this).text());
         $.ajax({	
@@ -87,8 +87,8 @@ $(function() {
         });
     });
     $(".shop-list").live("click", function(){
-        $("#waitproduct").fadeIn();
-        $("#waitshops").fadeIn();
+        $("#waitproduct").show();
+        $("#waitshops").show();
           $("#products").show();
         var shopId=$(this).attr("rel");
         $.ajax({	

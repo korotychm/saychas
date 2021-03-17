@@ -60,10 +60,13 @@ class ProductRepository implements ProductRepositoryInterface
      *
      * @return Product[]
      */
-    public function findAll()
+    public function findAll($limit=100, $offset=0, $order="id ASC")
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('product');
+        $select ->order($order);
+        $select ->limit($limit);
+        $select ->offset($offset);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -79,6 +82,8 @@ class ProductRepository implements ProductRepositoryInterface
         $resultSet->initialize($result);
         return $resultSet;
     }
+    
+    
 
     /**
      * Returns a single product.
@@ -122,35 +127,44 @@ class ProductRepository implements ProductRepositoryInterface
      * @param int $id
      * @param array $param
      */
-    public function findProductsByProviderIdAndExtraCondition($storeId, $param)
-    {
-        //SELECT `id`, ` category_id`, `title` FROM `product` WHERE `provider_id` in (SELECT  `provider_id` FROM `store` WHERE `id`=1  and `id` in (1,2)) order by id group by provider;
-                
+    public function findProductsByProviderIdAndExtraCondition($storeId, $param)  {
         $sql = new Sql($this->db);
+        $subSelectAvailbleStore = $sql->select('store');
+        $subSelectAvailbleStore ->columns(['provider_id']);
+        $subSelectAvailbleStore 
+            ->where->equalTo('id', $storeId)
+            ->where->and 
+            ->where->in('id', $param);
         
+        $select = $sql->select('product');
+        $select ->columns(['*']);
+        $select 
+            ->where->in('provider_id', $subSelectAvailbleStore);
+     /* $select ->order($order);
+        $select ->limit($limit);
+        $select ->offset($offset);/**/
+        
+        /*
         $where = new Where();
         $where->equalTo('id', $storeId);
         $where->in('id', $param);
-        
+        *
         $select = $sql->select()->from('product')->columns(["id", "category_id", "title"])->from("product")->
                 where(["provider_id in ?" => (new Select())->columns(["provider_id"])->from("store")->
                         where($where)]);
+         /**/
         
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-
-//        $selectString = $sql->buildSqlString($select);
-        
+//      $selectString = $sql->buildSqlString($select);
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-
-        $resultSet = new HydratingResultSet(
+  $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->productPrototype
         );
         $resultSet->initialize($result);
-
         return $resultSet;
         
     }
