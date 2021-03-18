@@ -121,11 +121,11 @@ class ReceivingController extends AbstractActionController
 
     public function receivePriceAction()
     {
-        //$content = $this->getRequest()->getContent();
+        $content = $this->getRequest()->getContent();
         
         $priceRepository = $this->container->get(\Application\Model\RepositoryInterface\PriceRepositoryInterface::class);
 
-        $content = '[{"product_id": "1", "reserve": "1", "store_id": "1", "unit": "ban"}]';
+//        $content = '[{"product_id": "1", "reserve": "1", "store_id": "1", "unit": "ban"}]';
         $arr = $priceRepository->replace($content);
         
         return new JsonModel($arr);

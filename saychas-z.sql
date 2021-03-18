@@ -518,9 +518,9 @@ CREATE TABLE `param_value` (
 
 DROP TABLE IF EXISTS `price`;
 CREATE TABLE `price` (
-  `product_id` int NOT NULL,
+  `product_id` VARCHAR(12) NOT NULL,
   `reserve` int NOT NULL,
-  `store_id` int NOT NULL,
+  `store_id` VARCHAR(9) NOT NULL,
   `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

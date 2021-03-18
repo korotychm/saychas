@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/PriceRepository.php
+// src/Model/Repository/StockBalanceRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -20,10 +20,10 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\Sql\Select;
 //use Laminas\Db\Sql\Where;
-use Application\Model\Entity\Price;
-use Application\Model\RepositoryInterface\PriceRepositoryInterface;
+use Application\Model\Entity\StockBalance;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 
-class PriceRepository implements PriceRepositoryInterface
+class StockBalanceRepository implements StockBalanceRepositoryInterface
 {
     /**
      * @var AdapterInterface
@@ -36,34 +36,34 @@ class PriceRepository implements PriceRepositoryInterface
     private HydratorInterface $hydrator;
 
     /**
-     * @var Price
+     * @var StockBalance
      */
-    private Price $pricePrototype;
+    private StockBalance $stockBalancePrototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Price $pricePrototype
+     * @param StockBalance $stockBalancePrototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Price $pricePrototype
+        StockBalance $stockBalancePrototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->pricePrototype = $pricePrototype;
+        $this->stockBalancePrototype = $stockBalancePrototype;
     }
 
     /**
-     * Returns a list of prices
+     * Returns a list of stock balances
      *
-     * @return Price[]
+     * @return StockBalance[]
      */
     public function findAll()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('price');
+        $select = $sql->select('stock_balance');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -74,22 +74,22 @@ class PriceRepository implements PriceRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->pricePrototype
+            $this->stockBalancePrototype
         );
         $resultSet->initialize($result);
         return $resultSet;
     }
 
     /**
-     * Returns a single price.
+     * Returns a single stockBalance.
      *
-     * @param  int $id Identifier of the price to return.
-     * @return Price
+     * @param  int $id Identifier of the stock balance to return.
+     * @return StockBalance
      */    
     public function find($id)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('price');
+        $select    = $sql->select('stock_balance');
         $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -102,22 +102,22 @@ class PriceRepository implements PriceRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->pricePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->stockBalancePrototype);
         $resultSet->initialize($result);
-        $price = $resultSet->current();
+        $stockBalance = $resultSet->current();
 
-        if (! $price) {
+        if (! $stockBalance) {
             throw new InvalidArgumentException(sprintf(
-                'Price with identifier "%s" not found.',
+                'StockBalance with identifier "%s" not found.',
                 $id
             ));
         }
 
-        return $price;
+        return $stockBalance;
     }
     
     /**
-     * Adds given price into it's repository
+     * Adds given stock balance into it's repository
      * 
      * @param json
      */
@@ -125,7 +125,7 @@ class PriceRepository implements PriceRepositoryInterface
     {        
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`) VALUES ( '%s', '%s', %u, '%s')",
+            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `reserve`, `unit`) VALUES ( '%s', '%s', %u, '%s')",
                     $row['product_id'], $row['store_id'], $row['reserve'], $row['unit']);
             try {
                 $query = $this->db->query($sql);
