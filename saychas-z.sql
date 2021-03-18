@@ -616,7 +616,7 @@ CREATE TABLE `stock_balance` (
 
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE `store` (
-  `id` VARCHAR(5) NOT NULL,
+  `id` VARCHAR(9) NOT NULL,
   `provider_id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
