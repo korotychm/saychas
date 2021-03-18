@@ -165,9 +165,19 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function replace($content)
     {
+//        /| id | provider_id | category_id | title      | description | vendor_code |
+        
+//| id          | int(11)     | NO   |     | NULL    |       |
+//| provider_id | int(11)     | NO   |     | NULL    |       |
+//| category_id | int(11)     | NO   |     | NULL    |       |
+//| title       | text        | NO   |     | NULL    |       |
+//| description | text        | NO   |     | NULL    |       |
+//| vendor_code | varchar(11) | NO   |     | NULL    |       |
+//+-------------+-------------+------+-----+---------+-------+
+        
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( %u, %u, %u, '%s', '%s', '%s' )",
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( %u, %u, %u, '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code']);
             try {
                 $query = $this->db->query($sql);

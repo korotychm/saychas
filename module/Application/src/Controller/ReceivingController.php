@@ -97,7 +97,7 @@ class ReceivingController extends AbstractActionController
         return new JsonModel($arr);
     }
     
-    public function replaceStoreAction()
+    public function receiveStoreAction()
     {
         $content = $this->getRequest()->getContent();
         
@@ -107,5 +107,17 @@ class ReceivingController extends AbstractActionController
         
         return new JsonModel($arr);
     }
+    
+    public function receiveProductAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $productRepository = $this->container->get(\Application\Model\RepositoryInterface\ProductRepositoryInterface::class);
+        
+        $arr = $productRepository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+
     
 }

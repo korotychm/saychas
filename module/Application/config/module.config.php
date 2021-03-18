@@ -103,13 +103,23 @@ return [
                     ],
                 ],
             ],
-            'replace-store' => [
+            'receive-store' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/replace-store[/:id]',
+                    'route'    => '/receive-store[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'replaceStore',
+                        'action'     => 'receiveStore',
+                    ],
+                ],
+            ],
+            'receive-product' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-product[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveProduct',
                     ],
                 ],
             ],

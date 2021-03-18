@@ -701,6 +701,12 @@ ALTER TABLE `provider`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `stock_balance`
 --
 ALTER TABLE `stock_balance`
