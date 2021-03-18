@@ -146,6 +146,27 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $category;
     }
     
+     /**
+     * Adds given price into it's repository
+     * 
+     * @param json
+     */
+    public function replace($content)
+    {
+        $result = json_decode($content, true);
+        foreach($result as $row) {
+            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+            }catch(InvalidQueryException $e){
+                return ['result' => false, 'description' => "error executing $sql"];
+            }
+        }
+        return ['result' => true, 'description' => ''];
+    }
+
     /**
      * Adds given array of categories into repository
      * 

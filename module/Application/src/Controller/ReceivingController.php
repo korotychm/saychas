@@ -81,9 +81,9 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $providerRepository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
         
-        $arr = $providerRepository->replace($content);
+        $arr = $repository->replace($content);
         
 ////        $response = new Response();
 ////        $response->setStatusCode(Response::STATUS_CODE_200);
@@ -101,9 +101,9 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $storeRepository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
         
-        $arr = $storeRepository->replace($content);
+        $arr = $repository->replace($content);
         
         return new JsonModel($arr);
     }
@@ -112,9 +112,9 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $productRepository = $this->container->get(\Application\Model\RepositoryInterface\ProductRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\ProductRepositoryInterface::class);
         
-        $arr = $productRepository->replace($content);
+        $arr = $repository->replace($content);
         
         return new JsonModel($arr);
     }
@@ -123,9 +123,9 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $priceRepository = $this->container->get(\Application\Model\RepositoryInterface\PriceRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\PriceRepositoryInterface::class);
 
-        $arr = $priceRepository->replace($content);
+        $arr = $repository->replace($content);
         
         return new JsonModel($arr);
     }
@@ -134,10 +134,23 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $stockBalanceRepository = $this->container->get(\Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class);
 
-        $arr = $stockBalanceRepository->replace($content);
+        $arr = $repository->replace($content);
         
         return new JsonModel($arr);
     }
+
+    public function receiveCategoryAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\CategoryRepositoryInterface::class);
+
+//        $content = '[{"group_name": "Group Name", "parent": "1", "comment": "comment 1", "id_1C_group": "29", "icon": "1", "rang": "10"}]';
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+    
 }

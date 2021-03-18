@@ -26,4 +26,9 @@ interface CategoryRepositoryInterface
      */
     public function addCategories(array $categories);
     
+    /**
+     * Return void
+     * @param Entity
+     */
+    public function replace($entity);
 }

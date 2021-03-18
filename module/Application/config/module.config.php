@@ -143,6 +143,16 @@ return [
                     ],
                 ],
             ],
+            'receive-category' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-category[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveCategory',
+                    ],
+                ],
+            ],
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
