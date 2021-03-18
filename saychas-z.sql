@@ -521,7 +521,8 @@ CREATE TABLE `price` (
   `product_id` VARCHAR(12) NOT NULL,
   `reserve` int NOT NULL,
   `store_id` VARCHAR(9) NOT NULL,
-  `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `price` INT(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -532,8 +533,8 @@ CREATE TABLE `price` (
 
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
-  `id` int NOT NULL,
-  `provider_id` int NOT NULL,
+  `id` VARCHAR(12) NOT NULL,
+  `provider_id` VARCHAR(5) NOT NULL,
   `category_id` int NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -580,7 +581,7 @@ INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description
 
 DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider` (
-  `id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `icon` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -602,9 +603,9 @@ INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
 
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
-  `product_id` int NOT NULL,
+  `product_id` VARCHAR(5) NOT NULL,
   `rest` int NOT NULL,
-  `store_id` int NOT NULL
+  `store_id` VARCHAR(5) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -615,8 +616,8 @@ CREATE TABLE `stock_balance` (
 
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE `store` (
-  `id` int NOT NULL,
-  `provider_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `id` VARCHAR(5) NOT NULL,
+  `provider_id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,

@@ -164,7 +164,7 @@ class StoreRepository implements StoreRepositoryInterface
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%u', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
             try {
                 $query = $this->db->query($sql);

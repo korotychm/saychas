@@ -131,4 +131,14 @@ class ReceivingController extends AbstractActionController
         return new JsonModel($arr);
     }
     
+    public function receiveStockBalanceAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $stockBalanceRepository = $this->container->get(\Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class);
+
+        $arr = $stockBalanceRepository->replace($content);
+        
+        return new JsonModel($arr);
+    }
 }

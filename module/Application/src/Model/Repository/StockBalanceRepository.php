@@ -125,8 +125,8 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
     {        
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `reserve`, `unit`) VALUES ( '%s', '%s', %u, '%s')",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit']);
+            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `rest`) VALUES ( '%s', '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['rest']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

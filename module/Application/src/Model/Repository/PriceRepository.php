@@ -125,8 +125,8 @@ class PriceRepository implements PriceRepositoryInterface
     {        
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`) VALUES ( '%s', '%s', %u, '%s')",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit']);
+            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`) VALUES ( '%s', '%s', %u, '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
