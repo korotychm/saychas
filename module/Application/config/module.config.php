@@ -123,6 +123,16 @@ return [
                     ],
                 ],
             ],
+            'receive-price' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-price[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receivePrice',
+                    ],
+                ],
+            ],
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -160,6 +170,7 @@ return [
             \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class => \Application\Model\Repository\ProviderRepository::class,
             \Application\Model\RepositoryInterface\StoreRepositoryInterface::class => \Application\Model\Repository\StoreRepository::class,
             \Application\Model\RepositoryInterface\ProductRepositoryInterface::class => \Application\Model\Repository\ProductRepository::class,
+            \Application\Model\RepositoryInterface\PriceRepositoryInterface::class => \Application\Model\Repository\PriceRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -171,6 +182,7 @@ return [
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
             \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
+            \Application\Model\Repository\PriceRepository::class => \Application\Model\Factory\PriceRepositoryFactory::class,
         ],
         
     ],
