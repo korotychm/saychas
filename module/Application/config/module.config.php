@@ -63,26 +63,26 @@ return [
                     ],
                 ],
             ],
-//            'receive-provider' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/receive-provider[/:id]',
-//                    'defaults' => [
-//                        'controller' => Controller\ReceivingController::class,
-//                        'action'     => 'receiveProvider',
-//                    ],
-//                ],
-//            ],
-            'receive' => [
+            'receive-provider' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/receive[/:id]',
+                    'route'    => '/receive-provider[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
                         'action'     => 'receiveProvider',
                     ],
                 ],
             ],
+//            'receive' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/receive[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'receiveProvider',
+//                    ],
+//                ],
+//            ],
             'provider' => [
                 'type'    => Literal::class,
                 'options' => [
