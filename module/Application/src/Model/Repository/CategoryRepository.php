@@ -158,7 +158,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 //            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
 //                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
             $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
-                    $row['title'], $row['parent_id'], $row['description'], $row['id'], 0/*$row['icon']*/, $row['sort_order']);
+                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
 //            echo $sql;
 //            exit;
             try {
