@@ -147,7 +147,7 @@ class ReceivingController extends AbstractActionController
         
         $repository = $this->container->get(\Application\Model\RepositoryInterface\CategoryRepositoryInterface::class);
 
-//        $content = '[{"group_name": "Group Name", "parent": "1", "comment": "comment 1", "id_1C_group": "29", "icon": "1", "rang": "10"}]';
+        //$content = '[{"title": "0001", "parent_id": "0001", "id": "0001", "description": "comment1 - moment1", "icon":"1234", "sort_order":10 }]';
         $arr = $repository->replace($content);
         
         return new JsonModel($arr);

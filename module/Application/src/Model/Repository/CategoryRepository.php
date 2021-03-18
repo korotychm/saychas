@@ -155,8 +155,12 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
+//            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+//                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
             $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
-                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
+                    $row['title'], $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
+//            echo $sql;
+//            exit;
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
