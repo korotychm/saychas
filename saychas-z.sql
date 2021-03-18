@@ -603,7 +603,7 @@ INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
 
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
-  `product_id` VARCHAR(5) NOT NULL,
+  `product_id` VARCHAR(12) NOT NULL,
   `rest` int NOT NULL,
   `store_id` VARCHAR(9) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
