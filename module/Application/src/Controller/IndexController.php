@@ -88,7 +88,6 @@ class IndexController extends AbstractActionController
     public function previewAction()
     {
         $this->layout()->setTemplate('layout/preview');
-
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
             'menu' => $categories
@@ -136,16 +135,9 @@ class IndexController extends AbstractActionController
                     )	
                 ))
              );
-            
             $return.="<pre>";
-            $return.= date("r")."\n ___\n";
-                    
-            ////.$result ;
-            //$return.= $post -> value   ;          
-            //exit(print_r($result));            
+            $return.= date("r")."\n";
             if($result) $return.=print_r(json_decode($result,true),true);
-            
-            //$return.="{$post -> name} => {$post -> value}";
             $return.="</pre>";
             exit ($return);
         }
@@ -153,43 +145,32 @@ class IndexController extends AbstractActionController
           
             $providers = $this->providerRepository->findAvailableProviders($param);
             $providers = $this->providerRepository->findAll();
-  //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
+              //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
             $return.=date("r");	
             $return.="<ul>";
             foreach ($providers as $row){
-                //echo date("r")."<pre>";
-               // exit (print_r($row));/**/
                 $return.="<li><a href=# rel='{$row -> getId()}' class=provider-list >{$row -> getTitle()}</a></li>";
-                //$return.="<li><a href=# rel='#' class=provider-list >----</a></li>";
+              
             }
-             $return.="</ul>";
+            $return.="</ul>";
             exit ($return);
         }	
         if ($id=="getshops"){
-            //sleep(1);
             $stores = $this->storeRepository->findStoresByProviderIdAndExtraCondition($post -> provider, $param) ;
             $return.=date("r")."<br>";	
             $return.="id постащика: {$post -> provider}<hr>" ;
             if (! $stores ) exit($return."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a>"); 
             $return.="<ul>";
             foreach ( $stores as $row)
-               // exit(print_r($row));
                 $return.="<li><a href=# rel='{$row -> getId()}' class=shop-list title='{$row->getAddress()} \r\n  {$row->getGeox()} , {$row -> getGeoy()} ' >"
                ."{$row -> getTitle()}</a>"
                ."</li>";
             $return.="</ul>";
-            
-                       
             exit ($return);
         }	
         if ($id=="getproducts"){
-            //$products = $this->productRepository->findAll(10,5);
             $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $param );
-            //exit ("<pre>".print_r($products, true)."</pre>");
-//sleep(1);
             $str = StringResource::PRODUCT_FAILURE_MESSAGE;
-            
-            //exit($str);
             if (!count($products)) exit(date("r")."<h3>для магазина id:{$post -> shop} товаров не найдено</h3> "); 
             $return.=date("r")."<br>";	
             $return.="id магазина: {$post -> shop}<hr>" ;

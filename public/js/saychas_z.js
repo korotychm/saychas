@@ -11,9 +11,9 @@ $(function() {
         onSelect: function(suggestion) {
            $("#ycard").show();
            var dataString=JSON.stringify(suggestion);
-           getLocalStores (dataString, "#dadataanswer");
+            getLocalStores (dataString, "#dadataanswer");
             $("#dadataanswer").stop().slideDown();
-            $("#dadataask").html ("<h3>Запрос:</h3>" + dataString).stop().slideDown();
+            $("#dadataask").html ("<h3>Запрос:</h3>" + dataString).stop().delay(500).slideDown();
                       
            myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
            var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
@@ -109,8 +109,8 @@ function getLocalStores (dataString, obj="#ajaxanswer2" ){
             type:'POST', 
             cache: false,	
             data: {"value":dataString},
-            success: function(data){ $(obj).html(data);},
-            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
+            success: function(data){ $(obj).html(data); return true},
+            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
         })
 }        
 
