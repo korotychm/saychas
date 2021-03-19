@@ -1,5 +1,5 @@
 <?php
-// src/ProductRepository.php
+// src/Model/Repository/ProductRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -124,8 +124,10 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Function obtains products from specified store that belongs to a specified provider.
      * The store is also listed as accessible
-     * @param int $id
+     * 
+     * @param int $storeId
      * @param array $param
+     * @return Product[]
      */
     public function findProductsByProviderIdAndExtraCondition($storeId, $param)  {
         $sql = new Sql($this->db);
@@ -172,13 +174,14 @@ class ProductRepository implements ProductRepositoryInterface
     
     /**
      * Adds given product into it's repository
+     * 
      * @param json
      */
     public function replace($content)
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( %u, %u, %u, '%s', '%s', '%s' )",
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code']);
             try {
                 $query = $this->db->query($sql);

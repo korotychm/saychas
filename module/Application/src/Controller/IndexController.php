@@ -79,7 +79,7 @@ class IndexController extends AbstractActionController
 //        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         return new ViewModel([
             'tests' => $this->testRepository->findAllTests(),
-            'first' => $this->testRepository->findTest(4),
+//            'first' => $this->testRepository->findTest(4),
             //'provider' => $this->providerRepository->find(4),
             'providers' => $this->providerRepository->findAll(),
         ]);

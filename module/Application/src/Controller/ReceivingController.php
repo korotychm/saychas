@@ -81,9 +81,9 @@ class ReceivingController extends AbstractActionController
     {
         $content = $this->getRequest()->getContent();
         
-        $providerRepository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
         
-        $arr = $providerRepository->replace($content);
+        $arr = $repository->replace($content);
         
 ////        $response = new Response();
 ////        $response->setStatusCode(Response::STATUS_CODE_200);
@@ -97,13 +97,58 @@ class ReceivingController extends AbstractActionController
         return new JsonModel($arr);
     }
     
-    public function replaceStoreAction()
+    public function receiveStoreAction()
     {
         $content = $this->getRequest()->getContent();
         
-        $storeRepository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
         
-        $arr = $storeRepository->replace($content);
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+    
+    public function receiveProductAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\ProductRepositoryInterface::class);
+        
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+
+    public function receivePriceAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\PriceRepositoryInterface::class);
+
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+    
+    public function receiveStockBalanceAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class);
+
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+
+    public function receiveCategoryAction()
+    {
+        $content = $this->getRequest()->getContent();
+        
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\CategoryRepositoryInterface::class);
+
+        //$content = '[{"title": "0001", "parent_id": "0001", "id": "0001", "description": "comment1 - moment1", "icon":"1234", "sort_order":10 }]';
+        $arr = $repository->replace($content);
         
         return new JsonModel($arr);
     }
