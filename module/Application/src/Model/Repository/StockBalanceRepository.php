@@ -137,5 +137,13 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
         return ['result' => true, 'description' => ''];
     }
     
+    /**
+     * Delete stock balances specified by json array of objects
+     * @param json
+     */
+    public function delete($json) {
+        /** @var id[] */
+        return [];
+    }    
     
 }

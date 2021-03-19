@@ -10,39 +10,47 @@ namespace Application\Model\Entity;
 
 class Category
 {
+//    -- INSERT INTO `category` (`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES
+//       INSERT INTO `category` (`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES
+
     /**
      * @var string
      */
-    private $group_name;
+    //private $group_name;
+    private $title;
 
     /**
-     * @var int
+     * @var string
      */
-    private $parent;
+    //private $parent;
+    private $parent_id;
     
     /**
-     * @var int
+     * @var string
      */
-    private $id_1C_group;
+    //private $id_1C_group;
+    private $id;
 
     /**
      * @var string
      */
-    private $comment;
+    //private $comment;
+    private $description;
 
     /**
-     * @param string      $groupName
-     * @param int         $id1cGroup
-     * @param int         $parent
+     * @param string      $title
+     * @param string      $id
+     * @param string      $parent_id
      * @param string|null $icon
-     * @param string|null $comment
+     * @param string|null $description
      */
-    public function __construct($groupName, $id1cGroup, $parent, $icon = null, $comment = null)
+    //public function __construct($groupName, $id1cGroup, $parent, $icon = null, $comment = null)
+    public function __construct($title, $id, $parentId, $icon = null, $description = null)
     {
-        $this->group_name = $groupName;
-        $this->parent = $parent;
-        $this->comment = $comment;
-        $this->id_1C_group = $id1cGroup;
+        $this->title = $title;
+        $this->parent_id = $parentId;
+        $this->description = $description;
+        $this->id = $id;
         $this->icon = $icon;
     }
 
@@ -51,7 +59,7 @@ class Category
      */
     public function getName()
     {
-        return $this->group_name;
+        return $this->title;
     }
 
     /**
@@ -59,14 +67,14 @@ class Category
      */
     public function getId()
     {
-        return $this->id_1C_group;
+        return $this->id;
     }
     /**
      * @return int
      */
     public function getParent()
     {
-        return $this->parent;
+        return $this->parent_id;
     }
 
     /**
@@ -82,6 +90,6 @@ class Category
      */
     public function getComment()
     {
-        return $this->comment;
+        return $this->description;
     }
 }
