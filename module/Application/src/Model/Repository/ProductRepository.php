@@ -166,20 +166,13 @@ class ProductRepository implements ProductRepositoryInterface
     public function replace($content)
     {
         $result = json_decode($content, true);
-        $platform = $this->db->getPlatform();
-        $driver = $this->db->getDriver();
         foreach($result as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $platform->quoteValue($row['vendor_code']) );
-            //mysql_real_escape_string()
+                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], quotemeta($row['vendor_code']));
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
-                $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code'] );
-//                echo $sql;
-//                exit;
                 return ['result' => false, 'description' => "error executing $sql"];
             }
         }
