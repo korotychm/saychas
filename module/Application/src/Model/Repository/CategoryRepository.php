@@ -80,12 +80,12 @@ class CategoryRepository implements CategoryRepositoryInterface
      *
      * @return string
      */
-    public function findAllCategories($echo = '', $i = 0, $idActive = false)
+    public function findAllCategories($echo = '', $i = '0', $idActive = false)
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
-        $select->where(['parent' => $i ]);
+        $select->where(['parent_id' => $i ]);
         
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
@@ -97,9 +97,10 @@ class CategoryRepository implements CategoryRepositoryInterface
         foreach($results as $result) {
             if (true /**|| pubtv(id_1C_group) */) // если в ветке есть хоть один товар, надо функцию сделать тоже такую
             {
-                $groupName=stripslashes($result['group_name']);
-                $echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
-                        $echo=$this->findAllCategories($echo, $result['id_1C_group'],$idActive);
+                $groupName=stripslashes($result['title']);
+                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
+                $echo.="<li><a href=#/catalog/".$result['id']."  >$groupName</a>";
+                        $echo=$this->findAllCategories($echo, $result['id'],$idActive);
                 $echo.="</li>";
             }
         }
@@ -120,7 +121,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('category');
-        $select->where(['id_1c_group = ?' => $id]);
+        $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -157,9 +158,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         foreach($result as $row) {
 //            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
 //                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
-            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+            $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
                     $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
-//            echo $sql;
+            echo $sql;
+            mail('alex@localhost', 'asdf', $sql);
+            continue;
 //            exit;
             try {
                 $query = $this->db->query($sql);

@@ -41,21 +41,36 @@ CREATE TABLE `brand` (
 -- Структура таблицы `category`
 --
 
+-- DROP TABLE IF EXISTS `category`;
+-- CREATE TABLE `category` (
+--   `group_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+--   `parent` VARCHAR(9) NOT NULL DEFAULT '0',
+--   `comment` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+--   `id_1C_group` VARCHAR(9) NOT NULL,
+--   `icon`  VARCHAR(11) NOT NULL DEFAULT '',
+--   `rang` int NOT NULL DEFAULT '0'
+-- ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
+
+
+-- $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+--         $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
+
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-  `group_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `parent` VARCHAR(9) NOT NULL DEFAULT '0',
-  `comment` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `id_1C_group` VARCHAR(9) NOT NULL,
+  `id` VARCHAR(9) NOT NULL,
+  `parent_id` VARCHAR(9) NOT NULL DEFAULT '0',
+  `title` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `icon`  VARCHAR(11) NOT NULL DEFAULT '',
-  `rang` int NOT NULL DEFAULT '0'
+  `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
 
 --
 -- Дамп данных таблицы `category`
 --
 
-INSERT INTO `category` (`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES
+-- INSERT INTO `category` (`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES
+INSERT INTO `category` (`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES
 ('Алкотестеры', 2, '', 29, 0, 0),
 ('Физиотерапия и магнитотерапия', 2, '', 25, 0, 0),
 ('Кварцевание/Облучатели бактерицидные', 2, '', 26, 0, 0),
@@ -662,8 +677,10 @@ ALTER TABLE `brand`
 --
 -- Индексы таблицы `category`
 --
+-- ALTER TABLE `category`
+--   ADD PRIMARY KEY (`id_1C_group`);
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id_1C_group`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `country`

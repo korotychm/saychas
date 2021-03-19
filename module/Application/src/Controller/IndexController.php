@@ -52,7 +52,7 @@ class IndexController extends AbstractActionController
 
         $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
         
-        $category = $this->categoryRepository->findCategory(29);
+        //$category = $this->categoryRepository->findCategory(29);
         
         $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
