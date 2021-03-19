@@ -1,5 +1,5 @@
 <?php
-// src/ModelCategoryRepository.php
+// src/Model/Repository/CategoryRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -20,17 +20,10 @@ use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Category;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Ddl;
+use Laminas\Db\Sql\Sql;
 
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
-
-//use Laminas\Db\ResultSet\ResultSet;
-
-//use Laminas\Hydrator\ReflectionHydrator;
-
-use Laminas\Db\Sql\Sql;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -153,57 +146,43 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $category;
     }
     
+     /**
+     * Adds given price into it's repository
+     * 
+     * @param json
+     */
+    public function replace($content)
+    {
+        $result = json_decode($content, true);
+        foreach($result as $row) {
+//            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+//                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
+            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
+//            echo $sql;
+//            exit;
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+            }catch(InvalidQueryException $e){
+                return ['result' => false, 'description' => "error executing $sql"];
+            }
+        }
+        return ['result' => true, 'description' => ''];
+    }
+
     /**
      * Adds given array of categories into repository
+     * 
      * @param array $data
      */
     public function addCategories(array $data)
     {
-        //Таблица 1.6  Группы   (categories)
-        //Id - id передаваемый из 1С,  лучше всего целое число
-        //title - название группы, текст
-        //parent – id  родительской группы из этой таблицы, 0 для корневых групп
-        //description - описание, text/HTML
-        //icon - целое число флаг для выбора иконки 
-        //rang порядок отображения
-        // [ [{"id": 1}, {"title": "title1"}, {"parent": null}, {"description": "description1"}, {"icon": 2}, {"rang": 2}], [{"id": 1}, {"title": "title1"}, {"parent": null}, {"description": "description1"}, {"icon": 2}, {"rang": 2}] ]
-        
-        // $sql       = new Sql($this->db);
         
         $categoryTable = new TableGateway('category', $this->db);
         
         $rowset = $categoryTable->select(['id_group' => 276643]);//['type' => 'PHP']
         
-        print_r($rowset->current()['id_group']);
-
-        // Existence of $adapter is assumed.
-        //$sql = new Sql($this->db);
-        
-//        $query = $this->db->query('truncate table category');
-//        $query->execute();
-
-//        $this->db->query(
-//            $sql->getSqlStringForSqlObject("TRUNCATE table category"),
-//            $this->db::QUERY_MODE_EXECUTE
-//        );
-//        echo 'banzaii';
-//        exit;
-        
-//        foreach($rowset as $row) {
-//            print_r($row['group_name']);
-//        }
-
-//        echo '<pre>';
-//        print_r($rowset);
-//        echo '</pre>';
-//        echo 'categories: ' . PHP_EOL;
-//        foreach ($rowset as $categoryRow) {
-//            echo $categoryRow['id'] . PHP_EOL;
-//        }
-//        
-//        echo '201';
-//        exit;
-
         foreach($data as $rows) {
             foreach($rows as $value) {
                 echo "{$value['id']} {$value['title']} {$value['parent']} {$value['description']} {$value['icon']} {$value['rang']} <br/>";

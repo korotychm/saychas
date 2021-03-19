@@ -1,5 +1,5 @@
 <?php
-// src/ProviderRepository.php
+// src/Model/Repository/ProviderRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.

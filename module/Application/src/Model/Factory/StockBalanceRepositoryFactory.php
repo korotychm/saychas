@@ -1,5 +1,5 @@
 <?php
-// src/Model/Factory/CategoryRepositoryFactory.php
+// src/Model/Factory/PriceRepositoryFactory.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -10,32 +10,27 @@
 namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
-use Application\Model\Entity\Category;
-use Application\Model\Repository\CategoryRepository;
+use Application\Model\Entity\StockBalance;
+use Application\Model\Repository\StockBalanceRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class CategoryRepositoryFactory implements FactoryInterface
+class StockBalanceRepositoryFactory implements FactoryInterface
 {
+   
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {        
-        if($requestedName instanceof CategoryRepository){
-            throw new Exception("not instanceof CategoryRepository");
+    {
+        if($requestedName instanceof PriceRepository){
+            throw new Exception("not instanceof StoreRepository");
         }
         
-        $config = $container->get('Config');
-
         $adapter = $container->get(AdapterInterface::class);
         
-        $adp = $container->get('Application\Db\WriteAdapter');
-        
-        return new CategoryRepository(
+        return new StockBalanceRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Category('', 0, 0, null, null),
-            $config['parameters']['1c_auth']['username'],
-            $config['parameters']['1c_auth']['password']
+            new StockBalance('', 0, '')
         );
     }
 }
