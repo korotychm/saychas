@@ -550,7 +550,7 @@ DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` VARCHAR(12) NOT NULL,
   `provider_id` VARCHAR(5) NOT NULL,
-  `category_id` int NOT NULL,
+  `category_id` VARCHAR(9) NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `vendor_code` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
