@@ -95,7 +95,7 @@ class IndexController extends AbstractActionController
         ]);
     }
     
-    public function ajaxAction(){   
+    public function ajaxAction($params = array('name' => 'value')){   
         $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
         $param=array(1,2,3,4,5);   
@@ -117,6 +117,35 @@ class IndexController extends AbstractActionController
             $return.= date("r")."\n" ;
             // if($result) print_r(json_decode($result));
             $return.="{$post -> name} => {$post -> value}";
+            $return.="</pre>";
+            exit ($return);
+        }
+         if ($id=="getstore"){
+             
+            //.print_r($post,true));  
+            $url="http://SRV02:8000/SC/hs/site/get_product";
+            
+            $result = file_get_contents(
+                $url, 
+                false, 
+                stream_context_create(array(
+                    'http' => array(
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/json',
+                    'content' => $post -> value 
+                    )	
+                ))
+             );
+            
+            $return.="<pre>";
+            $return.= date("r")."\n ";
+                    
+            ////.$result ;
+            //$return.= $post -> value   ;          
+            //exit(print_r($result));            
+            if($result) $return.=print_r(json_decode($result,true),true);
+            
+            //$return.="{$post -> name} => {$post -> value}";
             $return.="</pre>";
             exit ($return);
         }

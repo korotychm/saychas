@@ -122,14 +122,15 @@ class ProductRepository implements ProductRepositoryInterface
     }
     
     /**
-     * Function obtains products from specified store that belongs to a specified provider.
+     * Function obtains products from specified store that belongs to a specified provider from available stores.
+     * 
      * The store is also listed as accessible
      * @param int $id
      * @param array $param
      */
     public function findProductsByProviderIdAndExtraCondition($storeId, $param)  {
-        $sql = new Sql($this->db);
-        $subSelectAvailbleStore = $sql->select('store');
+        $sql = new Sql($this ->db);
+        $subSelectAvailbleStore = $sql ->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
         $subSelectAvailbleStore 
             ->where->equalTo('id', $storeId)
@@ -138,13 +139,11 @@ class ProductRepository implements ProductRepositoryInterface
         
         $select = $sql->select('product');
         $select ->columns(['*']);
-        $select 
-            ->where->in('provider_id', $subSelectAvailbleStore);
+        $select ->where->in('provider_id', $subSelectAvailbleStore);
      /* $select ->order($order);
         $select ->limit($limit);
         $select ->offset($offset);/**/
-        
-        /*
+         /*
         $where = new Where();
         $where->equalTo('id', $storeId);
         $where->in('id', $param);
@@ -160,7 +159,7 @@ class ProductRepository implements ProductRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-  $resultSet = new HydratingResultSet(
+        $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->productPrototype
         );
@@ -168,12 +167,7 @@ class ProductRepository implements ProductRepositoryInterface
         return $resultSet;
         
     }
-    
-    
-    /**
-     * Adds given product into it's repository
-     * @param json
-     */
+
     public function replace($content)
     {
         $result = json_decode($content, true);
