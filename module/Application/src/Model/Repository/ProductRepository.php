@@ -178,8 +178,8 @@ class ProductRepository implements ProductRepositoryInterface
             }catch(InvalidQueryException $e){
                 $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
                 $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code'] );
-                echo $sql;
-                exit;
+//                echo $sql;
+//                exit;
                 return ['result' => false, 'description' => "error executing $sql"];
             }
         }
