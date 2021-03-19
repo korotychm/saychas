@@ -158,7 +158,7 @@ class StoreRepository implements StoreRepositoryInterface
     /**
      * Adds given store into it's repository
      * 
-     * @param json
+     * @param json $content
      */
     public function replace($content)
     {
@@ -176,5 +176,13 @@ class StoreRepository implements StoreRepositoryInterface
         return ['result' => true, 'description' => ''];
     }
     
+    /**
+     * Delete stores specified by json array of objects
+     * @param json
+     */
+    public function delete($json) {
+        /** @var id[] */
+        return [];
+    }    
     
 }

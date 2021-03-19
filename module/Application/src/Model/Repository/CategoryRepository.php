@@ -156,12 +156,8 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $result = json_decode($content, true);
         foreach($result as $row) {
-//            $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
-//                    $row['group_name'], $row['parent'], $row['comment'], $row['id_1C_group'], $row['icon'], $row['rang']);
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
                     $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
-//            echo $sql;
-//            exit;
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -171,27 +167,15 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
         return ['result' => true, 'description' => ''];
     }
-
-    /**
-     * Adds given array of categories into repository
-     * 
-     * @param array $data
-     */
-    public function addCategories(array $data)
-    {
-        
-        $categoryTable = new TableGateway('category', $this->db);
-        
-        $rowset = $categoryTable->select(['id_group' => 276643]);//['type' => 'PHP']
-        
-        foreach($data as $rows) {
-            foreach($rows as $value) {
-                echo "{$value['id']} {$value['title']} {$value['parent']} {$value['description']} {$value['icon']} {$value['rang']} <br/>";
-            }
-        }
-        echo '200';
-        exit;
-    }
     
+    /**
+     * Delete categories specified by json array of objects
+     * @param $json
+     */
+    public function delete($json) {
+        /** @var id[] */
+        return [];
+    }
+
     
 }

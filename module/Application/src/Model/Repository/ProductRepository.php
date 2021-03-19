@@ -179,5 +179,28 @@ class ProductRepository implements ProductRepositoryInterface
         return ['result' => true, 'description' => ''];
     }
     
+    /**
+     * Delete products specified by json array of objects
+     * @param json
+     */
+    public function delete($json) {
+        /** @var id[] */
+        try {
+            $total = [];
+            foreach (json_decode($json, true) as $item) {
+                array_push($total, $item['id']);
+            }
+            $sql    = new Sql($this->db);
+            $delete = $sql->delete();
+            $delete->from('product');
+            $delete->where(['id' => $total]);
+
+            $selectString = $sql->buildSqlString($delete);
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => ''];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => $e->getMessage()];
+        }
+    }
     
 }
