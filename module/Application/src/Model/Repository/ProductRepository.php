@@ -20,6 +20,7 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
+use Laminas\Json;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -186,18 +187,21 @@ class ProductRepository implements ProductRepositoryInterface
     public function delete($json) {
         /** @var id[] */
         try {
+            $phpNative = Laminas\Json\Json::decode($json);
+            //json_decode($json, true)
             $total = [];
-            foreach (json_decode($json, true) as $item) {
+            foreach ($phpNative as $item) {
                 array_push($total, $item['id']);
             }
             $sql    = new Sql($this->db);
-            $delete = $sql->delete();
-            $delete->from('product');
-            $delete->where(['id' => $total]);
+            $delete = $sql->delete()->from('product')->where(['id' => $total]);
+//            $delete->from('product');
+//            $delete->where(['id' => $total]);
 
             $selectString = $sql->buildSqlString($delete);
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
             return ['result' => true, 'description' => ''];
+
         }catch(InvalidQueryException $e){
             return ['result' => false, 'description' => $e->getMessage()];
         }
