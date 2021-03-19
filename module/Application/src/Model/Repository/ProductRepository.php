@@ -20,7 +20,7 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
-use Laminas\Json;
+use Laminas\Json\Json;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -167,6 +167,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function replace($content)
     {
         $result = json_decode($content, true);
+//        $result = Json::decode($content);
         foreach($result as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], quotemeta($row['vendor_code']));
@@ -187,10 +188,11 @@ class ProductRepository implements ProductRepositoryInterface
     public function delete($json) {
         /** @var id[] */
         try {
-            $phpNative = Laminas\Json\Json::decode($json);
-            //json_decode($json, true)
+//            $phpNative = Json::decode($json);
+//            json_decode($json, true)
+            $result = json_decode($json, true);
             $total = [];
-            foreach ($phpNative as $item) {
+            foreach ($result as $item) {
                 array_push($total, $item['id']);
             }
             $sql    = new Sql($this->db);
