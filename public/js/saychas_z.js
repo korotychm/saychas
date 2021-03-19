@@ -13,7 +13,7 @@ $(function() {
            var dataString=JSON.stringify(suggestion);
             getLocalStores (dataString, "#dadataanswer");
             $("#dadataanswer").stop().slideDown();
-            $("#dadataask").html ("<h3>Запрос:</h3>" + dataString).stop().delay(500).slideDown();
+            $("#dadataask").html ("<h4>Посланный запрос:</h4>" + dataString).stop().slideDown();
                       
            myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
            var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
