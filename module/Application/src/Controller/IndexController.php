@@ -138,7 +138,7 @@ class IndexController extends AbstractActionController
              );
             
             $return.="<pre>";
-            $return.= date("r")."\n ";
+            $return.= date("r")."\n ___\n";
                     
             ////.$result ;
             //$return.= $post -> value   ;          

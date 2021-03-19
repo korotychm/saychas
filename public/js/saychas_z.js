@@ -3,7 +3,7 @@ $(function() {
     
     $("#dadataanswer").slideUp();
     
-    $("#address").click(function(){$("#dadataanswer").slideUp(); $("#ycard").fadeOut();})
+    $("#address").click(function(){$("#dadataanswer").slideUp(); $("#dadataask").delay(500).slideUp();  $("#ycard").fadeOut();})
     
     $("#address").suggestions({
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
@@ -13,7 +13,7 @@ $(function() {
            var dataString=JSON.stringify(suggestion);
            getLocalStores (dataString, "#dadataanswer");
             $("#dadataanswer").stop().slideDown();
-            $("#dadataask").html ("<h3>Запрос:</h3>" + dataString);
+            $("#dadataask").html ("<h3>Запрос:</h3>" + dataString).stop().slideDown();
                       
            myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
            var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
