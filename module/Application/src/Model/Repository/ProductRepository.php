@@ -21,6 +21,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
 use Laminas\Json\Json;
+use Laminas\Json\Exception;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -179,24 +180,22 @@ class ProductRepository implements ProductRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = json_decode($content, true);
-        }catch(\Exception $e){
-           echo 'asdfadsf';
-           exit;
+            $result = Json::decode($content);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => 400, 'description' => $e->getMessage()];
         }
         
-//        $result = Json::decode($content);
         foreach($result as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], quotemeta($row['vendor_code']));
+                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, quotemeta($row->vendor_code));
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(/**InvalidQueryException*/ \Exception $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+            }catch(InvalidQueryException $e){
+                return ['result' => 418, 'description' => "error executing $sql"];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => 200, 'description' => ''];
     }
     
     /**
@@ -206,8 +205,6 @@ class ProductRepository implements ProductRepositoryInterface
     public function delete($json) {
         /** @var id[] */
         try {
-//            $phpNative = Json::decode($json);
-//            json_decode($json, true)
             $result = json_decode($json, true);
             $total = [];
             foreach ($result as $item) {
@@ -215,8 +212,6 @@ class ProductRepository implements ProductRepositoryInterface
             }
             $sql    = new Sql($this->db);
             $delete = $sql->delete()->from('product')->where(['id' => $total]);
-//            $delete->from('product');
-//            $delete->where(['id' => $total]);
 
             $selectString = $sql->buildSqlString($delete);
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);

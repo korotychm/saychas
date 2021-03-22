@@ -22,6 +22,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Resource\StringResource;
 use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Post;
+use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
 
 class IndexController extends AbstractActionController
@@ -57,7 +58,7 @@ class IndexController extends AbstractActionController
 
         $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
         
-        //$category = $this->categoryRepository->findCategory(29);
+        $category = $this->categoryRepository->findCategory(29);
         
         $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
@@ -227,7 +228,7 @@ class IndexController extends AbstractActionController
     
     public function addNewPostAction()
     {
-        $id=$this->params()->fromRoute('id', '');
+        $id=$this->params()->fromRoute('id', '1');
         if(empty($id)) {
             throw new InvalidArgumentException('id must not be null');
         }
@@ -246,9 +247,10 @@ class IndexController extends AbstractActionController
 
         // Применяем изменения к БД.
         $this->entityManager->flush();
-        echo '<pre>';
-        print_r($post);
-        echo '</pre>';
+        
+        return new \Laminas\Diactoros\Response\JsonResponse(['banzaii' => 'vonzaii'], 401);
+        
+        echo "id = ". $id;
         exit;
     }
 }

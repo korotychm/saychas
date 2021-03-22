@@ -15,6 +15,8 @@ use RuntimeException;
 use Exception;
 use Laminas\Db\ResultSet\HydratingResultSet;
 //use Laminas\Uri\Exception\InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
+use Laminas\Diactoros\Response\JsonResponse;
 
 class ReceivingController extends AbstractActionController
 {
@@ -133,7 +135,15 @@ class ReceivingController extends AbstractActionController
         }        
         
         $arr = $repository->replace($content);
-        
+
+        //$response = new JsonResponse($arr, 401);
+
+//        $response = $this->getResponse();
+//        
+//        $response->setStatusCode(201);
+//
+//        $answer = ['statusCode' => $response->getStatusCode(), 'body' => $response->getContent()];
+
         return new JsonModel($arr);
     }
 
