@@ -20,6 +20,7 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
+use Laminas\Json\Json;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -178,9 +179,10 @@ class ProductRepository implements ProductRepositoryInterface
     public function replace($content)
     {
         $result = json_decode($content, true);
+//        $result = Json::decode($content);
         foreach($result as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code']);
+                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], quotemeta($row['vendor_code']));
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -198,18 +200,22 @@ class ProductRepository implements ProductRepositoryInterface
     public function delete($json) {
         /** @var id[] */
         try {
+//            $phpNative = Json::decode($json);
+//            json_decode($json, true)
+            $result = json_decode($json, true);
             $total = [];
-            foreach (json_decode($json, true) as $item) {
+            foreach ($result as $item) {
                 array_push($total, $item['id']);
             }
             $sql    = new Sql($this->db);
-            $delete = $sql->delete();
-            $delete->from('product');
-            $delete->where(['id' => $total]);
+            $delete = $sql->delete()->from('product')->where(['id' => $total]);
+//            $delete->from('product');
+//            $delete->where(['id' => $total]);
 
             $selectString = $sql->buildSqlString($delete);
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
             return ['result' => true, 'description' => ''];
+
         }catch(InvalidQueryException $e){
             return ['result' => false, 'description' => $e->getMessage()];
         }
