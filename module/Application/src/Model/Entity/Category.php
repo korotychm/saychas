@@ -10,9 +10,6 @@ namespace Application\Model\Entity;
 
 class Category
 {
-//    -- INSERT INTO `category` (`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES
-//       INSERT INTO `category` (`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES
-
     /**
      * @var string
      */
@@ -28,7 +25,6 @@ class Category
     /**
      * @var string
      */
-    //private $id_1C_group;
     private $id;
 
     /**
@@ -44,7 +40,6 @@ class Category
      * @param string|null $icon
      * @param string|null $description
      */
-    //public function __construct($groupName, $id1cGroup, $parent, $icon = null, $comment = null)
     public function __construct($title, $id, $parentId, $icon = null, $description = null)
     {
         $this->title = $title;

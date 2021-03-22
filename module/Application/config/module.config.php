@@ -19,6 +19,7 @@ use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 return [
     'router' => [
@@ -153,6 +154,16 @@ return [
                     ],
                 ],
             ],
+            'add-new-post' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/add-new-post[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'addNewPost',
+                    ],
+                ],
+            ],
             'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -232,16 +243,33 @@ return [
             'password' => 'w48Es4562',
         ],
     ],
-//    'driver' => [
-//        __NAMESPACE__ . '_driver' => [
-//            'class' => AnnotationDriver::class,
-//            'cache' => 'array',
-//            'paths' => [__DIR__ . '/../src/Entity']
-//        ],
-//        'orm_default' => [
-//            'drivers' => [
-//                __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+//    'doctrine' => [
+//        'driver' => [
+//            __NAMESPACE__ . '_driver' => [
+//                'class' => AnnotationDriver::class,
+//                'cache' => 'array',
+//                'paths' => [__DIR__ . '/../src/Entity']
 //            ],
-//        ],
+//            'orm_default' => [
+//                'drivers' => [
+//                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+//                ]
+//            ]
+//        ]
 //    ],
+    
+    'doctrine' => [
+          'driver' => [
+              __NAMESPACE__ . '_driver' => [
+                  'class' => AnnotationDriver::class,
+                  'cache' => 'array',
+                  'paths' => [__DIR__ . '/../src/Entity']
+              ],
+              'orm_default' => [
+                  'drivers' => [
+                      __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                  ]
+              ]
+          ]
+      ],    
 ];

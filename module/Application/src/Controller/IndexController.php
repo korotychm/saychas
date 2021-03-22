@@ -20,6 +20,9 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Resource\StringResource;
+use Doctrine\ORM\Mapping as ORM;
+use Application\Entity\Post;
+use \InvalidArgumentException;
 
 class IndexController extends AbstractActionController
 {
@@ -31,16 +34,18 @@ class IndexController extends AbstractActionController
     private $providerRepository;
     private $storeRepository;
     private $productRepository;
+    private $entityManager;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository)
+                ProductRepositoryInterface $productRepository, $entityManager)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
         $this->storeRepository = $storeRepository;
         $this->productRepository = $productRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -217,6 +222,33 @@ class IndexController extends AbstractActionController
         foreach ($products as $product) {
             echo $product->getId() . ' ' . $product->getTitle() . '<br/>';
         }
+        exit;
+    }
+    
+    public function addNewPostAction()
+    {
+        $id=$this->params()->fromRoute('id', '');
+        if(empty($id)) {
+            throw new InvalidArgumentException('id must not be null');
+        }
+        
+        // Создаем новую сущность Post.
+        $post = new \Application\Entity\Post();
+        $post->setId($id);
+        $post->setTitle('Top 10+ Books about Zend Framework 3');
+        $post->setContent('Post body goes here');
+        $post->setStatus(Post::STATUS_PUBLISHED);
+        $currentDate = date('Y-m-d H:i:s');
+        $post->setDateCreated($currentDate);
+
+        // Добавляем сущность в менеджер сущностей.
+        $this->entityManager->persist($post);
+
+        // Применяем изменения к БД.
+        $this->entityManager->flush();
+        echo '<pre>';
+        print_r($post);
+        echo '</pre>';
         exit;
     }
 }

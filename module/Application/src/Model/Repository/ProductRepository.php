@@ -186,7 +186,7 @@ class ProductRepository implements ProductRepositoryInterface
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(InvalidQueryException $e){
+            }catch(/**InvalidQueryException*/ \Exception $e){
                 return ['result' => false, 'description' => "error executing $sql"];
             }
         }

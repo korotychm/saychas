@@ -25,7 +25,8 @@ class IndexControllerFactory implements FactoryInterface
         $provider = $container->get(ProviderRepositoryInterface::class);
         $store =    $container->get(StoreRepositoryInterface::class);
         $product =    $container->get(ProductRepositoryInterface::class);
-        return new IndexController($test, $category, $provider, $store, $product);
+        $entityManager = $container->get('doctrine.entitymanager.orm_default');
+        return new IndexController($test, $category, $provider, $store, $product, $entityManager);
     }
 }
 
