@@ -140,7 +140,7 @@ class ReceivingController extends AbstractActionController
         
         $response->setStatusCode($arr['statusCode']);
 
-        $answer = ['result' => $arr['result'], 'statusCode' => $response->getStatusCode(), 'body' => $response->getContent()];
+        $answer = ['result' => $arr['result'], 'description' => $response->getContent()];
 
         return new JsonModel($answer);
     }
