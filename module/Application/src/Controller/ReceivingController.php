@@ -136,13 +136,11 @@ class ReceivingController extends AbstractActionController
         
         $arr = $repository->replace($content);
 
-        //$response = new JsonResponse($arr, 401);
-
         $response = $this->getResponse();
         
-        $response->setStatusCode($arr['result']);
+        $response->setStatusCode($arr['statusCode']);
 
-        $answer = ['statusCode' => $response->getStatusCode(), 'body' => $response->getContent()];
+        $answer = ['result' => $arr['result'], 'statusCode' => $response->getStatusCode(), 'body' => $response->getContent()];
 
         return new JsonModel($answer);
     }
