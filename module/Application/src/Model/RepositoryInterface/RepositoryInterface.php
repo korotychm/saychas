@@ -25,5 +25,11 @@ interface RepositoryInterface
      * @param Entity
      */
     public function replace($entity);
+ 
+    /**
+     * Return void
+     * @param json
+     */
+    public function delete($json);
     
 }

@@ -63,26 +63,26 @@ return [
                     ],
                 ],
             ],
-//            'receive-provider' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/receive-provider[/:id]',
-//                    'defaults' => [
-//                        'controller' => Controller\ReceivingController::class,
-//                        'action'     => 'receiveProvider',
-//                    ],
-//                ],
-//            ],
-            'receive' => [
+            'receive-provider' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/receive[/:id]',
+                    'route'    => '/receive-provider[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
                         'action'     => 'receiveProvider',
                     ],
                 ],
             ],
+//            'receive' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/receive[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'receiveProvider',
+//                    ],
+//                ],
+//            ],
             'provider' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -103,13 +103,53 @@ return [
                     ],
                 ],
             ],
-            'replace-store' => [
+            'receive-store' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/replace-store[/:id]',
+                    'route'    => '/receive-store[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'replaceStore',
+                        'action'     => 'receiveStore',
+                    ],
+                ],
+            ],
+            'receive-product' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-product[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveProduct',
+                    ],
+                ],
+            ],
+            'receive-price' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-price[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receivePrice',
+                    ],
+                ],
+            ],
+            'receive-stock-balance' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-stock-balance[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveStockBalance',
+                    ],
+                ],
+            ],
+            'receive-category' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-category[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveCategory',
                     ],
                 ],
             ],
@@ -150,6 +190,8 @@ return [
             \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class => \Application\Model\Repository\ProviderRepository::class,
             \Application\Model\RepositoryInterface\StoreRepositoryInterface::class => \Application\Model\Repository\StoreRepository::class,
             \Application\Model\RepositoryInterface\ProductRepositoryInterface::class => \Application\Model\Repository\ProductRepository::class,
+            \Application\Model\RepositoryInterface\PriceRepositoryInterface::class => \Application\Model\Repository\PriceRepository::class,
+            \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -161,6 +203,8 @@ return [
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
             \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
+            \Application\Model\Repository\PriceRepository::class => \Application\Model\Factory\PriceRepositoryFactory::class,
+            \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
         ],
         
     ],

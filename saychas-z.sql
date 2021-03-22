@@ -41,21 +41,45 @@ CREATE TABLE `brand` (
 -- Структура таблицы `category`
 --
 
+-- DROP TABLE IF EXISTS `category`;
+-- CREATE TABLE `category` (
+--   `group_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+--   `parent` VARCHAR(9) NOT NULL DEFAULT '0',
+--   `comment` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+--   `id_1C_group` VARCHAR(9) NOT NULL,
+--   `icon`  VARCHAR(11) NOT NULL DEFAULT '',
+--   `rang` int NOT NULL DEFAULT '0'
+-- ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
+
+
+-- $sql = sprintf("replace INTO `category`(`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES ( '%s', '%s', '%s', '%s', %u, %u)",
+--         $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
+
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
+<<<<<<< HEAD
   `group_name` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `parent` int NOT NULL,
   `comment` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `id_1C_group` int NOT NULL,
   `icon` int NOT NULL DEFAULT '0',
   `rang` int NOT NULL DEFAULT '0'
+=======
+  `id` VARCHAR(9) NOT NULL,
+  `parent_id` VARCHAR(9) NOT NULL DEFAULT '0',
+  `title` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `icon`  VARCHAR(11) NOT NULL DEFAULT '',
+  `sort_order` int NOT NULL DEFAULT '0'
+>>>>>>> dev
 ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
 
 --
 -- Дамп данных таблицы `category`
 --
 
-INSERT INTO `category` (`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES
+-- INSERT INTO `category` (`group_name`, `parent`, `comment`, `id_1C_group`, `icon`, `rang`) VALUES
+INSERT INTO `category` (`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES
 ('Алкотестеры', 2, '', 29, 0, 0),
 ('Физиотерапия и магнитотерапия', 2, '', 25, 0, 0),
 ('Кварцевание/Облучатели бактерицидные', 2, '', 26, 0, 0),
@@ -518,10 +542,18 @@ CREATE TABLE `param_value` (
 
 DROP TABLE IF EXISTS `price`;
 CREATE TABLE `price` (
+<<<<<<< HEAD
   `product_id` int NOT NULL,
   `reserve` int NOT NULL,
   `store_id` int NOT NULL,
   `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+=======
+  `product_id` VARCHAR(12) NOT NULL,
+  `reserve` int NOT NULL,
+  `store_id` VARCHAR(9) NOT NULL,
+  `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `price` INT(11) NOT NULL
+>>>>>>> dev
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -532,12 +564,21 @@ CREATE TABLE `price` (
 
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
+<<<<<<< HEAD
   `id` int NOT NULL,
   `provider_id` int NOT NULL,
   `category_id` int NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `vendor_code` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+=======
+  `id` VARCHAR(12) NOT NULL,
+  `provider_id` VARCHAR(5) NOT NULL,
+  `category_id` VARCHAR(9) NOT NULL,
+  `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `vendor_code` varchar(22) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+>>>>>>> dev
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -580,7 +621,11 @@ INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description
 
 DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider` (
+<<<<<<< HEAD
   `id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+=======
+  `id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+>>>>>>> dev
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `icon` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -602,9 +647,15 @@ INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
 
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
+<<<<<<< HEAD
   `product_id` int NOT NULL,
   `rest` int NOT NULL,
   `store_id` int NOT NULL
+=======
+  `product_id` VARCHAR(12) NOT NULL,
+  `rest` int NOT NULL,
+  `store_id` VARCHAR(9) NOT NULL
+>>>>>>> dev
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -615,8 +666,13 @@ CREATE TABLE `stock_balance` (
 
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE `store` (
+<<<<<<< HEAD
   `id` int NOT NULL,
   `provider_id` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+=======
+  `id` VARCHAR(9) NOT NULL,
+  `provider_id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+>>>>>>> dev
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -661,8 +717,10 @@ ALTER TABLE `brand`
 --
 -- Индексы таблицы `category`
 --
+-- ALTER TABLE `category`
+--   ADD PRIMARY KEY (`id_1C_group`);
 ALTER TABLE `category`
-  ADD PRIMARY KEY (`id_1C_group`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `country`
@@ -701,8 +759,17 @@ ALTER TABLE `provider`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `product`
+--
+<<<<<<< HEAD
+=======
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `stock_balance`
 --
+>>>>>>> dev
 ALTER TABLE `stock_balance`
   ADD UNIQUE KEY `product_id` (`product_id`,`store_id`);
 

@@ -3,14 +3,18 @@ $(function() {
     
     $("#dadataanswer").slideUp();
     
-    $("#address").click(function(){$("#dadataanswer").slideUp(); $("#ycard").fadeOut();})
+    $("#address").click(function(){$("#dadataanswer").slideUp(); $("#dadataask").delay(500).slideUp();  $("#ycard").fadeOut();})
     
     $("#address").suggestions({
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
         type: "ADDRESS",
         onSelect: function(suggestion) {
-           $("#ycard").fadeIn();
-           $("#dadataanswer").stop().html("<pre>"+print_r(suggestion)+"</pre>").slideDown();
+           $("#ycard").show();
+           var dataString=JSON.stringify(suggestion);
+            getLocalStores (dataString, "#dadataanswer");
+            $("#dadataanswer").stop().slideDown();
+            $("#dadataask").html ("<h4>Посланный запрос:</h4>" + dataString).stop().slideDown();
+                      
            myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
            var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
            myMap.geoObjects.each(function (geoObject) {
@@ -19,7 +23,7 @@ $(function() {
                }
            });
            myMap.geoObjects.add(placemark);  
-           $("#geocoords").html(suggestion.data.geo_lat+","+suggestion.data.geo_lon);
+           $("#geocoords").html("<h3>GPS: " + suggestion.data.geo_lat+","+suggestion.data.geo_lon +"</h3>");
         }
     });
     
@@ -43,19 +47,12 @@ $(function() {
     })
 	   
     $("#sendajax2").click(function(){
-        var dataString = $("#textarea").text();
-        $.ajax({	
-            url: "/receive",
-            type:'POST', 
-            cache: false,	
-            data: dataString,
-            success: function(data){ $("#ajaxanswer2").html(data);},
-            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
-        })
+        var dataString = $("#textarea").val();
+        getLocalStores (dataString);
    })
 	   
     $("#sendajaxprovider").click(function(){
-        $("#waitprovider").fadeIn();
+        $("#waitprovider").show();
             $.ajax({	
             url: "/ajax/getproviders",
             cache: false,
@@ -68,8 +65,8 @@ $(function() {
     $(".provider-list").live("click", function(){
         $("#products").hide();
         $("#shops").show();
-         $("#waitprovider").fadeIn();
-        $("#waitshops").fadeIn();
+         $("#waitprovider").show();
+        $("#waitshops").show();
         var providderId=$(this).attr("rel");
         $("#providershop").html($(this).text());
         $.ajax({	
@@ -87,8 +84,8 @@ $(function() {
         });
     });
     $(".shop-list").live("click", function(){
-        $("#waitproduct").fadeIn();
-        $("#waitshops").fadeIn();
+        $("#waitproduct").show();
+        $("#waitshops").show();
           $("#products").show();
         var shopId=$(this).attr("rel");
         $.ajax({	
@@ -105,6 +102,18 @@ $(function() {
         });
     });       
 });
+
+function getLocalStores (dataString, obj="#ajaxanswer2" ){
+    $.ajax({	
+            url: "/ajax/getstore",
+            type:'POST', 
+            cache: false,	
+            data: {"value":dataString},
+            success: function(data){ $(obj).html(data); return true},
+            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
+        })
+}        
+
 
 function print_r(arr, level) {
     var print_red_text = "";

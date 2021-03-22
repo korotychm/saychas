@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/StoreRepository.php
+// src/Model/Repository/PriceRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -18,16 +18,12 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-//use Laminas\Db\TableGateway\TableGateway;
-//use Laminas\Db\Sql\ExpressionInterface;
-//use Laminas\Db\Sql\Predicate;
-//use Laminas\Db\Sql\Predicate\PredicateSet;
-//use Laminas\Db\Sql\Predicate\In;
-use Laminas\Db\Sql\Where;
-use Application\Model\Entity\Store;
-use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+//use Laminas\Db\Sql\Select;
+//use Laminas\Db\Sql\Where;
+use Application\Model\Entity\Price;
+use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 
-class StoreRepository implements StoreRepositoryInterface
+class PriceRepository implements PriceRepositoryInterface
 {
     /**
      * @var AdapterInterface
@@ -40,34 +36,34 @@ class StoreRepository implements StoreRepositoryInterface
     private HydratorInterface $hydrator;
 
     /**
-     * @var Store
+     * @var Price
      */
-    private Store $storePrototype;
+    private Price $pricePrototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Store $storePrototype
+     * @param Price $pricePrototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Store $storePrototype
+        Price $pricePrototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->storePrototype = $storePrototype;
+        $this->pricePrototype = $pricePrototype;
     }
 
     /**
-     * Returns a list of stores
+     * Returns a list of prices
      *
-     * @return Store[]
+     * @return Price[]
      */
     public function findAll()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('store');
+        $select = $sql->select('price');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -78,22 +74,22 @@ class StoreRepository implements StoreRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->storePrototype
+            $this->pricePrototype
         );
         $resultSet->initialize($result);
         return $resultSet;
     }
 
     /**
-     * Returns a single store.
+     * Returns a single price.
      *
-     * @param  int $id Identifier of the store to return.
-     * @return Store
+     * @param  int $id Identifier of the price to return.
+     * @return Price
      */    
     public function find($id)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('store');
+        $select    = $sql->select('price');
         $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -106,66 +102,31 @@ class StoreRepository implements StoreRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->storePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->pricePrototype);
         $resultSet->initialize($result);
-        $store = $resultSet->current();
+        $price = $resultSet->current();
 
-        if (! $store) {
+        if (! $price) {
             throw new InvalidArgumentException(sprintf(
-                'Store with identifier "%s" not found.',
+                'Price with identifier "%s" not found.',
                 $id
             ));
         }
 
-        return $store;
+        return $price;
     }
     
     /**
-     * Function finds available stores of a specific provider
+     * Adds given price into it's repository
      * 
-     * @param int $providerId
-     * @param array $param
-     * @return Store[]
-     */
-    public function findStoresByProviderIdAndExtraCondition($providerId, $param)
-    {
-        $sql = new Sql($this->db);
-        
-        $where = new Where();
-        $where->equalTo('provider_id', $providerId);
-        $where->in('id', $param);
-
-        $select = $sql->select()->from('store')->columns(["id", "provider_id", "title", "description", "address", "geox", "geoy", "icon"])->where($where);
-        
-//        $selectString = $sql->buildSqlString($select);
-        
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->storePrototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-
-    }
-    
-    /**
-     * Adds given store into it's repository
-     * 
-     * @param json $content
+     * @param json
      */
     public function replace($content)
-    {
+    {        
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
+            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`) VALUES ( '%s', '%s', %u, '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -177,12 +138,27 @@ class StoreRepository implements StoreRepositoryInterface
     }
     
     /**
-     * Delete stores specified by json array of objects
-     * @param json
+     * Delete prices specified by json array of objects
+     * @param $json
      */
     public function delete($json) {
         /** @var id[] */
+//        $arr = json_decode($json, true);
+//        $total = [];
+//        foreach ($arr as $item) {
+//            array_push($total, $item['id']);
+//        }
+//        $sql    = new Sql($this->db);
+//        $delete = $sql->delete();
+//        $delete->from('price');
+//        $delete->where(['id' => $total]);
+//
+//        $selectString = $sql->buildSqlString($delete);
+//        echo $selectString;
+//        exit;
+//        $results = $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);       
+        
         return [];
-    }    
+    }
     
 }

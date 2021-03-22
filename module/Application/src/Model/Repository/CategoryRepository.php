@@ -1,5 +1,5 @@
 <?php
-// src/ModelCategoryRepository.php
+// src/Model/Repository/CategoryRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -20,17 +20,10 @@ use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Category;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Ddl;
+use Laminas\Db\Sql\Sql;
 
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
-
-//use Laminas\Db\ResultSet\ResultSet;
-
-//use Laminas\Hydrator\ReflectionHydrator;
-
-use Laminas\Db\Sql\Sql;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -87,12 +80,12 @@ class CategoryRepository implements CategoryRepositoryInterface
      *
      * @return string
      */
-    public function findAllCategories($echo = '', $i = 0, $idActive = false)
+    public function findAllCategories($echo = '', $i = '0', $idActive = false)
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
-        $select->where(['parent' => $i ]);
+        $select->where(['parent_id' => $i ]);
         
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
@@ -104,9 +97,10 @@ class CategoryRepository implements CategoryRepositoryInterface
         foreach($results as $result) {
             if (true /**|| pubtv(id_1C_group) */) // если в ветке есть хоть один товар, надо функцию сделать тоже такую
             {
-                $groupName=stripslashes($result['group_name']);
-                $echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
-                        $echo=$this->findAllCategories($echo, $result['id_1C_group'],$idActive);
+                $groupName=stripslashes($result['title']);
+                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
+                $echo.="<li><a href=#/catalog/".$result['id']."  >$groupName</a>";
+                        $echo=$this->findAllCategories($echo, $result['id'],$idActive);
                 $echo.="</li>";
             }
         }
@@ -127,7 +121,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('category');
-        $select->where(['id_1c_group = ?' => $id]);
+        $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -153,65 +147,35 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $category;
     }
     
-    /**
-     * Adds given array of categories into repository
-     * @param array $data
+     /**
+     * Adds given price into it's repository
+     * 
+     * @param json
      */
-    public function addCategories(array $data)
+    public function replace($content)
     {
-        //Таблица 1.6  Группы   (categories)
-        //Id - id передаваемый из 1С,  лучше всего целое число
-        //title - название группы, текст
-        //parent – id  родительской группы из этой таблицы, 0 для корневых групп
-        //description - описание, text/HTML
-        //icon - целое число флаг для выбора иконки 
-        //rang порядок отображения
-        // [ [{"id": 1}, {"title": "title1"}, {"parent": null}, {"description": "description1"}, {"icon": 2}, {"rang": 2}], [{"id": 1}, {"title": "title1"}, {"parent": null}, {"description": "description1"}, {"icon": 2}, {"rang": 2}] ]
-        
-        // $sql       = new Sql($this->db);
-        
-        $categoryTable = new TableGateway('category', $this->db);
-        
-        $rowset = $categoryTable->select(['id_group' => 276643]);//['type' => 'PHP']
-        
-        print_r($rowset->current()['id_group']);
-
-        // Existence of $adapter is assumed.
-        //$sql = new Sql($this->db);
-        
-//        $query = $this->db->query('truncate table category');
-//        $query->execute();
-
-//        $this->db->query(
-//            $sql->getSqlStringForSqlObject("TRUNCATE table category"),
-//            $this->db::QUERY_MODE_EXECUTE
-//        );
-//        echo 'banzaii';
-//        exit;
-        
-//        foreach($rowset as $row) {
-//            print_r($row['group_name']);
-//        }
-
-//        echo '<pre>';
-//        print_r($rowset);
-//        echo '</pre>';
-//        echo 'categories: ' . PHP_EOL;
-//        foreach ($rowset as $categoryRow) {
-//            echo $categoryRow['id'] . PHP_EOL;
-//        }
-//        
-//        echo '201';
-//        exit;
-
-        foreach($data as $rows) {
-            foreach($rows as $value) {
-                echo "{$value['id']} {$value['title']} {$value['parent']} {$value['description']} {$value['icon']} {$value['rang']} <br/>";
+        $result = json_decode($content, true);
+        foreach($result as $row) {
+            $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
+                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+            }catch(InvalidQueryException $e){
+                return ['result' => false, 'description' => "error executing $sql"];
             }
         }
-        echo '200';
-        exit;
+        return ['result' => true, 'description' => ''];
     }
     
+    /**
+     * Delete categories specified by json array of objects
+     * @param $json
+     */
+    public function delete($json) {
+        /** @var id[] */
+        return [];
+    }
+
     
 }

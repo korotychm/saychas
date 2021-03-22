@@ -21,6 +21,7 @@ return [
     'Laminas\Db',
     'Laminas\Router',
     'Laminas\Validator',
+    'Laminas\Json\Json',
     'DoctrineModule',
     'DoctrineORMModule',
     'Application',

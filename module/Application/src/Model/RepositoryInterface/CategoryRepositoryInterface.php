@@ -22,8 +22,13 @@ interface CategoryRepositoryInterface
     
     /**
      * Return void
-     * @param array categories
+     * @param Entity
      */
-    public function addCategories(array $categories);
-    
+    public function replace($entity);
+
+    /**
+     * Return void
+     * @param json
+     */
+    public function delete($json);
 }

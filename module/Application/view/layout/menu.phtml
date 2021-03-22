@@ -46,18 +46,20 @@
 <div class="container" styele="max-width:1400px">	
     <div class="card-deck"> 
        <div class="card">
-        <h2 class="card-header">Test Dadata</h2>
+        <h2 class="card-header">Запрос магазинов по адресу</h2>
         <div class="card-body">
             <div class="container" >
 	
              
                               <input id="address" name="suggestions"  placeholder="укажи адрес доставки"/>
-                 <div id="dadataanswer" style="font-size:12px; color:#ccc"></div>
+                 <div id="dadataanswer" style="font-size:12px; "></div>
+                 <div id="dadataask" style="font-size:12px; color:#ccc"></div>                 
+                 
             </div>  
         </div>
        </div> 
     <div class="card" id="ycard" style="display:none;">
-        <!-- div style=heignt:500px; -->
+        <!-- div style='min-heignt:300px;' -->
    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&mode=debug" type="text/javascript"></script>
     <script type="text/javascript">
         ymaps.ready(init);
@@ -75,8 +77,8 @@
             <!-- 'geo_lat' => "55.7132713"  'geo_lon' => "37.6860004" -->
             <div id="geocoords"></div>
            </div>
-       </div> 
-	   <!-- /div--> 
+       <!-- /div --> 
+	   </div> 
     </div>        
  <p><hr/></p>
 <div class="card-deck">        
@@ -119,7 +121,8 @@
             <h2 class="card-header">Телефон</h2>
             <div class="card-body">  
              <div class="container">
-                 <p><input name=phonesend  val=""  id="phonesend" class="phoneinput" placeholder="+7-999-999-9999" style="margin:5px 0;padding:4px" ></p>
+                 <p><input name=phonesend  val=""  id="phonesend" class="phoneInput" placeholder="+7-999-999-9999" style="margin:5px 0;padding:4px" ></p>
+                 
                  </div>  
             </div> 
         </div> 

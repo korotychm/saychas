@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/StoreRepository.php
+// src/Model/Repository/StockBalanceRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -18,16 +18,12 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-//use Laminas\Db\TableGateway\TableGateway;
-//use Laminas\Db\Sql\ExpressionInterface;
-//use Laminas\Db\Sql\Predicate;
-//use Laminas\Db\Sql\Predicate\PredicateSet;
-//use Laminas\Db\Sql\Predicate\In;
-use Laminas\Db\Sql\Where;
-use Application\Model\Entity\Store;
-use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+//use Laminas\Db\Sql\Select;
+//use Laminas\Db\Sql\Where;
+use Application\Model\Entity\StockBalance;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 
-class StoreRepository implements StoreRepositoryInterface
+class StockBalanceRepository implements StockBalanceRepositoryInterface
 {
     /**
      * @var AdapterInterface
@@ -40,34 +36,34 @@ class StoreRepository implements StoreRepositoryInterface
     private HydratorInterface $hydrator;
 
     /**
-     * @var Store
+     * @var StockBalance
      */
-    private Store $storePrototype;
+    private StockBalance $stockBalancePrototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Store $storePrototype
+     * @param StockBalance $stockBalancePrototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Store $storePrototype
+        StockBalance $stockBalancePrototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->storePrototype = $storePrototype;
+        $this->stockBalancePrototype = $stockBalancePrototype;
     }
 
     /**
-     * Returns a list of stores
+     * Returns a list of stock balances
      *
-     * @return Store[]
+     * @return StockBalance[]
      */
     public function findAll()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('store');
+        $select = $sql->select('stock_balance');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -78,22 +74,22 @@ class StoreRepository implements StoreRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->storePrototype
+            $this->stockBalancePrototype
         );
         $resultSet->initialize($result);
         return $resultSet;
     }
 
     /**
-     * Returns a single store.
+     * Returns a single stockBalance.
      *
-     * @param  int $id Identifier of the store to return.
-     * @return Store
+     * @param  int $id Identifier of the stock balance to return.
+     * @return StockBalance
      */    
     public function find($id)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('store');
+        $select    = $sql->select('stock_balance');
         $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -106,66 +102,31 @@ class StoreRepository implements StoreRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->storePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->stockBalancePrototype);
         $resultSet->initialize($result);
-        $store = $resultSet->current();
+        $stockBalance = $resultSet->current();
 
-        if (! $store) {
+        if (! $stockBalance) {
             throw new InvalidArgumentException(sprintf(
-                'Store with identifier "%s" not found.',
+                'StockBalance with identifier "%s" not found.',
                 $id
             ));
         }
 
-        return $store;
+        return $stockBalance;
     }
     
     /**
-     * Function finds available stores of a specific provider
+     * Adds given stock balance into it's repository
      * 
-     * @param int $providerId
-     * @param array $param
-     * @return Store[]
-     */
-    public function findStoresByProviderIdAndExtraCondition($providerId, $param)
-    {
-        $sql = new Sql($this->db);
-        
-        $where = new Where();
-        $where->equalTo('provider_id', $providerId);
-        $where->in('id', $param);
-
-        $select = $sql->select()->from('store')->columns(["id", "provider_id", "title", "description", "address", "geox", "geoy", "icon"])->where($where);
-        
-//        $selectString = $sql->buildSqlString($select);
-        
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->storePrototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-
-    }
-    
-    /**
-     * Adds given store into it's repository
-     * 
-     * @param json $content
+     * @param json
      */
     public function replace($content)
-    {
+    {        
         $result = json_decode($content, true);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
+            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `rest`) VALUES ( '%s', '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['rest']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -177,7 +138,7 @@ class StoreRepository implements StoreRepositoryInterface
     }
     
     /**
-     * Delete stores specified by json array of objects
+     * Delete stock balances specified by json array of objects
      * @param json
      */
     public function delete($json) {

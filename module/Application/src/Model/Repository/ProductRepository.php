@@ -1,5 +1,5 @@
 <?php
-// src/ProductRepository.php
+// src/Model/Repository/ProductRepository.php
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -20,6 +20,7 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
+use Laminas\Json\Json;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -60,10 +61,13 @@ class ProductRepository implements ProductRepositoryInterface
      *
      * @return Product[]
      */
-    public function findAll()
+    public function findAll($limit=100, $offset=0, $order="id ASC")
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('product');
+        $select ->order($order);
+        $select ->limit($limit);
+        $select ->offset($offset);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -79,6 +83,8 @@ class ProductRepository implements ProductRepositoryInterface
         $resultSet->initialize($result);
         return $resultSet;
     }
+    
+    
 
     /**
      * Returns a single product.
@@ -117,55 +123,66 @@ class ProductRepository implements ProductRepositoryInterface
     }
     
     /**
-     * Function obtains products from specified store that belongs to a specified provider.
+     * Function obtains products from specified store that belongs to a specified provider from available stores.
+     * 
      * The store is also listed as accessible
-     * @param int $id
+     * 
+     * @param int $storeId
      * @param array $param
+     * @return Product[]
      */
-    public function findProductsByProviderIdAndExtraCondition($storeId, $param)
-    {
-        //SELECT `id`, ` category_id`, `title` FROM `product` WHERE `provider_id` in (SELECT  `provider_id` FROM `store` WHERE `id`=1  and `id` in (1,2)) order by id group by provider;
-                
-        $sql = new Sql($this->db);
+    public function findProductsByProviderIdAndExtraCondition($storeId, $param)  {
+        $sql = new Sql($this ->db);
+        $subSelectAvailbleStore = $sql ->select('store');
+        $subSelectAvailbleStore ->columns(['provider_id']);
+        $subSelectAvailbleStore 
+            ->where->equalTo('id', $storeId)
+            ->where->and 
+            ->where->in('id', $param);
         
+        $select = $sql->select('product');
+        $select ->columns(['*']);
+        $select ->where->in('provider_id', $subSelectAvailbleStore);
+     /* $select ->order($order);
+        $select ->limit($limit);
+        $select ->offset($offset);/**/
+         /*
         $where = new Where();
         $where->equalTo('id', $storeId);
         $where->in('id', $param);
-        
+        *
         $select = $sql->select()->from('product')->columns(["id", "category_id", "title"])->from("product")->
                 where(["provider_id in ?" => (new Select())->columns(["provider_id"])->from("store")->
                         where($where)]);
+         /**/
         
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-
-//        $selectString = $sql->buildSqlString($select);
-        
+//      $selectString = $sql->buildSqlString($select);
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->productPrototype
         );
         $resultSet->initialize($result);
-
         return $resultSet;
         
     }
     
-    
     /**
      * Adds given product into it's repository
+     * 
      * @param json
      */
     public function replace($content)
     {
         $result = json_decode($content, true);
+//        $result = Json::decode($content);
         foreach($result as $row) {
-            $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( %u, %u, %u, '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], $row['vendor_code']);
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
+                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], quotemeta($row['vendor_code']));
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -176,5 +193,32 @@ class ProductRepository implements ProductRepositoryInterface
         return ['result' => true, 'description' => ''];
     }
     
+    /**
+     * Delete products specified by json array of objects
+     * @param json
+     */
+    public function delete($json) {
+        /** @var id[] */
+        try {
+//            $phpNative = Json::decode($json);
+//            json_decode($json, true)
+            $result = json_decode($json, true);
+            $total = [];
+            foreach ($result as $item) {
+                array_push($total, $item['id']);
+            }
+            $sql    = new Sql($this->db);
+            $delete = $sql->delete()->from('product')->where(['id' => $total]);
+//            $delete->from('product');
+//            $delete->where(['id' => $total]);
+
+            $selectString = $sql->buildSqlString($delete);
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => ''];
+
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => $e->getMessage()];
+        }
+    }
     
 }

@@ -79,11 +79,17 @@ class ReceivingController extends AbstractActionController
     
     public function receiveProviderAction()
     {
-        $content = $this->getRequest()->getContent();
-        
-        $providerRepository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
-        
-        $arr = $providerRepository->replace($content);
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\ProviderRepositoryInterface::class);
+        $request = $this->getRequest();
+        $content = $request->getContent();
+
+        if($request->isDelete()) {
+            // Perform delete action
+            $arr = $repository->delete($content);
+            return new JsonModel($arr);
+        }        
+                
+        $arr = $repository->replace($content);
         
 ////        $response = new Response();
 ////        $response->setStatusCode(Response::STATUS_CODE_200);
@@ -97,15 +103,90 @@ class ReceivingController extends AbstractActionController
         return new JsonModel($arr);
     }
     
-    public function replaceStoreAction()
+    public function receiveStoreAction()
     {
-        $content = $this->getRequest()->getContent();
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
+        $request = $this->getRequest();
+        $content = $request->getContent();
+
+        if($request->isDelete()) {
+            // Perform delete action
+            $arr = $repository->delete($content);
+            return new JsonModel($arr);
+        }        
         
-        $storeRepository = $this->container->get(\Application\Model\RepositoryInterface\StoreRepositoryInterface::class);
-        
-        $arr = $storeRepository->replace($content);
+        $arr = $repository->replace($content);
         
         return new JsonModel($arr);
     }
     
+    public function receiveProductAction()
+    {
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\ProductRepositoryInterface::class);
+        $request = $this->getRequest();
+        $content = $request->getContent();
+
+        if($request->isDelete()) {
+            // Perform delete action
+            $arr = $repository->delete($content);
+            return new JsonModel($arr);
+        }        
+        
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+
+    public function receivePriceAction()
+    {
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\PriceRepositoryInterface::class);
+        $request = $this->getRequest();
+        $content = $request->getContent();
+
+        if($request->isDelete()) {
+            // Perform delete action
+            $arr = $repository->delete($content);
+            return new JsonModel($arr);
+        }
+        
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+    
+    public function receiveStockBalanceAction()
+    {
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class);
+        $request = $this->getRequest();
+        $content = $request->getContent();
+
+        if($request->isDelete()) {
+            // Perform delete action
+            $arr = $repository->delete($content);
+            return new JsonModel($arr);
+        }
+
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+
+    public function receiveCategoryAction()
+    {
+        $repository = $this->container->get(\Application\Model\RepositoryInterface\CategoryRepositoryInterface::class);
+        $request = $this->getRequest();
+        $content = $request->getContent();
+
+        if($request->isDelete()) {
+            // Perform delete action
+            $arr = $repository->delete($content);
+            return new JsonModel($arr);
+        }
+
+        //$content = '[{"title": "0001", "parent_id": "0001", "id": "0001", "description": "comment1 - moment1", "icon":"1234", "sort_order":10 }]';
+        $arr = $repository->replace($content);
+        
+        return new JsonModel($arr);
+    }
+
 }
