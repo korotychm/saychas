@@ -182,7 +182,7 @@ class ProductRepository implements ProductRepositoryInterface
         try {
             $result = Json::decode($content);
         }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'statusCode' => 400, 'description' => $e->getMessage()];
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
         foreach($result as $row) {
@@ -192,10 +192,10 @@ class ProductRepository implements ProductRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'statusCode' => 418, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'statusCode' => 200, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**
