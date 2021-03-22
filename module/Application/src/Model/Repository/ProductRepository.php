@@ -178,7 +178,13 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function replace($content)
     {
-        $result = json_decode($content, true);
+        try {
+            $result = json_decode($content, true);
+        }catch(\Exception $e){
+           echo 'asdfadsf';
+           exit;
+        }
+        
 //        $result = Json::decode($content);
         foreach($result as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
