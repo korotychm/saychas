@@ -138,13 +138,13 @@ class ReceivingController extends AbstractActionController
 
         //$response = new JsonResponse($arr, 401);
 
-//        $response = $this->getResponse();
-//        
-//        $response->setStatusCode(201);
-//
-//        $answer = ['statusCode' => $response->getStatusCode(), 'body' => $response->getContent()];
+        $response = $this->getResponse();
+        
+        $response->setStatusCode($arr['result']);
 
-        return new JsonModel($arr);
+        $answer = ['statusCode' => $response->getStatusCode(), 'body' => $response->getContent()];
+
+        return new JsonModel($answer);
     }
 
     public function receivePriceAction()
