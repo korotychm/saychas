@@ -21,7 +21,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\Sql\Select;
 //use Laminas\Db\Sql\Where;
 use Laminas\Json\Json;
-use Laminas\Json\Exception\RuntimeException;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -181,7 +181,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         try {
             $result = Json::decode($content);
-        }catch(RuntimeException $e){
+        }catch(LaminasJsonRuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
