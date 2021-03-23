@@ -186,8 +186,26 @@ class StoreRepository implements StoreRepositoryInterface
      * @param json
      */
     public function delete($json) {
-        /** @var id[] */
-        return [];
+        try {
+            $result = Json::decode($json, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete();
+        $delete->from('store');
+        $delete->where(['id' => $total]);
+        $selectString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+        }
     }    
     
 }

@@ -9,14 +9,13 @@ use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
-use Laminas\Http\Response;
 use InvalidArgumentException;
-use RuntimeException;
+//use RuntimeException;
 use Exception;
-use Laminas\Db\ResultSet\HydratingResultSet;
+//use Laminas\Db\ResultSet\HydratingResultSet;
 //use Laminas\Uri\Exception\InvalidArgumentException;
-use Psr\Http\Message\ResponseInterface;
-use Laminas\Diactoros\Response\JsonResponse;
+//use Psr\Http\Message\ResponseInterface;
+//use Laminas\Diactoros\Response\JsonResponse;
 
 class ReceivingController extends AbstractActionController
 {
@@ -41,26 +40,22 @@ class ReceivingController extends AbstractActionController
      * @return ViewModel
      * @throws Exception
      */
-    public function receiveAction()
-    {
-        $request = $this->getRequest();
-        $post = $request->getPost();
-        
-        $category = $post['value'];
-        //$category = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
-        //print_r($category);
-//        print_r(json_decode($category, true));
-//        exit;
-        $json = $this->getRequest()->getPost()['value'];
-        $result = json_decode($json, true);
-
-        $categoryRepository = $this->container->get(\Application\Model\CategoryRepositoryInterface::class);
-        if(! $categoryRepository instanceof Model\CategoryRepositoryInterface) {
-            throw new InvalidArgumentException('Wrong repository');
-        }
-        $returnCode = $categoryRepository->addCategories($result);
-        return new ViewModel(['returnCode' => $returnCode]);
-    }
+//    public function receiveAction()
+//    {
+//        $request = $this->getRequest();
+//        $post = $request->getPost();
+//        
+//        $category = $post['value'];
+//        $json = $this->getRequest()->getPost()['value'];
+//        $result = json_decode($json, true);
+//
+//        $categoryRepository = $this->container->get(\Application\Model\CategoryRepositoryInterface::class);
+//        if(! $categoryRepository instanceof Model\CategoryRepositoryInterface) {
+//            throw new InvalidArgumentException('Wrong repository');
+//        }
+//        $returnCode = $categoryRepository->addCategories($result);
+//        return new ViewModel(['returnCode' => $returnCode]);
+//    }
     
     public function showProviderAction()
     {
@@ -88,7 +83,14 @@ class ReceivingController extends AbstractActionController
         if($request->isDelete()) {
             // Perform delete action
             $arr = $repository->delete($content);
-            return new JsonModel($arr);
+
+            $response = $this->getResponse();
+
+            $response->setStatusCode($arr['statusCode']);
+
+            $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+            return new JsonModel($answer);
         }        
                 
         $arr = $repository->replace($content);
@@ -101,16 +103,6 @@ class ReceivingController extends AbstractActionController
 
         return new JsonModel($answer);
         
-////        $response = new Response();
-////        $response->setStatusCode(Response::STATUS_CODE_200);
-////        $response->getHeaders()->addHeaders([
-////            'HeaderField1' => 'header-field-value',
-////            'HeaderField2' => 'header-field-value2',
-////        ]);
-//        
-////        return $response;
-        
-//        return new JsonModel($arr);
     }
     
     public function receiveStoreAction()
@@ -122,7 +114,14 @@ class ReceivingController extends AbstractActionController
         if($request->isDelete()) {
             // Perform delete action
             $arr = $repository->delete($content);
-            return new JsonModel($arr);
+
+            $response = $this->getResponse();
+
+            $response->setStatusCode($arr['statusCode']);
+
+            $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+            return new JsonModel($answer);
         }        
         
         $arr = $repository->replace($content);
@@ -135,7 +134,6 @@ class ReceivingController extends AbstractActionController
 
         return new JsonModel($answer);
         
-        return new JsonModel($arr);
     }
     
     public function receiveProductAction()
@@ -147,7 +145,14 @@ class ReceivingController extends AbstractActionController
         if($request->isDelete()) {
             // Perform delete action
             $arr = $repository->delete($content);
-            return new JsonModel($arr);
+            
+            $response = $this->getResponse();
+
+            $response->setStatusCode($arr['statusCode']);
+
+            $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+            return new JsonModel($answer);
         }        
         
         $arr = $repository->replace($content);
@@ -168,9 +173,8 @@ class ReceivingController extends AbstractActionController
         $content = $request->getContent();
 
         if($request->isDelete()) {
-            // Perform delete action
-            $arr = $repository->delete($content);
-            return new JsonModel($arr);
+            $this->getResponse()->setStatusCode(405);
+            return new JsonModel(['description' => 'Method is not supported: cannot delete price']);
         }
         
         $arr = $repository->replace($content);
@@ -192,8 +196,8 @@ class ReceivingController extends AbstractActionController
 
         if($request->isDelete()) {
             // Perform delete action
-            $arr = $repository->delete($content);
-            return new JsonModel($arr);
+            $this->getResponse()->setStatusCode(405);
+            return new JsonModel(['description' => 'Method is not supported: cannot delete stock balance']);
         }
 
         $arr = $repository->replace($content);
