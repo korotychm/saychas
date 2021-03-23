@@ -18,7 +18,7 @@ use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Json\Json;
-use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 //use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Category;
@@ -157,8 +157,8 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = Json::decode($content, Laminas\Json\Json::TYPE_ARRAY);
-        }catch(LaminasJsonRuntimeException $e){
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
          
