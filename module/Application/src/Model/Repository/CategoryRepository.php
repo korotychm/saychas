@@ -172,7 +172,7 @@ class CategoryRepository implements CategoryRepositoryInterface
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**

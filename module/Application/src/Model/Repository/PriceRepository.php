@@ -16,6 +16,7 @@ use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Json\Json;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\Sql\Select;
@@ -123,7 +124,11 @@ class PriceRepository implements PriceRepositoryInterface
      */
     public function replace($content)
     {        
-        $result = json_decode($content, true);
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
         foreach($result as $row) {
             $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`) VALUES ( '%s', '%s', %u, '%s', %u)",
                     $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price']);
@@ -131,10 +136,10 @@ class PriceRepository implements PriceRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**
