@@ -157,11 +157,11 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = json_decode($content, true);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-            
+            $result = Json::decode($content, Laminas\Json\Json::TYPE_ARRAY);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
+         
         foreach($result as $row) {
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
                     $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
@@ -169,7 +169,7 @@ class CategoryRepository implements CategoryRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
         return ['result' => true, 'description' => ''];
