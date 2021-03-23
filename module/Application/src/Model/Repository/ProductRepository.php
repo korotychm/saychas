@@ -10,7 +10,7 @@
 namespace Application\Model\Repository;
 
 use InvalidArgumentException;
-use RuntimeException;
+//use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
@@ -18,10 +18,10 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Where;
+//use Laminas\Db\Sql\Select;
+//use Laminas\Db\Sql\Where;
 use Laminas\Json\Json;
-use Laminas\Json\Exception;
+use Laminas\Json\Exception\RuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -181,7 +181,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         try {
             $result = Json::decode($content);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
+        }catch(RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
