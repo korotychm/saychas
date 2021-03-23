@@ -92,6 +92,14 @@ class ReceivingController extends AbstractActionController
         }        
                 
         $arr = $repository->replace($content);
+
+        $response = $this->getResponse();
+        
+        $response->setStatusCode($arr['statusCode']);
+
+        $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+        return new JsonModel($answer);
         
 ////        $response = new Response();
 ////        $response->setStatusCode(Response::STATUS_CODE_200);
@@ -102,7 +110,7 @@ class ReceivingController extends AbstractActionController
 //        
 ////        return $response;
         
-        return new JsonModel($arr);
+//        return new JsonModel($arr);
     }
     
     public function receiveStoreAction()
@@ -118,6 +126,14 @@ class ReceivingController extends AbstractActionController
         }        
         
         $arr = $repository->replace($content);
+
+        $response = $this->getResponse();
+        
+        $response->setStatusCode($arr['statusCode']);
+
+        $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+        return new JsonModel($answer);
         
         return new JsonModel($arr);
     }
@@ -158,8 +174,14 @@ class ReceivingController extends AbstractActionController
         }
         
         $arr = $repository->replace($content);
+
+        $response = $this->getResponse();
         
-        return new JsonModel($arr);
+        $response->setStatusCode($arr['statusCode']);
+
+        $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+        return new JsonModel($answer);
     }
     
     public function receiveStockBalanceAction()
@@ -175,8 +197,14 @@ class ReceivingController extends AbstractActionController
         }
 
         $arr = $repository->replace($content);
+
+        $response = $this->getResponse();
         
-        return new JsonModel($arr);
+        $response->setStatusCode($arr['statusCode']);
+
+        $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+        return new JsonModel($answer);
     }
 
     public function receiveCategoryAction()
@@ -193,8 +221,14 @@ class ReceivingController extends AbstractActionController
 
         //$content = '[{"title": "0001", "parent_id": "0001", "id": "0001", "description": "comment1 - moment1", "icon":"1234", "sort_order":10 }]';
         $arr = $repository->replace($content);
+
+        $response = $this->getResponse();
         
-        return new JsonModel($arr);
+        $response->setStatusCode($arr['statusCode']);
+
+        $answer = ['result' => $arr['result'], 'description' => $arr['description']];
+
+        return new JsonModel($answer);
     }
 
 }
