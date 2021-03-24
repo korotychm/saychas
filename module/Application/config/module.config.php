@@ -44,16 +44,16 @@ return [
                     ],
                 ],
             ],
-            'show-provider' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/show-provider[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\ReceivingController::class,
-                        'action'     => 'showProvider',
-                    ],
-                ],
-            ],
+//            'show-provider' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/show-provider[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'showProvider',
+//                    ],
+//                ],
+//            ],
             'show-product' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -64,26 +64,6 @@ return [
                     ],
                 ],
             ],
-            'receive-provider' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/receive-provider[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveProvider',
-                    ],
-                ],
-            ],
-//            'receive' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/receive[/:id]',
-//                    'defaults' => [
-//                        'controller' => Controller\ReceivingController::class,
-//                        'action'     => 'receiveProvider',
-//                    ],
-//                ],
-//            ],
             'provider' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -104,13 +84,23 @@ return [
                     ],
                 ],
             ],
+            'receive-provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-provider[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository', //  'receiveProvider',
+                    ],
+                ],
+            ],
             'receive-store' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/receive-store[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveStore',
+                        'action'     => 'receiveRepository', // 'receiveStore',
                     ],
                 ],
             ],
@@ -120,7 +110,7 @@ return [
                     'route'    => '/receive-product[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveProduct',
+                        'action'     => 'receiveRepository', // 'receiveProduct',
                     ],
                 ],
             ],
@@ -130,7 +120,7 @@ return [
                     'route'    => '/receive-price[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receivePrice',
+                        'action'     => 'receiveRepository', // 'receivePrice',
                     ],
                 ],
             ],
@@ -140,7 +130,7 @@ return [
                     'route'    => '/receive-stock-balance[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveStockBalance',
+                        'action'     => 'receiveRepository', // 'receiveStockBalance',
                     ],
                 ],
             ],
@@ -150,10 +140,46 @@ return [
                     'route'    => '/receive-category[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveCategory',
+                        'action'     => 'receiveRepository', // 'receiveCategory',
                     ],
                 ],
             ],
+//            'receive' => [
+//                // First we define the basic options for the parent route: \Laminas\Router\Http\
+//                'type' => Literal::class,
+//                'options' => [
+//                    'route'    => '/receive',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'receive',
+//                    ],
+//                ],
+//                'may_terminate' => true, // \Laminas\Router\Http\
+//                'child_routes' => [
+//                    'stock-balance' => [
+//                        'type' => Segment::class,
+//                        'options' => [
+//                            'route'    => '/stock-balance',
+//                            'defaults' => [
+//                                'action' => 'receiveStockBalance',
+//                            ],
+//                            'constraints' => [
+//                                
+//                            ],
+//                        ],
+//                    ],
+//                    'price' => [
+//                        'type'    => Segment::class,
+//                        'options' => [
+//                            'route'    => '/price[/:id]',
+//                            'defaults' => [
+//                                'controller' => Controller\ReceivingController::class,
+//                                'action'     => 'receivePrice',
+//                            ],
+//                        ],
+//                    ],
+//                ],
+//            ],
             'add-new-post' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -243,21 +269,14 @@ return [
             'password' => 'w48Es4562',
         ],
     ],
-//    'doctrine' => [
-//        'driver' => [
-//            __NAMESPACE__ . '_driver' => [
-//                'class' => AnnotationDriver::class,
-//                'cache' => 'array',
-//                'paths' => [__DIR__ . '/../src/Entity']
-//            ],
-//            'orm_default' => [
-//                'drivers' => [
-//                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-//                ]
-//            ]
-//        ]
-//    ],
-    
+    'repository_mapping' => [
+        'receive-stock-balance' => \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class,
+        'receive-store' => \Application\Model\RepositoryInterface\StoreRepositoryInterface::class,
+        'receive-product' => \Application\Model\RepositoryInterface\ProductRepositoryInterface::class,
+        'receive-price' => \Application\Model\RepositoryInterface\PriceRepositoryInterface::class,
+        'receive-category' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
+        'receive-provider' => \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class,
+    ],
     'doctrine' => [
           'driver' => [
               __NAMESPACE__ . '_driver' => [

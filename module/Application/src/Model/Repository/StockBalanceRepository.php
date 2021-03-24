@@ -147,8 +147,7 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
      * @param json
      */
     public function delete($json) {
-        /** @var id[] */
-        return [];
+        return ['result' => false, 'description' => 'Method is not supported: cannot delete stock balance', 'statusCode' => 405];
     }    
     
 }

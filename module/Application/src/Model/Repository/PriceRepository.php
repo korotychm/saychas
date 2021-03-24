@@ -146,24 +146,8 @@ class PriceRepository implements PriceRepositoryInterface
      * Delete prices specified by json array of objects
      * @param $json
      */
-    public function delete($json) {
-        /** @var id[] */
-//        $arr = json_decode($json, true);
-//        $total = [];
-//        foreach ($arr as $item) {
-//            array_push($total, $item['id']);
-//        }
-//        $sql    = new Sql($this->db);
-//        $delete = $sql->delete();
-//        $delete->from('price');
-//        $delete->where(['id' => $total]);
-//
-//        $selectString = $sql->buildSqlString($delete);
-//        echo $selectString;
-//        exit;
-//        $results = $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);       
-        
-        return [];
+    public function delete($json) {    
+        return ['result' => false, 'description' => 'Method is not supported: cannot delete price', 'statusCode' => 405];
     }
     
 }
