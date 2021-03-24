@@ -151,7 +151,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
     
      /**
-     * Adds given price into it's repository
+     * Adds given category into it's repository
      * 
      * @param json
      */

@@ -1,4 +1,5 @@
 <?php
+// src/Controller/ReceivingController.php
 
 declare(strict_types=1);
 
@@ -29,7 +30,7 @@ class ReceivingController extends AbstractActionController
 
 
     /**
-     * Receives repository depending on the route
+     * Receives repository updates depending on the route
      * @return JsonModel
      */
     public function receiveRepositoryAction()
@@ -44,7 +45,9 @@ class ReceivingController extends AbstractActionController
         $config = $this->container->get('Config');
         
         $repository = $this->container->get($config['router']['routes'][$routeName]['options']['repository']);
+        
         $request = $this->getRequest();
+        
         $content = $request->getContent();
 
         if($request->isDelete()) {

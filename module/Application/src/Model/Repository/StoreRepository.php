@@ -72,7 +72,6 @@ class StoreRepository implements StoreRepositoryInterface
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
- 
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
