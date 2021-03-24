@@ -90,8 +90,9 @@ return [
                     'route'    => '/receive-provider[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository', //  'receiveProvider',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class,
                 ],
             ],
             'receive-store' => [
@@ -100,8 +101,9 @@ return [
                     'route'    => '/receive-store[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository', // 'receiveStore',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\StoreRepositoryInterface::class,
                 ],
             ],
             'receive-product' => [
@@ -110,8 +112,9 @@ return [
                     'route'    => '/receive-product[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository', // 'receiveProduct',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\ProductRepositoryInterface::class,
                 ],
             ],
             'receive-price' => [
@@ -120,8 +123,9 @@ return [
                     'route'    => '/receive-price[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository', // 'receivePrice',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\PriceRepositoryInterface::class,
                 ],
             ],
             'receive-stock-balance' => [
@@ -130,8 +134,9 @@ return [
                     'route'    => '/receive-stock-balance[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository', // 'receiveStockBalance',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class,
                 ],
             ],
             'receive-category' => [
@@ -140,8 +145,9 @@ return [
                     'route'    => '/receive-category[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository', // 'receiveCategory',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
                 ],
             ],
 //            'receive' => [

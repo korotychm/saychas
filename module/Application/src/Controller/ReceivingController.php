@@ -28,6 +28,10 @@ class ReceivingController extends AbstractActionController
     }
 
 
+    /**
+     * Receives repository depending on the route
+     * @return JsonModel
+     */
     public function receiveRepositoryAction()
     {
         
@@ -39,7 +43,7 @@ class ReceivingController extends AbstractActionController
         
         $config = $this->container->get('Config');
         
-        $repository = $this->container->get($config['repository_mapping'][$routeName]);
+        $repository = $this->container->get($config['router']['routes'][$routeName]['options']['repository']);
         $request = $this->getRequest();
         $content = $request->getContent();
 
