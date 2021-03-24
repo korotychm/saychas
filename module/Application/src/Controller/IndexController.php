@@ -241,9 +241,18 @@ class IndexController extends AbstractActionController
         $post->setStatus(Post::STATUS_PUBLISHED);
         $currentDate = date('Y-m-d H:i:s');
         $post->setDateCreated($currentDate);
+        
+//        echo '<pre>';
+//        print_r($post);
+//        echo '</pre>';
+//        exit;
 
         // Добавляем сущность в менеджер сущностей.
         $this->entityManager->persist($post);
+//        echo '<pre>';
+//        print_r($post);
+//        echo '</pre>';
+//        exit;
 
         // Применяем изменения к БД.
         $this->entityManager->flush();
