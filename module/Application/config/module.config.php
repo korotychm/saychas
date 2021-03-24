@@ -275,14 +275,6 @@ return [
             'password' => 'w48Es4562',
         ],
     ],
-    'repository_mapping' => [
-        'receive-stock-balance' => \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class,
-        'receive-store' => \Application\Model\RepositoryInterface\StoreRepositoryInterface::class,
-        'receive-product' => \Application\Model\RepositoryInterface\ProductRepositoryInterface::class,
-        'receive-price' => \Application\Model\RepositoryInterface\PriceRepositoryInterface::class,
-        'receive-category' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
-        'receive-provider' => \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class,
-    ],
     'doctrine' => [
           'driver' => [
               __NAMESPACE__ . '_driver' => [
