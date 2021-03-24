@@ -15,9 +15,10 @@ use RuntimeException;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
-use Laminas\Db\ResultSet\ResultSet;
-use Laminas\Hydrator\ReflectionHydrator;
+//use Laminas\Db\ResultSet\ResultSet;
+//use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Json\Json;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Provider;
@@ -166,17 +167,21 @@ class ProviderRepository implements ProviderRepositoryInterface
      */
     public function replace($content)
     {
-        $result = json_decode($content, true);
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
         foreach($result as $row) {
             $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( '%s', '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**
@@ -184,22 +189,25 @@ class ProviderRepository implements ProviderRepositoryInterface
      * @param json
      */
     public function delete($json) {
-        /** @var id[] */
         try {
-            $total = [];
-            foreach (json_decode($json, true) as $item) {
-                array_push($total, $item['id']);
-            }
-            $sql    = new Sql($this->db);
-            $delete = $sql->delete();
-            $delete->from('provider');
-            $delete->where(['id' => $total]);
-
-            $selectString = $sql->buildSqlString($delete);
+            $result = Json::decode($json, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete();
+        $delete->from('provider');
+        $delete->where(['id' => $total]);
+        $selectString = $sql->buildSqlString($delete);
+        try {
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
-            return ['result' => true, 'description' => ''];
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
         }catch(InvalidQueryException $e){
-            return ['result' => false, 'description' => $e->getMessage()];
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
         }
     }
 

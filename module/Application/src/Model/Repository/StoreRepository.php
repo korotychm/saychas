@@ -16,6 +16,7 @@ use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Json\Json;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\TableGateway\TableGateway;
@@ -71,7 +72,6 @@ class StoreRepository implements StoreRepositoryInterface
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
- 
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
@@ -162,7 +162,11 @@ class StoreRepository implements StoreRepositoryInterface
      */
     public function replace($content)
     {
-        $result = json_decode($content, true);
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
         foreach($result as $row) {
             $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
@@ -170,10 +174,10 @@ class StoreRepository implements StoreRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**
@@ -181,8 +185,26 @@ class StoreRepository implements StoreRepositoryInterface
      * @param json
      */
     public function delete($json) {
-        /** @var id[] */
-        return [];
+        try {
+            $result = Json::decode($json, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete();
+        $delete->from('store');
+        $delete->where(['id' => $total]);
+        $selectString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+        }
     }    
     
 }
