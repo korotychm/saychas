@@ -84,8 +84,6 @@ class ProductRepository implements ProductRepositoryInterface
         return $resultSet;
     }
     
-    
-
     /**
      * Returns a single product.
      *
@@ -137,38 +135,51 @@ class ProductRepository implements ProductRepositoryInterface
         $subSelectAvailbleStore ->columns(['provider_id']);
         $subSelectAvailbleStore 
             ->where->equalTo('id', $storeId)
-            ->where->and 
-            ->where->in('id', $param);
+           /* ->where->and 
+            ->where->in('id', $param)*/
+           ;        
         
-        $select = $sql->select('product');
-        $select ->columns(['*']);
-        $select ->where->in('provider_id', $subSelectAvailbleStore);
-     /* $select ->order($order);
-        $select ->limit($limit);
-        $select ->offset($offset);/**/
-         /*
-        $where = new Where();
-        $where->equalTo('id', $storeId);
-        $where->in('id', $param);
-        *
-        $select = $sql->select()->from('product')->columns(["id", "category_id", "title"])->from("product")->
-                where(["provider_id in ?" => (new Select())->columns(["provider_id"])->from("store")->
-                        where($where)]);
-         /**/
+    
+    
+        
+        $select = $sql->select('');
+        $select
+            ->from(['p' => 'product'])
+            ->columns(['*'])
+      
+            ->join(
+                ['pr' => 'price'],
+                'p.id = pr.product_id',
+              //'(p.id = pr.product_id and pr.store_id = '.$storeId.")",
+                ['price'],           
+                $select::JOIN_LEFT  
+            ) 
+            ->join(
+                ['b' => 'stock_balance'],
+                'p.id = b.product_id',
+                ['rest'],           
+                $select::JOIN_LEFT  
+            )      
+                
+            ->where->in('p.provider_id', $subSelectAvailbleStore)
+            ->where->and
+            ->where->equalTo('pr.store_id', $storeId) /**/  
+            ->where->and
+            ->where->equalTo('b.store_id', $storeId) /**/  
+            //->group('p.id')
+             ;
+       
         
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-//      $selectString = $sql->buildSqlString($select);
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
+      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr/> ".$selectString);
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->productPrototype
         );
         $resultSet->initialize($result);
-        return $resultSet;
-        
+        return $resultSet;        
     }
     
     /**
