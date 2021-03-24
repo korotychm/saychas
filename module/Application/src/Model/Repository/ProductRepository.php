@@ -135,18 +135,13 @@ class ProductRepository implements ProductRepositoryInterface
         $subSelectAvailbleStore ->columns(['provider_id']);
         $subSelectAvailbleStore 
             ->where->equalTo('id', $storeId)
-           /* ->where->and 
-            ->where->in('id', $param)*/
-           ;        
-        
-    
-    
-        
+         /* ->where->and 
+            ->where->in('id', $param)/**/
+        ;        
         $select = $sql->select('');
         $select
             ->from(['p' => 'product'])
             ->columns(['*'])
-      
             ->join(
                 ['pr' => 'price'],
                 'p.id = pr.product_id',
@@ -160,19 +155,29 @@ class ProductRepository implements ProductRepositoryInterface
                 ['rest'],           
                 $select::JOIN_LEFT  
             )      
-                
             ->where->in('p.provider_id', $subSelectAvailbleStore)
             ->where->and
             ->where->equalTo('pr.store_id', $storeId) /**/  
             ->where->and
             ->where->equalTo('b.store_id', $storeId) /**/  
             //->group('p.id')
-             ;
+        ;
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        
+        
+        $result = $stmt->execute();
+        $selectString = $sql->buildSqlString($select);  
+       // exit(date("r")."<hr/> ".$selectString);
+        
        
         
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr/> ".$selectString);
+        $query = $this->db->query($selectString);
+        $result = $query->execute();
+
+       
+       
+        return $result;
+        
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
         $resultSet = new HydratingResultSet(
             $this->hydrator,

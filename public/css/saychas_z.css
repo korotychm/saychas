@@ -1,2 +1,4 @@
-.active {dispaly:inline-block; padding:6px 2px; background:#fff}
+.active {dispaly:inline-block; padding:6px 2px; background:rgba(255,255,255,,5); color:#000}
 #phonesend, .phoneinput {font-size:1.8rem; font-weight:700}
+.opacity0, .opacity0 a {color:#999; text-decoration:none }
+.opacity0 a   {text-decoration: line-through }

@@ -175,9 +175,16 @@ class IndexController extends AbstractActionController
             $return.=date("r")."<br>";	
             $return.="id магазина: {$post -> shop}<hr>" ;
             $return.="<ul>";
-            foreach ($products as $row)
-                $return.="<li><a href=# rel='{$row -> getId()}' >{$row -> getTitle()}</a></li>";
+            foreach ($products as $row){
+                $cena=(int)$row['price'];
+                $cena=$cena/100;
+                $cena= number_format($cena,2,".","&nbsp;");
+                $return.="<li class='opacity".$row['rest']."'><a class='opacity".$row['rest']."' href=# rel='".$row['id']."' >".$row['title']."</a>"
+                       . "<br>Остаток: ".$row['rest']
+                       . "<br>Цена: ".$cena."&nbsp;&#8381;</li>";
+            }
             $return.="</ul>";
+            
             exit ($return);
         }	
         header('HTTP/1.0 404 Not Found');
