@@ -215,7 +215,7 @@ class ProductRepository implements ProductRepositoryInterface
         }
         
         if((bool) $result->truncate) {
-            $this->db->query("truncate table `product`")->execute();
+            $this->db->query("truncate table product")->execute();
         }
 
         foreach($result->data as $row) {

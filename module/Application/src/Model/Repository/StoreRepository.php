@@ -169,7 +169,7 @@ class StoreRepository implements StoreRepositoryInterface
         }
 
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table `store`")->execute();
+            $this->db->query("truncate table store")->execute();
         }
 
         foreach($result['data'] as $row) {

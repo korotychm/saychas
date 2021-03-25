@@ -131,7 +131,7 @@ class PriceRepository implements PriceRepositoryInterface
         }
 
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table `price`")->execute();
+            $this->db->query("truncate table price")->execute();
         }
 
         foreach($result['data'] as $row) {

@@ -131,7 +131,7 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
         }
         
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table `stock_balance`")->execute();
+            $this->db->query("truncate table stock_balance")->execute();
         }
         
         foreach($result['data'] as $row) {

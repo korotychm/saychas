@@ -174,7 +174,7 @@ class ProviderRepository implements ProviderRepositoryInterface
         }
         
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table `provider`")->execute();
+            $this->db->query("truncate table provider")->execute();
         }
 
         foreach($result['data'] as $row) {

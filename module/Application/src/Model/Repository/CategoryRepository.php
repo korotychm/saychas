@@ -164,7 +164,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
         
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table `category`")->execute();
+            $this->db->query("truncate table category")->execute();
         }
         
         foreach($result['data'] as $row) {
