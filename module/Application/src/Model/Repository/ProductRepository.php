@@ -214,7 +214,7 @@ class ProductRepository implements ProductRepositoryInterface
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
-        if((bool) $result['truncate']) {
+        if((bool) $result->truncate) {
             $this->db->query("truncate table `product`")->execute();
         }
 
