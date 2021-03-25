@@ -23,6 +23,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
+use Application\Model\Entity\ProductExtended;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
@@ -175,17 +176,29 @@ class ProductRepository implements ProductRepositoryInterface
         $query = $this->db->query($selectString);
         $result = $query->execute();
 
+//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
        
-       
-        return $result;
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->productPrototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;        
+//        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
+        foreach ($result as $r){
+            $product     = $this->hydrator->hydrate($r, new ProductExtended());
+            //$data     = $hydrator->extract(new Product());
+            echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . '<br/>';
+        }
+        exit;
+//        
+//        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
+//        $product     = $hydrator->hydrate($r, new ProductExtended());
+
+//        $resultSet = new HydratingResultSet(
+//            $this->hydrator,
+//            $this->productPrototype
+//        );
+//        $resultSet->initialize($result);
+//        foreach($resultSet as $product) {
+//            echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . '<br/>';
+//        }
+//        exit;
+//        return $resultSet;
     }
     
     /**
