@@ -129,6 +129,11 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
         }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
+        
+        if((bool) $result['truncate']) {
+            $this->db->query("truncate table `stock_balance`")->execute();
+        }
+        
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `rest`) VALUES ( '%s', '%s', %u)",
                     $row['product_id'], $row['store_id'], $row['rest']);

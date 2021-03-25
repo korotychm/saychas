@@ -214,6 +214,10 @@ class ProductRepository implements ProductRepositoryInterface
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
+        if((bool) $result['truncate']) {
+            $this->db->query("truncate table `product`")->execute();
+        }
+
         foreach($result->data as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list` ) VALUES ( '%s', '%s', %u, '%s', '%s', '%s', '%s', '%s' )",
                     $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, '', '');

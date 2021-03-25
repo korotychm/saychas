@@ -172,6 +172,11 @@ class ProviderRepository implements ProviderRepositoryInterface
         }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
+        
+        if((bool) $result['truncate']) {
+            $this->db->query("truncate table `provider`")->execute();
+        }
+
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( '%s', '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
             try {
