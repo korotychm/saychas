@@ -163,7 +163,7 @@ class CategoryRepository implements CategoryRepositoryInterface
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
          
-        foreach($result as $row) {
+        foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
                     $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
             try {
