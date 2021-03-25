@@ -186,4 +186,66 @@ class Product
     {
         return $this->vendor_code;
     }
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="param_value_list", type="text", length=65535, nullable=false)
+     */
+    private $paramValueList;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="param_variable_list", type="text", nullable=false)
+     */
+    private $paramVariableList;
+
+
+    /**
+     * Set paramValueList.
+     *
+     * @param string $paramValueList
+     *
+     * @return Product
+     */
+    public function setParamValueList($paramValueList)
+    {
+        $this->paramValueList = $paramValueList;
+
+        return $this;
+    }
+
+    /**
+     * Get paramValueList.
+     *
+     * @return string
+     */
+    public function getParamValueList()
+    {
+        return $this->paramValueList;
+    }
+
+    /**
+     * Set paramVariableList.
+     *
+     * @param string $paramVariableList
+     *
+     * @return Product
+     */
+    public function setParamVariableList($paramVariableList)
+    {
+        $this->paramVariableList = $paramVariableList;
+
+        return $this;
+    }
+
+    /**
+     * Get paramVariableList.
+     *
+     * @return string
+     */
+    public function getParamVariableList()
+    {
+        return $this->paramVariableList;
+    }
 }

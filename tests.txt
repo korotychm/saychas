@@ -1,13 +1,13 @@
-curl -i -L saychas-z.local/receive-provider --data '[{"title": "0002", "id": "000002", "description": "provider 1" }]'
-curl -i -L saychas-z.local/receive-provider --data '[{"id": "000002 }]' -X DELETE
+curl -i -L saychas-z.local/receive-provider --data '{"truncate": false, "data": [{"title": "0002", "id": "000004", "description": "provider4" }] }'
+curl -i -L saychas-z.local/receive-provider --data '[{"id": "000004" }]' -X DELETE
 
-curl -i -L saychas-z.local/receive-product --data '[{"id": "1", "title": "0002", "provider_id": "000002", "category_id": "1",  "description": "product 1" }]'
+curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1" }] }'
 curl -i -L saychas-z.local/receive-product --data '[{"id": "1" }]' -X DELETE
 
-curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "store_id": "0002","reserve": "1",  "unit": "unit", "price": 1234 }]'
-curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "store_id": "0002" }]' -X DELETE
+curl -i -L saychas-z.local/receive-price --data '{ "truncate": false, "data": [{"product_id": "1", "store_id": "0002","reserve": "1",  "unit": "unit", "price": 1234, "provider_id": "000003" }] }'
+curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "provider_id": "0002" }]' -X DELETE
 
-curl -i -L saychas-z.local/receive-stock-balance --data '[{"product_id": "1", "store_id": "0002","rest": 1 }]'
+curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "store_id": "0002","rest": 1 }] }'
 curl -i -L saychas-z.local/receive-stock-balance --data '[{"product_id": "1", "store_id": "0002" }]' -X DELETE
 
 
@@ -15,6 +15,6 @@ curl -i -L saychas-z.local/receive-category --data '[{"id": "00001", "parent_id"
 curl -i -L saychas-z.local/receive-category --data '[{"id": "00001", "store_id": "0002" }]' -X DELETE
 
 
-curl -i -L saychas-z.local/receive-store --data '[{"id": "1", "provider_id": "1","title": "store1", "description": "description1", "address": "address1", "geox": "1", "geoy": "2" }]'
+curl -i -L saychas-z.local/receive-store --data '{"truncate": false, "data": [{"id": "1", "provider_id": "2","title": "title1", "description": "description12 asdfsdaf", "address": "address2 asdfadsf", "geox": "1", "geoy": "2" }] }'
 curl -i -L saychas-z.local/receive-store --data '[{"id": "1"}]' -X DELETE
 

@@ -5,12 +5,12 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Product
+ * Shop
  *
- * @ORM\Table(name="product")
+ * @ORM\Table(name="shop")
  * @ORM\Entity
  */
-class Product
+class Shop
 {
     /**
      * @var int
@@ -29,13 +29,6 @@ class Product
     private $providerId;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer", nullable=false)
-     */
-    private $categoryId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="title", type="text", length=65535, nullable=false)
@@ -52,9 +45,30 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="vendor_code", type="string", length=11, nullable=false)
+     * @ORM\Column(name="address", type="text", length=65535, nullable=false)
      */
-    private $vendorCode;
+    private $address;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="geox", type="text", length=65535, nullable=false)
+     */
+    private $geox;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="geoy", type="text", length=65535, nullable=false)
+     */
+    private $geoy;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icon", type="text", length=65535, nullable=false)
+     */
+    private $icon;
 
 
     /**
@@ -72,7 +86,7 @@ class Product
      *
      * @param int $providerId
      *
-     * @return Product
+     * @return Shop
      */
     public function setProviderId($providerId)
     {
@@ -92,35 +106,11 @@ class Product
     }
 
     /**
-     * Set categoryId.
-     *
-     * @param int $categoryId
-     *
-     * @return Product
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId.
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
-
-    /**
      * Set title.
      *
      * @param string $title
      *
-     * @return Product
+     * @return Shop
      */
     public function setTitle($title)
     {
@@ -144,7 +134,7 @@ class Product
      *
      * @param string $description
      *
-     * @return Product
+     * @return Shop
      */
     public function setDescription($description)
     {
@@ -164,88 +154,98 @@ class Product
     }
 
     /**
-     * Set vendorCode.
+     * Set address.
      *
-     * @param string $vendorCode
+     * @param string $address
      *
-     * @return Product
+     * @return Shop
      */
-    public function setVendorCode($vendorCode)
+    public function setAddress($address)
     {
-        $this->vendorCode = $vendorCode;
+        $this->address = $address;
 
         return $this;
     }
 
     /**
-     * Get vendorCode.
+     * Get address.
      *
      * @return string
      */
-    public function getVendorCode()
+    public function getAddress()
     {
-        return $this->vendorCode;
+        return $this->address;
     }
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="param_value_list", type="text", length=65535, nullable=false)
-     */
-    private $paramValueList;
 
     /**
-     * @var int
+     * Set geox.
      *
-     * @ORM\Column(name="param_variable_list", type="integer", nullable=false)
+     * @param string $geox
+     *
+     * @return Shop
      */
-    private $paramVariableList;
-
-
-    /**
-     * Set paramValueList.
-     *
-     * @param string $paramValueList
-     *
-     * @return Product
-     */
-    public function setParamValueList($paramValueList)
+    public function setGeox($geox)
     {
-        $this->paramValueList = $paramValueList;
+        $this->geox = $geox;
 
         return $this;
     }
 
     /**
-     * Get paramValueList.
+     * Get geox.
      *
      * @return string
      */
-    public function getParamValueList()
+    public function getGeox()
     {
-        return $this->paramValueList;
+        return $this->geox;
     }
 
     /**
-     * Set paramVariableList.
+     * Set geoy.
      *
-     * @param int $paramVariableList
+     * @param string $geoy
      *
-     * @return Product
+     * @return Shop
      */
-    public function setParamVariableList($paramVariableList)
+    public function setGeoy($geoy)
     {
-        $this->paramVariableList = $paramVariableList;
+        $this->geoy = $geoy;
 
         return $this;
     }
 
     /**
-     * Get paramVariableList.
+     * Get geoy.
      *
-     * @return int
+     * @return string
      */
-    public function getParamVariableList()
+    public function getGeoy()
     {
-        return $this->paramVariableList;
+        return $this->geoy;
+    }
+
+    /**
+     * Set icon.
+     *
+     * @param string $icon
+     *
+     * @return Shop
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * Get icon.
+     *
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
     }
 }

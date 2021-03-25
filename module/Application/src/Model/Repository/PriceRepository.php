@@ -123,15 +123,15 @@ class PriceRepository implements PriceRepositoryInterface
      * @param json
      */
     public function replace($content)
-    {        
+    {
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        foreach($result as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`) VALUES ( '%s', '%s', %u, '%s', %u)",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price']);
+        foreach($result['data'] as $row) {
+            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
+                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

@@ -176,7 +176,7 @@ class ProductRepository implements ProductRepositoryInterface
         $query = $this->db->query($selectString);
         $result = $query->execute();
 
-//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
        
 //        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
         foreach ($result as $r){
@@ -214,9 +214,9 @@ class ProductRepository implements ProductRepositoryInterface
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
-        foreach($result as $row) {
-            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
-                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, quotemeta($row->vendor_code));
+        foreach($result->data as $row) {
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list` ) VALUES ( '%s', '%s', %u, '%s', '%s', '%s', '%s', '%s' )",
+                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, '', '');
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

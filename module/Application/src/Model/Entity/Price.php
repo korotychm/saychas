@@ -155,4 +155,59 @@ class Price
     {
         return $this->unit;
     }
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="price", type="integer", nullable=false)
+     */
+    private $price;
+
+
+    /**
+     * Set providerId.
+     *
+     * @param string $providerId
+     *
+     * @return Price
+     */
+    public function setProviderId($providerId)
+    {
+        $this->providerId = $providerId;
+
+        return $this;
+    }
+
+    /**
+     * Get providerId.
+     *
+     * @return string
+     */
+    public function getProviderId()
+    {
+        return $this->providerId;
+    }
+
+    /**
+     * Set price.
+     *
+     * @param int $price
+     *
+     * @return Price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price.
+     *
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
 }

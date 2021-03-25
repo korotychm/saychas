@@ -129,7 +129,7 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
         }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        foreach($result as $row) {
+        foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `rest`) VALUES ( '%s', '%s', %u)",
                     $row['product_id'], $row['store_id'], $row['rest']);
             try {

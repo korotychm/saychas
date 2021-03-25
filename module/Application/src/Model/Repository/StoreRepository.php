@@ -167,7 +167,7 @@ class StoreRepository implements StoreRepositoryInterface
         }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        foreach($result as $row) {
+        foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
             try {
