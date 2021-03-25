@@ -162,7 +162,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         }catch(\Laminas\Json\Exception\RuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-         
+        
+        if((bool) $result['truncate']) {
+            $this->db->query("truncate table category")->execute();
+        }
+        
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
                     $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
