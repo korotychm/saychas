@@ -17,8 +17,11 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
-use Laminas\Db\TableGateway\TableGateway;
+//use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Sql;
 
@@ -148,13 +151,18 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
     
      /**
-     * Adds given price into it's repository
+     * Adds given category into it's repository
      * 
      * @param json
      */
     public function replace($content)
     {
-        $result = json_decode($content, true);
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        }catch(\Laminas\Json\Exception\RuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+         
         foreach($result as $row) {
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
                     $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
@@ -162,10 +170,10 @@ class CategoryRepository implements CategoryRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**
@@ -173,8 +181,25 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @param $json
      */
     public function delete($json) {
-        /** @var id[] */
-        return [];
+        try {
+            $result = Json::decode($json, Json::TYPE_ARRAY);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete()->from('category')->where(['id' => $total]);
+
+        $selectString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+        }
     }
 
     

@@ -19,6 +19,7 @@ use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 return [
     'router' => [
@@ -43,16 +44,16 @@ return [
                     ],
                 ],
             ],
-            'show-provider' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/show-provider[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\ReceivingController::class,
-                        'action'     => 'showProvider',
-                    ],
-                ],
-            ],
+//            'show-provider' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/show-provider[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'showProvider',
+//                    ],
+//                ],
+//            ],
             'show-product' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -63,26 +64,6 @@ return [
                     ],
                 ],
             ],
-            'receive-provider' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/receive-provider[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveProvider',
-                    ],
-                ],
-            ],
-//            'receive' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route'    => '/receive[/:id]',
-//                    'defaults' => [
-//                        'controller' => Controller\ReceivingController::class,
-//                        'action'     => 'receiveProvider',
-//                    ],
-//                ],
-//            ],
             'provider' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -103,14 +84,26 @@ return [
                     ],
                 ],
             ],
+            'receive-provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-provider[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class,
+                ],
+            ],
             'receive-store' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/receive-store[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveStore',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\StoreRepositoryInterface::class,
                 ],
             ],
             'receive-product' => [
@@ -119,8 +112,9 @@ return [
                     'route'    => '/receive-product[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveProduct',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\ProductRepositoryInterface::class,
                 ],
             ],
             'receive-price' => [
@@ -129,8 +123,9 @@ return [
                     'route'    => '/receive-price[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receivePrice',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\PriceRepositoryInterface::class,
                 ],
             ],
             'receive-stock-balance' => [
@@ -139,8 +134,9 @@ return [
                     'route'    => '/receive-stock-balance[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveStockBalance',
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class,
                 ],
             ],
             'receive-category' => [
@@ -149,7 +145,54 @@ return [
                     'route'    => '/receive-category[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveCategory',
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
+                ],
+            ],
+//            'receive' => [
+//                // First we define the basic options for the parent route: \Laminas\Router\Http\
+//                'type' => Literal::class,
+//                'options' => [
+//                    'route'    => '/receive',
+//                    'defaults' => [
+//                        'controller' => Controller\ReceivingController::class,
+//                        'action'     => 'receive',
+//                    ],
+//                ],
+//                'may_terminate' => true, // \Laminas\Router\Http\
+//                'child_routes' => [
+//                    'stock-balance' => [
+//                        'type' => Segment::class,
+//                        'options' => [
+//                            'route'    => '/stock-balance',
+//                            'defaults' => [
+//                                'action' => 'receiveStockBalance',
+//                            ],
+//                            'constraints' => [
+//                                
+//                            ],
+//                        ],
+//                    ],
+//                    'price' => [
+//                        'type'    => Segment::class,
+//                        'options' => [
+//                            'route'    => '/price[/:id]',
+//                            'defaults' => [
+//                                'controller' => Controller\ReceivingController::class,
+//                                'action'     => 'receivePrice',
+//                            ],
+//                        ],
+//                    ],
+//                ],
+//            ],
+            'add-new-post' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/add-new-post[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'addNewPost',
                     ],
                 ],
             ],
@@ -232,16 +275,18 @@ return [
             'password' => 'w48Es4562',
         ],
     ],
-//    'driver' => [
-//        __NAMESPACE__ . '_driver' => [
-//            'class' => AnnotationDriver::class,
-//            'cache' => 'array',
-//            'paths' => [__DIR__ . '/../src/Entity']
-//        ],
-//        'orm_default' => [
-//            'drivers' => [
-//                __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-//            ],
-//        ],
-//    ],
+    'doctrine' => [
+          'driver' => [
+              __NAMESPACE__ . '_driver' => [
+                  'class' => AnnotationDriver::class,
+                  'cache' => 'array',
+                  'paths' => [__DIR__ . '/../src/Entity']
+              ],
+              'orm_default' => [
+                  'drivers' => [
+                      __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                  ]
+              ]
+          ]
+      ],    
 ];

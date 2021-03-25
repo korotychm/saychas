@@ -10,7 +10,7 @@
 namespace Application\Model\Repository;
 
 use InvalidArgumentException;
-use RuntimeException;
+//use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
@@ -18,9 +18,10 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Laminas\Db\Sql\Select;
-use Laminas\Db\Sql\Where;
+//use Laminas\Db\Sql\Select;
+//use Laminas\Db\Sql\Where;
 use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
@@ -194,19 +195,23 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function replace($content)
     {
-        $result = json_decode($content, true);
-//        $result = Json::decode($content);
+        try {
+            $result = Json::decode($content);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        
         foreach($result as $row) {
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`) VALUES ( '%s', '%s', %u, '%s', '%s', '%s' )",
-                    $row['id'], $row['provider_id'], $row['category_id'], $row['title'], $row['description'], quotemeta($row['vendor_code']));
+                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, quotemeta($row->vendor_code));
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql"];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => ''];
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
     /**
@@ -214,26 +219,24 @@ class ProductRepository implements ProductRepositoryInterface
      * @param json
      */
     public function delete($json) {
-        /** @var id[] */
         try {
-//            $phpNative = Json::decode($json);
-//            json_decode($json, true)
-            $result = json_decode($json, true);
-            $total = [];
-            foreach ($result as $item) {
-                array_push($total, $item['id']);
-            }
-            $sql    = new Sql($this->db);
-            $delete = $sql->delete()->from('product')->where(['id' => $total]);
-//            $delete->from('product');
-//            $delete->where(['id' => $total]);
+            $result = Json::decode($json, Json::TYPE_ARRAY);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete()->from('product')->where(['id' => $total]);
 
-            $selectString = $sql->buildSqlString($delete);
+        $selectString = $sql->buildSqlString($delete);
+        try {
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
-            return ['result' => true, 'description' => ''];
-
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
         }catch(InvalidQueryException $e){
-            return ['result' => false, 'description' => $e->getMessage()];
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
         }
     }
     

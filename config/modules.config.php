@@ -24,5 +24,6 @@ return [
     'Laminas\Json\Json',
     'DoctrineModule',
     'DoctrineORMModule',
+    'Laminas\Diactoros',
     'Application',
 ];

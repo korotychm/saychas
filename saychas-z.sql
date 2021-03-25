@@ -549,11 +549,11 @@ CREATE TABLE `price` (
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` VARCHAR(12) NOT NULL,
-  `provider_id` VARCHAR(5) NOT NULL,
+  `provider_id` VARCHAR(6) NOT NULL,
   `category_id` VARCHAR(9) NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `vendor_code` varchar(22) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `vendor_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -596,7 +596,7 @@ INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description
 
 DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider` (
-  `id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `id` VARCHAR(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `icon` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -632,7 +632,7 @@ CREATE TABLE `stock_balance` (
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE `store` (
   `id` VARCHAR(9) NOT NULL,
-  `provider_id` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `provider_id` VARCHAR(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
