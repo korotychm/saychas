@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2021 at 03:56 AM
+-- Generation Time: Mar 26, 2021 at 07:36 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -35,6 +35,13 @@ CREATE TABLE `brand` (
   `logo` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `brand`
+--
+
+INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
+('000001', 'Samsung', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -50,23 +57,6 @@ CREATE TABLE `category` (
   `icon` varchar(11) COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
-
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort_order`) VALUES
-('000000006', '000000005', 'Apple', '', '', 0),
-('000000007', '000000005', 'Huawei', '', '', 0),
-('000000008', '000000005', 'Samsung', '', '', 0),
-('000000005', '000000003', 'Мобильные', '', '', 0),
-('000000011', '0', 'Одежда', '', '', 0),
-('000000009', '000000003', 'Сотовые стационарные', '', '', 0),
-('000000003', '000000002', 'Сотовые телефоны', '', '', 0),
-('000000004', '000000002', 'Стационарные телефоны', '', '', 0),
-('000000002', '000000001', 'Телефоны/Аксессуары', '', '', 0),
-('000000010', '000000004', 'ТЕСТ-ТЕСТ', '', '', 0),
-('000000001', '0', 'Электроника', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -143,15 +133,6 @@ CREATE TABLE `price` (
   `provider_id` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `price`
---
-
-INSERT INTO `price` (`product_id`, `reserve`, `store_id`, `unit`, `price`, `provider_id`) VALUES
-('000000000004', 0, '', '', 600000, '00002'),
-('000000000002', 0, '', '', 500000, '00003'),
-('000000000003', 0, '', '', 200000, '00003');
-
 -- --------------------------------------------------------
 
 --
@@ -216,10 +197,7 @@ CREATE TABLE `provider` (
 --
 
 INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
-('00001', 'Globus CR', '', ''),
-('00002', 'X5 Retail Group', '', ''),
-('00004', 'Богатый Алекс', '', ''),
-('00003', 'Супер Продавец ООО', '', '');
+('00001', 'Globus CR', '', '');
 
 -- --------------------------------------------------------
 
@@ -252,21 +230,6 @@ CREATE TABLE `stock_balance` (
   `store_id` varchar(9) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
---
--- Dumping data for table `stock_balance`
---
-
-INSERT INTO `stock_balance` (`product_id`, `rest`, `store_id`) VALUES
-('000000000004', 0, '000000002'),
-('000000000001', 0, '000000004'),
-('000000000002', 0, '000000004'),
-('000000000003', 0, '000000004'),
-('000000000005', 0, '000000004'),
-('000000000001', 12, '000000005'),
-('000000000002', 0, '000000005'),
-('000000000003', 0, '000000005'),
-('000000000005', 0, '000000005');
-
 -- --------------------------------------------------------
 
 --
@@ -284,17 +247,6 @@ CREATE TABLE `store` (
   `geoy` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `icon` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `store`
---
-
-INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES
-('000000003', '00003', '1 Магазин Суперпродавца', '', '', '55.796867', '37.709126', ''),
-('000000004', '00003', '2 Магазин Суперпродавца', '', '', '55.703505', '37.731048', ''),
-('000000005', '00003', '3 Магазин Суперпродавца', '', '', '55.784468', '37.571321', ''),
-('000000001', '00001', 'Globus(Шарикоподшипниковская)', '', '', '55.717229', '37.677831', ''),
-('000000002', '00002', 'Пятерочка(южнопортовая)', '', '', '55.706629', '37.68756', '');
 
 -- --------------------------------------------------------
 
