@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2021 at 07:36 AM
+-- Generation Time: Mar 26, 2021 at 08:03 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -177,6 +177,14 @@ CREATE TABLE `product_image` (
   `url_http` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `product_id`, `url_ftp`, `url_http`, `sort_order`) VALUES
+(1, '000000000005', '', 'test.jpeg', 0),
+(2, '000000000001', '', '0001.jpeg', 0);
 
 -- --------------------------------------------------------
 
