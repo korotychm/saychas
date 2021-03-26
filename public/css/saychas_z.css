@@ -1,4 +1,20 @@
-.active {dispaly:inline-block; padding:6px 2px; background:rgba(255,255,255,,5); color:#000}
+.active {dispaly:inline-block; padding:6px 2px; background:rgba(255,255,255,.5); color:#000}
 #phonesend, .phoneinput {font-size:1.8rem; font-weight:700}
 .opacity0, .opacity0 a {color:#999; text-decoration:none }
 .opacity0 a   {text-decoration: line-through }
+.productcard {
+    width:24.5%; 
+    display:inline-block; 
+    vertical-align:top; 
+    position:relative; 
+}
+.productcard .content {
+    display:block; 
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.0);
+    padding:16px;
+    border-radius:6px
+    }
+.productcard .content:hover {box-shadow: 5px 5px 20px rgba(0,0,0,0.25);}    
+.productcard .productimage {max-width:100%; border-radius:4px}
+.productcard .blok {display:block; margin:4px 0; }
+.productcard .price {font-weight: 500; line-height: 1.2; font-size: 1rem}

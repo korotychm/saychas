@@ -186,8 +186,9 @@ class IndexController extends AbstractActionController
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
                 $return.="<li class='opacity".$row['rest']."'><a class='opacity".$row['rest']."' href=# rel='".$row['id']."' >".$row['title']."</a>"
+                       . "<br>Артикул: ".$row['vendor_code']
                        . "<br>Остаток: ".$row['rest']
-                       . "<br>Цена: ".$cena."&nbsp;&#8381;</li>";
+                       . "Цена: ".$cena."&nbsp;&#8381;</li>";
             }
             $return.="</ul>";
             
