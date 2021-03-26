@@ -66,6 +66,11 @@ class Product
      * @var int
      */
     private $rest;
+    
+    /**
+     * @var string
+     */
+    private $url_http;
 
     /**
      * Get id.
@@ -277,5 +282,15 @@ class Product
     public function getRest()
     {
         return $this->rest;
+    }
+    
+    /**
+     * Get url_http.
+     *
+     * @return string
+     */
+    public function getUrlHttp()
+    {
+        return $this->url_http;
     }
 }

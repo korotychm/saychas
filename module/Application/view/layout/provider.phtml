@@ -73,22 +73,28 @@
         </div>	   <!-- /div--> 
     </div>  
         
-     <div class="card" id="products" style="display:none;">
+     <!-- div class="card" id="products" style="display:none;">
         <h2 class="card-header">Товары магазина </h2>
         <div class="card-body">
             <div class="waitcover waiting" style="display:none"  id="waitproduct"></div>
             <div class="container" >
         <div id="productsanswer"></div>
       </div> 
-     </div>	   <!-- /div--> 
-    </div>   
+     </div>	   
+    </div-->   
  </div>        
 </div>
-        
-        <div class="container" styele="max-width:1400px">
-<?php $print='            <div class="productcard ">
+        <div class="container" style="   display:none; position:relative"  id="products"><a name="product"></a>       
+  
+        <h2 class="">Товары магазина </h2>
+      
+            <div class="waitcover waiting" style="display:none"  id="waitproduct"></div>
+            
+                <div id="productsanswer" style="padding:0"></div>        
+               
+<?php  /*$print='            <div class="productcard ">
                 <div class="content opacity">
-                    <img src="/images/product/nophoto_1.jpeg" alt="alt" class="productimage"/>
+                    <img src="/images/product/nophoto.jpeg" alt="alt" class="productimage"/>
                     <b class="blok"><a =href=# >Наименование товара</a></b>
                     <span class="blok">Артикул товара</span>
                     <span class="blok">Остаток: </span>
@@ -97,9 +103,12 @@
                </div>            
         '; 
 
-echo $print.$print.$print.$print;
-?>
-        </div>   
+echo $print.$print.$print.$print;/**/
+?>   
+            
+        	   <!-- /div--> 
+   
+</div>              
             
      <p><hr/></p>
     <div class="card-deck">        
