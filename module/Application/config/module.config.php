@@ -150,6 +150,17 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
                 ],
             ],
+            'receive-category' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-brand[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
+                ],
+            ],
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
 //                'type' => Literal::class,
@@ -235,6 +246,7 @@ return [
             \Application\Model\RepositoryInterface\ProductRepositoryInterface::class => \Application\Model\Repository\ProductRepository::class,
             \Application\Model\RepositoryInterface\PriceRepositoryInterface::class => \Application\Model\Repository\PriceRepository::class,
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
+            \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -248,6 +260,7 @@ return [
             \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
             \Application\Model\Repository\PriceRepository::class => \Application\Model\Factory\PriceRepositoryFactory::class,
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
+            \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
         ],
         
     ],

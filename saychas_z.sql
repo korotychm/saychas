@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2021 at 03:09 AM
+-- Generation Time: Mar 26, 2021 at 03:56 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `brand`;
 CREATE TABLE `brand` (
-  `id` int NOT NULL,
+  `id` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `logo` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -358,6 +358,12 @@ ALTER TABLE `price`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_image`
+--
+ALTER TABLE `product_image`
   ADD PRIMARY KEY (`id`);
 
 --
