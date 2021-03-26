@@ -130,11 +130,7 @@ class PriceRepository implements PriceRepositoryInterface
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        if((bool) $result['truncate']) {
-            $this->db->query("truncate table price")->execute();
-        }
-
-        foreach($result['data'] as $row) {
+        foreach($result as $row) {
             $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
                     $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
             try {

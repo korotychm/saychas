@@ -30,7 +30,7 @@ class ProductRepositoryFactory implements FactoryInterface
         return new ProductRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Product(0, 0, 0, '', '', '', 0)
+            new Product(0, 0, 0, '', '', '', 0, 0)
         );
     }
 }

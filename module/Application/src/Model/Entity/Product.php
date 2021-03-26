@@ -56,6 +56,16 @@ class Product
      */
     private $vendor_code;
 
+    /**
+     * @var int
+     */
+    private $price;
+
+
+    /**
+     * @var int
+     */
+    private $rest;
 
     /**
      * Get id.
@@ -247,5 +257,25 @@ class Product
     public function getParamVariableList()
     {
         return $this->paramVariableList;
+    }
+    
+    /**
+     * Get price.
+     *
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+    
+    /**
+     * Get rest.
+     *
+     * @return int
+     */
+    public function getRest()
+    {
+        return $this->rest;
     }
 }
