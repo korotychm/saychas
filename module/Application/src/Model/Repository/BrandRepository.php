@@ -17,6 +17,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Brand;
@@ -150,7 +151,25 @@ class BrandRepository implements BrandRepositoryInterface
      * @param $json
      */
     public function delete($json) {
-        return ['result' => false, 'description' => 'Method is not supported: cannot delete price', 'statusCode' => 405];
+        try {
+            $result = Json::decode($json, Json::TYPE_ARRAY);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete()->from('brand')->where(['id' => $total]);
+
+        $selectString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+        }
     }
     
 }
