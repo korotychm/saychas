@@ -168,7 +168,7 @@ class IndexController extends AbstractActionController
             if (! $stores ) exit($return."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a>"); 
             $return.="<ul>";
             foreach ( $stores as $row)
-                $return.="<li><a href=# rel='{$row -> getId()}' class=shop-list title='{$row->getAddress()} \r\n  {$row->getGeox()} , {$row -> getGeoy()} ' >"
+                $return.="<li><a href=#product rel='{$row -> getId()}' class=shop-list title='{$row->getAddress()} \r\n  {$row->getGeox()} , {$row -> getGeoy()} ' >"
                ."{$row -> getTitle()}</a>"
                ."</li>";
             $return.="</ul>";
@@ -180,17 +180,25 @@ class IndexController extends AbstractActionController
             if (!count($products)) exit(date("r")."<h3>для магазина id:{$post -> shop} товаров не найдено</h3> "); 
             $return.=date("r")."<br>";	
             $return.="id магазина: {$post -> shop}<hr>" ;
-            $return.="<ul>";
+            //$return.="<ul>";
             foreach ($products as $row){
-                $cena=(int)$row['price'];
+                $cena=(int)$row->getPrice();
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
-                $return.="<li class='opacity".$row['rest']."'><a class='opacity".$row['rest']."' href=# rel='".$row['id']."' >".$row['title']."</a>"
-                       . "<br>Артикул: ".$row['vendor_code']
-                       . "<br>Остаток: ".$row['rest']
-                       . "Цена: ".$cena."&nbsp;&#8381;</li>";
-            }
-            $return.="</ul>";
+                
+                 $return.="<div class='productcard' >"
+                    ."   <div class='content opacity".(int)$row->getRest()."'>"
+                    ."       <img src='/images/product/".(($row->getUrlHttp())?$row->getUrlHttp():"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    ."       <strong class='blok'><a  href=#product CLASS=producttitle  >".$row->getTitle()."</a></strong>"
+                    ."       <span class='blok'>Id: ".$row->getid()."</span>"
+                    ."       <span class='blok'>Артикул: ".$row->getVendorCode()."</span>"
+                    ."       <span class='blok'>Остаток: ".$row->getRest()."</span>"
+                    ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
+                    //."       <span class='blok price'>Цена: ".$row->getUrlHttp()."</span>"
+                    ."   </div>"
+                    ."</div>"; 
+            }/**/
+            //$return.="</ul>";
             
             exit ($return);
         }	

@@ -156,8 +156,14 @@ class ProductRepository implements ProductRepositoryInterface
                 ['rest'],           
                 $select::JOIN_LEFT  
             )      
+            ->join(
+                ['img' => 'product_image'],
+                'p.id = img.product_id',
+                ['url_http'],           
+                $select::JOIN_LEFT  
+            )          
             ->where->in('p.provider_id', $subSelectAvailbleStore)
-            ->where->and
+            /*->where->and
             ->where->equalTo('pr.store_id', $storeId) /**/  
             ->where->and
             ->where->equalTo('b.store_id', $storeId) /**/  
@@ -176,10 +182,10 @@ class ProductRepository implements ProductRepositoryInterface
             $this->productPrototype
         );
         $resultSet->initialize($result);
-//        foreach($resultSet as $product) {
-//            echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
-//        }
-//        exit;
+/*/        foreach($resultSet as $product) {
+            echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
+        }
+        exit; /**/
         return $resultSet;
     }
     
