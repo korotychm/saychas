@@ -87,14 +87,14 @@ class StoreRepository implements StoreRepositoryInterface
     /**
      * Returns a single store.
      *
-     * @param  int $id Identifier of the store to return.
+     * @param  array $params
      * @return Store
      */    
-    public function find($id)
+    public function find($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('store');
-        $select->where(['id = ?' => $id]);
+        $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -102,7 +102,7 @@ class StoreRepository implements StoreRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new RuntimeException(sprintf(
                 'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
+                $params['id']
             ));
         }
 
@@ -113,7 +113,7 @@ class StoreRepository implements StoreRepositoryInterface
         if (! $store) {
             throw new InvalidArgumentException(sprintf(
                 'Store with identifier "%s" not found.',
-                $id
+                $params['id']
             ));
         }
 
