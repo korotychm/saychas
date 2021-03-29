@@ -13,13 +13,11 @@ class Category
     /**
      * @var string
      */
-    //private $group_name;
     private $title;
 
     /**
      * @var string
      */
-    //private $parent;
     private $parent_id;
     
     /**
@@ -30,13 +28,12 @@ class Category
     /**
      * @var string
      */
-    //private $comment;
     private $description;
 
     /**
      * @param string      $title
      * @param string      $id
-     * @param string      $parent_id
+     * @param string      $parentId
      * @param string|null $icon
      * @param string|null $description
      */
@@ -58,14 +55,14 @@ class Category
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {
         return $this->id;
     }
     /**
-     * @return int
+     * @return string
      */
     public function getParent()
     {
@@ -83,7 +80,7 @@ class Category
     /**
      * @return string
      */
-    public function getComment()
+    public function getDescription()
     {
         return $this->description;
     }
