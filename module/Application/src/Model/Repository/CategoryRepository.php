@@ -117,14 +117,14 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * Return a single category.
      *
-     * @param  int $id Identifier of the category to return.
+     * @param  array $params Identifier of the category to return.
      * @return Category
      */    
-    public function findCategory($id)
+    public function findCategory($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('category');
-        $select->where(['id = ?' => $id]);
+        $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -132,7 +132,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new RuntimeException(sprintf(
                 'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
+                $params['id']
             ));
         }
 
@@ -143,7 +143,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         if (! $category) {
             throw new InvalidArgumentException(sprintf(
                 'Category with identifier "%s" not found.',
-                $id
+                $params['id']
             ));
         }
 

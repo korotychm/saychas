@@ -52,7 +52,7 @@ class Category
     /**
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
         return $this->title;
     }

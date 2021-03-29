@@ -92,6 +92,7 @@ class IndexController extends AbstractActionController
             'product' => $this->productRepository->find(['id' => '000000000004']),
             'brand' => $this->brandRepository->find(['id' => '000002']),
             'store' => $this->storeRepository->find(['id' => '000000003']),
+            'category' => $this->categoryRepository->findCategory(['id' => '29']),
             'providers' => $this->providerRepository->findAll(),
         ]);
     }
