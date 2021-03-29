@@ -1,4 +1,11 @@
 $(function() { 
+     $("#tree22").treeview({
+                  persist: "location",
+                  collapsed: true,
+                animated: "medium",
+                
+            });
+    
     $(".phoneInput").mask("+7(999) 999-9999",{placeholder:" "});
     
     $("#dadataanswer").slideUp();

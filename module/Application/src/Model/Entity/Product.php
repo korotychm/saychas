@@ -73,6 +73,11 @@ class Product
     private $url_http;
 
     /**
+     * @var string
+     */
+    private $brand_title;
+
+    /**
      * Get id.
      *
      * @return int
@@ -292,5 +297,15 @@ class Product
     public function getUrlHttp()
     {
         return $this->url_http;
+    }
+    
+    /**
+     * Get brandtitle.
+     *
+     * @return string
+     */
+    public function getBrandTitle()
+    {
+        return $this->brandtitle;
     }
 }

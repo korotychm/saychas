@@ -161,7 +161,13 @@ class ProductRepository implements ProductRepositoryInterface
                 'p.id = img.product_id',
                 ['url_http'],           
                 $select::JOIN_LEFT  
-            )          
+            )
+            ->join(
+                ['brand' => 'brand'],
+                'p.brand_id = brand.id',
+                ['brandtitle'=>'title'],           
+                $select::JOIN_LEFT  
+            )   
             ->where->in('p.provider_id', $subSelectAvailbleStore)
             /*->where->and
             ->where->equalTo('pr.store_id', $storeId) /**/  
@@ -169,9 +175,11 @@ class ProductRepository implements ProductRepositoryInterface
             ->where->equalTo('b.store_id', $storeId) /**/  
             //->group('p.id')
         ;
+        
+ //                не надо, блять это удалять!   
+ //               $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+ //       
         $stmt   = $sql->prepareStatementForSqlObject($select);
-        
-        
         $result = $stmt->execute();
 
 

@@ -20,7 +20,7 @@
 .productcard .productimage {max-width:100%; border-radius:4px}
 .productcard .blok {display:block; margin:4px 0; }
 .productcard .price {font-weight: 500; line-height: 1.2; font-size: 1rem}
-.productcard .producttitle {font-size:1.2rem; font-weight:600; margin:5px 0;}
+.productcard .producttitle {font-size:1.2rem; font-weight:600; margin:10px 0;}
 
 
 @media (max-width: 1024px) {

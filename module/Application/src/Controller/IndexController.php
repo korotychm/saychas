@@ -189,9 +189,10 @@ class IndexController extends AbstractActionController
                  $return.="<div class='productcard' >"
                     ."   <div class='content opacity".(int)$row->getRest()."'>"
                     ."       <img src='/images/product/".(($row->getUrlHttp())?$row->getUrlHttp():"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
-                    ."       <strong class='blok'><a  href=#product CLASS=producttitle  >".$row->getTitle()."</a></strong>"
+                    ."       <strong class='blok producttitle'><a  href=#product   >".$row->getTitle()."</a></strong>"
                     ."       <span class='blok'>Id: ".$row->getid()."</span>"
                     ."       <span class='blok'>Артикул: ".$row->getVendorCode()."</span>"
+                  //  ."       <span class='blok'>Торговая марка: ".$row->getBrandTitle()."</span>"                         
                     ."       <span class='blok'>Остаток: ".$row->getRest()."</span>"
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     //."       <span class='blok price'>Цена: ".$row->getUrlHttp()."</span>"
@@ -208,9 +209,11 @@ class IndexController extends AbstractActionController
     public function providerAction()
     {
         $this->layout()->setTemplate('layout/provider');
-        $this->providerRepository->findAll();
+        $categories = $this->categoryRepository->findAllCategories();
+        $providers = $this->providerRepository->findAll();
         return new ViewModel([
-            "providers" => $this->providerRepository->findAll(),
+            "providers" => $providers,
+            "catalog" => $categories,
         ]);
         
         

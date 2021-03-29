@@ -1,1 +1,79 @@
-<??>
+    <div class="container" styele="max-width:1400px">	
+   <p>серверные срипты выполняются с иммитацией задежки на 1 сек. </p>
+    <div class="card-deck"> 
+       <div class="card">
+           
+         <h2 class="card-header">Поставщики</h2>
+        <div class="card-body">
+            <div class="waitcover waiting" style="display:none"  id="waitprovider"></div>
+            <div class="container" >
+                <div id="provideranswer">
+                    <?php  //print_r($this->provider);
+                     //print_r(json_encode();//
+                    ?>
+                    
+                </div>
+                 
+                 <input type="button" id="sendajaxprovider"   class="btn btn-primary" value='Получить список постащиков' />
+            </div>  
+        </div>
+       </div> 
+    <div class="card" id="shops" style="display:none;">
+        <h2 class="card-header">Магазины <div id="providershop">поставщика</div></h2>
+        <div class="card-body">
+            <div class="waitcover waiting" style="display:none"  id="waitshops"></div>
+            <div class="container" >
+                <div id="shopsanswer"></div>
+            </div> 
+        </div>	   <!-- /div--> 
+    </div>  
+        
+     <!-- div class="card" id="products" style="display:none;">
+        <h2 class="card-header">Товары магазина </h2>
+        <div class="card-body">
+            <div class="waitcover waiting" style="display:none"  id="waitproduct"></div>
+            <div class="container" >
+        <div id="productsanswer"></div>
+      </div> 
+     </div>	   
+    </div-->   
+ </div>        
+</div>
+        <div class="container" style="   display:none; position:relative"  id="products"><a name="product"></a>       
+  
+        <h2 class="">Товары магазина </h2>
+      
+            <div class="waitcover waiting" style="display:none"  id="waitproduct"></div>
+            
+                <div id="productsanswer" style="padding:0"></div>        
+               
+<?php  /*$print='            <div class="productcard ">
+                <div class="content opacity">
+                    <img src="/images/product/nophoto.jpeg" alt="alt" class="productimage"/>
+                    <b class="blok"><a =href=# >Наименование товара</a></b>
+                    <span class="blok">Артикул товара</span>
+                    <span class="blok">Остаток: </span>
+                    <span class="blok price">Цена:1 100 &#8381;</span>
+                </div>
+               </div>            
+        '; 
+
+echo $print.$print.$print.$print;/**/
+?>   
+            
+        	   <!-- /div--> 
+   
+</div>              
+            
+     <p><hr/></p>
+    <div class="container"><div class="card-deck">
+         <div class="card" >
+        <h2 class="card-header">Каталог <div id="providershop"></div></h2>
+        <div class="card-body">
+            <ul id="tree22">
+                <?= $this->catalog;?>
+            </ul>
+         </div> 
+        </div>	   <!-- /div--> 
+    </div>  
+    </div>    
