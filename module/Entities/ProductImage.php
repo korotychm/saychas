@@ -103,7 +103,7 @@ class ProductImage
      *
      * @return string
      */
-    public function getUrlFtp()
+    public function getFtpUrl()
     {
         return $this->urlFtp;
     }
@@ -115,9 +115,9 @@ class ProductImage
      *
      * @return ProductImage
      */
-    public function setUrlHttp($urlHttp)
+    public function setHttpUrl($httpUrl)
     {
-        $this->urlHttp = $urlHttp;
+        $this->httpUrl = $ttp;
 
         return $this;
     }

@@ -300,12 +300,12 @@ class Product
     }
     
     /**
-     * Get brandtitle.
+     * Get brand_title.
      *
      * @return string
      */
     public function getBrandTitle()
     {
-        return $this->brandtitle;
+        return $this->brand_title;
     }
 }
