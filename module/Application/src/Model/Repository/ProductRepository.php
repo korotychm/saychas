@@ -88,14 +88,14 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * Returns a single product.
      *
-     * @param  int $id Identifier of the product to return.
+     * @param  array $params
      * @return Product
      */    
-    public function find($id)
+    public function find($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('product');
-        $select->where(['id = ?' => $id]);
+        $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -103,7 +103,7 @@ class ProductRepository implements ProductRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new RuntimeException(sprintf(
                 'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
+                $params['id']
             ));
         }
 
@@ -114,7 +114,7 @@ class ProductRepository implements ProductRepositoryInterface
         if (! $product) {
             throw new InvalidArgumentException(sprintf(
                 'Product with identifier "%s" not found.',
-                $id
+                $params['id']
             ));
         }
 

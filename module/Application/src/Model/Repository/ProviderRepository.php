@@ -128,14 +128,14 @@ class ProviderRepository implements ProviderRepositoryInterface
     /**
      * Returns a single provider.
      *
-     * @param  int $id Identifier of the provider to return.
+     * @param  array $params
      * @return Provider
      */    
-    public function find($id)
+    public function find($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('provider');
-        $select->where(['id = ?' => $id]);
+        $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -143,7 +143,7 @@ class ProviderRepository implements ProviderRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new RuntimeException(sprintf(
                 'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
+                $params['id']
             ));
         }
 
@@ -154,7 +154,7 @@ class ProviderRepository implements ProviderRepositoryInterface
         if (! $provider) {
             throw new InvalidArgumentException(sprintf(
                 'Provider with identifier "%s" not found.',
-                $id
+                $params['id']
             ));
         }
 

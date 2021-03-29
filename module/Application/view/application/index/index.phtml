@@ -3,18 +3,6 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 ?>
-<?php if(false) : ?>
-<?php foreach ($this->tests as $test): ?>
-<article>
-  <h1 id="test<?= $test->getId() ?>"><?= $test->getName() ?></h1>
-</article>
-<?php endforeach ?>
-
-<?php if ( false ) : ?>
-<h1>First: <?= $first->getName() ?> </h1>
-<?php endif; ?>
-<?php endif; ?>
-
 <div class="jumbotron">
     <h1 class="display-4">Welcome to<br>Laminas MVC Skeleton Application</h1>
 
@@ -30,11 +18,14 @@
     <a class="btn btn-primary btn-lg" href="https://github.com/laminas" target="_blank">Check Laminas on GitHub &raquo;</a>
 </div>
 <?php if(true) : ?>
-<?php // echo $provider->getTitle() ?>
+<?php echo "<h1>".$this->provider->getTitle()."</h1>" ?>;
+<?php echo "<h1>".$this->product->getTitle()."</h1>" ?>;
+<?php echo "<h1>".$this->brand->getTitle()."</h1>" ?>;
+<?php echo "<h1>".$this->store->getTitle()."</h1>" ?>;
 <?php
-    foreach($providers as $provider) {
-        var_dump($provider);
-    }
+//    foreach($providers as $provider) {
+//        var_dump($provider);
+//    }
 ?>
 
 <?php endif; ?>

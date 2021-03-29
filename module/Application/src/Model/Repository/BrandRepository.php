@@ -17,6 +17,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Brand;
@@ -80,16 +81,16 @@ class BrandRepository implements BrandRepositoryInterface
     }
 
     /**
-     * Returns a single price.
+     * Returns a single brand.
      *
-     * @param  int $id Identifier of the price to return.
-     * @return Price
+     * @param  array $params
+     * @return Brand
      */    
-    public function find($id)
+    public function find($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select('brand');
-        $select->where(['id = ?' => $id]);
+        $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
@@ -97,7 +98,7 @@ class BrandRepository implements BrandRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new RuntimeException(sprintf(
                 'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
+                $params['id']
             ));
         }
 
@@ -108,7 +109,7 @@ class BrandRepository implements BrandRepositoryInterface
         if (! $brand) {
             throw new InvalidArgumentException(sprintf(
                 'Brand with identifier "%s" not found.',
-                $id
+                $params['id']
             ));
         }
 
@@ -150,7 +151,25 @@ class BrandRepository implements BrandRepositoryInterface
      * @param $json
      */
     public function delete($json) {
-        return ['result' => false, 'description' => 'Method is not supported: cannot delete price', 'statusCode' => 405];
+        try {
+            $result = Json::decode($json, Json::TYPE_ARRAY);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete()->from('brand')->where(['id' => $total]);
+
+        $selectString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+        }
     }
     
 }

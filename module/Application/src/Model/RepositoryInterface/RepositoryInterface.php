@@ -15,10 +15,10 @@ interface RepositoryInterface
     /**
      * Return a single application test.
      *
-     * @param  int $id Identifier of the test to return.
+     * @param  array $param
      * @return Entity
      */
-    public function find($id);
+    public function find(array $param);
     
     /**
      * Return void

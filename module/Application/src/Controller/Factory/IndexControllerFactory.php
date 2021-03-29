@@ -9,6 +9,7 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Controller\IndexController;
 
 /**
@@ -25,8 +26,9 @@ class IndexControllerFactory implements FactoryInterface
         $provider = $container->get(ProviderRepositoryInterface::class);
         $store =    $container->get(StoreRepositoryInterface::class);
         $product =    $container->get(ProductRepositoryInterface::class);
+        $brand =    $container->get(BrandRepositoryInterface::class);
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
-        return new IndexController($test, $category, $provider, $store, $product, $entityManager);
+        return new IndexController($test, $category, $provider, $store, $product, $brand, $entityManager);
     }
 }
 

@@ -19,10 +19,11 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Resource\StringResource;
-use Doctrine\ORM\Mapping as ORM;
+//use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Post;
-use Psr\Http\Message\ResponseInterface;
+//use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
 
 class IndexController extends AbstractActionController
@@ -39,13 +40,14 @@ class IndexController extends AbstractActionController
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, $entityManager)
+                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
         $this->storeRepository = $storeRepository;
         $this->productRepository = $productRepository;
+        $this->brandRepository = $brandRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -56,11 +58,11 @@ class IndexController extends AbstractActionController
         
         $servicemanager = $e->getApplication()->getServiceManager();
 
-        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
+//        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
         
-        $category = $this->categoryRepository->findCategory(29);
-        
-        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
+//        $category = $this->categoryRepository->findCategory(29);
+//        
+//        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
         // Return the response
         return $response;
@@ -84,9 +86,12 @@ class IndexController extends AbstractActionController
 //        $selectString = $sql->buildSqlString($select);
 //        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         return new ViewModel([
-            'tests' => $this->testRepository->findAllTests(),
+//            'tests' => $this->testRepository->findAllTests(),
 //            'first' => $this->testRepository->findTest(4),
-            //'provider' => $this->providerRepository->find(4),
+            'provider' => $this->providerRepository->find(['id' => '00004']),
+            'product' => $this->productRepository->find(['id' => '000000000004']),
+            'brand' => $this->brandRepository->find(['id' => '000002']),
+            'store' => $this->storeRepository->find(['id' => '000000003']),
             'providers' => $this->providerRepository->findAll(),
         ]);
     }
