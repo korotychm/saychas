@@ -18,3 +18,6 @@ curl -i -L saychas-z.local/receive-category --data '[{"id": "00001", "store_id":
 curl -i -L saychas-z.local/receive-store --data '{"truncate": false, "data": [{"id": "1", "provider_id": "2","title": "title1", "description": "description12 asdfsdaf", "address": "address2 asdfadsf", "geox": "1", "geoy": "2" }] }'
 curl -i -L saychas-z.local/receive-store --data '[{"id": "1"}]' -X DELETE
 
+
+curl -i -L saychas-z.local/receive-brand --data '{"truncate": false, "data": [{"id": "000002", "title": "title 1","descripton": "description 1", "logo": "logo1" }] }'
+curl -i -L saychas-z.local/receive-brand --data '[{"id": "1"}]' -X DELETE

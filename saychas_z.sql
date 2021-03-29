@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 26, 2021 at 03:56 AM
+-- Generation Time: Mar 26, 2021 at 08:09 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -35,6 +35,14 @@ CREATE TABLE `brand` (
   `logo` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `brand`
+--
+
+INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
+('000002', 'LG', '', ''),
+('000001', 'Samsung', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -50,23 +58,6 @@ CREATE TABLE `category` (
   `icon` varchar(11) COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
-
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort_order`) VALUES
-('000000006', '000000005', 'Apple', '', '', 0),
-('000000007', '000000005', 'Huawei', '', '', 0),
-('000000008', '000000005', 'Samsung', '', '', 0),
-('000000005', '000000003', 'Мобильные', '', '', 0),
-('000000011', '0', 'Одежда', '', '', 0),
-('000000009', '000000003', 'Сотовые стационарные', '', '', 0),
-('000000003', '000000002', 'Сотовые телефоны', '', '', 0),
-('000000004', '000000002', 'Стационарные телефоны', '', '', 0),
-('000000002', '000000001', 'Телефоны/Аксессуары', '', '', 0),
-('000000010', '000000004', 'ТЕСТ-ТЕСТ', '', '', 0),
-('000000001', '0', 'Электроника', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -196,6 +187,14 @@ CREATE TABLE `product_image` (
   `url_http` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `product_id`, `url_ftp`, `url_http`, `sort_order`) VALUES
+(1, '000000000005', '', 'test.jpeg', 0),
+(2, '000000000001', '', '0001.jpeg', 0);
 
 -- --------------------------------------------------------
 

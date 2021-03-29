@@ -150,7 +150,7 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
                 ],
             ],
-            'receive-category' => [
+            'receive-brand' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/receive-brand[/:id]',
