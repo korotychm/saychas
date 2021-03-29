@@ -8,7 +8,7 @@ interface CategoryRepositoryInterface
      *
      * Each entry should be a Test instance.
      *
-     * @return Category[]
+     * @return string
      */
     public function findAllCategories($echo='', $i=0, $idActive);
 
