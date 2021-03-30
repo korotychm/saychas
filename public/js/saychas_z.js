@@ -113,13 +113,14 @@ $(function() {
 
 function getLocalStores (dataString, obj="#ajaxanswer2" ){
     $.ajax({	
-            url: "/ajax/getstore",
+            //url: "/ajax/getstore",
+            url: "/ajax-get-store",
             type:'POST', 
             cache: false,	
             data: {"value":dataString},
             success: function(data){ $(obj).html(data); return true},
             error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
-        })
+        });
 }        
 
 

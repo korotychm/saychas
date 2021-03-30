@@ -227,6 +227,16 @@ return [
                     ],
                 ],
             ],
+                'ajax-get-store' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-store',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'ajaxGetStore',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -257,6 +267,7 @@ return [
             \Application\Model\RepositoryInterface\PriceRepositoryInterface::class => \Application\Model\Repository\PriceRepository::class,
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
+            \Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -271,6 +282,7 @@ return [
             \Application\Model\Repository\PriceRepository::class => \Application\Model\Factory\PriceRepositoryFactory::class,
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
         ],
         
     ],
@@ -299,6 +311,7 @@ return [
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
+            'get_store' => 'http://SRV02:8000/SC/hs/site/get_product',
         ],
     ],
     'doctrine' => [
