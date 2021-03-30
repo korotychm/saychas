@@ -37,10 +37,11 @@ class IndexController extends AbstractActionController
     private $storeRepository;
     private $productRepository;
     private $entityManager;
+    private $config;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager)
+                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager, $config)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -49,6 +50,7 @@ class IndexController extends AbstractActionController
         $this->productRepository = $productRepository;
         $this->brandRepository = $brandRepository;
         $this->entityManager = $entityManager;
+        $this->config = $config;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -104,6 +106,37 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'menu' => $categories
         ]);
+    }
+    
+    public function ajaxToWebAction()
+    {
+        $id=$this->params()->fromRoute('id', '');
+        $post = $this->getRequest()->getPost();
+        $param=array(1,2,3,4,5);
+        
+        $url = $this->config['parameters']['1c_request_links']['get_product'];
+        // $url="http://SRV02:8000/SC/hs/site/get_product";
+        $params = array('name' => 'value');
+        $result = file_get_contents(
+            $url, 
+            false, 
+            stream_context_create(array(
+                'http' => array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => http_build_query($params))	
+            ))
+         );
+        
+        $return.="<pre>";
+        $return.= date("r")."\n" ;
+        // if($result) print_r(json_decode($result));
+        $return.="{$post -> name} => {$post -> value}";
+        $return.="</pre>";
+        exit ($return);
+        
+        return new JsonModel([]);
+
     }
     
     public function ajaxAction($params = array('name' => 'value')){   
