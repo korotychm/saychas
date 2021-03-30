@@ -217,6 +217,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-to-web' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-to-web',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'ajaxToWeb',
+                    ],
+                ],
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -286,6 +296,9 @@ return [
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
+        ],
+        '1c_request_links' => [
+            'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
         ],
     ],
     'doctrine' => [

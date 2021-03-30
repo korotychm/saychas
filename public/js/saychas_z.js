@@ -44,7 +44,8 @@ $(function() {
         var dataString = $("#formajax").serialize();
         $.ajax({	
         // beforeSend : function (){ $("#overload").stop().show(); },
-            url: "/ajax/toweb",
+            //url: "/ajax/toweb",
+            url: "/ajax-to-web",
             type:'POST', 
             cache: false,	
             data: dataString,
