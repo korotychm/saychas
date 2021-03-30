@@ -258,6 +258,19 @@ class IndexController extends AbstractActionController
         
         
     }
+    public function catalogAction()
+    {
+        $this->layout()->setTemplate('layout/catalog');
+        $categories = $this->categoryRepository->findAllCategories();
+        $providers = $this->providerRepository->findAll();
+        return new ViewModel([
+            "providers" => $providers,
+            "catalog" => $categories,
+        ]);
+        
+        
+        
+    }
     
     public function showStoreAction()
     {

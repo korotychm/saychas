@@ -74,6 +74,16 @@ return [
                     ],
                 ],
             ],
+            'catalog' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/catalog[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'catalog',
+                    ],
+                ],
+            ],
             'show-store' => [
                 'type'    => Literal::class,
                 'options' => [
