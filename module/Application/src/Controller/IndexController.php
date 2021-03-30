@@ -20,11 +20,13 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Service\ServiceInterface\HtmlProviderServiceInterface;
 use Application\Resource\StringResource;
 //use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
+use Laminas\Http\Response;
 
 class IndexController extends AbstractActionController
 {
@@ -38,10 +40,11 @@ class IndexController extends AbstractActionController
     private $productRepository;
     private $entityManager;
     private $config;
+    private $htmlServiceProvider;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager, $config)
+                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager, $config, HtmlProviderServiceInterface $htmlServiceProvider)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -51,6 +54,7 @@ class IndexController extends AbstractActionController
         $this->brandRepository = $brandRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
+        $this->htmlServiceProvider = $htmlServiceProvider;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -110,22 +114,19 @@ class IndexController extends AbstractActionController
     
     public function ajaxToWebAction()
     {
-        $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
-        $param=array(1,2,3,4,5);
         
         $url = $this->config['parameters']['1c_request_links']['get_product'];
-        // $url="http://SRV02:8000/SC/hs/site/get_product";
         $params = array('name' => 'value');
         $result = file_get_contents(
             $url, 
             false, 
-            stream_context_create(array(
-                'http' => array(
+            stream_context_create([
+                'http' => [
                 'method'  => 'POST',
                 'header'  => 'Content-type: application/x-www-form-urlencoded',
-                'content' => http_build_query($params))	
-            ))
+                'content' => http_build_query($params)]
+            ])
          );
         
         $return.="<pre>";
@@ -137,6 +138,65 @@ class IndexController extends AbstractActionController
         
         return new JsonModel([]);
 
+    }
+    
+    public function ajaxGetStoreAction()
+    {
+        //$id=$this->params()->fromRoute('id', '');
+        $post = $this->getRequest()->getPost();
+        
+        $url = $this->config['parameters']['1c_request_links']['get_store'];
+
+        $result = file_get_contents(
+            $url,
+            false,
+            stream_context_create(array(
+                'http' => array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/json',
+                'content' => $post->value
+                )
+            ))
+        );
+        
+        $r = print_r(json_decode($result,true),true);
+//        $return.="<pre>";
+//        $return.= date("r")."\n";
+//        if($result) {
+//            $return.=print_r(json_decode($result,true),true);
+//        }
+//        $return.="</pre>";
+//        exit ($return);
+//        $response = Response::fromString(<<<EOS
+//        HTTP/1.0 200 OK
+//        HeaderField1: header-field-value
+//        HeaderField2: header-field-value2
+//
+//        <html>
+//        <body>
+//            <pre>
+//                $r
+//            </pre>
+//        </body>
+//        </html>
+//        EOS);
+        $response = new Response();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+        $response->getHeaders()->addHeaders([
+            'HeaderField1' => 'header-field-value',
+            'HeaderField2' => 'header-field-value2',
+        ]);
+        //$r = $this->htmlServiceProvider->testHtml();
+        $response->setContent(<<<EOS
+        <html>
+        <body>
+                <pre>
+            $r
+                </pre>
+        </body>
+        </html>
+        EOS);
+        return $response;        
     }
     
     public function ajaxAction($params = array('name' => 'value')){   
@@ -170,14 +230,14 @@ class IndexController extends AbstractActionController
             $url="http://SRV02:8000/SC/hs/site/get_product";
             
             $result = file_get_contents(
-                $url, 
-                false, 
+                $url,
+                false,
                 stream_context_create(array(
                     'http' => array(
                     'method'  => 'POST',
                     'header'  => 'Content-type: application/json',
-                    'content' => $post -> value 
-                    )	
+                    'content' => $post->value
+                    )
                 ))
              );
             $return.="<pre>";
