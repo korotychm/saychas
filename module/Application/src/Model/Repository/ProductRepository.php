@@ -215,8 +215,8 @@ class ProductRepository implements ProductRepositoryInterface
         }
 
         foreach($result->data as $row) {
-            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list` ) VALUES ( '%s', '%s', %u, '%s', '%s', '%s', '%s', '%s' )",
-                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, '', '');
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', %u, '%s', '%s', '%s', '%s', '%s', '%s' )",
+                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, '', '', $row->brand_id);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
