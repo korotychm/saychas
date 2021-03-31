@@ -10,6 +10,8 @@ CREATE PROCEDURE get_products_by_categories
 BEGIN
 	DROP TABLE IF EXISTS temp;
 
+	SET @pv = cat_id;
+
 	CREATE TABLE temp AS SELECT * FROM (
 	SELECT  id as category_id
 	FROM    (SELECT * FROM category
@@ -17,7 +19,6 @@ BEGIN
 	        (SELECT @pv := cat_id) initialisation
 	WHERE   FIND_IN_SET(`category_sorted`.parent_id, @pv)
 	AND     LENGTH(@pv := CONCAT(@pv, ',', id)) ) temp;
-
 	SELECT  `p`.provider_id,
 		`p`.category_id,
 	        `pr`.`price` AS `price`,
@@ -44,7 +45,7 @@ BEGIN
 	        SELECT `store`.`provider_id` AS `provider_id` FROM `store`
 	) AND `p`.category_id IN ( SELECT category_id FROM temp );
 
-	SET @pv = cat_id;
+	-- SET @pv = cat_id;
 
 END//
 

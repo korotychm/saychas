@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 31, 2021 at 03:08 AM
+-- Generation Time: Mar 31, 2021 at 08:16 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -20,6 +20,54 @@ SET time_zone = "+00:00";
 --
 -- Database: `saychas_z`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+DROP PROCEDURE IF EXISTS `get_products_by_categories`$$
+CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`cat_id` VARCHAR(9), `store_list` TEXT)  BEGIN
+	DROP TABLE IF EXISTS temp;
+
+	CREATE TABLE temp AS SELECT * FROM (
+	SELECT  id as category_id
+	FROM    (SELECT * FROM category
+        	 ORDER BY parent_id, id) category_sorted,
+	        (SELECT @pv := cat_id) initialisation
+	WHERE   FIND_IN_SET(`category_sorted`.parent_id, @pv)
+	AND     LENGTH(@pv := CONCAT(@pv, ',', id)) ) temp;
+
+	SELECT  `p`.provider_id,
+		`p`.category_id,
+	        `pr`.`price` AS `price`,
+	        `b`.`rest` AS `rest`,
+	        `img`.`url_http` AS `url_http`,
+	        `brand`.`title` AS `brand_title`,
+
+                `store`.`title` AS `store_title`,
+                `store`.`address` AS `store_address`,
+                `store`.`description` AS `store_description`,
+
+                `p`.`param_value_list`,
+                `p`.`param_variable_list`,
+		`p`.`title`,
+		`p`.`description`,
+		`p`.`vendor_code`
+	FROM `product` AS `p`
+	        LEFT JOIN `price` AS `pr` ON `p`.`id` = `pr`.`product_id`
+	        LEFT JOIN `stock_balance` AS `b` ON `p`.`id` = `b`.`product_id`
+	        LEFT JOIN `product_image` AS `img` ON `p`.`id` = `img`.`product_id`
+	        LEFT JOIN `brand` AS `brand` ON `p`.`brand_id` = `brand`.`id`
+		LEFT JOIN `store` ON find_in_set(`store`.id, store_list)
+	WHERE `p`.`provider_id` IN (
+	        SELECT `store`.`provider_id` AS `provider_id` FROM `store`
+	) AND `p`.category_id IN ( SELECT category_id FROM temp );
+
+	SET @pv = cat_id;
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -185,7 +233,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`) VALUES
-('000000000001', '00003', '6', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '', '', '000002'),
+('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '', '', '000002'),
 ('000000000002', '00003', '9', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', '', '50141256', '', '', '000003'),
 ('000000000003', '00004', '11', 'Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R', '', '20068499', '', '', '000001');
 
@@ -226,10 +274,7 @@ INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
 ('00001', 'Globus CR', '', ''),
 ('00002', 'X5 Retail Group', '', ''),
 ('00004', 'Богатый Алекс', '', ''),
-('00003', 'Супер Продавец ООО', '', ''),
-('0', '0', '0', '0'),
-('A', 'A', 'A', 'A'),
-('', '', '', '');
+('00003', 'Супер Продавец ООО', '', '');
 
 -- --------------------------------------------------------
 
@@ -300,6 +345,25 @@ INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `ge
 ('000000005', '00004', 'На Волгоградке (м-видео)', '', '', '55.721462', '37.697468', ''),
 ('000000001', '00001', 'Globus(Шарикоподшипниковская)', '', '', '55.717229', '37.677831', ''),
 ('000000002', '00003', 'Магазин 1 (Барамба)', '', '', '55.657123', '37.739375', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `temp`
+--
+
+DROP TABLE IF EXISTS `temp`;
+CREATE TABLE `temp` (
+  `category_id` varchar(9) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `temp`
+--
+
+INSERT INTO `temp` (`category_id`) VALUES
+('000000001'),
+('000000002');
 
 -- --------------------------------------------------------
 
