@@ -22,7 +22,7 @@ class BrandRepositoryFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         if($requestedName instanceof BrandRepository){
-            throw new Exception("not instanceof StoreRepository");
+            throw new Exception("not instanceof BrandRepository");
         }
         
         $adapter = $container->get(AdapterInterface::class);

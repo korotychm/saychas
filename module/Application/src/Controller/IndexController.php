@@ -159,7 +159,7 @@ class IndexController extends AbstractActionController
             ))
         );
         
-        //$r = print_r(json_decode($result,true),true);
+        $r = print_r(json_decode($result,true),true);
 //        $return.="<pre>";
 //        $return.= date("r")."\n";
 //        if($result) {
@@ -186,7 +186,7 @@ class IndexController extends AbstractActionController
             'HeaderField1' => 'header-field-value',
             'HeaderField2' => 'header-field-value2',
         ]);
-        $r = $this->htmlProvider->testHtml();
+        //$r = $this->htmlProvider->testHtml();
         $response->setContent(<<<EOS
         <html>
         <body>

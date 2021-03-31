@@ -21,8 +21,8 @@ class StockBalanceRepositoryFactory implements FactoryInterface
    
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof PriceRepository){
-            throw new Exception("not instanceof StoreRepository");
+        if($requestedName instanceof StockBalanceRepository){
+            throw new Exception("not instanceof StockBalanceRepository");
         }
         
         $adapter = $container->get(AdapterInterface::class);
