@@ -14,7 +14,7 @@ class HtmlProviderServiceFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         if($requestedName instanceof HtmlProviderService){
-            throw new Exception("not instanceof StoreRepository");
+            throw new Exception("not instanceof HtmlProviderService");
         }
         
 //        $adapter = $container->get(AdapterInterface::class);

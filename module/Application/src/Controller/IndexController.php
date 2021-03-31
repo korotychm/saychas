@@ -20,7 +20,7 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
-use Application\Service\ServiceInterface\HtmlProviderServiceInterface;
+use Application\Service\HtmlProviderService;
 use Application\Resource\StringResource;
 //use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Post;
@@ -40,11 +40,11 @@ class IndexController extends AbstractActionController
     private $productRepository;
     private $entityManager;
     private $config;
-    private $htmlServiceProvider;
+    private $htmlProvider;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager, $config, HtmlProviderServiceInterface $htmlServiceProvider)
+                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -54,7 +54,7 @@ class IndexController extends AbstractActionController
         $this->brandRepository = $brandRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
-        $this->htmlServiceProvider = $htmlServiceProvider;
+        $this->htmlProvider = $htmlProvider;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -159,7 +159,7 @@ class IndexController extends AbstractActionController
             ))
         );
         
-        $r = print_r(json_decode($result,true),true);
+        //$r = print_r(json_decode($result,true),true);
 //        $return.="<pre>";
 //        $return.= date("r")."\n";
 //        if($result) {
@@ -186,7 +186,7 @@ class IndexController extends AbstractActionController
             'HeaderField1' => 'header-field-value',
             'HeaderField2' => 'header-field-value2',
         ]);
-        //$r = $this->htmlServiceProvider->testHtml();
+        $r = $this->htmlProvider->testHtml();
         $response->setContent(<<<EOS
         <html>
         <body>

@@ -3,9 +3,7 @@
 
 namespace Application\Service;
 
-use Application\Service\ServiceInterface\HtmlProviderServiceInterface;
-
-class HtmlProviderService implements HtmlProviderServiceInterface
+class HtmlProviderService
 {
     /**
      * Returns Html string
