@@ -307,8 +307,9 @@ class IndexController extends AbstractActionController
     }
     public function providerAction()
     {
+        $id=$this->params()->fromRoute('id', '');
         $this->layout()->setTemplate('layout/provider');
-        $categories = $this->categoryRepository->findAllCategories();
+        $categories = $this->categoryRepository->findAllCategories("", 0, $id);
         $providers = $this->providerRepository->findAll();
         return new ViewModel([
             "providers" => $providers,
@@ -320,13 +321,33 @@ class IndexController extends AbstractActionController
     }
     public function catalogAction()
     {
+        $id=$this->params()->fromRoute('id', '');
+
         $this->layout()->setTemplate('layout/catalog');
-        $categories = $this->categoryRepository->findAllCategories();
+        $categories = $this->categoryRepository->findAllCategories("", 0, $id);
+        
+        //$this->categoryRepository->findAllMatherCategories();
+       // exit;
+         $bread = $this->categoryRepository->findAllMatherCategories($id);
+         $bread = $this->htmlProvider->breadCrumbs($bread);
+         
+         
+        //   exit ($bread);
+        
+          try {  $categoryTitle = $this->categoryRepository->findCategory(['id' => $id])->getTitle();}
+          
+          catch (\Exception $e) {
+              $categoryTitle = "&larr;Выбери категорию товаров  ";
+          }     
+            
         $providers = $this->providerRepository->findAll();
         return new ViewModel([
             "providers" => $providers,
             "catalog" => $categories,
-        ]);
+            "title" => $categoryTitle,
+            "id" => $id,
+            "bread"=> $bread, //print_r($bread,true),
+         ]);
         
         
         

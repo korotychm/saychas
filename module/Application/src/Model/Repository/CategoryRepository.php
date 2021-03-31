@@ -85,6 +85,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function findAllCategories($echo = '', $i = '0', $idActive = false)
     {
+        
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
@@ -100,9 +101,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         foreach($results as $result) {
             if (true /**|| pubtv(id_1C_group) */) // если в ветке есть хоть один товар, надо функцию сделать тоже такую
             {
+                
+                ($idActive==$result['id'])?$class="class='open activ activecategoty'":$class="";
                 $groupName=stripslashes($result['title']);
                 //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
-                $echo.="<li><a href=#/catalog/".$result['id']."  >$groupName</a>";
+                $echo.="<li $class><a href=/catalog/".$result['id']."  >$groupName</a>";
                         $echo=$this->findAllCategories($echo, $result['id'],$idActive);
                 $echo.="</li>";
             }
@@ -112,6 +115,31 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
         
         return str_replace("<ul></ul>","",$echo);
+    }
+    
+    public function findAllMatherCategories($i=0, $echo=[]){
+        
+     //exit (date("r"));
+        //return "banzaii";// (date("r"));
+        
+     
+        $sql = new Sql($this->db);
+        $select = $sql->select();
+        $select->from('category');
+        $select->where(['id' => $i ]);
+//                не надо, блять это удалять!   
+ //               $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+ //             
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        
+          
+ 
+        foreach($results as $result) {        
+                 $echo[]=[$result['id'],$result['title']];
+            if ($result['parent_id']) $echo=$this->findAllMatherCategories($result['parent_id'], $echo);    
+            return $echo;
+        }
     }
 
     /**

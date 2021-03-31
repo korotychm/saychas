@@ -7,4 +7,9 @@ namespace Application\Service\ServiceInterface;
  */
 interface HtmlProviderServiceInterface {
     function testHtml();
+   
+    /*
+     * хлебные крочки получаем массив, возвращет HTML
+     */
+    //function breadCrumbs($bread=[]);
 }

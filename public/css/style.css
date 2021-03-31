@@ -45,3 +45,8 @@
   transition: all 0.2s ease 0s;
   width: 25px;
 }
+
+ .navlink  {float:right; display:inline-block; padding:12px; vertical-align:top }
+ #left-col {display:inline-block; width:24.5%; vertical-align:top}  
+ #main-col {display:inline-block; width:75%; vertical-align:top}
+ .content-col {display:block; padding:10px;}
