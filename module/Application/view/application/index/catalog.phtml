@@ -3,5 +3,28 @@
 //echo "id: ".$id;
 //print_r($this->catalog);
 
-
 ?>
+<?php if (isset ($error) ) {
+    echo $error;
+}
+?>
+      <div class="container"  style="position:relative; max-width:1400px; min-height:calc(100vh - 160px) " >
+            <div id="left-col">
+                <div class="content-col"><!-- h2>Каталог </h2 -->
+                    <ul id="tree">
+                        <?= $this->catalog ?>
+                    </ul>
+                </div>               
+            </div>
+            <div id="main-col">
+                 <?= $this->bread ?> 
+                <div class="content-col" style="" id="tovary"> 
+                    <h2><?= $this->title ?>  <?php if($this->id) echo "id: ".$this->id;?></h2>
+                    <div id="tovar-list"></div>
+                </div>               
+            </div><!-- comment -->
+            
+        </div>
+
+
+
