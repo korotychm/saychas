@@ -288,6 +288,26 @@ class IndexController extends AbstractActionController
               $productCardParam['rest']=$row->getRest();
               $productCardParam['articul']=$row->getVendorCode();
               $productCardParam['brand']=$row->getBrandTitle();
+              $productCardParam['description']=$row->getDescription();
+              
+              
+              /*
+p`.provider_id, `p`.category_id,
+ 22                 `pr`.`price` AS `price`,
+ 23                 `b`.`rest` AS `rest`,
+ 24                 `img`.`url_http` AS `url_http`,
+ 25                 `brand`.`title` AS `brand_title`,
+ 26                 
+ 27                 `store`.`title` AS `store_title`,
+ 28                 `store`.`address` AS `store_address`,
+ 29                 `store`.`description` AS `store_description`,
+ 30                 
+ 31                 `p`.`param_value_list`,
+ 32                 `p`.`param_variable_list`,
+ 33                 `p`.`title`,
+ 34                 `p`.`description`,
+ 35                 `p`.`vendor_code`               */
+              
               
               $return.= $this->htmlProvider->productCard($productCardParam);
             }/**/

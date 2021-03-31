@@ -1,5 +1,5 @@
 :root {
-    --brand-color: #900;
+    --brand-color: #181818;
 }
 
 .navbar {
@@ -30,6 +30,16 @@
     width:100%; height:100%; 
     background-color: rgba(255,255,255,.95);
 }
+.overcover {
+    display:block; 
+    position:absolute; 
+    z-index:100;
+    top:0; left:0; 
+    width:100%; height:100%; 
+    
+    background: rgba(255,255,255,.75) url(/img/loader.gif) center no-repeat;   
+    
+}
 #head {display:inline-block; width:100%; max-width:1400px; text-align:left; position:relative}
 #logo {display:inline-block; width:250px;height:100px; max-width:33.3%;  background:url(/img/saychas.png) center no-repeat; background-size: contain; }
 #mobile_nav_icon  {display:block; position: absolute; top:7px; left:70px; border:1px solid #888; padding:8px 6px ; border-radius:4px; }
@@ -50,3 +60,6 @@
  #left-col {display:inline-block; width:24.5%; vertical-align:top}  
  #main-col {display:inline-block; width:75%; vertical-align:top}
  .content-col {display:block; padding:10px;}
+ 
+ .bread-crumbs{display:block; color:#333; font-size:13px; line-height:1.8em}
+ .bread-crumbs-item, .bread-crumbs-item a {display:inline-block; text-decoration:none; color:#333; padding:0 4  px ;    }
