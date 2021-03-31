@@ -276,29 +276,22 @@ class IndexController extends AbstractActionController
         if ($id=="getproducts"){
             $products = $this->productRepository->findProductsByProviderIdAndExtraCondition($post -> shop, $param );
             $str = StringResource::PRODUCT_FAILURE_MESSAGE;
-            if (!count($products)) exit(date("r")."<h3>для магазина id:{$post -> shop} товаров не найдено</h3> "); 
+            
             $return.=date("r")."<br>";	
             $return.="id магазина: {$post -> shop}<hr>" ;
-            //$return.="<ul>";
+
             foreach ($products as $row){
-                $cena=(int)$row->getPrice();
-                $cena=$cena/100;
-                $cena= number_format($cena,2,".","&nbsp;");
-                
-                 $return.="<div class='productcard' >"
-                    ."   <div class='content opacity".(int)$row->getRest()."'>"
-                    ."       <img src='/images/product/".(($row->getUrlHttp())?$row->getUrlHttp():"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
-                    ."       <strong class='blok producttitle'><a  href=#product   >".$row->getTitle()."</a></strong>"
-                    ."       <span class='blok'>Id: ".$row->getid()."</span>"
-                    ."       <span class='blok'>Артикул: ".$row->getVendorCode()."</span>"
-                  //  ."       <span class='blok'>Торговая марка: ".$row->getBrandTitle()."</span>"                         
-                    ."       <span class='blok'>Остаток: ".$row->getRest()."</span>"
-                    ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
-                    //."       <span class='blok price'>Цена: ".$row->getUrlHttp()."</span>"
-                    ."   </div>"
-                    ."</div>"; 
+              $productCardParam['price']=$row->getPrice();
+              $productCardParam['title']=$row->getTitle();
+              $productCardParam['img']=$row->getUrlHttp();
+              $productCardParam['id']=$row->getId();
+              $productCardParam['rest']=$row->getRest();
+              $productCardParam['articul']=$row->getVendorCode();
+              $productCardParam['brand']=$row->getBrandTitle();
+              
+              $return.= $this->htmlProvider->productCard($productCardParam);
             }/**/
-            //$return.="</ul>";
+            
             
             exit ($return);
         }	
@@ -330,6 +323,7 @@ class IndexController extends AbstractActionController
        // exit;
          $bread = $this->categoryRepository->findAllMatherCategories($id);
          $bread = $this->htmlProvider->breadCrumbs($bread);
+         
          
          
         //   exit ($bread);
