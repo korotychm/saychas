@@ -18,8 +18,7 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function breadCrumbs($a=[])
-    {
+    public function breadCrumbs($a=[]){
         if (count($a)):
             //<span class='bread-crumbs-item'></span>"
             $return[]="Каталог";
@@ -30,5 +29,42 @@ class HtmlProviderService
            return   "<span class='bread-crumbs-item'>".join("</span> / <span class='bread-crumbs-item'>",$return)."</span>";
         endif;
     }
+    
+    /**
+     * Returns Html string
+     * @return string
+     */
+    public function productCard($a=[]){
+        if (count($a)):
+              /*  
+              $productCardParam['price']
+              $productCardParam['title']
+              $productCardParam['img']
+              $productCardParam['id']
+              $productCardParam['rest']
+              $productCardParam['articul']
+              $productCardParam['brand']
+            */
+                $cena=(int)$a['price'];
+                $cena=$cena/100;
+                $cena= number_format($cena,2,".","&nbsp;");
+                
+                 $return.="<div class='productcard' >"
+                    ."   <div class='content opacity".(int)$a['rest']."'>"
+                    ."       <img src='/images/product/".(($a['img'])?$a['img']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    ."       <strong class='blok producttitle'><a  href=#product   >".$a['title']."</a></strong>"
+                    ."       <span class='blok'>Id: ".$a['id']."</span>"
+                    ."       <span class='blok'>Артикул: ".$a['articul']."</span>"
+                    ."       <span class='blok'>Торговая марка: ".$a['brand']."</span>"                         
+                    ."       <span class='blok'>Остаток: ".$a['rest']."</span>"
+                    ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
+                    ."   </div>"
+                    ."</div>"; 
+                 
+                 return $return;
+        endif;
+    
+    }
+    
     
 }

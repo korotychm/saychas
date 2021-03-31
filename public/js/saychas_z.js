@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    
+    $("#tree").slideDown("slow");
+})
 $(function() { 
      $("#tree22").treeview({
                   persist: "location",
