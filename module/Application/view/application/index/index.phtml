@@ -17,7 +17,7 @@
 
     <a class="btn btn-primary btn-lg" href="https://github.com/laminas" target="_blank">Check Laminas on GitHub &raquo;</a>
 </div>
-<?php if(true) : ?>
+<?php if(false) : ?>
 <?php echo "<h1>".$this->provider->getTitle()."</h1>" ?>;
 <?php echo "<h1>".$this->product->getTitle()."</h1>" ?>;
 <?php echo "<h1>".$this->brand->getTitle()."</h1>" ?>;
@@ -25,6 +25,8 @@
 <?php echo "<h1>".$this->category->getTitle()."</h1>" ?>;
 
 <?php endif; ?>
+
+<?php echo $this->escapeHtml('<h1>banzaii</h1>'); ?>
 
 <div class="card-deck">
     <div class="card">

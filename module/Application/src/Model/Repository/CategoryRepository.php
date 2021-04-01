@@ -116,21 +116,6 @@ class CategoryRepository implements CategoryRepositoryInterface
         return str_replace("<ul></ul>","",$echo);
     }
     
-    public function findCategoriesInDb($i='0', $echo=[])
-    {
-        $sql = new Sql($this->db);
-        $select = $sql->select();
-        $select->from('category');
-        $select->where(['parent_id' => $i ]);
-        
-//      Do not delete the following line
-//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
-              
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $results = $statement->execute();
-
-        return $this->findCategoryTree($results, $i, $echo);
-    }
     /**
      * Return array of category ids
      * 
