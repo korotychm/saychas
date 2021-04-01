@@ -85,7 +85,6 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function findAllCategories($echo = '', $i = '0', $idActive = false)
     {
-        
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
@@ -117,14 +116,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         return str_replace("<ul></ul>","",$echo);
     }
     
-    /**
-     * Return array of category ids
-     * 
-     * @param int $i
-     * @param array $echo
-     * @return array
-     */
-    public function findTreeCategories($i=0, $echo=[])
+    public function findCategoriesInDb($i='0', $echo=[])
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
@@ -136,12 +128,34 @@ class CategoryRepository implements CategoryRepositoryInterface
               
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
-    
+
+        return $this->findCategoryTree($results, $i, $echo);
+    }
+    /**
+     * Return array of category ids
+     * 
+     * @param int $i
+     * @param array $echo
+     * @return array
+     */
+    public function findCategoryTree($i='0', $echo=[])
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select();
+        $select->from('category');
+        $select->where(['parent_id' => $i ]);
+        
+//      Do not delete the following line
+//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+              
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        
         foreach($results as $result) {        
             $echo[]=$result['id'];
-            $echo=$this->findTreeCategories($result['id'], $echo);    
-            return $echo;
+            $echo=$this->findCategoryTree($result['id'], $echo);
         }
+        return $echo;
     }
     
     /**

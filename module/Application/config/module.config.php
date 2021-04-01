@@ -54,6 +54,16 @@ return [
 //                    ],
 //                ],
 //            ],
+            'testing' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/testing[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'testing',
+                    ],
+                ],
+            ],
             'show-product' => [
                 'type'    => Segment::class,
                 'options' => [

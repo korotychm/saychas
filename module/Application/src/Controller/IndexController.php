@@ -196,7 +196,7 @@ class IndexController extends AbstractActionController
         </body>
         </html>
         EOS);
-        return $response;        
+        return $response;
     }
     
     public function ajaxAction($params = array('name' => 'value')){   
@@ -318,6 +318,7 @@ p`.provider_id, `p`.category_id,
         header('HTTP/1.0 404 Not Found');
         exit(); 
     }
+
     public function providerAction()
     {
         $id=$this->params()->fromRoute('id', '');
@@ -329,9 +330,8 @@ p`.provider_id, `p`.category_id,
             "catalog" => $categories,
         ]);
         
-        
-        
     }
+
     public function catalogAction()
     {
         $id=$this->params()->fromRoute('id', '');
@@ -344,15 +344,14 @@ p`.provider_id, `p`.category_id,
          $bread = $this->categoryRepository->findAllMatherCategories($id);
          $bread = $this->htmlProvider->breadCrumbs($bread);
          
-         
-         
         //   exit ($bread);
         
-          try {  $categoryTitle = $this->categoryRepository->findCategory(['id' => $id])->getTitle();}
-          
-          catch (\Exception $e) {
-              $categoryTitle = "&larr;Выбери категорию товаров  ";
-          }     
+        try {
+            $categoryTitle = $this->categoryRepository->findCategory(['id' => $id])->getTitle();
+        }
+        catch (\Exception $e) {
+            $categoryTitle = "&larr;Выбери категорию товаров  ";
+        }     
             
         $providers = $this->providerRepository->findAll();
         return new ViewModel([
@@ -361,10 +360,8 @@ p`.provider_id, `p`.category_id,
             "title" => $categoryTitle,
             "id" => $id,
             "bread"=> $bread, //print_r($bread,true),
-         ]);
-        
-        
-        
+        ]);
+
     }
     
     public function showStoreAction()
@@ -426,6 +423,17 @@ p`.provider_id, `p`.category_id,
         return new \Laminas\Diactoros\Response\JsonResponse(['banzaii' => 'vonzaii'], 401);
         
         echo "id = ". $id;
+        exit;
+    }
+    
+    public function testingAction()
+    {
+        $id=$this->params()->fromRoute('id', '0');
+        //$id = $this->escapeHtml($id);
+        $categoryTree = $this->categoryRepository->findCategoryTree('' . $id);
+        echo '<pre>';
+        print_r($categoryTree);
+        echo '</pre>';
         exit;
     }
 }

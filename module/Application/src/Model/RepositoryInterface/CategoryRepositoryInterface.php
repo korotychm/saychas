@@ -30,15 +30,14 @@ interface CategoryRepositoryInterface
      *
      * @return array  
      */
-    
-     public function findTreeCategories($i=0, $echo=[]);
-     /**
-     * Return a single application test.
-     *
-     * @param  int $id Identifier of the test to return.
-     * @return Category
-     */
-   
+    public function findCategoryTree($i=0, $echo=[]);
+     
+    /**
+    * Return an array of category id.
+    *
+    * @param  int $id Identifier of the test to return.
+    * @return array of category id
+    */
     public function findCategory($id);
     
     /**
