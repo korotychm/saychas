@@ -1,6 +1,8 @@
 $(document).ready(function(){
     
-    $("#tree").slideDown("slow");
+    $("#tree").delay(500).slideDown("slow");
+    $(".overcover").delay(500).fadeOut("slow");
+	window.onbeforeunload = function (){$(".overcover").stop().fadeIn();}	
 })
 $(function() { 
      $("#tree22").treeview({

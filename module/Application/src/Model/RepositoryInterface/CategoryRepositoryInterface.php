@@ -23,6 +23,15 @@ interface CategoryRepositoryInterface
    
     public function findAllMatherCategories ($i=0, $echo=[]);
 
+   /**
+     * Return массив всех id дочерних категорий 
+     *
+     * Each entry should be a Test instance.
+     *
+     * @return array  
+     */
+    
+     public function findTreeCategories($i=0, $echo=[]);
      /**
      * Return a single application test.
      *
