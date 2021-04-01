@@ -203,7 +203,8 @@ class ProductRepository implements ProductRepositoryInterface
         $sql = new Sql($this ->db);
         $subSelectAvailbleStore = $sql ->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
-                
+        $where = new \Laminas\Db\Sql\Where();
+        $where->in('store.id', $params);
         $select = $sql->select('');
         $select
             ->from(['p' => 'product'])
@@ -231,7 +232,12 @@ class ProductRepository implements ProductRepositoryInterface
                 'p.brand_id = brand.id',
                 ['brandtitle'=>'title'],           
                 $select::JOIN_LEFT  
-            )   
+            )
+            ->join(
+                   'store', $where,
+                    ['store_id' => 'id'],
+                    $select::JOIN_LEFT
+            )
             ->where->in('p.provider_id', $subSelectAvailbleStore)
             ->where->and
             ->where->in('b.store_id', $params)

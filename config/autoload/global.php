@@ -14,6 +14,7 @@
 
 use Laminas\Db\Adapter;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Laminas\Session;
 //echo __DIR__ . '/../src/Entity';
 //exit;
 return [
@@ -61,6 +62,19 @@ return [
             ],
         ],
     ],
+//    'session_manager' => [
+//        'config' => [
+//            'class' => Session\Config\SessionConfig::class,
+//            'options' => [
+//                'name' => 'myapp',
+//            ],
+//        ],
+//        'storage' => Session\Storage\SessionArrayStorage::class,
+//        'validators' => [
+//            Session\Validator\RemoteAddr::class,
+//            Session\Validator\HttpUserAgent::class,
+//        ],
+//    ],
     
 //    'doctrine' => [        
 //        // migrations configuration

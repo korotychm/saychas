@@ -27,6 +27,8 @@ use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
 use Laminas\Http\Response;
+use Laminas\Session;
+use Laminas\Session\Container;
 
 class IndexController extends AbstractActionController
 {
@@ -76,7 +78,8 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
-        
+        $container = new Container('namespace');
+
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
 //            'database' => 'saychas_z',
@@ -92,6 +95,7 @@ class IndexController extends AbstractActionController
 //        $selectString = $sql->buildSqlString($select);
 //        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
         return new ViewModel([
+            'fooItem' => $container->item
 //            'tests' => $this->testRepository->findAllTests(),
 //            'first' => $this->testRepository->findTest(4),
 //            'provider' => $this->providerRepository->find(['id' => '00004']),
@@ -463,6 +467,9 @@ class IndexController extends AbstractActionController
     
     public function testingAction()
     {
+        $container = new Container('namespace');
+        $container->item = 'foo';
+
         $id=$this->params()->fromRoute('id', '0');
 
         $category_id=$this->params()->fromRoute('id', '0');
