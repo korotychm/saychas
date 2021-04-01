@@ -94,12 +94,12 @@ class IndexController extends AbstractActionController
         return new ViewModel([
 //            'tests' => $this->testRepository->findAllTests(),
 //            'first' => $this->testRepository->findTest(4),
-            'provider' => $this->providerRepository->find(['id' => '00004']),
-            'product' => $this->productRepository->find(['id' => '000000000004']),
-            'brand' => $this->brandRepository->find(['id' => '000002']),
-            'store' => $this->storeRepository->find(['id' => '000000003']),
-            'category' => $this->categoryRepository->findCategory(['id' => '29']),
-            'providers' => $this->providerRepository->findAll(),
+//            'provider' => $this->providerRepository->find(['id' => '00004']),
+//            'product' => $this->productRepository->find(['id' => '000000000004']),
+//            'brand' => $this->brandRepository->find(['id' => '000002']),
+//            'store' => $this->storeRepository->find(['id' => '000000003']),
+//            'category' => $this->categoryRepository->findCategory(['id' => '29']),
+//            'providers' => $this->providerRepository->findAll(),
         ]);
     }
     
@@ -428,12 +428,19 @@ p`.provider_id, `p`.category_id,
     
     public function testingAction()
     {
-        $id=$this->params()->fromRoute('id', '0');
-        //$id = $this->escapeHtml($id);
-        $categoryTree = $this->categoryRepository->findCategoryTree('' . $id);
-        echo '<pre>';
-        print_r($categoryTree);
-        echo '</pre>';
+        $category_id=$this->params()->fromRoute('id', '0');
+
+        $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
+        
+        $products = $this->productRepository->filterProductsByStores(['000000003', '000000008', '000000009']);
+        
+        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
+        
+        foreach($filteredProducts as $r) {
+            echo '<pre>';
+            print_r($r);
+            echo '</pre>';
+        }
         exit;
     }
 }

@@ -127,18 +127,18 @@ class ProductRepository implements ProductRepositoryInterface
      * The store is also listed as accessible
      * 
      * @param int $storeId
-     * @param array $param
+     * @param array $params
      * @return Product[]
      */
-    public function findProductsByProviderIdAndExtraCondition($storeId, $param)  {
+    public function findProductsByProviderIdAndExtraCondition($storeId, $params=[])  {
         $sql = new Sql($this ->db);
         $subSelectAvailbleStore = $sql ->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
         $subSelectAvailbleStore 
-            ->where->equalTo('id', $storeId)
+            ->where->equalTo('id', $storeId);
          /* ->where->and 
-            ->where->in('id', $param)/**/
-        ;        
+            ->where->in('id', $params);/**/
+                
         $select = $sql->select('');
         $select
             ->from(['p' => 'product'])
@@ -172,29 +172,101 @@ class ProductRepository implements ProductRepositoryInterface
             /*->where->and
             ->where->equalTo('pr.store_id', $storeId) /**/  
             ->where->and
-            ->where->equalTo('b.store_id', $storeId) /**/  
+            ->where->equalTo('b.store_id', $storeId)
             //->group('p.id')
         ;
         
- //                не надо, блять это удалять!   
- //               $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
- //       
+//      Do not delete the following line
+//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+       
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) return [];
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
        
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->productPrototype
         );
         $resultSet->initialize($result);
-/*/        foreach($resultSet as $product) {
+        /*/foreach($resultSet as $product) {
             echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
         }
-        exit; /**/
+        exit;/**/
+        
         return $resultSet;
+    }
+
+    public function filterProductsByStores(/*$storeId,*/ $params=[])  {
+        $sql = new Sql($this ->db);
+        $subSelectAvailbleStore = $sql ->select('store');
+        $subSelectAvailbleStore ->columns(['provider_id']);
+                
+        $select = $sql->select('');
+        $select
+            ->from(['p' => 'product'])
+            ->columns(['*'])
+            ->join(
+                ['pr' => 'price'],
+                'p.id = pr.product_id',
+                ['price'],           
+                $select::JOIN_LEFT  
+            ) 
+            ->join(
+                ['b' => 'stock_balance'],
+                'p.id = b.product_id',
+                ['rest'],           
+                $select::JOIN_LEFT  
+            )      
+            ->join(
+                ['img' => 'product_image'],
+                'p.id = img.product_id',
+                ['url_http'],           
+                $select::JOIN_LEFT  
+            )
+            ->join(
+                ['brand' => 'brand'],
+                'p.brand_id = brand.id',
+                ['brandtitle'=>'title'],           
+                $select::JOIN_LEFT  
+            )   
+            ->where->in('p.provider_id', $subSelectAvailbleStore)
+            ->where->and
+            ->where->in('b.store_id', $params)
+        ;
+        
+//      Do not delete the following line
+//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+//      echo $selectString;
+//      exit;
+       
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+       
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->productPrototype
+        );
+        $resultSet->initialize($result);
+        
+        return $resultSet;
+    }
+    
+    public function filterProductsByCategories($products, $categories)
+    {
+        $filteredProducts = [];
+        foreach ($products as $product) {
+            if(in_array($product->getCategoryId(), $categories)) {
+                $filteredProducts[] = $product;
+            }
+        }
+        return $filteredProducts;
     }
     
     /**
