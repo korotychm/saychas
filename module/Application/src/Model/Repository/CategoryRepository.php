@@ -124,8 +124,8 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @param array $echo
      * @return array
      */
-    public function findTreeCategories($i=0, $echo=[]){
-        
+    public function findTreeCategories($i=0, $echo=[])
+    {   
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
@@ -151,8 +151,8 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @param array $echo
      * @return array
      */
-    public function findAllMatherCategories($i=0, $echo=[]){
-        
+    public function findAllMatherCategories($i=0, $echo=[])
+    {    
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
