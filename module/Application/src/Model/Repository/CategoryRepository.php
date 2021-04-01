@@ -117,45 +117,58 @@ class CategoryRepository implements CategoryRepositoryInterface
         return str_replace("<ul></ul>","",$echo);
     }
     
+    /**
+     * Return array of category ids
+     * 
+     * @param int $i
+     * @param array $echo
+     * @return array
+     */
     public function findTreeCategories($i=0, $echo=[]){
         
-      
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
         $select->where(['parent_id' => $i ]);
-//                не надо, блять это удалять!   
- //               $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+        
+//      Do not delete the following line
+//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
               
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
     
         foreach($results as $result) {        
-                 $echo[]=$result['id'];
-                 $echo=$this->findTreeCategories($result['id'], $echo);    
+            $echo[]=$result['id'];
+            $echo=$this->findTreeCategories($result['id'], $echo);    
             return $echo;
-            }
         }
+    }
     
-    
+    /**
+     * Return array of arrays [category id, category title]
+     * 
+     * @param int $i
+     * @param array $echo
+     * @return array
+     */
     public function findAllMatherCategories($i=0, $echo=[]){
         
-     
         $sql = new Sql($this->db);
         $select = $sql->select();
         $select->from('category');
         $select->where(['id' => $i ]);
-//                не надо, блять это удалять!   
-//               $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
-             
+        
+//      Do not delete the following line
+//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
+              
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
-        
-          
  
         foreach($results as $result) {        
-                 $echo[]=[$result['id'],$result['title']];
-            if ($result['parent_id']) $echo=$this->findAllMatherCategories($result['parent_id'], $echo);    
+            $echo[]=[$result['id'],$result['title']];
+            if ($result['parent_id']) {
+                $echo=$this->findAllMatherCategories($result['parent_id'], $echo);
+            }
             return $echo;
         }
     }
