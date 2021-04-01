@@ -21,21 +21,22 @@
     </head>
     <body>
         <div class="overcover"></div>
+       
         <div id="header" class="blokc">   
             <div id="head">
                 <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
             <div class="iblok" id="logo" ></div>
+             <div class="iblok"><?= $this->addressform ?></div>
                <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
                <a class="navlink" href="<?= $this->url('preview') ?>">Меню</a>
                <a class="navlink" href="<?= $this->url('provider') ?>" >Магазины</a>
                <a class="navlink" href="<?= $this->url('catalog') ?>" >Каталог</a>
                <a class="navlink" href="http://localhost/phpmyadmin">pma</a>
             </div>
-        </div>
-                           
+        </div> 
+        <div class="full-wrap"><div id="content">                          
         <?= $this->content ?>                    
-       
-    <?php // phpinfo()?>
+        </div></div>
         <footer>
          <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
         </footer>

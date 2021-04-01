@@ -1,10 +1,14 @@
 <?php  
 //$id=$this->params()->fromRoute('id', '');
 //echo "id: ".$id;
-//print_r($this->catalog); ?>
+//print_r($this->catalog); 
+/*<?= $this->addressform ?>*/
+?>
 <div class="container"  style="position:relative; max-width:1400px; min-height:calc(100vh - 160px) " >
             <div id="left-col">
-                <div class="content-col"><!-- h2>Каталог </h2 -->
+                <div class="content-col">
+                    
+                    <!-- h2>Каталог </h2 -->
                     <ul id="tree" class="tree" style="display:none">
                         <?= $this->catalog ?>
                     </ul>

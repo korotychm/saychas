@@ -57,6 +57,8 @@
 }
 
  .navlink  {float:right; display:inline-block; padding:12px; vertical-align:top }
+ .full-wrap {display:block; text-align:center}
+ #content {display:inline-block; width:100%; max-width:1600px; text-align:left}
  #left-col {display:inline-block; width:24.5%; vertical-align:top}  
  #main-col {display:inline-block; width:75%; vertical-align:top}
  .content-col {display:block; padding:10px;}

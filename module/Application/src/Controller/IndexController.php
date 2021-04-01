@@ -73,12 +73,14 @@ class IndexController extends AbstractActionController
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
         // Return the response
+        $this->layout()->setTemplate('layout/mainpage');
         return $response;
+        
     }
     
     public function indexAction()
     {
-        $container = new Container('namespace');
+        $container = new Container(StringResource::SESSION_NAMESPACE);
 
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
@@ -301,19 +303,7 @@ class IndexController extends AbstractActionController
                     'param_value'=>$row->getParamValueList(),
                     'param_value'=>$row->getParamValueList(),
                 ];
-                /*
-                
-                $productCardParam['price']=$row->getPrice();
-                $productCardParam['title']=$row->getTitle();
-                $productCardParam['img']=$row->getUrlHttp();
-                $productCardParam['id']=$row->getId();
-                $productCardParam['rest']=$row->getRest();
-                $productCardParam['articul']=$row->getVendorCode();
-                $productCardParam['brand']=$row->getBrandTitle();
-                $productCardParam['description']=$row->getDescription();
-                * 
-                *
-                *
+                /*                
                 provider_id
                 category_id
                 price
@@ -328,6 +318,9 @@ class IndexController extends AbstractActionController
                 title
                 description
                 vendor_code
+                howHour
+                 * 
+                 * 
                  */
                $return.= $this->htmlProvider->productCard($productCardParam);
             }/**/
@@ -365,6 +358,10 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->filterProductsByStores(['000000003', '000000008', '000000009']);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
+        
+        
         foreach ($filteredProducts as $row){
               $productCardParam = [
                     'price'=>$row->getPrice(),
@@ -379,9 +376,10 @@ class IndexController extends AbstractActionController
                     'param_value'=>$row->getParamValueList(),
                 ];
         
+            $returnProduct.= $this->htmlProvider->productCard($productCardParam);
         }
         
-        $returnProduct= $this->htmlProvider->productCard($productCardParam);
+        
         
         
         try {
@@ -398,7 +396,8 @@ class IndexController extends AbstractActionController
             "title" => $categoryTitle,
             "id" => $category_id,
             "bread"=> $bread,
-            'priducts'=> $returnProduct,  //print_r($bread,true),
+            'priducts'=> $returnProduct,
+            'addressform'=> $addresForm."", //print_r($bread,true),
         ]);
 
     }
@@ -467,7 +466,7 @@ class IndexController extends AbstractActionController
     
     public function testingAction()
     {
-        $container = new Container('namespace');
+        $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->item = 'foo';
 
         $id=$this->params()->fromRoute('id', '0');

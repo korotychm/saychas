@@ -18,7 +18,8 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function breadCrumbs($a=[]){
+    public function breadCrumbs($a=[])
+    {
         if (count($a)):
             //<span class='bread-crumbs-item'></span>"
             $return[]="Каталог";
@@ -34,7 +35,8 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function productCard($a=[]){
+    public function productCard($a=[])
+    {
         if (count($a)):
               /*  
               $productCardParam['price']
@@ -64,6 +66,24 @@ class HtmlProviderService
                  return $return;
         endif;
     
+    }
+    
+    public function inputUserAddressForm ($a=[])
+    {
+        //exit(print_r($a));
+        if (count($a)):
+            if($a['seseionUserAddress']){
+              $openir=" none ";
+              $return.="
+                <div class='geo'>".$a['seseionUserAdres']." </div>
+               <span class=slideDown rel='address' >изменить</span>";
+            }
+            
+            $return.='<input id="address-input" name="suggestions '.$openir.'"  placeholder="укажи адрес доставки"/>';
+            
+           return $return;   
+        endif;
+        
     }
     
     
