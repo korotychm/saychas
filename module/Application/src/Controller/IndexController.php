@@ -156,8 +156,12 @@ class IndexController extends AbstractActionController
                 'header'  => 'Content-type: application/json',
                 'content' => $post->value
                 )
-            ))
+                ))
         );
+        
+        
+               
+        
         
         $r = print_r(json_decode($result,true),true);
 //        $return.="<pre>";
@@ -281,39 +285,50 @@ class IndexController extends AbstractActionController
             $return.="id магазина: {$post -> shop}<hr>" ;
 
             foreach ($products as $row){
-              $productCardParam['price']=$row->getPrice();
-              $productCardParam['title']=$row->getTitle();
-              $productCardParam['img']=$row->getUrlHttp();
-              $productCardParam['id']=$row->getId();
-              $productCardParam['rest']=$row->getRest();
-              $productCardParam['articul']=$row->getVendorCode();
-              $productCardParam['brand']=$row->getBrandTitle();
-              $productCardParam['description']=$row->getDescription();
-              
-              
-              /*
-p`.provider_id, `p`.category_id,
- 22                 `pr`.`price` AS `price`,
- 23                 `b`.`rest` AS `rest`,
- 24                 `img`.`url_http` AS `url_http`,
- 25                 `brand`.`title` AS `brand_title`,
- 26                 
- 27                 `store`.`title` AS `store_title`,
- 28                 `store`.`address` AS `store_address`,
- 29                 `store`.`description` AS `store_description`,
- 30                 
- 31                 `p`.`param_value_list`,
- 32                 `p`.`param_variable_list`,
- 33                 `p`.`title`,
- 34                 `p`.`description`,
- 35                 `p`.`vendor_code`               */
-              
-              
-              $return.= $this->htmlProvider->productCard($productCardParam);
+              $productCardParam = [
+                    'price'=>$row->getPrice(),
+                    'title'=>$row->getTitle(),
+                    'img'=>$row->getUrlHttp(),
+                    'id'=>$row->getId(),
+                    'rest'=>$row->getRest(),
+                    'articul'=>$row->getVendorCode(),
+                    'brand'=>$row->getBrandTitle(),
+                    'description'=>$row->getDescription(),
+                    'param_value'=>$row->getParamValueList(),
+                    'param_value'=>$row->getParamValueList(),
+                ];
+                /*
+                
+                $productCardParam['price']=$row->getPrice();
+                $productCardParam['title']=$row->getTitle();
+                $productCardParam['img']=$row->getUrlHttp();
+                $productCardParam['id']=$row->getId();
+                $productCardParam['rest']=$row->getRest();
+                $productCardParam['articul']=$row->getVendorCode();
+                $productCardParam['brand']=$row->getBrandTitle();
+                $productCardParam['description']=$row->getDescription();
+                * 
+                *
+                *
+                provider_id
+                category_id
+                price
+                rest
+                url_http
+                brand_title
+                store_title
+                store_address
+                store_description
+                param_value_list
+                param_variable_list
+                title
+                description
+                vendor_code
+                 */
+               $return.= $this->htmlProvider->productCard($productCardParam);
             }/**/
             
-            
-            exit ($return);
+            exit ($return); 
         }	
         header('HTTP/1.0 404 Not Found');
         exit(); 
@@ -322,7 +337,7 @@ p`.provider_id, `p`.category_id,
     public function providerAction()
     {
         $id=$this->params()->fromRoute('id', '');
-        $this->layout()->setTemplate('layout/provider');
+        $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
         $providers = $this->providerRepository->findAll();
         return new ViewModel([
@@ -336,7 +351,7 @@ p`.provider_id, `p`.category_id,
     {
         $id=$this->params()->fromRoute('id', '');
 
-        $this->layout()->setTemplate('layout/catalog');
+        $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
         
         //$this->categoryRepository->findAllMatherCategories();
@@ -430,7 +445,7 @@ p`.provider_id, `p`.category_id,
     {
         $id=$this->params()->fromRoute('id', '0');
         //$id = $this->escapeHtml($id);
-        $categoryTree = $this->categoryRepository->findCategoryTree('' . $id);
+        $categoryTree = $this->categoryRepository->findCategoryTree($id);
         echo '<pre>';
         print_r($categoryTree);
         echo '</pre>';

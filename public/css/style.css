@@ -8,8 +8,8 @@
 .navbar h1 {color:#fff}
 
 .btn-primary {
-    background-color: var(--brand-color !IMPORTANT);
-    border-color: var(--brand-color !IMPORTANT);
+    background-color: var(--brand-color) !IMPORTANT;
+    border-color: var(--brand-color) !IMPORTANT;
 }
 
 .blok, blokr, .blokc {display:block; clear:both; text-align:left}
@@ -41,7 +41,7 @@
     
 }
 #head {display:inline-block; width:100%; max-width:1400px; text-align:left; position:relative}
-#logo {display:inline-block; width:250px;height:100px; max-width:33.3%;  background:url(/img/saychas.png) center no-repeat; background-size: contain; }
+#logo {display:inline-block; width:255px;height:100px; max-width:33.3%;  background:url(/img/saychas.png) 5px -45px repeat-y; background-size: contain; }
 #mobile_nav_icon  {display:block; position: absolute; top:7px; left:70px; border:1px solid #888; padding:8px 6px ; border-radius:4px; }
 .mobile_nav_icon {
   border-bottom: 10px double #888;
@@ -63,3 +63,6 @@
  
  .bread-crumbs{display:block; color:#333; font-size:13px; line-height:1.8em}
  .bread-crumbs-item, .bread-crumbs-item a {display:inline-block; text-decoration:none; color:#333; padding:0 4  px ;    }
+ 
+ footer {border-top:1px solid #ccc; padding-top:0 15px;   }
+ #tree.tree {/*font-size:1.1rem;*/ font-weight:500}
