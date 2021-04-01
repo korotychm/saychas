@@ -349,32 +349,52 @@ class IndexController extends AbstractActionController
 
     public function catalogAction()
     {
-        $id=$this->params()->fromRoute('id', '');
+        $category_id=$this->params()->fromRoute('id', '');
 
         $this->layout()->setTemplate('layout/mainpage');
-        $categories = $this->categoryRepository->findAllCategories("", 0, $id);
-        
-        //$this->categoryRepository->findAllMatherCategories();
-       // exit;
-         $bread = $this->categoryRepository->findAllMatherCategories($id);
-         $bread = $this->htmlProvider->breadCrumbs($bread);
+        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        $bread = $this->categoryRepository->findAllMatherCategories($category_id);
+        $bread = $this->htmlProvider->breadCrumbs($bread);
          
-        //   exit ($bread);
+     
+        $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
+        $products = $this->productRepository->filterProductsByStores(['000000003', '000000008', '000000009']);
+        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
+        
+        foreach ($filteredProducts as $row){
+              $productCardParam = [
+                    'price'=>$row->getPrice(),
+                    'title'=>$row->getTitle(),
+                    'img'=>$row->getUrlHttp(),
+                    'id'=>$row->getId(),
+                    'rest'=>$row->getRest(),
+                    'articul'=>$row->getVendorCode(),
+                    'brand'=>$row->getBrandTitle(),
+                    'description'=>$row->getDescription(),
+                    'param_value'=>$row->getParamValueList(),
+                    'param_value'=>$row->getParamValueList(),
+                ];
+        
+        }
+        
+        $returnProduct= $this->htmlProvider->productCard($productCardParam);
+        
         
         try {
-            $categoryTitle = $this->categoryRepository->findCategory(['id' => $id])->getTitle();
+            $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
         catch (\Exception $e) {
             $categoryTitle = "&larr;Выбери категорию товаров  ";
         }     
             
-        $providers = $this->providerRepository->findAll();
+        
         return new ViewModel([
-            "providers" => $providers,
+        
             "catalog" => $categories,
             "title" => $categoryTitle,
-            "id" => $id,
-            "bread"=> $bread, //print_r($bread,true),
+            "id" => $category_id,
+            "bread"=> $bread,
+            'priducts'=> $returnProduct,  //print_r($bread,true),
         ]);
 
     }
@@ -460,4 +480,6 @@ class IndexController extends AbstractActionController
         }
         exit;
     }
+    
+    
 }

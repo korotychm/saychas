@@ -19,32 +19,26 @@
     <!-- Scripts -->
         <?= $this->headScript() ?>
     </head>
-    <body><div class="overcover"></div>
-     <div id="header" class="blokc">   
-         <div id="head">
-             <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
-			 <div class="iblok" id="logo" ></div>
-                         
-                        
-                        <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
-                        <a class="navlink" href="<?= $this->url('preview') ?>">Меню</a>
-                        <a class="navlink" href="<?= $this->url('provider') ?>" >Магазины</a>
-                        <a class="navlink" href="<?= $this->url('catalog') ?>" >Каталог</a>
-                        <a class="navlink" href="http://localhost/phpmyadmin">pma</a>
-                         
-                         
-                        
-             
-             
-         </div>
-     </div>
+    <body>
+        <div class="overcover"></div>
+        <div id="header" class="blokc">   
+            <div id="head">
+                <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
+            <div class="iblok" id="logo" ></div>
+               <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
+               <a class="navlink" href="<?= $this->url('preview') ?>">Меню</a>
+               <a class="navlink" href="<?= $this->url('provider') ?>" >Магазины</a>
+               <a class="navlink" href="<?= $this->url('catalog') ?>" >Каталог</a>
+               <a class="navlink" href="http://localhost/phpmyadmin">pma</a>
+            </div>
+        </div>
                            
         <?= $this->content ?>                    
        
     <?php // phpinfo()?>
-    <footer>
-     <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
-    </footer>
+        <footer>
+         <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
+        </footer>
 <?= $this->inlineScript()
 ->prependFile($this->basePath('js/jquery.treeview.js'))	
 ->prependFile($this->basePath('js/saychas_z.js'))	
@@ -54,5 +48,5 @@
 //->prependFile($this->basePath('js/bootstrap.min.js'))
 ->prependFile($this->basePath('js/jquery.js'))
 ?>
-     </body>
+    </body>
 </html>
