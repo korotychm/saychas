@@ -27,8 +27,10 @@ use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
 use Laminas\Http\Response;
-use Laminas\Session;
+//use Laminas\Session;
 use Laminas\Session\Container;
+
+use Application\Model\Entity\Characteristic;
 
 class IndexController extends AbstractActionController
 {
@@ -73,6 +75,10 @@ class IndexController extends AbstractActionController
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
         // Return the response
+        $this->layout()->setVariables([
+            'headerText' => $this->htmlProvider->testHtml(),
+            'footerText' => 'banzaii',
+        ]);
         $this->layout()->setTemplate('layout/mainpage');
         return $response;
         
@@ -466,6 +472,12 @@ class IndexController extends AbstractActionController
     
     public function testingAction()
     {
+        $characteristic = new Characteristic();
+        $characteristic->setId('1111')->setCategoryId('000000009')->setTitle('Title1')->setType(1)->setGroup(2);
+        echo '<pre>';
+        print_r($characteristic);
+        echo '</pre>';
+        exit;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->item = 'foo';
 
@@ -485,6 +497,25 @@ class IndexController extends AbstractActionController
             echo '</pre>';
         }
         exit;
+    }
+    
+    public function helloWorldAction()
+    {
+        $this->layout()->setTemplate('layout/mainpage');
+        
+//        $this->layout()->setVariables([
+//            'headerText' => $this->htmlProvider->testHtml(),
+//            'footerText' => 'banzaii',
+//        ]);
+
+//        $view = new ViewModel([
+//            'message' => 'Hello world',
+//        ]);
+//
+//        // Capture to the layout view's "article" variable
+//        $view->setCaptureTo('article');
+
+        return $view;
     }
     
     

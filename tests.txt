@@ -21,3 +21,6 @@ curl -i -L saychas-z.local/receive-store --data '[{"id": "1"}]' -X DELETE
 
 curl -i -L saychas-z.local/receive-brand --data '{"truncate": false, "data": [{"id": "000002", "title": "title 1","descripton": "description 1", "logo": "logo1" }] }'
 curl -i -L saychas-z.local/receive-brand --data '[{"id": "1"}]' -X DELETE
+
+curl -i -L saychas-z.local/receive-characteristic --data '{"truncate": false, "data": [{"category_id": "000000009", "sort_order": "1", "characteristic_id":"000000001", "characteristic_title": "title1", "characteristic_type": "4", "filter": "false", "group": "false"}] }'
+

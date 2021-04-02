@@ -183,6 +183,29 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
                 ],
             ],
+            'receive-characteristic' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-characteristic[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveCharacteristic',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
+                ],
+            ],
+            'hello-world' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/hello-world',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'helloWorld',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
+                ],
+            ],
+            
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
 //                'type' => Literal::class,
