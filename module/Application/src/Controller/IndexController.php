@@ -65,19 +65,18 @@ class IndexController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        
         $servicemanager = $e->getApplication()->getServiceManager();
+        $userAddressHtml = $this->htmlProvider->writeUserAddress();
 
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
-        
 //        $category = $this->categoryRepository->findCategory(29);
-//        
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
         // Return the response
         $this->layout()->setVariables([
             'headerText' => $this->htmlProvider->testHtml(),
             'footerText' => 'banzaii',
+            'userAddressHtml' => $userAddressHtml,
         ]);
         $this->layout()->setTemplate('layout/mainpage');
         return $response;
@@ -308,6 +307,7 @@ class IndexController extends AbstractActionController
                     'description'=>$row->getDescription(),
                     'param_value'=>$row->getParamValueList(),
                     'param_value'=>$row->getParamValueList(),
+                    
                 ];
                 /*                
                 provider_id
@@ -363,6 +363,7 @@ class IndexController extends AbstractActionController
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
         $products = $this->productRepository->filterProductsByStores(['000000003', '000000008', '000000009']);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
+        //  exit(print_r($filteredProducts));
         
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
@@ -380,6 +381,9 @@ class IndexController extends AbstractActionController
                     'description'=>$row->getDescription(),
                     'param_value'=>$row->getParamValueList(),
                     'param_value'=>$row->getParamValueList(),
+                    'store'=>$row->getStoreTitle()." (id:{$row->getStoreId()})",
+                    'store_id'=>$row->getStoreId(),
+                    //'store_address'=>$row->storeAddress(),
                 ];
         
             $returnProduct.= $this->htmlProvider->productCard($productCardParam);

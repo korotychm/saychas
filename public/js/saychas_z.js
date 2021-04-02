@@ -5,6 +5,7 @@ $(document).ready(function(){
 	window.onbeforeunload = function (){$(".overcover").stop().fadeIn();}	
 })
 $(function() { 
+	 $(".open-user-address-form, .searchpanelclose").click(function(){$("#searchpanel").slideToggle()})
      $("#tree22").treeview({
                   persist: "location",
                   collapsed: true,

@@ -204,7 +204,10 @@ class ProductRepository implements ProductRepositoryInterface
         $subSelectAvailbleStore = $sql ->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
         $where = new \Laminas\Db\Sql\Where();
-        $where->in('store.id', $params);
+        $where->in('st.id', $params);
+        $where->and;
+        $where->equalTo('b.store_id','st.id');
+        
         $select = $sql->select('');
         $select
             ->from(['p' => 'product'])
@@ -232,21 +235,25 @@ class ProductRepository implements ProductRepositoryInterface
                 'p.brand_id = brand.id',
                 ['brandtitle'=>'title'],           
                 $select::JOIN_LEFT  
-            )
-            ->join(
-                   'store', $where,
-                    ['store_id' => 'id'],
+            );
+        $where = new \Laminas\Db\Sql\Where();
+        $where->in('st.id', $params);
+        //$where->;
+        $where->and("b.store_id = st.id");
+         $select ->join(
+                   ['st'=>'store'], 
+                    $where,
+                    ['store_id' => 'id','store_title' => 'title', 'store_address' => 'address' ],
                     $select::JOIN_LEFT
             )
             ->where->in('p.provider_id', $subSelectAvailbleStore)
-            ->where->and
-            ->where->in('b.store_id', $params)
+            /*->where->and
+            ->where->in('b.store_id', $params)*/    
         ;
         
-//      Do not delete the following line
-//      $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);
-//      echo $selectString;
-//      exit;
+
+//        Do not delete the following line    /**/  
+        $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
        
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

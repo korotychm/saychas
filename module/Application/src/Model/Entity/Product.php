@@ -78,6 +78,20 @@ class Product
      */
     private $brand_title;
 
+    private $store_id;
+    
+    private $store_title;
+    
+    public function getStoreId()
+    {
+        return $this->store_id;
+    }
+    
+    public function getStoreTitle()
+    {
+        return $this->store_title;
+    }
+    
     /**
      * Get id.
      *

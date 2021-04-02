@@ -41,7 +41,7 @@
     
 }
 #head {display:inline-block; width:100%; max-width:1400px; text-align:left; position:relative}
-#logo {display:inline-block; width:255px;height:100px; max-width:33.3%;  background:url(/img/saychas.png) 5px -45px repeat-y; background-size: contain; }
+#logo {display:inline-block; width:255px;height:100px; max-width:33.3%;  background:url(/img/saychas.png) center no-repeat   ; background-size: contain; }
 #mobile_nav_icon  {display:block; position: absolute; top:7px; left:70px; border:1px solid #888; padding:8px 6px ; border-radius:4px; }
 .mobile_nav_icon {
   border-bottom: 10px double #888;
@@ -59,10 +59,18 @@
  .navlink  {float:right; display:inline-block; padding:12px; vertical-align:top }
  .full-wrap {display:block; text-align:center}
  #content {display:inline-block; width:100%; max-width:1600px; text-align:left}
- #left-col {display:inline-block; width:24.5%; vertical-align:top}  
- #main-col {display:inline-block; width:75%; vertical-align:top}
- .content-col {display:block; padding:10px;}
+ #left-col {display:inline-block; width:250px; vertical-align:top}  
+ #main-col {display:inline-block; width: calc(100% - 255px) ; vertical-align:top}
  
+ 
+ @media (max-width: 1001px ) {
+  #left-col, #main-col {
+    width:100%; 
+    }
+    
+  }
+ 
+ .content-col {display:block; padding:10px;}
  .bread-crumbs{display:block; color:#333; font-size:13px; line-height:1.8em}
  .bread-crumbs-item, .bread-crumbs-item a {display:inline-block; text-decoration:none; color:#333; padding:0 4  px ;    }
  

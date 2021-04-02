@@ -2,6 +2,8 @@
 // src\Service\HtmlProviderService.php
 
 namespace Application\Service;
+use Laminas\Session\Container;
+use Application\Resource\StringResource;
 
 class HtmlProviderService
 {
@@ -51,14 +53,16 @@ class HtmlProviderService
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
                 
-                 $return.="<div class='productcard' >"
+                 $return.="<div class='productcard ' >"
                     ."   <div class='content opacity".(int)$a['rest']."'>"
                     ."       <img src='/images/product/".(($a['img'])?$a['img']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
                     ."       <strong class='blok producttitle'><a  href=#product   >".$a['title']."</a></strong>"
                     ."       <span class='blok'>Id: ".$a['id']."</span>"
                     ."       <span class='blok'>Артикул: ".$a['articul']."</span>"
                     ."       <span class='blok'>Торговая марка: ".$a['brand']."</span>"                         
-                    ."       <span class='blok'>Остаток: ".$a['rest']."</span>"
+                    ."       <span class='blok'>Остаток: ".(int)$a['rest']."</span>"
+                    ."       <b><span class='blok'>Магазин: ".$a['store']."</span></b>"
+                    ."       <i class='blok'> ".$a['store_address']."</i>"                         
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
@@ -68,22 +72,18 @@ class HtmlProviderService
     
     }
     
-    public function inputUserAddressForm ($a=[])
-    {
-        //exit(print_r($a));
-        if (count($a)):
-            if($a['seseionUserAddress']){
-              $openir=" none ";
-              $return.="
-                <div class='geo'>".$a['seseionUserAdres']." </div>
-               <span class=slideDown rel='address' >изменить</span>";
-            }
-            
-            $return.='<input id="address-input" name="suggestions '.$openir.'"  placeholder="укажи адрес доставки"/>';
-            
-           return $return;   
-        endif;
         
+    public function writeUserAddress ()
+    {
+         $container = new Container(StringResource::SESSION_NAMESPACE);
+         $userAddress= $container->userAddress;
+         ($userAddress)?:$userAddress="Укажи адрес и получи заказ за час!";
+         return "<div class='geo16 open-user-address-form ' ><span>$userAddress</span   > </div>";
+    }
+    public function inputUserAddressForm ()
+    {
+        //$return.='<input id="address-input" name="suggestions '.$openir.'"  placeholder="укажи адрес доставки"/>';
+           return $return;   
     }
     
     

@@ -21,18 +21,35 @@
     </head>
     <body>
         <div class="overcover"></div>
-       <?= $headerText ?>
-       <?= $footerText ?>
+        <div id=searchpanel style="display:none" >
+            <div class=searchpanelclose></div>
+            <div class=searchpanel>
+		<div class=searchpanelcont>
+                    <DIV  style=" margin-bottom:10px;">         
+                        <input type=text 
+                                id='useraddress'  
+                               placeholder='Укажи адрес доставки'   
+                               pattern="[A-Za-zА-Яа-яЁё]+${3,}"  required 
+                               accept=""
+                               class='pn-text iblok' 
+                        />
+                    </DIV>
+		</div>		
+            </div>
+        </div>	
         <div id="header" class="blokc">   
             <div id="head">
                 <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
             <div class="iblok" id="logo" ></div>
+            <?=$userAddressHtml?>
              <div class="iblok"><?= $this->addressform ?></div>
-               <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
-               <a class="navlink" href="<?= $this->url('preview') ?>">Меню</a>
-               <a class="navlink" href="<?= $this->url('provider') ?>" >Магазины</a>
-               <a class="navlink" href="<?= $this->url('catalog') ?>" >Каталог</a>
-               <a class="navlink" href="http://localhost/phpmyadmin">pma</a>
+                <div style='float:right'>
+                   <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
+                   <a class="navlink" href="<?= $this->url('preview') ?>">Меню</a>
+                   <a class="navlink" href="<?= $this->url('provider') ?>" >Магазины</a>
+                   <a class="navlink" href="<?= $this->url('catalog') ?>" >Каталог</a>
+                   <a class="navlink" href="http://localhost/phpmyadmin">pma</a>
+                </div>
             </div>
         </div> 
         <div class="full-wrap"><div id="content">                          

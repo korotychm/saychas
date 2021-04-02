@@ -2,15 +2,62 @@
 .phoneinput {font-size:1.8rem; font-weight:700}
 .opacity0, .opacity0 a {color:#999; text-decoration:none }
 .opacity0  a   {text-decoration: line-through !important }
-.productcard {
-    width:24.5%; 
-    display:inline-block; 
-    vertical-align:top; 
-    position:relative; 
-}
-h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 
-.productcard .content {
+h2 span {font-size:14px; font-weight:300; display:block; color:#555}
+#searchtop {
+    display:inline-blok; 
+    position:absolute;  
+    width:40px; 
+    height:40px; 
+    right:65px; 
+    top:27px; 
+    background:url(img/searchtopblack.png) center no-repeat; 
+    z-index:100;  
+    cursor:pointer
+    /*border:1px solid red*/
+}
+#searchpanel {
+    display:block; 
+    position:fixed; 
+    top:0px; 
+    min-height:70px; 
+    background:#fff; 
+    border-bottom:1px solid #eee;  
+    text-align:center ;
+    width:100%; 
+    z-index:101101; 
+    box-shadow:0 0 5px 10px rgba(0,0,0,.15);
+    
+}
+.searchpanelcont {
+    display: block;
+    padding: 10px;
+}
+.searchpanelclose {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    height: 30px;
+    width: 30px;
+    background: url('/img/close2.png') center no-repeat;
+    cursor: pointer;
+}
+#useraddress 
+{
+    border:1px solid #ccc   ; 
+    font-weight:normal;  
+    background: transparent url('/img/geo16.png') left no-repeat;
+    
+    width:70%; 
+    padding:8px; 
+    padding-left:40px;      
+    margin:5px; 
+    color:#000;  
+    font-size:18px; 
+    border-radius:0; 
+}
+ .productcard .content {
     display:block; 
     box-shadow: 5px 5px 20px rgba(0,0,0,0.0);
     padding:16px;
@@ -24,22 +71,41 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .productcard .producttitle {font-size:1.2rem; font-weight:600; margin:10px 0;}
 
 
-@media (max-width: 1024px) {
+.productcard {
+    width:24.5%; 
+    display:inline-block; 
+    vertical-align:top; 
+    position:relative; 
+}
+
+@media (max-width: 1200px) {
     .productcard {
     width:32.5%; 
     }
     
   }
-@media (max-width: 800px ) {
+@media (max-width: 1001px ) {
     .productcard {
     width:49.5%; 
     }
     
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
     .productcard {
     width:100%; 
     }
     
   }
+  .geo16 {
+      display:inline-block;
+      cursor: pointer;
+      background: transparent url('/img/geo16.png') -6px center no-repeat;
+      padding:12px; 
+      padding-left:24px;
+      font-size:18px; 
+      /*font-weight:700;  
+      color:#f62;*/
+      vertical-align:top;
+   }
+  .geo16 span {border-bottom:1px dashed #666    }
