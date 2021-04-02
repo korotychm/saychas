@@ -238,8 +238,7 @@ class ProductRepository implements ProductRepositoryInterface
             );
         $where = new \Laminas\Db\Sql\Where();
         $where->in('st.id', $params);
-        //$where->;
-        $where->and("b.store_id = st.id");
+   
          $select ->join(
                    ['st'=>'store'], 
                     $where,
@@ -252,8 +251,7 @@ class ProductRepository implements ProductRepositoryInterface
         ;
         
 
-//        Do not delete the following line    /**/  
-        $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
+//        Do not delete the following line    /**/          $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
        
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
