@@ -141,7 +141,7 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
     }
     
     /**
-     * Delete prices specified by json array of objects
+     * Delete predefined characteristic values specified by json array of objects
      * @param $json
      */
     public function delete($json) {
@@ -155,7 +155,7 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
             array_push($total, $item['id']);
         }
         $sql    = new Sql($this->db);
-        $delete = $sql->delete()->from('characteristic')->where(['id' => $total]);
+        $delete = $sql->delete()->from('predef_char_value')->where(['id' => $total]);
 
         $selectString = $sql->buildSqlString($delete);
         try {
