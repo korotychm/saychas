@@ -1,4 +1,5 @@
 <?php
+// src/Model/Brand.php
 
 namespace Application\Model\Entity;
 

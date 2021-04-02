@@ -1,4 +1,5 @@
 <?php
+// src/Model/StockBalance.php
 
 namespace Application\Model\Entity;
 

@@ -30,6 +30,12 @@
 
 <?php endif; ?>
 
+
+<?php
+    $escaper = new Laminas\Escaper\Escaper('utf-8');
+    $output = $escaper->escapeUrl('input huinput');
+    echo $output;
+?>
 <?php echo $this->escapeHtml('<h1>banzaii</h1>'); ?>
 
 <div class="card-deck">
