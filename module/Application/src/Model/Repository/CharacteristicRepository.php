@@ -14,7 +14,7 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Application\Model\Entity\Brand;
+use Application\Model\Entity\Characteristic;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 
 class CharacteristicRepository implements CharacteristicRepositoryInterface
@@ -30,7 +30,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     private HydratorInterface $hydrator;
 
     /**
-     * @var Brand
+     * @var Characteristic
      */
     private Characteristic $prototype;
     
@@ -46,7 +46,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->brandPrototype = $prototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -57,7 +57,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     public function findAll()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('brand');
+        $select = $sql->select('characteristic');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -68,22 +68,22 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->brandPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
     }
 
     /**
-     * Returns a single brand.
+     * Returns a single characteristic.
      *
      * @param  array $params
-     * @return Brand
+     * @return Characteristic
      */    
     public function find($params)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('brand');
+        $select    = $sql->select('characteristic');
         $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -96,27 +96,34 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->brandPrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
-        $brand = $resultSet->current();
+        $current = $resultSet->current();
 
-        if (! $brand) {
+        if (! $current) {
             throw new InvalidArgumentException(sprintf(
-                'Brand with identifier "%s" not found.',
+                'Characteristic with identifier "%s" not found.',
                 $params['id']
             ));
         }
 
-        return $brand;
+        return $current;
     }
     
     /**
-     * Adds given brand into it's repository
+     * Adds given characteristic into it's repository
      * 
      * @param json
      */
     public function replace($content)
     {
+//            "category_id": "000000009",
+//            "sort_order": 3,
+//            "characteristic_id": "000000003",
+//            "characteristic_title": "Сопротивление",
+//            "characteristic_type": 1,
+//            "filter": false,
+//            "group": false
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         }catch(\Laminas\Json\Exception\RuntimeException $e){
@@ -124,12 +131,12 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         }
 
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table brand")->execute();
+            $this->db->query("truncate table characteristic")->execute();
         }
 
         foreach($result['data'] as $row) {
-            $sql = sprintf("replace INTO `brand`(`id`, `title`, `description`, `logo`) VALUES ( '%s', '%s', '%s', '%s')",
-                    $row['id'], $row['title'], $row['description'], $row['logo']);
+            $sql = sprintf("replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u)",
+                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -155,7 +162,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
             array_push($total, $item['id']);
         }
         $sql    = new Sql($this->db);
-        $delete = $sql->delete()->from('brand')->where(['id' => $total]);
+        $delete = $sql->delete()->from('characteristic')->where(['id' => $total]);
 
         $selectString = $sql->buildSqlString($delete);
         try {
