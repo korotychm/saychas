@@ -195,6 +195,17 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class,
                 ],
             ],
+            'receive-predef-char-value' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-predef-char-value[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface::class,
+                ],
+            ],
             'hello-world' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -313,6 +324,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class => \Application\Model\Repository\CharacteristicRepository::class,
+            \Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface::class => \Application\Model\Repository\PredefCharValueRepository::class,
             
             //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
         ],
@@ -330,6 +342,7 @@ return [
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicRepository::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
+            \Application\Model\Repository\PredefCharValueRepository::class => \Application\Model\Factory\PredefCharValueRepositoryFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
         ],
         

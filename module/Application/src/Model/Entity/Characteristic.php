@@ -8,7 +8,7 @@ namespace Application\Model\Entity;
 /**
  * Characteristic
  *
- * @ORM\Table(name="brand")
+ * @ORM\Table(name="characteristic")
  * @ORM\Entity
  */
 class Characteristic
@@ -53,9 +53,9 @@ class Characteristic
     private $sortOrder;
 
     public function __construct($object) {
-        $this->id = $object->characteristic_id;
-        $this->title = $object->characteristic_title;
-        $this->type = $object->characteristic_type;
+        $this->id = $object->id;
+        $this->title = $object->title;
+        $this->type = $object->type;
         $this->filter = $object->filter;
         $this->group = $object->group;
         $this->categoryId = $object->category_id;

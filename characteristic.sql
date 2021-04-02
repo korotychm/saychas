@@ -13,3 +13,13 @@ CREATE TABLE `characteristic` (
   `sort_order` int NOT NULL DEFAULT '1',
   PRIMARY KEY(`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `predefined_characteristic_value`;
+DROP TABLE IF EXISTS `predef_char_value`;
+
+CREATE TABLE `predef_char_value` (
+	`id`	VARCHAR(9) NOT NULL DEFAULT '',
+	`title`	VARCHAR(255) NOT NULL DEFAULT '',
+	`characteristic_id` VARCHAR(9)  NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`)
+)ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
