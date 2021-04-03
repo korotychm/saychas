@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Resource\StringResource;
 //use Doctrine\ORM\Mapping as ORM;
@@ -42,13 +43,16 @@ class IndexController extends AbstractActionController
     private $providerRepository;
     private $storeRepository;
     private $productRepository;
+    private $brandRepository;
+    private $characteristicRepository;
     private $entityManager;
     private $config;
     private $htmlProvider;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
+                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, 
+                CharacteristicRepositoryInterface $characteristicRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -56,6 +60,7 @@ class IndexController extends AbstractActionController
         $this->storeRepository = $storeRepository;
         $this->productRepository = $productRepository;
         $this->brandRepository = $brandRepository;
+        $this->characteristicRepository = $characteristicRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
@@ -506,6 +511,14 @@ class IndexController extends AbstractActionController
     public function helloWorldAction()
     {
         $this->layout()->setTemplate('layout/mainpage');
+        
+        $characteristic = $this->characteristicRepository->find([ 'id' => '000000002']);
+        
+        echo '<pre>';
+        print_r($characteristic);
+        echo '</pre>';
+        exit;
+        
         
 //        $this->layout()->setVariables([
 //            'headerText' => $this->htmlProvider->testHtml(),

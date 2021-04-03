@@ -14,10 +14,10 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Application\Model\Entity\Characteristic;
-use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\Entity\PredefCharValue;
+use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
 
-class CharacteristicRepository implements CharacteristicRepositoryInterface
+class PredefCharValueRepository implements PredefCharValueRepositoryInterface
 {
     /**
      * @var AdapterInterface
@@ -30,19 +30,19 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     private HydratorInterface $hydrator;
 
     /**
-     * @var Characteristic
+     * @var PredefCharValue
      */
-    private Characteristic $prototype;
+    private PredefCharValue $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Characteristic $prototype
+     * @param PredefCharValue $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Characteristic $prototype
+        PredefCharValue $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
@@ -57,7 +57,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     public function findAll()
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('characteristic');
+        $select = $sql->select('predef_char_value');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -75,15 +75,15 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     }
 
     /**
-     * Returns a single characteristic.
+     * Returns a single predefined character value.
      *
      * @param  array $params
-     * @return Characteristic
+     * @return PredefCharValue
      */    
     public function find($params)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('characteristic');
+        $select    = $sql->select('predef_char_value');
         $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -102,7 +102,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
 
         if (! $current) {
             throw new InvalidArgumentException(sprintf(
-                'Characteristic with identifier "%s" not found.',
+                'PredefCharValue with identifier "%s" not found.',
                 $params['id']
             ));
         }
@@ -117,13 +117,6 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
      */
     public function replace($content)
     {
-//            "category_id": "000000009",
-//            "sort_order": 3,
-//            "characteristic_id": "000000003",
-//            "characteristic_title": "Сопротивление",
-//            "characteristic_type": 1,
-//            "filter": false,
-//            "group": false
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         }catch(\Laminas\Json\Exception\RuntimeException $e){
@@ -131,12 +124,12 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         }
 
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table characteristic")->execute();
+            $this->db->query("truncate table predef_char_value")->execute();
         }
 
         foreach($result['data'] as $row) {
-            $sql = sprintf("replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u)",
-                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group']);
+            $sql = sprintf("replace INTO `predef_char_value`(`id`, `title`, `characteristic_id`) VALUES ( '%s', '%s', '%s')",
+                    $row['id'], $row['title'], $row['characteristic_id']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -148,7 +141,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     }
     
     /**
-     * Delete prices specified by json array of objects
+     * Delete predefined characteristic values specified by json array of objects
      * @param $json
      */
     public function delete($json) {
@@ -162,7 +155,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
             array_push($total, $item['id']);
         }
         $sql    = new Sql($this->db);
-        $delete = $sql->delete()->from('characteristic')->where(['id' => $total]);
+        $delete = $sql->delete()->from('predef_char_value')->where(['id' => $total]);
 
         $selectString = $sql->buildSqlString($delete);
         try {

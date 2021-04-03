@@ -24,3 +24,7 @@ curl -i -L saychas-z.local/receive-brand --data '[{"id": "1"}]' -X DELETE
 
 curl -i -L saychas-z.local/receive-characteristic --data '{"truncate": false, "data": [{"category_id": "000000009", "sort_order": "1", "characteristic_id":"000000001", "characteristic_title": "title1", "characteristic_type": "4", "filter": "false", "group": "false"}] }'
 
+curl -i -L saychas-z.local/receive-characteristic --data '{"truncate": false, "data": [{"category_id": "000000009", "sort_order": "1", "id":"000000001", "title": "title1", "type": "4", "filter": "false", "group": "false"}, {"category_id": "000000009", "sort_order": "1", "id":"000000001", "title": "title2", "type": "4", "filter": "false", "group": "false"}] }'
+
+
+curl -i -L saychas-z.local/receive-characteristic --data '{"truncate": false, "data": [{"id": "000000009","title": "title1", "id":"000000001"}, {"id": "000000008","title": "title2", "id":"000000002"} ] }'

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 31, 2021 at 08:16 AM
+-- Generation Time: Apr 02, 2021 at 04:06 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -29,6 +29,8 @@ DROP PROCEDURE IF EXISTS `get_products_by_categories`$$
 CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`cat_id` VARCHAR(9), `store_list` TEXT)  BEGIN
 	DROP TABLE IF EXISTS temp;
 
+	SET @pv = cat_id;
+
 	CREATE TABLE temp AS SELECT * FROM (
 	SELECT  id as category_id
 	FROM    (SELECT * FROM category
@@ -36,7 +38,6 @@ CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`
 	        (SELECT @pv := cat_id) initialisation
 	WHERE   FIND_IN_SET(`category_sorted`.parent_id, @pv)
 	AND     LENGTH(@pv := CONCAT(@pv, ',', id)) ) temp;
-
 	SELECT  `p`.provider_id,
 		`p`.category_id,
 	        `pr`.`price` AS `price`,
@@ -63,7 +64,7 @@ CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`
 	        SELECT `store`.`provider_id` AS `provider_id` FROM `store`
 	) AND `p`.category_id IN ( SELECT category_id FROM temp );
 
-	SET @pv = cat_id;
+	
 
 END$$
 
@@ -113,6 +114,7 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort_order`) VALUES
+('000000012', '000000003', 'DECT', '', '', 0),
 ('000000008', '000000002', 'Аксесуары', '', '', 0),
 ('000000010', '000000001', 'Бытовая техника', '', '', 0),
 ('000000007', '000000004', 'Кнопочные', '', '', 0),
@@ -124,6 +126,23 @@ INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort
 ('000000001', '0', 'Техника', '', '', 0),
 ('000000011', '000000010', 'Холодильники', '', '', 0),
 ('000000002', '000000001', 'Электроника', '', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `characteristic`
+--
+
+DROP TABLE IF EXISTS `characteristic`;
+CREATE TABLE `characteristic` (
+  `id` varchar(9) NOT NULL DEFAULT '',
+  `category_id` varchar(9) NOT NULL DEFAULT '',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `type` tinyint(1) NOT NULL DEFAULT '1',
+  `filter` tinyint(1) NOT NULL DEFAULT '0',
+  `group` tinyint(1) NOT NULL DEFAULT '0',
+  `sort_order` int NOT NULL DEFAULT '1'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -271,10 +290,7 @@ CREATE TABLE `provider` (
 --
 
 INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
-('00001', 'Globus CR', '', ''),
-('00002', 'X5 Retail Group', '', ''),
-('00004', 'Богатый Алекс', '', ''),
-('00003', 'Супер Продавец ООО', '', '');
+('0', '0', '0', '0');
 
 -- --------------------------------------------------------
 
@@ -362,8 +378,8 @@ CREATE TABLE `temp` (
 --
 
 INSERT INTO `temp` (`category_id`) VALUES
-('000000001'),
-('000000002');
+('000000004'),
+('000000005');
 
 -- --------------------------------------------------------
 
@@ -391,6 +407,12 @@ ALTER TABLE `brand`
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `characteristic`
+--
+ALTER TABLE `characteristic`
   ADD PRIMARY KEY (`id`);
 
 --
