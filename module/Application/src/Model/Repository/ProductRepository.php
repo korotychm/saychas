@@ -18,8 +18,8 @@ use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-//use Laminas\Db\Sql\Select;
-//use Laminas\Db\Sql\Where;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Where;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
@@ -199,7 +199,114 @@ class ProductRepository implements ProductRepositoryInterface
         return $resultSet;
     }
 
-    public function filterProductsByStores(/*$storeId,*/ $params=[])  {
+    /**
+     * Function obtains products of a provider that belong to a set of available stores.
+     * 
+     * The store is also listed as accessible
+     * 
+     * @param int $storeId
+     * @param array $params
+     * @return Product[]
+     */
+    public function filterProductsByStores(/*$storeId,*/ $params=[])
+    {
+        $sql    = new Sql($this->db);
+        /** Number 1 */
+//        $w = new \Laminas\Db\Sql\Where();
+//        $w->in('s.id', ['000000003', '000000001']);
+//        $sel = new Select();
+//        $sel->from(['s' => 'store'])
+//                ->columns(['provider_id'])
+//                ->join(
+//                    ['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT
+//                )->where($w);
+//        $w2 = new \Laminas\Db\Sql\Where();
+//        $w2->in('pr.provider_id', $sel);
+//        $sel2 = new Select();
+//        $sel2->from(['pr' => 'product'])
+//                ->columns(['*'])
+//                ->where($w2);
+        /** End of number 1 */
+        
+        /** Number 2 */
+        
+//      select pr.*, ss.id as store_id, ss.title as store_title
+//      from product pr
+//      left join
+//          (select s.* from store s left join provider p on p.id = s.provider_id where s.id in ('000000001','000000002','000000003','000000004','000000005') ) ss
+//          on ss.provider_id=pr.provider_id
+//      where ss.id is not null order by pr.id;        
+        
+        $w = new Where();
+        $w->in('s.id', $params);
+        
+        $sel = new Select();
+        $sel->from(['s' => 'store'])->columns(['*'])->join(['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT)->where($w);
+        
+        $w2 = new Where();
+        $w2->in('pr.provider_id', $sel);
+        $select = new Select();
+        $select->from(['pr' => 'product'])
+                ->columns(['*'])
+            ->join(
+                ['pri' => 'price'],
+                'pr.id = pri.product_id',
+                ['price'],
+                $select::JOIN_LEFT
+            )
+            ->join(
+                ['b' => 'stock_balance'],
+                'pr.id = b.product_id',
+                ['rest'],
+                $select::JOIN_LEFT
+            )
+            ->join(
+                ['img' => 'product_image'],
+                'pr.id = img.product_id',
+                ['url_http'],
+                $select::JOIN_LEFT
+            )->join(
+                ['brand' => 'brand'],
+                'pr.brand_id = brand.id',
+                ['brandtitle'=>'title'],
+                $select::JOIN_LEFT  
+            )
+                ->join(
+                        ['ss' => $sel],
+                        'ss.provider_id = pr.provider_id',
+                        ['store_id'=>'id', 'store_title'=>'title'],
+                        $select::JOIN_LEFT
+                )->where('ss.id is not null');
+        /** End of number 2 */
+        
+
+//        $selString = $sql->buildSqlString($select);
+//        print_r($selString);
+//        exit;
+
+
+//        Do not remove the following lines
+//        exit(date("r")."<hr>".$sql->buildSqlString($select));
+       
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+       
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->productPrototype
+        );
+        $resultSet->initialize($result);
+        
+        return $resultSet;
+        
+    }
+    
+    public function filterProductsByStores1(/*$storeId,*/ $params=[])  {
+
         $sql = new Sql($this ->db);
         $subSelectAvailbleStore = $sql ->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
@@ -252,6 +359,7 @@ class ProductRepository implements ProductRepositoryInterface
         
 
 //        Do not delete the following line    /**/          $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
+//         $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
        
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

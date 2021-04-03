@@ -366,7 +366,7 @@ class IndexController extends AbstractActionController
          
      
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
-        $products = $this->productRepository->filterProductsByStores(['000000003', '000000008', '000000009']);
+        $products = $this->productRepository->filterProductsByStores(['000000003', '000000004', '000000005', '000000001', '000000002']);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         //  exit(print_r($filteredProducts));
         
@@ -496,7 +496,7 @@ class IndexController extends AbstractActionController
 
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
         
-        $products = $this->productRepository->filterProductsByStores(['000000003', '000000008', '000000009']);
+        $products = $this->productRepository->filterProductsByStores(['000000003', '000000004', '000000005', '000000001', '000000002']);
         
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         
@@ -512,7 +512,8 @@ class IndexController extends AbstractActionController
     {
         $this->layout()->setTemplate('layout/mainpage');
         
-        $characteristic = $this->characteristicRepository->find([ 'id' => '000000002']);
+//        $characteristic = $this->characteristicRepository->find([ 'id' => '000000002']);
+        $this->productRepository->filterProductsByStores(['000000001','000000004','000000003','000000005','000000002']);
         
         echo '<pre>';
         print_r($characteristic);
