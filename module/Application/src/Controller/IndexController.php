@@ -512,7 +512,7 @@ class IndexController extends AbstractActionController
     {
         $this->layout()->setTemplate('layout/mainpage');
         
-//        $characteristic = $this->characteristicRepository->find([ 'id' => '000000002']);
+        $characteristic = $this->characteristicRepository->find([ 'id' => '000000001']);
         $this->productRepository->filterProductsByStores(['000000001','000000004','000000003','000000005','000000002']);
         
         echo '<pre>';
@@ -533,7 +533,7 @@ class IndexController extends AbstractActionController
 //        // Capture to the layout view's "article" variable
 //        $view->setCaptureTo('article');
 
-        return $view;
+//        return $view;
     }
     
     
