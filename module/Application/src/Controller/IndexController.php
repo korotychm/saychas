@@ -30,6 +30,8 @@ use \InvalidArgumentException;
 use Laminas\Http\Response;
 //use Laminas\Session;
 use Laminas\Session\Container;
+use Application\Model\Album;
+use Application\Model\Track;
 
 use Application\Model\Entity\Characteristic;
 
@@ -510,8 +512,53 @@ class IndexController extends AbstractActionController
     
     public function helloWorldAction()
     {
+        //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
         $this->layout()->setTemplate('layout/mainpage');
         
+        
+        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
+        $hydrator->addStrategy(
+            'tracks',
+            new \Laminas\Hydrator\Strategy\CollectionStrategy(
+                new \Laminas\Hydrator\ReflectionHydrator(),
+                Track::class
+            )
+        );
+        
+        $album = new Album();
+        $hydrator->hydrate(
+            [
+                'artist' => 'David Bowie',
+                'title'  => 'Let\'s Dance',
+                'tracks' => [
+                    [
+                        'title'    => 'Modern Love',
+                        'duration' => '4:46',
+                    ],
+                    [
+                        'title'    => 'China Girl',
+                        'duration' => '5:32',
+                    ],
+                    [
+                        'title'    => 'Let\'s Dance',
+                        'duration' => '7:38',
+                    ],
+                    // …
+                ],
+            ],
+            $album
+        );
+
+        echo $album->getTitle().' : '; // "Let's Dance"
+        echo $album->getArtist().'<br/>'; // 'David Bowie'
+//        echo $album->getTracks()[1]->getTitle(); // 'China Girl'
+//        echo $album->getTracks()[1]->getDuration(); // '5:32'
+        
+        foreach($album->getTracks() as $track) {
+            echo $track->getTitle().' '.$track->getDuration().'<br/>';
+        }
+
+        echo '<hr/>';
         $characteristic = $this->characteristicRepository->find([ 'id' => '000000001']);
         $this->productRepository->filterProductsByStores(['000000001','000000004','000000003','000000005','000000002']);
         

@@ -23,3 +23,5 @@ CREATE TABLE `predef_char_value` (
 	`characteristic_id` VARCHAR(9)  NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `characteristic` (`id`) VALUES ('000000001');
