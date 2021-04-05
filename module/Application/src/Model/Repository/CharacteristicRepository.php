@@ -14,6 +14,7 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use Application\Helper\ArrayHelper;
 use Application\Model\Entity\Characteristic;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 
@@ -109,18 +110,6 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         return $current;
     }
     
-    private function groupBy($arr, $criteria): array
-    {
-        return array_reduce($arr, function($accumulator, $item) use ($criteria) {
-            $key = (is_callable($criteria)) ? $criteria($item) : $item[$criteria];
-            if (!array_key_exists($key, $accumulator)) {
-                $accumulator[$key] = [];
-            }
-            array_push($accumulator[$key], $item);
-            return $accumulator;
-        }, []);
-    }
-
     /**
      * Adds given characteristic into it's repository
      * 
@@ -128,13 +117,6 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
      */
     public function replace($content)
     {
-//            "category_id": "000000009",
-//            "sort_order": 3,
-//            "characteristic_id": "000000003",
-//            "characteristic_title": "Сопротивление",
-//            "characteristic_type": 1,
-//            "filter": false,
-//            "group": false
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         }catch(\Laminas\Json\Exception\RuntimeException $e){
@@ -145,8 +127,8 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
             $this->db->query("truncate table characteristic")->execute();
         }
         
-//        $q = $this->groupBy($result['data'], 'category_id');
-        $r = $this->groupBy($result['data'], function($item) {
+//        $q = ArrayHelper::groupBy($result['data'], 'category_id');
+        $r = ArrayHelper::groupBy($result['data'], function($item) {
             return $item['category_id'];
         });
         
@@ -159,8 +141,11 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u)",
                     $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group']);
+            //$sql = "replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( :id, :category_id, :title, :type, :sort_order, :filter, :group)";
+            
             try {
                 $query = $this->db->query($sql);
+                //$query->execute([':id'=>$row['id'], ':category_id'=>$row['category_id'], ':title'=>$row['title'], ':type'=>$row['type'], ':sort_order'=>$row['sort_order'], ':filter'=>$row['filter'], ':group'=>$row['group'] ]);
                 $query->execute();
             }catch(InvalidQueryException $e){
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
