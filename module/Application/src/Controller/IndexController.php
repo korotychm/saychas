@@ -515,6 +515,12 @@ class IndexController extends AbstractActionController
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
         $this->layout()->setTemplate('layout/mainpage');
         
+        $stores = $this->storeRepository->findAll(['000000003', '000000004', '000000005']);//, '000000001', '000000002'['000000003', '000000004', '000000005']
+        
+        foreach ($stores as $store) {
+            echo $store->getId().' '.$store->getTitle(). '<br/>';
+        }
+        exit;
         
         $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
         $hydrator->addStrategy(
@@ -524,62 +530,62 @@ class IndexController extends AbstractActionController
                 Track::class
             )
         );
-        $t = [
-            'artist' => 'Shartist',
-            'title'  => 'Banzaii',
-            'tracks' => [
-                [
-                    'title'    => 'Vovan skache',
-                    'duration' => '4:46',
-                ],
-                [
-                    'title'    => 'Vovan nie skache',
-                    'duration' => '5:32',
-                ],
-                [
-                    'title'    => 'Vovan doprygalsa',
-                    'duration' => '7:38',
-                ],
-                // …
-            ],
-        ];
+//        $t = [
+//            'artist' => 'Shartist',
+//            'title'  => 'Banzaii',
+//            'tracks' => [
+//                [
+//                    'title'    => 'Vovan skache',
+//                    'duration' => '4:46',
+//                ],
+//                [
+//                    'title'    => 'Vovan nie skache',
+//                    'duration' => '5:32',
+//                ],
+//                [
+//                    'title'    => 'Vovan doprygalsa',
+//                    'duration' => '7:38',
+//                ],
+//                // …
+//            ],
+//        ];
         
         $test2 = new Test2();
-        
-        $arr = [ [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan skache', 'duration' => '4:46', ],
-                 [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan nie skache', 'duration' => '5:32', ],
-                 [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan doprygalsa', 'duration' => '7:38', ],
-                    // …
-            ];
-        $s = array_slice($arr,0, 2);
-        //print_r($s);
-        
-        $result = [];
-        $result['artist'] = array_slice($arr[0], 0, 1)['artist'];
-        $result['ttitle'] = array_slice($arr[0], 0, 2)['ttitle'];
-        $result['tracks'] = [];
-        foreach($arr as $a) {
-            $item = array_slice($a, 2);
-            $result['tracks'][] = $item;
-        }
-        echo '<pre>';
-        print_r($t);
-        echo '</pre>';
-        echo '<pre>';
-        print_r($result);
-        echo '</pre>';
-        exit;
-        foreach ($arr as $item) {
-            echo '<pre>';
-            print_r($item) ;
-            //print_r(array_column($item, 'artist') ) ;
-            echo '</pre>';
-        }
-        exit;
+//        
+//        $arr = [ [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan skache', 'duration' => '4:46', ],
+//                 [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan nie skache', 'duration' => '5:32', ],
+//                 [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan doprygalsa', 'duration' => '7:38', ],
+//                    // …
+//            ];
+//        $s = array_slice($arr,0, 2);
+//        //print_r($s);
+//        
+//        $result = [];
+//        $result['artist'] = array_slice($arr[0], 0, 1)['artist'];
+//        $result['ttitle'] = array_slice($arr[0], 0, 2)['ttitle'];
+//        $result['tracks'] = [];
+//        foreach($arr as $a) {
+//            $item = array_slice($a, 2);
+//            $result['tracks'][] = $item;
+//        }
+//        echo '<pre>';
+//        print_r($t);
+//        echo '</pre>';
+//        echo '<pre>';
+//        print_r($result);
+//        echo '</pre>';
+//        exit;
+//        foreach ($arr as $item) {
+//            echo '<pre>';
+//            print_r($item) ;
+//            //print_r(array_column($item, 'artist') ) ;
+//            echo '</pre>';
+//        }
+//        exit;
         
         $hydrator->hydrate(
             [
-                'artist' => 'Shartist',
+                'artist' => 'Shmartist',
                 'title'  => 'Banzaii',
                 'tracks' => [
                     [

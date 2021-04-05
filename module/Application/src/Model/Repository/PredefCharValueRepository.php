@@ -54,7 +54,7 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
      *
      * @return Characteristic[]
      */
-    public function findAll()
+    public function findAll($params=[])
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('predef_char_value');

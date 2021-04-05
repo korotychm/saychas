@@ -2,6 +2,8 @@
 // src\Service\HtmlProviderService.php
 
 namespace Application\Service;
+
+use Application\Model\Entity;
 use Laminas\Session\Container;
 use Application\Resource\StringResource;
 

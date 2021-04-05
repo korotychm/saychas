@@ -43,21 +43,21 @@ class StoreRepository implements StoreRepositoryInterface
     /**
      * @var Store
      */
-    private Store $storePrototype;
+    private Store $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Store $storePrototype
+     * @param Store $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Store $storePrototype
+        Store $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->storePrototype = $storePrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -65,10 +65,10 @@ class StoreRepository implements StoreRepositoryInterface
      *
      * @return Store[]
      */
-    public function findAll()
+    public function findAll($params=[])
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('store');
+        $select = $sql->select()->from('store')->columns(['id', 'provider_id', 'title', 'description', 'address', 'geox', 'geoy', 'icon'])->where(['id' => $params]);//['000000001', '000000002', '000000003', '000000004', '000000005']
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -78,7 +78,7 @@ class StoreRepository implements StoreRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->storePrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -106,7 +106,7 @@ class StoreRepository implements StoreRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->storePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $store = $resultSet->current();
 
@@ -148,7 +148,7 @@ class StoreRepository implements StoreRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->storePrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;

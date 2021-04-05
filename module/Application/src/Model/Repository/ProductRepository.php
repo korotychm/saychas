@@ -17,6 +17,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
@@ -235,7 +236,7 @@ class ProductRepository implements ProductRepositoryInterface
 //      left join
 //          (select s.* from store s left join provider p on p.id = s.provider_id where s.id in ('000000001','000000002','000000003','000000004','000000005') ) ss
 //          on ss.provider_id=pr.provider_id
-//      where ss.id is not null order by pr.id;        
+//      where ss.id is not null order by pr.id;
         
         $w = new Where();
         $w->in('s.id', $params);
@@ -248,29 +249,29 @@ class ProductRepository implements ProductRepositoryInterface
         $select = new Select();
         $select->from(['pr' => 'product'])
                 ->columns(['*'])
-            ->join(
-                ['pri' => 'price'],
-                'pr.id = pri.product_id',
-                ['price'],
-                $select::JOIN_LEFT
-            )
-            ->join(
-                ['b' => 'stock_balance'],
-                'pr.id = b.product_id',
-                ['rest'],
-                $select::JOIN_LEFT
-            )
-            ->join(
-                ['img' => 'product_image'],
-                'pr.id = img.product_id',
-                ['url_http'],
-                $select::JOIN_LEFT
-            )->join(
-                ['brand' => 'brand'],
-                'pr.brand_id = brand.id',
-                ['brandtitle'=>'title'],
-                $select::JOIN_LEFT  
-            )
+//            ->join(
+//                ['pri' => 'price'],
+//                'pr.id = pri.product_id',
+//                ['price'],
+//                $select::JOIN_LEFT
+//            )
+//            ->join(
+//                ['b' => 'stock_balance'],
+//                'pr.id = b.product_id',
+//                ['rest'],
+//                $select::JOIN_LEFT
+//            )
+//            ->join(
+//                ['img' => 'product_image'],
+//                'pr.id = img.product_id',
+//                ['url_http'],
+//                $select::JOIN_LEFT
+//            )->join(
+//                ['brand' => 'brand'],
+//                'pr.brand_id = brand.id',
+//                ['brandtitle'=>'title'],
+//                $select::JOIN_LEFT  
+//            )
                 ->join(
                         ['ss' => $sel],
                         'ss.provider_id = pr.provider_id',
@@ -305,77 +306,77 @@ class ProductRepository implements ProductRepositoryInterface
         
     }
     
-    public function filterProductsByStores1(/*$storeId,*/ $params=[])  {
-
-        $sql = new Sql($this ->db);
-        $subSelectAvailbleStore = $sql ->select('store');
-        $subSelectAvailbleStore ->columns(['provider_id']);
-        $where = new \Laminas\Db\Sql\Where();
-        $where->in('st.id', $params);
-        $where->and;
-        $where->equalTo('b.store_id','st.id');
-        
-        $select = $sql->select('');
-        $select
-            ->from(['p' => 'product'])
-            ->columns(['*'])
-            ->join(
-                ['pr' => 'price'],
-                'p.id = pr.product_id',
-                ['price'],           
-                $select::JOIN_LEFT  
-            ) 
-            ->join(
-                ['b' => 'stock_balance'],
-                'p.id = b.product_id',
-                ['rest'],           
-                $select::JOIN_LEFT  
-            )      
-            ->join(
-                ['img' => 'product_image'],
-                'p.id = img.product_id',
-                ['url_http'],           
-                $select::JOIN_LEFT  
-            )
-            ->join(
-                ['brand' => 'brand'],
-                'p.brand_id = brand.id',
-                ['brandtitle'=>'title'],           
-                $select::JOIN_LEFT  
-            );
-        $where = new \Laminas\Db\Sql\Where();
-        $where->in('st.id', $params);
-   
-         $select ->join(
-                   ['st'=>'store'], 
-                    $where,
-                    ['store_id' => 'id','store_title' => 'title', 'store_address' => 'address' ],
-                    $select::JOIN_LEFT
-            )
-            ->where->in('p.provider_id', $subSelectAvailbleStore)
-            /*->where->and
-            ->where->in('b.store_id', $params)*/    
-        ;
-        
-
-//        Do not delete the following line    /**/          $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
-//         $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
-       
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-       
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->productPrototype
-        );
-        $resultSet->initialize($result);
-        
-        return $resultSet;
-    }
+//    public function filterProductsByStores1(/*$storeId,*/ $params=[])  {
+//
+//        $sql = new Sql($this ->db);
+//        $subSelectAvailbleStore = $sql ->select('store');
+//        $subSelectAvailbleStore ->columns(['provider_id']);
+//        $where = new \Laminas\Db\Sql\Where();
+//        $where->in('st.id', $params);
+//        $where->and;
+//        $where->equalTo('b.store_id','st.id');
+//        
+//        $select = $sql->select('');
+//        $select
+//            ->from(['p' => 'product'])
+//            ->columns(['*'])
+//            ->join(
+//                ['pr' => 'price'],
+//                'p.id = pr.product_id',
+//                ['price'],           
+//                $select::JOIN_LEFT  
+//            ) 
+//            ->join(
+//                ['b' => 'stock_balance'],
+//                'p.id = b.product_id',
+//                ['rest'],           
+//                $select::JOIN_LEFT  
+//            )      
+//            ->join(
+//                ['img' => 'product_image'],
+//                'p.id = img.product_id',
+//                ['url_http'],           
+//                $select::JOIN_LEFT  
+//            )
+//            ->join(
+//                ['brand' => 'brand'],
+//                'p.brand_id = brand.id',
+//                ['brandtitle'=>'title'],           
+//                $select::JOIN_LEFT  
+//            );
+//        $where = new \Laminas\Db\Sql\Where();
+//        $where->in('st.id', $params);
+//   
+//         $select ->join(
+//                   ['st'=>'store'], 
+//                    $where,
+//                    ['store_id' => 'id','store_title' => 'title', 'store_address' => 'address' ],
+//                    $select::JOIN_LEFT
+//            )
+//            ->where->in('p.provider_id', $subSelectAvailbleStore)
+//            /*->where->and
+//            ->where->in('b.store_id', $params)*/    
+//        ;
+//        
+//
+////        Do not delete the following line    /**/          $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
+////         $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
+//       
+//        $stmt   = $sql->prepareStatementForSqlObject($select);
+//        $result = $stmt->execute();
+//
+//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+//            return [];
+//        }
+//       
+//        $resultSet = new HydratingResultSet(
+//            $this->hydrator,
+//            $this->productPrototype
+//        );
+//        $resultSet->initialize($result);
+//        
+//        return $resultSet;
+//    }
     
     public function filterProductsByCategories($products, $categories)
     {

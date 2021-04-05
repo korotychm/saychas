@@ -10,7 +10,7 @@ interface RepositoryInterface
      *
      * @return Entity[]
      */
-    public function findAll();
+    public function findAll(array $params);
 
     /**
      * Return a single application test.

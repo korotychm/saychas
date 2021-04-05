@@ -55,7 +55,7 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
      *
      * @return Characteristic[]
      */
-    public function findAll()
+    public function findAll($params=[])
     {
         $sql    = new Sql($this->db);
         $select = $sql->select('characteristic');
