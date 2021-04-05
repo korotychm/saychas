@@ -30,7 +30,7 @@ use \InvalidArgumentException;
 use Laminas\Http\Response;
 //use Laminas\Session;
 use Laminas\Session\Container;
-use Application\Model\Album;
+use Application\Model\Test2;
 use Application\Model\Track;
 
 use Application\Model\Entity\Characteristic;
@@ -524,37 +524,88 @@ class IndexController extends AbstractActionController
                 Track::class
             )
         );
+        $t = [
+            'artist' => 'Shartist',
+            'title'  => 'Banzaii',
+            'tracks' => [
+                [
+                    'title'    => 'Vovan skache',
+                    'duration' => '4:46',
+                ],
+                [
+                    'title'    => 'Vovan nie skache',
+                    'duration' => '5:32',
+                ],
+                [
+                    'title'    => 'Vovan doprygalsa',
+                    'duration' => '7:38',
+                ],
+                // …
+            ],
+        ];
         
-        $album = new Album();
+        $test2 = new Test2();
+        
+        $arr = [ [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan skache', 'duration' => '4:46', ],
+                 [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan nie skache', 'duration' => '5:32', ],
+                 [ 'artist' => 'Shmartist', 'ttitle'  => 'Banzaii', 'title'    => 'Vovan doprygalsa', 'duration' => '7:38', ],
+                    // …
+            ];
+        $s = array_slice($arr,0, 2);
+        //print_r($s);
+        
+        $result = [];
+        $result['artist'] = array_slice($arr[0], 0, 1)['artist'];
+        $result['ttitle'] = array_slice($arr[0], 0, 2)['ttitle'];
+        $result['tracks'] = [];
+        foreach($arr as $a) {
+            $item = array_slice($a, 2);
+            $result['tracks'][] = $item;
+        }
+        echo '<pre>';
+        print_r($t);
+        echo '</pre>';
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+        exit;
+        foreach ($arr as $item) {
+            echo '<pre>';
+            print_r($item) ;
+            //print_r(array_column($item, 'artist') ) ;
+            echo '</pre>';
+        }
+        exit;
+        
         $hydrator->hydrate(
             [
-                'artist' => 'David Bowie',
-                'title'  => 'Let\'s Dance',
+                'artist' => 'Shartist',
+                'title'  => 'Banzaii',
                 'tracks' => [
                     [
-                        'title'    => 'Modern Love',
+                        'title'    => 'Vovan skache',
                         'duration' => '4:46',
                     ],
                     [
-                        'title'    => 'China Girl',
+                        'title'    => 'Vovan nie skache',
                         'duration' => '5:32',
                     ],
                     [
-                        'title'    => 'Let\'s Dance',
+                        'title'    => 'Vovan doprygalsa',
                         'duration' => '7:38',
                     ],
                     // …
                 ],
             ],
-            $album
+            $test2
         );
 
-        echo $album->getTitle().' : '; // "Let's Dance"
-        echo $album->getArtist().'<br/>'; // 'David Bowie'
-//        echo $album->getTracks()[1]->getTitle(); // 'China Girl'
-//        echo $album->getTracks()[1]->getDuration(); // '5:32'
+        echo $test2->getTitle().' : '; // "Let's Dance"
+        echo $test2->getArtist().'<br/>'; // 'David Bowie'
+//        echo $test2->getTracks()[1]->getTitle(); // 'China Girl'
+//        echo $test2->getTracks()[1]->getDuration(); // '5:32'
         
-        foreach($album->getTracks() as $track) {
+        foreach($test2->getTracks() as $track) {
             echo $track->getTitle().' '.$track->getDuration().'<br/>';
         }
 

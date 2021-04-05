@@ -2,7 +2,7 @@
 
 namespace Application\Model;
 
-class Album
+class Test2
 {
     private ?string $title;
 

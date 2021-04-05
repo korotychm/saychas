@@ -294,6 +294,11 @@ class ProductRepository implements ProductRepositoryInterface
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
+        
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+        exit;
        
         $resultSet = new HydratingResultSet(
             $this->hydrator,
