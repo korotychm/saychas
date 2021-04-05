@@ -110,6 +110,18 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         return $current;
     }
     
+    private function groupBy($arr, $criteria): array
+    {
+        return array_reduce($arr, function($accumulator, $item) use ($criteria) {
+            $key = (is_callable($criteria)) ? $criteria($item) : $item[$criteria];
+            if (!array_key_exists($key, $accumulator)) {
+                $accumulator[$key] = [];
+            }
+            array_push($accumulator[$key], $item);
+            return $accumulator;
+        }, []);
+    }
+
     /**
      * Adds given characteristic into it's repository
      * 
@@ -133,6 +145,14 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         if((bool) $result['truncate']) {
             $this->db->query("truncate table characteristic")->execute();
         }
+        
+//        $q = $this->groupBy($result['data'], 'category_id');
+        
+        $r = $this->groupBy($result['data'], function($item) {
+            return $item['category_id'];
+        });
+        
+        $r = array_keys($r);
 
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u)",
