@@ -60,7 +60,6 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         $select = $sql->select('characteristic');
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-
  
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
@@ -147,16 +146,20 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
         }
         
 //        $q = $this->groupBy($result['data'], 'category_id');
-        
         $r = $this->groupBy($result['data'], function($item) {
             return $item['category_id'];
         });
         
-        $r = array_keys($r);
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete()->from('characteristic')->where(['category_id ' => array_keys($r)]);
 
+        $statement = $sql->prepareStatementForSqlObject($delete);
+        $statement->execute();
+        
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u)",
                     $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group']);
+            echo $sql."\n";
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
