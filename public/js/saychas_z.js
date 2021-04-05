@@ -184,8 +184,9 @@ function getLegalStores (dataString, obj="#ajaxanswer2" ){
             //headers: {'Content-Type': 'application/Json'},
             cache: false,	
             success: function(html){ 
-                console.log(html.userAddress);  
-                $(".user_address_set").html(html.userAddress);//.css("border:1px soli red"); 
+                console.log(html.legalStore);  
+                $(".user_address_set").html(html.userAddress);
+                $(".testlegalstor").html("<h2>доступные магазины</h2></pre>" +print_r(html.legalStore) + "</pre>");//.css("border:1px soli red"); 
                 return true
             
             },

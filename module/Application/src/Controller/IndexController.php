@@ -236,7 +236,7 @@ class IndexController extends AbstractActionController
                 ))
         );
         
-        $container->legalStore = Json::decode($result);
+        $container->legalStore = Json::decode($result, true);
         //exit(print_r($container->legalStore));
         exit ("200");
     }
@@ -244,8 +244,8 @@ class IndexController extends AbstractActionController
     public function ajaxSetUserAddressAction()
     {
         $json["userAddress"] = $this->htmlProvider->writeUserAddress();
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $json["legalstore"] =  $container->legalStore;
+        $container = new Container(StringResource::SESSION_NAMESPACE);  
+        $json["legalStore"] =  $container->legalStore;
         exit(Json::encode($json,JSON_UNESCAPED_UNICODE ));
     }
     
