@@ -14,7 +14,7 @@
             ->prependStylesheet($this->basePath('css/bs.css'))
             ->prependStylesheet($this->basePath('css/treeview.css'))
             ->prependStylesheet($this->basePath('/css/dadata/suggestions.css'))
-              ->prependStylesheet($this->basePath('css/saychas_z.css'))
+              ->prependStylesheet($this->basePath('css/saychas_z.css?'.time()))
         ?>
     <!-- Scripts -->
         <?= $this->headScript() ?>
@@ -25,14 +25,15 @@
             <div class=searchpanelclose></div>
             <div class=searchpanel>
 		<div class=searchpanelcont>
-                    <DIV  style=" margin-bottom:10px;">         
+                    <DIV  style=" margin-bottom:10px;  width:70%; " class="iblokl">         
                         <input type=text 
                                 id='useraddress'  
                                placeholder='Укажи адрес доставки'   
-                               pattern="[A-Za-zА-Яа-яЁё]+${3,}"  required 
+                               pattern="[A-Za-zА-Яа-яЁё]{3,}"  required 
                                accept=""
                                class='pn-text iblok' 
                         />
+                        <div id="useradesserror" class="errorblock none"></div>
                     </DIV>
 		</div>		
             </div>
@@ -41,7 +42,8 @@
             <div id="head">
                 <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
             <div class="iblok" id="logo" ></div>
-            <?=$userAddressHtml?>
+            <!-- span class="" style="border:1px solid red" -->
+                <div class='geo16 open-user-address-form user_address_set' ><?=$userAddressHtml?></div>
              <div class="iblok"><?= $this->addressform ?></div>
                 <div style='float:right'>
                    <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
@@ -60,7 +62,7 @@
         </footer>
 <?= $this->inlineScript()
 ->prependFile($this->basePath('js/jquery.treeview.js'))	
-->prependFile($this->basePath('js/saychas_z.js'))	
+->prependFile($this->basePath('js/saychas_z.js?'.time()))	
 ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
 ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))	
 ->prependFile($this->basePath('js/jquery.treeview.async.js'))	

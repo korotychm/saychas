@@ -17,17 +17,45 @@ $(function() {
     
     $("#dadataanswer").slideUp();
     
-    $("#address").click(function(){$("#dadataanswer").slideUp(); $("#dadataask").delay(500).slideUp();  $("#ycard").fadeOut();})
+    $("#address").click(function(){
+        $("#adesserror").hide();
+        $("#dadataanswer").slideUp(); $("#dadataask").delay(500).slideUp();  $("#ycard").fadeOut();})
+    
+    $("#useraddress").suggestions({
+        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+        type: "ADDRESS",
+        onSelect: function(suggestion) {
+            $("#adesserror").hide();
+          if (!suggestion.data.house)
+           {
+               $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
+               return false;
+           }
+            
+           
+            //return ;
+            var dataString=JSON.stringify(suggestion);
+            getLegalStores (dataString, '#useradesserror' );
+            }
+    });
     
     $("#address").suggestions({
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
         type: "ADDRESS",
         onSelect: function(suggestion) {
-           $("#ycard").show();
+            $("#adesserror").hide();
+           if (!suggestion.data.house)
+           {
+               $("#adesserror").html("Необходимо указать адрес до номера дома!").show();
+           }
+            
+            $("#yca rd").show();
            var dataString=JSON.stringify(suggestion);
+           //var jsondata=JSON.parse(suggestion);
+           $("#dadataask").html ("<h4>Посланный запрос:</h4><pre>" +  print_r(suggestion)/* dataString*/).stop().slideDown();
             getLocalStores (dataString, "#dadataanswer");
             $("#dadataanswer").stop().slideDown();
-            $("#dadataask").html ("<h4>Посланный запрос:</h4>" + dataString).stop().slideDown();
+            
                       
            myMap.setCenter([suggestion.data.geo_lat,suggestion.data.geo_lon],16)
            var  placemark = new ymaps.Placemark([suggestion.data.geo_lat,suggestion.data.geo_lon], { balloonContent: 'я тут'}, )
@@ -35,11 +63,13 @@ $(function() {
                if (geoObject instanceof ymaps.Placemark) {
                    myMap.geoObjects.remove(geoObject);  
                }
-           });
+           });/**/
            myMap.geoObjects.add(placemark);  
            $("#geocoords").html("<h3>GPS: " + suggestion.data.geo_lat+","+suggestion.data.geo_lon +"</h3>");
         }
     });
+    
+    
     
     $("#tree").treeview({
         persist: "location",
@@ -129,6 +159,41 @@ function getLocalStores (dataString, obj="#ajaxanswer2" ){
             error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
         });
 }        
+function getLegalStores (dataString, obj="#ajaxanswer2" ){
+    $.ajax({	
+            //url: "/ajax/getstore",
+            url: "/ajax-get-legal-store",
+            type:'POST', 
+            cache: false,	
+            data: {"value":dataString},
+            success: function(data){
+                if (data=="200") {$(".errorblock").hide(); $("#searchpanel").slideUp(); return setUserAddrees(); }
+                $(obj).html(data); return true
+            },
+            error: function (xhr, ajaxOptions, thrownError) {$(obj).html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
+        });
+}        
+
+
+    function setUserAddrees (){
+    $.ajax({	
+            //url: "/ajax/getstore",
+            url: "/ajax-set-user-address",
+            type:'POST', 
+            dataType: 'json',
+            //headers: {'Content-Type': 'application/Json'},
+            cache: false,	
+            success: function(html){ 
+                console.log(html.userAddress);  
+                $(".user_address_set").html(html.userAddress);//.css("border:1px soli red"); 
+                return true
+            
+            },
+            error: function (xhr, ajaxOptions, thrownError) {console.log("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
+        });
+}        
+
+
 
 
 function print_r(arr, level) {

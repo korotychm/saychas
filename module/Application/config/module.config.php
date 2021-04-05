@@ -283,7 +283,7 @@ return [
                     ],
                 ],
             ],
-                'ajax-get-store' => [
+           'ajax-get-store' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-get-store',
@@ -293,6 +293,26 @@ return [
                     ],
                 ],
             ],
+            'ajax-set-user-address'=>[
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-set-user-address',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'ajaxSetUserAddress',
+                    ],
+                ],
+            ],            
+            'ajax-get-legal-store'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-legal-store',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'ajaxGetLegalStore',
+                    ],
+                ],
+            ],            
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
