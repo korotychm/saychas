@@ -295,11 +295,6 @@ class ProductRepository implements ProductRepositoryInterface
             return [];
         }
         
-        echo '<pre>';
-        print_r($result);
-        echo '</pre>';
-        exit;
-       
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->productPrototype
