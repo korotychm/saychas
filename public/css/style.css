@@ -15,7 +15,10 @@
 .blok, blokr, .blokc {display:block; clear:both; text-align:left}
 .blokr {text-align:right}
 .blokc {text-align:center}
-.iblok {display:inline-block; }
+.iblok, .iblokl, .iblokr,.iblokc {display:inline-block; }
+.iblokl{text-align: left}
+.iblokr{text-align: right}
+.iblokc{text-align: center}
 .mini {font-size:80%}
 .card, .card-body {position:relative}
 .waiting {

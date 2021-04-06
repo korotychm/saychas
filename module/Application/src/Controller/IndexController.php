@@ -23,6 +23,8 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Resource\StringResource;
+use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
@@ -162,9 +164,15 @@ class IndexController extends AbstractActionController
     {
         //$id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
+        $json=$post->value;
+        try {
+            $TMP = Json::decode($json);
+        }
+        catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
         
-        $url = $this->config['parameters']['1c_request_links']['get_store'];
-
+         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
             $url,
             false,
@@ -176,32 +184,9 @@ class IndexController extends AbstractActionController
                 )
                 ))
         );
-        
-        
-               
-        
-        
+
         $r = print_r(json_decode($result,true),true);
-//        $return.="<pre>";
-//        $return.= date("r")."\n";
-//        if($result) {
-//            $return.=print_r(json_decode($result,true),true);
-//        }
-//        $return.="</pre>";
-//        exit ($return);
-//        $response = Response::fromString(<<<EOS
-//        HTTP/1.0 200 OK
-//        HeaderField1: header-field-value
-//        HeaderField2: header-field-value2
-//
-//        <html>
-//        <body>
-//            <pre>
-//                $r
-//            </pre>
-//        </body>
-//        </html>
-//        EOS);
+
         $response = new Response();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $response->getHeaders()->addHeaders([
@@ -220,6 +205,53 @@ class IndexController extends AbstractActionController
         EOS);
         return $response;
     }
+    
+    
+    public function ajaxGetLegalStoreAction()
+    {
+        $post = $this->getRequest()->getPost();
+        $json=$post->value;
+        try {
+            $TMP = Json::decode($json);
+        }
+        catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $ob=$TMP-> data;
+        if (!$ob->house) return (StringResource::USER_ADDREES_ERROR_MESSAGE);
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container->userAddress = $TMP -> value;
+        
+        $url = $this->config['parameters']['1c_request_links']['get_store'];
+        $result = file_get_contents(
+            $url,
+            false,
+            stream_context_create(array(
+                'http' => array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/json',
+                'content' => $post->value
+                )
+                ))
+        );
+        
+        $container->legalStore = Json::decode($result, true);
+        //exit(print_r($container->legalStore));
+        exit ("200");
+    }
+    
+    public function ajaxSetUserAddressAction()
+    {
+        $json["userAddress"] = $this->htmlProvider->writeUserAddress();
+        $container = new Container(StringResource::SESSION_NAMESPACE);  
+        $json["legalStore"] =  $container->legalStore;
+        exit(Json::encode($json,JSON_UNESCAPED_UNICODE ));
+    }
+    
+        
+    
+    
     
     public function ajaxAction($params = array('name' => 'value')){   
         $id=$this->params()->fromRoute('id', '');

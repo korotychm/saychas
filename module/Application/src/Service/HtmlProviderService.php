@@ -80,7 +80,7 @@ class HtmlProviderService
          $container = new Container(StringResource::SESSION_NAMESPACE);
          $userAddress= $container->userAddress;
          ($userAddress)?:$userAddress="Укажи адрес и получи заказ за час!";
-         return "<div class='geo16 open-user-address-form ' ><span>$userAddress</span   > </div>";
+         return "<span>$userAddress</span   > ";
     }
     public function inputUserAddressForm ()
     {
