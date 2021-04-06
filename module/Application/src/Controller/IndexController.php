@@ -309,7 +309,7 @@ class IndexController extends AbstractActionController
         if ($id=="getproviders"){                
           
             $providers = $this->providerRepository->findAvailableProviders($param);
-            $providers = $this->providerRepository->findAll();
+            $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit'=>100, 'offset' => 0, 'order' =>'id ASC']);
               //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
             $return.=date("r");	
             $return.="<ul>";
@@ -387,7 +387,7 @@ class IndexController extends AbstractActionController
         $id=$this->params()->fromRoute('id', '');
         $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
-        $providers = $this->providerRepository->findAll();
+        $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);
         return new ViewModel([
             "providers" => $providers,
             "catalog" => $categories,
@@ -552,6 +552,12 @@ class IndexController extends AbstractActionController
     public function helloWorldAction()
     {
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
+        
+        $products = $this->productRepository->filterProductsByStores(['000000005', '000000004']);
+        
+        print_r($products);
+        exit;
+        
         
         $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
         $hydrator->addStrategy(

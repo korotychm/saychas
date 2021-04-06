@@ -198,7 +198,7 @@ class ProductRepository implements ProductRepositoryInterface
         return $resultSet;
     }
     
-    public function filterProductsByStores2($params=[])
+    public function filterProductsByStores($params=[])
     {
 //SELECT DISTINCT
 //    s.id,
@@ -222,8 +222,10 @@ class ProductRepository implements ProductRepositoryInterface
         $w = new Where();
         $w->in('s.id', $params);
         $select = new Select();
-        $select->from(['s'=>'store'])->columns(['s.id', 's.provider_id', 's.title'])
-                ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)->where($w);
+        $select->from(['s'=>'store'])->columns(['id', 'provider_id', 'title'])
+                ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)
+                ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id'=>'id', 'product_title' => 'title'], $select::JOIN_INNER)
+                ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)->where($w);
         $selectString = $sql->buildSqlString($select);
         print_r($selectString);
         exit;
@@ -242,7 +244,7 @@ class ProductRepository implements ProductRepositoryInterface
      * @param array $params
      * @return Product[]
      */
-    public function filterProductsByStores(/*$storeId,*/ $params=[])
+    public function filterProductsByStores2(/*$storeId,*/ $params=[])
     {
         $sql    = new Sql($this->db);
         /** Number 1 */
