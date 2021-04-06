@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 02, 2021 at 04:06 AM
+-- Generation Time: Apr 06, 2021 at 05:50 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -78,7 +78,7 @@ DELIMITER ;
 
 DROP TABLE IF EXISTS `brand`;
 CREATE TABLE `brand` (
-  `id` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `id` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `logo` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -101,11 +101,11 @@ INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-  `id` varchar(9) COLLATE utf32_unicode_ci NOT NULL,
-  `parent_id` varchar(9) COLLATE utf32_unicode_ci NOT NULL DEFAULT '0',
+  `id` varchar(9) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `parent_id` varchar(9) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL DEFAULT '0',
   `title` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `icon` varchar(11) COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
+  `icon` varchar(11) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
 
@@ -135,14 +135,31 @@ INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort
 
 DROP TABLE IF EXISTS `characteristic`;
 CREATE TABLE `characteristic` (
-  `id` varchar(9) NOT NULL DEFAULT '',
-  `category_id` varchar(9) NOT NULL DEFAULT '',
-  `title` varchar(255) NOT NULL DEFAULT '',
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `category_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `type` tinyint(1) NOT NULL DEFAULT '1',
   `filter` tinyint(1) NOT NULL DEFAULT '0',
   `group` tinyint(1) NOT NULL DEFAULT '0',
   `sort_order` int NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `characteristic`
+--
+
+INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`) VALUES
+('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4),
+('000000001', '000000009', 'Тип подключения', 4, 1, 0, 3),
+('000000002', '000000009', 'Частотный диапазон', 1, 0, 0, 2),
+('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1),
+('000000006', '000000006', 'Экран', 2, 1, 1, 1),
+('000000007', '000000006', 'Оперативная память (RAM)', 4, 0, 0, 2),
+('000000008', '000000006', 'Встроенная память (ROM)', 4, 0, 0, 3),
+('000000009', '000000006', 'Основная камера МПикс', 1, 0, 0, 4),
+('000000010', '000000006', 'Фронтальная камера МПикс', 1, 0, 0, 5),
+('000000012', '000000011', 'Описание', 1, 0, 0, 1),
+('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5);
 
 -- --------------------------------------------------------
 
@@ -206,14 +223,27 @@ CREATE TABLE `param_value` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `predef_char_value`
+--
+
+DROP TABLE IF EXISTS `predef_char_value`;
+CREATE TABLE `predef_char_value` (
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `price`
 --
 
 DROP TABLE IF EXISTS `price`;
 CREATE TABLE `price` (
-  `product_id` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `reserve` int NOT NULL,
-  `store_id` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
+  `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `price` int NOT NULL,
   `provider_id` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
@@ -236,15 +266,15 @@ INSERT INTO `price` (`product_id`, `reserve`, `store_id`, `unit`, `price`, `prov
 
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
-  `id` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `provider_id` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `category_id` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
+  `id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `provider_id` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `category_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `vendor_code` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `param_value_list` text COLLATE utf8_unicode_ci NOT NULL,
-  `param_variable_list` text COLLATE utf8_unicode_ci NOT NULL,
-  `brand_id` varchar(8) COLLATE utf8_unicode_ci NOT NULL
+  `param_value_list` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `param_variable_list` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `brand_id` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -290,7 +320,9 @@ CREATE TABLE `provider` (
 --
 
 INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
-('0', '0', '0', '0');
+('00003', 'Поставщик 1', 'Империал бананас', ''),
+('00004', 'Поставщик 2', 'Вычурные веники', ''),
+('00001', 'title1', 'description1', '');
 
 -- --------------------------------------------------------
 
@@ -318,9 +350,9 @@ CREATE TABLE `shop` (
 
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
-  `product_id` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `rest` int NOT NULL,
-  `store_id` varchar(9) COLLATE utf8_unicode_ci NOT NULL
+  `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
@@ -341,7 +373,7 @@ INSERT INTO `stock_balance` (`product_id`, `rest`, `store_id`) VALUES
 
 DROP TABLE IF EXISTS `store`;
 CREATE TABLE `store` (
-  `id` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `provider_id` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -360,7 +392,8 @@ INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `ge
 ('000000004', '00003', '2 Магазин Суперпродавца', '', '', '55.703505', '37.731048', ''),
 ('000000005', '00004', 'На Волгоградке (м-видео)', '', '', '55.721462', '37.697468', ''),
 ('000000001', '00001', 'Globus(Шарикоподшипниковская)', '', '', '55.717229', '37.677831', ''),
-('000000002', '00003', 'Магазин 1 (Барамба)', '', '', '55.657123', '37.739375', '');
+('000000002', '00003', 'Магазин 1 (Барамба)', '', '', '55.657123', '37.739375', ''),
+('', '', '', '', '', '0', '0', '');
 
 -- --------------------------------------------------------
 
@@ -437,6 +470,12 @@ ALTER TABLE `param_title`
 -- Indexes for table `param_value`
 --
 ALTER TABLE `param_value`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `predef_char_value`
+--
+ALTER TABLE `predef_char_value`
   ADD PRIMARY KEY (`id`);
 
 --

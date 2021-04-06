@@ -9,6 +9,7 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -30,6 +31,7 @@ class IndexControllerFactory implements FactoryInterface
         $provider = $container->get(ProviderRepositoryInterface::class);
         $store =    $container->get(StoreRepositoryInterface::class);
         $product =    $container->get(ProductRepositoryInterface::class);
+        $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
         $brand =    $container->get(BrandRepositoryInterface::class);
         $characteristic =    $container->get(CharacteristicRepositoryInterface::class);
         $price =    $container->get(PriceRepositoryInterface::class);
@@ -37,7 +39,7 @@ class IndexControllerFactory implements FactoryInterface
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
-        return new IndexController($test, $category, $provider, $store, $product, $brand, $characteristic, $price, $stockBalance, $entityManager, $config, $htmlProvider);
+        return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, $stockBalance, $entityManager, $config, $htmlProvider);
     }
 }
 

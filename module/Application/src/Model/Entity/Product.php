@@ -88,6 +88,13 @@ class Product
      */
     private $store_title;
     
+    private $product_title;
+    
+    public function getProductTitle()
+    {
+        return $this->product_title;
+    }
+    
     /**
      * @return string, length=9
      */

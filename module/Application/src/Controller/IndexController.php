@@ -19,6 +19,7 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -49,6 +50,7 @@ class IndexController extends AbstractActionController
     private $providerRepository;
     private $storeRepository;
     private $productRepository;
+    private $filteredProductRepository;
     private $brandRepository;
     private $characteristicRepository;
     private $priceRepository;
@@ -59,7 +61,7 @@ class IndexController extends AbstractActionController
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, 
+                ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
                 CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
     {
         $this->testRepository = $testRepository;
@@ -67,6 +69,7 @@ class IndexController extends AbstractActionController
         $this->providerRepository = $providerRepository;
         $this->storeRepository = $storeRepository;
         $this->productRepository = $productRepository;
+        $this->filteredProductRepository = $filteredProductRepository;
         $this->brandRepository = $brandRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
@@ -687,6 +690,7 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->findAll(['table'=>'product', 'limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
         $prices = $this->priceRepository->findAll(['table'=>'price']);
         $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
+        $filteredProducts = $this->filteredProductRepository->filterProductsByStores(['000000005', '000000004']);
         
         foreach ($stores as $store) {
             echo $store->getId().' '.$store->getTitle(). '<br/>';
@@ -710,6 +714,10 @@ class IndexController extends AbstractActionController
         echo '<hr/>';
         foreach ($stockBalances as $stockBalance) {
             echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$price->getStoreId(). '<br/>';
+        }
+        echo '<hr/>';
+        foreach ($filteredProducts as $filteredProduct) {
+            echo $filteredProduct->getId().' '.$filteredProduct->getTitle(). ' '. $filteredProduct->getProductId().' ' . $filteredProduct->getProductTitle(). ' '. $filteredProduct->getRest(). '<br/>';
         }
         exit;
         

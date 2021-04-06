@@ -222,10 +222,12 @@ class ProductRepository implements ProductRepositoryInterface
         $w = new Where();
         $w->in('s.id', $params);
         $select = new Select();
+        $select->quantifier(Select::QUANTIFIER_DISTINCT);
         $select->from(['s'=>'store'])->columns(['id', 'provider_id', 'title'])
                 ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)
                 ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id'=>'id', 'product_title' => 'title'], $select::JOIN_INNER)
-                ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)->where($w);
+                ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)
+                ->order(['id ASC'])->where($w);
 //        $selectString = $sql->buildSqlString($select);
 //        print_r($selectString);
 //        exit;
