@@ -17,7 +17,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
-use Laminas\Db\Sql\Expression;
+//use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
@@ -41,21 +41,21 @@ class ProductRepository implements ProductRepositoryInterface
     /**
      * @var Product
      */
-    private Product $productPrototype;
+    private Product $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Product $productPrototype
+     * @param Product $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Product $productPrototype
+        Product $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->productPrototype = $productPrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -63,13 +63,11 @@ class ProductRepository implements ProductRepositoryInterface
      *
      * @return Product[]
      */
-    public function findAll($limit=100, $offset=0, $order="id ASC")
+    //public function findAll($limit=100, $offset=0, $order="id ASC")
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('product');
-        $select ->order($order);
-        $select ->limit($limit);
-        $select ->offset($offset);
+        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -80,7 +78,7 @@ class ProductRepository implements ProductRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->productPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -108,7 +106,7 @@ class ProductRepository implements ProductRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->productPrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $product = $resultSet->current();
 
@@ -189,7 +187,7 @@ class ProductRepository implements ProductRepositoryInterface
        
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->productPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         /*/foreach($resultSet as $product) {
@@ -198,6 +196,41 @@ class ProductRepository implements ProductRepositoryInterface
         exit;/**/
         
         return $resultSet;
+    }
+    
+    public function filterProductsByStores2($params=[])
+    {
+//SELECT DISTINCT
+//    s.id,
+//    s.provider_id,
+//    s.title,
+//    pr.id AS product_id,
+//    pr.title AS product_title,
+//    sb.rest
+//FROM
+//    store s
+//INNER JOIN provider p ON
+//    p.id = s.provider_id
+//INNER JOIN product pr ON
+//    pr.provider_id = s.provider_id
+//LEFT JOIN stock_balance sb ON
+//    sb.product_id = pr.id AND sb.store_id = s.id
+//WHERE
+//    s.id IN('000000005', '000000004');
+        
+        $sql = new Sql($this->db);
+        $w = new Where();
+        $w->in('s.id', $params);
+        $select = new Select();
+        $select->from(['s'=>'store'])->columns(['s.id', 's.provider_id', 's.title'])
+                ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)->where($w);
+        $selectString = $sql->buildSqlString($select);
+        print_r($selectString);
+        exit;
+  
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
     }
 
     /**
@@ -298,7 +331,7 @@ class ProductRepository implements ProductRepositoryInterface
         
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->productPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         
@@ -371,7 +404,7 @@ class ProductRepository implements ProductRepositoryInterface
 //       
 //        $resultSet = new HydratingResultSet(
 //            $this->hydrator,
-//            $this->productPrototype
+//            $this->prototype
 //        );
 //        $resultSet->initialize($result);
 //        

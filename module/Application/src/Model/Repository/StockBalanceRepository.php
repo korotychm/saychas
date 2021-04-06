@@ -61,10 +61,10 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
      *
      * @return StockBalance[]
      */
-    public function findAll($params=[])
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('stock_balance');
+        $select = $sql->select($params['table']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

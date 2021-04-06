@@ -61,10 +61,10 @@ class PriceRepository implements PriceRepositoryInterface
      *
      * @return Price[]
      */
-    public function findAll()
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('price');
+        $select = $sql->select($params['table']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

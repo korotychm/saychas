@@ -216,6 +216,16 @@ return [
                     ],
                 ],
             ],
+            'test-repos' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test-repos',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'testRepos',
+                    ],
+                ],
+            ],
             
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\

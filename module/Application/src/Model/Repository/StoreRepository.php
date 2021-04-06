@@ -65,10 +65,10 @@ class StoreRepository implements StoreRepositoryInterface
      *
      * @return Store[]
      */
-    public function findAll($params=[])
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select()->from('store')->columns(['id', 'provider_id', 'title', 'description', 'address', 'geox', 'geoy', 'icon'])->where(['id' => $params]);//['000000001', '000000002', '000000003', '000000004', '000000005']
+        $select = $sql->select()->from($params['table'])->where(['id' => $params['sequance']]);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

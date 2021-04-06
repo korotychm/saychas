@@ -55,10 +55,10 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
      *
      * @return Characteristic[]
      */
-    public function findAll($params=[])
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('characteristic');
+        $select = $sql->select($params['table']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
  

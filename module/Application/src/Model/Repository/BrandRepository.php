@@ -60,10 +60,10 @@ class BrandRepository implements BrandRepositoryInterface
      *
      * @return Brand[]
      */
-    public function findAll($params = [])
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('brand');
+        $select = $sql->select($params['table']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

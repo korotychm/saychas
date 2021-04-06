@@ -21,6 +21,8 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\PriceRepositoryInterface;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Resource\StringResource;
 use Laminas\Json\Json;
@@ -49,6 +51,8 @@ class IndexController extends AbstractActionController
     private $productRepository;
     private $brandRepository;
     private $characteristicRepository;
+    private $priceRepository;
+    private $stockBalanceRepository;
     private $entityManager;
     private $config;
     private $htmlProvider;
@@ -56,7 +60,7 @@ class IndexController extends AbstractActionController
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, BrandRepositoryInterface $brandRepository, 
-                CharacteristicRepositoryInterface $characteristicRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
+                CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -65,6 +69,8 @@ class IndexController extends AbstractActionController
         $this->productRepository = $productRepository;
         $this->brandRepository = $brandRepository;
         $this->characteristicRepository = $characteristicRepository;
+        $this->priceRepository = $priceRepository;
+        $this->stockBalanceRepository = $stockBalanceRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
@@ -455,6 +461,7 @@ class IndexController extends AbstractActionController
     {
         //$this->storeRepository->findProductsByProviderIdAndExtraCondition(1, [1, 2]);
         $stores = $this->storeRepository->findStoresByProviderIdAndExtraCondition(1, [1,2, 3]);
+        $stores = $this->storeRepository->findAll(['000000001', 2, 3]);
         
         foreach($stores as $store) {
             echo '<pre>';
@@ -545,14 +552,6 @@ class IndexController extends AbstractActionController
     public function helloWorldAction()
     {
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
-        $this->layout()->setTemplate('layout/mainpage');
-        
-        $stores = $this->storeRepository->findAll(['000000003', '000000004', '000000005']);//, '000000001', '000000002'['000000003', '000000004', '000000005']
-        
-        foreach ($stores as $store) {
-            echo $store->getId().' '.$store->getTitle(). '<br/>';
-        }
-        exit;
         
         $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
         $hydrator->addStrategy(
@@ -670,6 +669,44 @@ class IndexController extends AbstractActionController
 //        $view->setCaptureTo('article');
 
 //        return $view;
+    }
+    
+    public function testReposAction()
+    {
+        $this->layout()->setTemplate('layout/mainpage');
+        
+        $stores = $this->storeRepository->findAll(['table'=>'store', 'sequance' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
+        $brands = $this->brandRepository->findAll(['table'=>'brand']);
+        $characteristics = $this->characteristicRepository->findAll(['table'=>'characteristic']);
+        $products = $this->productRepository->findAll(['table'=>'product', 'limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
+        $prices = $this->priceRepository->findAll(['table'=>'price']);
+        $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
+        
+        foreach ($stores as $store) {
+            echo $store->getId().' '.$store->getTitle(). '<br/>';
+        }
+        echo '<hr/>';
+        foreach ($brands as $brand) {
+            echo $brand->getId().' '.$brand->getTitle(). '<br/>';
+        }
+        echo '<hr/>';
+        foreach ($characteristics as $characteristic) {
+            echo $characteristic->getId().' '.$characteristic->getTitle(). '<br/>';
+        }
+        echo '<hr/>';
+        foreach ($products as $product) {
+            echo $product->getId().' '.$product->getTitle(). '<br/>';
+        }
+        echo '<hr/>';
+        foreach ($prices as $price) {
+            echo $price->getPrice().' '.$price->getProductId().' '.$price->getStoreId(). '<br/>';
+        }
+        echo '<hr/>';
+        foreach ($stockBalances as $stockBalance) {
+            echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$price->getStoreId(). '<br/>';
+        }
+        exit;
+        
     }
     
     

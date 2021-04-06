@@ -61,13 +61,11 @@ class ProviderRepository implements ProviderRepositoryInterface
      *
      * @return Provider[]
      */
-    public function findAll($order="id ASC", $limit=100, $offset=0  )
+    // public function findAll($order="id ASC", $limit=100, $offset=0  )
+    public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select('provider');
-        $select ->order($order);
-        $select ->limit($limit);
-        $select ->offset($offset);
+        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
