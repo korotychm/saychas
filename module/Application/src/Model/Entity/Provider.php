@@ -1,5 +1,5 @@
 <?php
-// src/Model/Provider.php
+// src/Model/Entity/Provider.php
 
 namespace Application\Model\Entity;
 

@@ -1,5 +1,5 @@
 <?php
-// src/Model/Price.php
+// src/Model/Entity/Price.php
 
 namespace Application\Model\Entity;
 

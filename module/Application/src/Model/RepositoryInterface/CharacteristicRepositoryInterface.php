@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/RepositoryInterface/CharacteristicRepository.php
+// src/Model/Repository/RepositoryInterface/CharacteristicRepositoryInterface.php
 
 namespace Application\Model\RepositoryInterface;
 

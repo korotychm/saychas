@@ -1,4 +1,6 @@
 <?php
+// src/Model/Repository/RepositoryInterface/CategoryRepositoryInterface.php
+
 namespace Application\Model\RepositoryInterface;
 
 interface CategoryRepositoryInterface

@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/CharacteristicRepository.php
+// src/Model/Repository/PredefCharValueRepository.php
 
 namespace Application\Model\Repository;
 

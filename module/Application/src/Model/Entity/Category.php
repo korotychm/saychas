@@ -1,5 +1,5 @@
 <?php
-// src/Model/Category.php
+// src/Model/Entity/Category.php
 
 namespace Application\Model\Entity;
 

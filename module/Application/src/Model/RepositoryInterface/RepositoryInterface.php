@@ -1,4 +1,6 @@
 <?php
+// src/Model/Repository/RepositoryInterface/RepositoryInterface.php
+
 namespace Application\Model\RepositoryInterface;
 
 interface RepositoryInterface

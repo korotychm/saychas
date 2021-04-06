@@ -1,5 +1,5 @@
 <?php
-// src/Model/FilteredProduct.php
+// src/Model/Entity/FilteredProduct.php
 
 namespace Application\Model\Entity;
 
@@ -13,20 +13,6 @@ namespace Application\Model\Entity;
  */
 class FilteredProduct
 {
-
-//SELECT
-//    `s`.`id` AS `id`,
-//    `s`.`provider_id` AS `provider_id`,
-//    `s`.`title` AS `title`,
-//    `pr`.`id` AS `product_id`,
-//    `sb`.`rest` AS `rest`
-//FROM
-//    `store` AS `s`
-//INNER JOIN `provider` AS `p` ON `p`.`id` = `s`.`provider_id`
-//INNER JOIN `product` AS `pr` ON `pr`.`provider_id` = `s`.`provider_id`
-//LEFT JOIN `stock_balance` AS `sb` ON `sb`.`product_id` = `pr`.`id` AND `sb`.`store_id` = `s`.`id`
-//WHERE `s`.`id` IN('000000005', '000000004');
-
     /**
      * @var int
      *

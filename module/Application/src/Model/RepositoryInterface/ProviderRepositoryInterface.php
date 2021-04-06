@@ -1,6 +1,5 @@
 <?php
-
-
+// src/Model/Repository/RepositoryInterface/ProviderRepositoryInterface.php
 
 namespace Application\Model\RepositoryInterface;
 

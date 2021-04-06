@@ -1,5 +1,5 @@
 <?php
-// src/Model/Characteristic.php
+// src/Model/Entity/Characteristic.php
 
 namespace Application\Model\Entity;
 

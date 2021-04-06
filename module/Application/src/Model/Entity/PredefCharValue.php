@@ -1,5 +1,5 @@
 <?php
-// src/Model/PredefCharValue.php
+// src/Model/Entity/PredefCharValue.php
 
 namespace Application\Model\Entity;
 
