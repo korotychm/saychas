@@ -226,13 +226,24 @@ class ProductRepository implements ProductRepositoryInterface
                 ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)
                 ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id'=>'id', 'product_title' => 'title'], $select::JOIN_INNER)
                 ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)->where($w);
-        $selectString = $sql->buildSqlString($select);
-        print_r($selectString);
-        exit;
+//        $selectString = $sql->buildSqlString($select);
+//        print_r($selectString);
+//        exit;
   
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+        
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->prototype
+        );
+        $resultSet->initialize($result);
+        
+        return $resultSet;        
     }
 
     /**
