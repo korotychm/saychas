@@ -15,6 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -221,7 +222,7 @@ return [
                 'options' => [
                     'route'    => '/test-repos',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AjaxController::class,
                         'action'     => 'testRepos',
                     ],
                 ],
@@ -278,7 +279,7 @@ return [
                 'options' => [
                     'route'    => '/ajax[/:id]',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AjaxController::class,
                         'action'     => 'ajax',
                     ],
                 ],
@@ -288,7 +289,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-to-web',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AjaxController::class,
                         'action'     => 'ajaxToWeb',
                     ],
                 ],
@@ -298,7 +299,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-store',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AjaxController::class,
                         'action'     => 'ajaxGetStore',
                     ],
                 ],
@@ -308,7 +309,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-set-user-address',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AjaxController::class,
                         'action'     => 'ajaxSetUserAddress',
                     ],
                 ],
@@ -318,7 +319,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-legal-store',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\AjaxController::class,
                         'action'     => 'ajaxGetLegalStore',
                     ],
                 ],
@@ -339,6 +340,7 @@ return [
         'factories' => [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
+            Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
         ],
     ],
