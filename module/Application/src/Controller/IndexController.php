@@ -105,30 +105,9 @@ class IndexController extends AbstractActionController
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
 
-//        $adapter = new Adapter([
-//            'driver'   => 'Pdo_Mysql',
-//            'database' => 'saychas_z',
-//            'username' => 'saychas_z',
-//            'password' => 'saychas_z',
-//        ]);
-        
-//        $sql    = new Sql($adapter);
-//        $select = $sql->select();
-//        $select->from('test');
-//        $select->where(['id' => 2]);
-//
-//        $selectString = $sql->buildSqlString($select);
-//        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+
         return new ViewModel([
             'fooItem' => $container->item
-//            'tests' => $this->testRepository->findAllTests(),
-//            'first' => $this->testRepository->findTest(4),
-//            'provider' => $this->providerRepository->find(['id' => '00004']),
-//            'product' => $this->productRepository->find(['id' => '000000000004']),
-//            'brand' => $this->brandRepository->find(['id' => '000002']),
-//            'store' => $this->storeRepository->find(['id' => '000000003']),
-//            'category' => $this->categoryRepository->findCategory(['id' => '29']),
-//            'providers' => $this->providerRepository->findAll(),
         ]);
     }
     
@@ -227,7 +206,8 @@ class IndexController extends AbstractActionController
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         $ob=$TMP-> data;
-        if (!$ob->house) return (StringResource::USER_ADDREES_ERROR_MESSAGE);
+        
+        if (!$ob->house) exit (StringResource::USER_ADDREES_ERROR_MESSAGE);
         
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->userAddress = $TMP -> value;
@@ -357,25 +337,6 @@ class IndexController extends AbstractActionController
                     'param_value'=>$row->getParamValueList(),
                     
                 ];
-                /*                
-                provider_id
-                category_id
-                price
-                rest
-                url_http
-                brand_title
-                store_title
-                store_address
-                store_description
-                param_value_list
-                param_variable_list
-                title
-                description
-                vendor_code
-                howHour
-                 * 
-                 * 
-                 */
                $return.= $this->htmlProvider->productCard($productCardParam);
             }/**/
             
