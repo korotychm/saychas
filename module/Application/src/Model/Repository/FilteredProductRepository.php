@@ -20,6 +20,11 @@ use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 class FilteredProductRepository implements FilteredProductRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="filtered_product";//view="filtered_product";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -58,10 +63,13 @@ class FilteredProductRepository implements FilteredProductRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-
  
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
@@ -74,7 +82,7 @@ class FilteredProductRepository implements FilteredProductRepositoryInterface
         $resultSet->initialize($result);
         return $resultSet;
     }
-    
+
     /**
      * Returns a single product.
      *

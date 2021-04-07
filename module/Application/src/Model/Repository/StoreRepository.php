@@ -25,6 +25,11 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 class StoreRepository implements StoreRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="store";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -62,7 +67,11 @@ class StoreRepository implements StoreRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select()->from($params['table'])->where(['id' => $params['sequance']]);
+        $select = $sql->select()->from($this->tableName);//->where(['id' => $params['sequance']]);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

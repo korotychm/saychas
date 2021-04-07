@@ -21,6 +21,11 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 class PriceRepository implements PriceRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="price";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -33,21 +38,21 @@ class PriceRepository implements PriceRepositoryInterface
     /**
      * @var Price
      */
-    private Price $pricePrototype;
+    private Price $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Price $pricePrototype
+     * @param Price $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Price $pricePrototype
+        Price $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->pricePrototype = $pricePrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -58,7 +63,11 @@ class PriceRepository implements PriceRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -69,7 +78,7 @@ class PriceRepository implements PriceRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->pricePrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -97,7 +106,7 @@ class PriceRepository implements PriceRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->pricePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $price = $resultSet->current();
 

@@ -222,7 +222,7 @@ return [
                 'options' => [
                     'route'    => '/test-repos',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\IndexController::class,
                         'action'     => 'testRepos',
                     ],
                 ],

@@ -21,6 +21,11 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 class CharacteristicRepository implements CharacteristicRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="characteristic";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -58,7 +63,11 @@ class CharacteristicRepository implements CharacteristicRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
  

@@ -21,6 +21,11 @@ use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 class StockBalanceRepository implements StockBalanceRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="stock_balance";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -33,21 +38,21 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
     /**
      * @var StockBalance
      */
-    private StockBalance $stockBalancePrototype;
+    private StockBalance $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param StockBalance $stockBalancePrototype
+     * @param StockBalance $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        StockBalance $stockBalancePrototype
+        StockBalance $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->stockBalancePrototype = $stockBalancePrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -58,7 +63,11 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -69,7 +78,7 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->stockBalancePrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -97,7 +106,7 @@ class StockBalanceRepository implements StockBalanceRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->stockBalancePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $stockBalance = $resultSet->current();
 

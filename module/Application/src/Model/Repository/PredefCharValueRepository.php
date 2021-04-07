@@ -20,6 +20,11 @@ use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
 class PredefCharValueRepository implements PredefCharValueRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="predef_char_value";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -57,7 +62,11 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

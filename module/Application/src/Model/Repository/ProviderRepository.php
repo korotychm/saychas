@@ -21,6 +21,11 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 class ProviderRepository implements ProviderRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="provider";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -33,21 +38,21 @@ class ProviderRepository implements ProviderRepositoryInterface
     /**
      * @var Provider
      */
-    private Provider $providerPrototype;
+    private Provider $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Provider $providerPrototype
+     * @param Provider $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Provider $providerPrototype
+        Provider $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->providerPrototype = $providerPrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -59,7 +64,11 @@ class ProviderRepository implements ProviderRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
+        $select = $sql->select($this->tableName);//->order($params['order'])->limit($params['limit'])->offset($params['offset']);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -70,7 +79,7 @@ class ProviderRepository implements ProviderRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->providerPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -139,7 +148,7 @@ class ProviderRepository implements ProviderRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->providerPrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $provider = $resultSet->current();
 

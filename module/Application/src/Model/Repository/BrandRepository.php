@@ -20,6 +20,11 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 class BrandRepository implements BrandRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="brand";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -32,21 +37,21 @@ class BrandRepository implements BrandRepositoryInterface
     /**
      * @var Brand
      */
-    private Brand $brandPrototype;
+    private Brand $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Brand $brandPrototype
+     * @param Brand $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Brand $brandPrototype
+        Brand $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->brandPrototype = $brandPrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -57,7 +62,11 @@ class BrandRepository implements BrandRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -68,7 +77,7 @@ class BrandRepository implements BrandRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->brandPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -96,7 +105,7 @@ class BrandRepository implements BrandRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->brandPrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $brand = $resultSet->current();
 

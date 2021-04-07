@@ -684,38 +684,39 @@ class IndexController extends AbstractActionController
     {
         $this->layout()->setTemplate('layout/mainpage');
         
-        $stores = $this->storeRepository->findAll(['table'=>'store', 'sequance' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
-        $brands = $this->brandRepository->findAll(['table'=>'brand']);
-        $characteristics = $this->characteristicRepository->findAll(['table'=>'characteristic']);
-        $products = $this->productRepository->findAll(['table'=>'product', 'limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
+        $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
+        $brands = $this->brandRepository->findAll([]);
+        $characteristics = $this->characteristicRepository->findAll([]);
+        $products = $this->productRepository->findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
         $prices = $this->priceRepository->findAll(['table'=>'price']);
         $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
-        $filteredProducts = $this->filteredProductRepository->filterProductsByStores(['000000005', '000000004']);
+        $filteredProducts = $this->filteredProductRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000005', '000000004']]);//filterProductsByStores(['000000005', '000000004']);
         
+        echo 'Store <br/>';
         foreach ($stores as $store) {
             echo $store->getId().' '.$store->getTitle(). '<br/>';
         }
-        echo '<hr/>';
+        echo 'Brand <hr/>';
         foreach ($brands as $brand) {
             echo $brand->getId().' '.$brand->getTitle(). '<br/>';
         }
-        echo '<hr/>';
+        echo 'Characteristic <hr/>';
         foreach ($characteristics as $characteristic) {
             echo $characteristic->getId().' '.$characteristic->getTitle(). '<br/>';
         }
-        echo '<hr/>';
+        echo 'Product <hr/>';
         foreach ($products as $product) {
             echo $product->getId().' '.$product->getTitle(). '<br/>';
         }
-        echo '<hr/>';
+        echo 'Price <hr/>';
         foreach ($prices as $price) {
             echo $price->getPrice().' '.$price->getProductId().' '.$price->getStoreId(). '<br/>';
         }
-        echo '<hr/>';
+        echo 'Stock Balance <hr/>';
         foreach ($stockBalances as $stockBalance) {
             echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$price->getStoreId(). '<br/>';
         }
-        echo '<hr/>';
+        echo 'Filtered Products <hr/>';
         foreach ($filteredProducts as $filteredProduct) {
             echo $filteredProduct->getId().' '.$filteredProduct->getTitle(). ' '. $filteredProduct->getProductId().' ' . $filteredProduct->getProductTitle(). ' '. $filteredProduct->getRest(). '<br/>';
         }
