@@ -105,30 +105,9 @@ class IndexController extends AbstractActionController
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
 
-//        $adapter = new Adapter([
-//            'driver'   => 'Pdo_Mysql',
-//            'database' => 'saychas_z',
-//            'username' => 'saychas_z',
-//            'password' => 'saychas_z',
-//        ]);
-        
-//        $sql    = new Sql($adapter);
-//        $select = $sql->select();
-//        $select->from('test');
-//        $select->where(['id' => 2]);
-//
-//        $selectString = $sql->buildSqlString($select);
-//        $results = $adapter->query($selectString, $adapter::QUERY_MODE_EXECUTE);
+
         return new ViewModel([
             'fooItem' => $container->item
-//            'tests' => $this->testRepository->findAllTests(),
-//            'first' => $this->testRepository->findTest(4),
-//            'provider' => $this->providerRepository->find(['id' => '00004']),
-//            'product' => $this->productRepository->find(['id' => '000000000004']),
-//            'brand' => $this->brandRepository->find(['id' => '000002']),
-//            'store' => $this->storeRepository->find(['id' => '000000003']),
-//            'category' => $this->categoryRepository->findCategory(['id' => '29']),
-//            'providers' => $this->providerRepository->findAll(),
         ]);
     }
     
