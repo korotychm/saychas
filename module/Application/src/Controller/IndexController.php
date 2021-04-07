@@ -431,6 +431,19 @@ class IndexController extends AbstractActionController
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
         $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0]);
         
+//        $categories = $this->categoryRepository->initCategories();
+//        $acc = [];
+//        $c = $this->categoryRepository->findCategory(['id'=>'0']);
+//        $all = $this->categoryRepository->findAll($c, $acc);
+//        
+//        echo 'banzaii'.'<br/>';
+//        print_r($acc);
+//        exit;
+//        foreach($all as $c) {
+//            echo $c->getId().' '.$c->getParent().' '.$c->getTitle().'<br/>';
+//        }
+//        exit;
+        
         echo '---<br/>Store, function: findAll <br/>';
         foreach ($stores as $store) {
             echo $store->getId().' '.$store->getTitle(). '<br/>';

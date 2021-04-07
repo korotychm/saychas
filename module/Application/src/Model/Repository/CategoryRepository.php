@@ -115,6 +115,51 @@ class CategoryRepository implements CategoryRepositoryInterface
         return str_replace("<ul></ul>","",$echo);
     }
     
+    private HydratingResultSet $categories;
+    public function initCategories()
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select($this->tableName)->columns(['*']);
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+        
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->prototype
+        );
+        $resultSet->initialize($result);
+
+        $this->categories = $resultSet;
+        
+        return $resultSet;
+        
+    }
+    
+    public function findAll($parent, &$acc)
+    {
+        if($parent->getid()) {
+            array_push($acc, $parent);
+        }
+        foreach($this->categories as $category) {
+            if($category->getId() == $parent->getId()) {
+                print_r($acc);
+                echo '<br/>';
+                array_push($acc, $category);
+                $acc = $this->findAll($category, $acc);
+                //return $acc;
+            }
+        }
+        if($parent->getid()) {
+            array_push($acc, $parent);
+        }
+        return $acc;
+        
+    }
+    
     /**
      * Return array of category ids
      * 
@@ -181,7 +226,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select($this->tableName);
-        $select->where(['id = ?' => $params['id']]);
+        $select->where(['parent_id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
