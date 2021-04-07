@@ -50,13 +50,15 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
      *
      * @return Provider[]
      */
-   public function findAvailableProviders ($param,$order="id ASC", $limit=100, $offset=0 )
+//   public function findAvailableProviders ($param,$order="id ASC", $limit=100, $offset=0 )
+   public function findAvailableProviders ($params)
    {
         $sql    = new Sql($this->db);
         
         $subSelectAvailbleStore = $sql->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
-        $subSelectAvailbleStore ->where->in('id', $param);
+        $subSelectAvailbleStore ->where->in('id', $params['sequence']);
+        //$subSelectAvailbleStore ->where->in('id', $param);
         
         $select = $sql->select('provider');
         $select ->columns(['*']);
@@ -65,18 +67,25 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
         
         //$select -> where(["id in ?" => (new Select())->columns(["provider_id"])->from("store")->where($where)]);
         
-        $select ->order($order);
-        $select ->limit($limit);
-        $select ->offset($offset);
+        $select ->order($params['order']);
+        $select ->limit($params['limit']);
+        $select ->offset($params['offset']);
+//        $select ->order($order);
+//        $select ->limit($limit);
+//        $select ->offset($offset);
         
-        $stmt   = $sql->prepareStatementForSqlObject($select);
 //        $selectString = $sql->buildSqlString($select);
+//        echo $selectString;
+//        exit;
+
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+
         $result = $stmt->execute();
      
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {return [];}
          $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->productPrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         

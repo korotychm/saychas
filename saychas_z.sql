@@ -25,6 +25,7 @@ DELIMITER $$
 --
 -- Procedures
 --
+/**
 DROP PROCEDURE IF EXISTS `get_products_by_categories`$$
 CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`cat_id` VARCHAR(9), `store_list` TEXT)  BEGIN
 	DROP TABLE IF EXISTS temp;
@@ -69,7 +70,7 @@ CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`
 END$$
 
 DELIMITER ;
-
+*/
 -- --------------------------------------------------------
 
 --
@@ -351,7 +352,7 @@ CREATE TABLE `shop` (
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
   `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `rest` int NOT NULL,
+  `rest` int NOT NULL DEFAULT 0,
   `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 

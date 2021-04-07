@@ -243,8 +243,8 @@ class AjaxController extends AbstractActionController
         }
         if ($id=="getproviders"){                
           
-            $providers = $this->providerRepository->findAvailableProviders($param);
-            $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit'=>100, 'offset' => 0, 'order' =>'id ASC']);
+            $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence' => [1,2,3,4,5]]);
+            //$providers = $this->providerRepository->findAll(['limit'=>100, 'offset' => 0, 'order' =>'id ASC']);
               //if (!$providers )    exit(date("r")."<h3>Объект provider не&nbsp;получен</h3> <a href=# rel='666' class=provider-list  >Запросить тестовые магазины </a> <hr/>"); 
             $return.=date("r");	
             $return.="<ul>";

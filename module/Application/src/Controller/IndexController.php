@@ -447,34 +447,45 @@ class IndexController extends AbstractActionController
         $prices = $this->priceRepository->findAll(['table'=>'price']);
         $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
         $filteredProducts = $this->filteredProductRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000005', '000000004']]);//filterProductsByStores(['000000005', '000000004']);
+        //$providers = $this->providerRepository->findAvailableProviders(['000000003', '000000004', '000000005'], 'id ASC', 100, 0);
+        $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
+        $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0 ]);
         
-        echo 'Store <br/>';
+        echo '---<br/>Store, function: findAll <br/>';
         foreach ($stores as $store) {
             echo $store->getId().' '.$store->getTitle(). '<br/>';
         }
-        echo 'Brand <hr/>';
+        echo '---<br/>Brand, function: findAll <hr/>';
         foreach ($brands as $brand) {
             echo $brand->getId().' '.$brand->getTitle(). '<br/>';
         }
-        echo 'Characteristic <hr/>';
+        echo '---<br/>Characteristic, function: findAll <hr/>';
         foreach ($characteristics as $characteristic) {
             echo $characteristic->getId().' '.$characteristic->getTitle(). '<br/>';
         }
-        echo 'Product <hr/>';
+        echo '---<br/>Product, function: findAll <hr/>';
         foreach ($products as $product) {
             echo $product->getId().' '.$product->getTitle(). '<br/>';
         }
-        echo 'Price <hr/>';
+        echo '---<br/>Price, function: findAll <hr/>';
         foreach ($prices as $price) {
             echo $price->getPrice().' '.$price->getProductId().' '.$price->getStoreId(). '<br/>';
         }
-        echo 'Stock Balance <hr/>';
+        echo '---<br/>Stock Balance, function: findAll <hr/>';
         foreach ($stockBalances as $stockBalance) {
             echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$price->getStoreId(). '<br/>';
         }
-        echo 'Filtered Products <hr/>';
+        echo '---<br/>Filtered Products, function: findAll <hr/>';
         foreach ($filteredProducts as $filteredProduct) {
             echo $filteredProduct->getId().' '.$filteredProduct->getTitle(). ' '. $filteredProduct->getProductId().' ' . $filteredProduct->getProductTitle(). ' '. $filteredProduct->getRest(). '<br/>';
+        }
+        echo '---<br/>Providers, function: findAvailableProviders <hr/>';
+        foreach ($providers as $provider) {
+            echo $provider->getId().' '.$provider->getTitle().' ' . $provider->getDescription().'<br/>';
+        }
+        echo '---<br/>Providers2, function: findAll <hr/>';
+        foreach ($providers2 as $provider2) {
+            echo $provider2->getId().' '.$provider2->getTitle().' ' . $provider2->getDescription().'<br/>';
         }
         exit;
         
