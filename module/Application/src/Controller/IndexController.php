@@ -427,8 +427,9 @@ class IndexController extends AbstractActionController
         $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
         $filteredProducts = $this->filteredProductRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000005', '000000004']]);//filterProductsByStores(['000000005', '000000004']);
         //$providers = $this->providerRepository->findAvailableProviders(['000000003', '000000004', '000000005'], 'id ASC', 100, 0);
+        
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
-        $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0 ]);
+        $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0]);
         
         echo '---<br/>Store, function: findAll <br/>';
         foreach ($stores as $store) {

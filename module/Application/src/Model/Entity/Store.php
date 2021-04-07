@@ -27,7 +27,7 @@ class Store
      *
      * @ORM\Column(name="provider_id", type="string", length=11, nullable=false)
      */
-    private $providerId;
+    private $provider_id;
 
     /**
      * @var string
@@ -83,27 +83,27 @@ class Store
     }
 
     /**
-     * Set providerId.
+     * Set provider_id.
      *
-     * @param string $providerId
+     * @param string $provider_id
      *
      * @return Store
      */
-    public function setProviderId($providerId)
+    public function setProviderId($provider_id)
     {
-        $this->providerId = $providerId;
+        $this->provider_id = $provider_id;
 
         return $this;
     }
 
     /**
-     * Get providerId.
+     * Get provider_id.
      *
      * @return string
      */
     public function getProviderId()
     {
-        return $this->providerId;
+        return $this->provider_id;
     }
 
     /**
