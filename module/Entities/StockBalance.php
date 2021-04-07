@@ -7,26 +7,28 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * StockBalance
  *
- * @ORM\Table(name="stock_balance", uniqueConstraints={@ORM\UniqueConstraint(name="product_id", columns={"product_id", "store_id"})})
+ * @ORM\Table(name="stock_balance")
  * @ORM\Entity
  */
 class StockBalance
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="product_id", type="string", length=12, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="product_id", type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $productId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="store_id", type="string", length=9, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $storeId;
 
     /**
      * @var int
@@ -35,28 +37,11 @@ class StockBalance
      */
     private $rest;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="store_id", type="integer", nullable=false)
-     */
-    private $storeId;
-
-
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set productId.
      *
-     * @param int $productId
+     * @param string $productId
      *
      * @return StockBalance
      */
@@ -70,11 +55,35 @@ class StockBalance
     /**
      * Get productId.
      *
-     * @return int
+     * @return string
      */
     public function getProductId()
     {
         return $this->productId;
+    }
+
+    /**
+     * Set storeId.
+     *
+     * @param string $storeId
+     *
+     * @return StockBalance
+     */
+    public function setStoreId($storeId)
+    {
+        $this->storeId = $storeId;
+
+        return $this;
+    }
+
+    /**
+     * Get storeId.
+     *
+     * @return string
+     */
+    public function getStoreId()
+    {
+        return $this->storeId;
     }
 
     /**
@@ -99,29 +108,5 @@ class StockBalance
     public function getRest()
     {
         return $this->rest;
-    }
-
-    /**
-     * Set storeId.
-     *
-     * @param int $storeId
-     *
-     * @return StockBalance
-     */
-    public function setStoreId($storeId)
-    {
-        $this->storeId = $storeId;
-
-        return $this;
-    }
-
-    /**
-     * Get storeId.
-     *
-     * @return int
-     */
-    public function getStoreId()
-    {
-        return $this->storeId;
     }
 }

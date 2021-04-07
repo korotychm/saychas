@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Store
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=9, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class Store
     /**
      * @var string
      *
-     * @ORM\Column(name="provider_id", type="string", length=11, nullable=false)
+     * @ORM\Column(name="provider_id", type="string", length=6, nullable=false)
      */
     private $providerId;
 
@@ -74,7 +74,7 @@ class Store
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {

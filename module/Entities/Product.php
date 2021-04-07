@@ -13,25 +13,25 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=12, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="provider_id", type="integer", nullable=false)
+     * @ORM\Column(name="provider_id", type="string", length=6, nullable=false)
      */
     private $providerId;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="category_id", type="integer", nullable=false)
+     * @ORM\Column(name="category_id", type="string", length=9, nullable=false)
      */
     private $categoryId;
 
@@ -52,15 +52,36 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="vendor_code", type="string", length=11, nullable=false)
+     * @ORM\Column(name="vendor_code", type="string", length=100, nullable=false)
      */
     private $vendorCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="param_value_list", type="text", length=65535, nullable=false)
+     */
+    private $paramValueList;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="param_variable_list", type="text", length=65535, nullable=false)
+     */
+    private $paramVariableList;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="brand_id", type="string", length=8, nullable=false)
+     */
+    private $brandId;
 
 
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -70,7 +91,7 @@ class Product
     /**
      * Set providerId.
      *
-     * @param int $providerId
+     * @param string $providerId
      *
      * @return Product
      */
@@ -84,7 +105,7 @@ class Product
     /**
      * Get providerId.
      *
-     * @return int
+     * @return string
      */
     public function getProviderId()
     {
@@ -94,7 +115,7 @@ class Product
     /**
      * Set categoryId.
      *
-     * @param int $categoryId
+     * @param string $categoryId
      *
      * @return Product
      */
@@ -108,7 +129,7 @@ class Product
     /**
      * Get categoryId.
      *
-     * @return int
+     * @return string
      */
     public function getCategoryId()
     {
@@ -186,20 +207,6 @@ class Product
     {
         return $this->vendorCode;
     }
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="param_value_list", type="text", length=65535, nullable=false)
-     */
-    private $paramValueList;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="param_variable_list", type="integer", nullable=false)
-     */
-    private $paramVariableList;
-
 
     /**
      * Set paramValueList.
@@ -228,7 +235,7 @@ class Product
     /**
      * Set paramVariableList.
      *
-     * @param int $paramVariableList
+     * @param string $paramVariableList
      *
      * @return Product
      */
@@ -242,10 +249,34 @@ class Product
     /**
      * Get paramVariableList.
      *
-     * @return int
+     * @return string
      */
     public function getParamVariableList()
     {
         return $this->paramVariableList;
+    }
+
+    /**
+     * Set brandId.
+     *
+     * @param string $brandId
+     *
+     * @return Product
+     */
+    public function setBrandId($brandId)
+    {
+        $this->brandId = $brandId;
+
+        return $this;
+    }
+
+    /**
+     * Get brandId.
+     *
+     * @return string
+     */
+    public function getBrandId()
+    {
+        return $this->brandId;
     }
 }

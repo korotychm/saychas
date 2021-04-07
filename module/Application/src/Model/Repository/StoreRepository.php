@@ -22,7 +22,7 @@ use Laminas\Db\Sql\Where;
 use Application\Model\Entity\Store;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 
-class StoreRepository implements StoreRepositoryInterface
+class StoreRepository extends Repository implements StoreRepositoryInterface
 {
     /**
      * @var string
@@ -30,19 +30,9 @@ class StoreRepository implements StoreRepositoryInterface
     protected $tableName="store";
 
     /**
-     * @var AdapterInterface
-     */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
-
-    /**
      * @var Store
      */
-    private Store $prototype;
+    protected Store $prototype;
     
     /**
      * @param AdapterInterface $db
@@ -59,70 +49,6 @@ class StoreRepository implements StoreRepositoryInterface
         $this->prototype = $prototype;
     }
 
-    /**
-     * Returns a list of stores
-     *
-     * @return Store[]
-     */
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select()->from($this->tableName);//->where(['id' => $params['sequance']]);
-        if(isset($params['order']))     { $select->order($params['order']); }
-        if(isset($params['limit']))     { $select->limit($params['limit']); }
-        if(isset($params['offset']))    { $select->offset($params['offset']); }
-        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-
-    /**
-     * Returns a single store.
-     *
-     * @param  array $params
-     * @return Store
-     */    
-    public function find($params)
-    {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select('store');
-        $select->where(['id = ?' => $params['id']]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $params['id']
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
-        $resultSet->initialize($result);
-        $store = $resultSet->current();
-
-        if (! $store) {
-            throw new InvalidArgumentException(sprintf(
-                'Store with identifier "%s" not found.',
-                $params['id']
-            ));
-        }
-
-        return $store;
-    }
-    
     /**
      * Function finds available stores of a specific provider
      * 
@@ -187,32 +113,5 @@ class StoreRepository implements StoreRepositoryInterface
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
-    
-    /**
-     * Delete stores specified by json array of objects
-     * @param json
-     */
-    public function delete($json) {
-        try {
-            $result = Json::decode($json, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-        $total = [];
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
-        $sql    = new Sql($this->db);
-        $delete = $sql->delete();
-        $delete->from('store');
-        $delete->where(['id' => $total]);
-        $selectString = $sql->buildSqlString($delete);
-        try {
-            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
-            return ['result' => true, 'description' => '', 'statusCode' => 200];
-        }catch(InvalidQueryException $e){
-            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-        }
-    }    
     
 }

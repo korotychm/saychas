@@ -18,7 +18,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Price;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 
-class PriceRepository implements PriceRepositoryInterface
+class PriceRepository extends Repository implements PriceRepositoryInterface
 {
     /**
      * @var string
@@ -26,19 +26,9 @@ class PriceRepository implements PriceRepositoryInterface
     protected $tableName="price";
 
     /**
-     * @var AdapterInterface
-     */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
-
-    /**
      * @var Price
      */
-    private Price $prototype;
+    protected Price $prototype;
     
     /**
      * @param AdapterInterface $db
@@ -93,7 +83,7 @@ class PriceRepository implements PriceRepositoryInterface
     public function find($id)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('price');
+        $select    = $sql->select($this->tableName);
         $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);

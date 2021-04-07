@@ -5,41 +5,41 @@
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Country
+ * PredefCharValue
  *
- * @ORM\Table(name="country")
+ * @ORM\Table(name="predef_char_value")
  * @ORM\Entity
  */
-class Country
+class PredefCharValue
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=9, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private $id = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="text", length=255, nullable=false)
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
-    private $title;
+    private $title = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="text", length=255, nullable=false)
+     * @ORM\Column(name="characteristic_id", type="string", length=9, nullable=false)
      */
-    private $code;
+    private $characteristicId = '';
 
 
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -51,7 +51,7 @@ class Country
      *
      * @param string $title
      *
-     * @return Country
+     * @return PredefCharValue
      */
     public function setTitle($title)
     {
@@ -71,26 +71,26 @@ class Country
     }
 
     /**
-     * Set code.
+     * Set characteristicId.
      *
-     * @param string $code
+     * @param string $characteristicId
      *
-     * @return Country
+     * @return PredefCharValue
      */
-    public function setCode($code)
+    public function setCharacteristicId($characteristicId)
     {
-        $this->code = $code;
+        $this->characteristicId = $characteristicId;
 
         return $this;
     }
 
     /**
-     * Get code.
+     * Get characteristicId.
      *
      * @return string
      */
-    public function getCode()
+    public function getCharacteristicId()
     {
-        return $this->code;
+        return $this->characteristicId;
     }
 }

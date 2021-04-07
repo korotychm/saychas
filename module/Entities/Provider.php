@@ -13,32 +13,32 @@ use Doctrine\ORM\Mapping as ORM;
 class Provider
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=6, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
     private $title;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     private $description;
 
     /**
-     * @var string|null
+     * @var string
      *
-     * @ORM\Column(name="icon", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="icon", type="text", length=255, nullable=false)
      */
     private $icon;
 
@@ -46,7 +46,7 @@ class Provider
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -56,11 +56,11 @@ class Provider
     /**
      * Set title.
      *
-     * @param string|null $title
+     * @param string $title
      *
      * @return Provider
      */
-    public function setTitle($title = null)
+    public function setTitle($title)
     {
         $this->title = $title;
 
@@ -70,7 +70,7 @@ class Provider
     /**
      * Get title.
      *
-     * @return string|null
+     * @return string
      */
     public function getTitle()
     {
@@ -80,11 +80,11 @@ class Provider
     /**
      * Set description.
      *
-     * @param string|null $description
+     * @param string $description
      *
      * @return Provider
      */
-    public function setDescription($description = null)
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -94,7 +94,7 @@ class Provider
     /**
      * Get description.
      *
-     * @return string|null
+     * @return string
      */
     public function getDescription()
     {
@@ -104,11 +104,11 @@ class Provider
     /**
      * Set icon.
      *
-     * @param string|null $icon
+     * @param string $icon
      *
      * @return Provider
      */
-    public function setIcon($icon = null)
+    public function setIcon($icon)
     {
         $this->icon = $icon;
 
@@ -118,7 +118,7 @@ class Provider
     /**
      * Get icon.
      *
-     * @return string|null
+     * @return string
      */
     public function getIcon()
     {
