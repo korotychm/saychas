@@ -58,21 +58,16 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
         $subSelectAvailbleStore = $sql->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
         $subSelectAvailbleStore ->where->in('id', $params['sequence']);
-        //$subSelectAvailbleStore ->where->in('id', $param);
         
         $select = $sql->select('provider');
-        $select ->columns(['*']);
-        $select ->
-                where->in('id', $subSelectAvailbleStore);
+        $select->columns(['*']);
+        $select->where->in('id', $subSelectAvailbleStore);
         
         //$select -> where(["id in ?" => (new Select())->columns(["provider_id"])->from("store")->where($where)]);
         
         $select ->order($params['order']);
         $select ->limit($params['limit']);
         $select ->offset($params['offset']);
-//        $select ->order($order);
-//        $select ->limit($limit);
-//        $select ->offset($offset);
         
 //        $selectString = $sql->buildSqlString($select);
 //        echo $selectString;
