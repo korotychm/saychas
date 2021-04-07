@@ -18,36 +18,31 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Price;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 
-class PriceRepository implements PriceRepositoryInterface
+class PriceRepository extends Repository implements PriceRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var string
      */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
+    protected $tableName="price";
 
     /**
      * @var Price
      */
-    private Price $pricePrototype;
+    protected Price $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Price $pricePrototype
+     * @param Price $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Price $pricePrototype
+        Price $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->pricePrototype = $pricePrototype;
+        $this->prototype = $prototype;
     }
 
     /**
@@ -58,7 +53,11 @@ class PriceRepository implements PriceRepositoryInterface
     public function findAll($params)
     {
         $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -69,7 +68,7 @@ class PriceRepository implements PriceRepositoryInterface
 
         $resultSet = new HydratingResultSet(
             $this->hydrator,
-            $this->pricePrototype
+            $this->prototype
         );
         $resultSet->initialize($result);
         return $resultSet;
@@ -84,7 +83,7 @@ class PriceRepository implements PriceRepositoryInterface
     public function find($id)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('price');
+        $select    = $sql->select($this->tableName);
         $select->where(['id = ?' => $id]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -97,7 +96,7 @@ class PriceRepository implements PriceRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->pricePrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result);
         $price = $resultSet->current();
 

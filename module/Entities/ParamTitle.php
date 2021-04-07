@@ -42,6 +42,20 @@ class ParamTitle
      */
     private $filter = '0';
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="category_id", type="integer", nullable=false)
+     */
+    private $categoryId;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="type", type="boolean", nullable=false, options={"default"="1"})
+     */
+    private $type = true;
+
 
     /**
      * Get id.
@@ -124,20 +138,6 @@ class ParamTitle
     {
         return $this->filter;
     }
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer", nullable=false)
-     */
-    private $categoryId;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="type", type="boolean", nullable=false, options={"default"="1"})
-     */
-    private $type = true;
-
 
     /**
      * Set categoryId.

@@ -7,26 +7,28 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Price
  *
- * @ORM\Table(name="price", uniqueConstraints={@ORM\UniqueConstraint(name="id_product", columns={"product_id", "store_id"})})
+ * @ORM\Table(name="price")
  * @ORM\Entity
  */
 class Price
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="product_id", type="string", length=12, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="product_id", type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $productId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="provider_id", type="string", length=6, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $providerId;
 
     /**
      * @var int
@@ -36,9 +38,9 @@ class Price
     private $reserve;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="store_id", type="integer", nullable=false)
+     * @ORM\Column(name="store_id", type="string", length=9, nullable=false)
      */
     private $storeId;
 
@@ -49,21 +51,18 @@ class Price
      */
     private $unit;
 
-
     /**
-     * Get id.
+     * @var int
      *
-     * @return int
+     * @ORM\Column(name="price", type="integer", nullable=false)
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $price;
+
 
     /**
      * Set productId.
      *
-     * @param int $productId
+     * @param string $productId
      *
      * @return Price
      */
@@ -77,11 +76,35 @@ class Price
     /**
      * Get productId.
      *
-     * @return int
+     * @return string
      */
     public function getProductId()
     {
         return $this->productId;
+    }
+
+    /**
+     * Set providerId.
+     *
+     * @param string $providerId
+     *
+     * @return Price
+     */
+    public function setProviderId($providerId)
+    {
+        $this->providerId = $providerId;
+
+        return $this;
+    }
+
+    /**
+     * Get providerId.
+     *
+     * @return string
+     */
+    public function getProviderId()
+    {
+        return $this->providerId;
     }
 
     /**
@@ -111,7 +134,7 @@ class Price
     /**
      * Set storeId.
      *
-     * @param int $storeId
+     * @param string $storeId
      *
      * @return Price
      */
@@ -125,7 +148,7 @@ class Price
     /**
      * Get storeId.
      *
-     * @return int
+     * @return string
      */
     public function getStoreId()
     {
@@ -154,46 +177,6 @@ class Price
     public function getUnit()
     {
         return $this->unit;
-    }
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="provider_id", type="string", length=6, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $providerId;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="price", type="integer", nullable=false)
-     */
-    private $price;
-
-
-    /**
-     * Set providerId.
-     *
-     * @param string $providerId
-     *
-     * @return Price
-     */
-    public function setProviderId($providerId)
-    {
-        $this->providerId = $providerId;
-
-        return $this;
-    }
-
-    /**
-     * Get providerId.
-     *
-     * @return string
-     */
-    public function getProviderId()
-    {
-        return $this->providerId;
     }
 
     /**

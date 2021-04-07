@@ -17,22 +17,17 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\PredefCharValue;
 use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
 
-class PredefCharValueRepository implements PredefCharValueRepositoryInterface
+class PredefCharValueRepository extends Repository implements PredefCharValueRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var string
      */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
+    protected $tableName="predef_char_value";
 
     /**
      * @var PredefCharValue
      */
-    private PredefCharValue $prototype;
+    protected PredefCharValue $prototype;
     
     /**
      * @param AdapterInterface $db
@@ -50,67 +45,6 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
     }
 
     /**
-     * Returns a list of prices
-     *
-     * @return Characteristic[]
-     */
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-
-    /**
-     * Returns a single predefined character value.
-     *
-     * @param  array $params
-     * @return PredefCharValue
-     */    
-    public function find($params)
-    {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select('predef_char_value');
-        $select->where(['id = ?' => $params['id']]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $params['id']
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
-        $resultSet->initialize($result);
-        $current = $resultSet->current();
-
-        if (! $current) {
-            throw new InvalidArgumentException(sprintf(
-                'PredefCharValue with identifier "%s" not found.',
-                $params['id']
-            ));
-        }
-
-        return $current;
-    }
-    
-    /**
      * Adds given characteristic into it's repository
      * 
      * @param json
@@ -124,11 +58,11 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
         }
 
         if((bool) $result['truncate']) {
-            $this->db->query("truncate table predef_char_value")->execute();
+            $this->db->query("truncate table {$this->tableName}")->execute();
         }
 
         foreach($result['data'] as $row) {
-            $sql = sprintf("replace INTO `predef_char_value`(`id`, `title`, `characteristic_id`) VALUES ( '%s', '%s', '%s')",
+            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `characteristic_id`) VALUES ( '%s', '%s', '%s')",
                     $row['id'], $row['title'], $row['characteristic_id']);
             try {
                 $query = $this->db->query($sql);
@@ -138,32 +72,6 @@ class PredefCharValueRepository implements PredefCharValueRepositoryInterface
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
-    }
-    
-    /**
-     * Delete predefined characteristic values specified by json array of objects
-     * @param $json
-     */
-    public function delete($json) {
-        try {
-            $result = Json::decode($json, Json::TYPE_ARRAY);
-        }catch(LaminasJsonRuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-        $total = [];
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
-        $sql    = new Sql($this->db);
-        $delete = $sql->delete()->from('predef_char_value')->where(['id' => $total]);
-
-        $selectString = $sql->buildSqlString($delete);
-        try {
-            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
-            return ['result' => true, 'description' => '', 'statusCode' => 200];
-        }catch(InvalidQueryException $e){
-            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-        }
     }
     
 }

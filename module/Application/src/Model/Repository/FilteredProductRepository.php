@@ -17,22 +17,17 @@ use Laminas\Db\Sql\Where;
 use Application\Model\Entity\FilteredProduct;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 
-class FilteredProductRepository implements FilteredProductRepositoryInterface
+class FilteredProductRepository extends Repository implements FilteredProductRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var string
      */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
+    protected $tableName="filtered_product";//view="filtered_product";
 
     /**
      * @var FilteredProduct
      */
-    private FilteredProduct $prototype;
+    protected FilteredProduct $prototype;
     
     /**
      * @param AdapterInterface $db
@@ -49,43 +44,6 @@ class FilteredProductRepository implements FilteredProductRepositoryInterface
         $this->prototype = $prototype;
     }
 
-    /**
-     * Returns a list of products
-     *
-     * @return FilteredProduct[]
-     */
-    //public function findAll($limit=100, $offset=0, $order="id ASC")
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-    
-    /**
-     * Returns a single product.
-     *
-     * @param  array $params
-     * @return Product
-     */    
-    public function find($params)
-    {
-        return null;
-    }
-       
     public function filterProductsByStores($params=[])
     {
 //SELECT DISTINCT
@@ -138,12 +96,12 @@ class FilteredProductRepository implements FilteredProductRepositoryInterface
     
     public function replace($entity)
     {
-        
+        throw new \Exception($this->tableName.': Not implemented exception');
     }
     
     public function delete($json)
     {
-        echo $json;
+        throw new \Exception($this->tableName.': Not implemented exception');
     }
     
 }

@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Brand
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="string", length=6, nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -46,7 +46,7 @@ class Brand
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {

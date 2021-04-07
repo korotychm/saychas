@@ -1,0 +1,130 @@
+<?php
+
+/*
+ * Here comes the text of your license
+ * Each line should be prefixed with  * 
+ */
+
+namespace Application\Model\Repository;
+
+use InvalidArgumentException;
+use RuntimeException;
+// Replace the import of the Reflection hydrator with this:
+use Laminas\Hydrator\HydratorInterface;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Adapter\Driver\ResultInterface;
+use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Db\Sql\Sql;
+use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Application\Model\RepositoryInterface\RepositoryInterface;
+
+/**
+ * Description of Repository
+ *
+ * @author alex
+ */
+abstract class Repository implements RepositoryInterface
+{
+    /**
+     * @var AdapterInterface
+     */
+    protected AdapterInterface $db;
+    
+    /**
+     * @var HydratorInterface
+     */
+    protected HydratorInterface $hydrator;
+    
+    /**
+     * Returns a list of prices
+     *
+     * @return Entity[]
+     */
+    public function findAll($params)
+    {
+        $sql    = new Sql($this->db);
+        $select = $sql->select($this->tableName);
+        if(isset($params['order']))     { $select->order($params['order']); }
+        if(isset($params['limit']))     { $select->limit($params['limit']); }
+        if(isset($params['offset']))    { $select->offset($params['offset']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
+        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+ 
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->prototype
+        );
+        $resultSet->initialize($result);
+        return $resultSet;
+    }
+    
+    /**
+     * Returns a single brand.
+     *
+     * @param  array $params
+     * @return Entity
+     */    
+    public function find($params)
+    {
+        $sql       = new Sql($this->db);
+        $select    = $sql->select($this->tableName);
+        $select->where(['id = ?' => $params['id']]);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result    = $statement->execute();
+        
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            throw new RuntimeException(sprintf(
+                'Failed retrieving test with identifier "%s"; unknown database error.',
+                $params['id']
+            ));
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
+        $resultSet->initialize($result);
+        $entity = $resultSet->current();
+
+        if (! $entity) {
+            throw new InvalidArgumentException(sprintf(
+                $this->tableName . ' with identifier "%s" not found.',
+                $params['id']
+            ));
+        }
+
+        return $entity;
+    }
+    
+    /**
+     * Delete products specified by json array of objects
+     * @param json
+     */
+    public function delete($json) {
+        try {
+            $result = Json::decode($json, Json::TYPE_ARRAY);
+        }catch(LaminasJsonRuntimeException $e){
+           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        $total = [];
+        foreach ($result as $item) {
+            array_push($total, $item['id']);
+        }
+        $sql    = new Sql($this->db);
+        $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
+
+        $selectString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }catch(InvalidQueryException $e){
+            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+        }
+    }
+    
+}

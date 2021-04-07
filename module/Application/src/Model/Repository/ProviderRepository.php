@@ -18,64 +18,33 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Provider;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
-class ProviderRepository implements ProviderRepositoryInterface
+class ProviderRepository extends Repository implements ProviderRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var string
      */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
+    protected $tableName="provider";
 
     /**
      * @var Provider
      */
-    private Provider $providerPrototype;
+    protected Provider $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Provider $providerPrototype
+     * @param Provider $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Provider $providerPrototype
+        Provider $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->providerPrototype = $providerPrototype;
+        $this->prototype = $prototype;
     }
 
-    /**
-     * Returns a list of providers width limit and order
-     *
-     * @return Provider[]
-     */
-    // public function findAll($order="id ASC", $limit=100, $offset=0  )
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->providerPrototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-    
      /**
      * Returns a list of providers from only availble stores,  width limit and order
      *
@@ -116,43 +85,6 @@ class ProviderRepository implements ProviderRepositoryInterface
         
     }
     
-    /**/
-    /**
-     * Returns a single provider.
-     *
-     * @param  array $params
-     * @return Provider
-     */    
-    public function find($params)
-    {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select('provider');
-        $select->where(['id = ?' => $params['id']]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $params['id']
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->providerPrototype);
-        $resultSet->initialize($result);
-        $provider = $resultSet->current();
-
-        if (! $provider) {
-            throw new InvalidArgumentException(sprintf(
-                'Provider with identifier "%s" not found.',
-                $params['id']
-            ));
-        }
-
-        return $provider;
-    }
-    
     /**
      * Adds given provider into it's repository
      * @param json
@@ -179,33 +111,6 @@ class ProviderRepository implements ProviderRepositoryInterface
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
-    }
-    
-    /**
-     * Delete providers specified by json array of objects
-     * @param json
-     */
-    public function delete($json) {
-        try {
-            $result = Json::decode($json, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-        $total = [];
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
-        $sql    = new Sql($this->db);
-        $delete = $sql->delete();
-        $delete->from('provider');
-        $delete->where(['id' => $total]);
-        $selectString = $sql->buildSqlString($delete);
-        try {
-            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
-            return ['result' => true, 'description' => '', 'statusCode' => 200];
-        }catch(InvalidQueryException $e){
-            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-        }
     }
 
 }

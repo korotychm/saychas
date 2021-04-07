@@ -28,3 +28,5 @@ curl -i -L saychas-z.local/receive-characteristic --data '{"truncate": false, "d
 
 
 curl -i -L saychas-z.local/receive-characteristic --data '{"truncate": false, "data": [{"id": "000000009","title": "title1", "id":"000000001"}, {"id": "000000008","title": "title2", "id":"000000002"} ] }'
+
+curl -i -L saychas-z.local/receive-characteristic --data '[{"id": "000000005"}]' -X DELETE

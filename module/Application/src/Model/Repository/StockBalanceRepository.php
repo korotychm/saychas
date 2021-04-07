@@ -18,99 +18,33 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\StockBalance;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 
-class StockBalanceRepository implements StockBalanceRepositoryInterface
+class StockBalanceRepository extends Repository implements StockBalanceRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var string
      */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
+    protected $tableName="stock_balance";
 
     /**
      * @var StockBalance
      */
-    private StockBalance $stockBalancePrototype;
+    protected StockBalance $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param StockBalance $stockBalancePrototype
+     * @param StockBalance $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        StockBalance $stockBalancePrototype
+        StockBalance $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->stockBalancePrototype = $stockBalancePrototype;
+        $this->prototype = $prototype;
     }
 
-    /**
-     * Returns a list of stock balances
-     *
-     * @return StockBalance[]
-     */
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($params['table']);
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->stockBalancePrototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-
-    /**
-     * Returns a single stockBalance.
-     *
-     * @param  int $id Identifier of the stock balance to return.
-     * @return StockBalance
-     */    
-    public function find($id)
-    {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select('stock_balance');
-        $select->where(['id = ?' => $id]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->stockBalancePrototype);
-        $resultSet->initialize($result);
-        $stockBalance = $resultSet->current();
-
-        if (! $stockBalance) {
-            throw new InvalidArgumentException(sprintf(
-                'StockBalance with identifier "%s" not found.',
-                $id
-            ));
-        }
-
-        return $stockBalance;
-    }
-    
     /**
      * Adds given stock balance into it's repository
      * 

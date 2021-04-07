@@ -25,6 +25,11 @@ use Laminas\Db\Sql\Sql;
 class CategoryRepository implements CategoryRepositoryInterface
 {
     /**
+     * @var string
+     */
+    protected $tableName="category";
+
+    /**
      * @var AdapterInterface
      */
     private AdapterInterface $db;
@@ -37,7 +42,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @var Category
      */
-    private Category $categoryPrototype;
+    private Category $prototype;
     
     /**
      * @var string
@@ -53,7 +58,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     /**
      * @param Adapter $db
      * @param HydratorInterface $hydrator
-     * @param Category $categoryPrototype
+     * @param Category $prototype
      * @param string $username
      * @param string $password
      */
@@ -61,13 +66,13 @@ class CategoryRepository implements CategoryRepositoryInterface
 //        AdapterInterface $db,
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Category $categoryPrototype,
+        Category $prototype,
         string $username,
         string $password
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
-        $this->categoryPrototype = $categoryPrototype;
+        $this->prototype = $prototype;
         $this->username = $username;
         $this->password = $password;
     }
@@ -81,7 +86,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
-        $select->from('category');
+        $select->from($this->tableName);
         $select->where(['parent_id' => $i ]);
         
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -121,7 +126,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
-        $select->from('category');
+        $select->from($this->tableName);
         $select->where(['parent_id' => $i ]);
         
 //      Do not delete the following line
@@ -148,7 +153,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
-        $select->from('category');
+        $select->from($this->tableName);
         $select->where(['id' => $i ]);
         
 //      Do not delete the following line
@@ -175,7 +180,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function findCategory($params)
     {
         $sql       = new Sql($this->db);
-        $select    = $sql->select('category');
+        $select    = $sql->select($this->tableName);
         $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -188,7 +193,7 @@ class CategoryRepository implements CategoryRepositoryInterface
             ));
         }
 
-        $resultSet = new HydratingResultSet($this->hydrator, $this->categoryPrototype);
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $resultSet->initialize($result); 
         $category = $resultSet->current();
 

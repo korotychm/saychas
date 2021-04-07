@@ -20,22 +20,17 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 
-class ProductRepository implements ProductRepositoryInterface
+class ProductRepository extends Repository implements ProductRepositoryInterface
 {
     /**
-     * @var AdapterInterface
+     * @var string
      */
-    private AdapterInterface $db;
-
-    /**
-     * @var HydratorInterface
-     */
-    private HydratorInterface $hydrator;
+    protected $tableName="product";
 
     /**
      * @var Product
      */
-    private Product $prototype;
+    protected Product $prototype;
     
     /**
      * @param AdapterInterface $db
@@ -52,68 +47,6 @@ class ProductRepository implements ProductRepositoryInterface
         $this->prototype = $prototype;
     }
 
-    /**
-     * Returns a list of products
-     *
-     * @return Product[]
-     */
-    //public function findAll($limit=100, $offset=0, $order="id ASC")
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($params['table'])->order($params['order'])->limit($params['limit'])->offset($params['offset']);
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-    
-    /**
-     * Returns a single product.
-     *
-     * @param  array $params
-     * @return Product
-     */    
-    public function find($params)
-    {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select('product');
-        $select->where(['id = ?' => $params['id']]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $params['id']
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
-        $resultSet->initialize($result);
-        $product = $resultSet->current();
-
-        if (! $product) {
-            throw new InvalidArgumentException(sprintf(
-                'Product with identifier "%s" not found.',
-                $params['id']
-            ));
-        }
-
-        return $product;
-    }
-    
     /**
      * Function obtains products from specified store that belongs to a specified provider from available stores.
      * 
@@ -348,78 +281,6 @@ class ProductRepository implements ProductRepositoryInterface
         
     }
     
-//    public function filterProductsByStores1(/*$storeId,*/ $params=[])  {
-//
-//        $sql = new Sql($this ->db);
-//        $subSelectAvailbleStore = $sql ->select('store');
-//        $subSelectAvailbleStore ->columns(['provider_id']);
-//        $where = new \Laminas\Db\Sql\Where();
-//        $where->in('st.id', $params);
-//        $where->and;
-//        $where->equalTo('b.store_id','st.id');
-//        
-//        $select = $sql->select('');
-//        $select
-//            ->from(['p' => 'product'])
-//            ->columns(['*'])
-//            ->join(
-//                ['pr' => 'price'],
-//                'p.id = pr.product_id',
-//                ['price'],           
-//                $select::JOIN_LEFT  
-//            ) 
-//            ->join(
-//                ['b' => 'stock_balance'],
-//                'p.id = b.product_id',
-//                ['rest'],           
-//                $select::JOIN_LEFT  
-//            )      
-//            ->join(
-//                ['img' => 'product_image'],
-//                'p.id = img.product_id',
-//                ['url_http'],           
-//                $select::JOIN_LEFT  
-//            )
-//            ->join(
-//                ['brand' => 'brand'],
-//                'p.brand_id = brand.id',
-//                ['brandtitle'=>'title'],           
-//                $select::JOIN_LEFT  
-//            );
-//        $where = new \Laminas\Db\Sql\Where();
-//        $where->in('st.id', $params);
-//   
-//         $select ->join(
-//                   ['st'=>'store'], 
-//                    $where,
-//                    ['store_id' => 'id','store_title' => 'title', 'store_address' => 'address' ],
-//                    $select::JOIN_LEFT
-//            )
-//            ->where->in('p.provider_id', $subSelectAvailbleStore)
-//            /*->where->and
-//            ->where->in('b.store_id', $params)*/    
-//        ;
-//        
-//
-////        Do not delete the following line    /**/          $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
-////         $selectString = $sql->buildSqlString($select);  exit(date("r")."<hr>".$selectString);    echo $selectString;       exit;
-//       
-//        $stmt   = $sql->prepareStatementForSqlObject($select);
-//        $result = $stmt->execute();
-//
-//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-//            return [];
-//        }
-//       
-//        $resultSet = new HydratingResultSet(
-//            $this->hydrator,
-//            $this->prototype
-//        );
-//        $resultSet->initialize($result);
-//        
-//        return $resultSet;
-//    }
-    
     public function filterProductsByCategories($products, $categories)
     {
         $filteredProducts = [];
@@ -459,32 +320,6 @@ class ProductRepository implements ProductRepositoryInterface
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
-    }
-    
-    /**
-     * Delete products specified by json array of objects
-     * @param json
-     */
-    public function delete($json) {
-        try {
-            $result = Json::decode($json, Json::TYPE_ARRAY);
-        }catch(LaminasJsonRuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-        $total = [];
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
-        $sql    = new Sql($this->db);
-        $delete = $sql->delete()->from('product')->where(['id' => $total]);
-
-        $selectString = $sql->buildSqlString($delete);
-        try {
-            $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
-            return ['result' => true, 'description' => '', 'statusCode' => 200];
-        }catch(InvalidQueryException $e){
-            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-        }
     }
     
 }
