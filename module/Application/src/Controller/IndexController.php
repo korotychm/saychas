@@ -504,11 +504,11 @@ class IndexController extends AbstractActionController
 //            ),
 //        );
 //
-//        $categs = $hydrator->hydrate($tree, (new ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
+//        $categs = $hydrator->hydrate($tree, (new \ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
 //        
-//        echo '<pre>';
-//        print_r($categs);
-//        echo '</pre>';
+        echo '<pre>';
+        print_r($$tree);
+        echo '</pre>';
 
         exit;
         
