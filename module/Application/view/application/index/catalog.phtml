@@ -18,19 +18,28 @@
             <div id="main-col">
                  <?= $this->bread ?> 
                 <div class="content-col" style="" id="tovary"> 
-                    <div id="filtrblock">
-                        <form method="post" id="filtrform">
-                            <div class="iblock">
-                                <select id="sort"  name="sortOrder" >
-                                    <option disabled selected >Сортировка</option>
-                                    <option value="0"  >по-умолчанию</option>
-                                    <option value="1" >по-алфавиту</option>
-                                    <option value="2" >сначала дешевле</option>
-                                    <option value="3" >сначала дороже</option>                                    
-                                </select>
-                            </div>
-                        </form>
-                    </div>
+                    <form method="post" id="filtrform">
+                        <div id="filtrblock" class="container">
+                                <div class="iblok"  >
+                                    <select id="sort"  name="sortOrder" class="formsend" >
+                                        <option disabled selected >Сортировка</option>
+                                        <option value="0"  >по-умолчанию</option>
+                                        <option value="1" >по-алфавиту</option>
+                                        <option value="2" >сначала дешевле</option>
+                                        <option value="3" >сначала дороже</option>                                    
+                                    </select>
+                                </div>
+                                <div class="iblok"  >
+                                    <select id="limit"  name="sortOrder" class="formsend" >
+                                        <option disabled selected >На странице</option>
+                                        <option value="4"  >показывать по 4</option>
+                                        <option value="48" >показывать по 48</option>
+                                        <option value="96" >показывать по 96</option>
+                                        <option value="0" >показывать все</option>                                    
+                                    </select>
+                                </div>
+                        </div>
+                    </form>
                     <h2><?= $this->title ?>  <?php if($this->id) echo "<span>id: ".$this->id."</span>";?></h2>
                     <div id="tovar-list"><?= $this->priducts ?></div>
                 </div>               
