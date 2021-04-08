@@ -54,6 +54,7 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
     {
         $sql    = new Sql($this->db);
         $select = $sql->select($this->tableName);
+        $select->columns(['*']);
         if(isset($params['order']))     { $select->order($params['order']); }
         if(isset($params['limit']))     { $select->limit($params['limit']); }
         if(isset($params['offset']))    { $select->offset($params['offset']); }
@@ -61,6 +62,7 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
         $select->where(['store_id' => $params['store_id'], 'product_id' => $params['product_id']]);
         
 //        $selectString = $sql->buildSqlString($select);
+//        echo $selectString.'<br/>';
         
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -69,13 +71,14 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-
+        
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->prototype
         );
         $resultSet->initialize($result);
-        return $resultSet;
+        
+        return $params['array'] == 1 ? $resultSet->toArray() : $resultSet;
     }
 
     /**

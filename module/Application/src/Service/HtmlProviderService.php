@@ -8,6 +8,7 @@ use Laminas\Session\Container;
 use Application\Resource\StringResource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Laminas\Db\ResultSet\HydratingResultSet;
 
 class HtmlProviderService
 {
@@ -67,7 +68,6 @@ class HtmlProviderService
                     //'store_address'=>$row->storeAddress(),
                 ];
         */
-         
                 $cena=(int)$product->getPrice();
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
@@ -76,25 +76,25 @@ class HtmlProviderService
                 $timeDelevery=(int)$legalStore[$product->getStoreId()];
                 
                 ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
-                $param=['product_id' => $product->getId(), 'store_id' =>$product->getStoreId()];
-                $r=$this->stockBalanceRepository->findAll($param);
-                $rest = $r->current()->getRest();
+                
+                $rest=$this->stockBalanceRepository->findAll(['product_id' => $product->getId(), 'store_id' =>$product->getStoreId(), 'array'=>1]);
+                $r = $rest[0]['rest'];
 
                  $return.="<div class='productcard ' >"
                     .$speedlable     
-                    ."   <div class='content opacity".(int)$rest."'>"
+                    ."   <div class='content opacity".$r."'>"
                     ."       <img src='/images/product/".(($product->getUrlHttp())?$product->getUrlHttp():"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
                     ."       <strong class='blok producttitle'><a  href=#product   >".$product->getTitle()."</a></strong>"
                     ."       <span class='blok'>Id: ".$product->getId()."</span>"
                     ."       <span class='blok'>Артикул: ".$product->getVendorCode()."</span>"
                     ."       <span class='blok'>Торговая марка: ".$product->getBrandTitle()."</span>"                         
-                    ."       <span class='blok'>Остаток: ".(int)$rest."</span>"
+                    ."       <span class='blok'>Остаток: ".$r."</span>"
                     ."       <b><span class='blok'>Магазин: ".$product->getStoreTitle()." (id:{$product->getStoreId()})"."</span></b>"
                   //."       <i class='blok'> ".$product->storeAddress()."</i>"                         
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
-      return $return;
+      //return $return;
         }
       return $return;
     

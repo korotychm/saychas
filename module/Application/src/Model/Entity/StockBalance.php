@@ -27,7 +27,7 @@ class StockBalance
      *
      * @ORM\Column(name="product_id", type="integer", nullable=false)
      */
-    private $productId;
+    private $product_id;
 
     /**
      * @var int
@@ -41,7 +41,7 @@ class StockBalance
      *
      * @ORM\Column(name="store_id", type="integer", nullable=false)
      */
-    private $storeId;
+    private $store_id;
 
 
     /**
@@ -55,27 +55,27 @@ class StockBalance
     }
 
     /**
-     * Set productId.
+     * Set product_id.
      *
-     * @param int $productId
+     * @param int $product_id
      *
      * @return StockBalance
      */
-    public function setProductId($productId)
+    public function setProductId($product_id)
     {
-        $this->productId = $productId;
+        $this->product_id = $product_id;
 
         return $this;
     }
 
     /**
-     * Get productId.
+     * Get product_id.
      *
      * @return int
      */
     public function getProductId()
     {
-        return $this->productId;
+        return $this->product_id;
     }
 
     /**
@@ -103,26 +103,26 @@ class StockBalance
     }
 
     /**
-     * Set storeId.
+     * Set store_id.
      *
-     * @param int $storeId
+     * @param int $store_id
      *
      * @return StockBalance
      */
-    public function setStoreId($storeId)
+    public function setStoreId($store_id)
     {
-        $this->storeId = $storeId;
+        $this->store_id = $store_id;
 
         return $this;
     }
 
     /**
-     * Get storeId.
+     * Get store_id.
      *
      * @return int
      */
     public function getStoreId()
     {
-        return $this->storeId;
+        return $this->store_id;
     }
 }
