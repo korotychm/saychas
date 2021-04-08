@@ -78,7 +78,7 @@ class HtmlProviderService
                 ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
 
                 $rest=$this->stockBalanceRepository->findAll(['product_id' => $product->getId(), 'store_id' =>$product->getStoreId(), 'array'=>1]);
-                $r = $rest[0]['rest'];
+                $r = (int)$rest[0]['rest'];
 
 
                  $return.="<div class='productcard ' >"
