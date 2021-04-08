@@ -495,20 +495,20 @@ class IndexController extends AbstractActionController
 //        }
 //
         //$categ = new \Application\Model\Entity\Categ();
-        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
-        $hydrator->addStrategy(
-            'children',
-            new \Laminas\Hydrator\Strategy\CollectionStrategy(
-                new \Laminas\Hydrator\ReflectionHydrator(),
-                \Application\Model\Entity\Categ::class
-            ),
-        );
-
-        $categs = $hydrator->hydrate($tree, (new ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
-        
-        echo '<pre>';
-        print_r($categs);
-        echo '</pre>';
+//        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
+//        $hydrator->addStrategy(
+//            'children',
+//            new \Laminas\Hydrator\Strategy\CollectionStrategy(
+//                new \Laminas\Hydrator\ReflectionHydrator(),
+//                \Application\Model\Entity\Categ::class
+//            ),
+//        );
+//
+//        $categs = $hydrator->hydrate($tree, (new ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
+//        
+//        echo '<pre>';
+//        print_r($categs);
+//        echo '</pre>';
 
         exit;
         
