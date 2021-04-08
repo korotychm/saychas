@@ -77,8 +77,12 @@ class HtmlProviderService
                 
                 ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
                 $param=['product_id' => $product->getId(), 'store_id' =>$product->getStoreId()];
-                $r=$this->stockBalanceRepository->findAll($param);
-                $rest = $r->current()->getRest();
+                
+                /*$r=$this->stockBalanceRepository->findAll($param);
+                                try {$rest = $r->current()->getRest();}
+                                catch (\Exception $e) {$rest=0;}
+                //catch($e) {                   $rest=0;}*/
+                
 
                  $return.="<div class='productcard ' >"
                     .$speedlable     
@@ -94,8 +98,8 @@ class HtmlProviderService
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
-exit;                 
-               
+                 
+               //return $return;
         }
       return $return;
     
