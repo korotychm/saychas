@@ -105,6 +105,9 @@ class HtmlProviderService
     
     }
     
+    
+    
+    
         
     public function writeUserAddress ()
     {

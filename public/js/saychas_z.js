@@ -167,15 +167,18 @@ function getLegalStores (dataString, obj="#ajaxanswer2" ){
             cache: false,	
             data: {"value":dataString},
             success: function(data){
-                if (data=="200") {$(".errorblock").hide(); $("#searchpanel").slideUp(); return setUserAddrees(); }
+                if (data=="200") {$(".errorblock").hide(); $("#searchpanel").slideUp(); 
+                window.location.href=window.location.href;
+                return setUserAddrees(); 
+                }
+                
                 $(obj).html(data); return true
             },
             error: function (xhr, ajaxOptions, thrownError) {$(obj).html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
         });
 }        
 
-
-    function setUserAddrees (){
+function setUserAddrees (){
     $.ajax({	
             //url: "/ajax/getstore",
             url: "/ajax-set-user-address",
@@ -193,9 +196,6 @@ function getLegalStores (dataString, obj="#ajaxanswer2" ){
             error: function (xhr, ajaxOptions, thrownError) {console.log("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
         });
 }        
-
-
-
 
 function print_r(arr, level) {
     var print_red_text = "";

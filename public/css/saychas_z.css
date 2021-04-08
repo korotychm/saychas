@@ -13,8 +13,9 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     top:27px; 
     background:url(img/searchtopblack.png) center no-repeat; 
     z-index:100;  
-    cursor:pointer
-    /*border:1px solid red*/
+    cursor:pointer    
+   /*border:1px solid red*/
+        
 }
 #searchpanel {
     display:block; 
@@ -27,7 +28,6 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     width:100%; 
     z-index:101101; 
     box-shadow:0 0 5px 10px rgba(0,0,0,.15);
-    
 }
 .searchpanelcont {
     display: block;
@@ -49,8 +49,6 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     border:1px solid #ccc   ; 
     font-weight:normal;  
     background: transparent url('/img/geo16.png') left no-repeat;
-    
-   
     padding:8px; 
     padding-left:40px;      
     margin:5px; 
@@ -117,11 +115,12 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .speedlable {
     dispaly:inline-block; 
     position:absolute; 
-    /*width:22px; height:22px;*/
+    width:58px; 
+    /*height:22px;*/
     top:5px; left:5px; 
     padding:15px; 
     font-size:22px; font-weight:bolder; line-height:1em; text-align:center;
-    background:rgba(255,255,255,.7);
+    background:rgba(255,255,255,.85);
     border:3px solid #900; border-radius:50%;
     color:#900;
     
