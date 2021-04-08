@@ -24,6 +24,16 @@ class Category
      * @var string
      */
     private $description;
+    
+    /**
+     * @var string
+     */
+    private $icon;
+
+    /**
+     * @var int
+     */
+    private $sort_order;
 
     /**
      * @param string      $title
@@ -32,11 +42,12 @@ class Category
      * @param string|null $icon
      * @param string|null $description
      */
-    public function __construct($title, $id, $parentId, $icon = null, $description = null)
+    public function __construct($title, $id, $parentId, $sortOrder = null, $icon = null, $description = null)
     {
         $this->title = $title;
         $this->parent_id = $parentId;
         $this->description = $description;
+        $this->sort_order = $sortOrder;
         $this->id = $id;
         $this->icon = $icon;
     }
@@ -78,5 +89,13 @@ class Category
     public function getDescription()
     {
         return $this->description;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getSortOrder()
+    {
+        return $this->sort_order;
     }
 }

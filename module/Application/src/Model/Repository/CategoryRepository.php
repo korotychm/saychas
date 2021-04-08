@@ -18,6 +18,7 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 //use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Sql;
+use Application\Helper\ArrayHelper;
 
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
@@ -115,8 +116,11 @@ class CategoryRepository implements CategoryRepositoryInterface
         return str_replace("<ul></ul>","",$echo);
     }
     
-    private HydratingResultSet $categories;
-    public function initCategories()
+    /**
+     * Reads all data from category table
+     * @return HydratingResultSet
+     */
+    public function readAll()
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName)->columns(['*']);
@@ -133,31 +137,20 @@ class CategoryRepository implements CategoryRepositoryInterface
         );
         $resultSet->initialize($result);
 
-        $this->categories = $resultSet;
-        
         return $resultSet;
         
     }
     
-    public function findAll($parent, &$acc)
+    /**
+     * Builds tree out of read data(see readAll)
+     * @params['id'] - first element to start from
+     * @param array $params
+     * @return array
+     */
+    public function findAll($params)
     {
-        if($parent->getid()) {
-            array_push($acc, $parent);
-        }
-        foreach($this->categories as $category) {
-            if($category->getId() == $parent->getId()) {
-                print_r($acc);
-                echo '<br/>';
-                array_push($acc, $category);
-                $acc = $this->findAll($category, $acc);
-                //return $acc;
-            }
-        }
-        if($parent->getid()) {
-            array_push($acc, $parent);
-        }
-        return $acc;
-        
+        $data = $this->readAll();
+        return ArrayHelper::buildTree($data->toArray(), $params['id']);
     }
     
     /**

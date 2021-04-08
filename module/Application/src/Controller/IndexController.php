@@ -26,19 +26,19 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Resource\StringResource;
-use Laminas\Json\Json;
-use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+//use Laminas\Json\Json;
+//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Doctrine\ORM\Mapping as ORM;
 use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
-use Laminas\Http\Response;
+//use Laminas\Http\Response;
 //use Laminas\Session;
 use Laminas\Session\Container;
 use Application\Model\Test2;
 use Application\Model\Track;
-
 use Application\Model\Entity\Characteristic;
+use \ReflectionClass;
 
 class IndexController extends AbstractActionController
 {
@@ -83,7 +83,7 @@ class IndexController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $servicemanager = $e->getApplication()->getServiceManager();
+//        $servicemanager = $e->getApplication()->getServiceManager();
         $userAddressHtml = $this->htmlProvider->writeUserAddress();
 
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
@@ -293,9 +293,11 @@ class IndexController extends AbstractActionController
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
         
         $products = $this->productRepository->filterProductsByStores(['000000005', '000000004']);
-        
-        print_r($products);
-        exit;
+
+//        echo '<pre>';
+//        print_r($products);
+//        echo '</pre>';
+//        exit;
         
         
         $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
@@ -431,20 +433,7 @@ class IndexController extends AbstractActionController
         
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
         $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0]);
-        
-//        $categories = $this->categoryRepository->initCategories();
-//        $acc = [];
-//        $c = $this->categoryRepository->findCategory(['id'=>'0']);
-//        $all = $this->categoryRepository->findAll($c, $acc);
-//        
-//        echo 'banzaii'.'<br/>';
-//        print_r($acc);
-//        exit;
-//        foreach($all as $c) {
-//            echo $c->getId().' '.$c->getParent().' '.$c->getTitle().'<br/>';
-//        }
-//        exit;
-        
+
         echo '---<br/>Store, function: findAll <br/>';
         foreach ($stores as $store) {
             echo $store->getId().' '.$store->getTitle(). '<br/>';
@@ -481,6 +470,46 @@ class IndexController extends AbstractActionController
         foreach ($providers2 as $provider2) {
             echo $provider2->getId().' '.$provider2->getTitle().' ' . $provider2->getDescription().'<br/>';
         }
+
+        echo "<br/>================ Category Tree ======================<br/>";
+
+        $tree = $this->categoryRepository->findAll(['id' => 0]);
+
+//        $strategy = new \Laminas\Hydrator\Strategy\HydratorStrategy(
+//            new \Laminas\Hydrator\ReflectionHydrator(),
+//            \Application\Model\Entity\Categ::class
+//        );
+        
+//        $hydrated = $strategy->hydrate([
+//            'children' => $strategy->hydrate($tree[0]),
+//        ]);
+//        $i = 0;
+//        $builtTree = new \Application\Model\Entity\Categ();
+//        while(isset($tree[$i]['children'])) {
+//            $children = $tree[$i]['children'];
+//            $builtTree->Id = $tree[$i]['id'];
+//            $builtTree->Title = $tree[$i]['title'];
+//            $builtTree->ParentId = $tree[$i]['parent_id'];
+//            $builtTree->Children = $strategy->hydrate(['children' =>$children]);
+//            $i += 1;
+//        }
+//
+        //$categ = new \Application\Model\Entity\Categ();
+        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
+        $hydrator->addStrategy(
+            'children',
+            new \Laminas\Hydrator\Strategy\CollectionStrategy(
+                new \Laminas\Hydrator\ReflectionHydrator(),
+                \Application\Model\Entity\Categ::class
+            ),
+        );
+
+        $categs = $hydrator->hydrate($tree, (new ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
+        
+        echo '<pre>';
+        print_r($categs);
+        echo '</pre>';
+
         exit;
         
     }

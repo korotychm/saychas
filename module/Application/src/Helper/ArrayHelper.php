@@ -26,4 +26,46 @@ class ArrayHelper {
             return $accumulator;
         }, []);
     }
+    
+    /**
+     * Builds tree out of a flat array
+     * @param array $elements
+     * @param type $parentId
+     * @return type
+     */
+    public static function buildTree(array $elements, $parentId = 0) {
+        $branch = [];
+
+        foreach ($elements as $element) {
+            if ($element['parent_id'] == $parentId) {
+                $children = self::buildTree($elements, $element['id']);
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[] = $element;
+            }
+        }
+
+        return $branch;
+    }
+
+//    public static function buildTree1(array $elements, $parentId = 0) {
+//        $branch = array();
+//
+//        foreach ($elements as $element) {
+//            if ($element['parent_id'] == $parentId) {
+//                $children = buildTree($elements, $element['id']);
+//                if ($children) {
+//                    $element['children'] = $children;
+//                }
+//                $branch[] = $element;
+//            }
+//        }
+//
+//        return $branch;
+//    }
+//    $tree = buildTree($rows);
+//
+//    print_r( $tree );
+
 }
