@@ -144,7 +144,7 @@ class IndexController extends AbstractActionController
          
      
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
-        $products = $this->productRepository->filterProductsByStores(['000000003', '000000004', '000000005', '000000001', '000000002']);
+        $products = $this->productRepository->filterProductsByStores2(['000000003', '000000004', '000000005', '000000001', '000000002']);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         //  exit(print_r($filteredProducts));
         
@@ -152,7 +152,7 @@ class IndexController extends AbstractActionController
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         
         
-        foreach ($filteredProducts as $row){
+        /*foreach ($filteredProducts as $row){
               $productCardParam = [
                     'price'=>$row->getPrice(),
                     'title'=>$row->getTitle(),
@@ -169,9 +169,10 @@ class IndexController extends AbstractActionController
                     //'store_address'=>$row->storeAddress(),
                 ];
         
-            $returnProduct.= $this->htmlProvider->productCard($productCardParam);
-        }
-        
+           
+            
+        }*/
+         $returnProduct.= $this->htmlProvider->productCard($filteredProducts);
         
         
         

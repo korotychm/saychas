@@ -6,6 +6,7 @@ namespace Application\Service;
 use Application\Model\Entity;
 use Laminas\Session\Container;
 use Application\Resource\StringResource;
+use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 
 class HtmlProviderService
 {
@@ -39,38 +40,49 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function productCard($a=[])
+    public function productCard($filteredProducts)
     {
-        if (count($a)):
-              /*  
-              $productCardParam['price']
-              $productCardParam['title']
-              $productCardParam['img']
-              $productCardParam['id']
-              $productCardParam['rest']
-              $productCardParam['articul']
-              $productCardParam['brand']
-            */
-                $cena=(int)$a['price'];
+        
+  
+        foreach ($filteredProducts as $row){
+              $productCardParam = [
+                    'price'=>$row->getPrice(),
+                    'title'=>$row->getTitle(),
+                    'img'=>$row->getUrlHttp(),
+                    'id'=>$row->getId(),
+                    'rest'=>$row->getRest(),
+                    'articul'=>$row->getVendorCode(),
+                    'brand'=>$row->getBrandTitle(),
+                    'description'=>$row->getDescription(),
+                    'param_value'=>$row->getParamValueList(),
+                    'param_value'=>$row->getParamValueList(),
+                    'store'=>$row->getStoreTitle()." (id:{$row->getStoreId()})",
+                    'store_id'=>$row->getStoreId(),
+                    //'store_address'=>$row->storeAddress(),
+                ];
+        
+         
+                $cena=(int)$productCardParam['price'];
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
                 
                  $return.="<div class='productcard ' >"
-                    ."   <div class='content opacity".(int)$a['rest']."'>"
-                    ."       <img src='/images/product/".(($a['img'])?$a['img']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
-                    ."       <strong class='blok producttitle'><a  href=#product   >".$a['title']."</a></strong>"
-                    ."       <span class='blok'>Id: ".$a['id']."</span>"
-                    ."       <span class='blok'>Артикул: ".$a['articul']."</span>"
-                    ."       <span class='blok'>Торговая марка: ".$a['brand']."</span>"                         
-                    ."       <span class='blok'>Остаток: ".(int)$a['rest']."</span>"
-                    ."       <b><span class='blok'>Магазин: ".$a['store']."</span></b>"
-                    ."       <i class='blok'> ".$a['store_address']."</i>"                         
+                    ."   <div class='content opacity".(int)$productCardParam['rest']."'>"
+                    ."       <img src='/images/product/".(($productCardParam['img'])?$productCardParam['img']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    ."       <strong class='blok producttitle'><a  href=#product   >".$productCardParam['title']."</a></strong>"
+                    ."       <span class='blok'>Id: ".$productCardParam['id']."</span>"
+                    ."       <span class='blok'>Артикул: ".$productCardParam['articul']."</span>"
+                    ."       <span class='blok'>Торговая марка: ".$productCardParam['brand']."</span>"                         
+                    ."       <span class='blok'>Остаток: ".(int)$productCardParam['rest']."</span>"
+                    ."       <b><span class='blok'>Магазин: ".$productCardParam['store']."</span></b>"
+                    ."       <i class='blok'> ".$productCardParam['store_address']."</i>"                         
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
                  
-                 return $return;
-        endif;
+               
+        }
+      return $return;
     
     }
     
