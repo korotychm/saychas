@@ -156,7 +156,8 @@ class AjaxController extends AbstractActionController
             $TMP = Json::decode($json);
         }
         catch(LaminasJsonRuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        exit($e->getMessage());          
+// return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         $ob=$TMP-> data;
         if (!$ob->house) return (StringResource::USER_ADDREES_ERROR_MESSAGE);
@@ -176,8 +177,10 @@ class AjaxController extends AbstractActionController
                 )
                 ))
         );
+        $legalStore=Json::decode($result, true);
+        foreach($legalStore as $store) {$sessionLegalStore[$store['store_id']]=$store['deliverySpeedInHours'];}
         
-        $container->legalStore = Json::decode($result, true);
+        $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         //exit(print_r($container->legalStore));
         exit ("200");
     }
@@ -335,7 +338,8 @@ class AjaxController extends AbstractActionController
         $category_id=$this->params()->fromRoute('id', '');
 
         $this->layout()->setTemplate('layout/mainpage');
-        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        //$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        $categories = $this->categoryRepository->findAll(["id"=>$category_id]);
         $bread = $this->categoryRepository->findAllMatherCategories($category_id);
         $bread = $this->htmlProvider->breadCrumbs($bread);
          

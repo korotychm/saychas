@@ -113,3 +113,16 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
   .geo16 span {border-bottom:1px dashed #666    }
 
 * .none {display:none}
+
+.speedlable {
+    dispaly:inline-block; 
+    position:absolute; 
+    /*width:22px; height:22px;*/
+    top:5px; left:5px; 
+    padding:15px; 
+    font-size:22px; font-weight:bolder; line-height:1em; text-align:center;
+    background:rgba(255,255,255,.7);
+    border:3px solid #900; border-radius:50%;
+    color:#900;
+    
+}
