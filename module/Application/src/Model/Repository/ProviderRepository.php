@@ -105,10 +105,11 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
             $this->db->query("truncate table provider")->execute();
         }
 
+        print_r($result);
+        exit;
+
         foreach($result['data'] as $row) {
             $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( '%s', '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
-            print_r($sql);
-            exit;
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
