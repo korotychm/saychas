@@ -7,9 +7,15 @@ use Application\Model\Entity;
 use Laminas\Session\Container;
 use Application\Resource\StringResource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 
 class HtmlProviderService
 {
+    private $stockBalanceRepository;
+    
+    public function __construct(StockBalanceRepositoryInterface $stockBalanceRepository) {
+        $this->stockBalanceRepository = $stockBalanceRepository;
+    }
     /**
      * Returns Html string
      * @return string
@@ -44,43 +50,51 @@ class HtmlProviderService
     {
         
   
-        foreach ($filteredProducts as $row){
-              $productCardParam = [
-                    'price'=>$row->getPrice(),
-                    'title'=>$row->getTitle(),
-                    'img'=>$row->getUrlHttp(),
-                    'id'=>$row->getId(),
-                    'rest'=>$row->getRest(),
-                    'articul'=>$row->getVendorCode(),
-                    'brand'=>$row->getBrandTitle(),
-                    'description'=>$row->getDescription(),
-                    'param_value'=>$row->getParamValueList(),
-                    'param_value'=>$row->getParamValueList(),
-                    'store'=>$row->getStoreTitle()." (id:{$row->getStoreId()})",
-                    'store_id'=>$row->getStoreId(),
+        foreach ($filteredProducts as $product){
+              /*$productCardParam = [
+                    'price'=>$product->getPrice(),
+                    'title'=>$product->getTitle(),
+                    'img'=>$product->getUrlHttp()   ,
+                    'id'=>$product->getId(),
+                        'rest'=>$product->getRest(),
+                    'articul'=>$product->getVendorCode(),
+                    'brand'=>$product->getBrandTitle(),
+                    'description'=>$product->getDescription(),
+                    'param_value'=>$product->getParamValueList(),
+                    'param_value'=>$product->getParamValueList(),
+                    'store'=>$product->getStoreTitle()." (id:{$product->getStoreId()})",
+                    'store_id'=>$product->getStoreId(),
                     //'store_address'=>$row->storeAddress(),
                 ];
-        
+        */
          
-                $cena=(int)$productCardParam['price'];
+                $cena=(int)$product->getPrice();
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
+                $container = new Container(StringResource::SESSION_NAMESPACE);  
+                $legalStore =  $container->legalStore;
+                $timeDelevery=(int)$legalStore[$product->getStoreId()];
                 
+                ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
+                $param=['product_id' => $product->getId(), 'store_id' =>$product->getStoreId()];
+                $r=$this->stockBalanceRepository->findAll($param);
+                $rest = $r->current()->getRest();
+
                  $return.="<div class='productcard ' >"
-                    ."   <div class='content opacity".(int)$productCardParam['rest']."'>"
-                    ."       <img src='/images/product/".(($productCardParam['img'])?$productCardParam['img']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
-                    ."       <strong class='blok producttitle'><a  href=#product   >".$productCardParam['title']."</a></strong>"
-                    ."       <span class='blok'>Id: ".$productCardParam['id']."</span>"
-                    ."       <span class='blok'>Артикул: ".$productCardParam['articul']."</span>"
-                    ."       <span class='blok'>Торговая марка: ".$productCardParam['brand']."</span>"                         
-                    ."       <span class='blok'>Остаток: ".(int)$productCardParam['rest']."</span>"
-                    ."       <b><span class='blok'>Магазин: ".$productCardParam['store']."</span></b>"
-                    ."       <i class='blok'> ".$productCardParam['store_address']."</i>"                         
+                    .$speedlable     
+                    ."   <div class='content opacity".(int)$rest."'>"
+                    ."       <img src='/images/product/".(($product->getUrlHttp())?$product->getUrlHttp():"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    ."       <strong class='blok producttitle'><a  href=#product   >".$product->getTitle()."</a></strong>"
+                    ."       <span class='blok'>Id: ".$product->getId()."</span>"
+                    ."       <span class='blok'>Артикул: ".$product->getVendorCode()."</span>"
+                    ."       <span class='blok'>Торговая марка: ".$product->getBrandTitle()."</span>"                         
+                    ."       <span class='blok'>Остаток: ".(int)$rest."</span>"
+                    ."       <b><span class='blok'>Магазин: ".$product->getStoreTitle()." (id:{$product->getStoreId()})"."</span></b>"
+                  //."       <i class='blok'> ".$product->storeAddress()."</i>"                         
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
-                 
-               
+      return $return;
         }
       return $return;
     

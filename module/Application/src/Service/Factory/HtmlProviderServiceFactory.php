@@ -7,6 +7,7 @@ use Interop\Container\ContainerInterface;
 use Application\Service\HtmlProviderService;
 //use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 
 class HtmlProviderServiceFactory implements FactoryInterface
 {
@@ -18,8 +19,8 @@ class HtmlProviderServiceFactory implements FactoryInterface
         }
         
 //        $adapter = $container->get(AdapterInterface::class);
+        $stockBalanceRepository = $container->get(StockBalanceRepositoryInterface::class);
         
-        return new HtmlProviderService(
-        );
+        return new HtmlProviderService($stockBalanceRepository);
     }
 }
