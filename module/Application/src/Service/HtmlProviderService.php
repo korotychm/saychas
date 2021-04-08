@@ -94,8 +94,7 @@ class HtmlProviderService
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
-exit;                 
-               
+      return $return;
         }
       return $return;
     
