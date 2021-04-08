@@ -81,7 +81,6 @@ $(function() {
         var dataString = $("#formajax").serialize();
         $.ajax({	
         // beforeSend : function (){ $("#overload").stop().show(); },
-            //url: "/ajax/toweb",
             url: "/ajax-to-web",
             type:'POST', 
             cache: false,	
@@ -167,35 +166,32 @@ function getLegalStores (dataString, obj="#ajaxanswer2" ){
             cache: false,	
             data: {"value":dataString},
             success: function(data){
-                if (data=="200") {$(".errorblock").hide(); $("#searchpanel").slideUp(); return setUserAddrees(); }
-                $(obj).html(data); return true
+                if (data == "200") {$(".errorblock").hide(); $("#searchpanel").slideUp(); 
+                window.location.href = window.location.href;
+                return setUserAddrees(); 
+                }
+                
+                $(obj).html(data); return true;
             },
             error: function (xhr, ajaxOptions, thrownError) {$(obj).html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
         });
 }        
 
-
-    function setUserAddrees (){
+function setUserAddrees (){
     $.ajax({	
-            //url: "/ajax/getstore",
             url: "/ajax-set-user-address",
             type:'POST', 
             dataType: 'json',
-            //headers: {'Content-Type': 'application/Json'},
             cache: false,	
             success: function(html){ 
                 console.log(html.legalStore);  
                 $(".user_address_set").html(html.userAddress);
                 $(".testlegalstor").html("<h2>доступные магазины</h2></pre>" +print_r(html.legalStore) + "</pre>");//.css("border:1px soli red"); 
-                return true
-            
+                return true;
             },
             error: function (xhr, ajaxOptions, thrownError) {console.log("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError ); return true; }
         });
 }        
-
-
-
 
 function print_r(arr, level) {
     var print_red_text = "";

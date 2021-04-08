@@ -18,6 +18,19 @@
             <div id="main-col">
                  <?= $this->bread ?> 
                 <div class="content-col" style="" id="tovary"> 
+                    <div id="filtrblock">
+                        <form method="post" id="filtrform">
+                            <div class="iblock">
+                                <select id="sort"  name="sortOrder" >
+                                    <option disabled selected >Сортировка</option>
+                                    <option value="0"  >по-умолчанию</option>
+                                    <option value="1" >по-алфавиту</option>
+                                    <option value="2" >сначала дешевле</option>
+                                    <option value="3" >сначала дороже</option>                                    
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                     <h2><?= $this->title ?>  <?php if($this->id) echo "<span>id: ".$this->id."</span>";?></h2>
                     <div id="tovar-list"><?= $this->priducts ?></div>
                 </div>               

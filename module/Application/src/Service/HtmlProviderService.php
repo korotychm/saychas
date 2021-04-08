@@ -76,9 +76,10 @@ class HtmlProviderService
                 $timeDelevery=(int)$legalStore[$product->getStoreId()];
                 
                 ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
-                
+
                 $rest=$this->stockBalanceRepository->findAll(['product_id' => $product->getId(), 'store_id' =>$product->getStoreId(), 'array'=>1]);
                 $r = $rest[0]['rest'];
+
 
                  $return.="<div class='productcard ' >"
                     .$speedlable     
@@ -94,11 +95,13 @@ class HtmlProviderService
                     ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
                     ."   </div>"
                     ."</div>"; 
-      //return $return;
         }
       return $return;
     
     }
+    
+    
+    
     
         
     public function writeUserAddress ()
