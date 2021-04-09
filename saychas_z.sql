@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 06, 2021 at 05:50 AM
+-- Generation Time: Apr 09, 2021 at 01:39 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -25,7 +25,6 @@ DELIMITER $$
 --
 -- Procedures
 --
-/**
 DROP PROCEDURE IF EXISTS `get_products_by_categories`$$
 CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`cat_id` VARCHAR(9), `store_list` TEXT)  BEGIN
 	DROP TABLE IF EXISTS temp;
@@ -70,7 +69,7 @@ CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`
 END$$
 
 DELIMITER ;
-*/
+
 -- --------------------------------------------------------
 
 --
@@ -92,7 +91,8 @@ CREATE TABLE `brand` (
 INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
 ('000002', 'SONY', '', ''),
 ('000001', 'BOSH', '', ''),
-('', '', '', '');
+('', '', '', ''),
+('000004', 'Простоквашино', '', '');
 
 -- --------------------------------------------------------
 
@@ -126,7 +126,14 @@ INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort
 ('000000003', '000000002', 'Телефоны', '', '', 0),
 ('000000001', '0', 'Техника', '', '', 0),
 ('000000011', '000000010', 'Холодильники', '', '', 0),
-('000000002', '000000001', 'Электроника', '', '', 0);
+('000000002', '000000001', 'Электроника', '', '', 0),
+('', '0', '', '', '', 0),
+('000000017', '000000014', 'Молоко', '', '', 0),
+('000000013', '0', 'Продукты питания', '', '', 0),
+('000000014', '000000013', 'Молочная продукция', '', '', 0),
+('000000016', '000000014', 'Кефир', '', '', 0),
+('000000015', '000000013', 'Мясные продукты', '', '', 0),
+('000000018', '000000014', 'Ряженка', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -150,17 +157,18 @@ CREATE TABLE `characteristic` (
 --
 
 INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`) VALUES
-('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4),
 ('000000001', '000000009', 'Тип подключения', 4, 1, 0, 3),
 ('000000002', '000000009', 'Частотный диапазон', 1, 0, 0, 2),
 ('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1),
+('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4),
+('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5),
 ('000000006', '000000006', 'Экран', 2, 1, 1, 1),
 ('000000007', '000000006', 'Оперативная память (RAM)', 4, 0, 0, 2),
 ('000000008', '000000006', 'Встроенная память (ROM)', 4, 0, 0, 3),
 ('000000009', '000000006', 'Основная камера МПикс', 1, 0, 0, 4),
 ('000000010', '000000006', 'Фронтальная камера МПикс', 1, 0, 0, 5),
 ('000000012', '000000011', 'Описание', 1, 0, 0, 1),
-('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5);
+('000000013', '000000014', 'Жирность', 2, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -189,6 +197,22 @@ CREATE TABLE `customer` (
   `email` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `password` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `filtered_product`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `filtered_product`;
+CREATE TABLE `filtered_product` (
+`id` varchar(9)
+,`provider_id` varchar(6)
+,`title` text
+,`product_id` varchar(12)
+,`product_title` text
+,`rest` int
+);
 
 -- --------------------------------------------------------
 
@@ -233,6 +257,21 @@ CREATE TABLE `predef_char_value` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `predef_char_value`
+--
+
+INSERT INTO `predef_char_value` (`id`, `title`, `characteristic_id`) VALUES
+('000000002', 'Беспроводной', '000000001'),
+('000000001', 'Проводной', '000000001'),
+('000000004', '16 ГБ', '000000007'),
+('000000005', '32 ГБ', '000000007'),
+('000000003', '8 ГБ', '000000007'),
+('000000007', '128 ГБ', '000000008'),
+('000000008', '256 ГБ', '000000008'),
+('000000009', '512 ГБ', '000000008'),
+('000000006', '64 ГБ', '000000008');
 
 -- --------------------------------------------------------
 
@@ -284,8 +323,11 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`) VALUES
 ('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '', '', '000002'),
-('000000000002', '00003', '9', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', '', '50141256', '', '', '000003'),
-('000000000003', '00004', '11', 'Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R', '', '20068499', '', '', '000001');
+('000000000002', '00003', '000000009', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', '', '50141256', '', '', '000003'),
+('000000000003', '00004', '000000011', 'Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R', '', '20068499', '', '', '000001'),
+('000000000004', '00003', '000000017', 'Молоко', '', 'М-0011', '', '', '000004'),
+('000000000005', '', '000000016', 'Кефир', '', 'К-0012', '', '', ''),
+('000000000006', '', '000000018', 'Ряженка', '', 'Р-00123', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -321,9 +363,10 @@ CREATE TABLE `provider` (
 --
 
 INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
-('00003', 'Поставщик 1', 'Империал бананас', ''),
-('00004', 'Поставщик 2', 'Вычурные веники', ''),
-('00001', 'title1', 'description1', '');
+('00002', 'Apple', '', ''),
+('00003', 'Барамба', '', ''),
+('00004', 'М-Видео', '', ''),
+('00001', 'Ситилинк', '', '');
 
 -- --------------------------------------------------------
 
@@ -352,7 +395,7 @@ CREATE TABLE `shop` (
 DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
   `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `rest` int NOT NULL DEFAULT 0,
+  `rest` int NOT NULL DEFAULT '0',
   `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -389,31 +432,12 @@ CREATE TABLE `store` (
 --
 
 INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES
-('000000003', '00003', '1 Магазин Суперпродавца', '', '', '55.796867', '37.709126', ''),
-('000000004', '00003', '2 Магазин Суперпродавца', '', '', '55.703505', '37.731048', ''),
+('000000003', '00003', 'Магазин 2 (Барамба)', '', '', '55.895247', '37.57195', ''),
+('000000004', '00003', 'Магазин 3 (Барамба)', '', '', '55.72993', '37.496337', ''),
 ('000000005', '00004', 'На Волгоградке (м-видео)', '', '', '55.721462', '37.697468', ''),
-('000000001', '00001', 'Globus(Шарикоподшипниковская)', '', '', '55.717229', '37.677831', ''),
+('000000001', '00001', 'Ситилинк(ул. 5-я кожуховская)', '', '', '55.704362', '37.683324', ''),
 ('000000002', '00003', 'Магазин 1 (Барамба)', '', '', '55.657123', '37.739375', ''),
 ('', '', '', '', '', '0', '0', '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `temp`
---
-
-DROP TABLE IF EXISTS `temp`;
-CREATE TABLE `temp` (
-  `category_id` varchar(9) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `temp`
---
-
-INSERT INTO `temp` (`category_id`) VALUES
-('000000004'),
-('000000005');
 
 -- --------------------------------------------------------
 
@@ -426,6 +450,16 @@ CREATE TABLE `test` (
   `id` int NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `filtered_product`
+--
+DROP TABLE IF EXISTS `filtered_product`;
+
+DROP VIEW IF EXISTS `filtered_product`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER VIEW `filtered_product`  AS  select distinct `s`.`id` AS `id`,`s`.`provider_id` AS `provider_id`,`s`.`title` AS `title`,`pr`.`id` AS `product_id`,`pr`.`title` AS `product_title`,`sb`.`rest` AS `rest` from (((`store` `s` join `provider` `p` on((`p`.`id` = `s`.`provider_id`))) join `product` `pr` on((`pr`.`provider_id` = `s`.`provider_id`))) left join `stock_balance` `sb` on(((`sb`.`product_id` = `pr`.`id`) and (`sb`.`store_id` = `s`.`id`)))) ;
 
 --
 -- Indexes for dumped tables
