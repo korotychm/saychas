@@ -91,7 +91,7 @@ class HtmlProviderService
                 
                 
                 
-                $cena= (int)$product->getPrice();
+                $cena= (int)$product->getPrice();        
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
                 $container = new Container(StringResource::SESSION_NAMESPACE);  
