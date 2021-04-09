@@ -46,42 +46,6 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
     }
 
     /**
-     * Returns a list of stock_balances
-     *
-     * @return Entity[]
-     */
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($this->tableName);
-        $select->columns(['*']);
-        if(isset($params['order']))     { $select->order($params['order']); }
-        if(isset($params['limit']))     { $select->limit($params['limit']); }
-        if(isset($params['offset']))    { $select->offset($params['offset']); }
-        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
-        $select->where(['store_id' => $params['store_id'], 'product_id' => $params['product_id']]);
-        
-//        $selectString = $sql->buildSqlString($select);
-//        echo $selectString.'<br/>';
-        
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-        
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
-        );
-        $resultSet->initialize($result);
-        
-        return $params['array'] == 1 ? $resultSet->toArray() : $resultSet;
-    }
-
-    /**
      * Adds given stock balance into it's repository
      * 
      * @param json

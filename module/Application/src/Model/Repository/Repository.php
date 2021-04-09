@@ -37,7 +37,7 @@ abstract class Repository implements RepositoryInterface
     protected HydratorInterface $hydrator;
     
     /**
-     * Returns a list of prices
+     * Returns a list of entities
      *
      * @return Entity[]
      */
@@ -48,7 +48,9 @@ abstract class Repository implements RepositoryInterface
         if(isset($params['order']))     { $select->order($params['order']); }
         if(isset($params['limit']))     { $select->limit($params['limit']); }
         if(isset($params['offset']))    { $select->offset($params['offset']); }
-        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
+        if(isset($params['where']))    { $select->where($params['where']); }
+        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }//{ $select->where->in('id', $params['sequence']); } // 
+        
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -70,20 +72,21 @@ abstract class Repository implements RepositoryInterface
      *
      * @param  array $params
      * @return Entity
-     */    
+     */
     public function find($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select($this->tableName);
-        $select->where(['id = ?' => $params['id']]);
+        // $select->where(['id = ?' => $params['id']]);
+        $select->where($params);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();
         
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $params['id']
+                //Failed retrieving data with identifier
+                'Failed retrieving data with filter "%s"; unknown database error.', implode(';', $params)
             ));
         }
 
@@ -92,10 +95,17 @@ abstract class Repository implements RepositoryInterface
         $entity = $resultSet->current();
 
         if (! $entity) {
-            throw new InvalidArgumentException(sprintf(
-                $this->tableName . ' with identifier "%s" not found.',
-                $params['id']
-            ));
+            /**
+             * We comment out the following code for now
+             * as we want our function to return default value instead of null
+             * 
+                throw new InvalidArgumentException(sprintf(
+                    $this->tableName . ' with identifier "%s" not found.', '<Filter>'
+                     $params['id']
+                ));
+            */
+            // Return default
+            $entity = clone $this->prototype;
         }
 
         return $entity;

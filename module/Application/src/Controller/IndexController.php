@@ -25,6 +25,7 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Service\HtmlProviderService;
+use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
 //use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
@@ -58,11 +59,14 @@ class IndexController extends AbstractActionController
     private $entityManager;
     private $config;
     private $htmlProvider;
+    private $htmlFormProvider;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
-                CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
+                CharacteristicRepositoryInterface $characteristicRepository,
+                PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -77,6 +81,7 @@ class IndexController extends AbstractActionController
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
+        $this->htmlFormProvider = $htmlFormProvider;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -432,7 +437,10 @@ class IndexController extends AbstractActionController
         //$providers = $this->providerRepository->findAvailableProviders(['000000003', '000000004', '000000005'], 'id ASC', 100, 0);
         
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
-        $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0]);
+        $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['00003'], 'where'=>[ 'id' => ['00003', '00004']] ]);
+        
+        $form = $this->htmlFormProvider->testForm();
+        echo $form.'<br/>';
 
         echo '---<br/>Store, function: findAll <br/>';
         foreach ($stores as $store) {
@@ -456,7 +464,7 @@ class IndexController extends AbstractActionController
         }
         echo '---<br/>Stock Balance, function: findAll <hr/>';
         foreach ($stockBalances as $stockBalance) {
-            echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$price->getStoreId(). '<br/>';
+            echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$stockBalance->getStoreId(). '<br/>';//.$price->getStoreId(). '<br/>';
         }
         echo '---<br/>Filtered Products, function: findAll <hr/>';
         foreach ($filteredProducts as $filteredProduct) {

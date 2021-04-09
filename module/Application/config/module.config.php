@@ -378,6 +378,7 @@ return [
             \Application\Model\Repository\CharacteristicRepository::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
             \Application\Model\Repository\PredefCharValueRepository::class => \Application\Model\Factory\PredefCharValueRepositoryFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
+            \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
         ],
         
     ],
