@@ -91,7 +91,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             ->join(
                 ['brand' => 'brand'],
                 'p.brand_id = brand.id',
-                ['brandtitle'=>'title'],           
+                ['brand_title'=>'title'],           
                 $select::JOIN_LEFT  
             )   
             ->where->in('p.provider_id', $subSelectAvailbleStore)
