@@ -106,6 +106,8 @@ class IndexController extends AbstractActionController
         
     }
     
+    
+    
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -138,6 +140,7 @@ class IndexController extends AbstractActionController
         
     }
 
+    
     public function catalogAction()
     {
         $category_id=$this->params()->fromRoute('id', '');
@@ -149,30 +152,16 @@ class IndexController extends AbstractActionController
          
      
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
-        $products = $this->productRepository->filterProductsByStores(['000000003', '000000004', '000000005', '000000001', '000000002']);
+        $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
+        $params['order']=['price desc'];
+        //$params['limit']=4;
+        
+        $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         //  exit(print_r($filteredProducts));
         
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
-        
-        /*foreach ($filteredProducts as $row){
-              $productCardParam = [
-                    'price'=>$row->getPrice(),
-                    'title'=>$row->getTitle(),
-                    'img'=>$row->getUrlHttp(),
-                    'id'=>$row->getId(),
-                    'rest'=>$row->getRest(),
-                    'articul'=>$row->getVendorCode(),
-                    'brand'=>$row->getBrandTitle(),
-                    'description'=>$row->getDescription(),
-                    'param_value'=>$row->getParamValueList(),
-                    'param_value'=>$row->getParamValueList(),
-                    'store'=>$row->getStoreTitle()." (id:{$row->getStoreId()})",
-                    'store_id'=>$row->getStoreId(),
-                    //'store_address'=>$row->storeAddress(),
-                ];
-          }*/
         
         $returnProduct.= $this->htmlProvider->productCard($filteredProducts);
         

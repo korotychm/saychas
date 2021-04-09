@@ -89,6 +89,19 @@ $(function() {
             error: function (xhr, ajaxOptions, thrownError) {$("#ajaxanswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
         });
     })
+    
+        $(".formsend").live("change", function(){
+        var dataString = $("#filtrform").serialize();
+        $.ajax({	
+        // beforeSend : function (){ $("#overload").stop().show(); },
+            url: "/ajax-fltr",
+            type:'POST', 
+            cache: false,	
+            data: dataString,
+            success: function(data){ $("#ajaxfiltranswer").html(data);},
+            error: function (xhr, ajaxOptions, thrownError) {$("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
+        });
+    })
 	   
     $("#sendajax2").click(function(){
         var dataString = $("#textarea").val();

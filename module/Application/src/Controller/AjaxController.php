@@ -193,10 +193,24 @@ class AjaxController extends AbstractActionController
         exit(Json::encode($json,JSON_UNESCAPED_UNICODE ));
     }
     
+    public function setFilterForCategotyAction()
+    {
         
-    
-    
-    
+        $post=$this->getRequest()->getPost();
+        $categoty_id=$post->categoty_id;
+        
+        foreach ($post as $key=>$value)
+            //echo "$key=>$value <br>"; exit();
+            $fltrArray[$key]=$value;
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $filtrForCategory=$container->filtrForCategory;
+        $filtrForCategory[$categoty_id]=$fltrArray; 
+        $container->filtrForCategory = $filtrForCategory;
+        exit (print_r($container->filtrForCategory));
+        
+       }
+
     public function ajaxAction($params = array('name' => 'value')){   
         $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
@@ -352,30 +366,7 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         
-        
-        foreach ($filteredProducts as $row){
-              $productCardParam = [
-                    'price'=>$row->getPrice(),
-                    'title'=>$row->getTitle(),
-                    'img'=>$row->getUrlHttp(),
-                    'id'=>$row->getId(),
-                    'rest'=>$row->getRest(),
-                    'articul'=>$row->getVendorCode(),
-                    'brand'=>$row->getBrandTitle(),
-                    'description'=>$row->getDescription(),
-                    'param_value'=>$row->getParamValueList(),
-                    'param_value'=>$row->getParamValueList(),
-                    'store'=>$row->getStoreTitle()." (id:{$row->getStoreId()})",
-                    'store_id'=>$row->getStoreId(),
-                    //'store_address'=>$row->storeAddress(),
-                ];
-        
-            $returnProduct.= $this->htmlProvider->productCard($productCardParam);
-        }
-        
-        
-        
-        
+        $returnProduct = $this->htmlProvider->productCard($filteredProducts);
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }

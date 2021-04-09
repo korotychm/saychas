@@ -294,6 +294,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-fltr' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-fltr',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'setFilterForCategoty',
+                    ],
+                ],
+            ],
            'ajax-get-store' => [
                 'type'    => Literal::class,
                 'options' => [

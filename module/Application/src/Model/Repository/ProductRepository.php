@@ -196,7 +196,7 @@ End of number 1 */
 //      where ss.id is not null order by pr.id;
         
         $w = new Where();
-        $w->in('s.id', $params);
+        $w->in('s.id', $params['in']);
         
         $sel = new Select();
         $sel->from(['s' => 'store'])->columns(['*'])
@@ -237,6 +237,9 @@ End of number 1 */
                         ['store_id'=>'id', 'store_title'=>'title'],
                         $select::JOIN_LEFT
                 )->where('ss.id is not null');
+        if ($params['order'])   $select->order($params['order']);
+        if ($params['limit'])   $select->limit($params['limit']);
+        if ($params['offset'])  $select->offset($params['offset']);
         /** End of number 2 */
         
 //        $selString = $sql->buildSqlString($select);

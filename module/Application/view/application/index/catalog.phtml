@@ -19,18 +19,20 @@
                  <?= $this->bread ?> 
                 <div class="content-col" style="" id="tovary"> 
                     <form method="post" id="filtrform">
+                        <div id='ajaxfiltranswer'></div>
+                        <input type='hidden' name='categoty_id' value='<?=$this->id?>'>
                         <div id="filtrblock" class="container">
                                 <div class="iblok"  >
                                     <select id="sort"  name="sortOrder" class="formsend" >
                                         <option disabled selected >Сортировка</option>
                                         <option value="0"  >по-умолчанию</option>
-                                        <option value="1" >по-алфавиту</option>
-                                        <option value="2" >сначала дешевле</option>
-                                        <option value="3" >сначала дороже</option>                                    
+                                        <option value="1" <?=$this->sortselect[1]?> >по-алфавиту</option>
+                                        <option value="2" <?=$this->sortselect[2]?> >сначала дешевле</option>
+                                        <option value="3" <?=$this->sortselect[3]?> >сначала дороже</option>                                    
                                     </select>
                                 </div>
                                 <div class="iblok"  >
-                                    <select id="limit"  name="sortOrder" class="formsend" >
+                                    <select id="limit"  name="limit" class="formsend" >
                                         <option disabled selected >На странице</option>
                                         <option value="4"  >показывать по 4</option>
                                         <option value="48" >показывать по 48</option>
