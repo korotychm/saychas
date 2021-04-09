@@ -7,16 +7,28 @@ use Application\Model\Entity;
 use Laminas\Session\Container;
 use Application\Resource\StringResource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
+use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 
 class HtmlProviderService
 {
     private $stockBalanceRepository;
+    private $providerRepository;
+    private $priceRepository;
     
-    public function __construct(StockBalanceRepositoryInterface $stockBalanceRepository) {
+    public function __construct(
+            StockBalanceRepositoryInterface $stockBalanceRepository,
+            ProviderRepositoryInterface $providerRepository,
+            PriceRepositoryInterface $priceRepository
+    )
+    {
         $this->stockBalanceRepository = $stockBalanceRepository;
+        $this->providerRepository = $providerRepository;
+        $this->priceRepository = $priceRepository;
     }
+
     /**
      * Returns Html string
      * @return string
@@ -67,8 +79,19 @@ class HtmlProviderService
                     'store_id'=>$product->getStoreId(),
                     //'store_address'=>$row->storeAddress(),
                 ];
-        */
-                $cena=(int)$product->getPrice();
+               * 
+               */
+            //$provier = $this->prov
+            //$price = $this->priceRepository->find('');
+                
+                //$provider = $this->providerRepository->find(['product_id'=>$product->getId()]);
+                
+                //exit(print_r(['product_id=?'=>$product->getId(), 'provider_id=?', $product->getProviderId()])); 
+                $cena = $this->priceRepository->find(['product_id'=>$product->getId(), 'provider_id', $product->getProviderId()]);
+                
+                
+                
+                //$cena= (int)$product->getPrice();
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
                 $container = new Container(StringResource::SESSION_NAMESPACE);  

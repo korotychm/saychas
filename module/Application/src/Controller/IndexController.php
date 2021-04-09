@@ -156,7 +156,6 @@ class IndexController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         
-        
         /*foreach ($filteredProducts as $row){
               $productCardParam = [
                     'price'=>$row->getPrice(),
@@ -173,13 +172,9 @@ class IndexController extends AbstractActionController
                     'store_id'=>$row->getStoreId(),
                     //'store_address'=>$row->storeAddress(),
                 ];
+          }*/
         
-           
-            
-        }*/
-         $returnProduct.= $this->htmlProvider->productCard($filteredProducts);
-        
-        
+        $returnProduct.= $this->htmlProvider->productCard($filteredProducts);
         
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
