@@ -6,10 +6,7 @@ SELECT DISTINCT
     s.title,
     pr.id AS product_id,
     pr.title AS product_title,
-    sb.rest,
-    pri.price,
-    pr.param_value_list,
-    pr.param_variable_list
+    sb.rest
 FROM
     store s
 INNER JOIN provider p ON
@@ -19,8 +16,5 @@ INNER JOIN product pr ON
 LEFT JOIN stock_balance sb ON
     sb.product_id = pr.id AND sb.store_id = s.id
 LEFT JOIN price pri ON
-    pri.product_id = pr.id AND pri.provider_id = p.id;
-	
--- WHERE
---    s.id IN('000000005', '000000004');
+    pri.product_id = pr.id AND pri.store_id = s.id;
 
