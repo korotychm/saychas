@@ -98,7 +98,7 @@ $(function() {
             type:'POST', 
             cache: false,	
             data: dataString,
-            success: function(data){ $("#ajaxfiltranswer").html(data);},
+            success: function(data){window.location.href=window.location.href },
             error: function (xhr, ajaxOptions, thrownError) {$("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже."+"\r\n " + xhr.status +" "+ thrownError );}
         });
     })

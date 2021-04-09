@@ -59,7 +59,7 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function productCard($filteredProducts)
+    public function productCard($filteredProducts, $category_id=0)
     {
         
   
@@ -96,6 +96,8 @@ class HtmlProviderService
                 $cena= number_format($cena,2,".","&nbsp;");
                 $container = new Container(StringResource::SESSION_NAMESPACE);  
                 $legalStore =  $container->legalStore;
+                $filtrForCategory=$container->filtrForCategory;
+                
                 $timeDelevery=(int)$legalStore[$product->getStoreId()];
                 
                 ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
@@ -104,7 +106,7 @@ class HtmlProviderService
 
                 $r = (int) $rest->getRest();
 
-
+if (!($filtrForCategory[$category_id]['hasRestOnly'] and !$r))
                  $return.="<div class='productcard ' >"
                     .$speedlable     
                     ."   <div class='content opacity".$r."'>"

@@ -126,5 +126,5 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     
 }
 #filtrform  {display:block; text-align:right }
-#filtrform .iblock {margin: 6px}
+#filtrform .iblok {margin: 6px; vertical-align:middle; }
 #filtrform select {border:1px solid #ccc; border-radius:4px; padding:8px 12px;  }

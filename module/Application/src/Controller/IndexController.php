@@ -146,6 +146,14 @@ class IndexController extends AbstractActionController
         $category_id=$this->params()->fromRoute('id', '');
 
         $this->layout()->setTemplate('layout/mainpage');
+        
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
+        $filtrForCategory=$container->filtrForCategory;
+        
+        
+        
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $bread = $this->categoryRepository->findAllMatherCategories($category_id);
         $bread = $this->htmlProvider->breadCrumbs($bread);
@@ -153,17 +161,20 @@ class IndexController extends AbstractActionController
      
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
         $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
-        $params['order']=['price desc'];
+        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
+        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
         //$params['limit']=4;
         
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         //  exit(print_r($filteredProducts));
         
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
+        //$filtrForCategory=$filtrForCategory[$category_id];
         
-        $returnProduct.= $this->htmlProvider->productCard($filteredProducts);
+        
+        
+        $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id);
+        
         
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
@@ -171,17 +182,26 @@ class IndexController extends AbstractActionController
         catch (\Exception $e) {
             $categoryTitle = "&larr;Выбери категорию товаров  ";
         }     
-            
         
-        return new ViewModel([
+        
+        
+        //exit ($soertselect);   
+            
+        $vwm=[
         
             "catalog" => $categories,
             "title" => $categoryTitle,
             "id" => $category_id,
             "bread"=> $bread,
             'priducts'=> $returnProduct,
-            'addressform'=> $addresForm."", //print_r($bread,true),
-        ]);
+            'addressform'=> $addresForm."",
+            'sortselect'.$filtrForCategory[$category_id]['sortOrder'] => " selected ",
+            'hasRestOnly'.$filtrForCategory[$category_id]['hasRestOnly']  => " checked ",
+            //print_r($bread,true),
+        ];
+        //exit (print_r($vwm));   
+        
+        return new ViewModel($vwm);
 
     }
     
