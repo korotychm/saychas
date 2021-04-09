@@ -44,6 +44,21 @@ class FilteredProduct
      *
      */
     private $rest;
+    
+    /**
+     * @var int
+     */
+    private $price;
+    
+    /**
+     * @var string
+     */
+    private $param_value_list;
+
+    /**
+     * @var string
+     */
+    private $param_variable_list;
 
     /**
      * Get id.
@@ -129,4 +144,18 @@ class FilteredProduct
         return $this->rest;
     }
     
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function getParamValueList()
+    {
+        return $this->param_value_list;
+    }
+    
+    public function getParamVariableList()
+    {
+        return $this->param_variable_list;
+    }
 }

@@ -73,6 +73,7 @@ class FilteredProductRepository extends Repository implements FilteredProductRep
                 ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)
                 ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id'=>'id', 'product_title' => 'title'], $select::JOIN_INNER)
                 ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)
+//                ->join(['pri' => 'price'], 'pri.product_id = pr.id AND p.provider = p.id', ['price' => 'price'], $select::JOIN_LEFT)
                 ->order(['id ASC'])->where($w);
 //        $selectString = $sql->buildSqlString($select);
 //        print_r($selectString);
