@@ -87,11 +87,9 @@ class HtmlProviderService
                 //$provider = $this->providerRepository->find(['product_id'=>$product->getId()]);
                 
                 //exit(print_r(['product_id=?'=>$product->getId(), 'provider_id=?', $product->getProviderId()])); 
-                $cena = $this->priceRepository->find(['product_id'=>$product->getId(), 'provider_id', $product->getProviderId()]);
                 
-                
-                
-                //$cena= (int)$product->getPrice();
+                //$cena = $this->priceRepository->find(['product_id=?'=>$product->getId(), 'provider_id=?', $product->getProviderId()]);
+                $cena= (int)$product->getPrice();   
                 $cena=$cena/100;
                 $cena= number_format($cena,2,".","&nbsp;");
                 $container = new Container(StringResource::SESSION_NAMESPACE);  
