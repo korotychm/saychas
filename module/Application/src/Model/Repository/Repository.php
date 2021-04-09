@@ -73,7 +73,7 @@ abstract class Repository implements RepositoryInterface
      * @param  array $params
      * @return Entity
      */
-    public function find($params)
+    public function findFirstOrDefault($params)
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select($this->tableName);
@@ -106,6 +106,40 @@ abstract class Repository implements RepositoryInterface
             */
             // Return default
             $entity = clone $this->prototype;
+        }
+
+        return $entity;
+    }
+    
+    /**
+     * Returns a single brand.
+     *
+     * @param  array $params
+     * @return Entity
+     */
+    public function find($params)
+    {
+        $sql       = new Sql($this->db);
+        $select    = $sql->select($this->tableName);
+        // $select->where(['id = ?' => $params['id']]);
+        $select->where($params);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result    = $statement->execute();
+        
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+            throw new RuntimeException(sprintf(
+                //Failed retrieving data with identifier
+                'Failed retrieving data with filter "%s"; unknown database error.', implode(';', $params)
+            ));
+        }
+
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
+        $resultSet->initialize($result);
+        $entity = $resultSet->current();
+
+        if (! $entity) {
+            $entity = null; // not found
         }
 
         return $entity;

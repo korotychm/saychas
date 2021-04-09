@@ -40,6 +40,14 @@ class CharacteristicRepository extends Repository  implements CharacteristicRepo
         $this->hydrator      = $hydrator;
         $this->prototype = $prototype;
     }
+    
+    public const STRING_TYPE = 1;
+    
+    public const INTEGER_TYPE = 2;
+    
+    public const BOOL_TYPE = 3;
+    
+    public const REFERENCE_TYPE = 4;
 
     /**
      * Adds given characteristic into it's repository

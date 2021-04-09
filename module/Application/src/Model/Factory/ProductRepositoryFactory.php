@@ -9,6 +9,8 @@ use Application\Model\Repository\ProductRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 
 class ProductRepositoryFactory implements FactoryInterface
 {
@@ -20,11 +22,15 @@ class ProductRepositoryFactory implements FactoryInterface
         }
         
         $adapter = $container->get(AdapterInterface::class);
+        $predefChar = $container->get(PredefCharValueRepositoryInterface::class);
+        $characteristics = $container->get(CharacteristicRepositoryInterface::class);
         
         return new ProductRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Product(0, 0, 0, '', '', '', 0, 0, '', '')
+            new Product(0, 0, 0, '', '', '', 0, 0, '', ''),
+            $predefChar,
+            $characteristics
         );
     }
 }

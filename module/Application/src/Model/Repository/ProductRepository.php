@@ -19,6 +19,8 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 
 class ProductRepository extends Repository implements ProductRepositoryInterface
 {
@@ -33,6 +35,17 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     protected Product $prototype;
     
     /**
+     * @var PredefCharValueRepositoryInterface
+     */
+    protected PredefCharValueRepositoryInterface $predefCharValueRepo;
+    
+    /**
+     * @var CharacteristicRepositoryInterface
+     */
+    protected CharacteristicRepositoryInterface $characteristics;
+
+
+    /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Product $prototype
@@ -40,11 +53,15 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        Product $prototype
+        Product $prototype,
+        PredefCharValueRepositoryInterface $predefCharValueRepo,
+        CharacteristicRepositoryInterface $characteristics
     ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
-        $this->prototype = $prototype;
+        $this->db                   = $db;
+        $this->hydrator             = $hydrator;
+        $this->prototype            = $prototype;
+        $this->predefCharValueRepo  = $predefCharValueRepo;
+        $this->characteristics      = $characteristics;
     }
 
     /**
@@ -271,6 +288,25 @@ End of number 1 */
         return $filteredProducts;
     }
     
+    private function separatePredefined(array $characteristics)
+    {
+        $value_list = [];
+        $var_list = [];
+        foreach($characteristics as $c) {
+            $found = $this->characteristics->find(['id'=>$c->id]);
+            if(null == $found) {
+                throw new \Exception("Unexpected db error");
+            }
+            if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
+                $value_list[] = $c->value;
+            }else{
+                $var_list[] = $c;
+            }
+        }
+        
+        return ['value_list'=>implode(",", $value_list), 'var_list' => Json::encode($var_list)];
+    }
+    
     /**
      * Adds given product into it's repository
      * 
@@ -289,8 +325,13 @@ End of number 1 */
         }
 
         foreach($result->data as $row) {
+            $arr = ['value_list'=>'', 'var_list'=>''];
+            if(count($row->characteristics) > 0)
+            {
+                $arr = $this->separatePredefined($row->characteristics);
+            }
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, '', '', $row->brand_id);
+                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, $arr['value_list'], $arr['var_list'], $row->brand_id);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
