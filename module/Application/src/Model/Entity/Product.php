@@ -90,6 +90,32 @@ class Product
     
     private $product_title;
     
+    /**
+     * @var string
+     */
+    private $param_value_list;
+    
+    
+    /**
+     * @var string (json)
+     */
+    private $param_variable_list;
+    
+    
+          /*. "       <span class='blok'>Хар/List: " . $product->getParamValueList() . "</span>"
+            . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList() . "</span>" */
+    public function getParamValueList2()
+    {
+        return $this->param_value_list;
+    }
+    
+     public function getParamVariableList2()
+    {
+        return $this->param_variable_list;
+    }
+    
+    
+    
     public function getProductTitle()
     {
         return $this->product_title;

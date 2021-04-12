@@ -105,9 +105,7 @@ class IndexController extends AbstractActionController
         return $response;
         
     }
-    
-    
-    
+      
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -139,20 +137,14 @@ class IndexController extends AbstractActionController
         ]);
         
     }
-
-    
+   
     public function catalogAction()
     {
         $category_id=$this->params()->fromRoute('id', '');
-
         $this->layout()->setTemplate('layout/mainpage');
-        
-        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         $filtrForCategory=$container->filtrForCategory;
-        
-        
         
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $bread = $this->categoryRepository->findAllMatherCategories($category_id);
@@ -164,18 +156,10 @@ class IndexController extends AbstractActionController
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
         //$params['limit']=4;
-        
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        //  exit(print_r($filteredProducts));
-        
-        //$filtrForCategory=$filtrForCategory[$category_id];
-        
-        
-        
-        $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id);
-        
-        
+        $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
+        $returnProductFilter.= $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
@@ -183,10 +167,6 @@ class IndexController extends AbstractActionController
             $categoryTitle = "&larr;Выбери категорию товаров  ";
         }     
         
-        
-        
-        //exit ($soertselect);   
-            
         $vwm=[
         
             "catalog" => $categories,
@@ -429,6 +409,8 @@ class IndexController extends AbstractActionController
     
     public function testReposAction()
     {
+        phpinfo(); exit();
+        
         $this->layout()->setTemplate('layout/mainpage');
         
         $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']

@@ -259,9 +259,7 @@ End of number 1 */
         if ($params['offset'])  $select->offset($params['offset']);
         /** End of number 2 */
         
-//        $selString = $sql->buildSqlString($select);
-//        print_r($selString);
-//        exit;
+//        $selString = $sql->buildSqlString($select);         print_r($selString);         exit;
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
