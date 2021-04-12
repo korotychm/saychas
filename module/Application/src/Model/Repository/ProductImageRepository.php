@@ -24,7 +24,7 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
      * @var ProductImage
      */
     protected ProductImage $prototype;
-    
+
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
@@ -42,36 +42,35 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
 
     /**
      * Adds given product image into it's repository
-     * 
+     *
      * @param json
      */
-    public function replace($content)
-    {        
-        try {
-            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-        
-        foreach($result as $row) {
-            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `rest`) VALUES ( '%s', '%s', %u)",
-                    $row['product_id'], $row['store_id'], $row['rest']);
-            try {
-                $query = $this->db->query($sql);
-                $query->execute();
-            }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+    public function replace($data)
+    {
+        foreach($data as $product) {
+            foreach($product->images as $image) {
+                $sql = sprintf("insert INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
+                        $product->id, $image, 0);
+                try {
+                    //'SELECT * FROM `artist` WHERE `id` = ?', [5]
+                    $sql = sprintf("insert INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
+                        $product->id,$image, '', 0);
+                    $query = $this->db->query($sql);
+                    $query->execute();
+                }catch(Exception $e){
+                    return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                }
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
-    
+
     /**
      * Delete product images specified by json array of objects
      * @param json
      */
     public function delete($json) {
         return ['result' => false, 'description' => 'Method is not supported: cannot delete product image', 'statusCode' => 405];
-    }    
-    
+    }
+
 }
