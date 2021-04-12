@@ -1,30 +1,30 @@
 <?php
-// src/Model/Factory/PredefCharValueRepositoryFactory.php
+// src/Model/Factory/CharacteristicValueRepositoryFactory.php
 
 namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
-use Application\Model\Entity\PredefCharValue;
-use Application\Model\Repository\PredefCharValueRepository;
+use Application\Model\Entity\CharacteristicValue;
+use Application\Model\Repository\CharacteristicValueRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class PredefCharValueRepositoryFactory implements FactoryInterface
+class CharacteristicValueRepositoryFactory implements FactoryInterface
 {
    
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof PredefCharValueRepository){
+        if($requestedName instanceof CharacteristicValueRepository){
             throw new Exception("not instanceof CharacteristicRepository");
         }
         
         $adapter = $container->get(AdapterInterface::class);
         
-        return new PredefCharValueRepository(
+        return new CharacteristicValueRepository(
             $adapter,
             new ReflectionHydrator(),
-            new PredefCharValue('', '', '')
+            new CharacteristicValue('', '', '')
         );
     }
 }

@@ -11,7 +11,7 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="predef_char_value")
  * @ORM\Entity
  */
-class PredefCharValue
+class CharacteristicValue
 {
 //        "id": "000000008",
 //        "title": "256 ГБ",

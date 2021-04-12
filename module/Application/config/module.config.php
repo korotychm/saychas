@@ -204,7 +204,7 @@ return [
                         'controller' => Controller\ReceivingController::class,
                         'action'     => 'receiveRepository',
                     ],
-                    'repository' => \Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface::class,
+                    'repository' => \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class,
                 ],
             ],
             'hello-world' => [
@@ -367,7 +367,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class => \Application\Model\Repository\CharacteristicRepository::class,
-            \Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface::class => \Application\Model\Repository\PredefCharValueRepository::class,
+            \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class => \Application\Model\Repository\CharacteristicValueRepository::class,
             \Application\Model\RepositoryInterface\ProductImageRepositoryInterface::class => \Application\Model\Repository\ProductImageRepository::class,
             
             //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
@@ -387,7 +387,7 @@ return [
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicRepository::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
-            \Application\Model\Repository\PredefCharValueRepository::class => \Application\Model\Factory\PredefCharValueRepositoryFactory::class,
+            \Application\Model\Repository\CharacteristicValueRepository::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
             \Application\Model\Repository\ProductImageRepository::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,

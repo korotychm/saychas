@@ -10,7 +10,7 @@ use Application\Model\Repository\ProductRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
@@ -24,7 +24,7 @@ class ProductRepositoryFactory implements FactoryInterface
         }
         
         $adapter = $container->get(AdapterInterface::class);
-        $predefChar = $container->get(PredefCharValueRepositoryInterface::class);
+        $predefChar = $container->get(CharacteristicValueRepositoryInterface::class);
         $characteristics = $container->get(CharacteristicRepositoryInterface::class);
         $productImages = $container->get(ProductImageRepositoryInterface::class);
         

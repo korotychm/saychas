@@ -19,7 +19,7 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
-use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
@@ -36,9 +36,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     protected Product $prototype;
     
     /**
-     * @var PredefCharValueRepositoryInterface
+     * @var CharacteristicValueRepositoryInterface
      */
-    protected PredefCharValueRepositoryInterface $predefCharValueRepo;
+    protected CharacteristicValueRepositoryInterface $predefCharValueRepo;
     
     /**
      * @var CharacteristicRepositoryInterface
@@ -60,7 +60,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         AdapterInterface $db,
         HydratorInterface $hydrator,
         Product $prototype,
-        PredefCharValueRepositoryInterface $predefCharValueRepo,
+        CharacteristicValueRepositoryInterface $predefCharValueRepo,
         CharacteristicRepositoryInterface $characteristics,
         ProductImageRepositoryInterface $productImages
     ) {
