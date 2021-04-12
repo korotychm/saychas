@@ -21,6 +21,7 @@ use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
 class ProductRepository extends Repository implements ProductRepositoryInterface
 {
@@ -43,6 +44,11 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var CharacteristicRepositoryInterface
      */
     protected CharacteristicRepositoryInterface $characteristics;
+    
+    /**
+     * @var ProductImageRepositoryInterface
+     */
+    protected ProductImageRepositoryInterface $productImages;
 
 
     /**
@@ -55,13 +61,15 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         HydratorInterface $hydrator,
         Product $prototype,
         PredefCharValueRepositoryInterface $predefCharValueRepo,
-        CharacteristicRepositoryInterface $characteristics
+        CharacteristicRepositoryInterface $characteristics,
+        ProductImageRepositoryInterface $productImages
     ) {
         $this->db                   = $db;
         $this->hydrator             = $hydrator;
         $this->prototype            = $prototype;
         $this->predefCharValueRepo  = $predefCharValueRepo;
         $this->characteristics      = $characteristics;
+        $this->productImages        = $productImages;
     }
 
     /**
@@ -342,6 +350,7 @@ End of number 1 */
 
         foreach($result->data as $row) {
             $arr = ['value_list'=>'', 'var_list'=>''];
+            
             if(count($row->characteristics) > 0)
             {
                 $arr = $this->separatePredefined($row->characteristics);
