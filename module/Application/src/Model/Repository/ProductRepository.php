@@ -110,7 +110,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             ->join(
                 ['img' => 'product_image'],
                 'p.id = img.product_id',
-                ['url_http'],           
+                ['http_url'],           
                 $select::JOIN_LEFT  
             )
             ->join(
@@ -260,7 +260,7 @@ End of number 1 */
 //            ->join(
 //                ['img' => 'product_image'],
 //                'pr.id = img.product_id',
-//                ['url_http'],
+//                ['http_url'],
 //                $select::JOIN_LEFT
 //            )
             ->join(

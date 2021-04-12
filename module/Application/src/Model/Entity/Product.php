@@ -71,7 +71,7 @@ class Product
     /**
      * @var string
      */
-    private $url_http;
+    private $http_url;
 
     /**
      * @var string
@@ -350,13 +350,13 @@ class Product
     }
     
     /**
-     * Get url_http.
+     * Get http_url.
      *
      * @return string
      */
-    public function getUrlHttp()
+    public function getHttpUrl()
     {
-        return $this->url_http;
+        return $this->http_url;
     }
     
     /**

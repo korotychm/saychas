@@ -296,7 +296,7 @@ class AjaxController extends AbstractActionController
               $productCardParam = [
                     'price'=>$row->getPrice(),
                     'title'=>$row->getTitle(),
-                    'img'=>$row->getUrlHttp(),
+                    'img'=>$row->getHttpUrl(),
                     'id'=>$row->getId(),
                     'rest'=>$row->getRest(),
                     'articul'=>$row->getVendorCode(),
@@ -311,7 +311,7 @@ class AjaxController extends AbstractActionController
                 category_id
                 price
                 rest
-                url_http
+                http_url
                 brand_title
                 store_title
                 store_address

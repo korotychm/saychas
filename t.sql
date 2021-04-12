@@ -1,7 +1,7 @@
 SELECT  `p`.*,
 	`pr`.`price` AS `price`,
 	`b`.`rest` AS `rest`,
-	`img`.`url_http` AS `url_http`,
+	`img`.`http_url` AS `http_url`,
 	`brand`.`title` AS `brandtitle`,
 	`st`.`id` AS `store_id`,
 	`st`.`title` AS `store_title`,
@@ -22,7 +22,7 @@ WHERE `p`.`provider_id` IN (SELECT `store`.`provider_id` AS `provider_id` FROM `
 SELECT `p`.*,
 	`pr`.`price` AS `price`,
 	`b`.`rest` AS `rest`,
-	`img`.`url_http` AS `url_http`,
+	`img`.`http_url` AS `http_url`,
 	`brand`.`title` AS `brandtitle`, 
 	`st`.`id` AS `store_id`,
 	`st`.`title` AS `store_title`,
@@ -40,7 +40,7 @@ WHERE `p`.`provider_id` IN (SELECT `store`.`provider_id` AS `provider_id` FROM `
 select t.rest from (
 SELECT  `pr`.*, `pri`.`price` AS `price`,
 	( SELECT SUM(`b`.`rest`) AS `rest` FROM stock_balance GROUP BY store_id) as r,
-	`img`.`url_http` AS `url_http`,
+	`img`.`http_url` AS `http_url`,
 	`brand`.`title` AS `brandtitle`,
 	`ss`.`id` AS `store_id`,
 	`ss`.`title` AS `store_title`
