@@ -329,6 +329,17 @@ End of number 1 */
         return ['value_list'=>implode(",", $value_list), 'var_list' => Json::encode($var_list)];
     }
     
+    private function extractNonEmptyImages(array $data)
+    {
+        $result = [];
+        foreach ($data as $d) {
+            if(count($d->images) > 0) {
+                array_push($result, $d);
+            }
+        }
+        return $result;
+    }
+    
     /**
      * Adds given product into it's repository
      * 
@@ -345,6 +356,9 @@ End of number 1 */
         if((bool) $result->truncate) {
             $this->db->query("truncate table product")->execute();
         }
+        
+        $pi = $this->extractNonEmptyImages($result->data);
+        $this->productImages->replace($pi);
 
         foreach($result->data as $row) {
             $arr = ['value_list'=>'', 'var_list'=>''];
