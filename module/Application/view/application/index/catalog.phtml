@@ -35,17 +35,20 @@
                                         <option value="3" <?=$this->sortselect3?> >сначала дороже</option>                                    
                                     </select>
                                 </div>
-                                <!-- div class="iblok"  >
-                                    <select id="limit"  name="limit" class="formsend" >
-                                        <option disabled selected >На странице</option>
-                                        <option value="4"  >показывать по 4</option>
-                                        <option value="48" >показывать по 48</option>
-                                        <option value="96" >показывать по 96</option>
-                                        <option value="0" >показывать все</option>                                    
-                                    </select>
-                                </div-->
+                                <div class="ifilterblock"  >
+                                    <div class="filtritem" id="fi000001">
+                                        <div class="filtritemtitle" rel="000001">
+                                            FilterTitle
+                                        </div>
+                                        <div class="filtritemcontent" id="fc000001">
+                                            <div class="block"><input type="checkbox" >&nbsp;Value-1</div><!-- comment -->
+                                            <div class="block"><input type="checkbox" >&nbsp;Value-2 Value-very Long</div>
+                                             <div class="block"><input type="button" value="применить"></div><!-- comment -->
+                                        </div>
+                                </div>
                         </div>
                     </form>
+                    </div>  
                     <h2><?= $this->title ?>  <?php if($this->id) echo "<span>id: ".$this->id."</span>";?></h2>
                     <div id="tovar-list"><?= $this->priducts ?></div>
                 </div>               

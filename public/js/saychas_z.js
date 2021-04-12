@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
     
     $("#tree").delay(500).slideDown("slow");
@@ -5,7 +6,27 @@ $(document).ready(function(){
 	window.onbeforeunload = function (){$(".overcover").stop().fadeIn();}	
 })
 $(function() { 
-	 $(".open-user-address-form, .searchpanelclose").click(function(){$("#searchpanel").slideToggle()})
+    
+    function hidefilteritem() {
+        $(".filtritem").removeClass("active");
+        $(".filtritemcontent").hide();
+        $(".filtritemtitle").removeClass("closefilteritem");        
+    }
+    
+    $(".close").live("click", function(){hidefilteritem();});
+    $(".filtritemtitle").click(function(){
+        
+        
+        if($(this).hasClass("closefilteritem")) {hidefilteritem(); return;}
+        hidefilteritem();
+        var id=$(this).attr("rel");
+        $("#fi"+id).addClass("active");
+        $("#fc"+id).slideDown();
+        $(this).addClass("closefilteritem");
+        
+        
+    })
+     $(".open-user-address-form, .searchpanelclose").click(function(){$("#searchpanel").slideToggle()})
      $("#tree22").treeview({
                   persist: "location",
                   collapsed: true,
