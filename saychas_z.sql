@@ -132,6 +132,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 DROP TABLE IF EXISTS `characteristic_value`;
 CREATE TABLE `characteristic_value` (
   `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `is_predefined` TINYINT(1) NOT NULL DEFAULT 1,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -267,8 +268,8 @@ DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE `product_image` (
   `id` int NOT NULL,
   `product_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ftp_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `http_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ftp_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `http_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
