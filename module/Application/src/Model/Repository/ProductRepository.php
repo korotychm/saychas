@@ -360,15 +360,15 @@ End of number 1 */
         $pi = $this->extractNonEmptyImages($result->data);
         $this->productImages->replace($pi);
 
-        foreach($result->data as $row) {
+        foreach($result->data as $product) {
             $arr = ['value_list'=>'', 'var_list'=>''];
             
-            if(count($row->characteristics) > 0)
+            if(count($product->characteristics) > 0)
             {
-                $arr = $this->separatePredefined($row->characteristics);
+                $arr = $this->separatePredefined($product->characteristics);
             }
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $row->id, $row->provider_id, $row->category_id, $row->title, $row->description, $row->vendor_code, $arr['value_list'], $arr['var_list'], $row->brand_id);
+                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr['value_list'], $arr['var_list'], $product->brand_id);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
