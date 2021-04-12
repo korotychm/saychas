@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/PredefCharValueRepository.php
+// src/Model/Repository/CharacteristicValueRepository.php
 
 namespace Application\Model\Repository;
 
@@ -14,30 +14,30 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Application\Model\Entity\PredefCharValue;
-use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
+use Application\Model\Entity\CharacteristicValue;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 
-class PredefCharValueRepository extends Repository implements PredefCharValueRepositoryInterface
+class CharacteristicValueRepository extends Repository implements CharacteristicValueRepositoryInterface
 {
     /**
      * @var string
      */
-    protected $tableName="predef_char_value";
+    protected $tableName="characteristic_value";
 
     /**
-     * @var PredefCharValue
+     * @var CharacteristicValue
      */
-    protected PredefCharValue $prototype;
+    protected CharacteristicValue $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param PredefCharValue $prototype
+     * @param CharacteristicValue $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        PredefCharValue $prototype
+        CharacteristicValue $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
