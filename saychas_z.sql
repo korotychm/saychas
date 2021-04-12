@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2021 at 01:48 AM
+-- Generation Time: Apr 12, 2021 at 06:23 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -20,55 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `saychas_z`
 --
-
-DELIMITER $$
---
--- Procedures
---
-DROP PROCEDURE IF EXISTS `get_products_by_categories`$$
-CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`cat_id` VARCHAR(9), `store_list` TEXT)  BEGIN
-	DROP TABLE IF EXISTS temp;
-
-	SET @pv = cat_id;
-
-	CREATE TABLE temp AS SELECT * FROM (
-	SELECT  id as category_id
-	FROM    (SELECT * FROM category
-        	 ORDER BY parent_id, id) category_sorted,
-	        (SELECT @pv := cat_id) initialisation
-	WHERE   FIND_IN_SET(`category_sorted`.parent_id, @pv)
-	AND     LENGTH(@pv := CONCAT(@pv, ',', id)) ) temp;
-	SELECT  `p`.provider_id,
-		`p`.category_id,
-	        `pr`.`price` AS `price`,
-	        `b`.`rest` AS `rest`,
-	        `img`.`url_http` AS `url_http`,
-	        `brand`.`title` AS `brand_title`,
-
-                `store`.`title` AS `store_title`,
-                `store`.`address` AS `store_address`,
-                `store`.`description` AS `store_description`,
-
-                `p`.`param_value_list`,
-                `p`.`param_variable_list`,
-		`p`.`title`,
-		`p`.`description`,
-		`p`.`vendor_code`
-	FROM `product` AS `p`
-	        LEFT JOIN `price` AS `pr` ON `p`.`id` = `pr`.`product_id`
-	        LEFT JOIN `stock_balance` AS `b` ON `p`.`id` = `b`.`product_id`
-	        LEFT JOIN `product_image` AS `img` ON `p`.`id` = `img`.`product_id`
-	        LEFT JOIN `brand` AS `brand` ON `p`.`brand_id` = `brand`.`id`
-		LEFT JOIN `store` ON find_in_set(`store`.id, store_list)
-	WHERE `p`.`provider_id` IN (
-	        SELECT `store`.`provider_id` AS `provider_id` FROM `store`
-	) AND `p`.category_id IN ( SELECT category_id FROM temp );
-
-	
-
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -102,13 +53,13 @@ INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-  `id` varchar(9) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
-  `parent_id` varchar(9) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL DEFAULT '0',
-  `title` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `icon` varchar(11) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `parent_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `icon` varchar(11) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `sort_order` int NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf32 COLLATE=utf32_unicode_ci COMMENT='Категории товаров';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Категории товаров';
 
 --
 -- Dumping data for table `category`
@@ -173,6 +124,34 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `characteristic_value`
+--
+
+DROP TABLE IF EXISTS `characteristic_value`;
+CREATE TABLE `characteristic_value` (
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `characteristic_value`
+--
+
+INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
+('000000002', 'Беспроводной', '000000001'),
+('000000001', 'Проводной', '000000001'),
+('000000004', '16 ГБ', '000000007'),
+('000000005', '32 ГБ', '000000007'),
+('000000003', '8 ГБ', '000000007'),
+('000000007', '128 ГБ', '000000008'),
+('000000008', '256 ГБ', '000000008'),
+('000000009', '512 ГБ', '000000008'),
+('000000006', '64 ГБ', '000000008');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `country`
 --
 
@@ -207,74 +186,15 @@ CREATE TABLE `customer` (
 DROP VIEW IF EXISTS `filtered_product`;
 CREATE TABLE `filtered_product` (
 `id` varchar(9)
-,`provider_id` varchar(6)
-,`title` text
-,`product_id` varchar(12)
-,`product_title` text
-,`rest` int
-,`price` int
 ,`param_value_list` text
 ,`param_variable_list` text
+,`price` int
+,`product_id` varchar(12)
+,`product_title` text
+,`provider_id` varchar(6)
+,`rest` int
+,`title` text
 );
-
--- --------------------------------------------------------
-
---
--- Table structure for table `param_title`
---
-
-DROP TABLE IF EXISTS `param_title`;
-CREATE TABLE `param_title` (
-  `id` int NOT NULL,
-  `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `sort_order` int NOT NULL DEFAULT '0',
-  `filter` int NOT NULL DEFAULT '0',
-  `category_id` int NOT NULL,
-  `type` tinyint NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `param_value`
---
-
-DROP TABLE IF EXISTS `param_value`;
-CREATE TABLE `param_value` (
-  `id` int NOT NULL,
-  `parent_id` int NOT NULL,
-  `type` int NOT NULL DEFAULT '0',
-  `sort_order` int NOT NULL DEFAULT '0',
-  `value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `predef_char_value`
---
-
-DROP TABLE IF EXISTS `predef_char_value`;
-CREATE TABLE `predef_char_value` (
-  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `predef_char_value`
---
-
-INSERT INTO `predef_char_value` (`id`, `title`, `characteristic_id`) VALUES
-('000000002', 'Беспроводной', '000000001'),
-('000000001', 'Проводной', '000000001'),
-('000000004', '16 ГБ', '000000007'),
-('000000005', '32 ГБ', '000000007'),
-('000000003', '8 ГБ', '000000007'),
-('000000007', '128 ГБ', '000000008'),
-('000000008', '256 ГБ', '000000008'),
-('000000009', '512 ГБ', '000000008'),
-('000000006', '64 ГБ', '000000008');
 
 -- --------------------------------------------------------
 
@@ -345,8 +265,8 @@ DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE `product_image` (
   `id` int NOT NULL,
   `product_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ftp_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `http_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ftp_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `http_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -464,7 +384,7 @@ DROP TABLE IF EXISTS `test`;
 CREATE TABLE `test` (
   `id` int NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -499,6 +419,12 @@ ALTER TABLE `characteristic`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `characteristic_value`
+--
+ALTER TABLE `characteristic_value`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `country`
 --
 ALTER TABLE `country`
@@ -508,24 +434,6 @@ ALTER TABLE `country`
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `param_title`
---
-ALTER TABLE `param_title`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `param_value`
---
-ALTER TABLE `param_value`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `predef_char_value`
---
-ALTER TABLE `predef_char_value`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -584,6 +492,12 @@ ALTER TABLE `test`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `product_image`
+--
+ALTER TABLE `product_image`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
