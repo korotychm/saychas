@@ -1,8 +1,9 @@
 <?php
+// src/Model/Entity/ProductImage.php
 
+namespace Application\Model\Entity;
 
-
-use Doctrine\ORM\Mapping as ORM;
+//use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductImage
@@ -26,28 +27,28 @@ class ProductImage
      *
      * @ORM\Column(name="product_id", type="string", length=100, nullable=false)
      */
-    private $productId;
+    private $product_id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="ftp_url", type="text", length=65535, nullable=false)
      */
-    private $ftpUrl;
+    private $ftp_url;
 
     /**
      * @var string
      *
      * @ORM\Column(name="http_url", type="text", length=65535, nullable=false)
      */
-    private $httpUrl;
+    private $http_url;
 
     /**
      * @var int
      *
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
-    private $sortOrder = '0';
+    private $sort_order = '0';
 
 
     /**
@@ -61,7 +62,7 @@ class ProductImage
     }
 
     /**
-     * Set productId.
+     * Set product_id.
      *
      * @param string $productId
      *
@@ -69,23 +70,23 @@ class ProductImage
      */
     public function setProductId($productId)
     {
-        $this->productId = $productId;
+        $this->product_id = $productId;
 
         return $this;
     }
 
     /**
-     * Get productId.
+     * Get product_id.
      *
      * @return string
      */
     public function getProductId()
     {
-        return $this->productId;
+        return $this->product_id;
     }
 
     /**
-     * Set ftpUrl.
+     * Set ftp_url.
      *
      * @param string $ftpUrl
      *
@@ -93,23 +94,23 @@ class ProductImage
      */
     public function setFtpUrl($ftpUrl)
     {
-        $this->ftpUrl = $ftpUrl;
+        $this->ftp_url = $ftpUrl;
 
         return $this;
     }
 
     /**
-     * Get ftpUrl.
+     * Get ftp_url.
      *
      * @return string
      */
     public function getFtpUrl()
     {
-        return $this->ftpUrl;
+        return $this->ftp_url;
     }
 
     /**
-     * Set httpUrl.
+     * Set http_url.
      *
      * @param string $httpUrl
      *
@@ -117,23 +118,23 @@ class ProductImage
      */
     public function setHttpUrl($httpUrl)
     {
-        $this->httpUrl = $httpUrl;
+        $this->http_url = $httpUrl;
 
         return $this;
     }
 
     /**
-     * Get httpUrl.
+     * Get http_url.
      *
      * @return string
      */
     public function getHttpUrl()
     {
-        return $this->httpUrl;
+        return $this->http_url;
     }
 
     /**
-     * Set sortOrder.
+     * Set sort_order.
      *
      * @param int $sortOrder
      *
@@ -141,18 +142,18 @@ class ProductImage
      */
     public function setSortOrder($sortOrder)
     {
-        $this->sortOrder = $sortOrder;
+        $this->sort_order = $sortOrder;
 
         return $this;
     }
 
     /**
-     * Get sortOrder.
+     * Get sort_order.
      *
      * @return int
      */
     public function getSortOrder()
     {
-        return $this->sortOrder;
+        return $this->sort_order;
     }
 }

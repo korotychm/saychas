@@ -35,7 +35,7 @@ class StockBalance
      *
      * @ORM\Column(name="rest", type="integer", nullable=false)
      */
-    private $rest;
+    private $rest = '0';
 
 
     /**

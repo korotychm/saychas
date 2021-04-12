@@ -21,6 +21,7 @@ use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\PredefCharValueRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
 class ProductRepository extends Repository implements ProductRepositoryInterface
 {
@@ -43,6 +44,11 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var CharacteristicRepositoryInterface
      */
     protected CharacteristicRepositoryInterface $characteristics;
+    
+    /**
+     * @var ProductImageRepositoryInterface
+     */
+    protected ProductImageRepositoryInterface $productImages;
 
 
     /**
@@ -55,13 +61,15 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         HydratorInterface $hydrator,
         Product $prototype,
         PredefCharValueRepositoryInterface $predefCharValueRepo,
-        CharacteristicRepositoryInterface $characteristics
+        CharacteristicRepositoryInterface $characteristics,
+        ProductImageRepositoryInterface $productImages
     ) {
         $this->db                   = $db;
         $this->hydrator             = $hydrator;
         $this->prototype            = $prototype;
         $this->predefCharValueRepo  = $predefCharValueRepo;
         $this->characteristics      = $characteristics;
+        $this->productImages        = $productImages;
     }
 
     /**
@@ -172,6 +180,19 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         
         return $resultSet;        
     }
+    
+//    private function createStoreFilter($params)
+//    {
+//        $w = new Where();
+//        $w->in('s.id', $params);
+//        $sel = new Select();
+//        $sel->from(['s' => 'store'])->columns(['*'])
+//                ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT)
+//                ->where($w);
+//        $w2 = new Where();
+//        $w2->in('pr.provider_id', $sel);
+//        return $w;
+//    }    
 
     /**
      * Function obtains products of a provider that belong to a set of available stores.
@@ -254,9 +275,9 @@ End of number 1 */
                         ['store_id'=>'id', 'store_title'=>'title'],
                         $select::JOIN_LEFT
                 )->where('ss.id is not null');
-        if ($params['order'])   $select->order($params['order']);
-        if ($params['limit'])   $select->limit($params['limit']);
-        if ($params['offset'])  $select->offset($params['offset']);
+        if ($params['order']) { $select->order($params['order']); }
+        if ($params['limit']) { $select->limit($params['limit']); }
+        if ($params['offset']) { $select->offset($params['offset']); }
         /** End of number 2 */
         
 //        $selString = $sql->buildSqlString($select);         print_r($selString);         exit;
@@ -296,7 +317,7 @@ End of number 1 */
         foreach($characteristics as $c) {
             $found = $this->characteristics->find(['id'=>$c->id]);
             if(null == $found) {
-                throw new \Exception("Unexpected db error");
+                throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
             }
             if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
                 $value_list[] = $c->value;
@@ -327,6 +348,7 @@ End of number 1 */
 
         foreach($result->data as $row) {
             $arr = ['value_list'=>'', 'var_list'=>''];
+            
             if(count($row->characteristics) > 0)
             {
                 $arr = $this->separatePredefined($row->characteristics);

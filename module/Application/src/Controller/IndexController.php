@@ -413,13 +413,14 @@ class IndexController extends AbstractActionController
         
         $this->layout()->setTemplate('layout/mainpage');
         
-        $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
-        $brands = $this->brandRepository->findAll([]);
-        $characteristics = $this->characteristicRepository->findAll([]);
-        $products = $this->productRepository->findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
+//        $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
+//        $brands = $this->brandRepository->findAll([]);
+//        $characteristics = $this->characteristicRepository->findAll([]);
+        $products = $this->productRepository->findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC', 'store_filter' => ['000000003', '000000004', '000000005', '000000001', '000000002'] ]);
         $prices = $this->priceRepository->findAll(['table'=>'price']);
         $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
         $filteredProducts = $this->filteredProductRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000005', '000000004']]);//filterProductsByStores(['000000005', '000000004']);
+        $filteredProducts2 = $this->productRepository->filterProductsByStores(['000000003', '000000004', '000000005', '000000001', '000000002']);// findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
         //$providers = $this->providerRepository->findAvailableProviders(['000000003', '000000004', '000000005'], 'id ASC', 100, 0);
         
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
@@ -455,6 +456,10 @@ class IndexController extends AbstractActionController
         echo '---<br/>Filtered Products, function: findAll <hr/>';
         foreach ($filteredProducts as $filteredProduct) {
             echo $filteredProduct->getId().' '.$filteredProduct->getTitle(). ' '. $filteredProduct->getProductId().' ' . $filteredProduct->getProductTitle(). ' '. $filteredProduct->getRest(). '<br/>';
+        }
+        echo '---<br/>Filtered Products2, function: filterProductsByStores <hr/>';
+        foreach ($filteredProducts2 as $product2) {
+            echo $product2->getId().' '.$product2->getTitle(). '<br/>';
         }
         echo '---<br/>Providers, function: findAvailableProviders <hr/>';
         foreach ($providers as $provider) {

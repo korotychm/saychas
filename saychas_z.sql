@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 09, 2021 at 01:39 AM
+-- Generation Time: Apr 12, 2021 at 01:48 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -212,6 +212,9 @@ CREATE TABLE `filtered_product` (
 ,`product_id` varchar(12)
 ,`product_title` text
 ,`rest` int
+,`price` int
+,`param_value_list` text
+,`param_variable_list` text
 );
 
 -- --------------------------------------------------------
@@ -296,7 +299,10 @@ CREATE TABLE `price` (
 INSERT INTO `price` (`product_id`, `reserve`, `store_id`, `unit`, `price`, `provider_id`) VALUES
 ('000000000001', 0, '', '', 580000, '00003'),
 ('000000000002', 0, '', '', 470100, '00003'),
-('000000000003', 0, '', '', 5699000, '00004');
+('000000000003', 0, '', '', 5699000, '00004'),
+('000000000004', 0, '', '', 6500, '00003'),
+('000000000006', 0, '', '', 8300, '00003'),
+('000000000005', 0, '', '', 7800, '00003');
 
 -- --------------------------------------------------------
 
@@ -322,12 +328,12 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`) VALUES
-('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '', '', '000002'),
-('000000000002', '00003', '000000009', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', '', '50141256', '', '', '000003'),
-('000000000003', '00004', '000000011', 'Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R', '', '20068499', '', '', '000001'),
+('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '000000003', '[{\"id\":\"000000006\",\"value\":6.76},{\"id\":\"000000008\",\"value\":\"\"},{\"id\":\"000000009\",\"value\":\"50/20/12/TOF\"},{\"id\":\"000000010\",\"value\":\"13/TOF\"}]', '000002'),
+('000000000002', '00003', '000000009', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', '', '50141256', '000000002', '[{\"id\":\"000000003\",\"value\":\"29 u041eu043c\"},{\"id\":\"000000002\",\"value\":\"20 u0413u0446 - 20 u043au0413u0446\"},{\"id\":\"000000004\",\"value\":true},{\"id\":\"000000005\",\"value\":true}]', '000003'),
 ('000000000004', '00003', '000000017', 'Молоко', '', 'М-0011', '', '', '000004'),
-('000000000005', '', '000000016', 'Кефир', '', 'К-0012', '', '', ''),
-('000000000006', '', '000000018', 'Ряженка', '', 'Р-00123', '', '', '');
+('000000000005', '00003', '000000016', 'Кефир', '', 'К-0012', '', '', '000004'),
+('000000000006', '00003', '000000018', 'Ряженка', '', 'Р-00123', '', '', '000004'),
+('000000000003', '00004', '000000011', 'Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R', '', '20068499', '', '[{\"id\":\"000000012\",\"value\":\"\"}]', '000001');
 
 -- --------------------------------------------------------
 
@@ -339,8 +345,8 @@ DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE `product_image` (
   `id` int NOT NULL,
   `product_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `url_ftp` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `url_http` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `ftp_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `http_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -407,7 +413,16 @@ INSERT INTO `stock_balance` (`product_id`, `rest`, `store_id`) VALUES
 ('000000000002', 1, '000000004'),
 ('000000000002', 10, '000000002'),
 ('000000000002', 3, '000000003'),
-('000000000003', 8, '000000005');
+('000000000003', 8, '000000005'),
+('000000000004', 6, '000000002'),
+('000000000004', 4, '000000003'),
+('000000000004', 2, '000000004'),
+('000000000005', 15, '000000002'),
+('000000000005', 38, '000000003'),
+('000000000005', 42, '000000004'),
+('000000000006', 30, '000000002'),
+('000000000006', 14, '000000003'),
+('000000000006', 69, '000000004');
 
 -- --------------------------------------------------------
 
@@ -459,7 +474,7 @@ CREATE TABLE `test` (
 DROP TABLE IF EXISTS `filtered_product`;
 
 DROP VIEW IF EXISTS `filtered_product`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER VIEW `filtered_product`  AS  select distinct `s`.`id` AS `id`,`s`.`provider_id` AS `provider_id`,`s`.`title` AS `title`,`pr`.`id` AS `product_id`,`pr`.`title` AS `product_title`,`sb`.`rest` AS `rest` from (((`store` `s` join `provider` `p` on((`p`.`id` = `s`.`provider_id`))) join `product` `pr` on((`pr`.`provider_id` = `s`.`provider_id`))) left join `stock_balance` `sb` on(((`sb`.`product_id` = `pr`.`id`) and (`sb`.`store_id` = `s`.`id`)))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER VIEW `filtered_product`  AS  select distinct `s`.`id` AS `id`,`s`.`provider_id` AS `provider_id`,`s`.`title` AS `title`,`pr`.`id` AS `product_id`,`pr`.`title` AS `product_title`,`sb`.`rest` AS `rest`,`pri`.`price` AS `price`,`pr`.`param_value_list` AS `param_value_list`,`pr`.`param_variable_list` AS `param_variable_list` from ((((`store` `s` join `provider` `p` on((`p`.`id` = `s`.`provider_id`))) join `product` `pr` on((`pr`.`provider_id` = `s`.`provider_id`))) left join `stock_balance` `sb` on(((`sb`.`product_id` = `pr`.`id`) and (`sb`.`store_id` = `s`.`id`)))) left join `price` `pri` on(((`pri`.`product_id` = `pr`.`id`) and (`pri`.`provider_id` = `p`.`id`)))) ;
 
 --
 -- Indexes for dumped tables

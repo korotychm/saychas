@@ -63,6 +63,7 @@ class HtmlProviderService
      */
     public function productCard($filteredProducts, $category_id = 0)
     {
+<<<<<<< HEAD
         $return = "";
         foreach ($filteredProducts as $product) {
             /* $productCardParam = [
@@ -114,6 +115,68 @@ class HtmlProviderService
                         . "       <span class='blok price'>Цена: " . $cena . " &#8381;</span>"
                         . "   </div>"
                         . "</div>";
+=======
+        
+  
+        foreach ($filteredProducts as $product){
+              /*$productCardParam = [
+                    'price'=>$product->getPrice(),
+                    'title'=>$product->getTitle(),
+                    'img'=>$product->getUrlHttp()   ,
+                    'id'=>$product->getId(),
+                        'rest'=>$product->getRest(),
+                    'articul'=>$product->getVendorCode(),
+                    'brand'=>$product->getBrandTitle(),
+                    'description'=>$product->getDescription(),
+                    'param_value'=>$product->getParamValueList(),
+                    'param_value'=>$product->getParamValueList(),
+                    'store'=>$product->getStoreTitle()." (id:{$product->getStoreId()})",
+                    'store_id'=>$product->getStoreId(),
+                    //'store_address'=>$row->storeAddress(),
+                ];
+               * 
+               */
+            //$provier = $this->prov
+            //$price = $this->priceRepository->find('');
+                
+                //$provider = $this->providerRepository->find(['product_id'=>$product->getId()]);
+                
+                //exit(print_r(['product_id=?'=>$product->getId(), 'provider_id=?', $product->getProviderId()])); 
+                // $cena = $this->priceRepository->find(['product_id'=>$product->getId(), 'provider_id', $product->getProviderId()]);
+                
+                
+                
+                $cena= (int)$product->getPrice();        
+                $cena=$cena/100;
+                $cena= number_format($cena,2,".","&nbsp;");
+                $container = new Container(StringResource::SESSION_NAMESPACE);  
+                $legalStore =  $container->legalStore;
+                $filtrForCategory=$container->filtrForCategory;
+                
+                $timeDelevery=(int)$legalStore[$product->getStoreId()];
+                
+                ($timeDelevery)?$speedlable="<div class=speedlable>$timeDelevery"."ч</div>":$speedlable="";
+
+                $rest=$this->stockBalanceRepository->find(['product_id=?' => $product->getId(), 'store_id=?' =>$product->getStoreId()]);
+
+                $r = (int) $rest->getRest();
+
+if (!($filtrForCategory[$category_id]['hasRestOnly'] and !$r))
+                 $return.="<div class='productcard ' >"
+                    .$speedlable     
+                    ."   <div class='content opacity".$r."'>"
+                    ."       <img src='/images/product/".(($product->getUrlHttp())?$product->getUrlHttp():"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    ."       <strong class='blok producttitle'><a  href=#product   >".$product->getTitle()."</a></strong>"
+                    ."       <span class='blok'>Id: ".$product->getId()."</span>"
+                    ."       <span class='blok'>Артикул: ".$product->getVendorCode()."</span>"
+                    ."       <span class='blok'>Торговая марка: ".$product->getBrandTitle()."</span>"                         
+                    ."       <span class='blok'>Остаток: ".$r."</span>"
+                    ."       <b><span class='blok'>Магазин: ".$product->getStoreTitle()." (id:{$product->getStoreId()})"."</span></b>"
+                  //."       <i class='blok'> ".$product->storeAddress()."</i>"                         
+                    ."       <span class='blok price'>Цена: ".$cena." &#8381;</span>"
+                    ."   </div>"
+                    ."</div>"; 
+>>>>>>> ea8e96a7bfc5e9f5447084d146143297f3682482
         }
         return $return;
     }
