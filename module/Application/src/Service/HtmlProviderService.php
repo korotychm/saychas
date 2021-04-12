@@ -68,7 +68,7 @@ class HtmlProviderService
             /* $productCardParam = [
               'price'=>$product->getPrice(),
               'title'=>$product->getTitle(),
-              'img'=>$product->getUrlHttp()   ,
+              'img'=>$product->getHttpUrl()   ,
               'id'=>$product->getId(),
               'rest'=>$product->getRest(),
               'articul'=>$product->getVendorCode(),
@@ -101,7 +101,7 @@ class HtmlProviderService
                 $return->card .= "<div class='productcard ' >"
                         . $speedlable
                         . "   <div class='content opacity" . $r . "'>"
-                        . "       <img src='/images/product/" . (($product->getUrlHttp()) ? $product->getUrlHttp() : "nophoto_1.jpeg") . "' alt='alt' class='productimage'/>"
+                        . "       <img src='/images/product/" . (($product->getHttpUrl()) ? $product->getHttpUrl() : "nophoto_1.jpeg") . "' alt='alt' class='productimage'/>"
                         . "       <strong class='blok producttitle'><a  href=#product   >" . $product->getTitle() . "</a></strong>"
                         . "       <span class='blok'>Id: " . $product->getId() . "</span>"
                         . "       <span class='blok'>Артикул: " . $product->getVendorCode() . "</span>"

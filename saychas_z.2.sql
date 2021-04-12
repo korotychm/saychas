@@ -42,7 +42,7 @@ CREATE DEFINER=`saychas_z`@`localhost` PROCEDURE `get_products_by_categories` (`
 		`p`.category_id,
 	        `pr`.`price` AS `price`,
 	        `b`.`rest` AS `rest`,
-	        `img`.`url_http` AS `url_http`,
+	        `img`.`http_url` AS `http_url`,
 	        `brand`.`title` AS `brand_title`,
 
                 `store`.`title` AS `store_title`,
@@ -313,7 +313,7 @@ CREATE TABLE `product_image` (
   `id` int NOT NULL,
   `product_id` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `url_ftp` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `url_http` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `http_url` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `sort_order` int NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

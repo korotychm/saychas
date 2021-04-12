@@ -295,7 +295,7 @@ CREATE TABLE `product_image` (
   `id` int(11) NOT NULL,
   `product_id` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `url_ftp` text COLLATE utf8_unicode_ci NOT NULL,
-  `url_http` text COLLATE utf8_unicode_ci NOT NULL,
+  `http_url` text COLLATE utf8_unicode_ci NOT NULL,
   `sort_order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

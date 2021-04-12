@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 12, 2021 at 06:23 AM
+-- Generation Time: Apr 12, 2021 at 07:16 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -100,26 +100,28 @@ CREATE TABLE `characteristic` (
   `type` tinyint(1) NOT NULL DEFAULT '1',
   `filter` tinyint(1) NOT NULL DEFAULT '0',
   `group` tinyint(1) NOT NULL DEFAULT '0',
-  `sort_order` int NOT NULL DEFAULT '1'
+  `sort_order` int NOT NULL DEFAULT '1',
+  `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `characteristic`
 --
 
-INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`) VALUES
-('000000001', '000000009', 'Тип подключения', 4, 1, 0, 3),
-('000000002', '000000009', 'Частотный диапазон', 1, 0, 0, 2),
-('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1),
-('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4),
-('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5),
-('000000006', '000000006', 'Экран', 2, 1, 1, 1),
-('000000007', '000000006', 'Оперативная память (RAM)', 4, 0, 0, 2),
-('000000008', '000000006', 'Встроенная память (ROM)', 4, 0, 0, 3),
-('000000009', '000000006', 'Основная камера МПикс', 1, 0, 0, 4),
-('000000010', '000000006', 'Фронтальная камера МПикс', 1, 0, 0, 5),
-('000000012', '000000011', 'Описание', 1, 0, 0, 1),
-('000000013', '000000014', 'Жирность', 2, 1, 0, 1);
+INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`, `unit`, `description`) VALUES
+('000000001', '000000009', 'Тип подключения', 4, 1, 0, 3, '', ''),
+('000000002', '000000009', 'Частотный диапазон', 1, 0, 0, 2, '', ''),
+('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1, '', ''),
+('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4, '', ''),
+('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5, '', ''),
+('000000006', '000000006', 'Экран', 2, 1, 1, 1, '', ''),
+('000000007', '000000006', 'Оперативная память (RAM)', 4, 0, 0, 2, '', ''),
+('000000008', '000000006', 'Встроенная память (ROM)', 4, 0, 0, 3, '', ''),
+('000000009', '000000006', 'Основная камера МПикс', 1, 0, 0, 4, '', ''),
+('000000010', '000000006', 'Фронтальная камера МПикс', 1, 0, 0, 5, '', ''),
+('000000012', '000000011', 'Описание', 1, 0, 0, 1, '', ''),
+('000000013', '000000014', 'Жирность', 2, 1, 0, 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -130,6 +132,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 DROP TABLE IF EXISTS `characteristic_value`;
 CREATE TABLE `characteristic_value` (
   `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `is_predefined` TINYINT(1) NOT NULL DEFAULT 1,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

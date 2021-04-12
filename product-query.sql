@@ -1,8 +1,8 @@
 SELECT `p`.*,
 	`pr`.`price` AS `price`,
 	`b`.`rest` AS `rest`,
-	`img`.`url_http` AS `url_http`,
-	`brand`.`title` AS `brandtitle`
+	`img`.`http_url` AS `http_url`,
+	`brand`.`title` AS `brand_title`
 	FROM `product` AS `p`
 	LEFT JOIN `price` AS `pr` ON `p`.`id` = `pr`.`product_id`
 	LEFT JOIN `stock_balance` AS `b` ON `p`.`id` = `b`.`product_id`

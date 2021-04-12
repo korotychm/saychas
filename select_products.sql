@@ -1,7 +1,7 @@
 SELECT `p`.*,
 	`pr`.`price` AS `price`,
 	`b`.`rest` AS `rest`,
-	`img`.`url_http` AS `url_http`,
+	`img`.`http_url` AS `http_url`,
 	`brand`.`title` AS `brandtitle`
 FROM `product` AS `p`
 	LEFT JOIN `price` AS `pr` ON `p`.`id` = `pr`.`product_id`
@@ -33,7 +33,7 @@ and     length(@pv := concat(@pv, ',', id));
 SELECT `p`.*,
         `pr`.`price` AS `price`,
         `b`.`rest` AS `rest`,
-        `img`.`url_http` AS `url_http`,
+        `img`.`http_url` AS `http_url`,
         `brand`.`title` AS `brandtitle`
 FROM `product` AS `p`
         LEFT JOIN `price` AS `pr` ON `p`.`id` = `pr`.`product_id`
@@ -57,7 +57,7 @@ and     length(@pv := concat(@pv, ',', id))
 SELECT `p`.provider_id, `p`.category_id,
         `pr`.`price` AS `price`,
         `b`.`rest` AS `rest`,
-        `img`.`url_http` AS `url_http`,
+        `img`.`http_url` AS `http_url`,
         `brand`.`title` AS `brandtitle`
 FROM `product` AS `p`
         LEFT JOIN `price` AS `pr` ON `p`.`id` = `pr`.`product_id`
