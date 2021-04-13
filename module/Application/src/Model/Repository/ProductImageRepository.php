@@ -57,7 +57,7 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
 //                        $product->id,$image, '', 0);
                     $query = $this->db->query($sql);
                     $query->execute();
-                }catch(Exception $e){
+                }catch(\Exception $e){
                     return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                 }
             }
