@@ -272,12 +272,12 @@ End of number 1 */
 //                ['rest'],
 //                $select::JOIN_LEFT
 //            )
-//            ->join(
-//                ['img' => 'product_image'],
-//                'pr.id = img.product_id',
-//                ['http_url'],
-//                $select::JOIN_LEFT
-//            )
+            ->join(
+                ['img' => 'product_image'],
+                'pr.id = img.product_id',
+                ['http_url'],
+                $select::JOIN_LEFT
+            )
             ->join(
                 ['brand' => 'brand'],
                 'pr.brand_id = brand.id',
