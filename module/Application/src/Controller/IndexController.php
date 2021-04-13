@@ -166,7 +166,10 @@ class IndexController extends AbstractActionController
         catch (\Exception $e) {
             $categoryTitle = "&larr;Выбери категорию товаров  ";
         }     
+//        print_r($filtrForCategory);
+//        exit;
         
+        $mykey = (is_array( $filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
         $vwm=[
         
             "catalog" => $categories,
@@ -175,7 +178,8 @@ class IndexController extends AbstractActionController
             "bread"=> $bread,
             'priducts'=> $returnProduct,
             'addressform'=> $addresForm."",
-            'sortselect'.$filtrForCategory[$category_id]['sortOrder'] => " selected ",
+            'sortselect' => [$mykey => " selected "],
+            //'sortselect'.$filtrForCategory[$category_id]['sortOrder'] => " selected ",
             'hasRestOnly'.$filtrForCategory[$category_id]['hasRestOnly']  => " checked ",
             //print_r($bread,true),
         ];

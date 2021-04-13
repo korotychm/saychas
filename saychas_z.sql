@@ -132,7 +132,6 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 DROP TABLE IF EXISTS `characteristic_value`;
 CREATE TABLE `characteristic_value` (
   `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `is_predefined` TINYINT(1) NOT NULL DEFAULT 1,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -151,6 +150,19 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 ('000000008', '256 ГБ', '000000008'),
 ('000000009', '512 ГБ', '000000008'),
 ('000000006', '64 ГБ', '000000008');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `characteristic_value2`
+--
+
+DROP TABLE IF EXISTS `characteristic_value2`;
+CREATE TABLE `characteristic_value2` (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -425,6 +437,12 @@ ALTER TABLE `characteristic`
 -- Indexes for table `characteristic_value`
 --
 ALTER TABLE `characteristic_value`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `characteristic_value2`
+--
+ALTER TABLE `characteristic_value2`
   ADD PRIMARY KEY (`id`);
 
 --

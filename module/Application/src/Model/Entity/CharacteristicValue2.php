@@ -1,17 +1,17 @@
 <?php
-// src/Model/Entity/CharacteristicValue.php
+// src/Model/Entity/CharacteristicValue2.php
 
 namespace Application\Model\Entity;
 
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CharacteristicValue
+ * PredefCharValue
  *
- * @ORM\Table(name="characteristic_value")
+ * @ORM\Table(name="characteristic_value2")
  * @ORM\Entity
  */
-class CharacteristicValue
+class CharacteristicValue2
 {
     /**
      * id
@@ -32,11 +32,11 @@ class CharacteristicValue
 
 
     /**
-     * Set predefined character value.
+     * Set character value.
      *
      * @param string $id
      *
-     * @return CharacteristicValue
+     * @return CharacteristicValue2
      */
     public function setId($id)
     {
@@ -46,7 +46,7 @@ class CharacteristicValue
     }
     
     /**
-     * Get predefined character value.
+     * Get character value.
      *
      * @return string
      */
@@ -60,7 +60,7 @@ class CharacteristicValue
      *
      * @param string $title
      *
-     * @return CharacteristicValue
+     * @return CharacteristicValue2
      */
     public function setTitle($title)
     {
@@ -84,7 +84,7 @@ class CharacteristicValue
      *
      * @param string characteristicId
      *
-     * @return CharacteristicValue
+     * @return CharacteristicValue2
      */
     public function setCharacteristicId($characteristicId)
     {
