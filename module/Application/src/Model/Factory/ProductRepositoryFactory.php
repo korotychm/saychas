@@ -5,12 +5,13 @@ namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
 use Application\Model\Entity\Product;
-use Application\Model\Entity\ProductImage;
+//use Application\Model\Entity\ProductImage;
 use Application\Model\Repository\ProductRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
@@ -24,17 +25,23 @@ class ProductRepositoryFactory implements FactoryInterface
         }
         
         $adapter = $container->get(AdapterInterface::class);
-        $predefChar = $container->get(CharacteristicValueRepositoryInterface::class);
+        $characteristicValue = $container->get(CharacteristicValueRepositoryInterface::class);
+        $caracteristicValue2 = $container->get(CharacteristicValue2RepositoryInterface::class);
         $characteristics = $container->get(CharacteristicRepositoryInterface::class);
         $productImages = $container->get(ProductImageRepositoryInterface::class);
+        
+        $config = $container->get('Config');
+        $catalogToSaveImages = $config['parameters']['catalog_to_save_images'];
         
         return new ProductRepository(
             $adapter,
             new ReflectionHydrator(),
             new Product(0, 0, 0, '', '', '', 0, 0, '', ''),
-            $predefChar,
+            $characteristicValue,
             $characteristics,
-            $productImages
+            $productImages,
+            $caracteristicValue2,
+            $catalogToSaveImages,
         );
     }
 }

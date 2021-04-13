@@ -20,6 +20,7 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\Product;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
@@ -38,8 +39,13 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     /**
      * @var CharacteristicValueRepositoryInterface
      */
-    protected CharacteristicValueRepositoryInterface $predefCharValueRepo;
+    protected CharacteristicValueRepositoryInterface $characteristicValueRepository;// $predefCharValueRepo;
     
+    /**
+     * @var CharacteristicValueRepositoryInterface
+     */
+    protected CharacteristicValue2RepositoryInterface $characteristicValue2Repository;
+
     /**
      * @var CharacteristicRepositoryInterface
      */
@@ -49,6 +55,11 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var ProductImageRepositoryInterface
      */
     protected ProductImageRepositoryInterface $productImages;
+    
+    /**
+     * @var string
+     */
+    protected $catalogToSaveImages;
 
 
     /**
@@ -60,16 +71,20 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         AdapterInterface $db,
         HydratorInterface $hydrator,
         Product $prototype,
-        CharacteristicValueRepositoryInterface $predefCharValueRepo,
+        CharacteristicValueRepositoryInterface $characteristicValueRepository,
         CharacteristicRepositoryInterface $characteristics,
-        ProductImageRepositoryInterface $productImages
+        ProductImageRepositoryInterface $productImages,
+        CharacteristicValue2RepositoryInterface $characteristicValue2Repository,
+        $catalogToSaveImages
     ) {
-        $this->db                   = $db;
-        $this->hydrator             = $hydrator;
-        $this->prototype            = $prototype;
-        $this->predefCharValueRepo  = $predefCharValueRepo;
-        $this->characteristics      = $characteristics;
-        $this->productImages        = $productImages;
+        $this->db                               = $db;
+        $this->hydrator                         = $hydrator;
+        $this->prototype                        = $prototype;
+        $this->characteristicValueRepository    = $characteristicValueRepository;
+        $this->characteristics                  = $characteristics;
+        $this->productImages                    = $productImages;
+        $this->characteristicValue2Repository   = $characteristicValue2Repository;
+        $this->catalogToSaveImages              = $catalogToSaveImages;
     }
 
     /**
@@ -340,6 +355,32 @@ End of number 1 */
         return $result;
     }
     
+    public function pickUpImagesFromFtp(array $images)
+    {
+        $ftp_server = "nas01.saychas.office";
+        $username = "1C";
+        $password = "ree7EC2A";
+        
+        // perform connection
+        $conn_id = ftp_connect($ftp_server);
+        $login_result = ftp_login($conn_id, $username, $password);
+        if( (!$conn_id) || (!$login_result)) {
+            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user '.$username.'.');
+        }
+
+        foreach($images as $image) {
+            $local_file = realpath($this->catalogToSaveImages)."/".$image;
+            $server_file = "/1CMEDIA/PhotoTovarov/".$image;
+            
+            // trying to download $server_file and save it to $local_file            
+            if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
+                throw new \Exception('Could not complete the operation');
+            }
+        }
+        // close connection
+        ftp_close($conn_id);        
+    }
+    
     /**
      * Adds given product into it's repository
      * 
@@ -358,7 +399,16 @@ End of number 1 */
         }
         
         $pi = $this->extractNonEmptyImages($result->data);
+
         $this->productImages->replace($pi);
+        
+        foreach ($pi as $p) {
+            try {
+                $this->pickUpImagesFromFtp($p->images);
+            } catch(\Exception $e) {
+                return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+            }
+        }
 
         foreach($result->data as $product) {
             $arr = ['value_list'=>'', 'var_list'=>''];
