@@ -1,35 +1,4 @@
 <div class="container"  style="position:relative; max-width:1400px; min-height:calc(100vh - 160px) " >
-<<<<<<< HEAD
-            <div id="left-col">
-                <div class="content-col">
-                    <?= $this->addressform ?>
-                    <!-- h2>Каталог </h2 -->
-                    <ul id="tree" class="tree" style="display:none">
-                        <?= $this->catalog ?>
-                    </ul>
-                    <div class=" testlegalstor" ></div>
-                </div>               
-            </div>
-            <div id="main-col">
-                 <?= $this->bread ?> 
-                <div class="content-col" style="" id="tovary"> 
-                    <form method="post" id="filtrform">
-                        <div id='ajaxfiltranswer'></div>
-                        <input type='hidden' name='categoty_id' value='<?=$this->id?>'>
-                        <div id="filtrblock" class="container">
-                            <div class="iblok"  >
-                                <input  type='checkbox' name='hasRestOnly' value='1' class="formsend" <?=$this->hasRestOnly1 ?> /> только в наличии
-                            </div>    
-                            <div class="iblok"  >
-                                    <select id="sort"  name="sortOrder" class="formsend" >
-                                        <option disabled selected >Сортировка</option>
-                                        <option value="0"  >по-умолчанию</option>
-                                        <option value="1" <?=$this->sortselect[1]?> >по-алфавиту А-Я</option>
-                                        <option value="4" <?=$this->sortselect[4]?> >по-алфавиту Я-A</option>
-                                        <option value="2" <?=$this->sortselect[2]?> >сначала дешевле</option>
-                                        <option value="3" <?=$this->sortselect[3]?> >сначала дороже</option>                                    
-                                    </select>
-=======
     <div id="left-col">
         <div class="content-col">
             <?= $this->addressform ?>
@@ -70,7 +39,6 @@
                             <div class="filtritemcontent" id="fc000001">
                                 <div class="closefilteritem" rel="000001">
                                     Диагональ экрана
->>>>>>> sizov
                                 </div>
                                 
                                     <div class="nopub checkgroup blok" for="0001" >
