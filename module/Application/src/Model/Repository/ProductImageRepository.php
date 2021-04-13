@@ -12,6 +12,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\Sql\Where;
 use Application\Model\Entity\ProductImage;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
+use Exception;
 
 class ProductImageRepository extends Repository implements ProductImageRepositoryInterface
 {
@@ -49,16 +50,19 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
     {
         foreach($data as $product) {
             foreach($product->images as $image) {
-                $sql = sprintf("insert INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
-                        $product->id, $image, 0);
+                $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `http_url`, `sort_order`) VALUES ( '%s', '%s', '%s', %u )",
+                        $product->id, $image, '', 0);
                 try {
                     //'SELECT * FROM `artist` WHERE `id` = ?', [5]
-                    $sql = sprintf("insert INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
-                        $product->id,$image, '', 0);
+//                    $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
+//                        $product->id, $image, '', 0);
+                    
+//                    print_r($sql);
+//                    continue;
                     $query = $this->db->query($sql);
                     $query->execute();
-                }catch(\Exception $e){
-                    return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                }catch(Exception $e){
+                    return ['result' => false, 'description' => "error executing sql statement", 'statusCode' => 418];
                 }
             }
         }
