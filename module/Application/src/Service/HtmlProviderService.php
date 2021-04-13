@@ -109,7 +109,7 @@ class HtmlProviderService
                         . "   <div class='content opacity" . $r . "'>"
                         . "       <img src='/images/product/" . (($product->getHttpUrl()) ? $product->getHttpUrl() : "nophoto_1.jpeg") . "' alt='alt' class='productimage'/>"
                         . "       <strong class='blok producttitle'><a  href=#product   >" . $product->getTitle() . "</a></strong>"
-                        . "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
+                        //. "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
                         . "       <span class='blok'>Id: " . $product->getId() . "</span>"
                         . "       <span class='blok'>Артикул: " . $product->getVendorCode() . "</span>"
                         . "       <span class='blok'>Торговая марка: " . $product->getBrandTitle() . "</span>"
@@ -124,9 +124,10 @@ class HtmlProviderService
             }
         }
 
+        $filters = array_diff($filters, array(''));
         if(!empty($filters)) {
             $filters = array_unique($filters);
-            $filters = array_diff($filters, array(''));
+            
             $join = join(",", $filters);
         } else $join="empty";
         //$join=print_r($filters,true);*/

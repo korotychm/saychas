@@ -291,24 +291,7 @@ class AjaxController extends AbstractActionController
             
             $return.=date("r")."<br>";	
             $return.="id магазина: {$post -> shop}<hr>" ;
-
-           /* foreach ($products as $row){
-              $productCardParam = [
-                    'price'=>$row->getPrice(),
-                    'title'=>$row->getTitle(),
-                    'img'=>$row->getHttpUrl(),
-                    'id'=>$row->getId(),
-                    'rest'=>$row->getRest(),
-                    'articul'=>$row->getVendorCode(),
-                    'brand'=>$row->getBrandTitle(),
-                    'description'=>$row->getDescription(),
-                    'param_value'=>$row->getParamValueList(),
-                    'param_value'=>$row->getParamValueList(),
-                    
-                ];*/
-              $return .= $this->htmlProvider->productCard($products) ->card;
-           // }
-            
+                $return .= $this->htmlProvider->productCard($products) ->card;    
             exit ($return); 
         }	
         header('HTTP/1.0 404 Not Found');

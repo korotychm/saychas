@@ -17,7 +17,7 @@ $(function () {
     }
 
     $(".checkgroup").click(function () {
-        if($(this).hasClass("zach")) {$(this).removeClass("zach"); $("#fltrcheck"+$(this).attr("for")).val("");}
+        if($(this).hasClass("zach")) {$(this).removeClass("zach"); $("#check"+$(this).attr("for")).val("");}
         else  {$(this).addClass("zach"); $("#fltrcheck"+$(this).attr("for")).val($(this).attr("for"));}
     })
     $(".closefilteritem").live("click", function () {

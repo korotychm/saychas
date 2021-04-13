@@ -211,14 +211,14 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
-        $returnProductFilter.= $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
+        $returnProductFilter.="ПП характеристики в категории: ". $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
         catch (\Exception $e) {
-            $categoryTitle = "&larr;Выбери категорию товаров  ";
+            $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=[];
         }     
-        
+        if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
         $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
         $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
         $vwm=[

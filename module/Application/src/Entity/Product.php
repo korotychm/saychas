@@ -1,4 +1,4 @@
-<?php
+ <?php
 // src/Product.php
 
 namespace Application\Entity;
