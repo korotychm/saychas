@@ -292,7 +292,7 @@ class AjaxController extends AbstractActionController
             $return.=date("r")."<br>";	
             $return.="id магазина: {$post -> shop}<hr>" ;
 
-            foreach ($products as $row){
+           /* foreach ($products as $row){
               $productCardParam = [
                     'price'=>$row->getPrice(),
                     'title'=>$row->getTitle(),
@@ -305,9 +305,9 @@ class AjaxController extends AbstractActionController
                     'param_value'=>$row->getParamValueList(),
                     'param_value'=>$row->getParamValueList(),
                     
-                ];
-              $return.= $this->htmlProvider->productCard($productCardParam);
-            }
+                ];*/
+              $return .= $this->htmlProvider->productCard($products) ->card;
+           // }
             
             exit ($return); 
         }	

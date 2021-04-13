@@ -109,6 +109,7 @@ class HtmlProviderService
                         . "   <div class='content opacity" . $r . "'>"
                         . "       <img src='/images/product/" . (($product->getHttpUrl()) ? $product->getHttpUrl() : "nophoto_1.jpeg") . "' alt='alt' class='productimage'/>"
                         . "       <strong class='blok producttitle'><a  href=#product   >" . $product->getTitle() . "</a></strong>"
+                        . "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
                         . "       <span class='blok'>Id: " . $product->getId() . "</span>"
                         . "       <span class='blok'>Артикул: " . $product->getVendorCode() . "</span>"
                         . "       <span class='blok'>Торговая марка: " . $product->getBrandTitle() . "</span>"
