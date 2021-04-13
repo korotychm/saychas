@@ -97,6 +97,16 @@ return [
                     ],
                 ],
             ],
+            'product' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/product[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'product',
+                    ],
+                ],
+            ],
             'show-store' => [
                 'type'    => Literal::class,
                 'options' => [

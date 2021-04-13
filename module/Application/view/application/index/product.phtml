@@ -12,7 +12,7 @@
     <div id="main-col">
         <?= $this->bread ?> 
         <div class="content-col" style="" id="tovary"> 
-            <form method="post" id="filtrform">
+            <!-- form method="post" id="filtrform">
                 
                 <input type='hidden' name='categoty_id' value='<?= $this->id ?>'>
                 <div id="filtrblock" class="container">
@@ -58,7 +58,7 @@
                                         <input type="hidden" id="fltrcheck0003" name=fltr[] value="" >
                                     </div>
                                 
-                                <div class="block"><input type="button" value="применить"></div><!-- comment -->
+                                <div class="block"><input type="button" value="применить"></div>
                             </div>
                         </div>
                     </div>
@@ -72,17 +72,17 @@
                                 <div class="closefilteritem" rel="000002">
                                     Характеристика
                                 </div>
-                                <div class="block"><input type="checkbox" >&nbsp;Светлая ткань</div><!-- comment -->
+                                <div class="block"><input type="checkbox" >&nbsp;Светлая ткань</div>
                                 <div class="block"><input type="checkbox" >&nbsp;Светлейшая ткань, длиное написание very Long</div>
-                                <div class="block"><input type="button" value="применить"></div><!-- comment -->
+                                <div class="block"><input type="button" value="применить"></div>
                             </div>
                         </div>
                     </div>
-            </form>
+            </form -->
         </div>  
-                <div id='ajaxfiltranswer'>все ПП характеристики в группе: <?php echo $this->filter ?>  </div>
+                <!-- div id='ajaxfiltranswer'>все ПП характеристики в группе: <?php echo $this->filter ?>  </div -->
             <h2><?= $this->title ?>  <?php if ($this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
-        <div id="tovar-list"><?= $this->priducts ?></div>
+        <div id="tovar-list"><?= $this->priduct ?></div>
     </div>               
 </div>
 </div>

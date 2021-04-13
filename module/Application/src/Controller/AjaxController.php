@@ -103,7 +103,7 @@ class AjaxController extends AbstractActionController
     
     public function ajaxGetStoreAction()
     {
-        //$id=$this->params()->fromRoute('id', '');
+       
         $post = $this->getRequest()->getPost();
         $json=$post->value;
         try {
@@ -306,27 +306,8 @@ class AjaxController extends AbstractActionController
                     'param_value'=>$row->getParamValueList(),
                     
                 ];
-                /*                
-                provider_id
-                category_id
-                price
-                rest
-                http_url
-                brand_title
-                store_title
-                store_address
-                store_description
-                param_value_list
-                param_variable_list
-                title
-                description
-                vendor_code
-                howHour
-                 * 
-                 * 
-                 */
-               $return.= $this->htmlProvider->productCard($productCardParam);
-            }/**/
+              $return.= $this->htmlProvider->productCard($productCardParam);
+            }
             
             exit ($return); 
         }	
@@ -346,89 +327,4 @@ class AjaxController extends AbstractActionController
         ]);
         
     }
-
-    public function catalogAction()
-    {
-        $category_id=$this->params()->fromRoute('id', '');
-
-        $this->layout()->setTemplate('layout/mainpage');
-        //$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $categories = $this->categoryRepository->findAll(["id"=>$category_id]);
-        $bread = $this->categoryRepository->findAllMatherCategories($category_id);
-        $bread = $this->htmlProvider->breadCrumbs($bread);
-         
-     
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
-        $products = $this->productRepository->filterProductsByStores(['000000003', '000000004', '000000005', '000000001', '000000002']);
-        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        //  exit(print_r($filteredProducts));
-        
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
-        
-        $returnProduct = $this->htmlProvider->productCard($filteredProducts);
-        try {
-            $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
-        }
-        catch (\Exception $e) {
-            $categoryTitle = "&larr;Выбери категорию товаров  ";
-        }     
-            
-        
-        return new ViewModel([
-        
-            "catalog" => $categories,
-            "title" => $categoryTitle,
-            "id" => $category_id,
-            "bread"=> $bread,
-            'priducts'=> $returnProduct,
-            'addressform'=> $addresForm."", //print_r($bread,true),
-        ]);
-
-    }
-    
-    public function testReposAction()
-    {
-        $this->layout()->setTemplate('layout/mainpage');
-        
-        $stores = $this->storeRepository->findAll(['table'=>'store', 'sequance' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
-        $brands = $this->brandRepository->findAll(['table'=>'brand']);
-        $characteristics = $this->characteristicRepository->findAll(['table'=>'characteristic']);
-        $products = $this->productRepository->findAll(['table'=>'product', 'limit'=>100, 'offset'=>0, 'order'=>'id ASC']);
-        $prices = $this->priceRepository->findAll(['table'=>'price']);
-        $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
-        $filteredProducts = $this->filteredProductRepository->filterProductsByStores(['000000005', '000000004']);
-        
-        foreach ($stores as $store) {
-            echo $store->getId().' '.$store->getTitle(). '<br/>';
-        }
-        echo '<hr/>';
-        foreach ($brands as $brand) {
-            echo $brand->getId().' '.$brand->getTitle(). '<br/>';
-        }
-        echo '<hr/>';
-        foreach ($characteristics as $characteristic) {
-            echo $characteristic->getId().' '.$characteristic->getTitle(). '<br/>';
-        }
-        echo '<hr/>';
-        foreach ($products as $product) {
-            echo $product->getId().' '.$product->getTitle(). '<br/>';
-        }
-        echo '<hr/>';
-        foreach ($prices as $price) {
-            echo $price->getPrice().' '.$price->getProductId().' '.$price->getStoreId(). '<br/>';
-        }
-        echo '<hr/>';
-        foreach ($stockBalances as $stockBalance) {
-            echo $stockBalance->getRest().' '.$stockBalance->getProductId().' '.$price->getStoreId(). '<br/>';
-        }
-        echo '<hr/>';
-        foreach ($filteredProducts as $filteredProduct) {
-            echo $filteredProduct->getId().' '.$filteredProduct->getTitle(). ' '. $filteredProduct->getProductId().' ' . $filteredProduct->getProductTitle(). ' '. $filteredProduct->getRest(). '<br/>';
-        }
-        exit;
-        
-    }
-    
-    
 }

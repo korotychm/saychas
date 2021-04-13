@@ -129,20 +129,20 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 #filtrform .iblok {margin: 6px; vertical-align:middle; }
 #filtrform select {border:1px solid #ccc; border-radius:4px; padding:8px 12px;  }
 
-
 .filterblock  { display:block;  position:relative;    z-index:50;}
 .ifilterblock  {
     float:left; 
-     position:relative; 
-     z-index:10;
+    position:relative; 
+    /* z-index:10;*/
      box-shadow: 2px 2px 7px  rgba(0,0,0,0); 
      border:1px solid transparent ;
      border-radius:8px;    
     }
 .filtritem  {display:block; padding:10px; text-align:left;}
-.filtritemtitle {
+.filtritemtitle, .closefilteritem {
     font-weight:bold; 
     display:block;
+    position:relative;
     padding-right:14px; 
     margin-right:20px; z-index:5;   
     background:url("/img/arrdown.png") right no-repeat; 
@@ -150,14 +150,38 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     display:inline-block; 
     white-space: nowrap ;
 }
+.closefilteritem {
+     background:url("/img/arrup.png") right no-repeat; 
+     margin-right:0;
+}
 .filtritemcontent {display:none}
 .filtritemcontent .block {padding:4px 0px; white-space: nowrap }
-.ifilterblock .active {
+.filtritem.active {
+    display:inline-block;
     box-shadow: 2px 2px 7px  rgba(0,0,0,0.25); 
     background-color:rgba(255,255,255,.98   );
     border:1px solid #ddd; 
     border-radius:4px;    
-    position:absolute;  top:-11px; left:-11px;
-    z-index:80;
+    position:absolute;  
+    top:-11px; left:-11px;
+    z-index:100;
 } 
-.active .filtritemtitle  {MARGIN-RIGHT:0}
+.active .filtritemtitle  {margin-right: 0}
+.nenuzh, .nopub, .nopub22, .cheker, .cheker2 {	
+	display:inline-block; cursor:pointer; height:23px; line-height:23px;
+	background:url("/img/check.png") no-repeat;
+	vertical-align:middle;
+	padding-top:0px; 
+        line-height:28px;  
+	padding-left:27px;
+	margin:5px;
+	text-shadow:1px 1px rgba(255,255,255,.5);
+	color:#666;
+        white-space: nowrap
+}
+.nopub22 {width:120px; padding-left:27px}
+.cheker {color:#666; padding-left:28px; }
+.zach   {background-position: 0 -25px; color:#000; font-weight:300 }
+.zach2   {background-position: 0 -50px; font-weight:300 }
+.zach3   {background-position: 0 -75px; color:#191919; font-weight:300 }
+.waiting {background:url("/img/loader.gif") left no-repeat}
