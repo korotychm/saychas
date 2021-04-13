@@ -219,7 +219,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $sql       = new Sql($this->db);
         $select    = $sql->select($this->tableName);
-        $select->where(['parent_id = ?' => $params['id']]);
+        $select->where(['id = ?' => $params['id']]);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result    = $statement->execute();

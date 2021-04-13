@@ -63,7 +63,8 @@ class HtmlProviderService
      */
     public function productCard($filteredProducts, $category_id = 0)
     {
-        $return = "";
+        $return = ""; // new $return; 
+        $filters = [];
         foreach ($filteredProducts as $product) {
             /* $productCardParam = [
               'price'=>$product->getPrice(),
@@ -91,15 +92,20 @@ class HtmlProviderService
 
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
 
-            ($timeDelevery) ? $speedlable = "<div class=speedlable>$timeDelevery" . "ч</div>" : $speedlable = "";
+           
 
             $rest = $this->stockBalanceRepository->find(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
 
             $r = (int) $rest->getRest();
-
-            if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$r))
+            ($timeDelevery and $r) ? $speedlable = "<div class=speedlable>$timeDelevery" . "ч</div>" : $speedlable = ""; 
+                $filtersTmp = explode(",", $product->getParamValueList2());
+                 $filters = array_merge($filters, $filtersTmp);
+            
+            if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$r)) {
+            
+                
                 $return->card .= "<div class='productcard ' >"
-                        . $speedlable
+                        .     $speedlable
                         . "   <div class='content opacity" . $r . "'>"
                         . "       <img src='/images/product/" . (($product->getHttpUrl()) ? $product->getHttpUrl() : "nophoto_1.jpeg") . "' alt='alt' class='productimage'/>"
                         . "       <strong class='blok producttitle'><a  href=#product   >" . $product->getTitle() . "</a></strong>"
@@ -114,7 +120,16 @@ class HtmlProviderService
                         . "       <span class='blok price'>Цена: " . $cena . " &#8381;</span>"
                         . "   </div>"
                         . "</div>";
+            }
         }
+
+        if(!empty($filters)) {
+            $filters = array_unique($filters);
+            $filters = array_diff($filters, array(''));
+            $join = join(",", $filters);
+        } else $join="empty";
+        //$join=print_r($filters,true);*/
+        $return->filter = $join;   
         return $return;
     }
 
