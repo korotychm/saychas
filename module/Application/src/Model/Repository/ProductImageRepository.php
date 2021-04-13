@@ -51,7 +51,7 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
         foreach($data as $product) {
             foreach($product->images as $image) {
                 $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `http_url`, `sort_order`) VALUES ( '%s', '%s', '%s', %u )",
-                        $product->id, $image, '', 0);
+                        $product->id, $image, $image, 0);
                 try {
                     //'SELECT * FROM `artist` WHERE `id` = ?', [5]
 //                    $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
