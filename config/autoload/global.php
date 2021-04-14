@@ -67,11 +67,11 @@ return [
             'package:fetch-images' => \Application\Command\FetchImagesCommand::class,
         ],
     ],
-    'service_manager' => [
-        'factories' => [
-            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
-        ],
-    ],
+//    'service_manager' => [
+//        'factories' => [
+//            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
+//        ],
+//    ],
 //    'dependencies' => [
 //        'factories' => [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
