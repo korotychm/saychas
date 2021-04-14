@@ -355,7 +355,7 @@ End of number 1 */
         return $result;
     }
     
-    public function pickUpImagesFromFtp(array $images)
+    public function fetchImages(array $images)
     {
         $ftp_server = "nas01.saychas.office";
         $username = "1C";
@@ -404,7 +404,7 @@ End of number 1 */
         
         foreach ($pi as $p) {
             try {
-                $this->pickUpImagesFromFtp($p->images);
+                $this->fetchImages($p->images);
             } catch(\Exception $e) {
                 return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
             }
