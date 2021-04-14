@@ -15,6 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
+use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
@@ -62,18 +63,8 @@ return [
                 'options' => [
                     'route'    => '/testing[/:id]',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action'     => 'testing',
-                    ],
-                ],
-            ],
-            'show-product' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/show-product[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'showProduct',
                     ],
                 ],
             ],
@@ -112,7 +103,7 @@ return [
                 'options' => [
                     'route'    => '/show-store',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action'     => 'showStore',
                     ],
                 ],
@@ -222,7 +213,7 @@ return [
                 'options' => [
                     'route'    => '/hello-world',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action'     => 'helloWorld',
                     ],
                 ],
@@ -232,7 +223,7 @@ return [
                 'options' => [
                     'route'    => '/test-repos',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action'     => 'testRepos',
                     ],
                 ],
@@ -279,7 +270,7 @@ return [
                 'options' => [
                     'route'    => '/add-new-post[/:id]',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action'     => 'addNewPost',
                     ],
                 ],
@@ -360,6 +351,7 @@ return [
         'factories' => [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
+            Controller\MyTestController::class => MyTestControllerFactory::class,
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
         ],

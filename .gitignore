@@ -3,6 +3,8 @@ vendor/
 config/development.config.php
 data/cache/*
 data/cache
+public/images/product/*
+public/images/product
 !data/cache/.gitkeep
 composer.lock
 phpunit.xml
