@@ -130,59 +130,58 @@ class IndexController extends AbstractActionController
         
         
         $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
-        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
-        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
+       /* $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
+        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];*/
         $params['equal']=$product_id;
         
         //exit ($params['equal']);
         //$params['limit']=4;
         $products = $this->productRepository->filterProductsByStores($params);
         
-        $category_id= $products->getCategoryId() ; 
+        $productPage = $this->htmlProvider->productPage($products);
+                $categoryId= $productPage['categoryId'];
         
+        //$categoty_id = $this->htmlProvider->productPage($products)->categoryId;
+       //exit ($categoty_id);
         
+        //$category_id=0 ; //$products->getCategoryId() ; 
         
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
-        $filtrForCategory=$container->filtrForCategory;
         
-        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $bread = $this->categoryRepository->findAllMatherCategories($category_id);
+        $filtrForCategory=$container->filtrForCategory;
+        $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
+        $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
         $bread = $this->htmlProvider->breadCrumbs($bread);
          
         
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
+        /*$categoryTree = $this->categoryRepository->findCategoryTree($category_id);
         //$categoryTree[] = $category_id;
         $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
         //$params['limit']=4;
-        $products = $this->productRepository->filterProductsByStores($params);
+        /*$products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
-        $returnProductFilter.= $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
-        $returnProductFilter.= $this->htmlProvider->productPage ($filteredProducts,$category_id)->filter;
-        try {
-            $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
-        }
-        catch (\Exception $e) {
-            $categoryTitle = "&larr;Выбери категорию товаров  ";
-        }     
+        $returnProduct= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;*/
         
-        $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
-        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
+        
+        
+        //$myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
+        //$hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
         $vwm=[
         
+            "id" => $product_id,
             "catalog" => $categories,
-            "title" => $productTitle,//."/$category_id",
-            "id" => $category_id,
+           "title" => $productPage['title'],
+            //"id" => $category_id,
             "bread"=> $bread,
-            'priducts'=> $returnProduct,
+            'product'=> $productPage['card'],
             'filter' =>  $returnProductFilter,
             'addressform'=> $addresForm."",
-            'sortselect' =>[$myKey=> " selected "],
-            'hasRestOnly' =>[ $hasRest => " checked "],
+           /* 'sortselect' =>[$myKey=> " selected "],
+            'hasRestOnly' =>[ $hasRest => " checked "],*/
             //print_r($bread,true),
         ];
         //exit (print_r($vwm));   

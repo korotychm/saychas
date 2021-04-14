@@ -81,8 +81,10 @@
             </form -->
         </div>  
                 <!-- div id='ajaxfiltranswer'>все ПП характеристики в группе: <?php echo $this->filter ?>  </div -->
-            <h2><?= $this->title ?>  <?php if ($this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
-        <div id="tovar-list"><?= $this->priduct ?></div>
+            <h2><?= $this->title ?> <?php if ($this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
+        <div id="tovar-list">
+            <?= $this->product ?>
+        </div>
     </div>               
 </div>
 </div>
