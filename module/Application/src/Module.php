@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Application;
 
+//use Application\ConfigProvider;
+
 class Module
 {
     public function getConfig() : array
@@ -19,6 +21,14 @@ class Module
 //        print_r($v);
 //        echo '</pre>';
 //        exit;
+//        $configProvider = new \Application\ConfigProvider();
+//
+//        $conf = [
+//            'laminas-cli' => $configProvider->getCliConfig(),
+//            'service_manager' => $configProvider->getDependencyConfig(),
+//        ];
+        
         return include __DIR__ . '/../config/module.config.php';
+        //return array_merge( $conf, include __DIR__ . '/../config/module.config.php' );
     }
 }
