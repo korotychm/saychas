@@ -1,4 +1,7 @@
-<div class="container"  style="position:relative; max-width:1400px; min-height:calc(100vh - 160px) " >
+<?php
+$this->headTitle('Каталог товаров', 'PREPEND');
+$this->headTitle($this->title, 'PREPEND');
+?><div class="container"  style="position:relative; max-width:1400px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">
             <?= $this->addressform ?>

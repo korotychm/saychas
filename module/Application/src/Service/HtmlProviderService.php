@@ -98,7 +98,7 @@ class HtmlProviderService
 
             $r = (int) $rest->getRest();
             ($timeDelevery and $r) ? $speedlable = "<div class=speedlable>$timeDelevery" . "ч</div>" : $speedlable = ""; 
-                $filtersTmp = explode(",", $product->getParamValueList2());
+                $filtersTmp = explode(",", $product->getParamValueList());
                  $filters = array_merge($filters, $filtersTmp);
             
             if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$r)) {

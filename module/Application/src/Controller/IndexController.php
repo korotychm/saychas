@@ -141,6 +141,17 @@ class IndexController extends AbstractActionController
     public function productAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
+        
+        
+        $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
+        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
+        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
+        $params['equal']=$product_id;
+        
+        //exit ($params['equal']);
+        //$params['limit']=4;
+        $products = $this->productRepository->filterProductsByStores($params);
+        
         $category_id="000000001";   
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -151,8 +162,9 @@ class IndexController extends AbstractActionController
         $bread = $this->categoryRepository->findAllMatherCategories($category_id);
         $bread = $this->htmlProvider->breadCrumbs($bread);
          
-     
+        
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
+        //$categoryTree[] = $category_id;
         $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
@@ -203,7 +215,9 @@ class IndexController extends AbstractActionController
         $bread = $this->htmlProvider->breadCrumbs($bread);
          
      
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id);
+        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
+        //$params['egualTo'] = ['id'=>$category_id];
+        //$params['or'];// = ['id'=>$category_id];
         $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
@@ -218,6 +232,8 @@ class IndexController extends AbstractActionController
         catch (\Exception $e) {
             $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=[];
         }     
+        
+        
         if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
         $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
         $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
