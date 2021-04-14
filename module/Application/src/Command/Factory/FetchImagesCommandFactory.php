@@ -19,16 +19,17 @@ class FetchImagesCommandFactory implements FactoryInterface
         }
         
         //$adapter = $container->get(AdapterInterface::class);
-        $adapter = new Adapter([
-            'driver'   => 'Pdo_Mysql',
-            'database' => 'saychas_z',
-            'username' => 'saychas_z',
-            'password' => 'saychas_z',
-        ]);
+        $adapter = $container->get('Application\Db\WriteAdapter');
+//        $adapter = new Adapter([
+//            'driver'   => 'Pdo_Mysql',
+//            'database' => 'saychas_z',
+//            'username' => 'saychas_z',
+//            'password' => 'saychas_z',
+//        ]);
         
         return new FetchImagesCommand(
             $adapter,
-            null
+            $requestedName
         );
     }
 }

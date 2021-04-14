@@ -112,10 +112,10 @@ CREATE TABLE `characteristic` (
 
 DROP TABLE IF EXISTS `characteristic_value`;
 CREATE TABLE `characteristic_value` (
-  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `id` varchar(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `characteristic_value`
@@ -437,7 +437,7 @@ ALTER TABLE `characteristic`
 -- Indexes for table `characteristic_value`
 --
 ALTER TABLE `characteristic_value`
-  ADD PRIMARY KEY (`id`);
+   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `characteristic_value2`
