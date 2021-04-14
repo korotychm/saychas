@@ -152,7 +152,10 @@ class IndexController extends AbstractActionController
         //$params['limit']=4;
         $products = $this->productRepository->filterProductsByStores($params);
         
-        $category_id="000000001";   
+        $category_id= $products->getCategoryId() ; 
+        
+        
+        
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
@@ -173,6 +176,7 @@ class IndexController extends AbstractActionController
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
         $returnProductFilter.= $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
+        $returnProductFilter.= $this->htmlProvider->productPage ($filteredProducts,$category_id)->filter;
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
@@ -185,7 +189,7 @@ class IndexController extends AbstractActionController
         $vwm=[
         
             "catalog" => $categories,
-            "title" => $categoryTitle,//."/$category_id",
+            "title" => $productTitle,//."/$category_id",
             "id" => $category_id,
             "bread"=> $bread,
             'priducts'=> $returnProduct,
