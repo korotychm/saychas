@@ -145,6 +145,7 @@ class IndexController extends AbstractActionController
        //exit ($categoty_id);
         
         //$category_id=0 ; //$products->getCategoryId() ; 
+                
         
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -155,6 +156,7 @@ class IndexController extends AbstractActionController
         $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
         $bread = $this->htmlProvider->breadCrumbs($bread);
          
+        $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
         
         /*$categoryTree = $this->categoryRepository->findCategoryTree($category_id);
         //$categoryTree[] = $category_id;
@@ -175,7 +177,7 @@ class IndexController extends AbstractActionController
             "id" => $product_id,
             "catalog" => $categories,
            "title" => $productPage['title'],
-            //"id" => $category_id,
+            "category" => $categoryTitle,
             "bread"=> $bread,
             'product'=> $productPage['card'],
             'filter' =>  $returnProductFilter,

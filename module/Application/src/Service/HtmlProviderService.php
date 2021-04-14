@@ -132,7 +132,7 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->find(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
-            ($timeDelevery and $r) ? $speedlable = "<div class=speedlable>$timeDelevery" . "ч</div>" : $speedlable = ""; 
+            ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$timeDelevery" . "ч</b>" : $speedlable = ""; 
                 $filtersTmp = explode(",", $product->getParamValueList());
                  $filters = array_merge($filters, $filtersTmp);
             
@@ -140,16 +140,17 @@ class HtmlProviderService
             
             $title = $product->getTitle();
             $categotyId = $product->getCategoryId();                    
+            //$category = $product->getCategoryTitle();                    
            
             
             $img[]=$product->getHttpUrl();
                     // ?"<img src='/images/product/{$product->getHttpUrl()}' alt='alt' class='productimage'/>":"";    
-            $filtersTmp = explode(",", $product->getParamValueList());
+            $filtersTmp = explode(",", $product->getParamValueList2());
             $filters = array_merge($filters, $filtersTmp);
             $vendor=$product->getVendorCode() ;
             $brand=$product->getBrandTitle() ;
             //$totalRest +=$r;
-            $stors[$product->getStoreId()]="{$product->getStoreTitle()}<span class='blok mini' >остаток: $r</span>" ;
+            $stors[$product->getStoreId()]="{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>" ;
             $rst[$product->getStoreId()]=$r;
         }
         $totalRest= array_sum($rst);
@@ -164,29 +165,31 @@ class HtmlProviderService
         //$join=print_r($filters,true);*/
         
         $j=0;
-        foreach ($img as $im){if($im) $imagesready.="<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j'/>"; $j++;   }
+        $img=array_unique($img);
+        foreach ($img as $im){if($im) $imagesready.="<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' />"; $j++;   }
             
         
         
         $return['filter'] = $join;   
         $return['title'] = $title;
         $return['categoryId'] = $categotyId;     
+        //$return['categoryTitle'] =$category;
         $return['card'] .= ""
                         . "<div class='pw-contentblock cblock-2'>    
                             <div class='contentpadding'>    
-                                <?= $imagesready ?>
+                                 $imagesready 
                             </div>    
                             </div>"
                         . "
                             <div class='pw-contentblock cblock-2'>    
                             <div class='contentpadding'>
                             <div class='productpagecard ' >"     
-                        .     $speedlable
+                        //.     $speedlable
                         . "   <div class='content opacity" . $r . "'>"
                         . "       <h2 class='blok price'>Цена: " . $cena . " &#8381;</h2>"
                         . "       <span class='blok'>Артикул: " . $vendor. "</span>"
                         . "       <span class='blok'>Торговая марка: " . $brand. "</span>"
-                        . "       <span class='blok'>Остаток: " . $r . "</span>"
+                        . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
                         . "       <b><span class='blok'>Магазины</span></b><ul><li>".join("</li><li>",$stors)."</li></ul>"
                         . "       <b><span class='blok'>Характеристики</span></b><ul><li>$join</li></ul>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         

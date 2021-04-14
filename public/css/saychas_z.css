@@ -195,7 +195,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 	padding:0
 }
 .pw-contentblock .contentpadding { padding:10px 0; }
-.pw-contentblock .contentpadding * {max-width:100% }
+/*.pw-contentblock .contentpadding * {max-width:100% }*/
 
 .pw-contentblock.cblock-1 { width: 99.5%;}
 .pw-contentblock.cblock-2 { width: 49.5%; }
@@ -226,3 +226,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 	.pw-contentblock.cblock-6 { width: 100%;}
 	#headeraa h1 { font-size:22px; }
 }
+
+.product-page-image  {max-width:100px ; cursor:pointer; border:2px solid #fff;}
+.product-page-image.productimage0  {max-width:100%; border:none }
+.borderred {border-color:#f62 }

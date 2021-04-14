@@ -5,8 +5,8 @@ $(document).ready(function () {
     $(".overcover").delay(500).fadeOut("slow");
     window.onbeforeunload = function () {
         $(".overcover").stop().fadeIn();
-    }
-})
+    };
+});
 $(function () {
 
 
@@ -16,10 +16,20 @@ $(function () {
         // $(".filtritemtitle").removeClass("closefilteritem");        
     }
 
+    $(".product-page-image").click(function(){
+        var newsrc=$(this).attr("src");
+        var oldsrc=$("#productimage0").attr("src");
+        $(".product-page-image").removeClass("borderred");
+        $(this).addClass("borderred"); 
+        $("#productimage0").attr("src", newsrc);
+        $(this).attr("src", oldsrc);
+        return false;
+    }); 
+
     $(".checkgroup").click(function () {
         if($(this).hasClass("zach")) {$(this).removeClass("zach"); $("#check"+$(this).attr("for")).val("");}
         else  {$(this).addClass("zach"); $("#fltrcheck"+$(this).attr("for")).val($(this).attr("for"));}
-    })
+    });
     $(".closefilteritem").live("click", function () {
         hidefilteritem();
     });
