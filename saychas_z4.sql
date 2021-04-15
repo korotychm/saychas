@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 15, 2021 at 04:11 AM
+-- Generation Time: Apr 13, 2021 at 09:17 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -43,8 +43,7 @@ INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
 ('000001', 'BOSH', '', ''),
 ('000003', 'HUAWEI', '', ''),
 ('000002', 'SONY', '', ''),
-('000004', 'Простоквашино', '', ''),
-('000005', 'ACER', '', '');
+('000004', 'Простоквашино', '', '');
 
 -- --------------------------------------------------------
 
@@ -70,15 +69,12 @@ INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort
 ('000000012', '000000003', 'DECT', '', '', 0),
 ('000000008', '000000002', 'Аксесуары', '', '', 0),
 ('000000010', '000000001', 'Бытовая техника', '', '', 0),
-('000000020', '000000019', 'Игровые ноутбуки', '', '', 0),
 ('000000016', '000000014', 'Кефир', '', '', 0),
 ('000000007', '000000004', 'Кнопочные', '', '', 0),
 ('000000017', '000000014', 'Молоко', '', '', 0),
 ('000000014', '000000013', 'Молочная продукция', '', '', 0),
 ('000000015', '000000013', 'Мясные продукты', '', '', 0),
 ('000000009', '000000008', 'Наушники', '', '', 0),
-('000000019', '000000002', 'Ноутбуки', '', '', 0),
-('000000022', '000000019', 'Ноутбуки', '', '', 0),
 ('000000013', '0', 'Продукты питания', '', '', 0),
 ('000000018', '000000014', 'Ряженка', '', '', 0),
 ('000000006', '000000004', 'Смартфоны', '', '', 0),
@@ -86,7 +82,6 @@ INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort
 ('000000005', '000000003', 'Стационарные телефоны', '', '', 0),
 ('000000003', '000000002', 'Телефоны', '', '', 0),
 ('000000001', '0', 'Техника', '', '', 0),
-('000000021', '000000019', 'Ультрабуки', '', '', 0),
 ('000000011', '000000010', 'Холодильники', '', '', 0),
 ('000000002', '000000001', 'Электроника', '', '', 0);
 
@@ -105,28 +100,9 @@ CREATE TABLE `characteristic` (
   `filter` tinyint(1) NOT NULL DEFAULT '0',
   `group` tinyint(1) NOT NULL DEFAULT '0',
   `sort_order` int NOT NULL DEFAULT '1',
-  `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `description` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci
+  `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `characteristic`
---
-
-INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`, `unit`, `description`) VALUES
-('000000001', '000000009', 'Тип подключения', 4, 1, 0, 3, '', ''),
-('000000002', '000000009', 'Частотный диапазон', 1, 0, 0, 2, '', ''),
-('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1, '', ''),
-('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4, '', ''),
-('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5, '', ''),
-('000000006', '000000006', 'Экран', 2, 1, 1, 1, '', ''),
-('000000007', '000000019', 'Оперативная память (RAM)', 4, 0, 0, 2, '', ''),
-('000000008', '000000006', 'Встроенная память (ROM)', 4, 0, 0, 3, '', ''),
-('000000009', '000000006', 'Основная камера МПикс', 1, 0, 0, 4, '', ''),
-('000000010', '000000006', 'Фронтальная камера МПикс', 1, 0, 0, 5, '', ''),
-('000000012', '000000011', 'Описание', 1, 0, 0, 1, '', ''),
-('000000013', '000000014', 'Жирность', 2, 1, 0, 1, '', ''),
-('000000014', '000000019', 'Операционная система', 4, 1, 0, 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -136,10 +112,10 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 
 DROP TABLE IF EXISTS `characteristic_value`;
 CREATE TABLE `characteristic_value` (
-  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `id` varchar(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `characteristic_value`
@@ -154,10 +130,7 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 ('000000007', '128 ГБ', '000000008'),
 ('000000008', '256 ГБ', '000000008'),
 ('000000009', '512 ГБ', '000000008'),
-('000000006', '64 ГБ', '000000008'),
-('000000010', 'MS Windows', '000000014'),
-('000000011', 'Android', '000000014'),
-('000000012', 'Mac OS', '000000014');
+('000000006', '64 ГБ', '000000008');
 
 -- --------------------------------------------------------
 
@@ -266,6 +239,18 @@ CREATE TABLE `product` (
   `brand_id` varchar(8) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`) VALUES
+('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '', '[{\"id\":\"000000006\",\"value\":6.76},{\"id\":\"000000007\",\"value\":\"000000003\"},{\"id\":\"000000008\",\"value\":\"\"},{\"id\":\"000000009\",\"value\":\"50/20/12/TOF\"},{\"id\":\"000000010\",\"value\":\"13/TOF\"}]', '000002'),
+('000000000002', '00003', '000000009', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', '', '50141256', '', '[{\"id\":\"000000003\",\"value\":\"29 u041eu043c\"},{\"id\":\"000000002\",\"value\":\"20 u0413u0446 - 20 u043au0413u0446\"},{\"id\":\"000000001\",\"value\":\"000000002\"},{\"id\":\"000000004\",\"value\":true},{\"id\":\"000000005\",\"value\":true}]', '000003'),
+('000000000004', '00003', '000000017', 'Молоко', '', 'М-0011', '', '', '000004'),
+('000000000005', '00003', '000000016', 'Кефир', '', 'К-0012', '', '', '000004'),
+('000000000006', '00003', '000000018', 'Ряженка', '', 'Р-00123', '', '', '000004'),
+('000000000003', '00004', '000000011', 'Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R', '', '20068499', '', '[{\"id\":\"000000012\",\"value\":\"\"}]', '000001');
+
 -- --------------------------------------------------------
 
 --
@@ -295,9 +280,7 @@ INSERT INTO `product_image` (`product_id`, `ftp_url`, `http_url`, `sort_order`) 
 ('000000000006', '571756.jpg', '571756.jpg', 0),
 ('000000000003', '20068499b.jpg', '20068499b.jpg', 0),
 ('000000000003', '20068499b3.jpg', '20068499b3.jpg', 0),
-('000000000003', '20068499b1.jpg', '20068499b1.jpg', 0),
-('000000000007', '', '', 0),
-('000000000007', '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg', '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg', 0);
+('000000000003', '20068499b1.jpg', '20068499b1.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -321,8 +304,7 @@ INSERT INTO `provider` (`id`, `title`, `description`, `icon`) VALUES
 ('00002', 'Apple', '', ''),
 ('00003', 'Барамба', '', ''),
 ('00004', 'М-Видео', '', ''),
-('00001', 'Ситилинк', '', ''),
-('00005', 'DNS', '', '');
+('00001', 'Ситилинк', '', '');
 
 -- --------------------------------------------------------
 
@@ -455,7 +437,7 @@ ALTER TABLE `characteristic`
 -- Indexes for table `characteristic_value`
 --
 ALTER TABLE `characteristic_value`
-  ADD PRIMARY KEY (`id`);
+   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `characteristic_value2`
