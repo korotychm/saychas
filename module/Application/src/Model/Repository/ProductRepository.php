@@ -430,7 +430,7 @@ End of number 1 */
                 $var_list = Json::decode($arr['var_list']);
                 
                 foreach ($var_list as $var) {
-                    if(!empty($var->value)) {
+                    //if(!empty($var->value)) {
                         $myuuid = Uuid::uuid4();
                         $myid = md5($myuuid->toString());
                         $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
@@ -442,7 +442,7 @@ End of number 1 */
                             return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                         }
                         $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
-                    }
+                    //}
                 }
                 
             }
