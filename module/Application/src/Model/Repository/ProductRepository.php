@@ -423,16 +423,16 @@ End of number 1 */
         foreach($result->data as $product) {
 //            $arr = ['value_list'=>'', 'var_list'=>''];
 
-//            if(count($product->characteristics) > 0)
-//            {
-                $arr = $this->separatePredefined($product->characteristics);
+            $arr = $this->separatePredefined($product->characteristics);
                 
+            if(count($product->characteristics) > 0)
+            {
                 $var_list = Json::decode($arr['var_list']);
                 
                 foreach ($var_list as $var) {
                     if(!empty($var->value)) {
                         $myuuid = Uuid::uuid4();
-                        $myid = md5($myuuid->toString());
+                        $myid = random(1000);// md5($myuuid->toString());
                         $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
 
                         try {
@@ -445,7 +445,7 @@ End of number 1 */
                     }
                 }
                 
-//            }
+            }
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr['value_list'], $arr['var_list'], $product->brand_id);
