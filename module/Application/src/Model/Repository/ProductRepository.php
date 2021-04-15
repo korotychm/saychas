@@ -432,7 +432,7 @@ End of number 1 */
                 foreach ($var_list as $var) {
                     if(!empty($var->value)) {
                         $myuuid = Uuid::uuid4();
-                        $myid = 'banzaii'.rand(1000);// md5($myuuid->toString());
+                        $myid = md5($myuuid->toString());
                         $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
 
                         try {
