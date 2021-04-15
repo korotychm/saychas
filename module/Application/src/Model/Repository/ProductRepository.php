@@ -441,7 +441,6 @@ End of number 1 */
                             return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                         }
                         $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
-                        echo $arr['value_list']."\n";
                     }
                 }
                 
