@@ -407,12 +407,13 @@ End of number 1 */
             $this->db->query("truncate table product")->execute();
         }
 
-        $pi = $this->extractNonEmptyImages($result->data);
+        $products = $this->extractNonEmptyImages($result->data);
 
-        $this->productImages->replace($pi);
+        $this->productImages->replace($products); // $products - products that have non empty array of images
 
-        foreach ($pi as $p) {
+        foreach ($products as $p) {
             try {
+                /** returns array of successfully downloaded images */
                 $this->fetchImages($p->images);
             } catch(\Exception $e) {
                 return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
