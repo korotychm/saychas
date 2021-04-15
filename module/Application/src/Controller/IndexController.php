@@ -221,7 +221,7 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
-        $returnProductFilter.="ПП характеристики в категории: ". $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
+        //$returnProductFilter.="ПП характеристики в категории: ". $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
         
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
@@ -241,7 +241,7 @@ class IndexController extends AbstractActionController
             "id" => $category_id,
             "bread"=> $bread,
             'priducts'=> $returnProduct,
-            'filter' =>  $returnProductFilter,
+           // 'filter' =>  $returnProductFilter,
             'addressform'=> $addresForm."",
             'sortselect' =>[$myKey=> " selected "],
             'hasRestOnly' =>[ $hasRest => " checked "],

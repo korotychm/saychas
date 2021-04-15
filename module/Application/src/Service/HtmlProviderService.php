@@ -92,8 +92,8 @@ class HtmlProviderService
                         . "       <span class='blok'>Id: " . $product->getId() . "</span>"
                         . "       <span class='blok'>Артикул: " . $product->getVendorCode() . "</span>"
                         . "       <span class='blok'>Торговая марка: " . $product->getBrandTitle() . "</span>"
-                        . "       <span class='blok'>Хар/List: " . $product->getParamValueList2() . "</span>"
-                        . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList2() . "</span>"
+                      //  . "       <span class='blok'>Хар/List: " . $product->getParamValueList2() . "</span>"
+    //                    . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList2() . "</span>"
                         . "       <span class='blok'>Остаток: " . $r . "</span>"
                         . "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         
@@ -136,7 +136,8 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
-            ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$timeDelevery" . "ч</b>" : $speedlable = ""; 
+            if (!$speed or $speed<$timeDelevery ) $speed=(int)$timeDelevery;
+            ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$speed" . "ч</b>" : $speedlable = ""; 
                 $filtersTmp = explode(",", $product->getParamValueList());
                  $filters = array_merge($filters, $filtersTmp);
             
@@ -158,7 +159,7 @@ class HtmlProviderService
             $rst[$product->getStoreId()]=$r;
         }
         $totalRest= array_sum($rst);
-        
+        ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = ""; 
         
         $filters = array_diff($filters, array(''));
         if(!empty($filters)) {
@@ -168,7 +169,7 @@ class HtmlProviderService
             $characterictics= $this->characteristicRepository->getCharacteristicFromList($join2);
             foreach ($characterictics as $char) 
             {
-                $chars.="<li><b>{$char->getTitle()}</b>: {$char->getVal()}</li>";
+                $chars.="<li><em>{$char->getTitle()}</em    >: {$char->getVal()}</li>";
             }
             $join =$chars;
         } else $join="";
@@ -187,6 +188,7 @@ class HtmlProviderService
         $return['card'] .= ""
                         . "<div class='pw-contentblock cblock-2'>    
                             <div class='contentpadding'>    
+                                 $speedlable2
                                  $imagesready 
                             </div>    
                             </div>"
@@ -194,14 +196,15 @@ class HtmlProviderService
                             <div class='pw-contentblock cblock-2'>    
                             <div class='contentpadding'>
                             <div class='productpagecard ' >"     
-                        //.     $speedlable
+                        
                         . "   <div class='content opacity" . $r . "'>"
                         . "       <h2 class='blok price'>   " . $cena . " &#8381;</h2>"
                         . "       <span class='blok'>Артикул: " . $vendor. "</span>"
                         . "       <span class='blok'>Торговая марка: " . $brand. "</span>"
                         . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
                         . "       <b><span class='blok'>Магазины</span></b><ul><li>".join("</li><li>",$stors)."</li></ul>"
-                        . "       <b><span class='blok'>Характеристики</span></b><ul><li>$join $join2</li></ul>"
+                        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join</ul>"        
+                        . "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         
                         . "   </div>"
                         . "</div>"

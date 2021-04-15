@@ -59,7 +59,7 @@ class CharacteristicRepository extends Repository  implements CharacteristicRepo
      */
     public function getCharacteristicFromList ($list=0)
      {
-       $query = "SELECT `v`.`title` AS val, `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0, $list' ) ORDER BY `tit`.`sort_order` ";
+       $query = "SELECT `v`.`title` AS val, `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0,$list' ) ORDER BY `tit`.`sort_order` ";
        //exit($query );
        $result = $this->db->query($query)->execute();
        //exit (print_r($result));
