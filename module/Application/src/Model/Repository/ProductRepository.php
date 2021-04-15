@@ -35,12 +35,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var Product
      */
     protected Product $prototype;
-    
+
     /**
      * @var CharacteristicValueRepositoryInterface
      */
     protected CharacteristicValueRepositoryInterface $characteristicValueRepository;// $predefCharValueRepo;
-    
+
     /**
      * @var CharacteristicValueRepositoryInterface
      */
@@ -50,12 +50,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var CharacteristicRepositoryInterface
      */
     protected CharacteristicRepositoryInterface $characteristics;
-    
+
     /**
      * @var ProductImageRepositoryInterface
      */
     protected ProductImageRepositoryInterface $productImages;
-    
+
     /**
      * @var string
      */
@@ -89,9 +89,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
     /**
      * Function obtains products from specified store that belongs to a specified provider from available stores.
-     * 
+     *
      * The store is also listed as accessible
-     * 
+     *
      * @param int $storeId
      * @param array $params
      * @return Product[]
@@ -100,11 +100,11 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         $sql = new Sql($this ->db);
         $subSelectAvailbleStore = $sql ->select('store');
         $subSelectAvailbleStore ->columns(['provider_id']);
-        $subSelectAvailbleStore 
+        $subSelectAvailbleStore
             ->where->equalTo('id', $storeId);
-         /* ->where->and 
+         /* ->where->and
             ->where->in('id', $params);/**/
-                
+
         $select = $sql->select('');
         $select
             ->from(['p' => 'product'])
@@ -113,47 +113,47 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 ['pr' => 'price'],
                 'p.id = pr.product_id',
               //'(p.id = pr.product_id and pr.store_id = '.$storeId.")",
-                ['price'],           
-                $select::JOIN_LEFT  
-            ) 
+                ['price'],
+                $select::JOIN_LEFT
+            )
             ->join(
                 ['b' => 'stock_balance'],
                 'p.id = b.product_id',
-                ['rest'],           
-                $select::JOIN_LEFT  
-            )      
+                ['rest'],
+                $select::JOIN_LEFT
+            )
             ->join(
                 ['img' => 'product_image'],
                 'p.id = img.product_id',
-                ['http_url'],           
-                $select::JOIN_LEFT  
+                ['http_url'],
+                $select::JOIN_LEFT
             )
             ->join(
                 ['brand' => 'brand'],
                 'p.brand_id = brand.id',
-                ['brand_title'=>'title'],           
-                $select::JOIN_LEFT  
-            )   
+                ['brand_title'=>'title'],
+                $select::JOIN_LEFT
+            )
             ->where->in('p.provider_id', $subSelectAvailbleStore)
             /*->where->and
-            ->where->equalTo('pr.store_id', $storeId) /**/  
+            ->where->equalTo('pr.store_id', $storeId) /**/
             ->where->and
             ->where->equalTo('b.store_id', $storeId)
             //->group('p.id')
         ;
-        
+
 //      Do not delete the following line
 //      $selectString = $sql->buildSqlString($select);
 //      echo $selectString
-//      exit;        
-       
+//      exit;
+
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-       
+
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->prototype
@@ -163,10 +163,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
         }
         exit;/**/
-        
+
         return $resultSet;
     }
-    
+
     public function filterProductsByStores2($params=[])
     {
         $sql = new Sql($this->db);
@@ -179,23 +179,23 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id'=>'id', 'product_title' => 'title'], $select::JOIN_INNER)
                 ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)
                 ->order(['id ASC'])->where($w);
-  
+
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-        
+
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->prototype
         );
         $resultSet->initialize($result);
-        
-        return $resultSet;        
+
+        return $resultSet;
     }
-    
+
 //    private function createStoreFilter($params)
 //    {
 //        $w = new Where();
@@ -207,13 +207,13 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //        $w2 = new Where();
 //        $w2->in('pr.provider_id', $sel);
 //        return $w;
-//    }    
+//    }
 
     /**
      * Function obtains products of a provider that belong to a set of available stores.
-     * 
+     *
      * The store is also listed as accessible
-     * 
+     *
      * @param int $storeId
      * @param array $params
      * @return Product[]
@@ -238,29 +238,29 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                ->where($w2);
 
 End of number 1 */
-        
+
         /** Number 2 */
-        
+
 //      select pr.*, ss.id as store_id, ss.title as store_title
 //      from product pr
 //      left join
 //          (select s.* from store s left join provider p on p.id = s.provider_id where s.id in ('000000001','000000002','000000003','000000004','000000005') ) ss
 //          on ss.provider_id=pr.provider_id
 //      where ss.id is not null order by pr.id;
-        
-        
-        
+
+
+
         $whereAppend= ($params['equal'])?'and pr.id = "'.$params['equal'].'"':'';
         //exit ($whereAppend);
-        
+
         $w = new Where();
         $w->in('s.id', $params['in']);
-        
-        
+
+
         $sel = new Select();
         $sel->from(['s' => 'store'])->columns(['*'])
                 ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT)->where($w);
-        
+
         $w2 = new Where();
         $w2->in('pr.provider_id', $sel);
         $select = new Select();
@@ -288,7 +288,7 @@ End of number 1 */
                 ['brand' => 'brand'],
                 'pr.brand_id = brand.id',
                 ['brand_title'=>'title'],
-                $select::JOIN_LEFT  
+                $select::JOIN_LEFT
             )
                 ->join(
                         ['ss' => $sel],
@@ -296,14 +296,14 @@ End of number 1 */
                         ['store_id'=>'id', 'store_title'=>'title'],
                         $select::JOIN_LEFT
                 )->where('ss.id is not null '.$whereAppend );
-        
-        
+
+
         if ($params['order']) { $select->order($params['order']); }
         if ($params['limit']) { $select->limit($params['limit']); }
         if ($params['offset']) { $select->offset($params['offset']); }
         /** End of number 2 */
         
-//$selString = $sql->buildSqlString($select);        exit($selString);         //;
+        //$selString = $sql->buildSqlString($select);        exit($selString);         //;
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -311,17 +311,17 @@ End of number 1 */
         if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
             return [];
         }
-        
+
         $resultSet = new HydratingResultSet(
             $this->hydrator,
             $this->prototype
         );
         $resultSet->initialize($result);
-        
+
         return $resultSet;
-        
+
     }
-    
+
     public function filterProductsByCategories($products, $categories)
     {
         $filteredProducts = [];
@@ -332,7 +332,7 @@ End of number 1 */
         }
         return $filteredProducts;
     }
-    
+
     private function separatePredefined(array $characteristics)
     {
         $value_list = [];
@@ -348,10 +348,10 @@ End of number 1 */
                 $var_list[] = $c;
             }
         }
-        
+
         return ['value_list'=>implode(",", $value_list), 'var_list' => Json::encode($var_list)];
     }
-    
+
     private function extractNonEmptyImages(array $data)
     {
         $result = [];
@@ -362,13 +362,13 @@ End of number 1 */
         }
         return $result;
     }
-    
+
     public function fetchImages(array $images)
     {
         $ftp_server = "nas01.saychas.office";
         $username = "1C";
         $password = "ree7EC2A";
-        
+
         // perform connection
         $conn_id = ftp_connect($ftp_server);
         $login_result = ftp_login($conn_id, $username, $password);
@@ -379,19 +379,19 @@ End of number 1 */
         foreach($images as $image) {
             $local_file = realpath($this->catalogToSaveImages)."/".$image;
             $server_file = "/1CMEDIA/PhotoTovarov/".$image;
-            
-            // trying to download $server_file and save it to $local_file            
+
+            // trying to download $server_file and save it to $local_file
             if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
                 throw new \Exception('Could not complete the operation');
             }
         }
         // close connection
-        ftp_close($conn_id);        
+        ftp_close($conn_id);
     }
-    
+
     /**
      * Adds given product into it's repository
-     * 
+     *
      * @param json
      */
     public function replace($content)
@@ -401,15 +401,15 @@ End of number 1 */
         }catch(LaminasJsonRuntimeException $e){
            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
+
         if((bool) $result->truncate) {
             $this->db->query("truncate table product")->execute();
         }
-        
+
         $pi = $this->extractNonEmptyImages($result->data);
 
         $this->productImages->replace($pi);
-        
+
         foreach ($pi as $p) {
             try {
                 $this->fetchImages($p->images);
@@ -420,7 +420,7 @@ End of number 1 */
 
         foreach($result->data as $product) {
             $arr = ['value_list'=>'', 'var_list'=>''];
-            
+
             if(count($product->characteristics) > 0)
             {
                 $arr = $this->separatePredefined($product->characteristics);
@@ -436,5 +436,5 @@ End of number 1 */
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
-    
+
 }

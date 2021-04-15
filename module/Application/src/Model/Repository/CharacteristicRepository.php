@@ -78,13 +78,18 @@ class CharacteristicRepository extends Repository  implements CharacteristicRepo
         $statement->execute();
         
         foreach($result['data'] as $row) {
-            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u)",
-                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group']);
-            //$sql = "replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( :id, :category_id, :title, :type, :sort_order, :filter, :group)";
-            
+            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s')",
+                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], '', '');
+//            $sql = "replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( :id, :category_id, :title, :type, :sort_order, :filter, :group)";
+              //$sql = "replace INTO `characteristic`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`) VALUES ( :id='?', :category_id=>'?', :title='?', :type=?, :sort_order=?, :filter=?, :group=?)";
+//            print_r($sql);
+//            echo "\n";
+//            exit;
             try {
+                //$query = $this->db->query($sql, [ $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'] ]);
                 $query = $this->db->query($sql);
                 //$query->execute([':id'=>$row['id'], ':category_id'=>$row['category_id'], ':title'=>$row['title'], ':type'=>$row['type'], ':sort_order'=>$row['sort_order'], ':filter'=>$row['filter'], ':group'=>$row['group'] ]);
+//                $query->execute(['id'=>$row['id'], 'category_id'=>$row['category_id'], 'title'=>$row['title'], 'type'=>$row['type'], 'sort_order'=>$row['sort_order'], 'filter'=>$row['filter'], 'group'=>$row['group'] ]);
                 $query->execute();
             }catch(InvalidQueryException $e){
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];

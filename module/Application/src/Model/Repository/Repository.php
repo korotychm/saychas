@@ -68,10 +68,10 @@ abstract class Repository implements RepositoryInterface
     }
     
     /**
-     * Returns a single brand.
+     * Returns a single entity.
      *
      * @param  array $params
-     * @return Entity
+     * @return null|Entity
      */
     public function find($params)
     {
@@ -104,11 +104,28 @@ abstract class Repository implements RepositoryInterface
                      $params['id']
                 ));
             */
-            // Return default
-            $entity = clone $this->prototype;
+            $entity = null; // not found
+//            // Return default
+//            $entity = clone $this->prototype;
         }
 
         return $entity;
+    }
+    
+    /**
+     * Returns the first found entity or the default one
+     * if no entities found
+     * @param array $params
+     * @return Entity
+     */
+    public function findFirstOrDefault($params)
+    {
+        $found = $this->find($params);
+        if( null == $found ) {
+            $found = clone $this->prototype;
+            return $found;
+        }
+        return $found;
     }
     
     /**

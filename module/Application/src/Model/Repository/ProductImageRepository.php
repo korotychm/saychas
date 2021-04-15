@@ -42,6 +42,42 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
     }
 
     /**
+     * Fetches images from remote ftp server
+     * @param array $images
+     * @throws Exception
+     */
+//    public function fetch(array $images)
+//    {
+//        $ftp_server = "nas01.saychas.office";
+//        $username = "1C";
+//        $password = "ree7EC2A";
+//
+//        // perform connection
+//        $conn_id = ftp_connect($ftp_server);
+//        $login_result = ftp_login($conn_id, $username, $password);
+//        if( (!$conn_id) || (!$login_result)) {
+//            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user '.$username.'.');
+//        }
+//
+//        foreach($images as $image) {
+//            $local_file = realpath($this->catalogToSaveImages)."/".$image;
+//            $server_file = "/1CMEDIA/PhotoTovarov/".$image;
+//
+//            // trying to download $server_file and save it to $local_file
+//            if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
+//                throw new \Exception('Could not complete the operation');
+//            }
+//        }
+//        // close connection
+//        ftp_close($conn_id);
+//    }
+//    
+//    public function fetchAll()
+//    {
+//        
+//    }
+    
+    /**
      * Adds given product image into it's repository
      *
      * @param json

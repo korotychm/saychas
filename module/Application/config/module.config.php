@@ -356,6 +356,17 @@ return [
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
         ],
     ],
+    'laminas-cli' => [
+        'commands' => [
+            'package:fetch-images' => \Application\Command\FetchImagesCommand::class,
+        ],
+    ],
+//    'service_manager' => [
+//        'factories' => [
+//            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
+//        ],
+//    ],
+ 
     'service_manager' => [
         'aliases' => [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
@@ -395,6 +406,8 @@ return [
             \Application\Model\Repository\ProductImageRepository::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
+
+            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
         ],
         
     ],
