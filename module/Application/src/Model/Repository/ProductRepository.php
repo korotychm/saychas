@@ -424,7 +424,7 @@ End of number 1 */
 //            $arr = ['value_list'=>'', 'var_list'=>''];
 
             $arr = $this->separatePredefined($product->characteristics);
-                
+
             if(count($product->characteristics) > 0)
             {
                 $var_list = Json::decode($arr['var_list']);
@@ -444,7 +444,7 @@ End of number 1 */
                         $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
                     }
                 }
-                
+
             }
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
