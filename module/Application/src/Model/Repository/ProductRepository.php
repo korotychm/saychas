@@ -23,6 +23,7 @@ use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface
 use Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 
 class ProductRepository extends Repository implements ProductRepositoryInterface
 {
@@ -382,7 +383,7 @@ End of number 1 */
 
             // trying to download $server_file and save it to $local_file
             if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
-                throw new \Exception('Could not complete the operation');
+                //throw new \Exception('Could not complete the operation');
             }
         }
         // close connection
@@ -406,12 +407,13 @@ End of number 1 */
             $this->db->query("truncate table product")->execute();
         }
 
-        $pi = $this->extractNonEmptyImages($result->data);
+        $products = $this->extractNonEmptyImages($result->data);
 
-        $this->productImages->replace($pi);
+        $this->productImages->replace($products); // $products - products that have non empty array of images
 
-        foreach ($pi as $p) {
+        foreach ($products as $p) {
             try {
+                /** returns array of successfully downloaded images */
                 $this->fetchImages($p->images);
             } catch(\Exception $e) {
                 return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
@@ -419,12 +421,32 @@ End of number 1 */
         }
 
         foreach($result->data as $product) {
-            $arr = ['value_list'=>'', 'var_list'=>''];
+//            $arr = ['value_list'=>'', 'var_list'=>''];
+
+            $arr = $this->separatePredefined($product->characteristics);
 
             if(count($product->characteristics) > 0)
             {
-                $arr = $this->separatePredefined($product->characteristics);
+                $var_list = Json::decode($arr['var_list']);
+                
+                foreach ($var_list as $var) {
+                    if(!empty($var->value)) {
+                        $myuuid = Uuid::uuid4();
+                        $myid = md5($myuuid->toString());
+                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
+
+                        try {
+                            $q = $this->db->query($sql);
+                            $q->execute();
+                        }catch(InvalidQueryException $e){
+                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                        }
+                        $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
+                    }
+                }
+
             }
+
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr['value_list'], $arr['var_list'], $product->brand_id);
             try {
