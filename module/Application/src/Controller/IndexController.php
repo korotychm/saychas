@@ -129,7 +129,7 @@ class IndexController extends AbstractActionController
         $product_id=$this->params()->fromRoute('id', '');
         
         
-        $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
+        //$params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
        /* $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];*/
         $params['equal']=$product_id;
@@ -139,7 +139,7 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->filterProductsByStores($params);
         
         $productPage = $this->htmlProvider->productPage($products);
-                $categoryId= $productPage['categoryId'];
+        $categoryId= $productPage['categoryId'];
         
         //$categoty_id = $this->htmlProvider->productPage($products)->categoryId;
        //exit ($categoty_id);
@@ -152,11 +152,16 @@ class IndexController extends AbstractActionController
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         
         $filtrForCategory=$container->filtrForCategory;
+        
+        
+        //foreach ($characteristics as $char) {print_r($char); echo "-";} exit();
+        
         $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
         $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
         $bread = $this->htmlProvider->breadCrumbs($bread);
-         
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
+        
+        
         
         /*$categoryTree = $this->categoryRepository->findCategoryTree($category_id);
         //$categoryTree[] = $category_id;
@@ -217,11 +222,12 @@ class IndexController extends AbstractActionController
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
         $returnProductFilter.="ПП характеристики в категории: ". $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
+        
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
         catch (\Exception $e) {
-            $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=[];
+            $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
         }     
         
         

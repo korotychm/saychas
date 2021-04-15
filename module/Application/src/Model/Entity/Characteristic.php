@@ -34,7 +34,7 @@ class Characteristic
     /**
      * @var string, length=9
      */
-    private $categoryId;
+    private $category_id;
     
     /**
      * @var int
@@ -47,10 +47,16 @@ class Characteristic
     private $group;
     
     /**
-     * sortOrder
+     * sort_order
      * @var int
      */
-    private $sortOrder;
+    private $sort_order;
+    
+    /**
+     * val
+     * @var string
+     */
+    private $val;
 
     public function __construct($object) {
         $this->id = $object->id;
@@ -58,8 +64,9 @@ class Characteristic
         $this->type = $object->type;
         $this->filter = $object->filter;
         $this->group = $object->group;
-        $this->categoryId = $object->category_id;
-        $this->sortOrder = $object->sort_order;
+        $this->category_id = $object->category_id;
+        $this->sort_order = $object->sort_order;
+        $this->val = $object->val;
     }
     /**
      * Set characteristic id.
@@ -83,6 +90,15 @@ class Characteristic
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Get characteristic_value  value.
+     *
+     * @return string
+     */
+    public function getVal()
+    {
+        return $this->val;
     }
 
     /**
@@ -134,7 +150,7 @@ class Characteristic
     }
     
     /**
-     * Set categoryId.
+     * Set category_id.
      *
      * @param string, length=9
      *
@@ -142,19 +158,19 @@ class Characteristic
      */
     public function setCategoryId($categoryId)
     {
-        $this->categoryId = $categoryId;
+        $this->category_id = $categoryId;
 
         return $this;
     }
     
     /**
-     * Get type.
+     * Get category_id.
      *
      * @return string
      */
     public function getCategoryId()
     {
-        return $this->categoryId;
+        return $this->category_id;
     }
 
     /**
@@ -207,7 +223,7 @@ class Characteristic
     }
     
     /**
-     * Set sortOrder.
+     * Set sort_order.
      *
      * @param int $sortOrder
      *
@@ -215,7 +231,7 @@ class Characteristic
      */
     public function setSortOrder($sortOrder)
     {
-        $this->sortOrder = $sortOrder;
+        $this->sort_order = $sortOrder;
         return $this;
     }    
     
@@ -226,7 +242,7 @@ class Characteristic
      */
     public function getSortOrder()
     {
-        return $this->sortOrder;
+        return $this->sort_order;
     }
     
 }

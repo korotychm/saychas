@@ -194,7 +194,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 	margin:0; 
 	padding:0
 }
-.pw-contentblock .contentpadding { padding:10px 0; }
+.pw-contentblock .contentpadding { padding:10px; }
 /*.pw-contentblock .contentpadding * {max-width:100% }*/
 
 .pw-contentblock.cblock-1 { width: 99.5%;}

@@ -10,6 +10,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 
 class HtmlProviderServiceFactory implements FactoryInterface
 {
@@ -24,7 +25,8 @@ class HtmlProviderServiceFactory implements FactoryInterface
         $stockBalanceRepository = $container->get(StockBalanceRepositoryInterface::class);
         $providerRepository = $container->get(ProviderRepositoryInterface::class);
         $priceRepository = $container->get(PriceRepositoryInterface::class);
+        $characteristicRepository = $container->get(CharacteristicRepositoryInterface::class);
         
-        return new HtmlProviderService($stockBalanceRepository, $providerRepository, $priceRepository);
+        return new HtmlProviderService($stockBalanceRepository, $providerRepository, $priceRepository, $characteristicRepository);
     }
 }

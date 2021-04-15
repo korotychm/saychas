@@ -254,7 +254,7 @@ End of number 1 */
         //exit ($whereAppend);
 
         $w = new Where();
-        $w->in('s.id', $params['in']);
+        if($params['in']) $w->in('s.id', $params['in']);
 
 
         $sel = new Select();

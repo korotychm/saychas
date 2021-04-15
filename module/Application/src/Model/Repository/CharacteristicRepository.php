@@ -5,6 +5,8 @@ namespace Application\Model\Repository;
 
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
+use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
@@ -20,6 +22,7 @@ class CharacteristicRepository extends Repository  implements CharacteristicRepo
      * @var string
      */
     protected $tableName="characteristic";
+    protected $tableValuesName="characteristic_value";
 
     /**
      * @var Characteristic
@@ -49,6 +52,33 @@ class CharacteristicRepository extends Repository  implements CharacteristicRepo
     
     public const REFERENCE_TYPE = 4;
 
+    /**
+     * получаем массив характеристик
+     * @param type $list
+     * @return \Application\Model\Repository\HydratingResultSet
+     */
+    public function getCharacteristicFromList ($list=0)
+     {
+       $query = "SELECT `v`.`title` AS val, `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0, $list' ) ORDER BY `tit`.`sort_order` ";
+       //exit($query );
+       $result = $this->db->query($query)->execute();
+       //exit (print_r($result));
+       //SELECT     `val`.`title` AS val,     `tit`.* FROM     `characteristic` AS `tit` INNER JOIN     `characteristic_value` AS `val` ON     (`tit`.`id` = `val`.`characteristic_id`) WHERE     FIND_IN_SET(        `val`.`id`,        "000000001,000000002,000000003,000000004"    ) ORDER BY    `tit`.`sort_order`
+        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+             throw new \Exception('banzaii');
+        }
+        
+        $resultSet = new HydratingResultSet(
+            $this->hydrator,
+            $this->prototype
+        );
+        $resultSet->initialize($result);
+        
+        return $resultSet; 
+      }
+    
+    
+    
     /**
      * Adds given characteristic into it's repository
      * 

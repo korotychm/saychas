@@ -12,6 +12,7 @@ use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 
 class HtmlProviderService
 {
@@ -19,16 +20,19 @@ class HtmlProviderService
     private $stockBalanceRepository;
     private $providerRepository;
     private $priceRepository;
+    private $characteristicRepository;
 
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
             ProviderRepositoryInterface $providerRepository,
-            PriceRepositoryInterface $priceRepository
+            PriceRepositoryInterface $priceRepository,
+            CharacteristicRepositoryInterface $characteristicRepository
     )
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->providerRepository = $providerRepository;
         $this->priceRepository = $priceRepository;
+        $this->characteristicRepository = $characteristicRepository;
     }
 
     /**
@@ -99,12 +103,12 @@ class HtmlProviderService
             }
         }
 
-        $filters = array_diff($filters, array(''));
-        if(!empty($filters)) {
+        $filters = (count($filters))?array_diff($filters, array('')):$filters;
+        if(count($filters)) {
             $filters = array_unique($filters);
             
             $join = join(",", $filters);
-        } else $join="empty";
+        } else $join="";
         //$join=print_r($filters,true);*/
         $return->filter = $join;   
         $return->categoryId = "00000001";   
@@ -160,8 +164,14 @@ class HtmlProviderService
         if(!empty($filters)) {
             $filters = array_unique($filters);
             
-            $join = join("</li><li>", $filters);
-        } else $join="empty";
+            $join2 = join(",", $filters);
+            $characterictics= $this->characteristicRepository->getCharacteristicFromList($join2);
+            foreach ($characterictics as $char) 
+            {
+                $chars.="<li><b>{$char->getTitle()}</b>: {$char->getVal()}</li>";
+            }
+            $join =$chars;
+        } else $join="";
         //$join=print_r($filters,true);*/
         
         $j=0;
@@ -170,7 +180,7 @@ class HtmlProviderService
             
         
         
-        $return['filter'] = $join;   
+       // $return['filter'] = $join;   
         $return['title'] = $title;
         $return['categoryId'] = $categotyId;     
         //$return['categoryTitle'] =$category;
@@ -186,12 +196,12 @@ class HtmlProviderService
                             <div class='productpagecard ' >"     
                         //.     $speedlable
                         . "   <div class='content opacity" . $r . "'>"
-                        . "       <h2 class='blok price'>Цена: " . $cena . " &#8381;</h2>"
+                        . "       <h2 class='blok price'>   " . $cena . " &#8381;</h2>"
                         . "       <span class='blok'>Артикул: " . $vendor. "</span>"
                         . "       <span class='blok'>Торговая марка: " . $brand. "</span>"
                         . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
                         . "       <b><span class='blok'>Магазины</span></b><ul><li>".join("</li><li>",$stors)."</li></ul>"
-                        . "       <b><span class='blok'>Характеристики</span></b><ul><li>$join</li></ul>"
+                        . "       <b><span class='blok'>Характеристики</span></b><ul><li>$join $join2</li></ul>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         
                         . "   </div>"
                         . "</div>"
