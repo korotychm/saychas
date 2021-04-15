@@ -383,7 +383,7 @@ End of number 1 */
 
             // trying to download $server_file and save it to $local_file
             if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
-                throw new \Exception('Could not complete the operation');
+                //throw new \Exception('Could not complete the operation');
             }
         }
         // close connection
