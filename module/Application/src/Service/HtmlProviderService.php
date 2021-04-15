@@ -73,7 +73,7 @@ class HtmlProviderService
             $legalStore = $container->legalStore;
             $filtrForCategory = $container->filtrForCategory;
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
-            $rest = $this->stockBalanceRepository->find(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
+            $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
             ($timeDelevery and $r) ? $speedlable = "<div class=speedlable>$timeDelevery" . "ч</div>" : $speedlable = ""; 
                 
@@ -130,7 +130,7 @@ class HtmlProviderService
             
             $filtrForCategory = $container->filtrForCategory;
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
-            $rest = $this->stockBalanceRepository->find(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
+            $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
             ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$timeDelevery" . "ч</b>" : $speedlable = ""; 
                 $filtersTmp = explode(",", $product->getParamValueList());
