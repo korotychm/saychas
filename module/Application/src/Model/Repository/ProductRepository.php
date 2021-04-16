@@ -425,6 +425,23 @@ End of number 1 */
             $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
         }
     }
+    
+    private function updateCharacteristicsValueList($product) : array
+    {
+        $arr = $this->separateCharacteristics($product->characteristics);
+
+        if(count($product->characteristics) > 0)
+        {
+            $var_list = Json::decode($arr['var_list']);
+            try {
+                $this->replaceCharacteristicsFromList($arr, $var_list);
+            }catch(InvalidQueryException $e){
+                return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
+            }
+        }
+        
+        return $arr;
+    }
 
     /**
      * Adds given product into it's repository
@@ -486,13 +503,15 @@ End of number 1 */
                 try {
                     $this->replaceCharacteristicsFromList($arr, $var_list);
                 }catch(InvalidQueryException $e){
-                    return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                    return ['result' => false, 'description' => "error executing sql statement. ".$e->getMessage(), 'statusCode' => 418];
                 }
 
             }
+            
+            $arr1 = $this->updateCharacteristicsValueList($product);
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr['value_list'], $arr['var_list'], $product->brand_id);
+                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
