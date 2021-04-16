@@ -16,7 +16,7 @@ class Entity
     public function __set($name, $value)
     {
         if (isset($this->$name)) {
-            $this->title = $value;
+            $this->$name = $value;
         }
     }
 }

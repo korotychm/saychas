@@ -3,27 +3,27 @@
 
 namespace Application\Model\Entity;
 
-class Provider
+class Provider extends Entity
 {
     /**
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string | null
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string | null
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string | null
      */
-    private $icon;
+    protected $icon;
 
 
     /**

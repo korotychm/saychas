@@ -334,7 +334,7 @@ class MyTestController extends AbstractActionController
         
         $this->layout()->setTemplate('layout/mainpage');
         
-//        $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
+        $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
 //        $brands = $this->brandRepository->findAll([]);
 //        $characteristics = $this->characteristicRepository->findAll([]);
         $products = $this->productRepository->findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC', 'store_filter' => ['000000003', '000000004', '000000005', '000000001', '000000002'] ]);
@@ -356,7 +356,7 @@ class MyTestController extends AbstractActionController
 
         echo '---<br/>Store, function: findAll <br/>';
         foreach ($stores as $store) {
-            echo $store->getId().' '.$store->getTitle(). '<br/>';
+            echo $store->getId().' store title = '.$store->getTitle() . ' property title: ' . $store->title . '<br/>';
         }
         echo '---<br/>Brand, function: findAll <hr/>';
         foreach ($brands as $brand) {
@@ -368,9 +368,7 @@ class MyTestController extends AbstractActionController
         }
         echo '---<br/>Product, function: findAll <hr/>';
         foreach ($products as $product) {
-//            echo '<pre>';
-//            print_r($product);
-//            echo '</pre>';
+//            $product->vendor_code = $product->vendor_code . ' banzaii';
             echo $product->getId().' '.$product->getTitle(). ' property: ' . $product->title . ' vendor_code: '. $product->vendor_code . '<br/>';
         }
         echo '---<br/>Price, function: findAll <hr/>';
@@ -391,7 +389,7 @@ class MyTestController extends AbstractActionController
         }
         echo '---<br/>Providers, function: findAvailableProviders <hr/>';
         foreach ($providers as $provider) {
-            echo $provider->getId().' '.$provider->getTitle().' ' . $provider->getDescription().'<br/>';
+            echo $provider->getId().' '.$provider->getTitle().' ' . $provider->getDescription(). ' property title: ' .$provider->title . '<br/>';
         }
         echo '---<br/>Providers2, function: findAll <hr/>';
         foreach ($providers2 as $provider2) {

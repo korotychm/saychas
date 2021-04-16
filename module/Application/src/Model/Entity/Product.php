@@ -11,7 +11,7 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="product")
  * @ORM\Entity
  */
-class Product
+class Product extends Entity
 {
     /**
      * @var int
@@ -20,86 +20,89 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var int
      *
      * @ORM\Column(name="provider_id", type="integer", nullable=false)
      */
-    private $provider_id;
+    protected $provider_id;
 
     /**
      * @var int
      *
      * @ORM\Column(name="category_id", type="integer", nullable=false)
      */
-    private $category_id;
+    protected $category_id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      *
      * @ORM\Column(name="vendor_code", type="string", length=11, nullable=false)
      */
-    private $vendor_code;
+    protected $vendor_code;
 
     /**
      * @var int
      */
-    private $price;
+    protected $price;
 
 
     /**
      * @var int
      */
-    private $rest;
+    protected $rest;
     
     /**
      * @var string
      */
-    private $http_url;
+    protected $http_url;
 
     /**
      * @var string
      */
-    private $brand_title;
+    protected $brand_title;
 
     /**
      * @var string, length=9
      */
-    private $store_id;
+    protected $store_id;
     
     /**
      * @var string
      */
-    private $store_title;
-    
-    private $product_title;
+    protected $store_title;
     
     /**
      * @var string
      */
-    private $param_value_list;
+    protected $product_title;
+    
+    /**
+     * @var string
+     */
+    protected $param_value_list;
     
     
     /**
      * @var string (json)
      */
-    private $param_variable_list;
+    protected $param_variable_list;
     
     
           /*. "       <span class='blok'>Хар/List: " . $product->getParamValueList() . "</span>"
@@ -109,12 +112,10 @@ class Product
         return $this->param_value_list;
     }
     
-     public function getParamVariableList2()
+    public function getParamVariableList2()
     {
         return $this->param_variable_list;
     }
-    
-    
     
     public function getProductTitle()
     {
