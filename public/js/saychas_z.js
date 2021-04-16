@@ -46,11 +46,11 @@ $(function () {
 
     })
     $(".searchpanelclose").click(function () {
-        $("#searchpanel").hide();
+        $("#searchpanel").stop().css({top: "-100px"});
         $("#uadress").show();
     })
     $(".open-user-address-form").click(function () {
-          $("#searchpanel").slideDown();
+          $("#searchpanel").stop().animate({top: "10px"});
         $("#uadress").hide();
     })
     $("#tree22").treeview({
@@ -259,7 +259,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2") {
         success: function (data) {
             if (data == "200") {
                 $(".errorblock").hide();
-                $("#searchpanel").hide();
+                $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
                 window.location.href = window.location.href;
                 return setUserAddrees();

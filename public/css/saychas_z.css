@@ -19,7 +19,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 }
 #searchpanel {
     
-    margin-bottom:10px;  width:450px; vertical-align:top;   position:relative; 
+    margin-bottom:10px;  width:100%; max-width:450px; vertical-align:top;  position:absolute; top:-100px; 
     /*display:block; 
     position:fixed; 
     top:0px; 
