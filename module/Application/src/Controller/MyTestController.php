@@ -338,6 +338,10 @@ class MyTestController extends AbstractActionController
 //        $brands = $this->brandRepository->findAll([]);
 //        $characteristics = $this->characteristicRepository->findAll([]);
         $products = $this->productRepository->findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC', 'store_filter' => ['000000003', '000000004', '000000005', '000000001', '000000002'] ]);
+//        echo '<pre>';
+//        print_r($products);
+//        echo '</pre>';
+//        exit;
         $prices = $this->priceRepository->findAll(['table'=>'price']);
         $stockBalances = $this->stockBalanceRepository->findAll(['table'=>'stock_balance']);
         $filteredProducts = $this->filteredProductRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000005', '000000004']]);//filterProductsByStores(['000000005', '000000004']);
@@ -364,7 +368,10 @@ class MyTestController extends AbstractActionController
         }
         echo '---<br/>Product, function: findAll <hr/>';
         foreach ($products as $product) {
-            echo $product->getId().' '.$product->getTitle(). '<br/>';
+//            echo '<pre>';
+//            print_r($product);
+//            echo '</pre>';
+            echo $product->getId().' '.$product->getTitle(). ' property: ' . $product->title . ' vendor_code: '. $product->vendor_code . '<br/>';
         }
         echo '---<br/>Price, function: findAll <hr/>';
         foreach ($prices as $price) {

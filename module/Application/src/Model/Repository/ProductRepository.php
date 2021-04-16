@@ -334,7 +334,7 @@ End of number 1 */
         return $filteredProducts;
     }
 
-    private function separatePredefined(array $characteristics)
+    private function separateCharacteristics(array $characteristics)
     {
         $value_list = [];
         $var_list = [];
@@ -390,6 +390,11 @@ End of number 1 */
         ftp_close($conn_id);
     }
 
+    /**
+     * Replace product characteristic
+     * @param type $characteristic
+     * @return string
+     */
     private function replaceCharacteristic($characteristic)
     {
         if(!empty($characteristic->value)) {
@@ -406,6 +411,13 @@ End of number 1 */
 
     }
 
+    /**
+     * Replace product characteristics from $var_list.
+     * Put the result in $arr[value_list].
+     * 
+     * @param array $arr
+     * @param array $var_list
+     */
     private function replaceCharacteristicsFromList(array &$arr, array $var_list)
     {
         foreach ($var_list as $var) {
@@ -444,18 +456,15 @@ End of number 1 */
             }
         }
 
+        /** $result->data - products */
         foreach($result->data as $product) {
-//            $arr = ['value_list'=>'', 'var_list'=>''];
 
-            $arr = $this->separatePredefined($product->characteristics);
-
-//            print_r($arr);
-//            echo "\n====================\n";
+            $arr = $this->separateCharacteristics($product->characteristics);
 
             if(count($product->characteristics) > 0)
             {
                 $var_list = Json::decode($arr['var_list']);
-
+/**
 //                foreach ($var_list as $var) {
 //                    if(!empty($var->value)) {
 //                        $myuuid = Uuid::uuid4();
@@ -473,11 +482,12 @@ End of number 1 */
 //                    $v = $this->replaceCharacteristic($var);
 //                    $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
 //                }
-
-                $this->replaceCharacteristicsFromList($arr, $var_list);
-
-//                print_r($arr);
-//                continue;
+*/
+                try {
+                    $this->replaceCharacteristicsFromList($arr, $var_list);
+                }catch(InvalidQueryException $e){
+                    return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                }
 
             }
 
