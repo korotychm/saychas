@@ -75,38 +75,5 @@ class ReceivingController extends AbstractActionController
 
         return new JsonModel($answer);
     }
-    
-//    public function receiveCharacteristicAction()
-//    {
-//        $request = $this->getRequest();
-//        
-//        $content = $request->getContent();
-//
-//        if($request->isDelete()) {
-//            // Perform delete action
-//
-//            $response = $this->getResponse();
-//
-//            $response->setStatusCode(405);
-//
-//            $answer = ['result' => true, 'description' => ''];
-//
-//            return new JsonModel($answer);
-//        }
-//        
-//        try {
-//            $result = Json::decode($content);
-//            $characteristic = new Model\Entity\Characteristic($result->data[1]);
-//            print_r($characteristic);
-//            print_r($result);
-//            exit;
-//        }catch(LaminasJsonRuntimeException $e){
-//           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-//        }
-//        
-//        return new JsonModel($content);
-//        
-//        
-//    }
 
 }
