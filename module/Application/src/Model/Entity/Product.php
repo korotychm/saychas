@@ -104,9 +104,10 @@ class Product extends Entity
      */
     protected $param_variable_list;
     
-    
-          /*. "       <span class='blok'>Хар/List: " . $product->getParamValueList() . "</span>"
-            . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList() . "</span>" */
+
+    /**
+     * @return string
+     */
     public function getParamValueList2()
     {
         return $this->param_value_list;
@@ -272,42 +273,42 @@ class Product extends Entity
      *
      * @ORM\Column(name="param_value_list", type="text", length=65535, nullable=false)
      */
-    private $paramValueList;
+//    private $paramValueList;
 
     /**
      * @var string
      *
      * @ORM\Column(name="param_variable_list", type="text", nullable=false)
      */
-    private $paramVariableList;
+    //private $paramVariableList;
 
 
     /**
      * Set paramValueList.
      *
-     * @param string $paramValueList
+     * @param string $param_value_list
      *
      * @return Product
      */
     public function setParamValueList($paramValueList)
     {
-        $this->paramValueList = $paramValueList;
+        $this->param_value_list = $paramValueList;
 
         return $this;
     }
 
     /**
-     * Get paramValueList.
+     * Get param_value_list.
      *
      * @return string
      */
     public function getParamValueList()
     {
-        return $this->paramValueList;
+        return $this->param_value_list;
     }
 
     /**
-     * Set paramVariableList.
+     * Set param_variable_list.
      *
      * @param string $paramVariableList
      *
@@ -315,7 +316,7 @@ class Product extends Entity
      */
     public function setParamVariableList($paramVariableList)
     {
-        $this->paramVariableList = $paramVariableList;
+        $this->param_variable_list = $paramVariableList;
 
         return $this;
     }
