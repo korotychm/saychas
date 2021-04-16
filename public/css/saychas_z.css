@@ -234,8 +234,8 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .product-page-image  {max-width:100px ; cursor:pointer; border:2px solid #fff;}
 .product-page-image.productimage0  {max-width:100%; border:none }
 .borderred {border-color:#f62 }
-img.zero {
+img.zero, .zeroblok {
     width:700px;  max-width:100%;
-        background:url(/img/zero.png) center no-repeat ;
+        background:url('/img/no-ph.jpg') center no-repeat ;   
         background-size: contain
 }
