@@ -72,13 +72,16 @@ class Store extends Entity
     protected $icon;
 
 
-    public function __get($name)
-    {
-        if (isset($this->$name)) {
-            return ' overridden ' . $this->$name;
-        }
-        return null;
-    }
+//    public function __get($name)
+//    {
+//        if (isset($this->$name)) {
+//            if('title' == $name) {
+//                $this->title = ' overridden ' . $this->$name;
+//            }
+//            return $this->$name;
+//        }
+//        return null;
+//    }
     
     /**
      * Get id.
