@@ -11,7 +11,7 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="store")
  * @ORM\Entity
  */
-class Store
+class Store extends Entity
 {
     /**
      * @var int
@@ -20,58 +20,66 @@ class Store
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="provider_id", type="string", length=11, nullable=false)
      */
-    private $provider_id;
+    protected $provider_id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      *
      * @ORM\Column(name="address", type="text", length=65535, nullable=false)
      */
-    private $address;
+    protected $address;
 
     /**
      * @var string
      *
      * @ORM\Column(name="geox", type="text", length=65535, nullable=false)
      */
-    private $geox;
+    protected $geox;
 
     /**
      * @var string
      *
      * @ORM\Column(name="geoy", type="text", length=65535, nullable=false)
      */
-    private $geoy;
+    protected $geoy;
 
     /**
      * @var string
      *
      * @ORM\Column(name="icon", type="text", length=65535, nullable=false)
      */
-    private $icon;
+    protected $icon;
 
 
+    public function __get($name)
+    {
+        if (isset($this->$name)) {
+            return ' overridden ' . $this->$name;
+        }
+        return null;
+    }
+    
     /**
      * Get id.
      *
