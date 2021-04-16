@@ -46,36 +46,50 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
      * @param array $images
      * @throws Exception
      */
-//    public function fetch(array $images)
-//    {
-//        $ftp_server = "nas01.saychas.office";
-//        $username = "1C";
-//        $password = "ree7EC2A";
-//
-//        // perform connection
-//        $conn_id = ftp_connect($ftp_server);
-//        $login_result = ftp_login($conn_id, $username, $password);
-//        if( (!$conn_id) || (!$login_result)) {
-//            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user '.$username.'.');
-//        }
-//
-//        foreach($images as $image) {
-//            $local_file = realpath($this->catalogToSaveImages)."/".$image;
-//            $server_file = "/1CMEDIA/PhotoTovarov/".$image;
-//
-//            // trying to download $server_file and save it to $local_file
-//            if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
-//                throw new \Exception('Could not complete the operation');
-//            }
-//        }
-//        // close connection
-//        ftp_close($conn_id);
-//    }
-//    
-//    public function fetchAll()
-//    {
-//        
-//    }
+    public function fetch(array $images)
+    {
+        $ftp_server = "nas01.saychas.office";
+        $username = "1C";
+        $password = "ree7EC2A";
+
+        // perform connection
+        $conn_id = ftp_connect($ftp_server);
+        $login_result = ftp_login($conn_id, $username, $password);
+        if( (!$conn_id) || (!$login_result)) {
+            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user '.$username.'.');
+        }
+
+        foreach($images as $image) {
+            $local_file = realpath($this->catalogToSaveImages)."/".$image;
+            $server_file = "/1CMEDIA/PhotoTovarov/".$image;
+
+            // trying to download $server_file and save it to $local_file
+            if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
+                throw new \Exception('Could not complete the operation');
+            }
+        }
+        // close connection
+        ftp_close($conn_id);
+    }
+
+    /**
+     * Fetches all images for array of products
+     * @param array $products
+     * @return array
+     */
+    public function fetchAll(array $products) : array
+    {
+        /** @var Product[] */
+        foreach ($products as $p) {
+            try {
+                /** returns array of successfully downloaded images */
+                $this->fetch($p->images);
+            } catch(\Exception $e) {
+                return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+            }
+        }
+        return [];
+    }
     
     /**
      * Adds given product image into it's repository
@@ -89,12 +103,6 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
                 $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `http_url`, `sort_order`) VALUES ( '%s', '%s', '%s', %u )",
                         $product->id, $image, $image, 0);
                 try {
-                    //'SELECT * FROM `artist` WHERE `id` = ?', [5]
-//                    $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `sort_order`) VALUES ( '%s', '%s', %u )",
-//                        $product->id, $image, '', 0);
-                    
-//                    print_r($sql);
-//                    continue;
                     $query = $this->db->query($sql);
                     $query->execute();
                 }catch(Exception $e){
