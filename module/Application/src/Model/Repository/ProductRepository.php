@@ -303,7 +303,7 @@ End of number 1 */
         if ($params['limit']) { $select->limit($params['limit']); }
         if ($params['offset']) { $select->offset($params['offset']); }
         /** End of number 2 */
-        
+
         //$selString = $sql->buildSqlString($select);        exit($selString);         //;
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
@@ -389,7 +389,7 @@ End of number 1 */
         // close connection
         ftp_close($conn_id);
     }
-    
+
     private function replaceCharacteristic($characteristic)
     {
         if(!empty($characteristic->value)) {
@@ -397,20 +397,21 @@ End of number 1 */
             $myid = md5($myuuid->toString());
             $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
 
-//            $q = $this->db->query($sql);
-//            $q->execute();
+            $q = $this->db->query($sql);
+            $q->execute();
+
             return $myid;
         }
         return '';
-        
+
     }
-    
+
     private function replaceCharacteristicsFromList(array &$arr, array $var_list)
     {
         foreach ($var_list as $var) {
             $v = $this->replaceCharacteristic($var);
             $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
-        }        
+        }
     }
 
     /**
@@ -450,11 +451,11 @@ End of number 1 */
 
 //            print_r($arr);
 //            echo "\n====================\n";
- 
+
             if(count($product->characteristics) > 0)
             {
                 $var_list = Json::decode($arr['var_list']);
-                
+
 //                foreach ($var_list as $var) {
 //                    if(!empty($var->value)) {
 //                        $myuuid = Uuid::uuid4();
@@ -472,9 +473,9 @@ End of number 1 */
 //                    $v = $this->replaceCharacteristic($var);
 //                    $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
 //                }
-                
+
                 $this->replaceCharacteristicsFromList($arr, $var_list);
-                
+
 //                print_r($arr);
 //                continue;
 
