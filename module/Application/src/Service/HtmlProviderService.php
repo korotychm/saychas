@@ -79,7 +79,9 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
+            
             $_id = $product->getId();  
+            $_return[$_id]['rest']+=$r ;
             $_return[$_id]['id']=$_id;
             $_return[$_id]['imageurl'] = $product->getHttpUrl();
             if (!$_return[$_id]['speedlable']  and $timeDelevery ) $_return[$_id]['speedlable'] =  "<div class=speedlable>$timeDelevery" . "ч</div>"; 
@@ -91,19 +93,21 @@ class HtmlProviderService
             $_return[$_id]['cena'] = $cena;
             
             
-            //if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$r)) {
+            
                 
             //}
         }
         
         if ($_return) foreach ($_return as $Card){   
             
+        if (!($filtrForCategory[$category_id]['hasRestOnly'] and !$Card['rest']) and !empty($Card)) {            
             
             $return['card'] .= "<div class='productcard ' >"
                     .     $Card['speedlable']
-                    . "   <div class='content'>"
+                    . "   <div class='content opacity".$Card['rest']."'>"
                     . "<a  href='/product/".$Card['id']."' >"
-                    . "       <img src='/images/product/".(($Card['image'])?$Card['image']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    //. "       <img src='/images/product/"' alt='alt' class='productimage'/>"
+                        . "       <img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/".(($Card['image'])?$Card['image']:"nophoto_1.jpeg").")'/>"
                     . "</a>"
                     . "       <strong class='blok producttitle'><a  href='/product/".$Card['id']."' >" . $Card['title'] . "</a></strong>" 
                         //. "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
@@ -112,12 +116,13 @@ class HtmlProviderService
                     . "       <span class='blok'>Торговая марка: " .$Card['brand']  . "</span>"
                       //  . "       <span class='blok'>Хар/List: " . $product->getParamValueList2() . "</span>"
     //                    . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList2() . "</span>"
-                        //. "       <span class='blok'>Остаток: " . $r . "</span>"
+//                        . "       <span class='blok'>Остаток: " . $Card['rest'] . "</span>"
                         //. "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         
                     . "       <span class='blok price'>Цена: " . $Card['cena'] . " &#8381;</span>"
                     . "   </div>"
-                    . "</div>";
+                       . "</div>";
+       }
     }
         
 
