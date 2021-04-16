@@ -107,7 +107,7 @@ class HtmlProviderService
                     . "   <div class='content opacity".$Card['rest']."'>"
                     . "<a  href='/product/".$Card['id']."' >"
                     //. "       <img src='/images/product/"' alt='alt' class='productimage'/>"
-                        . "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/".(($Card['image'])?$Card['image']:"nophoto_1.jpeg").")'/></div>"
+                        . "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/".(($Card['image'])?$Card['image']:"nophoto_1.jpeg").")'/></div>"   
                     . "</a>"
                     . "       <strong class='blok producttitle'><a  href='/product/".$Card['id']."' >" . $Card['title'] . "</a></strong>" 
                         //. "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
