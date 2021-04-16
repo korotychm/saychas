@@ -50,7 +50,7 @@ $(function () {
         $("#uadress").show();
     })
     $(".open-user-address-form").click(function () {
-          $("#searchpanel").stop().animate({top: "10px"});
+          $("#searchpanel").stop().animate({top: "0px"});
         $("#uadress").hide();
     })
     $("#tree22").treeview({
