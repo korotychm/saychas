@@ -296,7 +296,7 @@ End of number 1 */
                         'ss.provider_id = pr.provider_id',
                         ['store_id'=>'id', 'store_title'=>'title'],
                         $select::JOIN_LEFT
-                )->where('ss.id is not null '.$whereAppend );
+                )->where('1 '.$whereAppend ); //ss.id is not null
 
 
         if ($params['order']) { $select->order($params['order']); }

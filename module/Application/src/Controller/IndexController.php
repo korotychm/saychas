@@ -220,7 +220,7 @@ class IndexController extends AbstractActionController
         //$params['limit']=4;
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        $returnProduct.= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;
+        $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
         //$returnProductFilter.="ПП характеристики в категории: ". $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
         
         try {

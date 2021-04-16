@@ -21,11 +21,14 @@
     </head>
     <body>
         <div class="overcover"></div>
-        <div id=searchpanel style="display:none" >
-            <div class=searchpanelclose></div>
-            <div class=searchpanel>
-		<div class=searchpanelcont>
-                    <DIV  style=" margin-bottom:10px;  width:70%; " class="iblokl">         
+   	
+        <div id="header" class="blokc">   
+            <div id="head">
+                <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
+            <div class="iblok" id="logo" ></div>
+            <!-- span class="" style="border:1px solid red" -->
+                 
+                    <DIV  style="display:none" class="iblokl" id="searchpanel">         
                         <input type=text 
                                 id='useraddress'  
                                placeholder='Укажи адрес доставки'   
@@ -34,16 +37,9 @@
                                class='pn-text iblok' 
                         />
                         <div id="useradesserror" class="errorblock none"></div>
-                    </DIV>
-		</div>		
-            </div>
-        </div>	
-        <div id="header" class="blokc">   
-            <div id="head">
-                <!-- div id="mobile_nav_icon"><div class="mobile_nav_icon"></div></div -->
-            <div class="iblok" id="logo" ></div>
-            <!-- span class="" style="border:1px solid red" -->
-                <div class='geo16 open-user-address-form user_address_set' ><?=$userAddressHtml?></div>
+                    <div class="searchpanelclose"></div></DIV>
+		  
+            <div class='geo16 open-user-address-form user_address_set' id="uadress" ><?=$userAddressHtml?></div>
              <div class="iblok"><?= $this->addressform ?></div>
                 <div style='float:right'>
                    <a class="navlink " href="<?= $this->url('home') ?>">Home</a>

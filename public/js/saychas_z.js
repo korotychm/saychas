@@ -45,8 +45,13 @@ $(function () {
 
 
     })
-    $(".open-user-address-form, .searchpanelclose").click(function () {
-        $("#searchpanel").slideToggle()
+    $(".searchpanelclose").click(function () {
+        $("#searchpanel").slideUp();
+        $("#uadress").show();
+    })
+    $(".open-user-address-form").click(function () {
+          $("#searchpanel").slideDown();
+        $("#uadress").hide();
     })
     $("#tree22").treeview({
         persist: "location",
@@ -255,6 +260,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2") {
             if (data == "200") {
                 $(".errorblock").hide();
                 $("#searchpanel").slideUp();
+                $("#uadress").show();
                 window.location.href = window.location.href;
                 return setUserAddrees();
             }

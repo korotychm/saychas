@@ -50,7 +50,7 @@ class HtmlProviderService
      */
     public function breadCrumbs($a = [])
     {
-        if (count($a)):
+        if ($a and count($a)):
             //<span class='bread-crumbs-item'></span>"
             $return[] = "Каталог";
             $a = array_reverse($a);
@@ -67,7 +67,7 @@ class HtmlProviderService
      */
     public function productCard($filteredProducts, $category_id = 0)
     {
-        $return = ""; // new $return; 
+        $return = []; // new $return; 
         $filters = [];
         foreach ($filteredProducts as $product) {
             $cena = (int) $product->getPrice();
@@ -96,9 +96,10 @@ class HtmlProviderService
             //}
         }
         
-        foreach ($_return as $Card){   
+        if ($_return) foreach ($_return as $Card){   
             
-            $return->card .= "<div class='productcard ' >"
+            
+            $return['card'] .= "<div class='productcard ' >"
                     .     $Card['speedlable']
                     . "   <div class='content'>"
                     . "<a  href='/product/".$Card['id']."' >"
@@ -127,8 +128,8 @@ class HtmlProviderService
             $join = join(",", $filters);
         } else $join="";
         //$join=print_r($filters,true);*/
-        $return->filter = $join;   
-        $return->categoryId = "00000001";   
+        $return['filter'] = $join;   
+        $return['categoryId'] = "00000001";   
         return $return;
     }
     
@@ -183,7 +184,7 @@ class HtmlProviderService
             $filters = array_unique($filters);
             
             $join2 = join(",", $filters);
-            $characterictics= $this->characteristicRepository->getCharacteristicFromList($join2);
+            if($characterictics= $this->characteristicRepository->getCharacteristicFromList($join2))
             foreach ($characterictics as $char) 
             {
                 $chars.="<li><em>{$char->getTitle()}</em    >: {$char->getVal()}</li>";
