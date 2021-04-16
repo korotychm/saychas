@@ -79,29 +79,46 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
-            ($timeDelevery and $r) ? $speedlable = "<div class=speedlable>$timeDelevery" . "ч</div>" : $speedlable = ""; 
-                
+            $_id = $product->getId();  
+            $_return[$_id]['id']=$_id;
+            $_return[$_id]['imageurl'] = $product->getHttpUrl();
+            if (!$_return[$_id]['speedlable']  and $timeDelevery ) $_return[$_id]['speedlable'] =  "<div class=speedlable>$timeDelevery" . "ч</div>"; 
+             if(!$_return[$_id]['image'] and $imageurl=$product->getHttpUrl())$_return[$_id]['image'] =$imageurl;
+            $_return[$_id]['brand'] = $product->getBrandTitle();
+            $_return[$_id]['price'] = $cena;
+            $_return[$_id]['art'] =  $product->getVendorCode() ;
+            $_return[$_id]['title'] =  $product->getTitle();
+            $_return[$_id]['cena'] = $cena;
             
-            if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$r)) {
-                $return->card .= "<div class='productcard ' >"
-                        .     $speedlable
-                        . "   <div class='content opacity" . $r . "'>"
-                        . "       <img src='/images/product/" . (($product->getHttpUrl()) ? $product->getHttpUrl() : "nophoto_1.jpeg") . "' alt='alt' class='productimage'/>"
-                        . "       <strong class='blok producttitle'><a  href=/product/{$product->getId()}   >" . $product->getTitle() . "</a></strong>" 
+            
+            //if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$r)) {
+                
+            //}
+        }
+        
+        foreach ($_return as $Card){   
+            
+            $return->card .= "<div class='productcard ' >"
+                    .     $Card['speedlable']
+                    . "   <div class='content'>"
+                    . "<a  href='/product/".$Card['id']."' >"
+                    . "       <img src='/images/product/".(($Card['image'])?$Card['image']:"nophoto_1.jpeg")."' alt='alt' class='productimage'/>"
+                    . "</a>"
+                    . "       <strong class='blok producttitle'><a  href='/product/".$Card['id']."' >" . $Card['title'] . "</a></strong>" 
                         //. "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
-                        . "       <span class='blok'>Id: " . $product->getId() . "</span>"
-                        . "       <span class='blok'>Артикул: " . $product->getVendorCode() . "</span>"
-                        . "       <span class='blok'>Торговая марка: " . $product->getBrandTitle() . "</span>"
+                        //. "       <span class='blok'>Id: " . $product->getId() . "</span>"
+                    . "       <span class='blok'>Артикул: " .$Card['art']. "</span>"
+                    . "       <span class='blok'>Торговая марка: " .$Card['brand']  . "</span>"
                       //  . "       <span class='blok'>Хар/List: " . $product->getParamValueList2() . "</span>"
     //                    . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList2() . "</span>"
-                        . "       <span class='blok'>Остаток: " . $r . "</span>"
-                        . "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
+                        //. "       <span class='blok'>Остаток: " . $r . "</span>"
+                        //. "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         
-                        . "       <span class='blok price'>Цена: " . $cena . " &#8381;</span>"
-                        . "   </div>"
-                        . "</div>";
-            }
-        }
+                    . "       <span class='blok price'>Цена: " . $Card['cena'] . " &#8381;</span>"
+                    . "   </div>"
+                    . "</div>";
+    }
+        
 
         $filters = (count($filters))?array_diff($filters, array('')):$filters;
         if(count($filters)) {
@@ -202,11 +219,11 @@ class HtmlProviderService
                         . "       <span class='blok'>Артикул: " . $vendor. "</span>"
                         . "       <span class='blok'>Торговая марка: " . $brand. "</span>"
                         . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
-                        . "       <b><span class='blok'>Магазины</span></b><ul><li>".join("</li><li>",$stors)."</li></ul>"
-                        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join</ul>"        
-                        . "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
+                        . "       <b><span class='blok'>Магазины</span></b><ul><li>".join("</li><li>",$stors)."</li></ul>";
+        $return['card'] .=($join)?"<b><span class='blok'>Характеристики</span></b><ul>$join</ul>":"";        
+                        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
                         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"                         
-                        . "   </div>"
+        $return['card'] .= "   </div>"
                         . "</div>"
                         . "</div>"    
                         . "</div>    ";
@@ -214,7 +231,7 @@ class HtmlProviderService
         
         
        // exit(print_r($return));
-        
+                    
           return $return;
     }
     
