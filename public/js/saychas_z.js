@@ -46,7 +46,7 @@ $(function () {
 
     })
     $(".searchpanelclose").click(function () {
-        $("#searchpanel").slideUp();
+        $("#searchpanel").hide();
         $("#uadress").show();
     })
     $(".open-user-address-form").click(function () {
@@ -259,7 +259,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2") {
         success: function (data) {
             if (data == "200") {
                 $(".errorblock").hide();
-                $("#searchpanel").slideUp();
+                $("#searchpanel").hide();
                 $("#uadress").show();
                 window.location.href = window.location.href;
                 return setUserAddrees();
