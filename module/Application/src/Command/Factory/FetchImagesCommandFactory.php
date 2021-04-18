@@ -4,9 +4,9 @@
 namespace Application\Command\Factory;
 
 use Interop\Container\ContainerInterface;
-use Application\Command\FetchImagesCommand;
+//use Application\Command\FetchImagesCommand;
 //use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Adapter;
+//use Laminas\Db\Adapter\Adapter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class FetchImagesCommandFactory implements FactoryInterface
@@ -27,7 +27,7 @@ class FetchImagesCommandFactory implements FactoryInterface
 //            'password' => 'saychas_z',
 //        ]);
         
-        return new FetchImagesCommand(
+        return new $requestedName( // new FetchImagesCommand(
             $adapter,
             $requestedName
         );

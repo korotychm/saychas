@@ -363,10 +363,10 @@ class MyTestController extends AbstractActionController
         echo '---<br/>Product, function: findAll <hr/>';
         foreach ($products as $product) {
 //            $product->vendor_code = $product->vendor_code . ' banzaii';
-            echo '<pre>';
-            print_r($product);
-            echo '</pre>';
-            exit;
+//            echo '<pre>';
+//            print_r($product);
+//            echo '</pre>';
+//            exit;
             echo $product->getId().' '.$product->getTitle(). ' property: ' . $product->title . ' vendor_code: '. $product->vendor_code . '<br/>';
         }
         echo '---<br/>Price, function: findAll <hr/>';
