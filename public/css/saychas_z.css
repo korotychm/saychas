@@ -129,13 +129,13 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     color:#f62;
 
 }
-#filtrform  {display:block; text-align:right; position:relative; z-index:20 }
+#filtrform  {display:block; text-align:left; position:relative; z-index:20 }
 #filtrform .iblok {margin: 6px; vertical-align:middle; }
 #filtrform select {border:1px solid #ccc; border-radius:4px; padding:8px 12px;  }
 
 .filterblock  { display:block;  position:relative;    z-index:50;}
 .ifilterblock  {
-    float:left; 
+    display:inline-block; vertical-align:top;
     position:relative; 
     /* z-index:10;*/
      box-shadow: 2px 2px 7px  rgba(0,0,0,0); 
@@ -154,6 +154,20 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     display:inline-block; 
     white-space: nowrap ;
 }
+.filtritemtitle div.count {
+     dispaly:inline-block; 
+    position:absolute; 
+   /* width:15px; */
+    /*height:22px;*/
+    top:-5px; right:5px; 
+    padding:3px; 
+    font-size:10px; font-weight:bolder; line-height:.5em        ; text-align:center;
+    background:#f62;
+    border:3px solid #f62; border-radius:50%;
+    color:#fff;
+    
+    
+} 
 .closefilteritem {
      background:url("/img/arrup.png") right no-repeat; 
      margin-right:0;
@@ -238,4 +252,6 @@ img.zero, .zeroblok {
     width:700px;  max-width:100%;
         background:url('/img/no-ph.jpg') center no-repeat ;   
         background-size: contain
-}
+}   
+
+.both {display:block; clear:both}

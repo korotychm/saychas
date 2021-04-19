@@ -199,22 +199,25 @@ class AjaxController extends AbstractActionController
         $post=$this->getRequest()->getPost();
         $categoty_id=$post->categoty_id;
         
+        
         foreach ($post as $key=>$value)
             //echo "$key=>$value <br>"; exit();
             $fltrArray[$key]=$value;
-        
+         
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
         $filtrForCategory[$categoty_id]=$fltrArray; 
         $container->filtrForCategory = $filtrForCategory;
-        exit (print_r($container->filtrForCategory));
+        exit();
+        //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");
+        //exit (print_r($container->filtrForCategory));
         
        }
 
     public function ajaxAction($params = array('name' => 'value')){   
         $id=$this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
-        $param=array(1,2,3,4,5);   
+        //$param=array(1,2,3,4,5);   
         
         if ($id=="toweb"){
             $url="http://SRV02:8000/SC/hs/site/get_product";

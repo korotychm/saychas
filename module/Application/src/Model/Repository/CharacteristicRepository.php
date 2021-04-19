@@ -57,10 +57,13 @@ class CharacteristicRepository extends Repository  implements CharacteristicRepo
      * @param type $list
      * @return \Application\Model\Repository\HydratingResultSet
      */
-    public function getCharacteristicFromList ($list=0)
+    public function getCharacteristicFromList ($list=0, $param=[])
      {
-       $query = "SELECT `v`.`title` AS val, `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0,$list' ) ORDER BY `tit`.`sort_order` ";
-       //exit($query );
+       //if ($param['where']) $wereAppend = $param['where'];
+        
+       $query = "SELECT `v`.`title` AS val, `v`.`id` as val_id,  `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0,$list' ) ".$param['where']."  ORDER BY `tit`.`sort_order` ";
+       
+       //   if ($param['where']) exit($query );
        $result = $this->db->query($query)->execute();
        //exit (print_r($result));
        //SELECT     `val`.`title` AS val,     `tit`.* FROM     `characteristic` AS `tit` INNER JOIN     `characteristic_value` AS `val` ON     (`tit`.`id` = `val`.`characteristic_id`) WHERE     FIND_IN_SET(        `val`.`id`,        "000000001,000000002,000000003,000000004"    ) ORDER BY    `tit`.`sort_order`

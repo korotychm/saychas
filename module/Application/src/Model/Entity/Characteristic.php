@@ -57,6 +57,11 @@ class Characteristic
      * @var string
      */
     private $val;
+     /**
+     * val_id
+     * @var string
+     */
+    private $val_id;
 
     public function __construct($object) {
         $this->id = $object->id;
@@ -67,6 +72,7 @@ class Characteristic
         $this->category_id = $object->category_id;
         $this->sort_order = $object->sort_order;
         $this->val = $object->val;
+        $this->val_id = $object->val_id;
     }
     /**
      * Set characteristic id.
@@ -99,6 +105,16 @@ class Characteristic
     public function getVal()
     {
         return $this->val;
+    }
+
+    /**
+     * Get characteristic_value  id.
+     *
+     * @return string
+     */
+    public function getValId()
+    {
+        return $this->val_id;
     }
 
     /**

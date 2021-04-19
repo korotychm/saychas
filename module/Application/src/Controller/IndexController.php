@@ -127,101 +127,68 @@ class IndexController extends AbstractActionController
     public function productAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
-        
-        
-        //$params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
-       /* $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
-        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];*/
         $params['equal']=$product_id;
-        
-        //exit ($params['equal']);
-        //$params['limit']=4;
         $products = $this->productRepository->filterProductsByStores($params);
-        
         $productPage = $this->htmlProvider->productPage($products);
         $categoryId= $productPage['categoryId'];
-        
-        //$categoty_id = $this->htmlProvider->productPage($products)->categoryId;
-       //exit ($categoty_id);
-        
-        //$category_id=0 ; //$products->getCategoryId() ; 
-                
-        
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
-        
         $filtrForCategory=$container->filtrForCategory;
-        
-        
-        //foreach ($characteristics as $char) {print_r($char); echo "-";} exit();
-        
         $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
         $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
         $bread = $this->htmlProvider->breadCrumbs($bread);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
         
-        
-        
-        /*$categoryTree = $this->categoryRepository->findCategoryTree($category_id);
-        //$categoryTree[] = $category_id;
-        $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
-        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
-        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
-        //$params['limit']=4;
-        /*$products = $this->productRepository->filterProductsByStores($params);
-        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        $returnProduct= $this->htmlProvider->productCard($filteredProducts,$category_id)->card;*/
-        
-        
-        
-        //$myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
-        //$hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
+
         $vwm=[
-        
-            "id" => $product_id,
-            "catalog" => $categories,
-           "title" => $productPage['title'],
-            "category" => $categoryTitle,
-            "bread"=> $bread,
+            'id' => $product_id,
+            'catalog' => $categories,
+            'title' => $productPage['title'],
+            'category' => $categoryTitle,
+            'bread'=> $bread,
             'product'=> $productPage['card'],
             'filter' =>  $returnProductFilter,
             'addressform'=> $addresForm."",
-           /* 'sortselect' =>[$myKey=> " selected "],
-            'hasRestOnly' =>[ $hasRest => " checked "],*/
-            //print_r($bread,true),
         ];
-        //exit (print_r($vwm));   
-        
         return new ViewModel($vwm);
-    
-        
-    }
+      }
     
     public function catalogAction()
     {
         $category_id=$this->params()->fromRoute('id', '');
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
+        //$addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         $filtrForCategory=$container->filtrForCategory;
         
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $bread = $this->categoryRepository->findAllMatherCategories($category_id);
-        $bread = $this->htmlProvider->breadCrumbs($bread);
+        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
+        $bread = $this->htmlProvider->breadCrumbs($matherCategories);
          
      
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         //$params['egualTo'] = ['id'=>$category_id];
         //$params['or'];// = ['id'=>$category_id];
-        $params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
+        //$params['in'] = ['000000003', '000000004', '000000005', '000000001', '000000002'];
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
         //$params['limit']=4;
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
-        //$returnProductFilter.="ПП характеристики в категории: ". $this->htmlProvider->productCard($filteredProducts,$category_id)->filter;
+        $returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
+        //$filterForm = 
+        $filterArray = $this->htmlProvider ->getCategotyFilterArray($returnProductFilter, $matherCategories );//
+        $filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
+        
+        $filterForm =  
+                //print_r($filtr, true); //
+                $this->htmlProvider ->getCategotyFilterHtml($filtr, $category_id);
+                
+                
+        
+        
         
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
@@ -241,10 +208,11 @@ class IndexController extends AbstractActionController
             "id" => $category_id,
             "bread"=> $bread,
             'priducts'=> $returnProduct,
-           // 'filter' =>  $returnProductFilter,
+            'filter' =>  print_r($returnProductFilter,true),
             'addressform'=> $addresForm."",
             'sortselect' =>[$myKey=> " selected "],
             'hasRestOnly' =>[ $hasRest => " checked "],
+            'filterform'=> $filterForm,
             //print_r($bread,true),
         ];
         //exit (print_r($vwm));   

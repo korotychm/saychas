@@ -15,6 +15,26 @@ $(function () {
         $(".filtritemcontent").hide();
         // $(".filtritemtitle").removeClass("closefilteritem");        
     }
+    
+    function sendfilterform (){
+        var dataString = $("#filtrform").serialize();
+        $.ajax({
+            // beforeSend : function (){ $("#overload").stop().show(); },
+            url: "/ajax-fltr",
+            type: 'POST',
+            cache: false,
+            data: dataString,
+            success: function (data) {
+                // $("#ajaxfiltranswer").html(data);
+                window.location.href = window.location.href
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+            }
+        });
+    }
+    
+    
 
     $(".product-page-image").click(function(){
         var newsrc=$(this).attr("src");
@@ -27,8 +47,10 @@ $(function () {
     }); 
 
     $(".checkgroup").click(function () {
-        if($(this).hasClass("zach")) {$(this).removeClass("zach"); $("#check"+$(this).attr("for")).val("");}
-        else  {$(this).addClass("zach"); $("#fltrcheck"+$(this).attr("for")).val($(this).attr("for"));}
+        
+    console.log("#fltrcheck"+$(this).attr("for"));
+        if($(this).hasClass("zach")) {$(this).removeClass("zach"); $("#fltrcheck"+$(this).attr("for")).prop("checked", false);}
+        else  {$(this).addClass("zach"); $("#fltrcheck"+$(this).attr("for")).prop("checked", true);}
     });
     $(".closefilteritem").live("click", function () {
         hidefilteritem();
@@ -145,20 +167,11 @@ $(function () {
     })
 
     $(".formsend").live("change", function () {
-        var dataString = $("#filtrform").serialize();
-        $.ajax({
-            // beforeSend : function (){ $("#overload").stop().show(); },
-            url: "/ajax-fltr",
-            type: 'POST',
-            cache: false,
-            data: dataString,
-            success: function (data) {
-                window.location.href = window.location.href
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-            }
-        });
+        sendfilterform();
+    })
+
+     $(".formsendbutton").live("click", function () {
+        sendfilterform();
     })
 
     $("#sendajax2").click(function () {
