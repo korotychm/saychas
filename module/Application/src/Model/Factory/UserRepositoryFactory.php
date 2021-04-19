@@ -27,28 +27,39 @@ class UserRepositoryFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
         $postRepository = $container->get(PostRepository::class);
         
-        $cache             = new \Laminas\Cache\Storage\Adapter\Memory;// new Memory();
+//        $cache             = new \Laminas\Cache\Storage\Adapter\Memory;// new Memory();
         
-        $cacheReadListener = function (HydrateEvent $event) use ($cache) {
-//            $object = $event->getExtractionObject();
-//
-//            if (!$object instanceof BlogPost) {
-//                return;
-//            }
-//
-//            if ($cache->hasItem($object->getId())) {
-//                $event->setExtractedData($cache->getItem($object->getId()));
-//                $event->stopPropagation();
-//            }
+        $userListener = function (HydrateEvent $event) use ($postRepository) {
+            $data = $event->getHydrationData();// 
+            
+            $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+                new \Laminas\Hydrator\ClassMethodsHydrator(),
+                \Application\Model\Entity\Post::class
+            );
+            
+            
+            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+            $user = $hydrator->hydrate($data, new User);
+            if( ! $user instanceof User) {
+                return;
+            }
+            $posts = $postRepository->findAll(['where'=>['id'=>$user->getPhoneNumber()]])->toArray();
+            $hydratedPosts = $strategy->hydrate($posts);
+            $user->setPosts($hydratedPosts);
+            print_r($user);
+            return 0;
         };
+        
+        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
+        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
 
-        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-//        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $cacheReadListener, 1000);
+        //$hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);
         
         return new UserRepository(
             $adapter,
             $hydrator,//new ReflectionHydrator(),
-            new User($postRepository) // new User('', '', '', '')
+            new User // new User('', '', '', '')
         );
     }
 }

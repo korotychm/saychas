@@ -15,35 +15,35 @@ use Application\Model\Repository\PostRepository;
  */
 class User extends Entity
 {
-    protected $postRepository;
+//    protected $postRepository;
     protected $firstName;
     protected $lastName;
     protected $emailAddress;
     protected $phoneNumber;
     protected $posts = [];
     
-    public function __construct(PostRepository $postRepository = null)
-    {
-        $this->postRepository = $postRepository;
-
-        $posts = $this->postRepository->findAll([]); //  'where'=>['id' => [$this->getPhoneNumber()] ]
-        
-        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-            new \Laminas\Hydrator\ClassMethodsHydrator(),
-            Post::class
-        );
-
-        $this->posts = $strategy->hydrate($posts->toArray());
-        
-        $this->setPosts($this->posts);
-    }
+//    public function __construct(PostRepository $postRepository = null)
+//    {
+//        $this->postRepository = $postRepository;
+//
+//        $posts = $this->postRepository->findAll([]); //  'where'=>['id' => [$this->getPhoneNumber()] ]
+//        
+//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+//            new \Laminas\Hydrator\ClassMethodsHydrator(),
+//            Post::class
+//        );
+//
+//        $this->posts = $strategy->hydrate($posts->toArray());
+//        
+//        $this->setPosts($this->posts);
+//    }
     
     public function getPostRepository()
     {
         return $this->postRepository;
     }
     
-    public function setFirstName(string $firstName)
+    public function setFirstName(?string $firstName)
     {
         $this->firstName = $firstName;
         return $this;
@@ -54,7 +54,7 @@ class User extends Entity
         return $this->firstName;
     }
 
-    public function setLastName(string $lastName)
+    public function setLastName(?string $lastName)
     {
         $this->lastName = $lastName;
         return $this;
@@ -65,7 +65,7 @@ class User extends Entity
         return $this->lastName;
     }
 
-    public function setEmailAddress(string $emailAddress)
+    public function setEmailAddress(?string $emailAddress)
     {
         $this->emailAddress = $emailAddress;
         return $this;
@@ -76,7 +76,7 @@ class User extends Entity
         return $this->emailAddress;
     }
 
-    public function setPhoneNumber(string $phoneNumber)
+    public function setPhoneNumber(?string $phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
         return $this;

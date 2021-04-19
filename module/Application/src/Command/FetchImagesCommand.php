@@ -43,6 +43,7 @@ use Application\Model\Entity\Entity;
 use laminas\Stdlib\Hydrator\Aggregate\ExtractEvent;
 use Laminas\Hydrator\Filter\MethodMatchFilter;
 use Laminas\Hydrator\Filter\FilterComposite;
+use Laminas\Hydrator\Aggregate\HydrateEvent;
 
 class User extends Entity
 {
@@ -341,14 +342,55 @@ class FetchImagesCommand extends Command
 //          FilterComposite::CONDITION_AND
 //        );
 
+        
+        
+        $postRepository = $this->postRepository;
+        
+//        $userListener = function (HydrateEvent $event) use ($postRepository) {
+//            $data = $event->getHydrationData();// 
+//            
+//            $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+//                new \Laminas\Hydrator\ClassMethodsHydrator(),
+//                \Application\Model\Entity\Post::class
+//            );
+//            
+//            
+//            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+//            $user = $hydrator->hydrate($data, new User);
+//            if( ! $user instanceof User) {
+//                return;
+//            }
+//            $posts = $postRepository->findAll(['where'=>['id'=>$user->getPhoneNumber()]])->toArray();
+//            $hydratedPosts = $strategy->hydrate($posts);
+//            $user->setPosts($hydratedPosts);
+//            print_r($user);
+//            return 0;
+//        };
+//        
+//        $h = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
+//        $h->add(new \Laminas\Hydrator\ClassMethodsHydrator());
+//
+//        //$hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+//        $h->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);
+//
+//        foreach($users as $user) {
+//            $u = $h->hydrate($user, new \Application\Model\Entity\User());
+//            print_r($user);
+//        }
+        //$us = $h->hydrate($users->toArray());
+//        
+//        print_r($u);
+        
         echo "=========================\n";
         $us = $strategy->hydrate($users->toArray());
+//        print_r($us);
         echo "=========================\n";
         
         foreach($us as $u) {
             echo $u->getFirstName()."\n";
             foreach($u->getPosts() as $p) {
-                echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
+                print_r($p);
+                //echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
             }
         }
 
