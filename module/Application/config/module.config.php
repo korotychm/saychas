@@ -404,10 +404,11 @@ return [
             \Application\Model\Repository\CharacteristicValueRepository::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicValue2Repository::class => \Application\Model\Factory\CharacteristicValue2RepositoryFactory::class,
             \Application\Model\Repository\ProductImageRepository::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
+            \Application\Model\Repository\UserRepository::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
 
-            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
+            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
         ],
         
     ],

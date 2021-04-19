@@ -210,17 +210,20 @@ class FetchImagesCommand extends Command
      */
     private $name;
     
+    private $userRepository;
+    
     /**
      * Constructor
      * 
      * @param Adapter $adapter
      * @param type $name
      */
-    public function __construct(Adapter $adapter, /*mixed */$name = null)
+    public function __construct(Adapter $adapter, /*mixed */$name, $userRepository)
     {
         parent::__construct($name);
         $this->adapter = $adapter;
         $this->name = $name;
+        $this->userRepository = $userRepository;
     }
     
     /** @var string */
@@ -309,15 +312,31 @@ class FetchImagesCommand extends Command
             $user
         );
         
-        echo "\n\n\n";
-        echo $user->camelize('banzaiiVonzaii')."\n";
-        echo $user->firstName . ' ' . $user->getFirstName() . ' '. $user->getLastName() . ' ' . $user->getEmailAddress() . ' ' . $user->getPhoneNumber() . "\n\n\n";
-        foreach ($user->getPosts() as $post) {
-            echo $post->id . ' ' . $post->email . ' ' .$post->getBlog();
-            echo "\n";
-        }
+//        echo "\n\n\n";
+//        echo $user->camelize('banzaiiVonzaii')."\n";
+//        echo $user->firstName . ' ' . $user->getFirstName() . ' '. $user->getLastName() . ' ' . $user->getEmailAddress() . ' ' . $user->getPhoneNumber() . "\n\n\n";
+//        foreach ($user->getPosts() as $post) {
+//            echo $post->id . ' ' . $post->email . ' ' .$post->getBlog();
+//            echo "\n";
+//        }
+//        
+//        echo "\n\n\n\n\n";
         
-        echo "\n\n\n\n\n";
+        $users = $this->userRepository->findAll([]);
+        
+        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+            new \Laminas\Hydrator\ClassMethodsHydrator(),
+            \Application\Model\Entity\User::class
+        );
+
+        $us = $strategy->hydrate($users->toArray());
+        
+        foreach($us as $u) {
+            echo $u->getFirstName()."\n";
+            foreach($u->posts as $p) {
+                echo $p->getId().' '.$p->getEmail().' '.$p->blog."\n";
+            }
+        }
 
 
         return 0;

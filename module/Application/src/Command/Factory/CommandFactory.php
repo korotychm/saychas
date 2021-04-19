@@ -4,21 +4,23 @@
 namespace Application\Command\Factory;
 
 use Interop\Container\ContainerInterface;
+use Application\Model\Repository\UserRepository;
 //use Application\Command\FetchImagesCommand;
 //use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Db\Adapter\Adapter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class FetchImagesCommandFactory implements FactoryInterface
+class CommandFactory implements FactoryInterface
 {
    
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof FetchImagesCommand){
-            throw new \Exception("not instanceof FetchImagesCommand");
+        if($requestedName instanceof $requestedName){
+            throw new \Exception("not instanceof ".$requestedName);
         }
         
         //$adapter = $container->get(AdapterInterface::class);
+        $userRepository = $container->get(UserRepository::class);
         $adapter = $container->get('Application\Db\WriteAdapter');
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
@@ -29,7 +31,8 @@ class FetchImagesCommandFactory implements FactoryInterface
         
         return new $requestedName( // new FetchImagesCommand(
             $adapter,
-            $requestedName
+            $requestedName,
+            $userRepository
         );
     }
 }

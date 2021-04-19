@@ -1,5 +1,5 @@
 <?php
-// src/Model/Factory/PriceRepositoryFactory.php
+// src/Model/Factory/BrandRepositoryFactory.php
 
 namespace Application\Model\Factory;
 
