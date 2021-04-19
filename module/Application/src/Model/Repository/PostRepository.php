@@ -1,5 +1,5 @@
 <?php
-// src/Model/Repository/BrandRepository.php
+// src/Model/Repository/PostRepository.php
 
 namespace Application\Model\Repository;
 
@@ -16,35 +16,35 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\Post;
 use Application\Model\RepositoryInterface\RepositoryInterface;
 
-class UserRepository extends Repository implements RepositoryInterface
+class PostRepository extends Repository implements RepositoryInterface
 {
     /**
      * @var string
      */
-    protected $tableName="user";
+    protected $tableName="post";
 
     /**
-     * @var User
+     * @var Post
      */
-    protected User $prototype;
+    protected Post $prototype;
     
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param User $prototype
+     * @param Post $prototype
      */
     public function __construct(
         AdapterInterface $db,
         HydratorInterface $hydrator,
-        User $prototype
+        Post $prototype
     ) {
         $this->db            = $db;
         $this->hydrator      = $hydrator;
         $this->prototype = $prototype;
     }
-
+    
     /**
-     * Adds given user into it's repository
+     * Adds given post into it's repository
      * 
      * @param json
      */

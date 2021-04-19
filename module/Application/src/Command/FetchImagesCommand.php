@@ -40,6 +40,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Laminas\Db\Adapter\Adapter;
 use Ramsey\Uuid\Uuid;
 use Application\Model\Entity\Entity;
+use laminas\Stdlib\Hydrator\Aggregate\ExtractEvent;
+use Laminas\Hydrator\Filter\MethodMatchFilter;
+use Laminas\Hydrator\Filter\FilterComposite;
 
 class User extends Entity
 {
@@ -212,18 +215,21 @@ class FetchImagesCommand extends Command
     
     private $userRepository;
     
+    private $postRepository;
+    
     /**
      * Constructor
      * 
      * @param Adapter $adapter
      * @param type $name
      */
-    public function __construct(Adapter $adapter, /*mixed */$name, $userRepository)
+    public function __construct(Adapter $adapter, /*mixed */$name, $userRepository, $postRepository)
     {
         parent::__construct($name);
         $this->adapter = $adapter;
         $this->name = $name;
         $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
     }
     
     /** @var string */
@@ -328,13 +334,21 @@ class FetchImagesCommand extends Command
             new \Laminas\Hydrator\ClassMethodsHydrator(),
             \Application\Model\Entity\User::class
         );
+        
+//        $hydrator->addFilter(
+//          'postrepository',
+//          new MethodMatchFilter('getPostRepository'),
+//          FilterComposite::CONDITION_AND
+//        );
 
+        echo "=========================\n";
         $us = $strategy->hydrate($users->toArray());
+        echo "=========================\n";
         
         foreach($us as $u) {
             echo $u->getFirstName()."\n";
-            foreach($u->posts as $p) {
-                echo $p->getId().' '.$p->getEmail().' '.$p->blog."\n";
+            foreach($u->getPosts() as $p) {
+                echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
             }
         }
 
