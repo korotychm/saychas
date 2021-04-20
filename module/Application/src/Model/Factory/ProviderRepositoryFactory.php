@@ -23,7 +23,7 @@ class ProviderRepositoryFactory implements FactoryInterface
         return new ProviderRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Provider('', 0, 0, null, null)
+            new Provider//('', 0, 0, null, null)
         );
     }
 }
