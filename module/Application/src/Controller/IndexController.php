@@ -133,7 +133,7 @@ class IndexController extends AbstractActionController
         $categoryId= $productPage['categoryId'];
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
+        //$addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         $filtrForCategory=$container->filtrForCategory;
         $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
         $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
