@@ -84,6 +84,7 @@ class HtmlProviderService
         $filtrForCategory=$container->filtrForCategory;
         
         if(!$filtred=$filtrForCategory[$category_id]['fltr']) $filtred=[];
+        print_r($filtred);
         foreach ($filters as $row) {
             $arrayTmp[$row->getId()]['title'] = $row->getTitle();
             $arrayTmp[$row->getId()]['id'] = $row->getId();
