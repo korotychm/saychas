@@ -149,7 +149,7 @@ class IndexController extends AbstractActionController
             'bread'=> $bread,
             'product'=> $productPage['card'],
             'filter' =>  $returnProductFilter,
-            'addressform'=> $addresForm."",
+//            'addressform'=> $addresForm."",
         ];
         return new ViewModel($vwm);
       }

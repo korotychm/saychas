@@ -9,6 +9,7 @@ use Application\Model\Entity\Product;
 use Application\Model\Repository\ProductRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface;
@@ -36,7 +37,7 @@ class ProductRepositoryFactory implements FactoryInterface
         return new ProductRepository(
             $adapter,
             new ReflectionHydrator(),
-            new Product(0, 0, 0, '', '', '', 0, 0, '', ''),
+            new Product,// Product(0, 0, 0, '', '', '', 0, 0, '', ''),
             $characteristicValue,
             $characteristics,
             $productImages,
