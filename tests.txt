@@ -38,3 +38,8 @@ curl -i -L saychas-z.local/receive-characteristic --data '[{"id": "000000005"}]'
 
 curl -i -L saychas-z.local/receive-predef-char-value --data '{"truncate": true, "data": [{"id": "000000009","title": "title1", "characteristic_id":"000000001"}, {"id": "000000008","title": "title2", "characteristic_id":"000000002"} ] }'
 receive-predef-char-value
+
+curl -i -L saychas-z.local/receive-size --data '{"truncate": false, "data": [{"id": "000000009","title": "title1"}, {"id": "000000008","title": "title2"} ] }'
+curl -i -L saychas-z.local/receive-size --data '[{"id": "000000001"}]' -X DELETE
+
+
