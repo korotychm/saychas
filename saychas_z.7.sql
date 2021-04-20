@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2021 at 03:42 AM
+-- Generation Time: Apr 20, 2021 at 02:15 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -33,6 +33,16 @@ CREATE TABLE `brand` (
   `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `logo` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Table structure for table `size`
+--
+
+DROP TABLE IF EXISTS `size`;
+CREATE TABLE `size` (
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -173,6 +183,19 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `characteristic_value2`
+--
+
+DROP TABLE IF EXISTS `characteristic_value2`;
+CREATE TABLE `characteristic_value2` (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `country`
 --
 
@@ -216,28 +239,6 @@ CREATE TABLE `filtered_product` (
 ,`rest` int
 ,`title` text
 );
-
--- --------------------------------------------------------
-
---
--- Table structure for table `post`
---
-
-DROP TABLE IF EXISTS `post`;
-CREATE TABLE `post` (
-  `id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `blog` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `post`
---
-
-INSERT INTO `post` (`id`, `email`, `blog`) VALUES
-('001', 'asdf@b.com', 'blog 1'),
-('002', 'aaa@bbb.com', 'blog2'),
-('003', 'a@c.com', 'blog 3');
 
 -- --------------------------------------------------------
 
@@ -389,25 +390,6 @@ CREATE TABLE `shop` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `size`
---
-
-DROP TABLE IF EXISTS `size`;
-CREATE TABLE `size` (
-  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `size`
---
-
-INSERT INTO `size` (`id`, `title`) VALUES
-('000000001', 'XXXL');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `stock_balance`
 --
 
@@ -415,7 +397,6 @@ DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
   `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `rest` int NOT NULL DEFAULT '0',
-  `size` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -487,28 +468,6 @@ CREATE TABLE `test` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `first_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `phone_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`) VALUES
-('first name 1', 'last name 1', 'email 1', '001'),
-('first name 2', 'last name 2', 'email 2', '222244444');
-
--- --------------------------------------------------------
-
---
 -- Structure for view `filtered_product`
 --
 DROP TABLE IF EXISTS `filtered_product`;
@@ -527,6 +486,12 @@ ALTER TABLE `brand`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `size`
+--
+ALTER TABLE `size`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `category`
 --
 ALTER TABLE `category`
@@ -542,6 +507,12 @@ ALTER TABLE `characteristic`
 -- Indexes for table `characteristic_value`
 --
 ALTER TABLE `characteristic_value`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `characteristic_value2`
+--
+ALTER TABLE `characteristic_value2`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -587,16 +558,10 @@ ALTER TABLE `shop`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `size`
---
-ALTER TABLE `size`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `stock_balance`
 --
 ALTER TABLE `stock_balance`
-  ADD PRIMARY KEY (`product_id`,`size`, `store_id`);
+  ADD PRIMARY KEY (`product_id`,`store_id`);
 
 --
 -- Indexes for table `store`

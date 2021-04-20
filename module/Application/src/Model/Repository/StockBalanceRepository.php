@@ -55,8 +55,8 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `store_id`, `rest`) VALUES ( '%s', '%s', %u)",
-                    $row['product_id'], $row['store_id'], $row['rest']);
+            $sql = sprintf("replace INTO `stock_balance`(`product_id`, `size`, `store_id`, `rest`) VALUES ( '%s', '%s', '%s', %u)",
+                    $row['product_id'], $row['size'], $row['store_id'], $row['rest']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

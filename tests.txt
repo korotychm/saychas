@@ -12,6 +12,7 @@ curl -i -L saychas-z.local/receive-price --data '{ "truncate": false, "data": [{
 curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "provider_id": "0002" }]' -X DELETE
 
 curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "store_id": "0002","rest": 1 }] }'
+curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "size": "XXL", "store_id": "0002","rest": 1 }] }'
 curl -i -L saychas-z.local/receive-stock-balance --data '[{"product_id": "1", "store_id": "0002" }]' -X DELETE
 
 
