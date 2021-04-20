@@ -140,8 +140,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             ->where->equalTo('pr.store_id', $storeId) /**/
             ->where->and
             ->where->equalTo('b.store_id', $storeId)
+            //->where(['id'=>['000000013', '000000003', '000000014']])
             //->group('p.id')
         ;
+//        if(isset($params['filter'])) {
+//            $select->where(['id'=>['000000013', '000000003', '000000014']]);
+//        }
 
 //      Do not delete the following line
 //      $selectString = $sql->buildSqlString($select);
@@ -210,6 +214,18 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //        return $w;
 //    }
 
+    private function packParams($params)
+    {
+        $a = [];
+        foreach($params['filter'] as $p) {
+           $a[] = "find_in_set('$p', param_value_list)"; 
+        }
+        $res = ' 1';
+        if(count($a) > 0) {
+            $res = '('.implode(' OR ', $a).')';
+        }
+        return $res;
+    }
     /**
      * Function obtains products of a provider that belong to a set of available stores.
      *
@@ -255,8 +271,9 @@ End of number 1 */
         //exit ($whereAppend);
 
         $w = new Where();
-        if($params['in']) $w->in('s.id', $params['in']);
-
+        if($params['in']) {
+            $w->in('s.id', $params['in']);
+        }
 
         $sel = new Select();
         $sel->from(['s' => 'store'])->columns(['*'])
@@ -298,13 +315,21 @@ End of number 1 */
                         $select::JOIN_LEFT
                 )->where('1 '.$whereAppend ); //ss.id is not null
 
+//        $params['filter'] = ['000000003', '000000013', '000000014'];
+        $s = '';
+        if (isset($params['filter'])) {
+            $s = $this->packParams($params);
+            $select->where($s);
+        }
+
+//        $selString = $sql->buildSqlString($select);
+//        exit($selString);
 
         if ($params['order']) { $select->order($params['order']); }
         if ($params['limit']) { $select->limit($params['limit']); }
         if ($params['offset']) { $select->offset($params['offset']); }
-        /** End of number 2 */
 
-        //$selString = $sql->buildSqlString($select);        exit($selString);         //;
+        /** End of number 2 */
 
         $stmt   = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 20, 2021 at 03:42 AM
+-- Generation Time: Apr 19, 2021 at 04:00 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -128,14 +128,14 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1, '', ''),
 ('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4, '', ''),
 ('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5, '', ''),
-('000000009', '000000006', 'Основная камера МПикс', 1, 1, 0, 4, '', ''),
-('000000007', '000000006', 'Оперативная память (RAM)', 4, 1, 0, 2, '', ''),
-('000000008', '000000006', 'Встроенная память (ROM)', 4, 1, 0, 3, '', ''),
 ('000000006', '000000006', 'Экран', 2, 1, 1, 1, '', ''),
+('000000007', '000000019', 'Оперативная память (RAM)', 4, 0, 0, 2, '', ''),
+('000000008', '000000006', 'Встроенная память (ROM)', 4, 0, 0, 3, '', ''),
+('000000009', '000000006', 'Основная камера МПикс', 1, 0, 0, 4, '', ''),
+('000000010', '000000006', 'Фронтальная камера МПикс', 1, 0, 0, 5, '', ''),
 ('000000012', '000000011', 'Описание', 1, 0, 0, 1, '', ''),
 ('000000013', '000000014', 'Жирность', 2, 1, 0, 1, '', ''),
-('000000014', '000000019', 'Операционная система', 4, 1, 0, 1, '', ''),
-('000000010', '000000006', 'Фронтальная камера МПикс', 1, 1, 0, 5, '', '');
+('000000014', '000000019', 'Операционная система', 4, 1, 0, 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -168,7 +168,68 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 ('000000006', '64 ГБ', '000000008'),
 ('000000011', 'Android', '000000014'),
 ('000000012', 'Mac OS', '000000014'),
-('000000010', 'MS Windows', '000000014');
+('000000010', 'MS Windows', '000000014'),
+('267a8c6d283e91ff8df7fa77a00071dd', '6.76', '000000006'),
+('168091016ee135ec83b24bc2bbff58ba', '50/20/12/TOF', '000000009'),
+('74585c9270e065c8ef1fab3106c9a458', '13/TOF', '000000010'),
+('e077719050f4652eea876338a8d4f04a', '29 Ом', '000000003'),
+('5a1e9025815355796298dabf81a291ec', '20 Гц - 20 кГц', '000000002'),
+('397f43d0f72d16db290d571a2316c8f7', '1', '000000004'),
+('ce0c2778ed88de97cd21b862cbacf2d8', '1', '000000005'),
+('3a09a6059982cb24d661b957a7240ac9', '2.5', '000000013'),
+('58a71e41f4c6c1388a7dce224e425401', '3.2', '000000013'),
+('f97b2656593dc55cdbe046b4e92dc385', '3.2', '000000013'),
+('911f408b7bfc0abbd303cd562bf700a7', '6.5', '000000006'),
+('248f39d56b9eb0a3c810f310c28e9736', '13+2 Мп', '000000009'),
+('b5847453f60071d856610d4e24d45f6f', '5 Мп', '000000010'),
+('20bc29de6e0dbbd2b1e675f1648f16d7', '6.53', '000000006'),
+('f10199fa67cb64730ae8aa7a3fd1d04f', '13 Мп', '000000009'),
+('ce3a52a26e63828c0618dde312d77a17', '5 Мп', '000000010'),
+('4533da968d1f84a4b4d2b9fcc59ad633', '6.76', '000000006'),
+('56b891823c0bbfacfa8b4514ca94a1b5', '50/20/12/TOF', '000000009'),
+('97ec75f8b574e2910d73ad22895273c4', '13/TOF', '000000010'),
+('082bd920c5320d8f4439c3f35ba4493e', '6.76', '000000006'),
+('3b4d4139693e821ffbc34045c65880e5', '50/20/12/TOF', '000000009'),
+('1f14320f0fee820c2df45d08f342f6c4', '13/TOF', '000000010'),
+('3b1c5f212272737cbb4db8109ea92281', '29 Ом', '000000003'),
+('e666eacf03bdadb384fe5a9fae14af2e', '20 Гц - 20 кГц', '000000002'),
+('e13664bf1b09ae714a36bc32eebc4653', '1', '000000004'),
+('1627ee3a5be20aea6846d003d15629ff', '1', '000000005'),
+('588621d05afa9354f633cdc8247a1642', '29 Ом', '000000003'),
+('c4419509281dbdb0062a79cd2d33009a', '20 Гц - 20 кГц', '000000002'),
+('88670d30e26d1b4c445d93e0b3a24a77', '1', '000000004'),
+('d0443bc4c4daa865d5b8aa2df2066a64', '1', '000000005'),
+('912b216349940789e411dc1372846dba', '2.5', '000000013'),
+('eadad3a97cffc6a356a5b6f26696269c', '2.5', '000000013'),
+('f3ba5506dce5bd35ef11c358b41c60e0', '3.2', '000000013'),
+('2ed1f50a2956c78164bdf967ef47c928', '3.2', '000000013'),
+('eac3dc195ca4603a50ce32f644008295', '3.2', '000000013'),
+('5e3853729cc1fd19f8c8b6bdbda92ae2', '3.2', '000000013'),
+('dffff41efd3e1e0c1c7a79c2f16c899f', '6.5', '000000006'),
+('71041532b732e143d66c19d3fbf33223', '13+2 Мп', '000000009'),
+('02767f8b64b15c08932ae48fe67c1994', '5 Мп', '000000010'),
+('919a484078a309202207bcd5eafefb97', '6.5', '000000006'),
+('ece43b57d07007796419ba91a5ada8e6', '13+2 Мп', '000000009'),
+('5b4813eb4a21706f492ae4ee2716a7f9', '5 Мп', '000000010'),
+('766c8200849ea7d25c4f34d86f4d8654', '6.53', '000000006'),
+('a6d0feba6f158c0d6fea681c2c158279', '13 Мп', '000000009'),
+('ca301ed9321e10c4465509f35937827b', '5 Мп', '000000010'),
+('55506b640bfd464ba3a73e8851717518', '6.53', '000000006'),
+('4caf6aacd3d427b135fd759c72f7d5fb', '13 Мп', '000000009'),
+('1b53a86f9d8c43c09ba1a7687f76685c', '5 Мп', '000000010');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `characteristic_value2`
+--
+
+DROP TABLE IF EXISTS `characteristic_value2`;
+CREATE TABLE `characteristic_value2` (
+  `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `characteristic_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -216,28 +277,6 @@ CREATE TABLE `filtered_product` (
 ,`rest` int
 ,`title` text
 );
-
--- --------------------------------------------------------
-
---
--- Table structure for table `post`
---
-
-DROP TABLE IF EXISTS `post`;
-CREATE TABLE `post` (
-  `id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `blog` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `post`
---
-
-INSERT INTO `post` (`id`, `email`, `blog`) VALUES
-('001', 'asdf@b.com', 'blog 1'),
-('002', 'aaa@bbb.com', 'blog2'),
-('003', 'a@c.com', 'blog 3');
 
 -- --------------------------------------------------------
 
@@ -389,25 +428,6 @@ CREATE TABLE `shop` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `size`
---
-
-DROP TABLE IF EXISTS `size`;
-CREATE TABLE `size` (
-  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `size`
---
-
-INSERT INTO `size` (`id`, `title`) VALUES
-('000000001', 'XXXL');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `stock_balance`
 --
 
@@ -415,7 +435,6 @@ DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
   `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `rest` int NOT NULL DEFAULT '0',
-  `size` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -487,28 +506,6 @@ CREATE TABLE `test` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `first_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `phone_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`) VALUES
-('first name 1', 'last name 1', 'email 1', '001'),
-('first name 2', 'last name 2', 'email 2', '222244444');
-
--- --------------------------------------------------------
-
---
 -- Structure for view `filtered_product`
 --
 DROP TABLE IF EXISTS `filtered_product`;
@@ -542,6 +539,12 @@ ALTER TABLE `characteristic`
 -- Indexes for table `characteristic_value`
 --
 ALTER TABLE `characteristic_value`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `characteristic_value2`
+--
+ALTER TABLE `characteristic_value2`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -587,16 +590,10 @@ ALTER TABLE `shop`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `size`
---
-ALTER TABLE `size`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `stock_balance`
 --
 ALTER TABLE `stock_balance`
-  ADD PRIMARY KEY (`product_id`,`size`, `store_id`);
+  ADD PRIMARY KEY (`product_id`,`store_id`);
 
 --
 -- Indexes for table `store`

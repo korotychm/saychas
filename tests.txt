@@ -12,6 +12,7 @@ curl -i -L saychas-z.local/receive-price --data '{ "truncate": false, "data": [{
 curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "provider_id": "0002" }]' -X DELETE
 
 curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "store_id": "0002","rest": 1 }] }'
+curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "size": "XXL", "store_id": "0002","rest": 1 }] }'
 curl -i -L saychas-z.local/receive-stock-balance --data '[{"product_id": "1", "store_id": "0002" }]' -X DELETE
 
 
@@ -38,3 +39,8 @@ curl -i -L saychas-z.local/receive-characteristic --data '[{"id": "000000005"}]'
 
 curl -i -L saychas-z.local/receive-predef-char-value --data '{"truncate": true, "data": [{"id": "000000009","title": "title1", "characteristic_id":"000000001"}, {"id": "000000008","title": "title2", "characteristic_id":"000000002"} ] }'
 receive-predef-char-value
+
+curl -i -L saychas-z.local/receive-size --data '{"truncate": false, "data": [{"id": "000000009","title": "title1"}, {"id": "000000008","title": "title2"} ] }'
+curl -i -L saychas-z.local/receive-size --data '[{"id": "000000001"}]' -X DELETE
+
+

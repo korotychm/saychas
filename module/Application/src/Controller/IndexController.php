@@ -157,10 +157,16 @@ class IndexController extends AbstractActionController
     public function catalogAction()
     {
         $category_id=$this->params()->fromRoute('id', '');
+
         $this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
         //$addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         $filtrForCategory=$container->filtrForCategory;
+        //        $params['filter'] = ['000000003', '000000013', '000000014'];
+        //$filtrForCategory[$category_id]['fltr'] = ['000000003', '000000013', '000000014'];
+        if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
+            $filtred=[];
+        }
         
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
@@ -174,6 +180,11 @@ class IndexController extends AbstractActionController
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
         //$params['limit']=4;
+        print_r($filtred);
+        $params['filter'] = $filtred;
+//        print_r($params['filter']);
+//        echo '<br/>';
+//        exit;
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];

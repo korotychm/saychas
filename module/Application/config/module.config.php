@@ -163,6 +163,17 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class,
                 ],
             ],
+            'receive-size' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-size[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\SizeRepositoryInterface::class,
+                ],
+            ],
             'receive-category' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -378,6 +389,7 @@ return [
             \Application\Model\RepositoryInterface\FilteredProductRepositoryInterface::class => \Application\Model\Repository\FilteredProductRepository::class,
             \Application\Model\RepositoryInterface\PriceRepositoryInterface::class => \Application\Model\Repository\PriceRepository::class,
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
+            \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class => \Application\Model\Repository\CharacteristicRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class => \Application\Model\Repository\CharacteristicValueRepository::class,
@@ -399,6 +411,7 @@ return [
             \Application\Model\Repository\FilteredProductRepository::class => \Application\Model\Factory\FilteredProductRepositoryFactory::class,
             \Application\Model\Repository\PriceRepository::class => \Application\Model\Factory\PriceRepositoryFactory::class,
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
+            \Application\Model\Repository\SizeRepository::class => \Application\Model\Factory\SizeRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicRepository::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicValueRepository::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
