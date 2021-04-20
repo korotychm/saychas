@@ -45,6 +45,10 @@ use Laminas\Hydrator\Filter\MethodMatchFilter;
 use Laminas\Hydrator\Filter\FilterComposite;
 use Laminas\Hydrator\Aggregate\HydrateEvent;
 
+use Application\Model\Entity\User as MyUser;
+
+use Application\Hydrator\UserHydrator;
+
 class User extends Entity
 {
     protected $firstName;
@@ -342,6 +346,32 @@ class FetchImagesCommand extends Command
 //          FilterComposite::CONDITION_AND
 //        );
 
+        $userHydrator = new UserHydrator($this->postRepository);
+        $strat = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+            $userHydrator,
+            \Application\Model\Entity\User::class
+        );
+
+        $d = ['firstName' => 'firstName', 'lastName' => 'lastName', 'emailAddress' => 'emailAddress', 'phoneNumber' => '002'];
+        $d1 = ['firstName' => 'firstName1', 'lastName' => 'lastName1', 'emailAddress' => 'emailAddress1', 'phoneNumber' => '004'];
+        $dat = [ $d, $d1];
+        $userObjects = $strat->hydrate($dat, null);
+        foreach($userObjects as $userObject) {
+            echo $userObject->firstName.' '.$userObject->lastName.' '.$userObject->emailAddress.' '.$userObject->phoneNumber."\n";
+            foreach($userObject->getPosts() as $post) {
+                echo $post->id.' '.$post->title.' '.$post->blog."\n";
+            }
+        }
+        //$userObject = $userHydrator->hydrate($d, new MyUser);
+        exit;
+        
+        echo $userObject->firstName.' '.$userObject->lastName.' '.$userObject->emailAddress.' '.$userObject->phoneNumber."\n";
+        foreach($userObject->getPosts() as $post) {
+            echo "asdf\n";
+            echo $post->id.' '.$post->title.' '.$post->blog."\n";
+        }
+        
+        exit;
         
         
         $postRepository = $this->postRepository;

@@ -20,29 +20,18 @@ class User extends Entity
     protected $lastName;
     protected $emailAddress;
     protected $phoneNumber;
-    protected $posts = [];
+    protected PostRepository $posts;// = [];
     
-//    public function __construct(PostRepository $postRepository = null)
+//    public function getPostRepository()
 //    {
-//        $this->postRepository = $postRepository;
-//
-//        $posts = $this->postRepository->findAll([]); //  'where'=>['id' => [$this->getPhoneNumber()] ]
-//        
-//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-//            new \Laminas\Hydrator\ClassMethodsHydrator(),
-//            Post::class
-//        );
-//
-//        $this->posts = $strategy->hydrate($posts->toArray());
-//        
-//        $this->setPosts($this->posts);
+//        return $this->postRepository;
 //    }
     
-    public function getPostRepository()
-    {
-        return $this->postRepository;
-    }
-    
+//    public function setPostRepository(PostRepository $postRepository)
+//    {
+//        $this->postRepository = $postRepository;
+//    }
+
     public function setFirstName(?string $firstName)
     {
         $this->firstName = $firstName;
@@ -89,32 +78,11 @@ class User extends Entity
     
     public function getPosts()
     {
-        //echo $this->phoneNumber."\n";
-        //
-//        echo "======================\n";
-//        print_r($this->postRepository);
-        
-        //$this->getPostRepository()->findAll([]);
-        
-//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-////        $hydrator->addStrategy(
-////            'posts',
-////            new \Laminas\Hydrator\Strategy\CollectionStrategy(
-////                new \Laminas\Hydrator\ClassMethodsHydrator(),
-////                Post::class
-////            )
-////        );
-//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-//            new \Laminas\Hydrator\ClassMethodsHydrator(),
-//            Post::class
-//        );
-//
-//        $this->posts = $strategy->hydrate($this->posts);
-        
-        return $this->posts;
+        $posts = $this->posts->findAll(['sequence' => [$this->getPhoneNumber()] ]);
+        return $posts;
     }
     
-    public function setPosts($posts)
+    public function setPosts(PostRepository $posts)
     {
         $this->posts = $posts;
 //        print_r($this->posts);
@@ -142,3 +110,53 @@ class User extends Entity
     }
     
 }
+
+
+
+
+
+
+
+
+//    public function __construct(PostRepository $postRepository = null)
+//    {
+//        $this->postRepository = $postRepository;
+//
+//        $posts = $this->postRepository->findAll([]); //  'where'=>['id' => [$this->getPhoneNumber()] ]
+//        
+//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+//            new \Laminas\Hydrator\ClassMethodsHydrator(),
+//            Post::class
+//        );
+//
+//        $this->posts = $strategy->hydrate($posts->toArray());
+//        
+//        $this->setPosts($this->posts);
+//    }
+
+
+
+
+
+        //echo $this->phoneNumber."\n";
+        //
+//        echo "======================\n";
+//        print_r($this->postRepository);
+        
+        //$this->getPostRepository()->findAll([]);
+        
+//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+////        $hydrator->addStrategy(
+////            'posts',
+////            new \Laminas\Hydrator\Strategy\CollectionStrategy(
+////                new \Laminas\Hydrator\ClassMethodsHydrator(),
+////                Post::class
+////            )
+////        );
+//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+//            new \Laminas\Hydrator\ClassMethodsHydrator(),
+//            Post::class
+//        );
+//
+//        $this->posts = $strategy->hydrate($this->posts);
+        

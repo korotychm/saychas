@@ -419,6 +419,7 @@ return [
             \Application\Model\Repository\ProductImageRepository::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
             \Application\Model\Repository\UserRepository::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Repository\PostRepository::class => \Application\Model\Factory\PostRepositoryFactory::class,
+            //\Application\Hydrator\UserHydrator::class => \Application\Hydrator\Factory\UserHydratorFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
 

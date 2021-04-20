@@ -6,13 +6,6 @@ namespace Application\Model\Repository;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Json\Json;
-use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-use Laminas\Db\Adapter\Driver\ResultInterface;
-use Laminas\Db\ResultSet\HydratingResultSet;
-use Laminas\Db\Sql\Sql;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Application\Model\Entity\User;
 use Application\Model\Entity\Post;
 use Application\Model\RepositoryInterface\RepositoryInterface;
 
