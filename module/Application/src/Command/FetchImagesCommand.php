@@ -346,6 +346,30 @@ class FetchImagesCommand extends Command
         
         $postRepository = $this->postRepository;
         
+        echo "=========================\n";
+        $us = $strategy->hydrate($users->toArray());
+        echo "=========================\n";
+        
+        foreach($us as $u) {
+            echo $u->getFirstName()."\n";
+            foreach($u->getPosts() as $p) {
+                print_r($p);
+                //echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
+            }
+        }
+
+
+        return 0;
+    }
+}
+
+
+
+
+
+
+
+
 //        $userListener = function (HydrateEvent $event) use ($postRepository) {
 //            $data = $event->getHydrationData();// 
 //            
@@ -381,20 +405,3 @@ class FetchImagesCommand extends Command
 //        
 //        print_r($u);
         
-        echo "=========================\n";
-        $us = $strategy->hydrate($users->toArray());
-//        print_r($us);
-        echo "=========================\n";
-        
-        foreach($us as $u) {
-            echo $u->getFirstName()."\n";
-            foreach($u->getPosts() as $p) {
-                print_r($p);
-                //echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
-            }
-        }
-
-
-        return 0;
-    }
-}

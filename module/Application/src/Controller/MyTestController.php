@@ -24,6 +24,7 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
@@ -56,6 +57,7 @@ class MyTestController extends AbstractActionController
     private $characteristicRepository;
     private $priceRepository;
     private $stockBalanceRepository;
+    private $userRepository;
     private $entityManager;
     private $config;
     private $htmlProvider;
@@ -65,7 +67,7 @@ class MyTestController extends AbstractActionController
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
                 CharacteristicRepositoryInterface $characteristicRepository,
-                PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
+                PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, UserRepository $userRepository,
             $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
     {
         $this->testRepository = $testRepository;
@@ -78,6 +80,7 @@ class MyTestController extends AbstractActionController
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
+        $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
@@ -344,6 +347,15 @@ class MyTestController extends AbstractActionController
         
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
         $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['00003'], 'where'=>[ 'id' => ['00003', '00004']] ]);
+        
+        $users = $this->userRepository->findAll([]);
+        
+//        foreach($users as $user) {
+//            echo '<pre>';
+//            print_r($user);
+//            echo '</pre>';
+//        }
+//        exit;
         
         $form = $this->htmlFormProvider->testForm();
         echo $form.'<br/>';

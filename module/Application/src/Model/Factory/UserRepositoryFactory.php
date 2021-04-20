@@ -47,7 +47,7 @@ class UserRepositoryFactory implements FactoryInterface
             $hydratedPosts = $strategy->hydrate($posts);
             $user->setPosts($hydratedPosts);
             print_r($user);
-            return 0;
+            return $user;
         };
         
         $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
