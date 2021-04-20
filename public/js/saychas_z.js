@@ -38,9 +38,10 @@ $(function () {
 
     $(".product-page-image").click(function(){
         var newsrc=$(this).attr("src");
+        var parent = $(this).parent();
         var oldsrc=$("#productimage0").attr("src");
-        $(".product-page-image").removeClass("borderred");
-        $(this).addClass("borderred"); 
+        $(".product-image-container-mini").removeClass("borderred");
+        parent.addClass("borderred"); 
         $("#productimage0").attr("src", newsrc);
         $(this).attr("src", oldsrc);
         return false;

@@ -301,7 +301,7 @@ return [
                     'route'    => '/ajax-fltr',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'setFilterForCategoty',
+                        'action'     => 'setFilterForCategory',
                     ],
                 ],
             ],

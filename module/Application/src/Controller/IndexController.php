@@ -179,12 +179,12 @@ class IndexController extends AbstractActionController
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
         $returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
         //$filterForm = 
-        $filterArray = $this->htmlProvider ->getCategotyFilterArray($returnProductFilter, $matherCategories );//
+        $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
         $filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
         
         $filterForm =  
                 //print_r($filtr, true); //
-                $this->htmlProvider ->getCategotyFilterHtml($filtr, $category_id);
+                $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);
                 
                 
         

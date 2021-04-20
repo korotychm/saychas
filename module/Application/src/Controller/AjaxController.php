@@ -193,11 +193,20 @@ class AjaxController extends AbstractActionController
         exit(Json::encode($json,JSON_UNESCAPED_UNICODE ));
     }
     
-    public function setFilterForCategotyAction()
+    public function unsetFilterForCategoКyAction()
+    {
+        $post=$this->getRequest()->getPost();
+        $category_id=$post->category_id;
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        unset($container->filtrForCategory[$category_id]);
+        
+    }    
+    
+    public function setFilterForCategoryAction()
     {
         
         $post=$this->getRequest()->getPost();
-        $categoty_id=$post->categoty_id;
+        $category_id=$post->category_id;
         
         
         foreach ($post as $key=>$value)
@@ -206,7 +215,7 @@ class AjaxController extends AbstractActionController
          
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
-        $filtrForCategory[$categoty_id]=$fltrArray; 
+        $filtrForCategory[$category_id]=$fltrArray; 
         $container->filtrForCategory = $filtrForCategory;
         exit();
         //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");

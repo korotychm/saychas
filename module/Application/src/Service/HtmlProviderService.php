@@ -65,7 +65,7 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function getCategotyFilterArray($filter, $categoryTree)
+    public function getCategoryFilterArray($filter, $categoryTree)
     {
         if (!$filter or!$categoryTree)
             return;
@@ -78,7 +78,7 @@ class HtmlProviderService
         return $where; // (print_r($filter, true));
     }
 
-    public function getCategotyFilterHtml($filters, $category_id)
+    public function getCategoryFilterHtml($filters, $category_id)
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
@@ -94,7 +94,7 @@ class HtmlProviderService
                      </div>";
         }
         if (!$arrayTmp)  return;
-        //$filtrForCategory[$categoty_id];
+        //$filtrForCategory[$category_id];
         foreach ($arrayTmp as $row) {
         
             $return .= '
@@ -110,51 +110,7 @@ class HtmlProviderService
         </div>";
         }
 
-        return $return;//.("<pre>".print_r($filtrForCategory[$category_id], true)."</pre>")."!!!$category_id";
-        /*
-         *
-         *    <div class="ifilterblock"  >
-          <div class="filtritemtitle" rel="000001">
-          Диагональ экрана
-          </div>
-          <div class="filtritem" id="fi000001">
-
-
-          <div class="filtritemcontent" id="fc000001">
-          <div class="closefilteritem" rel="000001">
-          Диагональ экрана
-          </div>
-
-          <div class="nopub checkgroup blok" for="0001" >
-          14" (35см)
-          <input type="hidden" id="fltrcheck0001" name=fltr[] value="" >
-          </div>
-          <div class="nopub checkgroup blok" for="0004" >
-          17" (43см) и длинный текстик
-          <input type="hidden" id="fltrcheck0004" name=fltr[] value="" >
-          </div>
-          <div class="nopub checkgroup blok" for="0002" >
-          19" (48см)
-          <input type="hidden" id="fltrcheck0002" name=fltr[] value="" >
-          </div>
-          <div class="nopub checkgroup blok" for="0003" >
-          21" (53см)
-          <input type="hidden" id="fltrcheck0003" name=fltr[] value="" >
-          </div>
-
-          <div class="block"><input type="button" value="применить"></div><!-- comment -->
-          </div>
-          </div>
-          </div>
-         *
-         *
-         *
-         * if (!$filter or  !$categoryTree) return;
-          $tree=[];
-          foreach ($categoryTree as $category)  $tree[]=$category[0];
-          if (!count($tree)) return;
-          $where = "`tit`.filter=1 and `tit`.categoty_id in (".join(",",$tree).")";
-          //return $where;// (print_r($filter, true)); */
+        return $return;
     }
 
     public function productCard($filteredProducts, $category_id = 0)
@@ -171,8 +127,11 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
-            $filtersTmp = explode(",", $product->getParamValueList2());
-            $filters = array_merge($filters, $filtersTmp);
+            if (!(!$r and $filtrForCategory[$category_id]['hasRestOnly']))
+            {
+                $filtersTmp = explode(",", $product->getParamValueList2());
+                $filters = array_merge($filters, $filtersTmp);
+            }    
             $_id = $product->getId();
             $_return[$_id]['rest'] += $r;
             $_return[$_id]['id'] = $_id;
@@ -186,8 +145,8 @@ class HtmlProviderService
             $_return[$_id]['art'] = $product->getVendorCode();
             $_return[$_id]['title'] = $product->getTitle();
             $_return[$_id]['cena'] = $cena;
+            $prices[]=$cena;
 
-            //}
         }
 
         if ($_return) {
@@ -255,7 +214,7 @@ class HtmlProviderService
             $id = $product->getId();
 
             $title = $product->getTitle();
-            $categotyId = $product->getCategoryId();
+            $categoryId = $product->getCategoryId();
             //$category = $product->getCategoryTitle();
 
 
@@ -290,7 +249,7 @@ class HtmlProviderService
         $img = array_unique($img);
         foreach ($img as $im) {
             if ($im)
-                $imagesready .= "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' />";
+              $imagesready .= ((!$j)?"<div class='square'><div class='squarecontent'>":"<div class='product-image-container-mini iblok' >")."<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' />".((!$j)?"</div></div>":"</div>");
             $j++;
         }
 
@@ -298,13 +257,15 @@ class HtmlProviderService
 
         // $return['filter'] = $join;
         $return['title'] = $title;
-        $return['categoryId'] = $categotyId;
+        $return['categoryId'] = $categoryId;
         //$return['categoryTitle'] =$category;
         $return['card'] .= ""
                 . "<div class='pw-contentblock cblock-2'>
                             <div class='contentpadding'>
-                                 $speedlable2
-                                 $imagesready
+                           
+                                            $speedlable2
+                                            $imagesready
+                                   
                             </div>
                             </div>"
                 . "
