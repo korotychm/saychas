@@ -8,6 +8,7 @@ use Application\Model\Entity\Brand;
 use Application\Model\Repository\BrandRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class BrandRepositoryFactory implements FactoryInterface
@@ -23,7 +24,7 @@ class BrandRepositoryFactory implements FactoryInterface
         
         return new BrandRepository(
             $adapter,
-            new ReflectionHydrator(),
+            new ClassMethodsHydrator,//new ReflectionHydrator(),
             new Brand//('', '', '', '')
         );
     }

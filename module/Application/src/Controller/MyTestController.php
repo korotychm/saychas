@@ -16,12 +16,14 @@ use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\RepositoryInterface\ProviderRelatedStoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
@@ -49,12 +51,14 @@ class MyTestController extends AbstractActionController
     private $categoryRepository;
     private $providerRepository;
     private $storeRepository;
+    private $providerRelatedStoreRepository;
     private $productRepository;
     private $filteredProductRepository;
     private $brandRepository;
     private $characteristicRepository;
     private $priceRepository;
     private $stockBalanceRepository;
+    private $handBookRelatedProductRepository;
     private $userRepository;
     private $entityManager;
     private $config;
@@ -63,21 +67,25 @@ class MyTestController extends AbstractActionController
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
+                ProviderRelatedStoreRepositoryInterface $providerRelatedStoreRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
                 CharacteristicRepositoryInterface $characteristicRepository,
-                PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, UserRepository $userRepository,
+                PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
+                HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
             $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
         $this->storeRepository = $storeRepository;
+        $this->providerRelatedStoreRepository = $providerRelatedStoreRepository;
         $this->productRepository = $productRepository;
         $this->filteredProductRepository = $filteredProductRepository;
         $this->brandRepository = $brandRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
+        $this->handBookRelatedProductRepository = $handBookProduct;
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
@@ -333,7 +341,18 @@ class MyTestController extends AbstractActionController
     {        
         $this->layout()->setTemplate('layout/mainpage');
         
+        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);
+        foreach($handBookRelatedProducts as $prod) {
+            echo $prod->getId().' asdf'.$prod->getBrandId().' '.$prod->getBrand()->title. ' fdsa'.$prod->title.'<br/>';
+//            $brands = $prod->getBrand();
+//            foreach($brands as $b) {
+//                echo '<pre>';
+//                print_r($b);
+//                echo '</pre>';
+//            }
+        }
         $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
+        $providerRelatedStoreRepository = $this->providerRelatedStoreRepository->findAll(['sequence' => ['000000003', '000000004', '000000005']]);
         $brands = $this->brandRepository->findAll([]);
         $characteristics = $this->characteristicRepository->findAll([]);
         $products = $this->productRepository->findAll(['limit'=>100, 'offset'=>0, 'order'=>'id ASC', 'store_filter' => ['000000003', '000000004', '000000005', '000000001', '000000002'] ]);
@@ -345,6 +364,17 @@ class MyTestController extends AbstractActionController
         
         $providers = $this->providerRepository->findAvailableProviders([ 'order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['000000003', '000000004', '000000005'] ]);
         $providers2 = $this->providerRepository->findAll(['order'=>'id ASC', 'limit'=>100, 'offset'=>0, 'sequence'=>['00003'], 'where'=>[ 'id' => ['00003', '00004']] ]);
+        
+        echo '==================== ProviderRelatedStoreRepository ==========================<br/>';
+        foreach($providerRelatedStoreRepository as $sp){
+            echo '<pre>';
+            $provider = $sp->getProvider();
+//            print_r($sp);
+            echo $sp->id.' '. $sp->getProviderId().' '. $sp->getTitle().' '.$sp->getDescription().' '. $sp->getAddress(). ' '. $sp->getGeox().' '.$sp->getGeoy(). $sp->getIcon().' '. $provider->getId().' '.$provider->getTitle().' '.$provider->getDescription().' '.$provider->getIcon().'<br/>';
+            echo '</pre>';
+        }
+        echo '==================== End ================================================<br/>';
+        
         
         $users = $this->userRepository->findAll([]);
         

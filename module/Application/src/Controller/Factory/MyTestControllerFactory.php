@@ -10,12 +10,14 @@ use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\RepositoryInterface\ProviderRelatedStoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
@@ -35,19 +37,21 @@ class MyTestControllerFactory implements FactoryInterface
         $category = $container->get(CategoryRepositoryInterface::class);
         $provider = $container->get(ProviderRepositoryInterface::class);
         $store = $container->get(StoreRepositoryInterface::class);
+        $providerRelatedStore = $container->get(ProviderRelatedStoreRepositoryInterface::class);
         $product = $container->get(ProductRepositoryInterface::class);
         $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
         $brand = $container->get(BrandRepositoryInterface::class);
         $characteristic = $container->get(CharacteristicRepositoryInterface::class);
         $price = $container->get(PriceRepositoryInterface::class);
         $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
+        $handBookProduct = $container->get(HandbookRelatedProductRepositoryInterface::class);
         $userRepository = $container->get(UserRepository::class);
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
-        return new MyTestController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic,
-                $price, $stockBalance, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider);
+        return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic,
+                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider);
     }
 
 }

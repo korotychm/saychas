@@ -12,7 +12,7 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="brand")
  * @ORM\Entity
  */
-class Brand
+class Brand extends Entity
 {
 
     /**
@@ -22,28 +22,28 @@ class Brand
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="title", type="text", length=255, nullable=false)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      *
      * @ORM\Column(name="logo", type="text", length=255, nullable=false)
      */
-    private $logo;
+    protected $logo;
 
     /**
      * Get id.
@@ -55,6 +55,11 @@ class Brand
         return $this->id;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
     /**
      * Set title.
      *

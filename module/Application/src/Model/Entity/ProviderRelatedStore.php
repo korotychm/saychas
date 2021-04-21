@@ -1,12 +1,12 @@
 <?php
 
-// src/Model/Entity/Store.php
+// src/Model/Entity/ProviderRelatedStore.php
 
 namespace Application\Model\Entity;
 
 //use Doctrine\ORM\Mapping as ORM;
 
-use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
+use Application\Model\Repository\ProviderRepository;
 
 /**
  * Store
@@ -14,13 +14,13 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
  * @ORM\Table(name="store")
  * @ORM\Entity
  */
-class Store extends Entity
+class ProviderRelatedStore extends Entity
 {
 
     /**
      * @var ProviderRepository
      */
-    public static ProviderRepositoryInterface $providerRepository;
+    public static ProviderRepository $providerRepository;
 
     /**
      * @var int
@@ -30,14 +30,6 @@ class Store extends Entity
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-
-    /**
-     * @return Provider
-     */
-    public function getProvider()
-    {
-        return self::$providerRepository->findFirstOrDefault(['id' => $this->getProviderId()]);
-    }
 
     /**
      * @var string
@@ -88,16 +80,19 @@ class Store extends Entity
      */
     protected $icon;
 
-//    public function __get($name)
-//    {
-//        if (isset($this->$name)) {
-//            if('title' == $name) {
-//                $this->title = ' overridden ' . $this->$name;
-//            }
-//            return $this->$name;
-//        }
-//        return null;
-//    }
+    /**
+     * Get provider
+     *
+     * @return Provider
+     * @throws \Exception
+     */
+    public function getProvider()
+    {
+        if (!( self::$providerRepository instanceof ProviderRepository )) {
+            throw new \Exception('ProviderRepository expected; other type given');
+        }
+        return self::$providerRepository->findFirstOrDefault(['id' => $this->getProviderId()]);
+    }
 
     /**
      * Get id.
@@ -107,6 +102,18 @@ class Store extends Entity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id.
+     *
+     * @param type $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

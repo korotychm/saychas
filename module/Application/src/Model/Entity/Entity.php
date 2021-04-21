@@ -4,6 +4,8 @@
 
 namespace Application\Model\Entity;
 
+use Exception;
+
 /**
  * Base Entity class
  */
@@ -13,20 +15,18 @@ class Entity
     /**
      * Camelizes strings; converts strings like my_string to MyString
      * 
-     * @param type $string
-     * @return type
+     * @param string $string
+     * @return string
      */
     private function camelize($string)
     {
-        $words = explode('_', $string);
+        //$words = explode('_', $string);
 
         // make a strings first character uppercase
-        $words = array_map('ucfirst', $words);
+        $words = array_map('ucfirst', explode('_', $string));
 
         // join array elements with ''
-        $string = implode('', $words);
-
-        return $string;
+        return implode('', $words);
     }
 
     /**
@@ -37,11 +37,14 @@ class Entity
      */
     public function __get($name)
     {
-        if (isset($this->$name)) {
-            $name = 'get' . $this->camelize($name);
-            return $this->$name();
+//    if (isset($this->$name)) {
+        $name = 'get' . $this->camelize($name);
+        if (!method_exists($this, $name)) {
+            throw new Exception('Method ' . $name . ' does not exist');
         }
-        return null;
+        return $this->$name();
+//    }
+//        return null;
     }
 
     /**
