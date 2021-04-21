@@ -1,8 +1,10 @@
 <?php
+
+// src/Controller/Factory/MyTestControllerFactory.php
+
 namespace Application\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
-//use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
@@ -25,20 +27,21 @@ use Application\Controller\MyTestController;
  */
 class MyTestControllerFactory implements FactoryInterface
 {
+
     public function __invoke(ContainerInterface $container, $requestName, array $options = null)
     {
         // Instantiate the controller and inject dependencies
-        $test = $container->get(/**\Application\Model\*/TestRepositoryInterface::class);
+        $test = $container->get(/*                 * \Application\Model\ */TestRepositoryInterface::class);
         $category = $container->get(CategoryRepositoryInterface::class);
         $provider = $container->get(ProviderRepositoryInterface::class);
-        $store =    $container->get(StoreRepositoryInterface::class);
-        $product =    $container->get(ProductRepositoryInterface::class);
+        $store = $container->get(StoreRepositoryInterface::class);
+        $product = $container->get(ProductRepositoryInterface::class);
         $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
-        $brand =    $container->get(BrandRepositoryInterface::class);
-        $characteristic =    $container->get(CharacteristicRepositoryInterface::class);
-        $price =    $container->get(PriceRepositoryInterface::class);
-        $stockBalance =    $container->get(StockBalanceRepositoryInterface::class);
-        $userRepository =    $container->get(UserRepository::class);
+        $brand = $container->get(BrandRepositoryInterface::class);
+        $characteristic = $container->get(CharacteristicRepositoryInterface::class);
+        $price = $container->get(PriceRepositoryInterface::class);
+        $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
+        $userRepository = $container->get(UserRepository::class);
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
@@ -46,5 +49,5 @@ class MyTestControllerFactory implements FactoryInterface
         return new MyTestController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic,
                 $price, $stockBalance, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider);
     }
-}
 
+}
