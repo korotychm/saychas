@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/Store.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class Store extends Entity
 {
+
     /**
      * @var int
      *
@@ -71,7 +73,6 @@ class Store extends Entity
      */
     protected $icon;
 
-
 //    public function __get($name)
 //    {
 //        if (isset($this->$name)) {
@@ -82,7 +83,7 @@ class Store extends Entity
 //        }
 //        return null;
 //    }
-    
+
     /**
      * Get id.
      *
@@ -260,4 +261,5 @@ class Store extends Entity
     {
         return $this->icon;
     }
+
 }

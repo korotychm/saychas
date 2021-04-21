@@ -1,10 +1,12 @@
 <?php
+
 // src/Model/Entity/Category.php
 
 namespace Application\Model\Entity;
 
 class Category
 {
+
     /**
      * @var string
      */
@@ -14,7 +16,7 @@ class Category
      * @var string
      */
     private $parent_id;
-    
+
     /**
      * @var string
      */
@@ -24,7 +26,7 @@ class Category
      * @var string
      */
     private $description;
-    
+
     /**
      * @var string
      */
@@ -67,6 +69,7 @@ class Category
     {
         return $this->id;
     }
+
     /**
      * @return string
      */
@@ -90,7 +93,7 @@ class Category
     {
         return $this->description;
     }
-    
+
     /**
      * @return int
      */
@@ -98,4 +101,5 @@ class Category
     {
         return $this->sort_order;
     }
+
 }

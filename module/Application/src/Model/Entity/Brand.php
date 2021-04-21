@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/Brand.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class Brand
 {
+
     /**
      * @var int
      *
@@ -42,7 +44,6 @@ class Brand
      * @ORM\Column(name="logo", type="text", length=255, nullable=false)
      */
     private $logo;
-
 
     /**
      * Get id.
@@ -125,4 +126,5 @@ class Brand
     {
         return $this->logo;
     }
+
 }

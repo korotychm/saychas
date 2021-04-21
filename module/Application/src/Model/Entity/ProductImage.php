@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/ProductImage.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class ProductImage
 {
+
     /**
      * @var int
      *
@@ -49,7 +51,6 @@ class ProductImage
      * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
     private $sort_order = '0';
-
 
     /**
      * Get id.
@@ -156,4 +157,5 @@ class ProductImage
     {
         return $this->sort_order;
     }
+
 }

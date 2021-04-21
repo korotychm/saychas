@@ -9,7 +9,8 @@ namespace Application\Helper;
  *
  * @author alex
  */
-class ArrayHelper {
+class ArrayHelper
+{
 
     /**
      * Groups array by subarray values
@@ -18,7 +19,8 @@ class ArrayHelper {
      * @param Callable|string $criteria
      * @return array
      */
-    public static function groupBy($arr, $criteria): array {
+    public static function groupBy($arr, $criteria): array
+    {
         return array_reduce($arr, function ($accumulator, $item) use ($criteria) {
             $key = (is_callable($criteria)) ? $criteria($item) : $item[$criteria];
             if (!array_key_exists($key, $accumulator)) {
@@ -36,7 +38,8 @@ class ArrayHelper {
      * @param type $parentId
      * @return type
      */
-    public static function buildTree(array $elements, $parentId = 0) {
+    public static function buildTree(array $elements, $parentId = 0)
+    {
         $branch = [];
 
         foreach ($elements as $element) {

@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/CharacteristicValue2.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class CharacteristicValue2
 {
+
     /**
      * id
      * @var string, length=9
@@ -30,7 +32,6 @@ class CharacteristicValue2
      */
     private $characteristic_id;
 
-
     /**
      * Set character value.
      *
@@ -41,10 +42,10 @@ class CharacteristicValue2
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
-    
+
     /**
      * Get character value.
      *
@@ -102,5 +103,5 @@ class CharacteristicValue2
     {
         return $this->characteristic_id;
     }
-        
+
 }

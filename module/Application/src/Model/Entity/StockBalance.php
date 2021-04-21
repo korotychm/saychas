@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/StockBalance.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class StockBalance
 {
+
     /**
      * @var int
      *
@@ -42,7 +44,6 @@ class StockBalance
      * @ORM\Column(name="store_id", type="integer", nullable=false)
      */
     private $store_id;
-
 
     /**
      * Get id.
@@ -125,4 +126,5 @@ class StockBalance
     {
         return $this->store_id;
     }
+
 }

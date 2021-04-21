@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/FilteredProduct.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class FilteredProduct
 {
+
     /**
      * @var int
      *
@@ -33,7 +35,7 @@ class FilteredProduct
      * @var string
      */
     private $product_id;
-    
+
     /**
      * @var string
      */
@@ -44,12 +46,12 @@ class FilteredProduct
      *
      */
     private $rest;
-    
+
     /**
      * @var int
      */
     private $price;
-    
+
     /**
      * @var string
      */
@@ -117,7 +119,7 @@ class FilteredProduct
     {
         return $this->title;
     }
-    
+
     /**
      * @return string
      */
@@ -125,7 +127,7 @@ class FilteredProduct
     {
         return $this->product_id;
     }
-    
+
     /**
      * @return string
      */
@@ -143,7 +145,7 @@ class FilteredProduct
     {
         return $this->rest;
     }
-    
+
     public function getPrice()
     {
         return $this->price;
@@ -153,9 +155,10 @@ class FilteredProduct
     {
         return $this->param_value_list;
     }
-    
+
     public function getParamVariableList()
     {
         return $this->param_variable_list;
     }
+
 }

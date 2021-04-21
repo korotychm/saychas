@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/Characteristic.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class Characteristic
 {
+
     /**
      * characteristic_id
      * @var string, length=9
@@ -35,29 +37,30 @@ class Characteristic
      * @var string, length=9
      */
     private $category_id;
-    
+
     /**
      * @var int
      */
     private $filter;
-    
+
     /**
      * @var int
      */
     private $group;
-    
+
     /**
      * sort_order
      * @var int
      */
     private $sort_order;
-    
+
     /**
      * val
      * @var string
      */
     private $val;
-     /**
+
+    /**
      * val_id
      * @var string
      */
@@ -74,6 +77,7 @@ class Characteristic
 //        $this->val = $object->val;
 //        $this->val_id = $object->val_id;
 //    }
+
     /**
      * Set characteristic id.
      *
@@ -84,10 +88,10 @@ class Characteristic
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
-    
+
     /**
      * Get characteristic id.
      *
@@ -97,6 +101,7 @@ class Characteristic
     {
         return $this->id;
     }
+
     /**
      * Get characteristic_value  value.
      *
@@ -164,7 +169,7 @@ class Characteristic
     {
         return $this->type;
     }
-    
+
     /**
      * Set category_id.
      *
@@ -178,7 +183,7 @@ class Characteristic
 
         return $this;
     }
-    
+
     /**
      * Get category_id.
      *
@@ -212,7 +217,6 @@ class Characteristic
     {
         return $this->filter;
     }
-    
 
     /**
      * Set group.
@@ -226,8 +230,8 @@ class Characteristic
         $this->group = $group;
 
         return $this;
-    }    
-    
+    }
+
     /**
      * Get group.
      *
@@ -237,7 +241,7 @@ class Characteristic
     {
         return $this->group;
     }
-    
+
     /**
      * Set sort_order.
      *
@@ -249,8 +253,8 @@ class Characteristic
     {
         $this->sort_order = $sortOrder;
         return $this;
-    }    
-    
+    }
+
     /**
      * Get sort_order.
      *
@@ -260,5 +264,5 @@ class Characteristic
     {
         return $this->sort_order;
     }
-    
+
 }

@@ -1,10 +1,12 @@
 <?php
+
 // src/Model/Entity/Provider.php
 
 namespace Application\Model\Entity;
 
 class Provider extends Entity
 {
+
     /**
      * @var int
      */
@@ -24,7 +26,6 @@ class Provider extends Entity
      * @var string | null
      */
     protected $icon;
-
 
     /**
      * @return int
@@ -90,4 +91,5 @@ class Provider extends Entity
     {
         return $this->icon;
     }
+
 }

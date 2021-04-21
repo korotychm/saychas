@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/Price.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class Price
 {
+
     /**
      * @var int
      *
@@ -49,7 +51,6 @@ class Price
      * @ORM\Column(name="unit", type="text", length=255, nullable=false)
      */
     private $unit;
-
 
     /**
      * Get id.
@@ -156,13 +157,13 @@ class Price
     {
         return $this->unit;
     }
+
     /**
      * @var int
      *
      * @ORM\Column(name="price", type="integer", nullable=false)
      */
     private $price;
-
 
     /**
      * Set providerId.
@@ -211,4 +212,5 @@ class Price
     {
         return $this->price;
     }
+
 }

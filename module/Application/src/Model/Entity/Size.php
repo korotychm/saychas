@@ -4,7 +4,7 @@
 
 /*
  * Here comes the text of your license
- * Each line should be prefixed with  * 
+ * Each line should be prefixed with  *
  */
 
 namespace Application\Model\Entity;
@@ -25,7 +25,7 @@ class Size extends Entity
 
     /**
      * Setter
-     * 
+     *
      * @param ?string $id
      * @return $this
      */
@@ -37,7 +37,7 @@ class Size extends Entity
 
     /**
      * Getter
-     * 
+     *
      * @return ?string
      */
     public function getId()
@@ -47,7 +47,7 @@ class Size extends Entity
 
     /**
      * Setter
-     * 
+     *
      * @param ?string $title
      * @return $this
      */
@@ -59,7 +59,7 @@ class Size extends Entity
 
     /**
      * Getter
-     * 
+     *
      * @return ?string
      */
     public function getTitle()

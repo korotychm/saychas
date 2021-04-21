@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/Entity.php
 
 namespace Application\Model\Entity;
@@ -8,6 +9,7 @@ namespace Application\Model\Entity;
  */
 class Entity
 {
+
     /**
      * Camelizes strings; converts strings like my_string to MyString
      * 
@@ -23,10 +25,10 @@ class Entity
 
         // join array elements with ''
         $string = implode('', $words);
-        
+
         return $string;
     }
-    
+
     /**
      * Magic __get method that calls a getter for specified property
      * 
@@ -36,22 +38,21 @@ class Entity
     public function __get($name)
     {
         if (isset($this->$name)) {
-            $name = 'get'.$this->camelize($name);
+            $name = 'get' . $this->camelize($name);
             return $this->$name();
         }
         return null;
     }
-    
+
     /**
      * Magic __set method that is not used right now
      */
     /**
-    public function __set($name, $value)
-    {
-        if (isset($this->$name)) {
-            $this->$name = $value;
-        }
-    }
-    */
-
+      public function __set($name, $value)
+      {
+      if (isset($this->$name)) {
+      $this->$name = $value;
+      }
+      }
+     */
 }

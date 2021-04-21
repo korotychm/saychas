@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Entity/Product.php
 
 namespace Application\Model\Entity;
@@ -13,6 +14,7 @@ namespace Application\Model\Entity;
  */
 class Product extends Entity
 {
+
     /**
      * @var int
      *
@@ -62,12 +64,11 @@ class Product extends Entity
      */
     protected $price;
 
-
     /**
      * @var int
      */
     protected $rest;
-    
+
     /**
      * @var string
      */
@@ -82,28 +83,26 @@ class Product extends Entity
      * @var string, length=9
      */
     protected $store_id;
-    
+
     /**
      * @var string
      */
     protected $store_title;
-    
+
     /**
      * @var string
      */
     protected $product_title;
-    
+
     /**
      * @var string
      */
     protected $param_value_list;
-    
-    
+
     /**
      * @var string (json)
      */
     protected $param_variable_list;
-    
 
     /**
      * @return string
@@ -112,17 +111,17 @@ class Product extends Entity
     {
         return $this->param_value_list;
     }
-    
+
     public function getParamVariableList2()
     {
         return $this->param_variable_list;
     }
-    
+
     public function getProductTitle()
     {
         return $this->product_title;
     }
-    
+
     /**
      * @return string, length=9
      */
@@ -138,7 +137,7 @@ class Product extends Entity
     {
         return $this->store_title;
     }
-    
+
     /**
      * Get id.
      *
@@ -268,6 +267,7 @@ class Product extends Entity
     {
         return $this->vendor_code;
     }
+
     /**
      * @var string
      *
@@ -281,7 +281,6 @@ class Product extends Entity
      * @ORM\Column(name="param_variable_list", type="text", nullable=false)
      */
     //private $paramVariableList;
-
 
     /**
      * Set paramValueList.
@@ -330,7 +329,7 @@ class Product extends Entity
     {
         return $this->paramVariableList;
     }
-    
+
     /**
      * Get price.
      *
@@ -340,7 +339,7 @@ class Product extends Entity
     {
         return $this->price;
     }
-    
+
     /**
      * Get rest.
      *
@@ -350,7 +349,7 @@ class Product extends Entity
     {
         return $this->rest;
     }
-    
+
     /**
      * Get http_url.
      *
@@ -360,7 +359,7 @@ class Product extends Entity
     {
         return $this->http_url;
     }
-    
+
     /**
      * Get brand_title.
      *
@@ -370,4 +369,5 @@ class Product extends Entity
     {
         return $this->brand_title;
     }
+
 }
