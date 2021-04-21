@@ -332,6 +332,7 @@ class FetchImagesCommand extends Command
 //        }
 //        
 //        echo "\n\n\n\n\n";
+//exit;
         
         $users = $this->userRepository->findAll([]);
         
@@ -345,7 +346,7 @@ class FetchImagesCommand extends Command
 //          new MethodMatchFilter('getPostRepository'),
 //          FilterComposite::CONDITION_AND
 //        );
-
+/**
         $userHydrator = new UserHydrator($this->postRepository);
         $strat = new \Laminas\Hydrator\Strategy\CollectionStrategy(
             $userHydrator,
@@ -388,7 +389,15 @@ class FetchImagesCommand extends Command
             }
         }
 
-
+*/
+        $users = $this->userRepository->findAll([]);
+        foreach ($users as $user) {
+            print_r($user->getFirstName().' '. $user->getLastName().' '.$user->getEmailAddress().' '.$user->getPhoneNumber());
+            echo "\n";
+            foreach($user->getPosts() as $post) {
+                echo $post->id.' '.$post->email.' '.$post->blog."\n";
+            }
+        }
         return 0;
     }
 }

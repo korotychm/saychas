@@ -14,8 +14,7 @@ use Laminas\Hydrator\ClassMethodsHydrator;
  *
  * @author alex
  */
-class UserHydrator extends ClassMethodsHydrator implements HydratorInterface
-{
+class UserHydrator /* extends ClassMethodsHydrator */ implements HydratorInterface {
 
     /** @var PostRepository */
     private PostRepository $postRepository;
@@ -25,8 +24,7 @@ class UserHydrator extends ClassMethodsHydrator implements HydratorInterface
      *
      * @param PostRepository $postRepository
      */
-    public function __construct(PostRepository $postRepository)
-    {
+    public function __construct(PostRepository $postRepository) {
         $this->postRepository = $postRepository;
     }
 
@@ -37,10 +35,9 @@ class UserHydrator extends ClassMethodsHydrator implements HydratorInterface
      * @param User $object
      * @return User
      */
-    public function hydrate($data, $object)
-    {
-        parent::hydrate($data, $object);
-
+    public function hydrate($data, $object) {
+        //parent::hydrate($data, $object);
+        
         if (!$object instanceof User) {
             return $object;
         }
@@ -56,8 +53,7 @@ class UserHydrator extends ClassMethodsHydrator implements HydratorInterface
      * @param object $object
      * @return array
      */
-    public function extract(object $object): array
-    {
+    public function extract(object $object): array {
         if (!$object instanceof User) {
             return array();
         }

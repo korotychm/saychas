@@ -2,13 +2,12 @@
 
 /*
  * Here comes the text of your license
- * Each line should be prefixed with  *
+ * Each line should be prefixed with  * 
  */
 
 namespace Application\Model\Entity;
 
 use Application\Model\Repository\PostRepository;
-
 /**
  * Description of User
  *
@@ -16,18 +15,18 @@ use Application\Model\Repository\PostRepository;
  */
 class User extends Entity
 {
-
-//    protected $postRepository;
+    public static PostRepository $postRepository;
     protected $firstName;
     protected $lastName;
     protected $emailAddress;
     protected $phoneNumber;
-    protected PostRepository $posts; // = [];
-
+    protected PostRepository $posts;// = [];
+    
 //    public function getPostRepository()
 //    {
 //        return $this->postRepository;
 //    }
+    
 //    public function setPostRepository(PostRepository $postRepository)
 //    {
 //        $this->postRepository = $postRepository;
@@ -38,7 +37,7 @@ class User extends Entity
         $this->firstName = $firstName;
         return $this;
     }
-
+    
     public function getFirstName()
     {
         return $this->firstName;
@@ -71,18 +70,21 @@ class User extends Entity
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-
+    
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
     }
-
+    
     public function getPosts()
     {
-        $posts = $this->posts->findAll(['sequence' => [$this->getPhoneNumber()]]);
+//        $posts = $this->posts->findAll(['sequence' => [$this->getPhoneNumber()] ]);
+//        echo count($posts);
+//        exit;
+        $posts = self::$postRepository->findAll(['sequence' => [$this->getPhoneNumber()]]);
         return $posts;
     }
-
+    
     public function setPosts(PostRepository $posts)
     {
         $this->posts = $posts;
@@ -109,22 +111,29 @@ class User extends Entity
 
         return $this;
     }
-
+    
 }
+
+
+
+
+
+
+
 
 //    public function __construct(PostRepository $postRepository = null)
 //    {
 //        $this->postRepository = $postRepository;
 //
 //        $posts = $this->postRepository->findAll([]); //  'where'=>['id' => [$this->getPhoneNumber()] ]
-//
+//        
 //        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
 //            new \Laminas\Hydrator\ClassMethodsHydrator(),
 //            Post::class
 //        );
 //
 //        $this->posts = $strategy->hydrate($posts->toArray());
-//
+//        
 //        $this->setPosts($this->posts);
 //    }
 
@@ -136,9 +145,9 @@ class User extends Entity
         //
 //        echo "======================\n";
 //        print_r($this->postRepository);
-
+        
         //$this->getPostRepository()->findAll([]);
-
+        
 //        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
 ////        $hydrator->addStrategy(
 ////            'posts',
@@ -153,4 +162,4 @@ class User extends Entity
 //        );
 //
 //        $this->posts = $strategy->hydrate($this->posts);
-
+        

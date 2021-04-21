@@ -43,32 +43,6 @@ class UserRepository extends Repository implements RepositoryInterface
         $this->prototype = $prototype;
     }
 
-    public function findAll($params)
-    {
-        $sql    = new Sql($this->db);
-        $select = $sql->select($this->tableName);
-        if(isset($params['order']))     { $select->order($params['order']); }
-        if(isset($params['limit']))     { $select->limit($params['limit']); }
-        if(isset($params['offset']))    { $select->offset($params['offset']); }
-        if(isset($params['where']))     { $select->where($params['where']); }
-        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }//{ $select->where->in('id', $params['sequence']); } // 
-        
-        $stmt   = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();
-
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            return [];
-        }
-
-        $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
-        );
-        $resultSet->initialize($result);
-        return $resultSet;
-    }
-    
     /**
      * Adds given user into it's repository
      * 

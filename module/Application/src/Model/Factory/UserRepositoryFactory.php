@@ -5,13 +5,14 @@ namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
 use Application\Model\Entity\User;
-use Application\Model\Entity\Entity;
+//use Application\Model\Entity\Entity;
 use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\PostRepository;
-use Laminas\Hydrator\Aggregate\HydrateEvent;
+//use Laminas\Hydrator\Aggregate\HydrateEvent;
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\EventManager\EventManagerInterface;
-use Laminas\EventManager\EventManager;
+//use Laminas\EventManager\EventManagerInterface;
+//use Laminas\EventManager\EventManager;
+use Application\Hydrator\UserHydrator;
 // use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
@@ -29,37 +30,44 @@ class UserRepositoryFactory implements FactoryInterface
         
 //        $cache             = new \Laminas\Cache\Storage\Adapter\Memory;// new Memory();
         
-        $userListener = function (HydrateEvent $event) use ($postRepository) {
-            $data = $event->getHydrationData();// 
-            
-            $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-                new \Laminas\Hydrator\ClassMethodsHydrator(),
-                \Application\Model\Entity\Post::class
-            );
-            
-            
-            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-            $user = $hydrator->hydrate($data, new User);
-            if( ! $user instanceof User) {
-                return;
-            }
-            $posts = $postRepository->findAll(['where'=>['id'=>$user->getPhoneNumber()]])->toArray();
-            $hydratedPosts = $strategy->hydrate($posts);
-            $user->setPosts($hydratedPosts);
-            print_r($user);
-            return $user;
-        };
+//        $userListener = function (HydrateEvent $event) use ($postRepository) {
+//            $data = $event->getHydrationData();// 
+//            
+//            $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+//                new \Laminas\Hydrator\ClassMethodsHydrator(),
+//                \Application\Model\Entity\Post::class
+//            );
+//            
+//            
+//            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+//            $user = $hydrator->hydrate($data, new User);
+//            if( ! $user instanceof User) {
+//                return;
+//            }
+//            $posts = $postRepository->findAll(['where'=>['id'=>$user->getPhoneNumber()]])->toArray();
+//            $hydratedPosts = $strategy->hydrate($posts);
+//            $user->setPosts($hydratedPosts);
+//            print_r($user);
+//            return $user;
+//        };
         
+        /**
         $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
         $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
+        $hydrator->add( new \Application\Hydrator\UserHydrator($postRepository));
+        * 
+        */
 
-        //$hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);
+//        $hydrator = new UserHydrator($postRepository);
+//        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);
+        
+        $prototype = new User;
+        $prototype::$postRepository = $postRepository;
         
         return new UserRepository(
             $adapter,
-            $hydrator,//new ReflectionHydrator(),
-            new User // new User('', '', '', '')
+            new \Laminas\Hydrator\ClassMethodsHydrator,//new ReflectionHydrator(),//$hydrator,//new ReflectionHydrator(),
+            $prototype // new User('', '', '', '')
         );
     }
 }
