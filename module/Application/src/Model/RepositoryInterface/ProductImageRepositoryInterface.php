@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/RepositoryInterface/ProductImageRepositoryInterface.php
 
 namespace Application\Model\RepositoryInterface;
@@ -6,5 +7,7 @@ namespace Application\Model\RepositoryInterface;
 /**
  * @author alex
  */
-interface ProductImageRepositoryInterface extends RepositoryInterface {
+interface ProductImageRepositoryInterface extends RepositoryInterface
+{
+    
 }
