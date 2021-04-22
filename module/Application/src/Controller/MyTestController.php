@@ -336,21 +336,44 @@ class MyTestController extends AbstractActionController
 
 //        return $view;
     }
+
+    private function packParams($params)
+    {
+        $a = [];
+        foreach($params['filter'] as $p) {
+           $a[] = "find_in_set('$p', param_value_list)"; 
+        }
+        $res = ' 1';
+        if(count($a) > 0) {
+            $res = '('.implode(' OR ', $a).')';
+        }
+        return $res;
+    }
     
     public function testReposAction()
-    {        
+    {
+//        $s = '';
+//        if (isset($params['filter'])) {
+//            $s = $this->packParams($params);
+////            $select->where($s);
+//        }
+        //function() { return $this->packParams(['000000003']); }
+//        print_r($this->packParams(['filter' => ['000000003'] ]));
+//        exit;
         $this->layout()->setTemplate('layout/mainpage');
-        
-        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);
+        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928'] ]) ]);
+        echo '<table style="font-size: 10pt">';
+        echo '<tr><th>Product id</th><th>ParamValueList</th><th>Product brand_id</th><th>ProductBrand title</th><th>ProductPrice<br/>product_id</th><th>ProductPrice<br/>price</th><th>Product title</th><th>ProductPrice<br/>provider_id</th></tr>';
         foreach($handBookRelatedProducts as $prod) {
-            echo $prod->getId().' asdf'.$prod->getBrandId().' '.$prod->getBrand()->title. ' fdsa'.$prod->title.'<br/>';
-//            $brands = $prod->getBrand();
-//            foreach($brands as $b) {
-//                echo '<pre>';
-//                print_r($b);
-//                echo '</pre>';
-//            }
+            echo '<tr>';
+            echo '<td>'.$prod->getId().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
+            echo '</tr>';
+//            $prices = $prod->getPrice();
+//            echo '<pre>';
+//            print_r($prices);
+//            echo '</pre>';
         }
+        echo '</table>';
         $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
         $providerRelatedStoreRepository = $this->providerRelatedStoreRepository->findAll(['sequence' => ['000000003', '000000004', '000000005']]);
         $brands = $this->brandRepository->findAll([]);
@@ -423,7 +446,7 @@ class MyTestController extends AbstractActionController
         }
         echo '---<br/>Filtered Products2, function: filterProductsByStores <hr/>';
         foreach ($filteredProducts2 as $product2) {
-            echo $product2->getId().' '.$product2->getTitle(). '<br/>';
+            echo $product2->getId().' '.$product2->getTitle(). ' price = '. $product2->getPrice(). $product2->getStoreTitle(). ' '. $product2->getStoreId(). ' '.$product2->getProviderId(). '<br/>';
         }
         echo '---<br/>Providers, function: findAvailableProviders <hr/>';
         foreach ($providers as $provider) {

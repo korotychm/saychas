@@ -12,7 +12,7 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="price", uniqueConstraints={@ORM\UniqueConstraint(name="id_product", columns={"product_id", "store_id"})})
  * @ORM\Entity
  */
-class Price
+class Price extends Entity
 {
 
     /**
@@ -22,45 +22,54 @@ class Price
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    //private $id;
 
     /**
      * @var int
      *
      * @ORM\Column(name="product_id", type="integer", nullable=false)
      */
-    private $productId;
+    protected $productId;
 
     /**
      * @var int
      *
      * @ORM\Column(name="reserve", type="integer", nullable=false)
      */
-    private $reserve;
+    protected $reserve;
 
     /**
      * @var int
      *
      * @ORM\Column(name="store_id", type="integer", nullable=false)
      */
-    private $storeId;
+    protected $storeId;
 
     /**
      * @var string
      *
      * @ORM\Column(name="unit", type="text", length=255, nullable=false)
      */
-    private $unit;
+    protected $unit;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="price", type="integer", nullable=false)
+     */
+    protected $price;
+    
+    protected  $providerId;
 
     /**
      * Get id.
      *
      * @return int
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+//    public function getId()
+//    {
+//        return $this->id;
+//    }
 
     /**
      * Set productId.
@@ -157,13 +166,6 @@ class Price
     {
         return $this->unit;
     }
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="price", type="integer", nullable=false)
-     */
-    private $price;
 
     /**
      * Set providerId.

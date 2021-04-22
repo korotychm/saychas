@@ -111,35 +111,35 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
      * @param  int $id Identifier of the price to return.
      * @return Price
      */    
-    public function find($id)
-    {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select($this->tableName);
-        $select->where(['id = ?' => $id]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-            throw new RuntimeException(sprintf(
-                'Failed retrieving test with identifier "%s"; unknown database error.',
-                $id
-            ));
-        }
-
-        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
-        $resultSet->initialize($result);
-        $price = $resultSet->current();
-
-        if (! $price) {
-            throw new InvalidArgumentException(sprintf(
-                'Price with identifier "%s" not found.',
-                $id
-            ));
-        }
-
-        return $price;
-    }
+//    public function find($id)
+//    {
+//        $sql       = new Sql($this->db);
+//        $select    = $sql->select($this->tableName);
+//        $select->where(['id = ?' => $id]);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $result    = $statement->execute();
+//        
+//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+//            throw new RuntimeException(sprintf(
+//                'Failed retrieving test with identifier "%s"; unknown database error.',
+//                $id
+//            ));
+//        }
+//
+//        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
+//        $resultSet->initialize($result);
+//        $price = $resultSet->current();
+//
+//        if (! $price) {
+//            throw new InvalidArgumentException(sprintf(
+//                'Price with identifier "%s" not found.',
+//                $id
+//            ));
+//        }
+//
+//        return $price;
+//    }
     
     /**
      * Adds given price into it's repository

@@ -7,7 +7,9 @@ use Interop\Container\ContainerInterface;
 use Application\Model\Entity\Price;
 use Application\Model\Repository\PriceRepository;
 use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Hydrator\Aggregate\AggregateHydrator;
 use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class PriceRepositoryFactory implements FactoryInterface
@@ -21,9 +23,13 @@ class PriceRepositoryFactory implements FactoryInterface
         
         $adapter = $container->get(AdapterInterface::class);
         
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new ReflectionHydrator());
+        $hydrator->add(new ClassMethodsHydrator);
+        
         return new PriceRepository(
             $adapter,
-            new ReflectionHydrator(),
+            $hydrator, // new ReflectionHydrator(),
             new Price//(0, 0, 0, '')
         );
     }

@@ -26,7 +26,7 @@ interface RepositoryInterface
 
     /**
      * Return a single entity or default if not found
-     * 
+     *
      * @param array $params
      * @return Entity|default
      */
@@ -34,7 +34,7 @@ interface RepositoryInterface
 
     /**
      * Return a single entity
-     * 
+     *
      * @param Entity
      * @return void
      */
@@ -42,7 +42,7 @@ interface RepositoryInterface
 
     /**
      * Return void. Deletes entities specified by $json
-     * 
+     *
      * @param json
      * @return void
      */

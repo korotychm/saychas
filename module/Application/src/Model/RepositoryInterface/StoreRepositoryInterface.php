@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/RepositoryInterface/StoreRepositoryInterface.php
 
 namespace Application\Model\RepositoryInterface;
@@ -6,7 +7,9 @@ namespace Application\Model\RepositoryInterface;
 /**
  * @author alex
  */
-interface StoreRepositoryInterface extends RepositoryInterface {
+interface StoreRepositoryInterface extends RepositoryInterface
+{
+
     /**
      * @param int $provider_id
      */

@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/RepositoryInterface/FilteredProductRepositoryInterface.php
 
 namespace Application\Model\RepositoryInterface;
@@ -8,4 +9,5 @@ namespace Application\Model\RepositoryInterface;
  */
 interface FilteredProductRepositoryInterface extends RepositoryInterface
 {
+    
 }

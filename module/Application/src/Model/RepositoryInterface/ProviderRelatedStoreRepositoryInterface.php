@@ -9,5 +9,5 @@ namespace Application\Model\RepositoryInterface;
  */
 interface ProviderRelatedStoreRepositoryInterface extends RepositoryInterface
 {
-
+    
 }

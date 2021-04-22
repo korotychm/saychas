@@ -23,17 +23,17 @@ class HandbookRelatedProduct extends Entity
      * @var BrandRepositoryInterface
      */
     public static BrandRepository $brandRepository;
-    
+
     /**
      * @var PriceRepositoryInterface
      */
     public static PriceRepositoryInterface $priceRepository;
-    
+
     /**
      * @var ProductImageRepositoryInterface
      */
     public static ProductImageRepositoryInterface $productImageRepository;
-    
+
     /**
      * Get brand
      *
@@ -46,7 +46,6 @@ class HandbookRelatedProduct extends Entity
             throw new \Exception('BrandRepositoryInterface expected; other type given');
         }
         return self::$brandRepository->findFirstOrDefault(['id' => $this->getBrandId()]);
-        //return self::$brandRepository->findAll(['id' => $this->getBrandId()]);
     }
 
     /**
@@ -61,10 +60,9 @@ class HandbookRelatedProduct extends Entity
             throw new \Exception('PriceRepositoryInterface expected; other type given');
         }
         //'pr.id = pri.product_id'
-//        return self::$priceRepository->findFirstOrDefault(['product_id' => $this->getId()]);
         return self::$priceRepository->findFirstOrDefault(['product_id=?' => $this->getId()]);
     }
-    
+
     /**
      * Get productImage
      *
@@ -148,7 +146,7 @@ class HandbookRelatedProduct extends Entity
     {
         return $this->id;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
@@ -319,7 +317,7 @@ class HandbookRelatedProduct extends Entity
     {
         return $this->paramVariableList;
     }
-    
+
     public function getBrandId()
     {
         return $this->brand_id;
@@ -330,4 +328,5 @@ class HandbookRelatedProduct extends Entity
         $this->brand_id = $brandId;
         return $this;
     }
+
 }
