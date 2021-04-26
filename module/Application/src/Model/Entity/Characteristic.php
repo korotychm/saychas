@@ -66,18 +66,6 @@ class Characteristic
      */
     private $val_id;
 
-//    public function __construct($object) {
-//        $this->id = $object->id;
-//        $this->title = $object->title;
-//        $this->type = $object->type;
-//        $this->filter = $object->filter;
-//        $this->group = $object->group;
-//        $this->category_id = $object->category_id;
-//        $this->sort_order = $object->sort_order;
-//        $this->val = $object->val;
-//        $this->val_id = $object->val_id;
-//    }
-
     /**
      * Set characteristic id.
      *

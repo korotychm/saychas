@@ -23,11 +23,7 @@ class Store extends Entity
     public static ProviderRepositoryInterface $providerRepository;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var string
      */
     protected $id;
 
@@ -41,63 +37,38 @@ class Store extends Entity
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="provider_id", type="string", length=11, nullable=false)
      */
     protected $provider_id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
     protected $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     protected $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="address", type="text", length=65535, nullable=false)
      */
     protected $address;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="geox", type="text", length=65535, nullable=false)
      */
     protected $geox;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="geoy", type="text", length=65535, nullable=false)
      */
     protected $geoy;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="icon", type="text", length=65535, nullable=false)
      */
     protected $icon;
-
-//    public function __get($name)
-//    {
-//        if (isset($this->$name)) {
-//            if('title' == $name) {
-//                $this->title = ' overridden ' . $this->$name;
-//            }
-//            return $this->$name;
-//        }
-//        return null;
-//    }
 
     /**
      * Get id.

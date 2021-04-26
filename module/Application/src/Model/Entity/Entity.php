@@ -37,14 +37,11 @@ class Entity
      */
     public function __get($name)
     {
-//    if (isset($this->$name)) {
         $name = 'get' . $this->camelize($name);
         if (!method_exists($this, $name)) {
             throw new Exception('Method ' . $name . ' does not exist');
         }
         return $this->$name();
-//    }
-//        return null;
     }
 
     /**

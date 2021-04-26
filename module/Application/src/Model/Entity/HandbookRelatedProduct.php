@@ -34,7 +34,7 @@ class HandbookRelatedProduct extends Entity
      * @var ProductImageRepositoryInterface
      */
     public static ProductImageRepositoryInterface $productImageRepository;
-    
+
     /**
      * @var ProviderRepositoryInterface
      */
@@ -80,11 +80,11 @@ class HandbookRelatedProduct extends Entity
         if (!( self::$productImageRepository instanceof ProductImageRepositoryInterface )) {
             throw new \Exception('ProductImageRepositoryInterface expected; other type given');
         }
-        return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()] ]);
+        return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()]]);
     }
 
     /**
-     * 
+     *
      * @return Provider
      * @throws \Exception
      */
@@ -153,7 +153,7 @@ class HandbookRelatedProduct extends Entity
 
     /**
      * Set id.
-     * 
+     *
      * @param string $id
      * @return $this
      */
@@ -330,7 +330,7 @@ class HandbookRelatedProduct extends Entity
 
     /**
      * Get brand_id
-     * 
+     *
      * @return string
      */
     public function getBrandId()
@@ -340,7 +340,7 @@ class HandbookRelatedProduct extends Entity
 
     /**
      * Set brand_id
-     * 
+     *
      * @param string $brandId
      * @return $this
      */

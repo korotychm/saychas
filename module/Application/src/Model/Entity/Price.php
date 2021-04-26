@@ -16,60 +16,34 @@ class Price extends Entity
 {
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    //private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="product_id", type="integer", nullable=false)
+     * @var string
      */
     protected $productId;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="reserve", type="integer", nullable=false)
      */
     protected $reserve;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="store_id", type="integer", nullable=false)
+     * @var string
      */
     protected $storeId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="unit", type="text", length=255, nullable=false)
      */
     protected $unit;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="price", type="integer", nullable=false)
      */
     protected $price;
-    
-    protected  $providerId;
 
     /**
-     * Get id.
-     *
-     * @return int
+     * @var string
      */
-//    public function getId()
-//    {
-//        return $this->id;
-//    }
+    protected  $providerId;
 
     /**
      * Set productId.

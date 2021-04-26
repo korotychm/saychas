@@ -13,7 +13,7 @@ class Provider extends Entity
      * @var StoreRepository
      */
     public static StoreRepositoryInterface $storeRepository;
-    
+
     /**
      * @var int
      */
@@ -33,9 +33,9 @@ class Provider extends Entity
      * @var string | null
      */
     protected $icon;
-    
+
     /**
-     * 
+     *
      * @return Store[]
      * @throws \Exception
      */
@@ -44,7 +44,7 @@ class Provider extends Entity
         if (!( self::$storeRepository instanceof StoreRepositoryInterface )) {
             throw new \Exception('StoreRepositoryInterface expected; other type given');
         }
-        return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()] ]);
+        return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()]]);
     }
 
     /**
