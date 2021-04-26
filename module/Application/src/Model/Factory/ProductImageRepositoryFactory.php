@@ -7,7 +7,9 @@ use Interop\Container\ContainerInterface;
 use Application\Model\Entity\ProductImage;
 use Application\Model\Repository\ProductImageRepository;
 use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Hydrator\Aggregate\AggregateHydrator;
 use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ProductImageRepositoryFactory implements FactoryInterface
@@ -21,10 +23,13 @@ class ProductImageRepositoryFactory implements FactoryInterface
         
         $adapter = $container->get(AdapterInterface::class);
         
+        $hydrator = new AggregateHydrator();
+        $hydrator->add(new ReflectionHydrator());
+        $hydrator->add(new ClassMethodsHydrator);
         return new ProductImageRepository(
             $adapter,
             new ReflectionHydrator(),
-            new ProductImage(0,'', '', '', 0)
+            new ProductImage // (0,'', '', '', 0)
         );
     }
 }

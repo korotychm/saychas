@@ -364,10 +364,20 @@ class MyTestController extends AbstractActionController
         $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928'] ]) ]);
         echo '<table style="font-size: 10pt">';
         echo '<tr><th>Product id</th><th>ParamValueList</th><th>Product brand_id</th><th>ProductBrand title</th><th>ProductPrice<br/>product_id</th><th>ProductPrice<br/>price</th><th>Product title</th><th>ProductPrice<br/>provider_id</th></tr>';
+//        $pr = $this->handBookRelatedProductRepository->findFirstOrDefault(['id'=>'000000000001']);
+        
         foreach($handBookRelatedProducts as $prod) {
             echo '<tr>';
+//            echo '<td>'.$prod->getId().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
             echo '<td>'.$prod->getId().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
             echo '</tr>';
+            echo '<tr colspan="6" align="center"><td>';
+            $images = $prod->getProductImages();
+            foreach ($images as $image) {
+                echo $image->getProductId().' '. $image->getHttpUrl().'<br/>';
+            }
+            echo '</td></tr>';
+            
 //            $prices = $prod->getPrice();
 //            echo '<pre>';
 //            print_r($prices);

@@ -64,18 +64,19 @@ class HandbookRelatedProduct extends Entity
     }
 
     /**
-     * Get productImage
+     * Get productImages
      *
-     * @return ProductImage
+     * @return ProductImage[]
      * @throws \Exception
      */
-    public function getProductImage()
+    public function getProductImages()
     {
         if (!( self::$productImageRepository instanceof ProductImageRepositoryInterface )) {
             throw new \Exception('ProductImageRepositoryInterface expected; other type given');
         }
+        return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()] ]);
         //'pr.id = img.product_id'
-        return self::$productImageRepository->findFirstOrDefault(['product_id' => $this->getId()]);
+//        return self::$productImageRepository->findFirstOrDefault(['product_id' => $this->getId()]);
     }
 
     /**
