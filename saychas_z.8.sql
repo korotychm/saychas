@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2021 at 08:42 AM
+-- Generation Time: Apr 20, 2021 at 03:42 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.15
 
@@ -123,21 +123,19 @@ CREATE TABLE `characteristic` (
 --
 
 INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`, `unit`, `description`) VALUES
-('000000010', '000000006', 'Фронтальная камера МПикс', 1, 1, 0, 10, '', ''),
-('000000019', '000000006', 'Камера', 1, 0, 0, 8, '', ''),
-('000000009', '000000006', 'Основная камера МПикс', 1, 1, 0, 9, '', ''),
+('000000001', '000000009', 'Тип подключения', 4, 1, 0, 3, '', ''),
+('000000002', '000000009', 'Частотный диапазон', 1, 0, 0, 2, '', ''),
+('000000003', '000000009', 'Сопротивление', 1, 0, 0, 1, '', ''),
 ('000000004', '000000009', 'Система активного подавле', 3, 0, 0, 4, '', ''),
 ('000000005', '000000009', 'Поддержка AAC', 3, 0, 0, 5, '', ''),
-('000000008', '000000006', 'Встроенная память (ROM)', 4, 1, 0, 7, '', ''),
-('000000007', '000000006', 'Оперативная память (RAM)', 4, 1, 0, 6, '', ''),
+('000000009', '000000006', 'Основная камера МПикс', 1, 1, 0, 4, '', ''),
+('000000007', '000000006', 'Оперативная память (RAM)', 4, 1, 0, 2, '', ''),
+('000000008', '000000006', 'Встроенная память (ROM)', 4, 1, 0, 3, '', ''),
+('000000006', '000000006', 'Экран', 2, 1, 1, 1, '', ''),
 ('000000012', '000000011', 'Описание', 1, 0, 0, 1, '', ''),
 ('000000013', '000000014', 'Жирность', 2, 1, 0, 1, '', ''),
 ('000000014', '000000019', 'Операционная система', 4, 1, 0, 1, '', ''),
-('000000018', '000000006', 'Память', 1, 0, 0, 5, '', ''),
-('000000006', '000000006', 'Экран', 2, 1, 1, 4, '', ''),
-('000000017', '000000006', 'Основные характеристики', 1, 0, 0, 3, '', ''),
-('000000002', '000000006', 'Бренд', 0, 0, 0, 2, '', ''),
-('000000001', '000000006', 'Поставщик', 0, 0, 0, 1, '', '');
+('000000010', '000000006', 'Фронтальная камера МПикс', 1, 1, 0, 5, '', '');
 
 -- --------------------------------------------------------
 
@@ -170,8 +168,7 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 ('000000006', '64 ГБ', '000000008'),
 ('000000011', 'Android', '000000014'),
 ('000000012', 'Mac OS', '000000014'),
-('000000010', 'MS Windows', '000000014'),
-('000000015', 'Общие характеристики', '000000003');
+('000000010', 'MS Windows', '000000014');
 
 -- --------------------------------------------------------
 
@@ -228,9 +225,9 @@ CREATE TABLE `filtered_product` (
 
 DROP TABLE IF EXISTS `post`;
 CREATE TABLE `post` (
-  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `blog` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
+  `id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `blog` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -406,7 +403,6 @@ CREATE TABLE `size` (
 --
 
 INSERT INTO `size` (`id`, `title`) VALUES
-('000000002', 'XXL'),
 ('000000001', 'XXXL');
 
 -- --------------------------------------------------------
@@ -419,7 +415,7 @@ DROP TABLE IF EXISTS `stock_balance`;
 CREATE TABLE `stock_balance` (
   `product_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `rest` int NOT NULL DEFAULT '0',
-  `size` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `size` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `store_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -427,24 +423,24 @@ CREATE TABLE `stock_balance` (
 -- Dumping data for table `stock_balance`
 --
 
-INSERT INTO `stock_balance` (`product_id`, `rest`, `size`, `store_id`) VALUES
-('000000000002', 1, '', '000000004'),
-('000000000002', 10, '', '000000002'),
-('000000000002', 3, '', '000000003'),
-('000000000003', 8, '', '000000005'),
-('000000000004', 6, '', '000000002'),
-('000000000004', 4, '', '000000003'),
-('000000000004', 2, '', '000000004'),
-('000000000005', 15, '', '000000002'),
-('000000000005', 38, '', '000000003'),
-('000000000005', 42, '', '000000004'),
-('000000000006', 30, '', '000000002'),
-('000000000006', 14, '', '000000003'),
-('000000000006', 69, '', '000000004'),
-('000000000001', 0, '', '000000002'),
-('000000000001', 0, '', '000000003'),
-('000000000001', 0, '', '000000004'),
-('000000000007', 10, '', '000000005');
+INSERT INTO `stock_balance` (`product_id`, `rest`, `store_id`) VALUES
+('000000000002', 1, '000000004'),
+('000000000002', 10, '000000002'),
+('000000000002', 3, '000000003'),
+('000000000003', 8, '000000005'),
+('000000000004', 6, '000000002'),
+('000000000004', 4, '000000003'),
+('000000000004', 2, '000000004'),
+('000000000005', 15, '000000002'),
+('000000000005', 38, '000000003'),
+('000000000005', 42, '000000004'),
+('000000000006', 30, '000000002'),
+('000000000006', 14, '000000003'),
+('000000000006', 69, '000000004'),
+('000000000001', 0, '000000002'),
+('000000000001', 0, '000000003'),
+('000000000001', 0, '000000004'),
+('000000000007', 10, '000000005');
 
 -- --------------------------------------------------------
 
@@ -496,13 +492,19 @@ CREATE TABLE `test` (
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int NOT NULL,
-  `name` tinytext COLLATE utf8_unicode_ci NOT NULL,
-  `phone` int DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address` text COLLATE utf8_unicode_ci NOT NULL,
-  `geodata` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `first_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `phone_number`) VALUES
+('first name 1', 'last name 1', 'email 1', '001'),
+('first name 2', 'last name 2', 'email 2', '222244444');
 
 -- --------------------------------------------------------
 
@@ -594,7 +596,7 @@ ALTER TABLE `size`
 -- Indexes for table `stock_balance`
 --
 ALTER TABLE `stock_balance`
-  ADD PRIMARY KEY (`product_id`,`size`,`store_id`);
+  ADD PRIMARY KEY (`product_id`,`size`, `store_id`);
 
 --
 -- Indexes for table `store`
@@ -607,14 +609,6 @@ ALTER TABLE `store`
 --
 ALTER TABLE `test`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `phone` (`phone`),
-  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -630,12 +624,6 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `test`
 --
 ALTER TABLE `test`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 COMMIT;
 
