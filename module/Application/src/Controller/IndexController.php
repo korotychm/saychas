@@ -22,6 +22,7 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
@@ -42,6 +43,7 @@ class IndexController extends AbstractActionController
     private $characteristicRepository;
     private $priceRepository;
     private $stockBalanceRepository;
+    private $handBookRelatedProductRepository;
     private $entityManager;
     private $config;
     private $htmlProvider;
@@ -52,6 +54,7 @@ class IndexController extends AbstractActionController
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
+                HandbookRelatedProductRepositoryInterface $handBookProduct,
             $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
     {
         $this->testRepository = $testRepository;
@@ -64,6 +67,7 @@ class IndexController extends AbstractActionController
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
+        $this->handBookRelatedProductRepository = $handBookProduct;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
@@ -124,6 +128,19 @@ class IndexController extends AbstractActionController
         
     }
    
+    private function packParams($params)
+    {
+        $a = [];
+        foreach($params['filter'] as $p) {
+           $a[] = "find_in_set('$p', param_value_list)"; 
+        }
+        $res = ' 1';
+        if(count($a) > 0) {
+            $res = '('.implode(' OR ', $a).')';
+        }
+        return $res;
+    }
+    
     public function productAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
@@ -180,12 +197,13 @@ class IndexController extends AbstractActionController
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
         //$params['limit']=4;
-        print_r($filtred);
+        //print_r($filtred);
         $params['filter'] = $filtred;
 //        print_r($params['filter']);
 //        echo '<br/>';
 //        exit;
         $products = $this->productRepository->filterProductsByStores($params);
+        //$products = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => $params['filter'] ]) ]);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
         $returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
@@ -219,7 +237,7 @@ class IndexController extends AbstractActionController
             "id" => $category_id,
             "bread"=> $bread,
             'priducts'=> $returnProduct,
-            'filter' =>  print_r($returnProductFilter,true),
+            //'filter' =>  print_r($returnProductFilter,true),
             'addressform'=> $addresForm."",
             'sortselect' =>[$myKey=> " selected "],
             'hasRestOnly' =>[ $hasRest => " checked "],

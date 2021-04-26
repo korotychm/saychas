@@ -10,6 +10,7 @@ use Application\Resource\StringResource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
@@ -84,7 +85,7 @@ class HtmlProviderService
         $filtrForCategory=$container->filtrForCategory;
         
         if(!$filtred=$filtrForCategory[$category_id]['fltr']) $filtred=[];
-        print_r($filtred);
+        //print_r($filtred);
         foreach ($filters as $row) {
             $arrayTmp[$row->getId()]['title'] = $row->getTitle();
             $arrayTmp[$row->getId()]['id'] = $row->getId();
@@ -136,7 +137,8 @@ class HtmlProviderService
             $_id = $product->getId();
             $_return[$_id]['rest'] += $r;
             $_return[$_id]['id'] = $_id;
-            $_return[$_id]['imageurl'] = $product->getHttpUrl();
+            $_return[$_id]['imageurl'] = $product->getHttpUrl(); //            $_return[$_id]['imageurl'] = $product->getProductImage()->getHttpUrl();
+
             if (!$_return[$_id]['speedlable'] and $timeDelevery)
                 $_return[$_id]['speedlable'] = "<div class=speedlable>$timeDelevery" . "ч</div>";
             if (!$_return[$_id]['image'] and $imageurl = $product->getHttpUrl())
