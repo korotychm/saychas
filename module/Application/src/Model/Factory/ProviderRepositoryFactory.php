@@ -6,8 +6,10 @@ namespace Application\Model\Factory;
 use Interop\Container\ContainerInterface;
 use Application\Model\Entity\Provider;
 use Application\Model\Repository\ProviderRepository;
+use Application\Model\Repository\StoreRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
+//use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ProviderRepositoryFactory implements FactoryInterface
@@ -20,10 +22,19 @@ class ProviderRepositoryFactory implements FactoryInterface
         
         $adapter = $container->get(AdapterInterface::class);
         
+        $hydrator = new ReflectionHydrator();// new ClassMethodsHydrator();//
+        
+        $storeRepository = $container->get(StoreRepository::class);
+        
+        $prototype = new Provider;
+
+        $prototype::$storeRepository = $storeRepository;
+
+        
         return new ProviderRepository(
             $adapter,
-            new ReflectionHydrator(),
-            new Provider//('', 0, 0, null, null)
+            $hydrator,
+            $prototype//('', 0, 0, null, null)
         );
     }
 }
