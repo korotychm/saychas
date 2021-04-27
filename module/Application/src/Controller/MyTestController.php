@@ -28,9 +28,10 @@ use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
-//use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Doctrine\ORM\Mapping as ORM;
+use Laminas\Authentication\AuthenticationService;
+
+use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+
 use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
@@ -64,6 +65,7 @@ class MyTestController extends AbstractActionController
     private $config;
     private $htmlProvider;
     private $htmlFormProvider;
+    private $authService;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -72,7 +74,7 @@ class MyTestController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -91,6 +93,7 @@ class MyTestController extends AbstractActionController
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
         $this->htmlFormProvider = $htmlFormProvider;
+        $this->authService = $authService;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -352,6 +355,52 @@ class MyTestController extends AbstractActionController
     
     public function testReposAction()
     {
+        $adapter = new \Laminas\Db\Adapter\Adapter([
+            'driver'   => 'Pdo_Mysql',
+            'database' => 'saychas_z',
+            'username' => 'saychas_z',
+            'password' => 'saychas_z',
+        ]);
+        
+        
+        $authAdapter = new AuthAdapter($adapter);
+
+        $authAdapter
+            ->setTableName('user')
+            ->setIdentityColumn('name')
+            ->setCredentialColumn('email');
+
+        $authAdapter
+            ->setIdentity('my_username')
+            ->setCredential('my_password');
+        
+        $result = $authAdapter->authenticate();
+
+        $auth = new AuthenticationService();
+        
+        $result1 = $auth->authenticate($authAdapter);
+        
+        echo $result1->getIdentity();
+        
+        
+//        if ($user = $this->identity()) {
+//            echo 'Logged in as ' . $this->escapeHtml($user->getUsername());
+//        } else {
+//            echo 'Not logged in';
+//        }
+//        exit;
+        
+//        print_r($result->getIdentity());
+//        exit;
+        
+//        if ($user = $this->identity()) {
+//            // someone is logged !
+//            print_r('banzaii');
+//        } else {
+//            // not logged in
+//            print_r('vonzaii');
+//        }
+    
         $this->layout()->setTemplate('layout/mainpage');
         $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '000000014', '1b53a86f9d8c43c09ba1a7687f76685c', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928', '5b4813eb4a21706f492ae4ee2716a7f9'] ]) ]);
 //        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);

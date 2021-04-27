@@ -22,6 +22,7 @@ use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Controller\MyTestController;
+//use Laminas\Authentication\AuthenticationService;
 
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
@@ -50,8 +51,9 @@ class MyTestControllerFactory implements FactoryInterface
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
+        $authService = $container->get('my_auth_service');
         return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic,
-                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider);
+                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService);
     }
 
 }

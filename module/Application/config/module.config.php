@@ -239,7 +239,7 @@ return [
                     ],
                 ],
             ],
-            
+
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
 //                'type' => Literal::class,
@@ -260,7 +260,7 @@ return [
 //                                'action' => 'receiveStockBalance',
 //                            ],
 //                            'constraints' => [
-//                                
+//
 //                            ],
 //                        ],
 //                    ],
@@ -335,7 +335,7 @@ return [
                         'action'     => 'ajaxSetUserAddress',
                     ],
                 ],
-            ],            
+            ],
             'ajax-get-legal-store'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -345,7 +345,7 @@ return [
                         'action'     => 'ajaxGetLegalStore',
                     ],
                 ],
-            ],            
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -377,7 +377,7 @@ return [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
 //        ],
 //    ],
- 
+
     'service_manager' => [
         'aliases' => [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
@@ -397,8 +397,12 @@ return [
             \Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface::class => \Application\Model\Repository\CharacteristicValue2Repository::class,
             \Application\Model\RepositoryInterface\ProductImageRepositoryInterface::class => \Application\Model\Repository\ProductImageRepository::class,
             \Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface::class => \Application\Model\Repository\HandbookRelatedProductRepository::class,
-            
+
             //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
+
+            
+            'my_auth_service' => \Laminas\Authentication\AuthenticationService::class,
+//            \Laminas\Authentication\AuthenticationService\AuthenticationService::class => 'my_auth_service',
         ],
         'factories' => [
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -428,8 +432,13 @@ return [
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
 
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
-        ],
-        
+            
+            \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
+      ],
+//        'invokables' => [
+//            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
+//        ]
+
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
@@ -476,5 +485,5 @@ return [
     ],
 //    'session_containers' => [
 //        StringResource::SESSION_NAMESPACE,
-//    ],    
+//    ],
 ];

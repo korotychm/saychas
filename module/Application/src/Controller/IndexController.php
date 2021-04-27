@@ -250,4 +250,86 @@ class IndexController extends AbstractActionController
 
     }
     
+    public function catalog1Action()
+    {
+        $category_id=$this->params()->fromRoute('id', '');
+
+        $this->layout()->setTemplate('layout/mainpage');
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        
+        $filtrForCategory=$container->filtrForCategory;
+        
+        if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
+            $filtred=[];
+        }
+        
+        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
+        $bread = $this->htmlProvider->breadCrumbs($matherCategories);
+     
+        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
+        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
+        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
+        $params['filter'] = $filtred;
+
+        $products = $this->productRepository->filterProductsByStores($params);
+//        $products = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => $params['filter'] ]) ]);
+
+//        $printed = '';
+//        foreach ($prods as $p1) {
+//            if($printed != $p1->getId()) {
+//                echo $p1->getId(). ' '. $p1->title.' '.$p1->getProviderId().'<br/>';
+//                $printed = $p1->getId();
+//            }
+//        }
+//        echo '<hr/>';
+//        echo 'findAll<br/>';
+//        $products = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => $params['filter'] ]) ]);
+//        foreach($products as $p) {
+//            echo $p->getId(). ' '. $p->getTitle().' '.$p->getProviderId(). '<br/>';
+//            echo $p->getProvider()->getStores()->current()->getId().'<br/>';
+//        }
+//        echo '<hr/>';
+//        exit;
+
+        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
+        $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
+        $returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
+        //$filterForm = 
+        $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
+        $filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
+        
+        $filterForm =  
+                $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);
+
+        try {
+            $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
+        }
+        catch (\Exception $e) {
+            $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
+        }     
+        
+        
+        if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
+        $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
+        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
+        $vwm=[
+        
+            "catalog" => $categories,
+            "title" => $categoryTitle,//."/$category_id",
+            "id" => $category_id,
+            "bread"=> $bread,
+            'priducts'=> $returnProduct,
+//            'addressform'=> $addresForm."",
+            'sortselect' =>[$myKey=> " selected "],
+            'hasRestOnly' =>[ $hasRest => " checked "],
+            'filterform'=> $filterForm,
+        ];
+        
+        return new ViewModel($vwm);
+
+    }
+    
+    
 }

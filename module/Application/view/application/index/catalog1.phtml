@@ -1,0 +1,98 @@
+<?php
+$this->headTitle('Каталог товаров', 'PREPEND');
+$this->headTitle($this->title, 'PREPEND');
+?><div class="container"  style="position:relative; max-width:1400px; min-height:calc(100vh - 160px) " >
+    <div id="left-col">
+        <div class="content-col">
+            <?= $this->addressform ?>
+            <!-- h2>Каталог </h2 -->
+            <ul id="tree" class="tree" style="display:none">
+                <?= $this->catalog ?>
+                
+            </ul>
+            <div class=" testlegalstor" ></div>
+        </div>               
+    </div>
+    <div id="main-col">
+        <?= $this->bread ?> 
+        <div class="content-col" style="" id="tovary"> 
+            <form method="post" id="filtrform">
+                
+                <input type='hidden' name='category_id' value='<?= $this->id ?>'>
+                <div id="filtrblock" class="container">
+                    
+                    <?= $this-> filterform //filter ?><br class="both"/>
+                    <div class="iblokl"  >
+                        <select id="sort"  name="sortOrder" class="formsend" >
+                            <option disabled selected >Сортировка</option>
+                            <option value="0"  >по-умолчанию</option>
+                            <option value="1" <?= $this->sortselect[1] ?> >по-алфавиту А-Я</option>
+                            <option value="4" <?= $this->sortselect[4] ?> >по-алфавиту Я-A</option>
+                            <option value="2" <?= $this->sortselect[2] ?> >сначала дешевле</option>
+                            <option value="3" <?= $this->sortselect[3] ?> >сначала дороже</option>                                    
+                        </select>
+                    </div>
+                    <div class="iblokl"  >
+                        <div class='nopub checkgroup formsendbutton <?=($this->hasRestOnly[1])?"zach":""?>' for=restonly >только в наличии
+                        <input  id='fltrcheckrestonly' type='checkbox' name='hasRestOnly' value='1' class="formsend none" <?= $this->hasRestOnly[1] ?> /> 
+                        </div>
+                    </div>    
+                    
+                    
+                    <!--div class="ifilterblock"  >
+                        <div class="filtritemtitle" rel="000001">
+                            Диагональ экрана
+                        </div>
+                        <div class="filtritem" id="fi000001">
+
+
+                            <div class="filtritemcontent" id="fc000001">
+                                <div class="closefilteritem" rel="000001">
+                                    Диагональ экрана
+                                </div>
+                                
+                                    <div class="nopub checkgroup blok" for="0001" >
+                                        14" (35см)
+                                        <input type="hidden" id="fltrcheck0001" name=fltr[] value="" >
+                                    </div>
+                                    <div class="nopub checkgroup blok" for="0004" >
+                                        17" (43см) и длинный текстик 
+                                        <input type="hidden" id="fltrcheck0004" name=fltr[] value="" >
+                                    </div>
+                                    <div class="nopub checkgroup blok" for="0002" >
+                                        19" (48см)
+                                        <input type="hidden" id="fltrcheck0002" name=fltr[] value="" >
+                                    </div>
+                                    <div class="nopub checkgroup blok" for="0003" >
+                                        21" (53см)
+                                        <input type="hidden" id="fltrcheck0003" name=fltr[] value="" >
+                                    </div>
+                                
+                                <div class="block"><input type="button" value="применить"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- div class="ifilterblock"  >
+                        <div class="filtritemtitle" rel="000002">
+                            Характеристика
+                        </div>
+                        <div class="filtritem " id="fi000002">
+
+                            <div class="filtritemcontent" id="fc000002">
+                                <div class="closefilteritem" rel="000002">
+                                    Характеристика
+                                </div>
+                                <div class="block"><input type="checkbox" >&nbsp;Светлая ткань</div>
+                                <div class="block"><input type="checkbox" >&nbsp;Светлейшая ткань, длиное написание very Long</div>
+                                <div class="block"><input type="button" value="применить"></div>
+                            </div>
+                        </div>
+                    </div-->
+            </form>
+        </div>  
+                <div id='ajaxfiltranswer'></div><br class="both">
+            <h2><?= $this->title ?>  <?php if ($this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
+        <div id="tovar-list"><?= $this->priducts ?></div>
+    </div>               
+</div>
+</div>

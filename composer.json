@@ -23,7 +23,9 @@
         "laminas/laminas-diactoros": "^2.5",
         "doctrine/doctrine-laminas-hydrator": "^2.1",
         "laminas/laminas-escaper": "^2.7",
-        "ramsey/uuid": "^4.1"
+        "ramsey/uuid": "^4.1",
+        "laminas/laminas-authentication": "^2.8",
+        "laminas/laminas-mvc-plugin-identity": "^1.2"
     },
     "autoload": {
         "psr-4": {
