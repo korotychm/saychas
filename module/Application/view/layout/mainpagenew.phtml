@@ -1,0 +1,142 @@
+<?= $this->doctype() ?>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('Saychas.ru')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?=
+                $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+        <!-- Le styles -->
+        <?=
+                $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+                ->prependStylesheet($this->basePath('css/style.css'))
+                //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('css/bs.css'))
+                ->prependStylesheet($this->basePath('css/treeview.css'))
+                ->prependStylesheet($this->basePath('/css/dadata/suggestions.css'))
+                ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
+        ?>
+        <!-- Scripts -->
+        <?= $this->headScript() ?>
+    </head>
+    <body>
+        <div class="overcover"></div>
+
+        <div id="header" class="blokc" >  
+            <div id="headermenu" >
+                <div class="headermenucontent">
+                    <a  href="<?= $this->url('home') ?>">Home</a>
+                    <a  href="<?= $this->url('preview') ?>">Меню</a>
+                    <a  href="<?= $this->url('provider') ?>" >Магазины</a>
+                    <a  href="<?= $this->url('catalog') ?>" >Каталог</a>
+                    <a  href="<?= $this->url('test-repos') ?>" >Banzaii</a>
+                    <a  href="/phpmyadmin" >Sql</a>
+                    <!--a href="#">Частые вопросы</a>
+                    <!-- a href="#">Доставка</a>
+                    <a href="#">Скидки</a>
+                    <a href="#">Контакты</a>
+                    <a href="#">Бренды</a>
+                    <a href="#">Система лояльности</a>  
+                    <a href="#">Стать партнером</a -->
+                    <span  class="parthnerenter" ><b class="brandcolor">:</b><a href="#">Вход для партеров</a>
+                </div>
+            </div>
+
+
+            <div id="head">
+                <div id="catalogbutton">
+                    <div class=catalogbutton >
+                        <div class=mobile_nav_icon></div>
+                        Каталог
+                    </div>
+                </div>
+                <div class="iblok" id="logo" ></div>
+                <div id="topservice">
+                    <div class='pw-contentblock cblock-2'>
+                        <div class='contentpadding'>
+                            <div class="blok" id="quicksearch">
+                                <input type="text" id="serchtopinput" placeholder="Быстрый поиск"  >
+                                <!-- div class="searchicon"></div -->
+                            </div> 
+                        </div>
+                    </div>
+                    <div class='pw-contentblock cblock-2 nopadding'>
+                        <div  style="  " class="blokl nopadding" id="searchpanel">         
+                            <input type=text 
+                                   id='useraddress'  
+                                   placeholder='Укажи адрес доставки'   
+                                   pattern="[A-Za-zА-Яа-яЁё]{3,}"  required 
+                                   accept=""
+                                   class='pn-text iblok' 
+                                   />
+                            <div id="useradesserror" class="errorblock none"></div>
+                            <div class="searchpanelclose"></div>
+                        </div>
+
+                        <div class='contentpadding'>
+                            <div class="blok" id="quickaddress">
+                                <div class='geo16 uadress' >Привезем сейчас:</div>
+                                <div class='open-user-address-form user_address_set uadress' id="uadress" ><?= $userAddressHtml ?></div>
+                            </div>
+                        </div> 
+
+
+
+                    </div>
+
+
+
+
+                </div>
+                <div class='iblok' id="profileblock">
+                    <div class='contentpadding'>
+                        <div class='pw-contentblock cblock-2'>
+                            <div class='contentpadding blokc'>
+                                <div class="emptyblock"></div>
+                                <div class="blokc">профиль</div>
+                            </div>
+                        </div>
+                        <div class='pw-contentblock cblock-2'>
+                            <div class='contentpadding  blokc'>
+                                <div class="emptyblock">
+                                    <div id="zakazcount">2</div>
+                                </div>
+                                <div class="blokc">корзина</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="iblok"><?= $this->addressform ?></div>
+                <!-- div style='float:right'>
+                    <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
+                    <a  href="<?= $this->url('preview') ?>">Меню</a>
+                    <a  href="<?= $this->url('provider') ?>" >Магазины</a>
+                    <a  href="<?= $this->url('catalog') ?>" >Каталог</a>
+                    <a  href="<?= $this->url('test-repos') ?>" >Banzaii</a>
+                    <a  href="/phpmyadmin" >Sql</a>
+                </div -->
+                <!--/div-->
+            </div> 
+            <div class="full-wrap"><div id="content">                          
+                    <?= $this->content ?>                    
+                </div></div>
+            <footer>
+                <p class="blokc mini">&copy; <?= date('Y') ?> saychas.ru</p>
+            </footer>
+            <?=
+                    $this->inlineScript()
+                    ->prependFile($this->basePath('js/jquery.treeview.js'))
+                    ->prependFile($this->basePath('js/saychas_z.js?' . time()))
+                    ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
+                    ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
+                    ->prependFile($this->basePath('js/jquery.treeview.async.js'))
+//->prependFile($this->basePath('js/bootstrap.min.js'))
+                    ->prependFile($this->basePath('js/jquery.js'))
+            ?>
+    </body>
+</html>

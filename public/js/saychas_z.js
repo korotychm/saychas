@@ -69,11 +69,11 @@ $(function () {
 
     })
     $(".searchpanelclose").click(function () {
-        $("#searchpanel").stop().css({top: "-100px"});
+        $("#searchpanel").stop().css({top: "-200px"});
         $("#uadress").show();
     })
     $(".open-user-address-form").click(function () {
-          $("#searchpanel").stop().animate({top: "0px"});
+          $("#searchpanel").stop().animate({top: "0px"});  
         $("#uadress").hide();
     })
     $("#tree22").treeview({

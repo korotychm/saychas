@@ -36,7 +36,7 @@
 
 .treeview a {color:#333; position:relative; top:-6px;}
 .treeview a.selected {
-	color: #900;
+	color: #f53;
 }
 
 #treecontrol { margin: 1em 0; display: none; }

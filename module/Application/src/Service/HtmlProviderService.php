@@ -58,7 +58,8 @@ class HtmlProviderService
             foreach ($a as $b) {
                 $return[] = "<a href=/catalog/" . $b[0] . ">" . $b[1] . "</a>";
             }
-            return "<div  class='bread-crumbs'><span class='bread-crumbs-item'>" . join("</span> / <span class='bread-crumbs-item'>", $return) . "</span></div>";
+            //return "<div  class='bread-crumbs'><span class='bread-crumbs-item'>" . join("</span> / <span class='bread-crumbs-item'>", $return) . "</span></div>";
+            return  join('<b class="brandcolor"> : </b>', $return);
         endif;
     }
 

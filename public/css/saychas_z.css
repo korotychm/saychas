@@ -4,8 +4,45 @@
 .opacity0  a   {text-decoration: line-through !important }
 
 h2 span {font-size:14px; font-weight:300; display:block; color:#555}
+
+#headermenu {display:block; background:#252525; margin:0; outline:0; padding:0; height:56px; text-align:center; position: relative; z-index:1000;}
+#headermenu .headermenucontent {display:inline-block; width:100%; max-width:1600px; min-width:1001px;  max-height:60px; height:auto; overflow:hidden; text-align:left}
+#headermenu .headermenucontent a {
+    display:inline-block; 
+    text-decoration:none; 
+    border-bottom:2px solid transparent; 
+    color:#fff;
+    padding:16px 10px; 
+    padding-bottom:10px;
+    
+    margin:0; outline:0;
+}
+#headermenu .headermenucontent a:hover {border-color:#ff5533} 
+.parthnerenter {float:right}
+.brandcolor {color:#f53}
+.parthnerenter .brandcolor {font-size:130%}
+
+#catalogbutton{display:inline-block; width:200px; margin-top:38px; vertical-align:top; }
+.catalogbutton {color:#fff; text-shadow:1px 1px rgba(0,0,0,.05); display:inline-block;  background-color:#f53; padding:13px 26px ; cursor: pointer;   border-radius:60px; font-weight:bold; font-size:20px}
+.mobile_nav_icon {  
+  display:inline-block; vertical-align:top;
+  border-bottom: 10px double #ffffff;
+  border-top: 2px solid #ffffff;
+  cursor: pointer;
+  float: left;
+  height: 2px;
+  /*margin-left: 5px;*/
+  position:relative;
+  margin-top: 7px;
+  
+  padding-top: 4px;
+  transition: all 0.2s ease 0s;
+  width: 18px;
+  margin-right:8px; /*margin-top:5px;*/
+}
+
 #searchtop {
-    display:inline-blok; 
+    display:blok; 
     position:absolute;  
     width:40px; 
     height:40px; 
@@ -13,23 +50,22 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     top:27px; 
     background:url(img/searchtopblack.png) center no-repeat; 
     z-index:100;  
-    cursor:pointer    
-        /*border:1px solid red*/
-
+    cursor:pointer;    
+    outline:0;
+	/*border:1px solid red*/
 }
 #searchpanel {
     
-    margin-bottom:10px;  width:100%; max-width:450px; vertical-align:top;  position:absolute; top:-100px; 
-    /*display:block; 
-    position:fixed; 
-    top:0px; 
-    min-height:70px; 
+    padding:20px 10px; 
+    border-radius:60px;  
+    width:100%;  
+    
+    position:absolute; 
+    top:-200px; left:0; z-index:90;
+    padding-top:38px; 
     background:#fff; 
-    border-bottom:1px solid #eee;  
-    text-align:center ;
-    width:100%; 
-    z-index:101101; 
-    box-shadow:0 0 5px 10px rgba(0,0,0,.15);*/
+    width:100%;
+    
 }
 .searchpanelcont {
     display: block;
@@ -39,8 +75,8 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .searchpanelclose {
     display: block;
     position: absolute;
-    top: 10px;
-    right: 10px;    
+    bottom: 30px;
+    right: 30px;    
     height: 30px;
     width: 30px;
     background: url('/img/close2.png') center no-repeat;
@@ -52,14 +88,19 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     border:1px solid #ccc   ; 
     font-weight:normal;  
     background: transparent url('/img/geo16.png') left no-repeat;
-    padding:8px; 
-    padding-left:40px;      
-    margin:5px; 
-    color:#000;  
-    font-size:18px; 
-    border-radius:0; 
+   border:2px solid #f53; 
+    padding:12px 28px ; 
+    padding-right:45px;
+    cursor: pointer;  
+    border-radius:60px; 
+   width:100%;
+    /*width: calc(100% - 67px);
+    /*font-weight:bold; */
+    outline: 0; display:block; 
     position:relative; z-index:100000;
 }
+#uadress {margin-left:24px; display:block;  cursor:pointer /*font-weight:bold*/}
+#uadress span {border-bottom:1px dashed  var(--gray);}
 .productcard .content {
     display:block; 
     box-shadow: 2px 2px 8px rgba(0,0,0,0.0);
@@ -80,7 +121,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     vertical-align:top; 
     position:relative; 
 }
-.errorblock {display:block; padding:10px; background:url(/img/warning.png) left center no-repeat; padding-left:25px }
+.errorblock {display:block; padding:10px; background:url(/img/warning.png) left 12px no-repeat; padding-left:28px }
 
 @media (max-width: 1200px) {
     .productcard {
@@ -95,19 +136,19 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 
 }
 
-@media (max-width: 800px) {
+/*@media (max-width: 800px) {
     .productcard {
         width:100%; 
     }
 
-}
+}*/
 .geo16 {
     display:inline-block;
     cursor: pointer;
     background: transparent url('/img/geo16.png') -6px center no-repeat;
-    padding:12px; 
+    /*padding:12px; */
     padding-left:24px;
-    font-size:18px; 
+    /*font-size:18px; 
     /*font-weight:700;  
     color:#f62;*/
     vertical-align:top;
@@ -155,7 +196,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     display:inline-block; 
     white-space: nowrap ;
 }
-.filtritemtitle div.count {
+.filtritemtitle div.count, #zakazcount {
      dispaly:inline-block; 
     position:absolute; 
    /* width:15px; */
@@ -166,9 +207,8 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     background:#f62;
     border:3px solid #f62; border-radius:50%;
     color:#fff;
-    
-    
 } 
+#zakazcount {right:0; top:0;}
 .closefilteritem {
      background:url("/img/arrup.png") right no-repeat; 
      margin-right:0;
@@ -211,20 +251,24 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 	position:relative; 
 	vertical-align:top; 
 	margin:0; 
-	padding:0
+	padding:0;
+        outline:0;
 }
 .pw-contentblock .contentpadding { padding:10px; }
 /*.pw-contentblock .contentpadding * {max-width:100% }*/
 
-.pw-contentblock.cblock-1 { width: 99.5%;}
-.pw-contentblock.cblock-2 { width: 49.5%; }
-.pw-contentblock.cblock-3 { width: 33.0%;}
-.pw-contentblock.cblock-4 { width: 24.5%;}
+.pw-contentblock.cblock-1 { width: 98%;}
+.pw-contentblock.cblock-2 { width: 48%; }
+.pw-contentblock.cblock-3 { width: 32.5%;}
+.pw-contentblock.cblock-4 { width: 24%;}
 .pw-contentblock.cblock-5 { width: 65.5%;}
-.pw-contentblock.cblock-6 { width: 74.5%;}
+.pw-contentblock.cblock-6 { width: 74%;}
 
 @media screen and (max-width: 1200px) {
 .pw-contentblock.cblock-4 { width: 33.33333%;}
+#topservice .pw-contentblock.cblock-2 {width:100%; display:block}
+#topservice .pw-contentblock.cblock-2.nopadding .contentpadding, #searchpanel.nopadding {padding-top:0px;}
+
 }
 @media screen and (max-width: 1024px) {
 	.imgleftnews, .imgrightnews {max-width:50%}
@@ -236,7 +280,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 	#headeraa h1 { font-size:28; }
 }
 
-@media screen and (max-width: 800px) {
+/*@media screen and (max-width: 800px) {
 	.imgleftnews, .imgrightnews {float:none;  display:block; width:100%; max-width:100%;margin-bottom:1vh; margin:0; padding:0;}
 	.pw-contentblock.cblock-2, 
 	.pw-contentblock.cblock-3, 
@@ -245,7 +289,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 	.pw-contentblock.cblock-6 { width: 100%;}
 	#headeraa h1 { font-size:22px; }
 }
-
+*/
 .product-page-image  {max-width:100px ; cursor:pointer; border:2px solid #fff;}
 .product-page-image.productimage0  {max-width:100%; border:none }
 
@@ -293,3 +337,7 @@ img.zero, .zeroblok {
 }
 .product-image-container-mini img {max-width:100%; max-height:100%;   flex-shrink: 0;   }
 .borderred {border-color:#f62 }
+
+#topservice {display:inline-block; width: calc(100% - 630px); vertical-align:top; position:relative }
+#topservice .pw-contentblock .contentpadding {padding-top:38px}
+.emptyblock  {width:50px; height:50px; border: 2px solid var(--red); position:relative; display:inline-block;  border-radius:50% }

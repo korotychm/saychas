@@ -91,7 +91,7 @@ class IndexController extends AbstractActionController
             'footerText' => 'banzaii',
             'userAddressHtml' => $userAddressHtml,
         ]);
-        $this->layout()->setTemplate('layout/mainpage');
+        //$this->layout()->setTemplate('layout/mainpage');
         return $response;
         
     }
@@ -108,7 +108,7 @@ class IndexController extends AbstractActionController
     
     public function previewAction()
     {
-        $this->layout()->setTemplate('layout/preview');
+        $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
             'menu' => $categories
@@ -118,11 +118,11 @@ class IndexController extends AbstractActionController
     public function providerAction()
     {
         $id=$this->params()->fromRoute('id', '');
-        $this->layout()->setTemplate('layout/mainpage');
+        $this->layout()->setTemplate('layout/mainpagenew');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
-        $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);
+       /* $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);*/
         return new ViewModel([
-            "providers" => $providers,
+           /* "providers" => $providers,*/
             "catalog" => $categories,
         ]);
         
@@ -143,12 +143,14 @@ class IndexController extends AbstractActionController
     
     public function productAction()
     {
+       
+         $this->layout()->setTemplate('layout/mainpagenew');
         $product_id=$this->params()->fromRoute('id', '');
         $params['equal']=$product_id;
         $products = $this->productRepository->filterProductsByStores($params);
         $productPage = $this->htmlProvider->productPage($products);
         $categoryId= $productPage['categoryId'];
-        $this->layout()->setTemplate('layout/mainpage');
+        //$this->layout()->setTemplate('layout/mainpage');
         $container = new Container(StringResource::SESSION_NAMESPACE);
         //$addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         $filtrForCategory=$container->filtrForCategory;
