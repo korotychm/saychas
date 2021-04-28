@@ -59,6 +59,14 @@ class UserRepository extends Repository implements RepositoryInterface
         if(empty($u)) {
             $sql = sprintf("insert INTO `{$this->tableName}`( `name`, `phone`, `email`, `address`, `geodata`) VALUES ( '%s', %u, '%s', '%s', '%s' )",
                     $user->getName(), $user->getPhone(), $user->getEmail(), $user->getAddress(), $user->getGeodata());
+
+        $statement = $this->db->createStatement("insert INTO `{$this->tableName}`( `name`, `phone`, `email`, `address`, `geodata`) VALUES ( :name, :phone, :email, :address, :geodata )");
+        $statement->prepare();
+        $result = $statement->execute([':name' => $user->getName(), ':phone' => $user->getPhone(), ':email' => $user->getEmail(), ':address' => $user->getAddress(), ':geodata' => $user->getGeodata()]);
+        
+        print_r($result);
+        exit;
+            
         }else{
             $sql = sprintf("update `{$this->tableName}` set name='%s', phone=%u, email='%s', address='%s', geodata='%s' where id={$user->getId()}",
                    $user->getName(), $user->getPhone(), $user->getEmail(), $user->getAddress(), $user->getGeodata());

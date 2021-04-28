@@ -398,20 +398,22 @@ class MyTestController extends AbstractActionController
 //        exit;
         
         
-//        $user = new \Application\Model\Entity\User();
-//        $user->setName('banzaii');
-//        $user->setPhone(33333344);
-//        $user->setEmail('aaaaaaaaaaaabb');
-//        
-//        echo $user->getId().' '.$user->getName().'<br/>';
+        $user = new \Application\Model\Entity\User();
+        $user->setName('banzaii');
+        $user->setPhone(33344555);
+        $user->setAddress('address');
+        $user->setGeodata('geodata');
+        $user->setEmail('aaaaaaaaaaaabbcc');
+        
+        echo $user->getId().' '.$user->getName().'<br/>';
         
 //        echo '<pre>';
 //        print_r($user);
 //        echo '</pre>';
 //        exit;
         
-//        $this->userRepository->persist($user);
-//        exit;
+        $this->userRepository->persist($user);
+        exit;
         /**
         foreach ($users as $user) {
             echo '<pre>';
