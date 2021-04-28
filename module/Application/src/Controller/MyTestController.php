@@ -28,9 +28,10 @@ use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
-use Laminas\Authentication\AuthenticationService;
+//use Laminas\Authentication\AuthenticationService;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+use Application\Adapter\Auth\UserAuthAdapter;
 
 use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
@@ -42,6 +43,11 @@ use Application\Model\Test2;
 use Application\Model\Track;
 use Application\Model\Entity\Characteristic;
 use \ReflectionClass;
+use Laminas\Http\Client;
+use Laminas\Http\Cookies;
+
+use Laminas\Db\Sql\Sql;
+
 
 class MyTestController extends AbstractActionController
 {
@@ -214,6 +220,10 @@ class MyTestController extends AbstractActionController
     {
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
         
+        echo $this->identity().' '.'shmidentity';// $result1->getIdentity();
+        exit;
+
+        
         $products = $this->productRepository->filterProductsByStores(['000000005', '000000004']);
 
 //        echo '<pre>';
@@ -353,8 +363,70 @@ class MyTestController extends AbstractActionController
         return $res;
     }
     
-    public function testReposAction()
+    public function testClientAction()
     {
+
+        $client = new Client();
+        $client->setUri('http://saychas-z.local');
+        $client->setOptions([
+            'maxredirects' => 0,
+            'timeout'      => 30,
+        ]);
+        $client->setCookies([
+            'banzaii' => 'vonzaii',
+            'banzaii' => 'vlezaii',
+        ]);
+        
+        $response = $client->send();
+        
+        echo '<pre>';
+        $v = print_r($client->getCookies(), true);
+        echo '</pre>';
+        return new ViewModel(['v' => $v]);
+    }
+    
+    public function testIdentityAction()
+    {
+        $users = $this->userRepository->findAll([]);
+        
+//        $response = $this->getResponse();
+//        $cookies = Cookies::fromResponse($response, 'http://saychas-z.local');
+//        $cookiesToCache = $cookies->getAllCookies($cookies::COOKIE_STRING_ARRAY);
+//        echo '<pre>';
+//        print_r($cookiesToCache);
+//        echo '</pre>';
+//        exit;
+        
+        
+//        $user = new \Application\Model\Entity\User();
+//        $user->setName('banzaii');
+//        $user->setPhone(33333344);
+//        $user->setEmail('aaaaaaaaaaaabb');
+//        
+//        echo $user->getId().' '.$user->getName().'<br/>';
+        
+//        echo '<pre>';
+//        print_r($user);
+//        echo '</pre>';
+//        exit;
+        
+//        $this->userRepository->persist($user);
+//        exit;
+        /**
+        foreach ($users as $user) {
+            echo '<pre>';
+            print_r($user);
+            echo '</pre>';
+            $reflect = new ReflectionClass($user);
+            foreach($reflect->getProperties() as $prop) {
+                $p = $reflect->getProperty($prop->getName());
+                $p->setAccessible(true);
+                echo $prop->getName().' '. $p->getValue($user).'<br/>';
+            }
+        }
+        echo '<hr/>';
+        */
+        
         $adapter = new \Laminas\Db\Adapter\Adapter([
             'driver'   => 'Pdo_Mysql',
             'database' => 'saychas_z',
@@ -362,8 +434,19 @@ class MyTestController extends AbstractActionController
             'password' => 'saychas_z',
         ]);
         
+
+//        $statement = $adapter->createStatement('SELECT * FROM user WHERE id=:id');
+//        
+//        $statement->prepare();
+//        $result = $statement->execute([':id' => 4]);
+//        
+//        foreach($result as $r) {
+//            print_r($r);
+//        }
+//        exit;
+//
         
-        $authAdapter = new AuthAdapter($adapter);
+    $authAdapter = new AuthAdapter($adapter);
 
         $authAdapter
             ->setTableName('user')
@@ -376,21 +459,27 @@ class MyTestController extends AbstractActionController
         
         $result = $authAdapter->authenticate();
 
-        $auth = new AuthenticationService();
-        
-        $result1 = $auth->authenticate($authAdapter);
-        
-        echo $result1->getIdentity();
+        $auth = $this->authService;
         
         
+        $userAuthAdapter = new UserAuthAdapter('my_user', 'my_pass');
+        
+        $result1 = $auth->authenticate($userAuthAdapter);
+        
+//        $auth->clearIdentity();
+//        
+//        echo 'cleared';
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container->identity = $this->identity();
+        echo $this->identity().' '.'shmidentity';// $result1->getIdentity();
+        
+        exit;
 //        if ($user = $this->identity()) {
 //            echo 'Logged in as ' . $this->escapeHtml($user->getUsername());
 //        } else {
 //            echo 'Not logged in';
 //        }
-//        exit;
-        
-//        print_r($result->getIdentity());
 //        exit;
         
 //        if ($user = $this->identity()) {
@@ -401,6 +490,13 @@ class MyTestController extends AbstractActionController
 //            print_r('vonzaii');
 //        }
     
+    }
+    
+    public function testReposAction()
+    {
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        echo $container->identity;
+        echo '<hr/>';
         $this->layout()->setTemplate('layout/mainpage');
         $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '000000014', '1b53a86f9d8c43c09ba1a7687f76685c', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928', '5b4813eb4a21706f492ae4ee2716a7f9'] ]) ]);
 //        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);

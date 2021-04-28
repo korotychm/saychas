@@ -239,6 +239,26 @@ return [
                     ],
                 ],
             ],
+            'test-identity' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test-identity',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'testIdentity',
+                    ],
+                ],
+            ],
+            'test-client' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test-client',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'testClient',
+                    ],
+                ],
+            ],
 
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
@@ -398,10 +418,11 @@ return [
             \Application\Model\RepositoryInterface\ProductImageRepositoryInterface::class => \Application\Model\Repository\ProductImageRepository::class,
             \Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface::class => \Application\Model\Repository\HandbookRelatedProductRepository::class,
 
+            \Laminas\Authentication\AuthenticationServiceInterface::class => \Laminas\Authentication\AuthenticationService::class,
             //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
 
             
-            'my_auth_service' => \Laminas\Authentication\AuthenticationService::class,
+            //'my_auth_service' => \Laminas\Authentication\AuthenticationService::class,
 //            \Laminas\Authentication\AuthenticationService\AuthenticationService::class => 'my_auth_service',
         ],
         'factories' => [

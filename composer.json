@@ -25,7 +25,8 @@
         "laminas/laminas-escaper": "^2.7",
         "ramsey/uuid": "^4.1",
         "laminas/laminas-authentication": "^2.8",
-        "laminas/laminas-mvc-plugin-identity": "^1.2"
+        "laminas/laminas-mvc-plugin-identity": "^1.2",
+        "laminas/laminas-http": "^2.14"
     },
     "autoload": {
         "psr-4": {

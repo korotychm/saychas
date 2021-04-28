@@ -128,6 +128,17 @@ abstract class Repository implements RepositoryInterface
         return $found;
     }
     
+
+    /**
+     * Adds given user into it's repository
+     *
+     * @param json
+     */
+    public function replace($content)
+    {
+        return ['result' => false, 'description' => '', 'statusCode' => 405];
+    }
+
     /**
      * Returns a single brand.
      *
