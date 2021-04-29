@@ -45,6 +45,8 @@ use Application\Model\Entity\Characteristic;
 use \ReflectionClass;
 use Laminas\Http\Client;
 use Laminas\Http\Cookies;
+use Laminas\Http\Headers;
+use Laminas\Http\Header;
 
 use Laminas\Db\Sql\Sql;
 
@@ -72,6 +74,8 @@ class MyTestController extends AbstractActionController
     private $htmlProvider;
     private $htmlFormProvider;
     private $authService;
+    private $db;
+    private $userAdapter;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -80,7 +84,7 @@ class MyTestController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService)
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -100,6 +104,8 @@ class MyTestController extends AbstractActionController
         $this->htmlProvider = $htmlProvider;
         $this->htmlFormProvider = $htmlFormProvider;
         $this->authService = $authService;
+        $this->db = $db;
+        $this->userAdapter = $userAdapter;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -362,32 +368,47 @@ class MyTestController extends AbstractActionController
         }
         return $res;
     }
-    
+  
     public function testClientAction()
     {
-
-        $client = new Client();
-        $client->setUri('http://saychas-z.local');
-        $client->setOptions([
-            'maxredirects' => 0,
-            'timeout'      => 30,
-        ]);
-        $client->setCookies([
-            'banzaii' => 'vonzaii',
-            'banzaii' => 'vlezaii',
-        ]);
+        $cookie = Header\SetCookie::fromString('Set-Cookie: flavor=chocolate%20chips');
         
-        $response = $client->send();
+        print_r($cookie->getName());
+        
+        $headers = $this->getRequest()->getHeaders();
+        $header = $this->getRequest()->getHeader('Cookie');
+        $host = $this->getRequest()->getHeader('Host');
         
         echo '<pre>';
-        $v = print_r($client->getCookies(), true);
+        print_r($_SERVER['HTTP_HOST']);
+        echo '<br/>';
+        print_r($host->Host);
+        echo '<br/>';
+        print_r($_COOKIE);
+        print_r($headers->toArray());
+        print_r($header->TestCookie);
         echo '</pre>';
-        return new ViewModel(['v' => $v]);
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container->userIdentity = ['my_username', 'my_data'];
+
+        //setcookie("userIdentity", ['my_username', 'my_data']);
     }
-    
+
     public function testIdentityAction()
     {
-        $users = $this->userRepository->findAll([]);
+//        $headers = $this->getRequest()->getHeaders();
+//        $header = $this->getRequest()->getHeader('Cookie');
+//        
+//        echo '<pre>';
+////        print_r($headers);
+//        print_r($header->TestCookie);
+//        print_r($header->banzaii);
+//        echo '</pre>';
+//        exit;
+//        
+//        echo $_COOKIE["TestCookie"].'<br/>';
+//        $users = $this->userRepository->findAll([]);
         
 //        $response = $this->getResponse();
 //        $cookies = Cookies::fromResponse($response, 'http://saychas-z.local');
@@ -397,25 +418,20 @@ class MyTestController extends AbstractActionController
 //        echo '</pre>';
 //        exit;
         
-        
-        $user = new \Application\Model\Entity\User();
-        $user->setName('banzaii');
-        $user->setPhone(33344555);
-        $user->setAddress('address');
-        $user->setGeodata('geodata');
-        $user->setEmail('aaaaaaaaaaaabbcc');
-        
-        echo $user->getId().' '.$user->getName().'<br/>';
-        
-//        echo '<pre>';
-//        print_r($user);
-//        echo '</pre>';
-//        exit;
-        
-        $this->userRepository->persist($user);
-        exit;
         /**
-        foreach ($users as $user) {
+        $user = new \Application\Model\Entity\User();
+//        $user->setId(24);
+        $user->setName('AAAAA2');
+        $user->setPhone(777772);
+        $user->setAddress('BBBBb2');
+        $user->setGeodata('GGGGG2');
+        $user->setEmail('FFFFFFF2');
+        
+//        echo $user->getId().' '.$user->getName().'<br/>';
+//        
+//        $this->userRepository->persist($user);
+//        exit;
+//        foreach ($users as $user) {
             echo '<pre>';
             print_r($user);
             echo '</pre>';
@@ -425,10 +441,10 @@ class MyTestController extends AbstractActionController
                 $p->setAccessible(true);
                 echo $prop->getName().' '. $p->getValue($user).'<br/>';
             }
-        }
+//        }
         echo '<hr/>';
+        exit;
         */
-        
         $adapter = new \Laminas\Db\Adapter\Adapter([
             'driver'   => 'Pdo_Mysql',
             'database' => 'saychas_z',
@@ -464,17 +480,20 @@ class MyTestController extends AbstractActionController
         $auth = $this->authService;
         
         
-        $userAuthAdapter = new UserAuthAdapter('my_user', 'my_pass');
+        $userAuthAdapter = new UserAuthAdapter($this->db);
         
-        $result1 = $auth->authenticate($userAuthAdapter);
+        //$result1 = $auth->authenticate($userAuthAdapter);
+        $result1 = $auth->authenticate($this->userAdapter);
+        
+        $code = $result1->getCode();
+        
+        echo 'code = '.$code.'<br/>';
+        
+        print_r($this->identity());
         
 //        $auth->clearIdentity();
 //        
 //        echo 'cleared';
-        
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $container->identity = $this->identity();
-        echo $this->identity().' '.'shmidentity';// $result1->getIdentity();
         
         exit;
 //        if ($user = $this->identity()) {

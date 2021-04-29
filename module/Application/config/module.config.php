@@ -455,6 +455,7 @@ return [
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
             
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
+            \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
       ],
 //        'invokables' => [
 //            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,

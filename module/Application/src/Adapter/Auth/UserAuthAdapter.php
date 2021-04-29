@@ -1,11 +1,17 @@
 <?php
-// src/Adapter/Auth/AuthAdapter.php
+
+// src/Adapter/Auth/UserAuthAdapter.php
 
 namespace Application\Adapter\Auth;
 
 use Laminas\Authentication\Adapter\AdapterInterface;
-use Laminas\Authentication\Adapter\Exception\ExceptionInterface;
-use Laminas\Authentication\Result;
+use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
+//use Laminas\Authentication\Adapter\Exception\ExceptionInterface;
+//use Laminas\Authentication\Result;
+use Application\Adapter\Auth\UserAuthResult;
+use Application\Resource\StringResource;
+use Laminas\Session\Container;
+
 /**
  * Description of AuthAdapter
  *
@@ -13,15 +19,19 @@ use Laminas\Authentication\Result;
  */
 class UserAuthAdapter implements AdapterInterface
 {
+
+    private ?DbAdapter $adapter;
+
     /**
      * Sets username and password for authentication
      *
      * @return void
      */
-    public function __construct($identity, $credential)
+    public function __construct(?DbAdapter $adapter = null, $identity = '', $credential = '')
     {
+        $this->adapter = $adapter;
         $this->identity = $identity;
-        $this->credential = credential;
+        $this->credential = $credential;
     }
 
     /**
@@ -59,8 +69,17 @@ class UserAuthAdapter implements AdapterInterface
 //     * Authentication success.
 //     */
 //    const SUCCESS                        = 1;
-//    
-        $result = new Result(Result::SUCCESS, $this->identity);
+//
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+
+        $code = UserAuthResult::FAILURE;
+
+        if (isset($container->userIdentity)) {
+            $this->identity = $container->userIdentity;
+            $code = UserAuthResult::SUCCESS_FOUND_IN_SESSION;
+        }
+        $result = new UserAuthResult($code, $this->identity);
         return $result;
-    }    
+    }
+
 }

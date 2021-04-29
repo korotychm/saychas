@@ -23,8 +23,8 @@ use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Controller\MyTestController;
 use Laminas\Authentication\AuthenticationService;
-//use Laminas\Authentication\AuthenticationService;
-
+use Laminas\Db\Adapter\AdapterInterface;
+use Application\Adapter\Auth\UserAuthAdapter;
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
  * controller.
@@ -53,9 +53,11 @@ class MyTestControllerFactory implements FactoryInterface
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
         //$authService = $container->get('my_auth_service');
+        $adapter = $container->get(AdapterInterface::class);
         $authService = $container->get(AuthenticationService::class);
+        $userAdapter = $container->get(UserAuthAdapter::class);
         return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic,
-                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService);
+                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService, $adapter, $userAdapter);
     }
 
 }
