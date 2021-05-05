@@ -1,10 +1,12 @@
 <?php
+
 // src/Model/Entity/Category.php
 
 namespace Application\Model\Entity;
 
 class Categ
 {
+
     /**
      * @var string
      */
@@ -14,7 +16,7 @@ class Categ
      * @var string
      */
     private $parent_id;
-    
+
     /**
      * @var string
      */
@@ -24,7 +26,6 @@ class Categ
      * @var string
      */
     private $description;
-    
     private $children;
 
     /**
@@ -40,6 +41,7 @@ class Categ
         $this->title = $title;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -47,12 +49,13 @@ class Categ
     {
         return $this->id;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
+
     /**
      * @return string
      */
@@ -60,12 +63,12 @@ class Categ
     {
         return $this->parent_id;
     }
+
     public function setParentId($parent_id)
     {
         $this->parent_id = $parent_id;
         return $this;
     }
-    
 
     /**
      * @return string
@@ -74,15 +77,16 @@ class Categ
     {
         return $this->description;
     }
-    
-    public function getChildren() : Categ
+
+    public function getChildren(): Categ
     {
         return $this->children;
     }
-    
+
     public function setChildren($children)
     {
         $this->children = $children;
         return $this;
     }
+
 }

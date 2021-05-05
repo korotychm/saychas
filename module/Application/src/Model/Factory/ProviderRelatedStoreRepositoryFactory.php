@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Factory/ProviderRelatedStoreRepositoryFactory.php
 
 namespace Application\Model\Factory;
@@ -14,23 +15,24 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ProviderRelatedStoreRepositoryFactory implements FactoryInterface
 {
-   
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof ProviderRelatedStoreRepository){
+        if ($requestedName instanceof ProviderRelatedStoreRepository) {
             throw new Exception("not instanceof ProviderRelatedStoreRepository");
         }
-        
+
         $adapter = $container->get(AdapterInterface::class);
-        
+
         $providerRepository = $container->get(ProviderRepository::class);
-        $prototype = new Store;//new ProviderRelatedStore;
+        $prototype = new Store; //new ProviderRelatedStore;
         $prototype::$providerRepository = $providerRepository;
-        
+
         return new ProviderRelatedStoreRepository(
-            $adapter,
-            new ClassMethodsHydrator(),
-            $prototype
+                $adapter,
+                new ClassMethodsHydrator(),
+                $prototype
         );
     }
+
 }

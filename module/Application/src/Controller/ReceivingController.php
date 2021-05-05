@@ -1,4 +1,5 @@
 <?php
+
 // src/Controller/ReceivingController.php
 
 declare(strict_types=1);
@@ -9,13 +10,15 @@ use Application\Model;
 use Interop\Container\ContainerInterface;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
+
 //use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 
 class ReceivingController extends AbstractActionController
 {
+
     /**
-     * 
+     *
      * @var ContainerInterface
      */
     private ContainerInterface $container;
@@ -30,29 +33,28 @@ class ReceivingController extends AbstractActionController
         $this->container = $container;
     }
 
-
     /**
      * Receives repository updates depending on the route
      * @return JsonModel
      */
     public function receiveRepositoryAction()
     {
-        
+
         $routeMatch = $this->getEvent()->getRouteMatch();
 
         $routeName = $routeMatch->getMatchedRouteName();
 
         //$params = $routeMatch->getParams();
-        
+
         $config = $this->container->get('Config');
-        
+
         $repository = $this->container->get($config['router']['routes'][$routeName]['options']['repository']);
-        
+
         $request = $this->getRequest();
-        
+
         $content = $request->getContent();
 
-        if($request->isDelete()) {
+        if ($request->isDelete()) {
             // Perform delete action
             $arr = $repository->delete($content);
 
@@ -68,7 +70,7 @@ class ReceivingController extends AbstractActionController
         $arr = $repository->replace($content);
 
         $response = $this->getResponse();
-        
+
         $response->setStatusCode($arr['statusCode']);
 
         $answer = ['result' => $arr['result'], 'description' => $arr['description']];

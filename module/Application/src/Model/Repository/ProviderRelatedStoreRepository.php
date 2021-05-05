@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/ProviderRelatedStoreRepository.php
 
 namespace Application\Model\Repository;
@@ -12,41 +13,44 @@ use Application\Model\RepositoryInterface\ProviderRelatedStoreRepositoryInterfac
 
 class ProviderRelatedStoreRepository extends Repository implements ProviderRelatedStoreRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="store";
+    protected $tableName = "store";
 
     /**
      * @var Store
      */
     protected Store $prototype;
+
 //    protected ProviderRelatedStore $prototype;
-    
+
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Store $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        Store $prototype
-        //ProviderRelatedStore $prototype
-    ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            Store $prototype
+            //ProviderRelatedStore $prototype
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
 
     /**
      * Adds given store into it's repository
-     * 
+     *
      * @param json $content
      */
     public function replace($content)
     {
         return ['result' => false, 'description' => '', 'statusCode' => 405];
     }
-    
+
 }

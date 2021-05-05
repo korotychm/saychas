@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Factory/BrandRepositoryFactory.php
 
 namespace Application\Model\Factory;
@@ -16,16 +17,17 @@ class BrandRepositoryFactory implements FactoryInterface
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof BrandRepository){
+        if ($requestedName instanceof BrandRepository) {
             throw new Exception("not instanceof BrandRepository");
         }
 
         $adapter = $container->get(AdapterInterface::class);
 
         return new BrandRepository(
-            $adapter,
-            new ClassMethodsHydrator,//new ReflectionHydrator(),
-            new Brand//('', '', '', '')
+                $adapter,
+                new ClassMethodsHydrator, //new ReflectionHydrator(),
+                new Brand//('', '', '', '')
         );
     }
+
 }

@@ -417,20 +417,77 @@ class MyTestController extends AbstractActionController
 //        print_r($cookiesToCache);
 //        echo '</pre>';
 //        exit;
+//| id          | varchar(9)   | NO   | PRI |         |       |
+//| category_id | varchar(9)   | NO   |     |         |       |
+//| title       | varchar(255) | NO   |     |         |       |
+//| type        | tinyint(1)   | NO   |     | 1       |       |
+//| filter      | tinyint(1)   | NO   |     | 0       |       |
+//| group       | tinyint(1)   | NO   |     | 0       |       |
+//| sort_order  | int(11)      | NO   |     | 1       |       |
+//| unit        | tinytext     | YES  |     | NULL    |       |
+//| description | tinytext 
         
-        /**
+        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+        $composite->addFilter(
+            'excludeval',
+            new \Laminas\Hydrator\Filter\MethodMatchFilter('getVal'),
+            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+        );
+        $composite->addFilter(
+            'excludevalId',
+            new \Laminas\Hydrator\Filter\MethodMatchFilter('getValId'),
+            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+        );
+        
+        $charact = new \Application\Model\Entity\Characteristic();
+        $charact->setId('000000044');
+        $charact->setCategoryId('000000006');
+        $charact->setTitle('Characteristic Title');
+        $charact->setType(4);
+        $charact->setFilter(1);
+        $charact->setGroup(0);
+        $charact->setSortOrder(1);
+        $charact->setUnit('shmunet');
+        $charact->setDesctiption('huiption');
+        $this->characteristicRepository->persist($charact, ['id'=>$charact->getId()], $composite);
+        
+        $foundCharact = $this->characteristicRepository->findAll(['id'=>null]);
+        foreach($foundCharact as $c) {
+            echo '<pre>';
+            print_r($c);
+            echo '</pre>';
+        }
+        
+exit;        
+        
         $user = new \Application\Model\Entity\User();
-//        $user->setId(24);
-        $user->setName('AAAAA2');
-        $user->setPhone(777772);
-        $user->setAddress('BBBBb2');
-        $user->setGeodata('GGGGG2');
-        $user->setEmail('FFFFFFF2');
-        
-//        echo $user->getId().' '.$user->getName().'<br/>';
+        $user->setId(35);
+        $user->setName('4444');
+        $user->setPhone(112288);
+        $user->setAddress('BBBBb1212');
+        $user->setGeodata('GGGG555333');
+        $user->setEmail('email88');
+
+//        $provider = new \Application\Model\Entity\Provider();
 //        
-//        $this->userRepository->persist($user);
+//        $provider->setDescription('description');
+//        
+//        $this->providerRelatedStoreRepository->persist($provider, []);
+//        
 //        exit;
+//        
+//        echo $user->getId().' '.$user->getName().'<br/>';
+        
+        print_r($this->userRepository->persist($user,['id' => $user->getId()]));
+        
+        $users = $this->userRepository->findAll([]);
+        foreach ($users as $u) {
+            echo '<pre>';
+            print_r($u);
+            echo '</pre>';
+        }
+        exit;
+        /**
 //        foreach ($users as $user) {
             echo '<pre>';
             print_r($user);

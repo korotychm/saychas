@@ -1,8 +1,9 @@
 <?php
+
 // src\Command\FetchImages.php
 /*
  * Here comes the text of your license
- * Each line should be prefixed with  * 
+ * Each line should be prefixed with  *
  */
 //namespace Application\Command;
 //
@@ -24,7 +25,7 @@
 //        parent::__construct($name);
 //        $this->adapter = $adapter;
 //    }
-//    
+//
 //    protected function execute(InputInterface $input, OutputInterface $output)
 //    {
 //        return 1;
@@ -44,19 +45,18 @@ use laminas\Stdlib\Hydrator\Aggregate\ExtractEvent;
 use Laminas\Hydrator\Filter\MethodMatchFilter;
 use Laminas\Hydrator\Filter\FilterComposite;
 use Laminas\Hydrator\Aggregate\HydrateEvent;
-
 use Application\Model\Entity\User as MyUser;
-
 use Application\Hydrator\UserHydrator;
 
 class User extends Entity
 {
+
     protected $firstName;
     protected $lastName;
     protected $emailAddress;
     protected $phoneNumber;
     protected $posts;
-    
+
     public function camelize($string)
     {
         $words = explode('_', $string);
@@ -66,7 +66,7 @@ class User extends Entity
 
         // join array elements with '-'
         $string = implode('', $words);
-        
+
         return $string;
     }
 
@@ -75,7 +75,7 @@ class User extends Entity
         $this->firstName = $firstName;
         return $this;
     }
-    
+
     public function getFirstName()
     {
         return $this->firstName;
@@ -108,12 +108,12 @@ class User extends Entity
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-    
+
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
     }
-    
+
     public function getPosts()
     {
         $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
@@ -125,12 +125,12 @@ class User extends Entity
 //            )
 //        );
         $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-            new \Laminas\Hydrator\ClassMethodsHydrator(),
-            Post::class
+                new \Laminas\Hydrator\ClassMethodsHydrator(),
+                Post::class
         );
 
         $this->posts = $strategy->hydrate($this->posts);
-        
+
         return $this->posts;
     }
 
@@ -138,97 +138,99 @@ class User extends Entity
     {
         //$this->posts = [];//  $posts;
         $this->posts = [
-                    [
-                        'id' => '1',
-                        'email'    => 'email@google.com',
-                        'blog' => 'blog1',
-                    ],
-                    [
-                        'id' => '2',
-                        'email'    => 'email1@google.com',
-                        'blog' => 'blog2',
-                    ],
-                    [
-                        'id' => '3',
-                        'email'    => 'email2@google.com',
-                        'blog' => 'blog3',
-                    ],
-            ];
+            [
+                'id' => '1',
+                'email' => 'email@google.com',
+                'blog' => 'blog1',
+            ],
+            [
+                'id' => '2',
+                'email' => 'email1@google.com',
+                'blog' => 'blog2',
+            ],
+            [
+                'id' => '3',
+                'email' => 'email2@google.com',
+                'blog' => 'blog3',
+            ],
+        ];
 
         return $this;
     }
+
 }
 
 class Post extends Entity
 {
+
     protected ?string $id;
     protected ?string $email;
     protected ?string $blog;
-    
+
     public function __construct(?string $id = null, ?string $email = null, ?string $blog = null)
     {
         $this->id = $id;
         $this->email = $email;
         $this->blog = $blog;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
-    
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function setEmail($email)
     {
         $this->email = $email;
         return $this;
     }
-    
+
     public function getEmail()
     {
         return $this->email;
     }
-    
+
     public function setBlog($blog)
     {
         $this->blog = $blog;
         return $this;
     }
-    
+
     public function getBlog()
     {
         return $this->blog;
     }
+
 }
 
 class FetchImagesCommand extends Command
-{    
+{
+
     /**
      * @var Adapter
      */
     private $adapter;
-    
+
     /**
      * @var string
      */
     private $name;
-    
     private $userRepository;
-    
     private $postRepository;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param Adapter $adapter
      * @param type $name
      */
-    public function __construct(Adapter $adapter, /*mixed */$name, $userRepository, $postRepository)
+    public function __construct(Adapter $adapter, /* mixed */ $name, $userRepository, $postRepository)
     {
         parent::__construct($name);
         $this->adapter = $adapter;
@@ -236,7 +238,7 @@ class FetchImagesCommand extends Command
         $this->userRepository = $userRepository;
         $this->postRepository = $postRepository;
     }
-    
+
     /** @var string */
     protected static $defaultName = 'fetch-images';
 
@@ -246,7 +248,7 @@ class FetchImagesCommand extends Command
      * @return void        $user->setFirstName('banzaii')->setLastName('vonzaii');
 
      */
-    protected function configure() : void
+    protected function configure(): void
     {
         $this->setName(self::$defaultName);
         $this->addOption('name', null, InputOption::VALUE_REQUIRED, 'Application');
@@ -254,53 +256,51 @@ class FetchImagesCommand extends Command
 
     /**
      * Executes the command
-     * 
+     *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $myuuid = Uuid::uuid4();
         //printf("Your UUID is: %s", $myuuid->toString());
-
         //$output->writeln('Fetch images: ' . $myuuid->toString() . $input->getOption('name'));
-        $output->writeln('Fetch images: ' . $myuuid->toString() . ' '. $this->name);
+        $output->writeln('Fetch images: ' . $myuuid->toString() . ' ' . $this->name);
         $output->writeln("\n");
-        
+
 //        $data = [
 //            'first_name'    => 'James',
 //            'last_name'     => 'Kahn',
 //            'email_address' => 'james.kahn@example.org',
 //            'phone_number'  => '+61 419 1234 5678',
 //        ];
-
 //        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator;// ObjectPropertyHydrator();
 //        $refHydrator = new \Laminas\Hydrator\ReflectionHydrator();
-//        
+//
 //        $user = $hydrator->hydrate($data, new User());
 //        $data     = $hydrator->extract($user);
 //        //$data     = $refHydrator->extract($user);
 //        print_r($data);
 //        echo "\n";
-        
+
         $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
         $hydrator->addStrategy(
-            'posts',
-            new \Laminas\Hydrator\Strategy\CollectionStrategy(
-                new \Laminas\Hydrator\ClassMethodsHydrator(),
-                Post::class
-            )
+                'posts',
+                new \Laminas\Hydrator\Strategy\CollectionStrategy(
+                        new \Laminas\Hydrator\ClassMethodsHydrator(),
+                        Post::class
+                )
         );
-        
+
         $user = new User();
         $hydrator->hydrate(
-            [
-                'firstName' => 'David Bowie',
-                'lastName'  => 'Let\'s Dance',
-                'emailAddress' => 'asdf@banzaii.vonzaii',
-                'phoneNumber' => '1234567890',
-                'posts' => [],
+                [
+                    'firstName' => 'David Bowie',
+                    'lastName' => 'Let\'s Dance',
+                    'emailAddress' => 'asdf@banzaii.vonzaii',
+                    'phoneNumber' => '1234567890',
+                    'posts' => [],
 //                'posts' => [
 //                    [
 //                        'id' => '111',
@@ -310,7 +310,7 @@ class FetchImagesCommand extends Command
 //                    [
 //                        'id' => '222',
 //                        'email'    => 'email1@google.com',
-//                        'blog' => 'blog2', 
+//                        'blog' => 'blog2',
 //                    ],
 //                    [
 //                        'id' => '333',
@@ -318,11 +318,11 @@ class FetchImagesCommand extends Command
 //                        'blog' => 'blog3',
 //                    ],
 //                ]
-                    // …
-            ],
-            $user
+                // …
+                ],
+                $user
         );
-        
+
 //        echo "\n\n\n";
 //        echo $user->camelize('banzaiiVonzaii')."\n";
 //        echo $user->firstName . ' ' . $user->getFirstName() . ' '. $user->getLastName() . ' ' . $user->getEmailAddress() . ' ' . $user->getPhoneNumber() . "\n\n\n";
@@ -330,94 +330,88 @@ class FetchImagesCommand extends Command
 //            echo $post->id . ' ' . $post->email . ' ' .$post->getBlog();
 //            echo "\n";
 //        }
-//        
+//
 //        echo "\n\n\n\n\n";
 //exit;
-        
+
         $users = $this->userRepository->findAll([]);
-        
+
         $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-            new \Laminas\Hydrator\ClassMethodsHydrator(),
-            \Application\Model\Entity\User::class
+                new \Laminas\Hydrator\ClassMethodsHydrator(),
+                \Application\Model\Entity\User::class
         );
-        
+
 //        $hydrator->addFilter(
 //          'postrepository',
 //          new MethodMatchFilter('getPostRepository'),
 //          FilterComposite::CONDITION_AND
 //        );
-/**
-        $userHydrator = new UserHydrator($this->postRepository);
-        $strat = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-            $userHydrator,
-            \Application\Model\Entity\User::class
-        );
+        /**
+          $userHydrator = new UserHydrator($this->postRepository);
+          $strat = new \Laminas\Hydrator\Strategy\CollectionStrategy(
+          $userHydrator,
+          \Application\Model\Entity\User::class
+          );
 
-        $d = ['firstName' => 'firstName', 'lastName' => 'lastName', 'emailAddress' => 'emailAddress', 'phoneNumber' => '002'];
-        $d1 = ['firstName' => 'firstName1', 'lastName' => 'lastName1', 'emailAddress' => 'emailAddress1', 'phoneNumber' => '004'];
-        $dat = [ $d, $d1];
-        $userObjects = $strat->hydrate($dat, null);
-        foreach($userObjects as $userObject) {
-            echo $userObject->firstName.' '.$userObject->lastName.' '.$userObject->emailAddress.' '.$userObject->phoneNumber."\n";
-            foreach($userObject->getPosts() as $post) {
-                echo $post->id.' '.$post->title.' '.$post->blog."\n";
-            }
-        }
-        //$userObject = $userHydrator->hydrate($d, new MyUser);
-        exit;
-        
-        echo $userObject->firstName.' '.$userObject->lastName.' '.$userObject->emailAddress.' '.$userObject->phoneNumber."\n";
-        foreach($userObject->getPosts() as $post) {
-            echo "asdf\n";
-            echo $post->id.' '.$post->title.' '.$post->blog."\n";
-        }
-        
-        exit;
-        
-        
-        $postRepository = $this->postRepository;
-        
-        echo "=========================\n";
-        $us = $strategy->hydrate($users->toArray());
-        echo "=========================\n";
-        
-        foreach($us as $u) {
-            echo $u->getFirstName()."\n";
-            foreach($u->getPosts() as $p) {
-                print_r($p);
-                //echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
-            }
-        }
+          $d = ['firstName' => 'firstName', 'lastName' => 'lastName', 'emailAddress' => 'emailAddress', 'phoneNumber' => '002'];
+          $d1 = ['firstName' => 'firstName1', 'lastName' => 'lastName1', 'emailAddress' => 'emailAddress1', 'phoneNumber' => '004'];
+          $dat = [ $d, $d1];
+          $userObjects = $strat->hydrate($dat, null);
+          foreach($userObjects as $userObject) {
+          echo $userObject->firstName.' '.$userObject->lastName.' '.$userObject->emailAddress.' '.$userObject->phoneNumber."\n";
+          foreach($userObject->getPosts() as $post) {
+          echo $post->id.' '.$post->title.' '.$post->blog."\n";
+          }
+          }
+          //$userObject = $userHydrator->hydrate($d, new MyUser);
+          exit;
 
-*/
+          echo $userObject->firstName.' '.$userObject->lastName.' '.$userObject->emailAddress.' '.$userObject->phoneNumber."\n";
+          foreach($userObject->getPosts() as $post) {
+          echo "asdf\n";
+          echo $post->id.' '.$post->title.' '.$post->blog."\n";
+          }
+
+          exit;
+
+
+          $postRepository = $this->postRepository;
+
+          echo "=========================\n";
+          $us = $strategy->hydrate($users->toArray());
+          echo "=========================\n";
+
+          foreach($us as $u) {
+          echo $u->getFirstName()."\n";
+          foreach($u->getPosts() as $p) {
+          print_r($p);
+          //echo $p->getId().' '.$p->getEmail().' '.$p->getBlog()."\n";
+          }
+          }
+
+         */
         $users = $this->userRepository->findAll([]);
         foreach ($users as $user) {
-            print_r($user->getFirstName().' '. $user->getLastName().' '.$user->getEmailAddress().' '.$user->getPhoneNumber());
+            print_r($user->getFirstName() . ' ' . $user->getLastName() . ' ' . $user->getEmailAddress() . ' ' . $user->getPhoneNumber());
             echo "\n";
-            foreach($user->getPosts() as $post) {
-                echo $post->id.' '.$post->email.' '.$post->blog."\n";
+            foreach ($user->getPosts() as $post) {
+                echo $post->id . ' ' . $post->email . ' ' . $post->blog . "\n";
             }
         }
         return 0;
     }
+
 }
 
-
-
-
-
-
-
-
 //        $userListener = function (HydrateEvent $event) use ($postRepository) {
-//            $data = $event->getHydrationData();// 
-//            
+//            $data = $event->getHydrationData();//
+//
 //            $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
 //                new \Laminas\Hydrator\ClassMethodsHydrator(),
 //                \Application\Model\Entity\Post::class
 //            );
-//            
-//            
+//
+//
 //            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
 //            $user = $hydrator->hydrate($data, new User);
 //            if( ! $user instanceof User) {
@@ -429,7 +423,7 @@ class FetchImagesCommand extends Command
 //            print_r($user);
 //            return 0;
 //        };
-//        
+//
 //        $h = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
 //        $h->add(new \Laminas\Hydrator\ClassMethodsHydrator());
 //
@@ -441,6 +435,6 @@ class FetchImagesCommand extends Command
 //            print_r($user);
 //        }
         //$us = $h->hydrate($users->toArray());
-//        
+//
 //        print_r($u);
-        
+

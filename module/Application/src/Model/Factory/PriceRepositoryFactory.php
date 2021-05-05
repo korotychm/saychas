@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Factory/PriceRepositoryFactory.php
 
 namespace Application\Model\Factory;
@@ -14,23 +15,24 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class PriceRepositoryFactory implements FactoryInterface
 {
-   
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof PriceRepository){
+        if ($requestedName instanceof PriceRepository) {
             throw new Exception("not instanceof PriceRepository");
         }
-        
+
         $adapter = $container->get(AdapterInterface::class);
-        
+
         $hydrator = new AggregateHydrator();
         $hydrator->add(new ReflectionHydrator());
         $hydrator->add(new ClassMethodsHydrator);
-        
+
         return new PriceRepository(
-            $adapter,
-            $hydrator, // new ReflectionHydrator(),
-            new Price//(0, 0, 0, '')
+                $adapter,
+                $hydrator, // new ReflectionHydrator(),
+                new Price//(0, 0, 0, '')
         );
     }
+
 }

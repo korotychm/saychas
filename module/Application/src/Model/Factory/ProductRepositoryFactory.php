@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Factory/ProductRepositoryFactory.php
 
 namespace Application\Model\Factory;
@@ -18,31 +19,32 @@ use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
 class ProductRepositoryFactory implements FactoryInterface
 {
-   
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof ProductRepository){
+        if ($requestedName instanceof ProductRepository) {
             throw new Exception("not instanceof ProductRepository");
         }
-        
+
         $adapter = $container->get(AdapterInterface::class);
         $characteristicValue = $container->get(CharacteristicValueRepositoryInterface::class);
         $caracteristicValue2 = $container->get(CharacteristicValue2RepositoryInterface::class);
         $characteristics = $container->get(CharacteristicRepositoryInterface::class);
         $productImages = $container->get(ProductImageRepositoryInterface::class);
-        
+
         $config = $container->get('Config');
         $catalogToSaveImages = $config['parameters']['catalog_to_save_images'];
-        
+
         return new ProductRepository(
-            $adapter,
-            new ReflectionHydrator(),
-            new Product,// Product(0, 0, 0, '', '', '', 0, 0, '', ''),
-            $characteristicValue,
-            $characteristics,
-            $productImages,
-            $caracteristicValue2,
-            $catalogToSaveImages,
+                $adapter,
+                new ReflectionHydrator(),
+                new Product, // Product(0, 0, 0, '', '', '', 0, 0, '', ''),
+                $characteristicValue,
+                $characteristics,
+                $productImages,
+                $caracteristicValue2,
+                $catalogToSaveImages,
         );
     }
+
 }

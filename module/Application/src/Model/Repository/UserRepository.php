@@ -8,15 +8,9 @@ namespace Application\Model\Repository;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-//use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Laminas\Db\Adapter\Driver\ResultInterface;
-//use Laminas\Db\ResultSet\HydratingResultSet;
-//use Laminas\Db\Sql\Sql;
-//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\User;
-//use Application\Model\Entity\Post;
 use Application\Model\RepositoryInterface\RepositoryInterface;
+use Laminas\Db\Sql\Sql;
 
 class UserRepository extends Repository implements RepositoryInterface
 {
@@ -47,61 +41,86 @@ class UserRepository extends Repository implements RepositoryInterface
         $this->prototype = $prototype;
     }
 
-    /**
+}
+
+/**
      * Persists User
-     * 
+     *
+     * $params must be set at all times
+     *
      * @param User $user
+     * @param array $params
      * @return void
      */
-    public function persist($user)
-    {
-        $u = $this->find(['id' => $user->getId()]);
-        $parameters = [':name' => $user->getName(), ':phone' => $user->getPhone(), ':email' => $user->getEmail(), ':address' => $user->getAddress(), ':geodata' => $user->getGeodata()/*, ':id'=>$user->getId()*/];
-        if(empty($u)) {
-            $statement = $this->db->createStatement("insert INTO `{$this->tableName}`( `name`, `phone`, `email`, `address`, `geodata`) VALUES ( :name, :phone, :email, :address, :geodata )");
-        }else{
-            $parameters[':id'] = $user->getId();
-            $statement = $this->db->createStatement("update `{$this->tableName}` set name = :name, phone = :phone, email = :email, address = :address, geodata = :geodata where id = :id ");
-        }
-        try {
-            $statement->prepare();
-            $statement->execute($parameters);
-        }catch(InvalidQueryException $e){
-            print_r($e->getMessage());
-            return ['result' => false, 'description' => "error executing $sql".' '.$e->getMessage(), 'statusCode' => 418];
-        }
-    }
-
-//    /**
-//     * Persists User
-//     * 
-//     * @param User $user
-//     * @return void
-//     */
-//    public function persist($user)
+//    public function persist1($user, $params)
 //    {
-//        $u = $this->find(['id' => $user->getId()]);
-//        if(empty($u)) {
-//            $sql = sprintf("insert INTO `{$this->tableName}`( `name`, `phone`, `email`, `address`, `geodata`) VALUES ( '%s', %u, '%s', '%s', '%s' )",
-//                    $user->getName(), $user->getPhone(), $user->getEmail(), $user->getAddress(), $user->getGeodata());
-//
-//        $statement = $this->db->createStatement("insert INTO `{$this->tableName}`( `name`, `phone`, `email`, `address`, `geodata`) VALUES ( :name, :phone, :email, :address, :geodata )");
-//        $statement->prepare();
-//        $result = $statement->execute([':name' => $user->getName(), ':phone' => $user->getPhone(), ':email' => $user->getEmail(), ':address' => $user->getAddress(), ':geodata' => $user->getGeodata()]);
-//        
-//        print_r($result);
-//        exit;
-//            
-//        }else{
-//            $sql = sprintf("update `{$this->tableName}` set name='%s', phone=%u, email='%s', address='%s', geodata='%s' where id={$user->getId()}",
-//                   $user->getName(), $user->getPhone(), $user->getEmail(), $user->getAddress(), $user->getGeodata());
+//        $u = $this->find($params);
+//        $pars = $this->reflect($user);
+//        $parameters = $pars['params'];
+//        if (empty($u)) {
+//            $parameters = array_diff($parameters, $params);
+//            $statement = $this->db->createStatement("insert INTO `{$this->tableName}`( `name`, `phone`, `email`, `address`, `geodata`) VALUES ( :name, :phone, :email, :address, :geodata )");
+//        } else {
+//            $parameters[':id'] = $user->getId();
+//            $statement = $this->db->createStatement("update `{$this->tableName}` set name = :name, phone = :phone, email = :email, address = :address, geodata = :geodata where id = :id ");
 //        }
 //        try {
-//            $query = $this->db->query($sql);
-//            $query->execute();
-//        }catch(InvalidQueryException $e){
-//            return ['result' => false, 'description' => "error executing $sql".' '.$e->getMessage(), 'statusCode' => 418];
+//            $statement->prepare();
+//            $statement->execute($parameters);
+//        } catch (InvalidQueryException $e) {
+//            echo $e->getMessage();
+//            return ['result' => false, 'description' => "error executing statement. " . ' ' . $e->getMessage(), 'statusCode' => 418];
 //        }
 //    }
+//    private function valueFoundAsKey($value_array, $key_array)
+//    {
+//        $result = [];
+//        foreach ($value_array as $key => $value) {
+//            if(array_key_exists($value, $key_array)) {
+//                continue;
+//            }
+//            $result[$key] = $value;
+//        }
+//        return $result;
+//    }
 
-}
+
+
+
+
+
+
+        //$pars = $this->reflect($user);
+        //$values = array_values($pars['assoc']);// $pars['values'];
+        //$names = $pars['names'];
+
+
+
+
+
+    /**
+     * Converts Entity to associative array
+     *
+     * @param Entity $entity
+     * @return array
+     */
+//    protected function reflect($entity)
+//    {
+//        $params = [];
+//        $names = [];
+//        $assoc = [];
+//        $values = [];
+//        $reflect = new ReflectionClass($entity);
+//        foreach($reflect->getProperties() as $prop) {
+//            $p = $reflect->getProperty($prop->getName());
+//            $p->setAccessible(true);
+//            $methodName = 'set'.$entity->camelize($prop->getName());
+//            if(method_exists($entity, $methodName)) {
+//                $names[] = $prop->getName();
+//                $values[] = $p->getValue($entity);
+//                $assoc[$prop->getName()] = $p->getValue($entity);
+//            }
+//        }
+//        return ['params' => $params, 'names' => $names, 'assoc' => $assoc, 'values' => $values];
+//    }
+
