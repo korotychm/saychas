@@ -21,6 +21,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -65,6 +66,7 @@ class MyTestController extends AbstractActionController
     private $filteredProductRepository;
     private $brandRepository;
     private $characteristicRepository;
+    private $characteristicValueRepository;
     private $priceRepository;
     private $stockBalanceRepository;
     private $handBookRelatedProductRepository;
@@ -81,7 +83,7 @@ class MyTestController extends AbstractActionController
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProviderRelatedStoreRepositoryInterface $providerRelatedStoreRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
-                CharacteristicRepositoryInterface $characteristicRepository,
+                CharacteristicRepositoryInterface $characteristicRepository, CharacteristicValueRepositoryInterface $characteristicValueRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
             $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter)
@@ -95,6 +97,7 @@ class MyTestController extends AbstractActionController
         $this->filteredProductRepository = $filteredProductRepository;
         $this->brandRepository = $brandRepository;
         $this->characteristicRepository = $characteristicRepository;
+        $this->characteristicValueRepository = $characteristicValueRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->handBookRelatedProductRepository = $handBookProduct;
@@ -417,6 +420,17 @@ class MyTestController extends AbstractActionController
 //        print_r($cookiesToCache);
 //        echo '</pre>';
 //        exit;
+
+        $charValue = new \Application\Model\Entity\CharacteristicValue();
+        $charValue->setId('000000017');
+        $charValue->setTitle('char title17');
+        $charValue->setCharacteristicId('000000007');
+        $this->characteristicValueRepository->persist($charValue, ['id' => $charValue->getId()]);
+        
+        echo 'asdf';
+        
+        exit;
+        
 //| id          | varchar(9)   | NO   | PRI |         |       |
 //| category_id | varchar(9)   | NO   |     |         |       |
 //| title       | varchar(255) | NO   |     |         |       |
