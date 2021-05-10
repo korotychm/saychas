@@ -80,6 +80,29 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         return $resultSet;
     }
 
+    public function persist($entity, $params, $hydrator = null)
+    {
+        if (null == $hydrator) {
+            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+
+            $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+            $composite->addFilter(
+                    'excludeval',
+                    new \Laminas\Hydrator\Filter\MethodMatchFilter('getVal'),
+                    \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+            );
+            $composite->addFilter(
+                    'excludevalId',
+                    new \Laminas\Hydrator\Filter\MethodMatchFilter('getValId'),
+                    \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+            );
+
+            $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+        }
+
+        parent::persist($entity, $params, $hydrator);
+    }
+
     /**
      * Adds given characteristic into it's repository
      *

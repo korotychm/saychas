@@ -2,7 +2,7 @@
 
 /*
  * Here comes the text of your license
- * Each line should be prefixed with  * 
+ * Each line should be prefixed with  *
  */
 
 namespace Application\Model\Repository;
@@ -60,7 +60,7 @@ abstract class Repository implements RepositoryInterface
         }
         if (isset($params['sequence'])) {
             $select->where(['id' => $params['sequence']]);
-        }//{ $select->where->in('id', $params['sequence']); } // 
+        }//{ $select->where->in('id', $params['sequence']); } //
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -108,7 +108,7 @@ abstract class Repository implements RepositoryInterface
             /**
              * We comment out the following code for now
              * as we want our function to return default value instead of null
-             * 
+             *
               throw new InvalidArgumentException(sprintf(
               $this->tableName . ' with identifier "%s" not found.', '<Filter>'
               $params['id']
@@ -139,23 +139,22 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Persists $user
-     *
-     * $params must be set at all times
+     * Persists $entity
      *
      * @param Entity $entity
-     * @param array $params
+     * @param Entity $params
+     * @param \Laminas\Hydrator\ClassMethodsHydrator $hydrator
+     * @return void
      */
-    public function persist($entity, $params, $composite = null)
+    public function persist($entity, $params, $hydrator = null)
     {
 
-        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
+        if (null == $hydrator) {
+            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
+        }
 
         $u = $this->find($params);
 
-        if (null != $composite) {
-            $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
-        }
         $assoc = $hydrator->extract($entity);
 
         $values = array_values($assoc);
@@ -182,6 +181,42 @@ abstract class Repository implements RepositoryInterface
         }
     }
 
+//    public function persist1($entity, $params, $composite = null)
+//    {
+//
+//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
+//
+//        $u = $this->find($params);
+//
+//        if (null != $composite) {
+//            $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+//        }
+//        $assoc = $hydrator->extract($entity);
+//
+//        $values = array_values($assoc);
+//        $names = array_keys($assoc);
+//
+//        $sql = new Sql($this->db);
+//        if (empty($u)) {
+//            $sqlObj = $sql->insert();
+//            $sqlObj->into($this->tableName);
+//            $sqlObj->columns($names);
+//            $sqlObj->values($values);
+//        } else {
+//            $sqlObj = $sql->update($this->tableName);
+//            $sqlObj->set($assoc);
+//            $sqlObj->where($params);
+//        }
+//
+//        try {
+//            $stmt = $sql->prepareStatementForSqlObject($sqlObj);
+//            $stmt->execute();
+//        } catch (InvalidQueryException $ex) {
+//            echo $ex->getMessage();
+//            return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
+//        }
+//    }
+
     /**
      * Adds given user into it's repository
      *
@@ -207,7 +242,7 @@ abstract class Repository implements RepositoryInterface
 //
 //        $statement = $sql->prepareStatementForSqlObject($select);
 //        $result    = $statement->execute();
-//        
+//
 //        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
 //            throw new RuntimeException(sprintf(
 //                //Failed retrieving data with identifier

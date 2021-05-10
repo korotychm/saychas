@@ -421,16 +421,16 @@ class MyTestController extends AbstractActionController
 //        echo '</pre>';
 //        exit;
 
-        $charValue = new \Application\Model\Entity\CharacteristicValue();
-        $charValue->setId('000000017');
-        $charValue->setTitle('char title17');
-        $charValue->setCharacteristicId('000000007');
-        $this->characteristicValueRepository->persist($charValue, ['id' => $charValue->getId()]);
-        
-        echo 'asdf';
-        
-        exit;
-        
+//        $charValue = new \Application\Model\Entity\CharacteristicValue();
+//        $charValue->setId('000000017');
+//        $charValue->setTitle('char title17');
+//        $charValue->setCharacteristicId('000000007');
+//        $this->characteristicValueRepository->persist($charValue, ['id' => $charValue->getId()]);
+//        
+//        echo 'asdf';
+//        
+//        exit;
+
 //| id          | varchar(9)   | NO   | PRI |         |       |
 //| category_id | varchar(9)   | NO   |     |         |       |
 //| title       | varchar(255) | NO   |     |         |       |
@@ -441,46 +441,51 @@ class MyTestController extends AbstractActionController
 //| unit        | tinytext     | YES  |     | NULL    |       |
 //| description | tinytext 
         
-        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
-        $composite->addFilter(
-            'excludeval',
-            new \Laminas\Hydrator\Filter\MethodMatchFilter('getVal'),
-            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
-        );
-        $composite->addFilter(
-            'excludevalId',
-            new \Laminas\Hydrator\Filter\MethodMatchFilter('getValId'),
-            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
-        );
-        
-        $charact = new \Application\Model\Entity\Characteristic();
-        $charact->setId('000000044');
-        $charact->setCategoryId('000000006');
-        $charact->setTitle('Characteristic Title');
-        $charact->setType(4);
-        $charact->setFilter(1);
-        $charact->setGroup(0);
-        $charact->setSortOrder(1);
-        $charact->setUnit('shmunet');
-        $charact->setDesctiption('huiption');
-        $this->characteristicRepository->persist($charact, ['id'=>$charact->getId()], $composite);
-        
-        $foundCharact = $this->characteristicRepository->findAll(['id'=>null]);
-        foreach($foundCharact as $c) {
-            echo '<pre>';
-            print_r($c);
-            echo '</pre>';
-        }
-        
-exit;        
+//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
+//        
+//        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+//        $composite->addFilter(
+//            'excludeval',
+//            new \Laminas\Hydrator\Filter\MethodMatchFilter('getVal'),
+//            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+//        );
+//        $composite->addFilter(
+//            'excludevalId',
+//            new \Laminas\Hydrator\Filter\MethodMatchFilter('getValId'),
+//            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+//        );
+//        
+//        $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+     
+//        $charact = new \Application\Model\Entity\Characteristic();
+//        $charact->setId('000000044');
+//        $charact->setCategoryId('000000006');
+//        $charact->setTitle('Characteristic Title');
+//        $charact->setType(2);
+//        $charact->setFilter(1);
+//        $charact->setGroup(0);
+//        $charact->setSortOrder(1);
+//        $charact->setUnit('shmunet2');
+//        $charact->setDesctiption('huiption2');
+//        //$this->characteristicRepository->persist($charact, ['id'=>$charact->getId()], $composite);
+//        $this->characteristicRepository->persist($charact, ['id'=>$charact->getId()]);
+//        
+//        $foundCharact = $this->characteristicRepository->findAll(['id'=>null]);
+//        foreach($foundCharact as $c) {
+//            echo '<pre>';
+//            print_r($c);
+//            echo '</pre>';
+//        }
+//        
+//exit;        
         
         $user = new \Application\Model\Entity\User();
         $user->setId(35);
         $user->setName('4444');
-        $user->setPhone(112288);
+        $user->setPhone(1122775);
         $user->setAddress('BBBBb1212');
         $user->setGeodata('GGGG555333');
-        $user->setEmail('email88');
+        $user->setEmail('email8778');
 
 //        $provider = new \Application\Model\Entity\Provider();
 //        
