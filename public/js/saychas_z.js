@@ -244,6 +244,17 @@ $(function () {
             }
         });
     });
+
+$(window).resize(function(){leftpanelclose();});
+	$("#catalogbutton").click(function(){
+		$("#overcoverblack").fadeIn();
+		$("#lefmobiletpanel").animate({left:"0" },500);
+		
+	})	
+	$("#lefmobiletpanelclose").click(function(){leftpanelclose()})
+	
+
+
 });
 
 function getLocalStores(dataString, obj = "#ajaxanswer2") {
@@ -288,6 +299,11 @@ function getLegalStores(dataString, obj = "#ajaxanswer2") {
         }
     });
 }
+
+function leftpanelclose(){
+		$("#overcoverblack").fadeOut();
+		$("#lefmobiletpanel").stop().animate({left:"-110%" },300);
+	}
 
 function setUserAddrees() {
     $.ajax({

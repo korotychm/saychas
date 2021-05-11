@@ -264,16 +264,16 @@ class HtmlProviderService
         $return['categoryId'] = $categoryId;
         //$return['categoryTitle'] =$category;
         $return['card'] .= ""
-                . "<div class='pw-contentblock cblock-2'>
+                . "<div class='pw-contentblock cblock-3'>
                             <div class='contentpadding'>
                            
                                             $speedlable2
                                             $imagesready
                                    
                             </div>
-                            </div>"
+                 </div>"
                 . "
-                            <div class='pw-contentblock cblock-2'>
+                            <div class='pw-contentblock cblock-3'>
                             <div class='contentpadding'>
                             <div class='productpagecard ' >"
                 . "   <div class='content opacity" . $r . "'>"
@@ -288,7 +288,15 @@ class HtmlProviderService
         $return['card'] .= "   </div>"
                 . "</div>"
                 . "</div>"
-                . "</div>    ";
+                . "</div>    "
+                . "<div class='pw-contentblock cblock-3'>
+                            <div class='contentpadding'>
+                           
+                                           <h2>покупка</h2>
+                                   
+                            </div>
+                 </div>"
+                 ;
 
         // exit(print_r($return));
 

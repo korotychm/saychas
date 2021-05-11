@@ -8,6 +8,8 @@
 }
 .navbar h1 {color:#fff}
 
+.contentwrapper {width:100%; max-width:1600px; }
+
 .btn-primary {
     background-color: var(--brand-color) !IMPORTANT;
     border-color: var(--brand-color) !IMPORTANT;
@@ -70,6 +72,7 @@
     /*font-weight:bold; */
     outline: 0;
     background:#fff url("/img/searchicon.png") calc(100% - 12px) center  no-repeat;
+	margin-bottom:10px;
     
  }
   #serchtopinput:focus {background-image:url("/img/loader.gif") }

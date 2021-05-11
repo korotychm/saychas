@@ -146,6 +146,7 @@
 .suggestions-promo svg {
   height: 20px;
   vertical-align: bottom;
+  opacity:0;
 }
 @media screen and (min-width: 600px) {
   .suggestions-promo {

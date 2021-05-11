@@ -23,6 +23,24 @@
     </head>
     <body>
         <div class="overcover"></div>
+		<div id="overcoverblack" class='overcoverblack none' ></div>
+		
+		
+			<div id="lefmobiletpanel">
+				<div id="lefmobiletpanelclose" ></div>
+				<div id="lefmobiletpanelcontent"  class="blokc" ><div class=logo ></div>
+				
+				<div class='iblokok' id=supermenuinside>
+					
+                                    <ul id="tree" class="tree treeview" style=""><h3>Каталог</h3>
+                                        <?=$this->catalogCategoties ?>
+                                    </ul>
+					
+				</div >
+				</div >
+				<!---->
+			</div>
+		
 
         <div id="header" class="blokc" >  
             <div id="headermenu" >
@@ -59,6 +77,7 @@
                             <div class="blok" id="quicksearch">
                                 <input type="text" id="serchtopinput" placeholder="Быстрый поиск"  >
                                 <!-- div class="searchicon"></div -->
+								<div class=blok ><span class=gray >Например: </span>Смратфон с диагональю до 5&nbsp;дюймов</div>
                             </div> 
                         </div>
                     </div>
@@ -122,6 +141,22 @@
                 </div -->
                 <!--/div-->
             </div> 
+			<div class="iblok contentwrapper">
+				<div id="topmenu" >
+					<ul>
+						<li><a href=# >Item1</a></li> 
+						<li><a href=# >Item.2</a></li> 
+						<li><a href=# >Item_3</a></li> 
+						<li><a href=# >Item - 4</a></li> 
+						<li><a href=# >Item</a></li> 						
+						<li><a href=# >Item</a></li> 						
+						<li><a href=# >Item</a></li> 						
+						<li><a href=# >Item</a></li> 						
+						<li><a href=# >Item</a></li> 						
+						<li><a href=# >Item-5 very long</a></li> 
+					</ul>
+				</div>
+			</div>
             <div class="full-wrap"><div id="content">                          
                     <?= $this->content ?>                    
                 </div></div>

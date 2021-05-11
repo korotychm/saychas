@@ -89,6 +89,7 @@ class IndexController extends AbstractActionController
         $this->layout()->setVariables([
             'headerText' => $this->htmlProvider->testHtml(),
             'footerText' => 'banzaii',
+            'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
         ]);
         //$this->layout()->setTemplate('layout/mainpage');
