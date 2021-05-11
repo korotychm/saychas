@@ -2,7 +2,7 @@
 
 /*
  * Here comes the text of your license
- * Each line should be prefixed with  * 
+ * Each line should be prefixed with  *
  */
 
 namespace Application\Model\Repository;
@@ -26,16 +26,17 @@ use Application\Model\RepositoryInterface\RepositoryInterface;
  */
 abstract class Repository implements RepositoryInterface
 {
+
     /**
      * @var AdapterInterface
      */
     protected AdapterInterface $db;
-    
+
     /**
      * @var HydratorInterface
      */
     protected HydratorInterface $hydrator;
-    
+
     /**
      * Returns a list of entities
      *
@@ -43,30 +44,49 @@ abstract class Repository implements RepositoryInterface
      */
     public function findAll($params)
     {
-        $sql    = new Sql($this->db);
+        $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
-        if(isset($params['order']))     { $select->order($params['order']); }
-        if(isset($params['limit']))     { $select->limit($params['limit']); }
-        if(isset($params['offset']))    { $select->offset($params['offset']); }
-        if(isset($params['where']))     { $select->where($params['where']); }
-        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }//{ $select->where->in('id', $params['sequence']); } // 
+        if (isset($params['order'])) {
+            $select->order($params['order']);
+        }
+        if (isset($params['limit'])) {
+            $select->limit($params['limit']);
+        }
+        if (isset($params['offset'])) {
+            $select->offset($params['offset']);
+        }
+        if (isset($params['where'])) {
+            $select->where($params['where']);
+        }
+        if (isset($params['sequence'])) {
+            $select->where(['id' => $params['sequence']]);
+        }
+        if (isset($params['joins'])) {
+            $joins = $params['joins']->getJoins();
+            foreach($joins as $join) {
+                $select->join($join['name'], $join['on'], $join['columns'], $join['type'] );
+            }
+        }
         
-        $stmt   = $sql->prepareStatementForSqlObject($select);
+//        $sqlString = $sql->buildSqlString($select);
+//        print_r($sqlString);
+//        exit;
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];
         }
 
         $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
+                $this->hydrator,
+                $this->prototype
         );
-        $resultSet->initialize($result);
+        $resultSet->initialize($result);        
         return $resultSet;
     }
-    
+
     /**
      * Returns a single entity.
      *
@@ -75,18 +95,18 @@ abstract class Repository implements RepositoryInterface
      */
     public function find($params)
     {
-        $sql       = new Sql($this->db);
-        $select    = $sql->select($this->tableName);
+        $sql = new Sql($this->db);
+        $select = $sql->select($this->tableName);
         // $select->where(['id = ?' => $params['id']]);
         $select->where($params);
 
         $statement = $sql->prepareStatementForSqlObject($select);
-        $result    = $statement->execute();
-        
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        $result = $statement->execute();
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             throw new RuntimeException(sprintf(
-                //Failed retrieving data with identifier
-                'Failed retrieving data with filter "%s"; unknown database error.', implode(';', $params)
+                                    //Failed retrieving data with identifier
+                                    'Failed retrieving data with filter "%s"; unknown database error.', implode(';', $params)
             ));
         }
 
@@ -94,16 +114,16 @@ abstract class Repository implements RepositoryInterface
         $resultSet->initialize($result);
         $entity = $resultSet->current();
 
-        if (! $entity) {
+        if (!$entity) {
             /**
              * We comment out the following code for now
              * as we want our function to return default value instead of null
-             * 
-                throw new InvalidArgumentException(sprintf(
-                    $this->tableName . ' with identifier "%s" not found.', '<Filter>'
-                     $params['id']
-                ));
-            */
+             *
+              throw new InvalidArgumentException(sprintf(
+              $this->tableName . ' with identifier "%s" not found.', '<Filter>'
+              $params['id']
+              ));
+             */
             $entity = null; // not found
 //            // Return default
 //            $entity = clone $this->prototype;
@@ -111,7 +131,7 @@ abstract class Repository implements RepositoryInterface
 
         return $entity;
     }
-    
+
     /**
      * Returns the first found entity or the default one
      * if no entities found
@@ -121,13 +141,66 @@ abstract class Repository implements RepositoryInterface
     public function findFirstOrDefault($params)
     {
         $found = $this->find($params);
-        if( null == $found ) {
+        if (null == $found) {
             $found = clone $this->prototype;
             return $found;
         }
         return $found;
     }
-    
+
+    /**
+     * Persists $entity
+     *
+     * @param Entity $entity
+     * @param Entity $params
+     * @param \Laminas\Hydrator\ClassMethodsHydrator $hydrator
+     * @return void
+     */
+    public function persist($entity, $params, $hydrator = null)
+    {
+
+        if (null == $hydrator) {
+            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
+        }
+
+        $u = $this->find($params);
+
+        $assoc = $hydrator->extract($entity);
+
+        $values = array_values($assoc);
+        $names = array_keys($assoc);
+
+        $sql = new Sql($this->db);
+        if (empty($u)) {
+            $sqlObj = $sql->insert();
+            $sqlObj->into($this->tableName);
+            $sqlObj->columns($names);
+            $sqlObj->values($values);
+        } else {
+            $sqlObj = $sql->update($this->tableName);
+            $sqlObj->set($assoc);
+            $sqlObj->where($params);
+        }
+
+        try {
+            $stmt = $sql->prepareStatementForSqlObject($sqlObj);
+            $stmt->execute();
+        } catch (InvalidQueryException $ex) {
+            echo $ex->getMessage();
+            return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
+        }
+    }
+
+    /**
+     * Adds given user into it's repository
+     *
+     * @param json
+     */
+    public function replace($content)
+    {
+        return ['result' => false, 'description' => '', 'statusCode' => 405];
+    }
+
     /**
      * Returns a single brand.
      *
@@ -143,7 +216,7 @@ abstract class Repository implements RepositoryInterface
 //
 //        $statement = $sql->prepareStatementForSqlObject($select);
 //        $result    = $statement->execute();
-//        
+//
 //        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
 //            throw new RuntimeException(sprintf(
 //                //Failed retrieving data with identifier
@@ -161,31 +234,32 @@ abstract class Repository implements RepositoryInterface
 //
 //        return $entity;
 //    }
-    
+
     /**
      * Delete products specified by json array of objects
      * @param json
      */
-    public function delete($json) {
+    public function delete($json)
+    {
         try {
             $result = Json::decode($json, Json::TYPE_ARRAY);
-        }catch(LaminasJsonRuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        } catch (LaminasJsonRuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         $total = [];
         foreach ($result as $item) {
             array_push($total, $item['id']);
         }
-        $sql    = new Sql($this->db);
+        $sql = new Sql($this->db);
         $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
 
         $selectString = $sql->buildSqlString($delete);
         try {
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
             return ['result' => true, 'description' => '', 'statusCode' => 200];
-        }catch(InvalidQueryException $e){
+        } catch (InvalidQueryException $e) {
             return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
         }
     }
-    
+
 }

@@ -22,6 +22,8 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 use Application\Resource\StringResource;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
@@ -239,7 +241,27 @@ return [
                     ],
                 ],
             ],
-            
+            'test-identity' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test-identity',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'testIdentity',
+                    ],
+                ],
+            ],
+            'test-client' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/test-client',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'testClient',
+                    ],
+                ],
+            ],
+
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
 //                'type' => Literal::class,
@@ -260,7 +282,7 @@ return [
 //                                'action' => 'receiveStockBalance',
 //                            ],
 //                            'constraints' => [
-//                                
+//
 //                            ],
 //                        ],
 //                    ],
@@ -293,6 +315,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'ajax',
+                    ],
+                ],
+            ],
+            'banzaii' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/banzaii[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'banzaii',
                     ],
                 ],
             ],
@@ -335,7 +367,7 @@ return [
                         'action'     => 'ajaxSetUserAddress',
                     ],
                 ],
-            ],            
+            ],
             'ajax-get-legal-store'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -345,7 +377,7 @@ return [
                         'action'     => 'ajaxGetLegalStore',
                     ],
                 ],
-            ],            
+            ],
             'application' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -377,8 +409,11 @@ return [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
 //        ],
 //    ],
- 
+
     'service_manager' => [
+//        'abstract_factories' => [
+//            ReflectionBasedAbstractFactory::class,
+//        ],
         'aliases' => [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
@@ -397,10 +432,16 @@ return [
             \Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface::class => \Application\Model\Repository\CharacteristicValue2Repository::class,
             \Application\Model\RepositoryInterface\ProductImageRepositoryInterface::class => \Application\Model\Repository\ProductImageRepository::class,
             \Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface::class => \Application\Model\Repository\HandbookRelatedProductRepository::class,
-            
+
+            \Laminas\Authentication\AuthenticationServiceInterface::class => \Laminas\Authentication\AuthenticationService::class,
             //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
+
+            
+            //'my_auth_service' => \Laminas\Authentication\AuthenticationService::class,
+//            \Laminas\Authentication\AuthenticationService\AuthenticationService::class => 'my_auth_service',
         ],
         'factories' => [
+            //\Laminas\View\HelperPluginManager => ReflectionBasedAbstractFactory::class,
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             //\Application\Model\TestRepository::class => InvokableFactory::class,
             'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -428,8 +469,16 @@ return [
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
 
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
-        ],
-        
+            
+            \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
+            \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
+            
+      ],
+        'invokables' => [
+//            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
+            \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
+        ]
+
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
@@ -450,6 +499,11 @@ return [
             __DIR__ . '/../view',
         ],
         'strategies' => ['ViewJsonStrategy',],
+    ],
+    'view_helpers' => [
+      'invokables' => [
+         'catalog' => \Application\View\Helper\CatalogHelper::class,
+      ],
     ],
     'parameters' => [
         '1c_auth' => [
@@ -478,5 +532,5 @@ return [
     ],
 //    'session_containers' => [
 //        StringResource::SESSION_NAMESPACE,
-//    ],    
+//    ],
 ];

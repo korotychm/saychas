@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/PriceRepository.php
 
 namespace Application\Model\Repository;
@@ -20,28 +21,30 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 
 class PriceRepository extends Repository implements PriceRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="price";
+    protected $tableName = "price";
 
     /**
      * @var Price
      */
     protected Price $prototype;
-    
+
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Price $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        Price $prototype
-    ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            Price $prototype
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
 
@@ -52,35 +55,42 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
      */
     public function findAll($params)
     {
-        $sql    = new Sql($this->db);
+        $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
         $select->columns(['*']);
-        if(isset($params['order']))     { $select->order($params['order']); }
-        if(isset($params['limit']))     { $select->limit($params['limit']); }
-        if(isset($params['offset']))    { $select->offset($params['offset']); }
-        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
+        if (isset($params['order'])) {
+            $select->order($params['order']);
+        }
+        if (isset($params['limit'])) {
+            $select->limit($params['limit']);
+        }
+        if (isset($params['offset'])) {
+            $select->offset($params['offset']);
+        }
+        if (isset($params['sequence'])) {
+            $select->where(['id' => $params['sequence']]);
+        }
         $select->where(['store_id' => $params['store_id'], 'product_id' => $params['product_id']]);
-        
+
 //        $selectString = $sql->buildSqlString($select);
 //        echo $selectString.'<br/>';
-        
-        $stmt   = $sql->prepareStatementForSqlObject($select);
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
- 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];
         }
-        
+
         $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
+                $this->hydrator,
+                $this->prototype
         );
         $resultSet->initialize($result);
-        
+
         return $params['array'] == 1 ? $resultSet->toArray() : $resultSet;
     }
-    
+
 //    public function findAll($params)
 //    {
 //        $sql    = new Sql($this->db);
@@ -92,7 +102,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 //        $stmt   = $sql->prepareStatementForSqlObject($select);
 //        $result = $stmt->execute();
 //
-// 
+//
 //        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
 //            return [];
 //        }
@@ -110,7 +120,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
      *
      * @param  int $id Identifier of the price to return.
      * @return Price
-     */    
+     */
 //    public function find($id)
 //    {
 //        $sql       = new Sql($this->db);
@@ -119,7 +129,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 //
 //        $statement = $sql->prepareStatementForSqlObject($select);
 //        $result    = $statement->execute();
-//        
+//
 //        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
 //            throw new RuntimeException(sprintf(
 //                'Failed retrieving test with identifier "%s"; unknown database error.',
@@ -140,39 +150,40 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 //
 //        return $price;
 //    }
-    
+
     /**
      * Adds given price into it's repository
-     * 
+     *
      * @param json
      */
     public function replace($content)
     {
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        foreach($result['data'] as $row) {
+        foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
                     $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(InvalidQueryException $e){
+            } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
-    
+
     /**
      * Delete prices specified by json array of objects
      * @param $json
      */
-    public function delete($json) {    
+    public function delete($json)
+    {
         return ['result' => false, 'description' => 'Method is not supported: cannot delete price', 'statusCode' => 405];
     }
-    
+
 }

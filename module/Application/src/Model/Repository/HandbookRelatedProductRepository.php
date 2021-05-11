@@ -7,6 +7,8 @@ namespace Application\Model\Repository;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Sql\Select;
+use Laminas\Db\Sql\Join;
 use Application\Model\Entity\HandbookRelatedProduct;
 //use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -40,6 +42,14 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
         $this->prototype = $prototype;
     }
 
+    public function findAll($params)
+    {
+        $join = new Join();
+        $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", ['price'], Select::JOIN_LEFT);
+        $params['joins'] = $join;
+        return parent::findAll($params);
+    }
+    
     /**
      * Adds given handbookRelatedProduct into it's repository
      *

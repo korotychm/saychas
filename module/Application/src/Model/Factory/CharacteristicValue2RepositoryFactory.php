@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Factory/CharacteristicValue2RepositoryFactory.php
 
 namespace Application\Model\Factory;
@@ -12,19 +13,20 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class CharacteristicValue2RepositoryFactory implements FactoryInterface
 {
-   
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof CharacteristicValue2Repository){
+        if ($requestedName instanceof CharacteristicValue2Repository) {
             throw new Exception("not instanceof Characteristic2Repository");
         }
-        
+
         $adapter = $container->get(AdapterInterface::class);
-        
+
         return new CharacteristicValue2Repository(
-            $adapter,
-            new ReflectionHydrator(),
-            new CharacteristicValue2('', '', '')
+                $adapter,
+                new ReflectionHydrator(),
+                new CharacteristicValue2('', '', '')
         );
     }
+
 }

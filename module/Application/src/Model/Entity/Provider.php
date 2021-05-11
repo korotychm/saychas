@@ -4,8 +4,15 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+
 class Provider extends Entity
 {
+
+    /**
+     * @var StoreRepository
+     */
+    public static StoreRepositoryInterface $storeRepository;
 
     /**
      * @var int
@@ -28,7 +35,20 @@ class Provider extends Entity
     protected $icon;
 
     /**
-     * @return int
+     *
+     * @return Store[]
+     * @throws \Exception
+     */
+    public function getStores()
+    {
+        if (!( self::$storeRepository instanceof StoreRepositoryInterface )) {
+            throw new \Exception('StoreRepositoryInterface expected; other type given');
+        }
+        return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()]]);
+    }
+
+    /**
+     * @return string
      */
     public function getId()
     {

@@ -15,6 +15,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -22,7 +23,9 @@ use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Controller\MyTestController;
-
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Db\Adapter\AdapterInterface;
+use Application\Adapter\Auth\UserAuthAdapter;
 /**
  * This is the factory for IndexController. Its purpose is to instantiate the
  * controller.
@@ -42,6 +45,7 @@ class MyTestControllerFactory implements FactoryInterface
         $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
         $brand = $container->get(BrandRepositoryInterface::class);
         $characteristic = $container->get(CharacteristicRepositoryInterface::class);
+        $characteristicValue = $container->get(CharacteristicValueRepositoryInterface::class);
         $price = $container->get(PriceRepositoryInterface::class);
         $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
         $handBookProduct = $container->get(HandbookRelatedProductRepositoryInterface::class);
@@ -50,8 +54,12 @@ class MyTestControllerFactory implements FactoryInterface
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
-        return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic,
-                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider);
+        //$authService = $container->get('my_auth_service');
+        $adapter = $container->get(AdapterInterface::class);
+        $authService = $container->get(AuthenticationService::class);
+        $userAdapter = $container->get(UserAuthAdapter::class);
+        return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic, $characteristicValue,
+                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService, $adapter, $userAdapter);
     }
 
 }

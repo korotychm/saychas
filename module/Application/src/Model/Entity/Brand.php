@@ -16,50 +16,47 @@ class Brand extends Entity
 {
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="text", length=255, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var string
      */
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="text", length=255, nullable=false)
      */
     protected $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     protected $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="logo", type="text", length=255, nullable=false)
      */
     protected $logo;
 
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * Set id.
+     *
+     * @param string $id
+     * @return $this
+     */
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
+
     /**
      * Set title.
      *

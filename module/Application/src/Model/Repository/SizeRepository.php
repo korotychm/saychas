@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/SizeRepository.php
 
 namespace Application\Model\Repository;
@@ -13,10 +14,11 @@ use Application\Model\RepositoryInterface\SizeRepositoryInterface;
 
 class SizeRepository extends Repository implements SizeRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="size";
+    protected $tableName = "size";
 
     /**
      * @var Size
@@ -29,12 +31,13 @@ class SizeRepository extends Repository implements SizeRepositoryInterface
      * @param Size $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        Size $prototype
-    ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            Size $prototype
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
 
@@ -47,17 +50,17 @@ class SizeRepository extends Repository implements SizeRepositoryInterface
     {
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        foreach($result['data'] as $row) {
+        foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `size`(`id`, `title`) VALUES ( '%s', '%s')",
                     $row['id'], $row['title']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(InvalidQueryException $e){
+            } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }

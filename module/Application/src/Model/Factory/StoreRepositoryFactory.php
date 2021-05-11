@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Factory/StoreRepositoryFactory.php
 
 namespace Application\Model\Factory;
@@ -12,19 +13,20 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class StoreRepositoryFactory implements FactoryInterface
 {
-   
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof StoreRepository){
+        if ($requestedName instanceof StoreRepository) {
             throw new Exception("not instanceof StoreRepository");
         }
-        
+
         $adapter = $container->get(AdapterInterface::class);
-        
+
         return new StoreRepository(
-            $adapter,
-            new ReflectionHydrator(),
-            new Store//(0, '', '', '', '', '', '', '')
+                $adapter,
+                new ReflectionHydrator(),
+                new Store//(0, '', '', '', '', '', '', '')
         );
     }
+
 }

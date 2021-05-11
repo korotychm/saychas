@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/StockBalanceRepository.php
 
 namespace Application\Model\Repository;
@@ -16,10 +17,11 @@ use Exception;
 
 class ProductImageRepository extends Repository implements ProductImageRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="product_image";
+    protected $tableName = "product_image";
 
     /**
      * @var ProductImage
@@ -32,12 +34,13 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
      * @param ProductImage $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        ProductImage $prototype
-    ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            ProductImage $prototype
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
 
@@ -55,16 +58,16 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
         // perform connection
         $conn_id = ftp_connect($ftp_server);
         $login_result = ftp_login($conn_id, $username, $password);
-        if( (!$conn_id) || (!$login_result)) {
-            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user '.$username.'.');
+        if ((!$conn_id) || (!$login_result)) {
+            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user ' . $username . '.');
         }
 
-        foreach($images as $image) {
-            $local_file = realpath($this->catalogToSaveImages)."/".$image;
-            $server_file = "/1CMEDIA/PhotoTovarov/".$image;
+        foreach ($images as $image) {
+            $local_file = realpath($this->catalogToSaveImages) . "/" . $image;
+            $server_file = "/1CMEDIA/PhotoTovarov/" . $image;
 
             // trying to download $server_file and save it to $local_file
-            if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
+            if (!ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
                 throw new \Exception('Could not complete the operation');
             }
         }
@@ -77,20 +80,20 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
      * @param array $products
      * @return array
      */
-    public function fetchAll(array $products) : array
+    public function fetchAll(array $products): array
     {
         /** @var Product[] */
         foreach ($products as $p) {
             try {
                 /** returns array of successfully downloaded images */
                 $this->fetch($p->images);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
             }
         }
         return [];
     }
-    
+
     /**
      * Adds given product image into it's repository
      *
@@ -98,14 +101,14 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
      */
     public function replace($data)
     {
-        foreach($data as $product) {
-            foreach($product->images as $image) {
+        foreach ($data as $product) {
+            foreach ($product->images as $image) {
                 $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `http_url`, `sort_order`) VALUES ( '%s', '%s', '%s', %u )",
                         $product->id, $image, $image, 0);
                 try {
                     $query = $this->db->query($sql);
                     $query->execute();
-                }catch(Exception $e){
+                } catch (Exception $e) {
                     return ['result' => false, 'description' => "error executing sql statement", 'statusCode' => 418];
                 }
             }
@@ -117,7 +120,8 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
      * Delete product images specified by json array of objects
      * @param json
      */
-    public function delete($json) {
+    public function delete($json)
+    {
         return ['result' => false, 'description' => 'Method is not supported: cannot delete product image', 'statusCode' => 405];
     }
 

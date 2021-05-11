@@ -1,13 +1,9 @@
 <?php
 
-/*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
- */
+// src/Model/Entity/User.php
 
 namespace Application\Model\Entity;
 
-use Application\Model\Repository\PostRepository;
 /**
  * Description of User
  *
@@ -15,151 +11,178 @@ use Application\Model\Repository\PostRepository;
  */
 class User extends Entity
 {
-    public static PostRepository $postRepository;
-    protected $firstName;
-    protected $lastName;
-    protected $emailAddress;
-    protected $phoneNumber;
-    protected PostRepository $posts;// = [];
-    
-//    public function getPostRepository()
-//    {
-//        return $this->postRepository;
-//    }
-    
-//    public function setPostRepository(PostRepository $postRepository)
-//    {
-//        $this->postRepository = $postRepository;
-//    }
 
-    public function setFirstName(?string $firstName)
+    protected $id;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @var int
+     */
+    protected $phone;
+
+    /**
+     * @var string
+     */
+    protected $email;
+
+    /**
+     * @var text
+     */
+    protected $address;
+
+    /**
+     * @var text
+     */
+    protected $geodata;
+    
+    /**
+     * @var timestamp
+     */
+    protected $timestamp;
+
+    /**
+     * Set id.
+     * 
+     * @param int $id
+     * @return $this
+     */
+    public function setId($id)
     {
-        $this->firstName = $firstName;
+        $this->id = $id;
         return $this;
     }
-    
-    public function getFirstName()
+    /**
+     * Get id.
+     *
+     * @return type
+     */
+    public function getId()
     {
-        return $this->firstName;
+        return $this->id;
     }
 
-    public function setLastName(?string $lastName)
+    /**
+     * Set name.
+     *
+     * @param string $name
+     * @return $this
+     */
+    public function setName(string $name)
     {
-        $this->lastName = $lastName;
+        $this->name = $name;
         return $this;
     }
 
-    public function getLastName()
+    /**
+     * Get name.
+     *
+     * @return string
+     */
+    public function getName()
     {
-        return $this->lastName;
+        return $this->name;
     }
 
-    public function setEmailAddress(?string $emailAddress)
+    /**
+     * Set phone.
+     *
+     * @param int $phone
+     * @return $this
+     */
+    public function setPhone($phone)
     {
-        $this->emailAddress = $emailAddress;
+        $this->phone = $phone;
         return $this;
     }
 
-    public function getEmailAddress()
+    /**
+     * Get phone
+     *
+     * @return int
+     */
+    public function getPhone()
     {
-        return $this->emailAddress;
+        return $this->phone;
     }
 
-    public function setPhoneNumber(?string $phoneNumber)
+    /**
+     * Set email.
+     *
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->email = $email;
         return $this;
     }
-    
-    public function getPhoneNumber()
-    {
-        return $this->phoneNumber;
-    }
-    
-    public function getPosts()
-    {
-//        $posts = $this->posts->findAll(['sequence' => [$this->getPhoneNumber()] ]);
-//        echo count($posts);
-//        exit;
-        $posts = self::$postRepository->findAll(['sequence' => [$this->getPhoneNumber()]]);
-        return $posts;
-    }
-    
-    public function setPosts(PostRepository $posts)
-    {
-        $this->posts = $posts;
-//        print_r($this->posts);
-//        exit;
-        //$this->posts = $this->postRepository->findAll([]);
-//        $this->posts = [
-//                    [
-//                        'id' => '1',
-//                        'email'    => 'email@google.com',
-//                        'blog' => 'blog1',
-//                    ],
-//                    [
-//                        'id' => '2',
-//                        'email'    => 'email1@google.com',
-//                        'blog' => 'blog2',
-//                    ],
-//                    [
-//                        'id' => '3',
-//                        'email'    => 'email2@google.com',
-//                        'blog' => 'blog3',
-//                    ],
-//            ];
 
+    /**
+     * Get email.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set address.
+     *
+     * @param string $address
+     * @return $this
+     */
+    public function setAddress(string $address)
+    {
+        $this->address = $address;
         return $this;
     }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set geodata.
+     *
+     * @param string $geodata
+     * @return $this
+     */
+    public function setGeodata(string $geodata)
+    {
+        $this->geodata = $geodata;
+        return $this;
+    }
+
+    /**
+     * Get geodata.
+     *
+     * @return string
+     */
+    public function getGeodata()
+    {
+        return $this->geodata;
+    }
     
+    /**
+     * Get timestamp
+     * 
+     * @return string
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+
 }
-
-
-
-
-
-
-
-
-//    public function __construct(PostRepository $postRepository = null)
-//    {
-//        $this->postRepository = $postRepository;
-//
-//        $posts = $this->postRepository->findAll([]); //  'where'=>['id' => [$this->getPhoneNumber()] ]
-//        
-//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-//            new \Laminas\Hydrator\ClassMethodsHydrator(),
-//            Post::class
-//        );
-//
-//        $this->posts = $strategy->hydrate($posts->toArray());
-//        
-//        $this->setPosts($this->posts);
-//    }
-
-
-
-
-
-        //echo $this->phoneNumber."\n";
-        //
-//        echo "======================\n";
-//        print_r($this->postRepository);
-        
-        //$this->getPostRepository()->findAll([]);
-        
-//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-////        $hydrator->addStrategy(
-////            'posts',
-////            new \Laminas\Hydrator\Strategy\CollectionStrategy(
-////                new \Laminas\Hydrator\ClassMethodsHydrator(),
-////                Post::class
-////            )
-////        );
-//        $strategy = new \Laminas\Hydrator\Strategy\CollectionStrategy(
-//            new \Laminas\Hydrator\ClassMethodsHydrator(),
-//            Post::class
-//        );
-//
-//        $this->posts = $strategy->hydrate($this->posts);
-        

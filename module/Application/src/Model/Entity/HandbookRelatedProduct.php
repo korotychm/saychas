@@ -9,6 +9,7 @@ namespace Application\Model\Entity;
 use Application\Model\Repository\BrandRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
+use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 /**
  * HandbookRelatedProduct
@@ -33,6 +34,11 @@ class HandbookRelatedProduct extends Entity
      * @var ProductImageRepositoryInterface
      */
     public static ProductImageRepositoryInterface $productImageRepository;
+
+    /**
+     * @var ProviderRepositoryInterface
+     */
+    public static ProviderRepositoryInterface $providerRepository;
 
     /**
      * Get brand
@@ -74,52 +80,49 @@ class HandbookRelatedProduct extends Entity
         if (!( self::$productImageRepository instanceof ProductImageRepositoryInterface )) {
             throw new \Exception('ProductImageRepositoryInterface expected; other type given');
         }
-        return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()] ]);
-        //'pr.id = img.product_id'
-//        return self::$productImageRepository->findFirstOrDefault(['product_id' => $this->getId()]);
+        return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()]]);
     }
 
     /**
-     * @var int
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @return Provider
+     * @throws \Exception
+     */
+    public function getProvider()
+    {
+        if (!( self::$providerRepository instanceof ProviderRepositoryInterface )) {
+            throw new \Exception('ProviderRepositoryInterface expected; other type given');
+        }
+        return self::$providerRepository->findFirstOrDefault(['id=?' => $this->getProviderId()]);
+    }
+
+    /**
+     * @var string
      */
     protected $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="provider_id", type="integer", nullable=false)
+     * @var string
      */
     protected $provider_id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer", nullable=false)
+     * @var string
      */
     protected $category_id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
     protected $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     protected $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="vendor_code", type="string", length=11, nullable=false)
      */
     protected $vendor_code;
 
@@ -148,6 +151,12 @@ class HandbookRelatedProduct extends Entity
         return $this->id;
     }
 
+    /**
+     * Set id.
+     *
+     * @param string $id
+     * @return $this
+     */
     public function setId($id)
     {
         $this->id = $id;
@@ -157,7 +166,7 @@ class HandbookRelatedProduct extends Entity
     /**
      * Set providerId.
      *
-     * @param int $providerId
+     * @param string $providerId
      * @return Product
      */
     public function setProviderId($providerId)
@@ -170,7 +179,7 @@ class HandbookRelatedProduct extends Entity
     /**
      * Get providerId.
      *
-     * @return int
+     * @return string
      */
     public function getProviderId()
     {
@@ -180,7 +189,7 @@ class HandbookRelatedProduct extends Entity
     /**
      * Set categoryId.
      *
-     * @param int $categoryId
+     * @param string $categoryId
      * @return Product
      */
     public function setCategoryId($categoryId)
@@ -193,7 +202,7 @@ class HandbookRelatedProduct extends Entity
     /**
      * Get categoryId.
      *
-     * @return int
+     * @return string
      */
     public function getCategoryId()
     {
@@ -319,11 +328,22 @@ class HandbookRelatedProduct extends Entity
         return $this->paramVariableList;
     }
 
+    /**
+     * Get brand_id
+     *
+     * @return string
+     */
     public function getBrandId()
     {
         return $this->brand_id;
     }
 
+    /**
+     * Set brand_id
+     *
+     * @param string $brandId
+     * @return $this
+     */
     public function setBrandId($brandId)
     {
         $this->brand_id = $brandId;

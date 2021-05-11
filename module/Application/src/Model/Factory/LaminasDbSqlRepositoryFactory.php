@@ -1,6 +1,7 @@
 <?php
+
 // src/Model/Factory/LaminasDbSqlRepositoryFactory.php
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -35,8 +36,8 @@
 ////        return new LaminasDbSqlRepository($container->get(AdapterInterface::class));
 //    }
 //}
-
 // In /module/Blog/src/Factory/LaminasDbSqlRepositoryFactory.php
+
 namespace Application\Model\Factory;
 
 //use Interop\Container\ContainerInterface;
@@ -56,17 +57,17 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class LaminasDbSqlRepositoryFactory implements FactoryInterface
 {
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        
+
 //        if($requestedName instanceof OrderManager){
 //            throw new Exception("not instanceof OrderManager");
 //        }
-
 //        $config = $container->get('Config');
 //        return  new $requestedName($config);
 
-        
+
         $config = $container->get('config');
         $adapter = $container->get(AdapterInterface::class);
 //        echo '<pre>';
@@ -75,7 +76,7 @@ class LaminasDbSqlRepositoryFactory implements FactoryInterface
 //        echo 'vonzaii<br/>';
 //        echo '</pre>';
 //        exit;
-//        
+//
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
 //            'database' => 'saychas_z',
@@ -84,10 +85,11 @@ class LaminasDbSqlRepositoryFactory implements FactoryInterface
 //        ]);
         return new LaminasDbSqlRepository(
 //            $container->get(AdapterInterface::class),
-            $adapter,
+                $adapter,
 //            new $requestedName($config[0]['adapters']['Application\Db\WriteAdapter']),
-            new ReflectionHydrator(),
-            new Test('', '')
+                new ReflectionHydrator(),
+                new Test('', '')
         );
     }
+
 }

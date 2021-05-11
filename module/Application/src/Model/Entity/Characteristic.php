@@ -12,41 +12,41 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="characteristic")
  * @ORM\Entity
  */
-class Characteristic
+class Characteristic// extends Entity
 {
 
     /**
      * characteristic_id
      * @var string, length=9
      */
-    private $id;
+    protected $id;
 
     /**
      * characteristic_title
      * @var string|null
      */
-    private $title;
+    protected $title;
 
     /**
      * * characteristic_type
      * @var int
      */
-    private $type;
+    protected $type;
 
     /**
      * @var string, length=9
      */
-    private $category_id;
+    protected $category_id;
 
     /**
      * @var int
      */
-    private $filter;
+    protected $filter;
 
     /**
      * @var int
      */
-    private $group;
+    protected $group;
 
     /**
      * sort_order
@@ -55,28 +55,27 @@ class Characteristic
     private $sort_order;
 
     /**
+     * unit
+     * @var string
+     */
+    protected $unit;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
      * val
      * @var string
      */
-    private $val;
+    protected $val;
 
     /**
      * val_id
      * @var string
      */
-    private $val_id;
-
-//    public function __construct($object) {
-//        $this->id = $object->id;
-//        $this->title = $object->title;
-//        $this->type = $object->type;
-//        $this->filter = $object->filter;
-//        $this->group = $object->group;
-//        $this->category_id = $object->category_id;
-//        $this->sort_order = $object->sort_order;
-//        $this->val = $object->val;
-//        $this->val_id = $object->val_id;
-//    }
+    protected $val_id;
 
     /**
      * Set characteristic id.
@@ -263,6 +262,50 @@ class Characteristic
     public function getSortOrder()
     {
         return $this->sort_order;
+    }
+
+    /**
+     * Set unit
+     *
+     * @param string $unit
+     * @return $this
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
+        return $this;
+    }
+
+    /**
+     * Get unit.
+     *
+     * @return string
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * Set description.
+     *
+     * @param string $description
+     * @return $this
+     */
+    public function setDesctiption($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
 }

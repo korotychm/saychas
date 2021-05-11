@@ -16,46 +16,32 @@ class Product extends Entity
 {
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var string
      */
     protected $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="provider_id", type="integer", nullable=false)
+     * @var string
      */
     protected $provider_id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="category_id", type="integer", nullable=false)
+     * @var string
      */
     protected $category_id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="text", length=65535, nullable=false)
      */
     protected $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     protected $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="vendor_code", type="string", length=11, nullable=false)
      */
     protected $vendor_code;
 
@@ -117,6 +103,11 @@ class Product extends Entity
         return $this->param_variable_list;
     }
 
+    /**
+     * Get product_title.
+     * 
+     * @return string
+     */
     public function getProductTitle()
     {
         return $this->product_title;
@@ -267,20 +258,6 @@ class Product extends Entity
     {
         return $this->vendor_code;
     }
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="param_value_list", type="text", length=65535, nullable=false)
-     */
-//    private $paramValueList;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="param_variable_list", type="text", nullable=false)
-     */
-    //private $paramVariableList;
 
     /**
      * Set paramValueList.

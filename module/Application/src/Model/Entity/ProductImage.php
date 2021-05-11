@@ -16,46 +16,34 @@ class ProductImage
 {
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var string
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="product_id", type="string", length=100, nullable=false)
      */
     private $product_id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ftp_url", type="text", length=65535, nullable=false)
      */
     private $ftp_url;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="http_url", type="text", length=65535, nullable=false)
      */
     private $http_url;
 
     /**
      * @var int
-     *
-     * @ORM\Column(name="sort_order", type="integer", nullable=false)
      */
     private $sort_order = '0';
 
     /**
      * Get id.
      *
-     * @return int
+     * @return string
      */
     public function getId()
     {

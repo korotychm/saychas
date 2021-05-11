@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/ProviderRepository.php
 
 namespace Application\Model\Repository;
@@ -20,78 +21,80 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 class ProviderRepository extends Repository implements ProviderRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="provider";
+    protected $tableName = "provider";
 
     /**
      * @var Provider
      */
     protected Provider $prototype;
-    
+
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Provider $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        Provider $prototype
-    ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            Provider $prototype
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
 
-     /**
+    /**
      * Returns a list of providers from only availble stores,  width limit and order
      *
      * @return Provider[]
      */
 //   public function findAvailableProviders ($param,$order="id ASC", $limit=100, $offset=0 )
-   public function findAvailableProviders ($params)
-   {
-        $sql    = new Sql($this->db);
-        if($params['sequence']){  
+    public function findAvailableProviders($params)
+    {
+        $sql = new Sql($this->db);
+        if ($params['sequence']) {
             $subSelectAvailbleStore = $sql->select('store');
-            $subSelectAvailbleStore ->columns(['provider_id']);
-            $subSelectAvailbleStore ->where->in('id', $params['sequence']);
+            $subSelectAvailbleStore->columns(['provider_id']);
+            $subSelectAvailbleStore->where->in('id', $params['sequence']);
         }
-        
+
         $select = $sql->select('provider');
         $select->columns(['*']);
-        if($params['sequence']){ 
+        if ($params['sequence']) {
             $select->where->in('id', $subSelectAvailbleStore);
         }
-        
+
         //$select -> where(["id in ?" => (new Select())->columns(["provider_id"])->from("store")->where($where)]);
-        
-        $select ->order($params['order']);
-        $select ->limit($params['limit']);
-        $select ->offset($params['offset']);
-        
+
+        $select->order($params['order']);
+        $select->limit($params['limit']);
+        $select->offset($params['offset']);
+
 //        $selectString = $sql->buildSqlString($select);
 //        echo $selectString;
 //        exit;
 
-        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $stmt = $sql->prepareStatementForSqlObject($select);
 
         $result = $stmt->execute();
-     
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {return [];}
-         $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
+            return [];
+        }
+        $resultSet = new HydratingResultSet(
+                $this->hydrator,
+                $this->prototype
         );
         $resultSet->initialize($result);
-        
-        
+
         return $resultSet;
-        
     }
-    
+
     /**
      * Adds given provider into it's repository
      * @param json
@@ -100,20 +103,20 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
     {
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
-        if((bool) $result['truncate']) {
+
+        if ((bool) $result['truncate']) {
             $this->db->query("truncate table provider")->execute();
         }
 
-        foreach($result['data'] as $row) {
+        foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `icon`) VALUES ( '%s', '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['icon']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(InvalidQueryException $e){
+            } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }

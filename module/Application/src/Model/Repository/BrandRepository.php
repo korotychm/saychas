@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/BrandRepository.php
 
 namespace Application\Model\Repository;
@@ -15,59 +16,61 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 
 class BrandRepository extends Repository implements BrandRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="brand";
+    protected $tableName = "brand";
 
     /**
      * @var Brand
      */
     protected Brand $prototype;
-    
+
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Brand $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        Brand $prototype
-    ) {
-        $this->db            = $db;
-        $this->hydrator      = $hydrator;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            Brand $prototype
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
 
     /**
      * Adds given brand into it's repository
-     * 
+     *
      * @param json
      */
     public function replace($content)
     {
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        if((bool) $result['truncate']) {
+        if ((bool) $result['truncate']) {
             $this->db->query("truncate table {$this->tableName}")->execute();
         }
 
-        foreach($result['data'] as $row) {
+        foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `description`, `logo`) VALUES ( '%s', '%s', '%s', '%s')",
                     $row['id'], $row['title'], $row['description'], $row['logo']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(InvalidQueryException $e){
+            } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
-    
+
 }

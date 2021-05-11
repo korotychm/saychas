@@ -21,6 +21,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -28,9 +29,11 @@ use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
-//use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Doctrine\ORM\Mapping as ORM;
+//use Laminas\Authentication\AuthenticationService;
+
+use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+use Application\Adapter\Auth\UserAuthAdapter;
+
 use Application\Entity\Post;
 //use Psr\Http\Message\ResponseInterface;
 use \InvalidArgumentException;
@@ -41,6 +44,13 @@ use Application\Model\Test2;
 use Application\Model\Track;
 use Application\Model\Entity\Characteristic;
 use \ReflectionClass;
+use Laminas\Http\Client;
+use Laminas\Http\Cookies;
+use Laminas\Http\Headers;
+use Laminas\Http\Header;
+
+use Laminas\Db\Sql\Sql;
+
 
 class MyTestController extends AbstractActionController
 {
@@ -56,6 +66,7 @@ class MyTestController extends AbstractActionController
     private $filteredProductRepository;
     private $brandRepository;
     private $characteristicRepository;
+    private $characteristicValueRepository;
     private $priceRepository;
     private $stockBalanceRepository;
     private $handBookRelatedProductRepository;
@@ -64,15 +75,18 @@ class MyTestController extends AbstractActionController
     private $config;
     private $htmlProvider;
     private $htmlFormProvider;
+    private $authService;
+    private $db;
+    private $userAdapter;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProviderRelatedStoreRepositoryInterface $providerRelatedStoreRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
-                CharacteristicRepositoryInterface $characteristicRepository,
+                CharacteristicRepositoryInterface $characteristicRepository, CharacteristicValueRepositoryInterface $characteristicValueRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -83,6 +97,7 @@ class MyTestController extends AbstractActionController
         $this->filteredProductRepository = $filteredProductRepository;
         $this->brandRepository = $brandRepository;
         $this->characteristicRepository = $characteristicRepository;
+        $this->characteristicValueRepository = $characteristicValueRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->handBookRelatedProductRepository = $handBookProduct;
@@ -91,6 +106,9 @@ class MyTestController extends AbstractActionController
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
         $this->htmlFormProvider = $htmlFormProvider;
+        $this->authService = $authService;
+        $this->db = $db;
+        $this->userAdapter = $userAdapter;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -210,6 +228,10 @@ class MyTestController extends AbstractActionController
     public function helloWorldAction()
     {
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
+        
+        echo $this->identity().' '.'shmidentity';// $result1->getIdentity();
+        exit;
+
         
         $products = $this->productRepository->filterProductsByStores(['000000005', '000000004']);
 
@@ -349,39 +371,257 @@ class MyTestController extends AbstractActionController
         }
         return $res;
     }
+  
+    public function testClientAction()
+    {
+        $cookie = Header\SetCookie::fromString('Set-Cookie: flavor=chocolate%20chips');
+        
+        print_r($cookie->getName());
+        
+        $headers = $this->getRequest()->getHeaders();
+        $header = $this->getRequest()->getHeader('Cookie');
+        $host = $this->getRequest()->getHeader('Host');
+        
+        echo '<pre>';
+        print_r($_SERVER['HTTP_HOST']);
+        echo '<br/>';
+        print_r($host->Host);
+        echo '<br/>';
+        print_r($_COOKIE);
+        print_r($headers->toArray());
+        print_r($header->TestCookie);
+        echo '</pre>';
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container->userIdentity = ['my_username', 'my_data'];
+
+        //setcookie("userIdentity", ['my_username', 'my_data']);
+    }
+
+    public function testIdentityAction()
+    {
+//        $headers = $this->getRequest()->getHeaders();
+//        $header = $this->getRequest()->getHeader('Cookie');
+//        
+//        echo '<pre>';
+////        print_r($headers);
+//        print_r($header->TestCookie);
+//        print_r($header->banzaii);
+//        echo '</pre>';
+//        exit;
+//        
+//        echo $_COOKIE["TestCookie"].'<br/>';
+//        $users = $this->userRepository->findAll([]);
+        
+//        $response = $this->getResponse();
+//        $cookies = Cookies::fromResponse($response, 'http://saychas-z.local');
+//        $cookiesToCache = $cookies->getAllCookies($cookies::COOKIE_STRING_ARRAY);
+//        echo '<pre>';
+//        print_r($cookiesToCache);
+//        echo '</pre>';
+//        exit;
+
+//        $charValue = new \Application\Model\Entity\CharacteristicValue();
+//        $charValue->setId('000000017');
+//        $charValue->setTitle('char title17');
+//        $charValue->setCharacteristicId('000000007');
+//        $this->characteristicValueRepository->persist($charValue, ['id' => $charValue->getId()]);
+//        
+//        echo 'asdf';
+//        
+//        exit;
+
+//| id          | varchar(9)   | NO   | PRI |         |       |
+//| category_id | varchar(9)   | NO   |     |         |       |
+//| title       | varchar(255) | NO   |     |         |       |
+//| type        | tinyint(1)   | NO   |     | 1       |       |
+//| filter      | tinyint(1)   | NO   |     | 0       |       |
+//| group       | tinyint(1)   | NO   |     | 0       |       |
+//| sort_order  | int(11)      | NO   |     | 1       |       |
+//| unit        | tinytext     | YES  |     | NULL    |       |
+//| description | tinytext 
+        
+//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
+//        
+//        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+//        $composite->addFilter(
+//            'excludeval',
+//            new \Laminas\Hydrator\Filter\MethodMatchFilter('getVal'),
+//            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+//        );
+//        $composite->addFilter(
+//            'excludevalId',
+//            new \Laminas\Hydrator\Filter\MethodMatchFilter('getValId'),
+//            \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+//        );
+//        
+//        $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+     
+//        $charact = new \Application\Model\Entity\Characteristic();
+//        $charact->setId('000000044');
+//        $charact->setCategoryId('000000006');
+//        $charact->setTitle('Characteristic Title');
+//        $charact->setType(2);
+//        $charact->setFilter(1);
+//        $charact->setGroup(0);
+//        $charact->setSortOrder(1);
+//        $charact->setUnit('shmunet2');
+//        $charact->setDesctiption('huiption2');
+//        //$this->characteristicRepository->persist($charact, ['id'=>$charact->getId()], $composite);
+//        $this->characteristicRepository->persist($charact, ['id'=>$charact->getId()]);
+//        
+//        $foundCharact = $this->characteristicRepository->findAll(['id'=>null]);
+//        foreach($foundCharact as $c) {
+//            echo '<pre>';
+//            print_r($c);
+//            echo '</pre>';
+//        }
+//        
+//exit;        
+        
+        $user = new \Application\Model\Entity\User();
+        $user->setId(35);
+        $user->setName('4444');
+        $user->setPhone(1122775);
+        $user->setAddress('BBBBb1212');
+        $user->setGeodata('GGGG555333');
+        $user->setEmail('email8778');
+
+//        $provider = new \Application\Model\Entity\Provider();
+//        
+//        $provider->setDescription('description');
+//        
+//        $this->providerRelatedStoreRepository->persist($provider, []);
+//        
+//        exit;
+//        
+//        echo $user->getId().' '.$user->getName().'<br/>';
+        
+        print_r($this->userRepository->persist($user,['id' => $user->getId()]));
+        
+        $users = $this->userRepository->findAll([]);
+        foreach ($users as $u) {
+            echo '<pre>';
+            print_r($u);
+            echo '</pre>';
+        }
+        exit;
+        /**
+//        foreach ($users as $user) {
+            echo '<pre>';
+            print_r($user);
+            echo '</pre>';
+            $reflect = new ReflectionClass($user);
+            foreach($reflect->getProperties() as $prop) {
+                $p = $reflect->getProperty($prop->getName());
+                $p->setAccessible(true);
+                echo $prop->getName().' '. $p->getValue($user).'<br/>';
+            }
+//        }
+        echo '<hr/>';
+        exit;
+        */
+        $adapter = new \Laminas\Db\Adapter\Adapter([
+            'driver'   => 'Pdo_Mysql',
+            'database' => 'saychas_z',
+            'username' => 'saychas_z',
+            'password' => 'saychas_z',
+        ]);
+        
+
+//        $statement = $adapter->createStatement('SELECT * FROM user WHERE id=:id');
+//        
+//        $statement->prepare();
+//        $result = $statement->execute([':id' => 4]);
+//        
+//        foreach($result as $r) {
+//            print_r($r);
+//        }
+//        exit;
+//
+        
+    $authAdapter = new AuthAdapter($adapter);
+
+        $authAdapter
+            ->setTableName('user')
+            ->setIdentityColumn('name')
+            ->setCredentialColumn('email');
+
+        $authAdapter
+            ->setIdentity('my_username')
+            ->setCredential('my_password');
+        
+        $result = $authAdapter->authenticate();
+
+        $auth = $this->authService;
+        
+        
+        $userAuthAdapter = new UserAuthAdapter($this->db);
+        
+        //$result1 = $auth->authenticate($userAuthAdapter);
+        $result1 = $auth->authenticate($this->userAdapter);
+        
+        $code = $result1->getCode();
+        
+        echo 'code = '.$code.'<br/>';
+        
+        print_r($this->identity());
+        
+//        $auth->clearIdentity();
+//        
+//        echo 'cleared';
+        
+        exit;
+//        if ($user = $this->identity()) {
+//            echo 'Logged in as ' . $this->escapeHtml($user->getUsername());
+//        } else {
+//            echo 'Not logged in';
+//        }
+//        exit;
+        
+//        if ($user = $this->identity()) {
+//            // someone is logged !
+//            print_r('banzaii');
+//        } else {
+//            // not logged in
+//            print_r('vonzaii');
+//        }
+    
+    }
     
     public function testReposAction()
     {
-//        $s = '';
-//        if (isset($params['filter'])) {
-//            $s = $this->packParams($params);
-////            $select->where($s);
-//        }
-        //function() { return $this->packParams(['000000003']); }
-//        print_r($this->packParams(['filter' => ['000000003'] ]));
-//        exit;
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        echo $container->identity;
+        echo '<hr/>';
         $this->layout()->setTemplate('layout/mainpage');
-        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928'] ]) ]);
+        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '000000014', '1b53a86f9d8c43c09ba1a7687f76685c', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928', '5b4813eb4a21706f492ae4ee2716a7f9'] ]) ]);
+        
+//        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);
         echo '<table style="font-size: 10pt">';
         echo '<tr><th>Product id</th><th>ParamValueList</th><th>Product brand_id</th><th>ProductBrand title</th><th>ProductPrice<br/>product_id</th><th>ProductPrice<br/>price</th><th>Product title</th><th>ProductPrice<br/>provider_id</th></tr>';
-//        $pr = $this->handBookRelatedProductRepository->findFirstOrDefault(['id'=>'000000000001']);
         
         foreach($handBookRelatedProducts as $prod) {
             echo '<tr>';
 //            echo '<td>'.$prod->getId().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
-            echo '<td>'.$prod->getId().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
-            echo '</tr>';
+            $provider = $prod->getProvider();
+            $strs = $provider->getStores();
+            
             echo '<tr colspan="6" align="center"><td>';
-            $images = $prod->getProductImages();
-            foreach ($images as $image) {
-                echo $image->getProductId().' '. $image->getHttpUrl().'<br/>';
+            foreach ($strs as $st) {
+                echo $provider->getTitle().' >>> '. $st->getProviderId().' '. $st->getTitle().'<br/>';
             }
             echo '</td></tr>';
             
-//            $prices = $prod->getPrice();
-//            echo '<pre>';
-//            print_r($prices);
-//            echo '</pre>';
+            echo '<td>'.$provider->getId().' '.$provider->getTitle().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
+            echo '</tr>';
+//            echo '<tr colspan="6" align="center"><td>';
+//            $images = $prod->getProductImages();
+//            foreach ($images as $image) {
+//                echo $image->getProductId().' '. $image->getHttpUrl().'<br/>';
+//            }
+//            echo '</td></tr>';
+            
         }
         echo '</table>';
         $stores = $this->storeRepository->findAll(['sequence' => ['000000003', '000000004', '000000005'] ]);//, '000000001', '000000002'['000000003', '000000004', '000000005']
