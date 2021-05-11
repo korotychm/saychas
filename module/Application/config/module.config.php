@@ -22,6 +22,8 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 use Application\Resource\StringResource;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
@@ -316,6 +318,16 @@ return [
                     ],
                 ],
             ],
+            'banzaii' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/banzaii[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'banzaii',
+                    ],
+                ],
+            ],
             'ajax-to-web' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -399,6 +411,9 @@ return [
 //    ],
 
     'service_manager' => [
+//        'abstract_factories' => [
+//            ReflectionBasedAbstractFactory::class,
+//        ],
         'aliases' => [
             //\Application\Model\TestRepositoryInterface::class => \Application\Model\TestRepository::class,
             \Application\Model\TestRepositoryInterface::class => \Application\Model\LaminasDbSqlRepository::class,
@@ -426,6 +441,7 @@ return [
 //            \Laminas\Authentication\AuthenticationService\AuthenticationService::class => 'my_auth_service',
         ],
         'factories' => [
+            //\Laminas\View\HelperPluginManager => ReflectionBasedAbstractFactory::class,
             //'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
             //\Application\Model\TestRepository::class => InvokableFactory::class,
             'Application\Db\WriteAdapter' => AdapterAbstractServiceFactory::class,
@@ -456,10 +472,12 @@ return [
             
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
+            
       ],
-//        'invokables' => [
+        'invokables' => [
 //            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
-//        ]
+            \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
+        ]
 
     ],
     'view_manager' => [
@@ -479,6 +497,11 @@ return [
             __DIR__ . '/../view',
         ],
         'strategies' => ['ViewJsonStrategy',],
+    ],
+    'view_helpers' => [
+      'invokables' => [
+         'catalog' => \Application\View\Helper\CatalogHelper::class,
+      ],
     ],
     'parameters' => [
         '1c_auth' => [

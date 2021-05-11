@@ -8,7 +8,22 @@ $(document).ready(function () {
     };
 });
 $(function () {
-
+    
+    $('#banzaii').on('click', function(){
+        $.ajax({
+            url: "/banzaii",
+            type: 'POST',
+            cache: false,
+            data: null,
+            success: function (data) {
+                $("#vonzaii").html(data);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#vonzaii").html('Error');
+                alert('asdf');
+            }
+        });
+    });
 
     function hidefilteritem() {
         $(".filtritem").removeClass("active");

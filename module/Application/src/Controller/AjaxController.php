@@ -290,7 +290,7 @@ class AjaxController extends AbstractActionController
             $return.="id постащика: {$post -> provider}<hr>" ;
             if (! $stores ) exit($return."<h3>Объект store не&nbsp;получен</h3> <a href=# rel='2' class=shop-list  >Запросить тестовые товары </a>"); 
             $return.="<ul>";
-            foreach ( $stores as $row)
+            foreach ( $stores as $row) 
                 $return.="<li><a href=#product rel='{$row -> getId()}' class=shop-list title='{$row->getAddress()} \r\n  {$row->getGeox()} , {$row -> getGeoy()} ' >"
                ."{$row -> getTitle()}</a>"
                ."</li>";
@@ -306,8 +306,16 @@ class AjaxController extends AbstractActionController
                 $return .= $this->htmlProvider->productCard($products) ->card;    
             exit ($return); 
         }	
+
         header('HTTP/1.0 404 Not Found');
         exit(); 
+    }
+    
+    public function banzaiiAction()
+    {
+        //$this->response->setStatusCode(404);
+
+        return (new ViewModel(['banzaii'=>'zzappolzaii']))->setTerminal(true);
     }
 
     public function providerAction()

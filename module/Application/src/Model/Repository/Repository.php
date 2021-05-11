@@ -60,7 +60,17 @@ abstract class Repository implements RepositoryInterface
         }
         if (isset($params['sequence'])) {
             $select->where(['id' => $params['sequence']]);
-        }//{ $select->where->in('id', $params['sequence']); } //
+        }
+        if (isset($params['joins'])) {
+            $joins = $params['joins']->getJoins();
+            foreach($joins as $join) {
+                $select->join($join['name'], $join['on'], $join['columns'], $join['type'] );
+            }
+        }
+        
+//        $sqlString = $sql->buildSqlString($select);
+//        print_r($sqlString);
+//        exit;
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -73,7 +83,7 @@ abstract class Repository implements RepositoryInterface
                 $this->hydrator,
                 $this->prototype
         );
-        $resultSet->initialize($result);
+        $resultSet->initialize($result);        
         return $resultSet;
     }
 
@@ -180,42 +190,6 @@ abstract class Repository implements RepositoryInterface
             return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
         }
     }
-
-//    public function persist1($entity, $params, $composite = null)
-//    {
-//
-//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
-//
-//        $u = $this->find($params);
-//
-//        if (null != $composite) {
-//            $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
-//        }
-//        $assoc = $hydrator->extract($entity);
-//
-//        $values = array_values($assoc);
-//        $names = array_keys($assoc);
-//
-//        $sql = new Sql($this->db);
-//        if (empty($u)) {
-//            $sqlObj = $sql->insert();
-//            $sqlObj->into($this->tableName);
-//            $sqlObj->columns($names);
-//            $sqlObj->values($values);
-//        } else {
-//            $sqlObj = $sql->update($this->tableName);
-//            $sqlObj->set($assoc);
-//            $sqlObj->where($params);
-//        }
-//
-//        try {
-//            $stmt = $sql->prepareStatementForSqlObject($sqlObj);
-//            $stmt->execute();
-//        } catch (InvalidQueryException $ex) {
-//            echo $ex->getMessage();
-//            return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
-//        }
-//    }
 
     /**
      * Adds given user into it's repository

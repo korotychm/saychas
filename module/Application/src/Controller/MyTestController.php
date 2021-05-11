@@ -596,6 +596,7 @@ class MyTestController extends AbstractActionController
         echo '<hr/>';
         $this->layout()->setTemplate('layout/mainpage');
         $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '000000014', '1b53a86f9d8c43c09ba1a7687f76685c', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928', '5b4813eb4a21706f492ae4ee2716a7f9'] ]) ]);
+        
 //        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);
         echo '<table style="font-size: 10pt">';
         echo '<tr><th>Product id</th><th>ParamValueList</th><th>Product brand_id</th><th>ProductBrand title</th><th>ProductPrice<br/>product_id</th><th>ProductPrice<br/>price</th><th>Product title</th><th>ProductPrice<br/>provider_id</th></tr>';
