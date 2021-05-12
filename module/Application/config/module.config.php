@@ -41,20 +41,19 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 return [
     'router' => [
         'routes' => [
-            'reg' => [
-                'type' => Regex::class,
-                'options' => [
-//                    'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
-                    'regex' => '/blog([\/]*(?<id>[0-9_-]*))(\/(?<product_id>[0-9]*))?',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'blog',
-                        'default'     => '1',
-                    ],
-//                    'spec' => '/blog/%id%.%format%',
-                    'spec' => '/blog[/%id%[/%product_id%]]',
-                ]
-            ],
+//            'reg' => [
+//                'type' => Regex::class,
+//                'options' => [
+////                    'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
+//                    'regex' => '/blog(\/(?<id>[0-9_-]*))?(\/(?<product_id>[0-9]*))?',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'blog',
+//                        'default'     => '1',
+//                    ],
+//                    'spec' => '/blog[/%id%[/%product_id%]]',
+//                ]
+//            ],
 //            'blog' => [
 //                'type'    => Segment::class,
 //                'options' => [
@@ -63,6 +62,7 @@ return [
 //                        'controller' => Controller\MyTestController::class,
 //                        'action'     => 'blog',
 //                    ],
+//                    'spec' => '/blog[/%id%[/%product_id%]]',
 //                ],
 //            ],
             'home' => [
@@ -333,6 +333,36 @@ return [
 //                    ],
 //                ],
 //            ],
+            'blog' => [
+                // First we define the basic options for the parent route: \Laminas\Router\Http\
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/blog/:id',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'blog',
+                    ],
+                    'constraints' => [
+                        'id' => '(\d)+',
+                    ],
+                ],
+                'may_terminate' => true, // \Laminas\Router\Http\
+                'child_routes' => [
+                    'product' => [
+                        'type'    => Segment::class,
+                        'options' => [
+                            'route'    => '[/product/:product_id]',
+                            'defaults' => [
+                                'controller' => Controller\MyTestController::class,
+                                'action'     => 'product',
+                            ],
+//                            'constraints' => [
+//                                'product_id' => '(\d)+',
+//                            ],
+                        ],
+                    ],
+                ],
+            ],
             'add-new-post' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -518,12 +548,11 @@ return [
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
             
-      ],
+        ],
         'invokables' => [
 //            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
         ]
-
     ],
     'view_manager' => [
         'display_not_found_reason' => true,

@@ -32,6 +32,7 @@ use Application\Resource\StringResource;
 //use Laminas\Authentication\AuthenticationService;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+use Laminas\Diactoros\Response\RedirectResponse;
 use Application\Adapter\Auth\UserAuthAdapter;
 
 use Application\Entity\Post;
@@ -750,9 +751,31 @@ class MyTestController extends AbstractActionController
         
     }
     
+    public function productAction()
+    {
+        $params = $this->params()->fromRoute();
+        $response = $this->getResponse();
+        
+        print_r($params);
+        
+        $validator = new \Laminas\I18n\Validator\IsInt();
+        
+        if( (false == $validator->isValid($params['product_id'])) ) {
+            $url = $this->url()->fromRoute('blog', ['id'=>$params['id']]);            
+            $response->getHeaders()->addHeaderLine(
+                'Location',
+                $url
+            );
+            $response->setStatusCode(301);
+        }
+        return $response;
+
+    }
+    
     public function blogAction()
     {
         $params = $this->params()->fromRoute();
+        
         print_r($params);
         return (new ViewModel())->setTerminal(true);
     }
