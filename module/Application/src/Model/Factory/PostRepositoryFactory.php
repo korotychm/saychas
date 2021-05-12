@@ -6,7 +6,6 @@ namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
 use Application\Model\Entity\Post;
-use Application\Model\Entity\Entity;
 use Application\Model\Repository\PostRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 // use Laminas\Hydrator\ReflectionHydrator;
@@ -25,8 +24,8 @@ class PostRepositoryFactory implements FactoryInterface
 
         return new PostRepository(
                 $adapter,
-                new \Laminas\Hydrator\ClassMethodsHydrator(), //new ReflectionHydrator(),
-                new Post // new Post('', '', '', '')
+                new \Laminas\Hydrator\ClassMethodsHydrator(),
+                new Post
         );
     }
 

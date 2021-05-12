@@ -25,7 +25,7 @@ class StoreRepositoryFactory implements FactoryInterface
         return new StoreRepository(
                 $adapter,
                 new ReflectionHydrator(),
-                new Store//(0, '', '', '', '', '', '', '')
+                new Store
         );
     }
 

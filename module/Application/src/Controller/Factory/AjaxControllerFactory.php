@@ -1,4 +1,7 @@
 <?php
+
+// src/Controller/Factory/AjaxControllerFactory.php
+
 namespace Application\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
@@ -23,23 +26,24 @@ use Application\Controller\AjaxController;
  */
 class AjaxControllerFactory implements FactoryInterface
 {
+
     public function __invoke(ContainerInterface $container, $requestName, array $options = null)
     {
         // Instantiate the controller and inject dependencies
-        $test = $container->get(/**\Application\Model\*/TestRepositoryInterface::class);
+        $test = $container->get(/*                 * \Application\Model\ */TestRepositoryInterface::class);
         $category = $container->get(CategoryRepositoryInterface::class);
         $provider = $container->get(ProviderRepositoryInterface::class);
-        $store =    $container->get(StoreRepositoryInterface::class);
-        $product =    $container->get(ProductRepositoryInterface::class);
+        $store = $container->get(StoreRepositoryInterface::class);
+        $product = $container->get(ProductRepositoryInterface::class);
         $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
-        $brand =    $container->get(BrandRepositoryInterface::class);
-        $characteristic =    $container->get(CharacteristicRepositoryInterface::class);
-        $price =    $container->get(PriceRepositoryInterface::class);
-        $stockBalance =    $container->get(StockBalanceRepositoryInterface::class);
+        $brand = $container->get(BrandRepositoryInterface::class);
+        $characteristic = $container->get(CharacteristicRepositoryInterface::class);
+        $price = $container->get(PriceRepositoryInterface::class);
+        $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, $stockBalance, $entityManager, $config, $htmlProvider);
     }
-}
 
+}

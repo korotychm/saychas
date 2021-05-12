@@ -69,8 +69,6 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
 
         $select = $sql->select()->from('store')->columns(["id", "provider_id", "title", "description", "address", "geox", "geoy", "icon"])->where($where);
 
-//        $selectString = $sql->buildSqlString($select);
-
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 

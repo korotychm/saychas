@@ -68,10 +68,6 @@ abstract class Repository implements RepositoryInterface
             }
         }
         
-//        $sqlString = $sql->buildSqlString($select);
-//        print_r($sqlString);
-//        exit;
-
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -97,7 +93,6 @@ abstract class Repository implements RepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
-        // $select->where(['id = ?' => $params['id']]);
         $select->where($params);
 
         $statement = $sql->prepareStatementForSqlObject($select);

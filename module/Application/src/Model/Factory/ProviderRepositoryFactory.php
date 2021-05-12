@@ -35,7 +35,7 @@ class ProviderRepositoryFactory implements FactoryInterface
         return new ProviderRepository(
                 $adapter,
                 $hydrator,
-                $prototype//('', 0, 0, null, null)
+                $prototype
         );
     }
 
