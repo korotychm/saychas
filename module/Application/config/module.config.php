@@ -23,13 +23,48 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 use Application\Resource\StringResource;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\Router\Http\Regex;
 
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
+//$route = Regex::factory([
+//    'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
+//    'defaults' => [
+//        'controller' => 'Application\Controller\MyTestController',
+//        'action'     => 'view',
+//        'format'     => 'html',
+//    ],
+//    'spec' => '/blog/%id%.%format%',
+//]);            
+
 return [
     'router' => [
         'routes' => [
+            'reg' => [
+                'type' => Regex::class,
+                'options' => [
+//                    'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
+                    'regex' => '/blog([\/]*(?<id>[0-9_-]*))(\/(?<product_id>[0-9]*))?',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'blog',
+                        'default'     => '1',
+                    ],
+//                    'spec' => '/blog/%id%.%format%',
+                    'spec' => '/blog[/%id%[/%product_id%]]',
+                ]
+            ],
+//            'blog' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/blog[/:id[/:product_id]]',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'blog',
+//                    ],
+//                ],
+//            ],
             'home' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -378,6 +413,16 @@ return [
                     ],
                 ],
             ],
+//            'regex' => [
+//                'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
+//                'defaults' => [
+//                    'controller' => 'Application\Controller\BlogController',
+//                    'action'     => 'view',
+//                    'format'     => 'html',
+//                ],
+//                'spec' => '/blog/%id%.%format%',
+//            ],
+
             'application' => [
                 'type'    => Segment::class,
                 'options' => [

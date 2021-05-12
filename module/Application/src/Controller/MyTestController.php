@@ -750,5 +750,12 @@ class MyTestController extends AbstractActionController
         
     }
     
+    public function blogAction()
+    {
+        $params = $this->params()->fromRoute();
+        print_r($params);
+        return (new ViewModel())->setTerminal(true);
+    }
+    
     
 }
