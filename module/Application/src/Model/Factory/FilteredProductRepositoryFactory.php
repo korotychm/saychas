@@ -25,7 +25,7 @@ class FilteredProductRepositoryFactory implements FactoryInterface
         return new FilteredProductRepository(
                 $adapter,
                 new ReflectionHydrator(),
-                new FilteredProduct//(0, 0, 0, 0, '', 0, '', '')
+                new FilteredProduct
         );
     }
 

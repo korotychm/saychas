@@ -4,6 +4,12 @@
 
 namespace Application\Model\Entity;
 
+/**
+ * Category
+ *
+ * @ORM\Table(name="category")
+ * @ORM\Entity
+ */
 class Category
 {
 

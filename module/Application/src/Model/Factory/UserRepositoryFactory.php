@@ -62,8 +62,8 @@ class UserRepositoryFactory implements FactoryInterface
 
         return new UserRepository(
                 $adapter,
-                $hydrator, // new \Laminas\Hydrator\ClassMethodsHydrator,//new ReflectionHydrator(),//$hydrator,//new ReflectionHydrator(),
-                $prototype // new User('', '', '', '')
+                $hydrator,
+                $prototype
         );
     }
 

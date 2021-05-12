@@ -25,7 +25,7 @@ class CharacteristicValueRepositoryFactory implements FactoryInterface
         return new CharacteristicValueRepository(
                 $adapter,
                 new ReflectionHydrator(),
-                new CharacteristicValue//('', '', '')
+                new CharacteristicValue
         );
     }
 

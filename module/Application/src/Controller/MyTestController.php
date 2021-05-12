@@ -32,6 +32,7 @@ use Application\Resource\StringResource;
 //use Laminas\Authentication\AuthenticationService;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+use Laminas\Diactoros\Response\RedirectResponse;
 use Application\Adapter\Auth\UserAuthAdapter;
 
 use Application\Entity\Post;
@@ -711,37 +712,6 @@ class MyTestController extends AbstractActionController
 
         $tree = $this->categoryRepository->findAll(['id' => 0]);
 
-//        $strategy = new \Laminas\Hydrator\Strategy\HydratorStrategy(
-//            new \Laminas\Hydrator\ReflectionHydrator(),
-//            \Application\Model\Entity\Categ::class
-//        );
-        
-//        $hydrated = $strategy->hydrate([
-//            'children' => $strategy->hydrate($tree[0]),
-//        ]);
-//        $i = 0;
-//        $builtTree = new \Application\Model\Entity\Categ();
-//        while(isset($tree[$i]['children'])) {
-//            $children = $tree[$i]['children'];
-//            $builtTree->Id = $tree[$i]['id'];
-//            $builtTree->Title = $tree[$i]['title'];
-//            $builtTree->ParentId = $tree[$i]['parent_id'];
-//            $builtTree->Children = $strategy->hydrate(['children' =>$children]);
-//            $i += 1;
-//        }
-//
-        //$categ = new \Application\Model\Entity\Categ();
-//        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
-//        $hydrator->addStrategy(
-//            'children',
-//            new \Laminas\Hydrator\Strategy\CollectionStrategy(
-//                new \Laminas\Hydrator\ReflectionHydrator(),
-//                \Application\Model\Entity\Categ::class
-//            ),
-//        );
-//
-//        $categs = $hydrator->hydrate($tree, (new \ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
-        
         echo '<pre>';
         print_r($tree);
         echo '</pre>';
@@ -750,9 +720,31 @@ class MyTestController extends AbstractActionController
         
     }
     
+    public function productAction()
+    {
+        $params = $this->params()->fromRoute();
+        $response = $this->getResponse();
+        
+        print_r($params);
+        
+        $validator = new \Laminas\I18n\Validator\IsInt();
+        
+        if( (false == $validator->isValid($params['product_id'])) ) {
+            $url = $this->url()->fromRoute('blog', ['id'=>$params['id']]);            
+            $response->getHeaders()->addHeaderLine(
+                'Location',
+                $url
+            );
+            $response->setStatusCode(301);
+        }
+        return $response;
+
+    }
+    
     public function blogAction()
     {
         $params = $this->params()->fromRoute();
+        
         print_r($params);
         return (new ViewModel())->setTerminal(true);
     }

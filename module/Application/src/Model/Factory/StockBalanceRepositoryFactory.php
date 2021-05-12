@@ -25,7 +25,7 @@ class StockBalanceRepositoryFactory implements FactoryInterface
         return new StockBalanceRepository(
                 $adapter,
                 new ReflectionHydrator(),
-                new StockBalance//('', 0, '')
+                new StockBalance
         );
     }
 

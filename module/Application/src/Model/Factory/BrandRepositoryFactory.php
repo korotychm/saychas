@@ -25,8 +25,8 @@ class BrandRepositoryFactory implements FactoryInterface
 
         return new BrandRepository(
                 $adapter,
-                new ClassMethodsHydrator, //new ReflectionHydrator(),
-                new Brand//('', '', '', '')
+                new ClassMethodsHydrator,
+                new Brand
         );
     }
 

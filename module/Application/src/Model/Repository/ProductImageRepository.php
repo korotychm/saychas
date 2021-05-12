@@ -7,8 +7,8 @@ namespace Application\Model\Repository;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Json\Json;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
+//use Laminas\Json\Json;
+//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Db\Sql\Select;
 //use Laminas\Db\Sql\Where;
 use Application\Model\Entity\ProductImage;
