@@ -53,13 +53,13 @@ class HtmlProviderService
     {
         if ($a and count($a)):
             //<span class='bread-crumbs-item'></span>"
-            $return[] = "Каталог";
+            $return[] = "<a href=# class='catalogshow'>Каталог</a>";
             $a = array_reverse($a);
             foreach ($a as $b) {
                 $return[] = "<a href=/catalog/" . $b[0] . ">" . $b[1] . "</a>";
             }
             //return "<div  class='bread-crumbs'><span class='bread-crumbs-item'>" . join("</span> / <span class='bread-crumbs-item'>", $return) . "</span></div>";
-            return  join('<b class="brandcolor"> : </b>', $return);
+            return join('<b class="brandcolor"> : </b>', $return);
         endif;
     }
 
@@ -83,26 +83,28 @@ class HtmlProviderService
     public function getCategoryFilterHtml($filters, $category_id)
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory=$container->filtrForCategory;
-        
-        if(!$filtred=$filtrForCategory[$category_id]['fltr']) $filtred=[];
+        $filtrForCategory = $container->filtrForCategory;
+
+        if (!$filtred = $filtrForCategory[$category_id]['fltr'])
+            $filtred = [];
         //print_r($filtred);
         foreach ($filters as $row) {
             $arrayTmp[$row->getId()]['title'] = $row->getTitle();
             $arrayTmp[$row->getId()]['id'] = $row->getId();
-            $arrayTmp[$row->getId()]['count']+=(in_array($row->getValId(),$filtred)?1:0);
+            $arrayTmp[$row->getId()]['count'] += (in_array($row->getValId(), $filtred) ? 1 : 0);
             $arrayTmp[$row->getId()]['options'] .= "
-                     <div class='nopub checkgroup blok ".(in_array($row->getValId(),$filtred)?" zach ":"")."' for='{$row->getValId()}' >{$row->getVal()}
-                               <input type='checkbox' id='fltrcheck{$row->getValId()}' name='fltr[]' class='none' value='{$row->getValId()}'  ".(in_array($row->getValId(),$filtred)?" checked ":"")." >
+                     <div class='nopub checkgroup blok " . (in_array($row->getValId(), $filtred) ? " zach " : "") . "' for='{$row->getValId()}' >{$row->getVal()}
+                               <input type='checkbox' id='fltrcheck{$row->getValId()}' name='fltr[]' class='none' value='{$row->getValId()}'  " . (in_array($row->getValId(), $filtred) ? " checked " : "") . " >
                      </div>";
         }
-        if (!$arrayTmp)  return;
+        if (!$arrayTmp)
+            return;
         //$filtrForCategory[$category_id];
         foreach ($arrayTmp as $row) {
-        
+
             $return .= '
       <div class="ifilterblock"  >
-            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['title'].(($count=(int)$row['count'])?"<div class='count' >$count</div>":""). '</div>
+            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['title'] . (($count = (int) $row['count']) ? "<div class='count' >$count</div>" : "") . '</div>
             <div class="filtritem" id="fi' . $row['id'] . '">
                 <div class="filtritemcontent" id="fc' . $row['id'] . '">
                     <div class="closefilteritem" rel="' . $row['id'] . '">' . $row['title'] . '</div>
@@ -130,11 +132,10 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
-            if (!(!$r and $filtrForCategory[$category_id]['hasRestOnly']))
-            {
+            if (!(!$r and $filtrForCategory[$category_id]['hasRestOnly'])) {
                 $filtersTmp = explode(",", $product->getParamValueList2());
                 $filters = array_merge($filters, $filtersTmp);
-            }    
+            }
             $_id = $product->getId();
             $_return[$_id]['rest'] += $r;
             $_return[$_id]['id'] = $_id;
@@ -149,8 +150,7 @@ class HtmlProviderService
             $_return[$_id]['art'] = $product->getVendorCode();
             $_return[$_id]['title'] = $product->getTitle();
             $_return[$_id]['cena'] = $cena;
-            $prices[]=$cena;
-
+            $prices[] = $cena;
         }
 
         if ($_return) {
@@ -183,7 +183,7 @@ class HtmlProviderService
         $filters = (count($filters)) ? array_diff($filters, array('')) : $filters;
         if (count($filters)) {
             $filters = array_unique($filters);
-         }
+        }
         $return['filter'] = $filters;
         $return['categoryId'] = "00000001";
         return $return;
@@ -251,10 +251,21 @@ class HtmlProviderService
 
         $j = 0;
         $img = array_unique($img);
+        //exit (print_r($img));   
         foreach ($img as $im) {
-            if ($im)
-              $imagesready .= ((!$j)?"<div class='square'><div class='squarecontent'>":"<div class='product-image-container-mini iblok' >")."<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' />".((!$j)?"</div></div>":"</div>");
-            $j++;
+            if ($im) {
+                $borderred="";
+                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
+                if (!$j) {
+                    $mainimage = "<div class='square'><div class='squarecontent'>$image</div></div>";   
+                    $borderred = " borderred ";
+                $j++;
+                    
+                } else $j++;
+                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />"; 
+                $imgicons .= "<div class='product-image-container-mini iblok $borderred' >$image</div>";
+                
+            }
         }
 
 
@@ -265,19 +276,21 @@ class HtmlProviderService
         //$return['categoryTitle'] =$category;
         $return['card'] .= ""
                 . "<div class='pw-contentblock cblock-3'>
-                            <div class='contentpadding'>
+                    <div class='contentpadding' id=productpageimg>
                            
-                                            $speedlable2
-                                            $imagesready
-                                   
-                            </div>
+                            $speedlable2
+                            $imagesready
+<div class='iblok iconimg' style='width:98px;' >$imgicons</div>
+<div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>                               
+
+                                                                         
+                     </div>
                  </div>"
                 . "
-                            <div class='pw-contentblock cblock-3'>
-                            <div class='contentpadding'>
-                            <div class='productpagecard ' >"
+              <div class='pw-contentblock cblock-3'>
+                <div class='contentpadding'>
+                      <div class='productpagecard ' >"
                 . "   <div class='content opacity" . $r . "'>"
-                . "       <h2 class='blok price'>   " . $cena . " &#8381;</h2>"
                 . "       <span class='blok'>Артикул: " . $vendor . "</span>"
                 . "       <span class='blok'>Торговая марка: " . $brand . "</span>"
                 . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
@@ -291,12 +304,20 @@ class HtmlProviderService
                 . "</div>    "
                 . "<div class='pw-contentblock cblock-3'>
                             <div class='contentpadding'>
-                           
-                                           <h2>покупка</h2>
+								<div class='paybox' >"
+                . "      			<div class='contentpadding'>
+										<h2 class='blok price'>   " . $cena . " &#8381; <span class='oldprice'>10&nbsp;000&nbsp;&#8381;</span></h2>
+									</div>
+									<div class='volna' ></div>
+									<div class='contentpadding'>
+										доставка
+									</div>
+									"
+                . "				</div>
                                    
                             </div>
                  </div>"
-                 ;
+        ;
 
         // exit(print_r($return));
 

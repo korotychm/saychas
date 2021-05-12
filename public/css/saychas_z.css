@@ -57,7 +57,7 @@ position:absolute; top:10px; right:10px;}
 
 #topmenu {display:table;  margin:0; outline:0; padding:0; min-height:56px; max-height:56px; text-align:center; width:100%; max-width:1600px; overflow:hidden;
 background:#f2f2f2;
-	border-radius:25px; position:relative; top:-12px;
+	border-radius:25px; position:relative; top:-12px; margin-bottom:12px
 	}
 #topmenu ul {
 	display:table-row;
@@ -149,7 +149,7 @@ background:#f2f2f2;
     display: block;
     position: absolute;
     bottom: 30px;
-    right: 30px;    
+    right: 22px;    
     height: 30px;
     width: 30px;
     background: url('/img/close2.png') center no-repeat;
@@ -264,7 +264,7 @@ background:#f2f2f2;
     background:url("/img/arrdown.png") right no-repeat; 
     cursor:pointer; 
     display:inline-block; 
-    white-space: nowrap ;
+    /*white-space: nowrap ;*/
 }
 .filtritemtitle div.count, #zakazcount {
      dispaly:inline-block; 
@@ -327,6 +327,8 @@ background:#f2f2f2;
 .pw-contentblock .contentpadding { padding:10px; }
 /*.pw-contentblock .contentpadding * {max-width:100% }*/
 
+.paybox .contentpadding  {padding:20px;}
+
 .pw-contentblock.cblock-1 { width: 98%;}
 .pw-contentblock.cblock-2 { width: 48%; }
 .pw-contentblock.cblock-3 { width: 32.5%;}
@@ -360,8 +362,11 @@ background:#f2f2f2;
 	#headeraa h1 { font-size:22px; }
 }
 */
-.product-page-image  {max-width:100px ; cursor:pointer; border:2px solid #fff;}
+.product-page-image  {max-width:100px ; cursor:pointer; border:2px solid #fff;  }
 .product-page-image.productimage0  {max-width:100%; border:none }
+
+.iconimg {width:98px; vertical-align:top}
+.mainimg {width:calc(100% - 110px); float:right; ; vertical-align:top}
 
 img.zero, .zeroblok {
     width:700px;  max-width:100%;
@@ -398,12 +403,12 @@ img.zero, .zeroblok {
     flex-shrink: 0;
   }
 .product-image-container-mini { 
-    width:100px; height:100px;margin-right:10px; overflow:hidden;
+    width:80px; height:80px;margin-right:10px; overflow:hidden;
   display: flex;
    justify-content: center;
    text-align:center;
    align-items: center;
-   border: 1px solid #ccc; border-radius:4px;
+   border: 2px solid #ccc; border-radius:50%;
 }
 .product-image-container-mini img {max-width:100%; max-height:100%;   flex-shrink: 0;   }
 .borderred {border-color:#f62 }
@@ -411,3 +416,15 @@ img.zero, .zeroblok {
 #topservice {display:inline-block; width: calc(100% - 630px); vertical-align:top; position:relative }
 #topservice .pw-contentblock .contentpadding {padding-top:38px}
 .emptyblock  {width:50px; height:50px; border: 2px solid var(--red); position:relative; display:inline-block;  border-radius:50% }
+.volna {display:block; height:15px; background:url(/img/volna.png) repeat-x;}
+.paybox {display:block;  box-shadow: 2px 2px 16px rgba(0,0,0,0.05); border-radius:16px;  min-height:200px;}
+.oldprice {display:inline-block; font-size:90%; color:var(--gray); text-decoration:line-through; margin-left:15px; }
+
+.imgflex, .imgflexmini {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+
+

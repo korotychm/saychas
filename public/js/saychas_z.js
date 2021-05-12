@@ -58,7 +58,7 @@ $(function () {
         $(".product-image-container-mini").removeClass("borderred");
         parent.addClass("borderred"); 
         $("#productimage0").attr("src", newsrc);
-        $(this).attr("src", oldsrc);
+        //$(this).attr("src", oldsrc);
         return false;
     }); 
 
@@ -261,7 +261,7 @@ $(function () {
     });
 
 $(window).resize(function(){leftpanelclose();});
-	$("#catalogbutton").click(function(){
+	$(".catalogshow").click(function(){
 		$("#overcoverblack").fadeIn();
 		$("#lefmobiletpanel").animate({left:"0" },500);
 		

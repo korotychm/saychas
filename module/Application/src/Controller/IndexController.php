@@ -178,7 +178,7 @@ class IndexController extends AbstractActionController
     {
         $category_id=$this->params()->fromRoute('id', '');
 
-        $this->layout()->setTemplate('layout/mainpage');
+        $this->layout()->setTemplate('layout/mainpagenew');
         $container = new Container(StringResource::SESSION_NAMESPACE);
         //$addresForm = "". $this->htmlProvider->inputUserAddressForm(['seseionUserAddress'=>$container-> seseionUserAddress]);
         $filtrForCategory=$container->filtrForCategory;
