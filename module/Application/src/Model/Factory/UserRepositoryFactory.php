@@ -52,7 +52,7 @@ class UserRepositoryFactory implements FactoryInterface
 
         $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
         $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
-        $hydrator->add(new \laminas\Hydrator\ReflectionHydrator);
+        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
 //        $hydrator->add( new \Application\Hydrator\UserHydrator($postRepository));
 //        $hydrator = new UserHydrator($postRepository);
 //        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);

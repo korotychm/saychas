@@ -24,7 +24,7 @@ class FtpHelper
      * @return void
      * @throws \Exception
      */
-    public static function fetch(ContainerInterface $container, string $table, array $files = []): void
+    public static function fetch($container, string $table, array $files = []): void
     {
         $config = $container->get('Config');
         $local_catalog = $config['parameters']['local_catalog'][$table]['path'];
