@@ -91,6 +91,8 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
      */
     public function replace($content)
     {
+        print_r($content);
+        exit;
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
@@ -106,8 +108,8 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
                     $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
             
             //$this->logger->debug($sql);
-            print_r($sql);
-            exit;
+//            print_r($sql);
+//            exit;
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
