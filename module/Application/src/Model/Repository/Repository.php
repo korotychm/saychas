@@ -7,7 +7,7 @@
 
 namespace Application\Model\Repository;
 
-use InvalidArgumentException;
+//use InvalidArgumentException;
 use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
@@ -17,6 +17,8 @@ use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Db\Sql\Sql;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Laminas\Log\Logger;
+use Laminas\Log\Writer\Stream as StreamWriter;
 use Application\Model\RepositoryInterface\RepositoryInterface;
 
 /**
@@ -28,6 +30,11 @@ abstract class Repository implements RepositoryInterface
 {
 
     /**
+     * @var Laminas\Log\Logger
+     */
+    protected Logger $logger;
+
+    /**
      * @var AdapterInterface
      */
     protected AdapterInterface $db;
@@ -36,6 +43,13 @@ abstract class Repository implements RepositoryInterface
      * @var HydratorInterface
      */
     protected HydratorInterface $hydrator;
+    
+    public function __construct()
+    {
+        $this->logger = new Logger();
+        $writer = new StreamWriter('php://output');
+        $this->logger->addWriter($writer);
+    }
 
     /**
      * Returns a list of entities
@@ -67,7 +81,7 @@ abstract class Repository implements RepositoryInterface
                 $select->join($join['name'], $join['on'], $join['columns'], $join['type'] );
             }
         }
-        
+
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -79,7 +93,7 @@ abstract class Repository implements RepositoryInterface
                 $this->hydrator,
                 $this->prototype
         );
-        $resultSet->initialize($result);        
+        $resultSet->initialize($result);
         return $resultSet;
     }
 

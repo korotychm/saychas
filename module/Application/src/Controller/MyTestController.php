@@ -32,7 +32,7 @@ use Application\Resource\StringResource;
 //use Laminas\Authentication\AuthenticationService;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
-use Laminas\Diactoros\Response\RedirectResponse;
+//use Laminas\Diactoros\Response\RedirectResponse;
 use Application\Adapter\Auth\UserAuthAdapter;
 
 use Application\Entity\Post;
