@@ -508,30 +508,32 @@ End of number 1 */
             if(count($product->characteristics) > 0)
             {
                 $var_list = Json::decode($arr['var_list']);
-/**
-//                foreach ($var_list as $var) {
-//                    if(!empty($var->value)) {
-//                        $myuuid = Uuid::uuid4();
-//                        $myid = md5($myuuid->toString());
-//                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
-//
-//                        try {
-//                            $q = $this->db->query($sql);
-//                            $q->execute();
-//                        }catch(InvalidQueryException $e){
-//                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-//                        }
-//                        $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
-//                    }
-//                    $v = $this->replaceCharacteristic($var);
-//                    $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
-//                }
-*/
-                try {
-                    $this->replaceCharacteristicsFromList($arr, $var_list);
-                }catch(InvalidQueryException $e){
-                    return ['result' => false, 'description' => "error executing sql statement. ".$e->getMessage(), 'statusCode' => 418];
+
+                foreach ($var_list as $var) {
+                    if(!empty($var->value)) {
+                        $myuuid = Uuid::uuid4();
+                        $myid = md5($myuuid->toString());
+                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
+
+                        try {
+                            $q = $this->db->query($sql);
+                            $q->execute();
+                        }catch(InvalidQueryException $e){
+                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                        }
+                        $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
+                    }
+                    $v = $this->replaceCharacteristic($var);
+                    $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
                 }
+
+
+                
+//                try {
+//                    $this->replaceCharacteristicsFromList($arr, $var_list);
+//                }catch(InvalidQueryException $e){
+//                    return ['result' => false, 'description' => "error executing sql statement. ".$e->getMessage(), 'statusCode' => 418];
+//                }
 
             }
             
