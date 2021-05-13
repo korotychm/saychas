@@ -589,6 +589,34 @@ return [
             'get_store' => 'http://SRV02:8000/SC/hs/site/get_product',
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
+        'local_catalog' => [
+            'product' => [
+                'path' => __DIR__.'/../../../public/images/product',
+            ],
+            'brand' => [
+                'path' => __DIR__.'/../../../public/images/brand',
+            ],
+            'provider' => [
+                'path' => __DIR__.'/../../../public/images/provider',
+            ],
+        ],
+        'server_catalog' => [
+            'product' => [
+                'path' => '/1CMEDIA/PhotoTovarov/',
+            ],
+            'brand' => [
+                'path' => '/1CMEDIA/BrandLogo/',
+            ],
+            'provider' => [
+                'path' => '/1CMEDIA/ProviderLogo/',
+            ],
+        ],
+        'ftp_server' => [
+            "domain" => "nas01.saychas.office",
+            "username" => "1C",
+            "password" => "ree7EC2A",
+        ],
+
     ],
     'doctrine' => [
         'driver' => [

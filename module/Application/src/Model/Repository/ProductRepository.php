@@ -367,7 +367,7 @@ End of number 1 */
         foreach($characteristics as $c) {
             $found = $this->characteristics->find(['id'=>$c->id]);
             if(null == $found) {
-                throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
+                //throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
             }
             if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
                 $value_list[] = $c->value;
