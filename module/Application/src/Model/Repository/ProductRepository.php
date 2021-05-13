@@ -364,6 +364,8 @@ End of number 1 */
     {
         $value_list = [];
         $var_list = [];
+        print_r($characteristics);
+        exit;
         foreach($characteristics as $c) {
             $found = $this->characteristics->find(['id'=>$c->id]);
 //            if(null == $found) {
@@ -373,7 +375,7 @@ End of number 1 */
             if(null != $found) {
                 if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
                     $value_list[] = $c->value;
-                    echo $c->value."\n";
+                    //echo $c->value."\n";
                 }else{
                     $var_list[] = $c;
                 }
