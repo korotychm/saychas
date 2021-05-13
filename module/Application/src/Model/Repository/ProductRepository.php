@@ -539,17 +539,13 @@ End of number 1 */
             
             $arr1 = $this->updateCharacteristicsValueList($product);
 
-//            echo '<pre>';
-//            print_r($arr1);
-//            echo '</pre>';
-//            exit;
+            print_r($arr1);
+            echo "\n";
+            continue;
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             
-            print_r($sql);
-            echo '<br/>';
-            continue;
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
