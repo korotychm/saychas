@@ -91,8 +91,6 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
      */
     public function replace($content)
     {
-        print_r($content);
-        exit;
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
@@ -100,8 +98,11 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
         }
 
         if ((bool) $result['truncate']) {
-            $this->db->query("truncate table store")->execute();
+            $this->db->query("truncate table {$this->tableName}")->execute();
         }
+
+        print_r($result);
+        exit;
 
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
