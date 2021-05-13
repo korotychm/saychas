@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 13, 2021 at 03:26 AM
+-- Generation Time: May 13, 2021 at 03:34 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.16
 
@@ -32,14 +32,14 @@ CREATE TABLE `brand` (
   `id` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `logo` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `image` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `brand`
 --
 
-INSERT INTO `brand` (`id`, `title`, `description`, `logo`) VALUES
+INSERT INTO `brand` (`id`, `title`, `description`, `image`) VALUES
 ('000005', 'ACER', '', ''),
 ('000007', 'Asus', '', ''),
 ('000001', 'BOSH', '', ''),
@@ -1288,8 +1288,8 @@ CREATE TABLE `provider` (
 --
 
 INSERT INTO `provider` (`id`, `title`, `description`, `image`) VALUES
-('00002', 'Apple', '', ''),
-('00005', 'DNS', '', ''),
+('00002', 'Apple', '', '00002.jpg'),
+('00005', 'DNS', '', '00005_DNS.png'),
 ('00003', 'Барамба', '', ''),
 ('00004', 'М-Видео', '', ''),
 ('00001', 'Ситилинк', '', '');
