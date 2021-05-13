@@ -44,12 +44,12 @@ abstract class Repository implements RepositoryInterface
      */
     protected HydratorInterface $hydrator;
     
-    public function __construct()
-    {
-        $this->logger = new Logger();
-        $writer = new StreamWriter('php://output');
-        $this->logger->addWriter($writer);
-    }
+//    public function __construct()
+//    {
+//        $this->logger = new Logger();
+//        $writer = new StreamWriter('php://output');
+//        $this->logger->addWriter($writer);
+//    }
 
     /**
      * Returns a list of entities
