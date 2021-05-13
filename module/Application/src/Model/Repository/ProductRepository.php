@@ -508,8 +508,8 @@ End of number 1 */
             if(count($product->characteristics) > 0)
             {
                 $var_list = Json::decode($arr['var_list']);
-                print_r($var_list);
-                continue;
+//                print_r($var_list);
+//                continue;
 /**
 //                foreach ($var_list as $var) {
 //                    if(!empty($var->value)) {
