@@ -366,14 +366,17 @@ End of number 1 */
         $var_list = [];
         foreach($characteristics as $c) {
             $found = $this->characteristics->find(['id'=>$c->id]);
-            if(null == $found) {
-                //throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
-                continue;
-            }
-            if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
-                $value_list[] = $c->value;
-            }else{
-                $var_list[] = $c;
+//            if(null == $found) {
+//                //throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
+//                continue;
+//            }
+            if(null != $found) {
+                if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
+                    $value_list[] = $c->value;
+                    echo $c->value."\n";
+                }else{
+                    $var_list[] = $c;
+                }
             }
         }
 
@@ -539,9 +542,9 @@ End of number 1 */
             
             $arr1 = $this->updateCharacteristicsValueList($product);
 
-            print_r($arr1);
-            echo "\n";
-            continue;
+//            print_r($arr1);
+//            echo "\n";
+//            continue;
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
