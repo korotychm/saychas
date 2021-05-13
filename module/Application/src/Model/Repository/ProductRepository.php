@@ -548,6 +548,7 @@ End of number 1 */
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             
             print_r($sql);
+            echo '<br/>';
             continue;
             try {
                 $query = $this->db->query($sql);
