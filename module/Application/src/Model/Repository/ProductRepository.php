@@ -364,21 +364,16 @@ End of number 1 */
     {
         $value_list = [];
         $var_list = [];
-        print_r($characteristics);
-        exit;
         foreach($characteristics as $c) {
             $found = $this->characteristics->find(['id'=>$c->id]);
-//            if(null == $found) {
-//                //throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
-//                continue;
-//            }
-            if(null != $found) {
-                if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
-                    $value_list[] = $c->value;
-                    //echo $c->value."\n";
-                }else{
-                    $var_list[] = $c;
-                }
+            if(null == $found) {
+                throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
+                //continue;
+            }
+            if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
+                $value_list[] = $c->value;
+            }else{
+                $var_list[] = $c;
             }
         }
 
