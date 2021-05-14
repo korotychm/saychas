@@ -10,12 +10,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Laminas\Db\Adapter\Adapter;
-use Ramsey\Uuid\Uuid;
+//use Ramsey\Uuid\Uuid;
+use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Application\Helper\FtpHelper;
 
 class FetchImagesCommand extends Command
 {
 
+    /**
+     * @var int
+     */
+    private $limit;
+    
     /**
      * @var Adapter
      */
@@ -57,7 +63,8 @@ class FetchImagesCommand extends Command
     protected function configure(): void
     {
         $this->setName(self::$defaultName);
-        $this->addOption('name', null, InputOption::VALUE_REQUIRED, 'Application');
+        $this->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Application', 5);
+        $this->addArgument('name', null, 'table name to take filenames from', null);
     }
 
     /**
@@ -69,27 +76,101 @@ class FetchImagesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $myuuid = Uuid::uuid4();
-        $output->writeln('Fetch images: ' . $myuuid->toString() . ' ' . $this->name);
-        $output->writeln("\n");
+        $tableName = $input->getArgument('name');
+        $this->limit = $input->getOption('limit');
         
-        $statement = $this->adapter->createStatement("select `image` from `provider`");
-        $statement->prepare();
-        $result = $statement->execute();
-        
-        $images = [];
-        foreach($result as $r) {
-            if(!empty($r['image'])) {
-                $images[] = $r['image'];
-            }
+        if (in_array($tableName, ['provider', 'brand'])) {
+            $images = $this->getImageNames($tableName);
+        } else if (in_array($tableName, ['product'])) {
+            $images = $this->getHttpUrls($tableName);
+        } else {
+            throw new InvalidArgumentException('Wrong table name given; Expeced one of those: provider, brand, product_image');
         }
 
-        FtpHelper::fetch($this->container, 'brand', $images);
+        $update = function ($file) use ($tableName, $output) {
+            $output->writeln($file);
+            $statement = $this->adapter->createStatement("update `{$tableName}_image` set http_url=:http_url where ftp_url=:http_url");
+            $statement->prepare();
+            $statement->execute([':http_url' => $file]);
+        };
+        
+        $notExistingFileNames = [];
+//        $images[] = "banzaii.jpg";
+//        $images[] = "vonzaii.jpg";
+        if (in_array($tableName, ['product'])) {
+            FtpHelper::fetch($this->container, $tableName, $images, function ($item) use (&$notExistingFileNames) {
+                $notExistingFileNames[] = $item;
+            }, $update);
+        }else{
+            FtpHelper::fetch($this->container, $tableName, $images, function ($item) use (&$notExistingFileNames) {
+                $notExistingFileNames[] = $item;
+            });
+        }
+
+        if (count($notExistingFileNames) > 0) {
+            $output->writeln('Files with the following names do not exist');
+            $output->writeln($notExistingFileNames);
+        }
+        $output->writeln("=============\n" . $tableName . ' done');
 
         return 0;
     }
 
+    /**
+     * Gets array of images from specified table
+     *
+     * @param type $tableName
+     * @return array
+     * @throws InvalidArgumentException
+     */
+    private function getImageNames($tableName): array
+    {
+        $fieldName = 'image';
+        $statement = $this->adapter->createStatement("select `$fieldName` from `{$tableName}`");// limit 5
+        $statement->prepare();
+        $result = $statement->execute();
+
+        $images = [];
+        foreach ($result as $r) {
+            if (!empty($r[$fieldName])) {
+                $images[] = $r[$fieldName];
+            }
+        }
+
+        return $images;
+    }
+
+    /**
+     * Gets array of images from specified table
+     *
+     * @param string $tableName
+     * @return array
+     */
+    private function getHttpUrls($tableName): array
+    {
+        $fieldName = 'ftp_url';
+        $limit='';
+        if($this->limit <> '*') {
+            $limit = "limit {$this->limit}";
+        }
+        $statement = $this->adapter->createStatement("select `$fieldName` from `{$tableName}_image` where `http_url` is null or `http_url`='' {$limit}");
+        $statement->prepare();
+        $result = $statement->execute();
+        $images = [];
+        foreach ($result as $r) {
+            if (!empty($r[$fieldName])) {
+                $images[] = $r[$fieldName];
+            }
+        }
+
+        return $images;
+    }
+
 }
+
+//        $myuuid = Uuid::uuid4();
+//        $output->writeln('Fetch images: ' . $myuuid->toString() . ' ' . $this->name);
+//        $output->writeln("\n");
 
 //        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
 //        $hydrator->addStrategy(

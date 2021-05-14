@@ -2,9 +2,12 @@
 
 // src/Helper/FtpHelper.php
 
-use Interop\Container\ContainerInterface;
-
 namespace Application\Helper;
+
+use Interop\Container\ContainerInterface;
+use Laminas\Stdlib\Exception\InvalidArgumentException;
+//use Laminas\I18n\Exception\InvalidArgumentException;
+//use Laminas\Log\Logger;
 
 /**
  * Description of FtpHelper
@@ -24,8 +27,11 @@ class FtpHelper
      * @return void
      * @throws \Exception
      */
-    public static function fetch($container, string $table, array $files = []): void
+    public static function fetch($container, string $table, array $files, $callback, $update = null): void
     {
+        if(null == $callback) {
+            throw new InvalidArgumentException('Callback cannot be null');
+        }
         $config = $container->get('Config');
         $local_catalog = $config['parameters']['local_catalog'][$table]['path'];
         $server_catalog = $config['parameters']['server_catalog'][$table]['path'];
@@ -36,21 +42,43 @@ class FtpHelper
         // perform connection
         $conn_id = ftp_connect($ftp_server);
         $login_result = ftp_login($conn_id, $username, $password);
+
         if ((!$conn_id) || (!$login_result)) {
             throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user ' . $username . '.');
         }
 
+        $list = ftp_nlist($conn_id, $server_catalog);
         foreach ($files as $file) {
             $local_file = realpath($local_catalog) . "/" . $file;
             $server_file = $server_catalog . $file;
-
+            if(!in_array($server_file, $list) && null != $callback) {
+//                $callback($file);
+                continue;
+            }
             // trying to download $server_file and save it to $local_file
             if (!ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
-                //throw new \Exception('Could not complete the operation');
+                self::warn($server_file);
+            }
+            if(null != $update) {
+                $update($file);
             }
         }
         // close connection
         ftp_close($conn_id);
+    }
+
+    /**
+     * Logs warnings
+     *
+     * @param type $message
+     * @param type $extra
+     */
+    private static function warn(/*$logger,*/ $message, $extra = [])
+    {
+        echo 'Failed to download file '.$message;
+//        if (null != $logger) {
+//            $logger->warn('failed to download file ' . $message);
+//        }
     }
 
 }
