@@ -125,7 +125,7 @@ class HtmlProviderService
         foreach ($filteredProducts as $product) {
             $cena = (int) $product->getPrice();
             $cena = $cena / 100;
-            $cena = number_format($cena, 2, ".", "&nbsp;");
+            $cena = number_format($cena, 0, "", "&nbsp;");
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
             $filtrForCategory = $container->filtrForCategory;
@@ -158,7 +158,24 @@ class HtmlProviderService
                 if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$Card['rest']) and!empty($Card)) {
 
                     $return['card'] .= "<div class='productcard ' >"
-                            . $Card['speedlable']
+                           // . $Card['speedlable']
+                            
+                            
+                           ."<div class='contentabsolute  content opacity" . $Card['rest'] . "'>"
+                            . "<a  href='/product/" . $Card['id'] . "' >"
+                            . "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . (($Card['image']) ? $Card['image'] : "nophoto_1.jpeg") . ")'/></div>"
+                            . "</a>"
+                            . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
+                            . "         <div class='inactiveblok'></div>"
+                            . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
+                            . "       <span class='oldprice'>" .(int) $Card['oldprice'] . "&#8381;</span>"
+                            . "        <div class=payblockcard>"
+                            . "             <div class=paybutton rel='".$Card['id']."' >в корзину</div>"
+                            . "        </div>"
+                            . "   </div>"
+                            
+                            
+                            
                             . "   <div class='content opacity" . $Card['rest'] . "'>"
                             . "<a  href='/product/" . $Card['id'] . "' >"
                             //. "       <img src='/images/product/"' alt='alt' class='productimage'/>"
@@ -167,15 +184,18 @@ class HtmlProviderService
                             . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
                             //. "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
                             //. "       <span class='blok'>Id: " . $product->getId() . "</span>"
-                            . "       <span class='blok'>Артикул: " . $Card['art'] . "</span>"
-                            . "       <span class='blok'>Торговая марка: " . $Card['brand'] . "</span>"
+                         //   . "       <span class='blok'>Артикул: " . $Card['art'] . "</span>"
+                          //  . "       <span class='blok'>Торговая марка: " . $Card['brand'] . "</span>"
                             //  . "       <span class='blok'>Хар/List: " . $product->getParamValueList2() . "</span>"
                             //                    . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList2() . "</span>"
                             //                        . "       <span class='blok'>Остаток: " . $Card['rest'] . "</span>"
                             //. "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
                             //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
-                            . "       <span class='blok price'>Цена: " . $Card['cena'] . " &#8381;</span>"
+                            . "         <div class='inactiveblok'></div>"                         . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
+                            . "       <span class='oldprice'>" .(int) $Card['oldprice'] . "&#8381;</span>"
+                            
                             . "   </div>"
+                            
                             . "</div>";
                 }
             }
@@ -241,9 +261,14 @@ class HtmlProviderService
 
             $join2 = join(",", $filters);
             if ($characterictics = $this->characteristicRepository->getCharacteristicFromList($join2))
-                foreach ($characterictics as $char) {
-                    $chars .= "<li><em>{$char->getTitle()}</em    >: {$char->getVal()}</li>";
-                }
+                $j=0;
+                    foreach ($characterictics as $char) {
+                      //$chars .= "<div class='char-row'><span class='char-title'><span>{$char->getTitle()}({$char->getType()})</span></span><span class=char-value ><span>{$char->getVal()}</span></span></div>";
+                         ($j< 10 )? $chars .= "<div class='char-row'><span class='char-title'><span>{$char->getTitle()}</span></span><span class=char-value ><span>{$char->getVal()}</span></span></div>"
+                               : $charsmore .="<div class='char-row'><span class='char-title'><span>{$char->getTitle()}</span></span><span class=char-value ><span>{$char->getVal()}</span></span></div>";
+                        $j++;/**/
+                    }
+                
             $join = $chars;
         } else
             $join = "";
@@ -290,12 +315,12 @@ class HtmlProviderService
               <div class='pw-contentblock cblock-3'>
                 <div class='contentpadding'>
                       <div class='productpagecard ' >"
-                . "   <div class='content opacity" . $r . "'>"
-                . "       <span class='blok'>Артикул: " . $vendor . "</span>"
+                . "   <div class='content opacity-" . $r . "'>"
+                . "       <!-- span class='blok'>Артикул: " . $vendor . "</span>"
                 . "       <span class='blok'>Торговая марка: " . $brand . "</span>"
                 . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
-                . "       <b><span class='blok'>Магазины</span></b><ul><li>" . join("</li><li>", $stors) . "</li></ul>";
-        $return['card'] .= ($join) ? "<b><span class='blok'>Характеристики</span></b><ul>$join</ul>" : "";
+                . "       <b><span class='blok'>Магазины</span></b><ul><li>" . join("</li><li>", $stors) . "</li></ul -->";
+        $return['card'] .= ($join) ? "<div class='char-blok'>$join</div>" : "";
         //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
         $return['card'] .= "   </div>"
@@ -316,8 +341,21 @@ class HtmlProviderService
                 . "				</div>
                                    
                             </div>
-                 </div>"
+                 </div>
+                 "
         ;
+         $return['card'].=""
+                 . "<div class=blok  >"
+                 . "    <div class='pw-contentblock cblock-5' >
+                            <div class='contentpadding ' >
+                                описание товара 
+                                <h3>Характеристики</h3>
+                                <div class='char-blok-bottom'>
+                                    $charsmore
+                                </div>
+                            </div>
+                        </div>"
+                 . "</div>";
 
         // exit(print_r($return));
 

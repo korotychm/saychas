@@ -1,35 +1,25 @@
 <?php
-//echo 
-if ($_GET[id]==1){
-	$url="http://SRV02:8000/SC/hs/site/get_product";
-	/*$headers=get_headers($url);
-	if ($headersss[0] != "HTTP/1.0 200 OK")	{
-		echo "<pre>" ; exit (print_r($headers));
-	} 
-	else echo "<pre>" ;
-	//echo "<pre>" ; exit (print_r($headers));/**/
-	$params = array($_POST['name'] => $_POST['value']);
-	$result = file_get_contents($url, false, stream_context_create(array(
-    'http' => array(
-        'method'  => 'POST',
-        'header'  => 'Content-type: application/x-www-form-urlencoded',
-        'content' => http_build_query($params))	
-		)));
-	echo "<pre>".date("r")."\n" ;
-	if($result) print_r(json_decode($result));
-	print_r($_REQUEST);
-	echo "</pre>";
-}
-if ($_GET[id]==2){
-	$return="";
+
+echo "
+<script>
+$('.plusweb-sliderpage').nivoSlider({ animSpeed: 500, pauseTime: 5000,controlNav:true});
+</script>
+
+<link rel='stylesheet' href='/css/ns/default.css' type='text/css' media='screen' />
+	<link rel='stylesheet' href='/css/ns/nivo-slider.css' type='text/css' media='screen' />
+	<script type='text/javascript' src='/js/nivo.slider.js'></script>
+	<div class=blokc style=''>
+		<div class=iblokl style='width:1600px; max-width:100%; /*border:1px solid red;*/' >
+			<div class='slider-wrapper theme-default' >
+				<div id='slider' class='nivoSlider' style='background:#fff url(/img/loader.gif) center no-repeat; ' >
+					<img src=/images/slides/01.jpg id=slide-01 />
+					<img src=/images/slides/03.jpg id=slide-02 />
+					<img src=/images/slides/03.jpg id=slide-03 />
+				</div>
+			</div>
+		</div>
+	</div>";
+
+
 	
-	//$list=array(); // плоучить от Сани
-	if (!$list or !is_array($list)) exit(date("r")."<h3>массив не получен</h3>"); 
-	$return.=date("r");	
-	$return.="<ul>";
-	foreach ($list as $row)
-	$return.="<ul>";"<li><a href=# rel='".$row['id']."' class=providers-list >".$row['title']."</a></li>";
-	$return.="</ul>";
-	exit ($return);
-}	
 ?>
