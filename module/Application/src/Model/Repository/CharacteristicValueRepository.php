@@ -4,16 +4,16 @@
 
 namespace Application\Model\Repository;
 
-use InvalidArgumentException;
-use RuntimeException;
+//use InvalidArgumentException;
+//use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Driver\ResultInterface;
-use Laminas\Db\ResultSet\HydratingResultSet;
+//use Laminas\Db\Adapter\Driver\ResultInterface;
+//use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Json\Json;
-use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-use Laminas\Db\Sql\Sql;
+//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+//use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\CharacteristicValue;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;

@@ -1,6 +1,6 @@
 <?php
 
-// src/Model/Repository/CharacteristicRepository.php
+// src/Helper/ArrayHelper.php
 
 namespace Application\Helper;
 

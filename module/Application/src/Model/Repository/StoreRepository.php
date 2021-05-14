@@ -4,8 +4,8 @@
 
 namespace Application\Model\Repository;
 
-use InvalidArgumentException;
-use RuntimeException;
+//use InvalidArgumentException;
+//use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
@@ -69,8 +69,6 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
 
         $select = $sql->select()->from('store')->columns(["id", "provider_id", "title", "description", "address", "geox", "geoy", "icon"])->where($where);
 
-//        $selectString = $sql->buildSqlString($select);
-
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -100,12 +98,13 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
         }
 
         if ((bool) $result['truncate']) {
-            $this->db->query("truncate table store")->execute();
+            $this->db->query("truncate table {$this->tableName}")->execute();
         }
 
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon']);
+
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

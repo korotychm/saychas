@@ -8,8 +8,8 @@ namespace Application\Model\Repository;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Json\Json;
-use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-use Laminas\Db\Sql\Sql;
+//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+//use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Brand;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
@@ -61,8 +61,8 @@ class BrandRepository extends Repository implements BrandRepositoryInterface
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `description`, `logo`) VALUES ( '%s', '%s', '%s', '%s')",
-                    $row['id'], $row['title'], $row['description'], $row['logo']);
+            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s')",
+                    $row['id'], $row['title'], $row['description'], $row['image']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

@@ -3,14 +3,14 @@
 
 namespace Application\Model\Repository;
 
-use InvalidArgumentException;
+//use InvalidArgumentException;
 //use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
-use Laminas\Hydrator\ClassMethodsHydrator;
+//use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\Db\Sql\Sql;
 //use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
@@ -538,6 +538,7 @@ End of number 1 */
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
+            
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

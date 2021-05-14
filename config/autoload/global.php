@@ -33,12 +33,13 @@ return [
         'adapters' => [
             'Application\Db\WriteAdapter' => [
                 'driver' => 'Pdo_Mysql',
-                'dsn'    => 'mysql:dbname=test_z;host=localhost;charset=utf8',
+//                'dsn'    => 'mysql:dbname=test_z;host=localhost;charset=utf8',
+                'dsn'    => 'mysql:dbname=saychas_z;host=localhost;charset=utf8',
                 'driver_options' => [
                     PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES \'UTF8\'',
                 ],
-                'username' => 'test_z',
-                'password' => 'test_z',
+                'username' => 'saychas_z',// 'test_z',
+                'password' => 'saychas_z',// 'test_z',
             ],
             'Application\Db\ReadOnlyAdapter' => [
                 'driver' => 'Pdo_Mysql',

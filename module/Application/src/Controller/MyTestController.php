@@ -32,6 +32,7 @@ use Application\Resource\StringResource;
 //use Laminas\Authentication\AuthenticationService;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
+//use Laminas\Diactoros\Response\RedirectResponse;
 use Application\Adapter\Auth\UserAuthAdapter;
 
 use Application\Entity\Post;
@@ -43,13 +44,10 @@ use Laminas\Session\Container;
 use Application\Model\Test2;
 use Application\Model\Track;
 use Application\Model\Entity\Characteristic;
-use \ReflectionClass;
-use Laminas\Http\Client;
-use Laminas\Http\Cookies;
-use Laminas\Http\Headers;
 use Laminas\Http\Header;
+use Laminas\Log\Logger;
+use Laminas\Log\Writer\Stream as StreamWriter;
 
-use Laminas\Db\Sql\Sql;
 
 
 class MyTestController extends AbstractActionController
@@ -78,6 +76,8 @@ class MyTestController extends AbstractActionController
     private $authService;
     private $db;
     private $userAdapter;
+    
+    private $logger;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -109,6 +109,10 @@ class MyTestController extends AbstractActionController
         $this->authService = $authService;
         $this->db = $db;
         $this->userAdapter = $userAdapter;
+        
+        $this->logger = new Logger();
+        $writer = new StreamWriter('php://output');
+        $this->logger->addWriter($writer);
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -400,6 +404,16 @@ class MyTestController extends AbstractActionController
 
     public function testIdentityAction()
     {
+//        $this->logger->alert('Banzaii');
+//        echo '<br/>';
+//        $this->logger->debug('debug', [$this->identity()]);
+//        echo '<br/>';
+//        $this->logger->log(0, 'message');
+//        echo '<br/>';
+//        $this->logger->crit('crit');
+//        echo '<br/>';
+//        $this->logger->info('info');
+//        echo '<br/>';
 //        $headers = $this->getRequest()->getHeaders();
 //        $header = $this->getRequest()->getHeader('Cookie');
 //        
@@ -479,13 +493,13 @@ class MyTestController extends AbstractActionController
 //        
 //exit;        
         
-        $user = new \Application\Model\Entity\User();
-        $user->setId(35);
-        $user->setName('4444');
-        $user->setPhone(1122775);
-        $user->setAddress('BBBBb1212');
-        $user->setGeodata('GGGG555333');
-        $user->setEmail('email8778');
+//        $user = new \Application\Model\Entity\User();
+//        $user->setId(35);
+//        $user->setName('4444');
+//        $user->setPhone(1122775);
+//        $user->setAddress('BBBBb1212');
+//        $user->setGeodata('GGGG555333');
+//        $user->setEmail('email8778');
 
 //        $provider = new \Application\Model\Entity\Provider();
 //        
@@ -497,15 +511,15 @@ class MyTestController extends AbstractActionController
 //        
 //        echo $user->getId().' '.$user->getName().'<br/>';
         
-        print_r($this->userRepository->persist($user,['id' => $user->getId()]));
-        
-        $users = $this->userRepository->findAll([]);
-        foreach ($users as $u) {
-            echo '<pre>';
-            print_r($u);
-            echo '</pre>';
-        }
-        exit;
+//        print_r($this->userRepository->persist($user,['id' => $user->getId()]));
+//        
+//        $users = $this->userRepository->findAll([]);
+//        foreach ($users as $u) {
+//            echo '<pre>';
+//            print_r($u);
+//            echo '</pre>';
+//        }
+//        exit;
         /**
 //        foreach ($users as $user) {
             echo '<pre>';
@@ -711,37 +725,6 @@ class MyTestController extends AbstractActionController
 
         $tree = $this->categoryRepository->findAll(['id' => 0]);
 
-//        $strategy = new \Laminas\Hydrator\Strategy\HydratorStrategy(
-//            new \Laminas\Hydrator\ReflectionHydrator(),
-//            \Application\Model\Entity\Categ::class
-//        );
-        
-//        $hydrated = $strategy->hydrate([
-//            'children' => $strategy->hydrate($tree[0]),
-//        ]);
-//        $i = 0;
-//        $builtTree = new \Application\Model\Entity\Categ();
-//        while(isset($tree[$i]['children'])) {
-//            $children = $tree[$i]['children'];
-//            $builtTree->Id = $tree[$i]['id'];
-//            $builtTree->Title = $tree[$i]['title'];
-//            $builtTree->ParentId = $tree[$i]['parent_id'];
-//            $builtTree->Children = $strategy->hydrate(['children' =>$children]);
-//            $i += 1;
-//        }
-//
-        //$categ = new \Application\Model\Entity\Categ();
-//        $hydrator = new \Laminas\Hydrator\ReflectionHydrator();
-//        $hydrator->addStrategy(
-//            'children',
-//            new \Laminas\Hydrator\Strategy\CollectionStrategy(
-//                new \Laminas\Hydrator\ReflectionHydrator(),
-//                \Application\Model\Entity\Categ::class
-//            ),
-//        );
-//
-//        $categs = $hydrator->hydrate($tree, (new \ReflectionClass(\Application\Model\Entity\Categ::class))->newInstanceWithoutConstructor());
-        
         echo '<pre>';
         print_r($tree);
         echo '</pre>';
@@ -750,9 +733,31 @@ class MyTestController extends AbstractActionController
         
     }
     
+    public function productAction()
+    {
+        $params = $this->params()->fromRoute();
+        $response = $this->getResponse();
+        
+        print_r($params);
+        
+        $validator = new \Laminas\I18n\Validator\IsInt();
+        
+        if( (false == $validator->isValid($params['product_id'])) ) {
+            $url = $this->url()->fromRoute('blog', ['id'=>$params['id']]);            
+            $response->getHeaders()->addHeaderLine(
+                'Location',
+                $url
+            );
+            $response->setStatusCode(301);
+        }
+        return $response;
+
+    }
+    
     public function blogAction()
     {
         $params = $this->params()->fromRoute();
+        
         print_r($params);
         return (new ViewModel())->setTerminal(true);
     }

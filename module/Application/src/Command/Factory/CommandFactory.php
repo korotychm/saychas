@@ -4,8 +4,8 @@
 namespace Application\Command\Factory;
 
 use Interop\Container\ContainerInterface;
-use Application\Model\Repository\UserRepository;
-use Application\Model\Repository\PostRepository;
+//use Application\Model\Repository\UserRepository;
+//use Application\Model\Repository\PostRepository;
 //use Application\Command\FetchImagesCommand;
 //use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Db\Adapter\Adapter;
@@ -21,8 +21,8 @@ class CommandFactory implements FactoryInterface
         }
         
         //$adapter = $container->get(AdapterInterface::class);
-        $userRepository = $container->get(UserRepository::class);
-        $postRepository = $container->get(PostRepository::class);
+//        $userRepository = $container->get(UserRepository::class);
+//        $postRepository = $container->get(PostRepository::class);
         $adapter = $container->get('Application\Db\WriteAdapter');
 //        $adapter = new Adapter([
 //            'driver'   => 'Pdo_Mysql',
@@ -34,8 +34,10 @@ class CommandFactory implements FactoryInterface
         return new $requestedName( // new FetchImagesCommand(
             $adapter,
             $requestedName,
-            $userRepository,
-            $postRepository
+            $container
+//            ,
+//            $userRepository,
+//            $postRepository
         );
     }
 }

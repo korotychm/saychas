@@ -4,8 +4,8 @@
 
 namespace Application\Model\Repository;
 
-use InvalidArgumentException;
-use RuntimeException;
+//use InvalidArgumentException;
+//use RuntimeException;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
@@ -14,8 +14,6 @@ use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Json\Json;
 use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-//use Laminas\Db\Sql\Select;
-//use Laminas\Db\Sql\Where;
 use Application\Model\Entity\Price;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 
@@ -72,9 +70,6 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
         }
         $select->where(['store_id' => $params['store_id'], 'product_id' => $params['product_id']]);
 
-//        $selectString = $sql->buildSqlString($select);
-//        echo $selectString.'<br/>';
-
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
@@ -90,66 +85,6 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 
         return $params['array'] == 1 ? $resultSet->toArray() : $resultSet;
     }
-
-//    public function findAll($params)
-//    {
-//        $sql    = new Sql($this->db);
-//        $select = $sql->select($this->tableName);
-//        if(isset($params['order']))     { $select->order($params['order']); }
-//        if(isset($params['limit']))     { $select->limit($params['limit']); }
-//        if(isset($params['offset']))    { $select->offset($params['offset']); }
-//        if(isset($params['sequence']))  { $select->where(['id'=>$params['sequence']]); }
-//        $stmt   = $sql->prepareStatementForSqlObject($select);
-//        $result = $stmt->execute();
-//
-//
-//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-//            return [];
-//        }
-//
-//        $resultSet = new HydratingResultSet(
-//            $this->hydrator,
-//            $this->prototype
-//        );
-//        $resultSet->initialize($result);
-//        return $resultSet;
-//    }
-
-    /**
-     * Returns a single price.
-     *
-     * @param  int $id Identifier of the price to return.
-     * @return Price
-     */
-//    public function find($id)
-//    {
-//        $sql       = new Sql($this->db);
-//        $select    = $sql->select($this->tableName);
-//        $select->where(['id = ?' => $id]);
-//
-//        $statement = $sql->prepareStatementForSqlObject($select);
-//        $result    = $statement->execute();
-//
-//        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
-//            throw new RuntimeException(sprintf(
-//                'Failed retrieving test with identifier "%s"; unknown database error.',
-//                $id
-//            ));
-//        }
-//
-//        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
-//        $resultSet->initialize($result);
-//        $price = $resultSet->current();
-//
-//        if (! $price) {
-//            throw new InvalidArgumentException(sprintf(
-//                'Price with identifier "%s" not found.',
-//                $id
-//            ));
-//        }
-//
-//        return $price;
-//    }
 
     /**
      * Adds given price into it's repository

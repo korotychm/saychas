@@ -30,8 +30,8 @@ class PriceRepositoryFactory implements FactoryInterface
 
         return new PriceRepository(
                 $adapter,
-                $hydrator, // new ReflectionHydrator(),
-                new Price//(0, 0, 0, '')
+                $hydrator,
+                new Price
         );
     }
 

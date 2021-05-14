@@ -27,7 +27,9 @@
         "laminas/laminas-authentication": "^2.8",
         "laminas/laminas-mvc-plugin-identity": "^1.2",
         "laminas/laminas-http": "^2.14",
-        "laminas/laminas-view": "^2.12"
+        "laminas/laminas-view": "^2.12",
+        "laminas/laminas-i18n": "^2.11",
+        "laminas/laminas-log": "^2.13"
     },
     "autoload": {
         "psr-4": {

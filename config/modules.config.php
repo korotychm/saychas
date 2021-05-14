@@ -12,6 +12,8 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
+    'Laminas\Log',
+    'Laminas\I18n',
     'Laminas\Mvc\Plugin\Identity',
     'Laminas\Session',
     'Laminas\Cache',

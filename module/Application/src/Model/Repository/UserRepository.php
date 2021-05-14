@@ -7,10 +7,10 @@ namespace Application\Model\Repository;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
+//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\User;
 use Application\Model\RepositoryInterface\RepositoryInterface;
-use Laminas\Db\Sql\Sql;
+//use Laminas\Db\Sql\Sql;
 
 class UserRepository extends Repository implements RepositoryInterface
 {
