@@ -33,7 +33,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "module/Application/src/"
+            "Application\\": "module/Application/src/",
+            "ControlPanel\\": "module/ControlPanel/src/"
         },
         "psr-0": {
             "": "src/"

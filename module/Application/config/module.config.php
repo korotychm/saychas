@@ -24,6 +24,7 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Resource\StringResource;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\Router\Http\Regex;
+use Laminas\Router\Http\Hostname;
 
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -65,6 +66,33 @@ return [
 //                    'spec' => '/blog[/%id%[/%product_id%]]',
 //                ],
 //            ],
+            
+//            'lk.saychas-z.local' => [
+//                'type' => Hostname::class,
+//                'options' => [
+//                    'route' => ':3rd.:2nd.:1st',
+//                    'constraints' => [
+//                        ':3rd' => 'lk',
+//                        ':2nd' => 'saychas-z',
+//                        ':1st' => 'local',
+//                    ],
+//                ],
+//                'may_terminate' => true,
+//                'child_routes' => [
+//                    'index' => [
+//                        'type' => Literal::class,
+//                        'options' => [
+//                            'route' => '/index',
+//                            'defaults' => [
+//                                'controller' => \ControlPanel\Controller\IndexController::class,
+//                                'action' => 'index',
+//                            ],
+//                        ],
+//                        'may_terminate' => true,
+//                    ],
+//                ],
+//            ],
+            
             'home' => [
                 'type'    => Literal::class,
                 'options' => [

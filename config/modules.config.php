@@ -30,4 +30,5 @@ return [
     'DoctrineORMModule',
     'Laminas\Diactoros',
     'Application',
+    'ControlPanel',
 ];
