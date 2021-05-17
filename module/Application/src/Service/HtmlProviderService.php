@@ -10,6 +10,7 @@ use Application\Resource\StringResource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -19,18 +20,21 @@ class HtmlProviderService
 {
 
     private $stockBalanceRepository;
+    private $brandRepository;
     private $providerRepository;
     private $priceRepository;
     private $characteristicRepository;
 
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
+            BrandRepositoryInterface $brandRepository,
             ProviderRepositoryInterface $providerRepository,
             PriceRepositoryInterface $priceRepository,
             CharacteristicRepositoryInterface $characteristicRepository
     )
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
+        $this->brandRepository = $brandRepository;
         $this->providerRepository = $providerRepository;
         $this->priceRepository = $priceRepository;
         $this->characteristicRepository = $characteristicRepository;
@@ -229,26 +233,24 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();
-            if (!$speed or $speed < $timeDelevery)
+            if (!$speed or $speed < $timeDelevery){
                 $speed = (int) $timeDelevery;
+            }   
             ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$speed" . "ч</b>" : $speedlable = "";
             $filtersTmp = explode(",", $product->getParamValueList());
             $filters = array_merge($filters, $filtersTmp);
 
             $id = $product->getId();
-
             $title = $product->getTitle();
             $categoryId = $product->getCategoryId();
             //$category = $product->getCategoryTitle();
 
-
             $img[] = $product->getHttpUrl();
-            // ?"<img src='/images/product/{$product->getHttpUrl()}' alt='alt' class='productimage'/>":"";
             $filtersTmp = explode(",", $product->getParamValueList2());
             $filters = array_merge($filters, $filtersTmp);
             $vendor = $product->getVendorCode();
             $brand = $product->getBrandTitle();
-            //$totalRest +=$r;
+            $description = $product->getDescription();
             $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
             $rst[$product->getStoreId()] = $r;
         }
@@ -263,20 +265,28 @@ class HtmlProviderService
             if ($characterictics = $this->characteristicRepository->getCharacteristicFromList($join2))
                 $j=0;
                     foreach ($characterictics as $char) {
-                      //$chars .= "<div class='char-row'><span class='char-title'><span>{$char->getTitle()}({$char->getType()})</span></span><span class=char-value ><span>{$char->getVal()}</span></span></div>";
-                         ($j< 10 )? $chars .= "<div class='char-row'><span class='char-title'><span>{$char->getTitle()}</span></span><span class=char-value ><span>{$char->getVal()}</span></span></div>"
-                               : $charsmore .="<div class='char-row'><span class='char-title'><span>{$char->getTitle()}</span></span><span class=char-value ><span>{$char->getVal()}</span></span></div>";
-                        $j++;/**/
+                        $bool=["нет","да"];
+                        $value=$char->getVal();
+                        
+                        if ($char->getType() == 3 )   $value = $bool[$value];    
+                        if ($char->getType() == 6 ) { 
+                            $b = $this->brandRepository->findFirstOrDefault(['id' => $value]); 
+                            $value =$b->getTitle().(($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":""); 
+                        }
+                        elseif ($char->getType() == 7 )   $value="<div class='cirkul' style='background-color:$value'></div>";
+                        ($char->getType() == 0 )?$charRow="<h3>{$char->getTitle()}</h3>":
+                            $charRow="<div class='char-row'><span class='char-title'><span>{$char->getTitle()}</span></span><span class=char-value ><span>$value</span></span></div>";
+                        
+                        
+                       ($j< 10 )?$chars .= $charRow:$charsmore.=$charRow;
+                        $j++;
                     }
                 
             $join = $chars;
         } else
             $join = "";
-        //$join=print_r($filters,true);*/
-
         $j = 0;
         $img = array_unique($img);
-        //exit (print_r($img));   
         foreach ($img as $im) {
             if ($im) {
                 $borderred="";
@@ -284,21 +294,15 @@ class HtmlProviderService
                 if (!$j) {
                     $mainimage = "<div class='square'><div class='squarecontent'>$image</div></div>";   
                     $borderred = " borderred ";
+                }
                 $j++;
-                    
-                } else $j++;
                 $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />"; 
                 $imgicons .= "<div class='product-image-container-mini iblok $borderred' >$image</div>";
                 
             }
         }
-
-
-
-        // $return['filter'] = $join;
         $return['title'] = $title;
         $return['categoryId'] = $categoryId;
-        //$return['categoryTitle'] =$category;
         $return['card'] .= ""
                 . "<div class='pw-contentblock cblock-3'>
                     <div class='contentpadding' id=productpageimg>
@@ -348,16 +352,14 @@ class HtmlProviderService
                  . "<div class=blok  >"
                  . "    <div class='pw-contentblock cblock-5' >
                             <div class='contentpadding ' >
-                                описание товара 
-                                <h3>Характеристики</h3>
+                               <p>".str_replace("\n","</p><p>", $description)."</p>" 
+                                .(($charsmore)?"<h3>Характеристики</h3>
                                 <div class='char-blok-bottom'>
                                     $charsmore
-                                </div>
+                                </div>":"")."
                             </div>
                         </div>"
                  . "</div>";
-
-        // exit(print_r($return));
 
         return $return;
     }

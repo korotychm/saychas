@@ -357,6 +357,7 @@ End of number 1 */
                 $filteredProducts[] = $product;
             }
         }
+        
         return $filteredProducts;
     }
 
