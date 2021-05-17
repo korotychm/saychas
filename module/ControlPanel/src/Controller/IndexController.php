@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ControlPanel\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
@@ -43,8 +44,10 @@ class IndexController extends AbstractActionController
         $routeName = $routeMatch->getMatchedRouteName();
         
         print_r($routeName);
-
-        exit;
+//
+//        exit;
+        
+        return new ViewModel(['banzaii' => 'vonzaii']);
     }    
     
 }
