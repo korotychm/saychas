@@ -99,21 +99,16 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $answer = print_r($result['data'], true);
-//        foreach ($result['data'] as $row) {
-//            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
-//                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
-//            
-//            $answer .= "sql = ";
-//            
-//            try {
-//                $query = $this->db->query($sql);
-//                $query->execute();
-//            } catch (InvalidQueryException $e) {
-//                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-//            }
-//        }
-            return ['result' => false, 'description' => $answer, 'statusCode' => 401];
+        foreach ($result/*['data']*/ as $row) {
+            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
+                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+            } catch (InvalidQueryException $e) {
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+            }
+        }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
 
