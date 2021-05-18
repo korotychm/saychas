@@ -8,6 +8,7 @@ use Interop\Container\ContainerInterface;
 use Application\Model\Entity\User;
 //use Application\Model\Entity\Entity;
 use Application\Model\Repository\UserRepository;
+use Application\Model\Repository\UserDataRepository;
 //use Application\Model\Repository\PostRepository;
 //use Laminas\Hydrator\Aggregate\HydrateEvent;
 use Laminas\Db\Adapter\AdapterInterface;
@@ -27,7 +28,7 @@ class UserRepositoryFactory implements FactoryInterface
         }
 
         $adapter = $container->get(AdapterInterface::class);
-//        $postRepository = $container->get(PostRepository::class);
+        $userDataRepository = $container->get(UserDataRepository::class);
 //        $cache             = new \Laminas\Cache\Storage\Adapter\Memory;// new Memory();
 //        $userListener = function (HydrateEvent $event) use ($postRepository) {
 //            $data = $event->getHydrationData();//
@@ -58,7 +59,7 @@ class UserRepositoryFactory implements FactoryInterface
 //        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);
 
         $prototype = new User;
-//        $prototype::$postRepository = $postRepository;
+        $prototype::$userDataRepository = $userDataRepository;
 
         return new UserRepository(
                 $adapter,

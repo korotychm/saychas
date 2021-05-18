@@ -1,6 +1,6 @@
 <?php
 
-// src/Model/Repository/BrandRepository.php
+// src/Model/Repository/UserRepository.php
 
 namespace Application\Model\Repository;
 

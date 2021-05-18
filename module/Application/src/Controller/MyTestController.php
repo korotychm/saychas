@@ -378,23 +378,23 @@ class MyTestController extends AbstractActionController
   
     public function testClientAction()
     {
-        $cookie = Header\SetCookie::fromString('Set-Cookie: flavor=chocolate%20chips');
-        
-        print_r($cookie->getName());
-        
-        $headers = $this->getRequest()->getHeaders();
-        $header = $this->getRequest()->getHeader('Cookie');
-        $host = $this->getRequest()->getHeader('Host');
-        
-        echo '<pre>';
-        print_r($_SERVER['HTTP_HOST']);
-        echo '<br/>';
-        print_r($host->Host);
-        echo '<br/>';
-        print_r($_COOKIE);
-        print_r($headers->toArray());
-        print_r($header->TestCookie);
-        echo '</pre>';
+//        $cookie = Header\SetCookie::fromString('Set-Cookie: flavor=chocolate%20chips');
+//        
+//        print_r($cookie->getName());
+//        
+//        $headers = $this->getRequest()->getHeaders();
+//        $header = $this->getRequest()->getHeader('Cookie');
+//        $host = $this->getRequest()->getHeader('Host');
+//        
+//        echo '<pre>';
+//        print_r($_SERVER['HTTP_HOST']);
+//        echo '<br/>';
+//        print_r($host->Host);
+//        echo '<br/>';
+//        print_r($_COOKIE);
+//        print_r($headers->toArray());
+//        print_r($header->TestCookie);
+//        echo '</pre>';
         
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->userIdentity = ['my_username', 'my_data'];
@@ -445,16 +445,6 @@ class MyTestController extends AbstractActionController
 //        
 //        exit;
 
-//| id          | varchar(9)   | NO   | PRI |         |       |
-//| category_id | varchar(9)   | NO   |     |         |       |
-//| title       | varchar(255) | NO   |     |         |       |
-//| type        | tinyint(1)   | NO   |     | 1       |       |
-//| filter      | tinyint(1)   | NO   |     | 0       |       |
-//| group       | tinyint(1)   | NO   |     | 0       |       |
-//| sort_order  | int(11)      | NO   |     | 1       |       |
-//| unit        | tinytext     | YES  |     | NULL    |       |
-//| description | tinytext 
-        
 //        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
 //        
 //        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
@@ -568,7 +558,6 @@ class MyTestController extends AbstractActionController
         $result = $authAdapter->authenticate();
 
         $auth = $this->authService;
-        
         
         $userAuthAdapter = new UserAuthAdapter($this->db);
         

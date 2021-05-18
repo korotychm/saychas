@@ -1,42 +1,26 @@
 <?php
 
-// src/Model/Entity/User.php
+// src/Model/Entity/UserData.php
 
 namespace Application\Model\Entity;
 
-use Application\Model\Repository\UserDataRepository;
 /**
- * Description of User
+ * Description of UserData
  *
  * @author alex
  */
-class User extends Entity
+class UserData extends Entity
 {
 
-    /**
-     * @var UserDataRepository
-     */
-    public static UserDataRepository $userDataRepository;
-    
     /**
      * @var int
      */
     protected $id;
 
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var int
      */
-    protected $phone;
-
-    /**
-     * @var string
-     */
-    protected $email;
+    protected $user_id;
 
     /**
      * @var text
@@ -75,69 +59,25 @@ class User extends Entity
     }
 
     /**
-     * Set name.
+     * Set user_id.
      *
-     * @param string $name
+     * @param int $userId
      * @return $this
      */
-    public function setName(string $name)
+    public function setUserId(string $userId)
     {
-        $this->name = $name;
+        $this->user_id = $userId;
         return $this;
     }
 
     /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set phone.
-     *
-     * @param int $phone
-     * @return $this
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-        return $this;
-    }
-
-    /**
-     * Get phone
+     * Get user_id.
      *
      * @return int
      */
-    public function getPhone()
+    public function getUserId()
     {
-        return $this->phone;
-    }
-
-    /**
-     * Set email.
-     *
-     * @param string $email
-     * @return $this
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * Get email.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
+        return $this->user_id;
     }
 
     /**
@@ -194,4 +134,14 @@ class User extends Entity
         return $this->timestamp;
     }
 
+    /**
+     * Set timestamp
+     * 
+     * @return timestamp
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
+    }
 }
