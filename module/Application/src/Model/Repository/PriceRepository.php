@@ -100,8 +100,8 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
         }
 
         foreach ($result/*['data']*/ as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
+            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, %u, '%s')",
+                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['old_price'], $row['provider_id']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

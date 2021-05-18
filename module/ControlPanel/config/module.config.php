@@ -3,7 +3,7 @@
 namespace ControlPanel;
 
 use Laminas\Router\Http\Literal;
-//use Laminas\Router\Http\Segment;
+use Laminas\Router\Http\Segment;
 use Laminas\Router\Http\Hostname;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 //use ControlPanel\Controller\IndexController;
@@ -16,20 +16,20 @@ return [
     ],
     'router' => [
         'routes' => [
-//            'controlpanel' => [
-//                'type'    => Segment::class,
-//                'options' => [
-//                    'route' => '/controlpanel[/:action[/:id]]',
-//                    'constraints' => [
-//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-//                        'id'     => '[0-9]+',
-//                    ],
-//                    'defaults' => [
-//                        'controller' => \ControlPanel\Controller\IndexController::class,
-//                        'action'     => 'index',
-//                    ],
-//                ],
-//            ],
+            'control-panel' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/control-panel[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => \ControlPanel\Controller\IndexController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
 //            'lk.saychas.com' => [
 //                'type' => Hostname::class,
 //                'options' => [
