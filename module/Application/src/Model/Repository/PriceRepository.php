@@ -109,7 +109,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => false, 'description' => 'hui vam', 'statusCode' => 405];
     }
 
     /**
