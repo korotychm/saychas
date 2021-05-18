@@ -320,10 +320,8 @@ class HtmlProviderService
                 <div class='contentpadding'>
                       <div class='productpagecard ' >"
                 . "   <div class='content opacity-" . $r . "'>"
-                . "       <!-- span class='blok'>Артикул: " . $vendor . "</span>"
-                . "       <span class='blok'>Торговая марка: " . $brand . "</span>"
-                . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
-                . "       <b><span class='blok'>Магазины</span></b><ul><li>" . join("</li><li>", $stors) . "</li></ul -->";
+                ;
+        
         $return['card'] .= ($join) ? "<div class='char-blok'>$join</div>" : "";
         //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
         //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
@@ -344,7 +342,12 @@ class HtmlProviderService
 									"
                 . "				</div>
                                    
-                            </div>
+                            
+                          <P class='mini opacity0'><UL><span class='blok'>Артикул: " . $vendor . "</span>"
+                . "       <span class='blok'>Торговая марка: " . $brand . "</span>"
+                . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
+                . "       <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li></ul></P>
+        </div>
                  </div>
                  "
         ;
