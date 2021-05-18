@@ -30,31 +30,31 @@ return [
 //                    ],
 //                ],
 //            ],
-            'lk.saychas.com' => [
-                'type' => Hostname::class,
-                'options' => [
-                    'route' => ':3rd.:2nd.:1st',
-                    'constraints' => [
-                        ':3rd' => 'lk',
-                        ':2nd' => 'saychas-z',
-                        ':1st' => 'local',
-                    ],
-                ],
-//                'may_terminate' => true,
-                'child_routes' => [
-                    'index' => [
-                        'type' => Literal::class,
-                        'options' => [
-                            'route' => '/',
-                            'defaults' => [
-                                'controller' => \ControlPanel\Controller\IndexController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                        'may_terminate' => true,
-                    ],
-                ],
-            ],
+//            'lk.saychas.com' => [
+//                'type' => Hostname::class,
+//                'options' => [
+//                    'route' => ':3rd.:2nd.:1st',
+//                    'constraints' => [
+//                        ':3rd' => 'lk',
+//                        ':2nd' => 'saychas-z',
+//                        ':1st' => 'local',
+//                    ],
+//                ],
+////                'may_terminate' => true,
+//                'child_routes' => [
+//                    'index' => [
+//                        'type' => Literal::class,
+//                        'options' => [
+//                            'route' => '/',
+//                            'defaults' => [
+//                                'controller' => \ControlPanel\Controller\IndexController::class,
+//                                'action' => 'index',
+//                            ],
+//                        ],
+//                        'may_terminate' => true,
+//                    ],
+//                ],
+//            ],
         ],
     ],
     'view_manager' => [
