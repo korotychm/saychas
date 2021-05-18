@@ -99,7 +99,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $answer = 'hui vam';
+        $answer = print_r($result['data'], true);
 //        foreach ($result['data'] as $row) {
 //            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
 //                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
