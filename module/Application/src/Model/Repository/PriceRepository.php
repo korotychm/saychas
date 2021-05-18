@@ -99,10 +99,12 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $answer = [];
+        $answer = '';
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, '%s')",
                     $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['provider_id']);
+            
+            $answer .= $sql."\n";
             
             try {
                 $query = $this->db->query($sql);
@@ -111,7 +113,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
-            return ['result' => false, 'description' => $sql, 'statusCode' => 405];
+            return ['result' => false, 'description' => $answer, 'statusCode' => 405];
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
 
