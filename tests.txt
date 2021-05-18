@@ -8,11 +8,17 @@ curl -i -L saychas-z.local/receive-product --data '[{"id": "1" }]' -X DELETE
 curl -i -L saychas-z.local/receive-product --data '{"truncate": true,"data": [{"id": "000000000006","parent_id": "","category_id": "000000018","title": "Ряженка","description": "","vendor_code": "Р-00123","provider_id": "00004","brand_id": "","characteristics": [],"images": []},{"id": "000000000001","parent_id": "","category_id": "000000006","title": "Смартфон vivo Y31, голубой океан","description": "","vendor_code": "PL_08/17","provider_id": "00003","brand_id": "000002","characteristics": [{"id": "000000006","value": 6.76},{"id": "000000007","value": "000000003"},{"id": "000000008","value": ""},{"id": "000000009","value": "50/20/12/TOF"},{"id": "000000010","value": "13/TOF"}],"images": ["30046493b.jpg","30046493b2.jpg"]}]}'
 
 
+/* old price test */
 curl -i -L saychas-z.local/receive-price --data '{ "truncate": false, "data": [{"product_id": "1", "store_id": "0002","reserve": "1",  "unit": "unit", "price": 1234, "provider_id": "000003" }] }'
+/* new one; new field added: old_price */
+curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "store_id": "0002","reserve": "1",  "unit": "unit", "price": 1234, "old_price": 999, "provider_id": "000003" }]'
 curl -i -L saychas-z.local/receive-price --data '[{"product_id": "1", "provider_id": "0002" }]' -X DELETE
 
+/* old stock balance structure */
 curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "store_id": "0002","rest": 1 }] }'
 curl -i -L saychas-z.local/receive-stock-balance --data '{"truncate": false, "data": [{"product_id": "1", "size": "XXL", "store_id": "0002","rest": 1 }] }'
+/* new one */
+curl -i -L saychas-z.local/receive-stock-balance --data '[{"product_id": "1", "size": "XXL", "store_id": "0002","rest": 1 }]'
 curl -i -L saychas-z.local/receive-stock-balance --data '[{"product_id": "1", "store_id": "0002" }]' -X DELETE
 
 
