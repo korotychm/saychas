@@ -522,3 +522,4 @@ img.zero, .zeroblok {
 #footer .fcontent {width:100%; max-width: calc(97% - 465px); margin-left:2.5%; margin:68px 0;}
 #footer .fcontent a {color:#fff}
 .activlink {color: var(--red)!important}
+.cirkul {display:inline-block; width:40px; height:40px; border-radius:40px; }

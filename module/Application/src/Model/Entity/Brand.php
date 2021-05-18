@@ -33,7 +33,7 @@ class Brand extends Entity
     /**
      * @var string
      */
-    protected $logo;
+    protected $image;
 
     /**
      * Get id.
@@ -106,27 +106,27 @@ class Brand extends Entity
     }
 
     /**
-     * Set logo.
+     * Set image.
      *
-     * @param string $logo
+     * @param string $image
      *
      * @return Brand
      */
-    public function setLogo($logo)
+    public function setImage($image)
     {
-        $this->logo = $logo;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * Get logo.
+     * Get image.
      *
      * @return string
      */
-    public function getLogo()
+    public function getImage()
     {
-        return $this->logo;
+        return $this->image;
     }
 
 }
