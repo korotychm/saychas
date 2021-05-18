@@ -93,6 +93,8 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
      */
     public function replace($content)
     {
+        print_r($content);
+        exit;
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
