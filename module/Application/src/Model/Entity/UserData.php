@@ -35,7 +35,7 @@ class UserData extends Entity
     /**
      * @var timestamp
      */
-    protected $timestamp;
+    protected $time;
 
     /**
      * Set id.

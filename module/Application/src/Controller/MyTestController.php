@@ -404,6 +404,13 @@ class MyTestController extends AbstractActionController
 
     public function testIdentityAction()
     {
+//        $this->authService->clearIdentity();
+//        print_r($this->authService->hasIdentity());
+        echo 'banzaii';
+        //print_r($this->identity());
+        print_r($this->authService->getIdentity());
+        exit;
+        
 //        $this->logger->alert('Banzaii');
 //        echo '<br/>';
 //        $this->logger->debug('debug', [$this->identity()]);

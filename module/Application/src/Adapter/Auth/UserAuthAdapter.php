@@ -47,44 +47,24 @@ class UserAuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {
-//    const FAILURE                        = 0;
-//
-//    /**
-//     * Failure due to identity not being found.
-//     */
-//    const FAILURE_IDENTITY_NOT_FOUND     = -1;
-//
-//    /**
-//     * Failure due to identity being ambiguous.
-//     */
-//    const FAILURE_IDENTITY_AMBIGUOUS     = -2;
-//
-//    /**
-//     * Failure due to invalid credential being supplied.
-//     */
-//    const FAILURE_CREDENTIAL_INVALID     = -3;
-//
-//    /**
-//     * Failure due to uncategorized reasons.
-//     */
-//    const FAILURE_UNCATEGORIZED          = -4;
-//
-//    /**
-//     * Authentication success.
-//     */
-//    const SUCCESS                        = 1;
-//
         $container = new Container(StringResource::SESSION_NAMESPACE);
 
         $code = UserAuthResult::FAILURE;
 
-//        if(!isset($container->userIdentity)) {
-//            $user = new User();
-//            $user->init();
-//            $userId = $this->userRepository->persist($user, []);
-//            $this->identity = $container->userIdentity = $userId;
-//            $code = UserAuthResult::SUCCESS;
-//        }
+        if(!isset($container->userIdentity)) {
+            $user = new User();
+            $user->init();
+            $userId = $this->userRepository->persist($user, []);
+            $this->identity = $container->userIdentity = $userId;
+            $code = UserAuthResult::SUCCESS;
+        }else{
+            $user = $this->userRepository->find(['id' => $container->userIdentity]);
+            $this->identity = $container->userIdentity;
+            if(null == $user) {
+                throw new \Exception('Unknown identity error');
+            }
+            $code = UserAuthResult::SUCCESS;
+        }
         
         $result = new UserAuthResult($code, $this->identity);
         return $result;

@@ -7,6 +7,7 @@ namespace Application\Controller\Factory;
 use Interop\Container\ContainerInterface;
 //use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Authentication\AuthenticationService;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
@@ -18,6 +19,8 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+
+use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Controller\IndexController;
@@ -47,8 +50,10 @@ class IndexControllerFactory implements FactoryInterface
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
+        $userRepository = $container->get(UserRepository::class);
+        $authService = $container->get(AuthenticationService::class);
         return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic,
-                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider);
+                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService);
     }
 
 }

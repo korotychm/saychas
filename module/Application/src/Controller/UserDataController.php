@@ -10,7 +10,9 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Application\Model\Entity\User;
+//use Laminas\Authentication\AuthenticationService;
+//use Application\Model\Entity\User;
+use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Resource\StringResource;
@@ -55,31 +57,38 @@ class UserDataController extends AbstractActionController
 
     public function clearAction()
     {
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        unset($container->userIdentity);
         if($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
         }
         return $this->getResponse();
     }
+    
+    public function addUserDataAction()
+    {
+        $userId = $this->authService->getIdentity();
+        $userData = new UserData();
+        $userData->setAddress('address1');
+        $userData->setGeodata('geodata1');
+        //$userData->setTime(time());
+        
+        if(null != $userId) {
+            $user = $this->userRepository->find(['id'=>$userId]);
+            if(null != $user) {
+                // User found
+                $user->setUserData([$userData]);
+            }
+        }
+        return $this->getResponse();
+    }
+    
     public function createAction()
     {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        
-        if(!isset($container->userIdentity)) {
-            $user = new User();
-            $user->init();
-            $userId = $this->userRepository->persist($user, []);
-            $container->userIdentity = $userId;
-        }
         $userAuthAdapter = new UserAuthAdapter($this->userRepository);
-//        $userAuthAdapter->setIdentity($container->userIdentity);
-//        $userAuthAdapter->setCredential($container->userIdentity);
         $result = $this->authService->authenticate($userAuthAdapter);
-        $code = $result->getCode();
-        $this->logger->info('<br/>');
-        $this->logger->info($code);
-        if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
-            unset($container->userIdentity);
-        }
+        $identity = $this->identity();// $result->getIdentity();
+        $this->logger->info('identity = '.$identity);
 
         return $this->getResponse();
         
@@ -88,11 +97,6 @@ class UserDataController extends AbstractActionController
     public function saveAction()
     {
         $post = $this->params()->fromPost();
-        
-//        $users = $this->userRepository->findAll([]);
-//        foreach ($users as $user) {
-//            print_r($user);
-//        }
 
         $user = new \Application\Model\Entity\User();
         $user->setId(1);
@@ -121,8 +125,6 @@ class UserDataController extends AbstractActionController
         $user->setUserData($ud);
         
         try {
-//            $id = $this->userRepository->persist($user, []);
-//            echo $id.'<br/>';
             $user_data = $user->getUserData();
             foreach($user_data as $udata) {
                 echo '<pre>';

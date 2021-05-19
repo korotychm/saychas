@@ -12,6 +12,7 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
+use Laminas\Authentication\AuthenticationService;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
@@ -23,10 +24,13 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\Repository\UserRepository;
+
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
 use Laminas\Session\Container;
+use Application\Adapter\Auth\UserAuthAdapter;
 
 class IndexController extends AbstractActionController
 {
@@ -48,6 +52,8 @@ class IndexController extends AbstractActionController
     private $config;
     private $htmlProvider;
     private $htmlFormProvider;
+    private $userRepository;
+    private $authService;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -55,7 +61,7 @@ class IndexController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider)
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -72,6 +78,8 @@ class IndexController extends AbstractActionController
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
         $this->htmlFormProvider = $htmlFormProvider;
+        $this->userRepository = $userRepository;
+        $this->authService = $authService;
     }
 
     public function onDispatch(MvcEvent $e) 
@@ -92,6 +100,13 @@ class IndexController extends AbstractActionController
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
         ]);
+        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
+        $result = $this->authService->authenticate($userAuthAdapter);
+        $code = $result->getCode();
+        if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
+            throw new \Exception('Unknown error in IndexController');
+        }
+        
         //$this->layout()->setTemplate('layout/mainpage');
         return $response;
         
