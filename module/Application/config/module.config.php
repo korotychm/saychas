@@ -103,6 +103,26 @@ return [
                     ],
                 ],
             ],
+            'create-user-data' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/create-user-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'create',
+                    ],
+                ],
+            ],
+            'clear-user-data' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/clear-user-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'clear',
+                    ],
+                ],
+            ],
             'home' => [
                 'type'    => Literal::class,
                 'options' => [

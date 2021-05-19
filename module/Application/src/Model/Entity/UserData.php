@@ -64,7 +64,7 @@ class UserData extends Entity
      * @param int $userId
      * @return $this
      */
-    public function setUserId(string $userId)
+    public function setUserId($userId)
     {
         $this->user_id = $userId;
         return $this;
@@ -125,23 +125,23 @@ class UserData extends Entity
     }
     
     /**
-     * Get timestamp
+     * Get time
      * 
      * @return string
      */
-    public function getTimestamp()
+    public function getTime()
     {
-        return $this->timestamp;
+        return $this->time;
     }
 
     /**
-     * Set timestamp
+     * Set time
      * 
-     * @return timestamp
+     * @return $this
      */
-    public function setTimestamp($timestamp)
+    public function setTime($time)
     {
-        $this->timestamp = $timestamp;
+        $this->time = $time;
         return $this;
     }
 }

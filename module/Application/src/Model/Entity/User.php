@@ -52,6 +52,33 @@ class User extends Entity
      * @var timestamp
      */
     protected $timestamp;
+    
+    protected $user_data;
+    
+    public function setUserData(array $userData)
+    {
+        foreach($userData as $ud) {
+            $ud->setUserId($this->getId());
+            self::$userDataRepository->persist($ud, []);
+        }
+        return $this;
+    }
+    
+    public function getUserData()
+    {
+        $this->user_data = self::$userDataRepository->findAll(['id'=>$this->getId()]);
+        return $this->user_data;
+    }
+    
+    public function init()
+    {
+        $this->setName('');
+        $this->setPhone(0);
+        $this->setEmail('');
+        $this->setGeodata('');
+        //$this->setTimestamp(mktime(1));
+        $this->setAddress('');        
+    }
 
     /**
      * Set id.
@@ -182,6 +209,18 @@ class User extends Entity
     public function getGeodata()
     {
         return $this->geodata;
+    }
+    
+    /**
+     * Set timestamp.
+     * 
+     * @param timestamp $timestamp
+     * @return $this
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
     }
     
     /**

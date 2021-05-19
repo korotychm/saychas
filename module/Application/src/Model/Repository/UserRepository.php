@@ -40,6 +40,25 @@ class UserRepository extends Repository implements RepositoryInterface
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
+    
+    public function persist($entity, $params, $hydrator = null)
+    {
+        if (null == $hydrator) {
+            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+
+            $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+            $composite->addFilter(
+                    'excludeuserdata',
+                    new \Laminas\Hydrator\Filter\MethodMatchFilter('getUserData'),
+                    \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+            );
+
+            $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+        }
+
+        return parent::persist($entity, $params, $hydrator);
+    }
+    
 
 }
 

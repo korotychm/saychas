@@ -18,7 +18,7 @@ class UserDataRepository extends Repository implements RepositoryInterface
     /**
      * @var string
      */
-    protected $tableName = "user";
+    protected $tableName = "user_data";
 
     /**
      * @var UserData
