@@ -73,8 +73,8 @@ class User extends Entity
     public function init()
     {
         $this->setName('');
-        $this->setPhone(0);
-        $this->setEmail('');
+        //$this->setPhone(0);
+        //$this->setEmail('');
         $this->setGeodata('');
         //$this->setTimestamp(mktime(1));
         $this->setAddress('');        

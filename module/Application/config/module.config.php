@@ -123,6 +123,16 @@ return [
                     ],
                 ],
             ],
+            'add-user-data' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/add-user-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'addUserData',
+                    ],
+                ],
+            ],
             'home' => [
                 'type'    => Literal::class,
                 'options' => [
