@@ -16,15 +16,16 @@ use Laminas\Router\Http\Segment;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
 use Application\Controller\Factory\MyTestControllerFactory;
+use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
-use Application\Resource\StringResource;
+//use Application\Resource\StringResource;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-use Laminas\Router\Http\Regex;
-use Laminas\Router\Http\Hostname;
+//use Laminas\Router\Http\Regex;
+//use Laminas\Router\Http\Hostname;
 
 
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
@@ -92,7 +93,36 @@ return [
 //                    ],
 //                ],
 //            ],
-            
+            'save-user-data' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/save-user-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'save',
+                    ],
+                ],
+            ],
+            'create-user-data' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/create-user-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'create',
+                    ],
+                ],
+            ],
+            'clear-user-data' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/clear-user-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'clear',
+                    ],
+                ],
+            ],
             'home' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -498,6 +528,7 @@ return [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
             Controller\MyTestController::class => MyTestControllerFactory::class,
+            Controller\UserDataController::class => UserDataControllerFactory::class,
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
         ],
@@ -566,6 +597,7 @@ return [
             \Application\Model\Repository\ProductImageRepository::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
             \Application\Model\Repository\HandbookRelatedProductRepository::class => \Application\Model\Factory\HandbookRelatedProductRepositoryFactory::class,
             \Application\Model\Repository\UserRepository::class => \Application\Model\Factory\UserRepositoryFactory::class,
+            \Application\Model\Repository\UserDataRepository::class => \Application\Model\Factory\UserDataRepositoryFactory::class,
             \Application\Model\Repository\PostRepository::class => \Application\Model\Factory\PostRepositoryFactory::class,
             //\Application\Hydrator\UserHydrator::class => \Application\Hydrator\Factory\UserHydratorFactory::class,
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,

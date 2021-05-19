@@ -172,6 +172,7 @@ abstract class Repository implements RepositoryInterface
             $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
         }
 
+        $params['id'] = $entity->getId();
         $u = $this->find($params);
 
         $assoc = $hydrator->extract($entity);
@@ -190,14 +191,16 @@ abstract class Repository implements RepositoryInterface
             $sqlObj->set($assoc);
             $sqlObj->where($params);
         }
-
+        
         try {
             $stmt = $sql->prepareStatementForSqlObject($sqlObj);
             $stmt->execute();
+            $id = $this->db->getDriver()->getLastGeneratedValue();
         } catch (InvalidQueryException $ex) {
             echo $ex->getMessage();
             return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
         }
+        return $id;
     }
 
     /**

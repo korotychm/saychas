@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 18, 2021 at 03:03 AM
+-- Generation Time: May 18, 2021 at 06:36 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.16
 
@@ -1247,8 +1247,8 @@ CREATE TABLE `price` (
 INSERT INTO `price` (`product_id`, `reserve`, `store_id`, `unit`, `price`, `old_price`, `provider_id`) VALUES
 ('000000000006', 0, '', '', 8300, 0, '00003'),
 ('000000000005', 0, '', '', 7800, 0, '00003'),
-('000000000004', 0, '', '', 6500, 0, '00003'),
-('000000000002', 0, '', '', 470100, 0, '00003'),
+('000000000004', 0, '', '', 7400, 6500, '00003'),
+('000000000002', 0, '', '', 470100, 450000, '00003'),
 ('000000000001', 0, '', '', 580000, 0, '00003'),
 ('000000000003', 0, '', '', 5699000, 0, '00004'),
 ('000000000007', 0, '', '', 5400000, 0, '00005'),
@@ -1509,6 +1509,23 @@ CREATE TABLE `user` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_data`
+--
+
+DROP TABLE IF EXISTS `user_data`;
+CREATE TABLE `user_data` (
+  `id` int,
+  `user_id` int,
+  `address` text COLLATE utf8_unicode_ci,
+  `geodata` text COLLATE utf8_unicode_ci,
+  `time` time
+  -- `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `filtered_product`
 --
 DROP TABLE IF EXISTS `filtered_product`;
@@ -1617,6 +1634,17 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `phone` (`phone`),
   ADD UNIQUE KEY `email` (`email`);
+
+
+--
+-- Indexes for table `user_data`
+--
+ALTER TABLE `user_data`
+  ADD PRIMARY KEY (`id`); -- ,
+
+ALTER TABLE `user_data`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
 
 --
 -- AUTO_INCREMENT for dumped tables

@@ -10,6 +10,8 @@ use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
 //use Laminas\Authentication\Result;
 use Application\Adapter\Auth\UserAuthResult;
 use Application\Resource\StringResource;
+use Application\Model\Repository\UserRepository;
+use Application\Model\Entity\User;
 use Laminas\Session\Container;
 
 /**
@@ -20,6 +22,7 @@ use Laminas\Session\Container;
 class UserAuthAdapter implements AdapterInterface
 {
 
+    private $userRepository;
     private ?DbAdapter $adapter;
 
     /**
@@ -27,8 +30,9 @@ class UserAuthAdapter implements AdapterInterface
      *
      * @return void
      */
-    public function __construct(?DbAdapter $adapter = null, $identity = '', $credential = '')
+    public function __construct(UserRepository $userRepository, ?DbAdapter $adapter = null, $identity = '', $credential = '')
     {
+        $this->userRepository = $userRepository;
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
@@ -74,10 +78,14 @@ class UserAuthAdapter implements AdapterInterface
 
         $code = UserAuthResult::FAILURE;
 
-        if (isset($container->userIdentity)) {
-            $this->identity = $container->userIdentity;
-            $code = UserAuthResult::SUCCESS_FOUND_IN_SESSION;
-        }
+//        if(!isset($container->userIdentity)) {
+//            $user = new User();
+//            $user->init();
+//            $userId = $this->userRepository->persist($user, []);
+//            $this->identity = $container->userIdentity = $userId;
+//            $code = UserAuthResult::SUCCESS;
+//        }
+        
         $result = new UserAuthResult($code, $this->identity);
         return $result;
     }
