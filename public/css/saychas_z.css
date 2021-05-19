@@ -195,7 +195,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .productcard .productimage {max-width:100%; border-radius:4px}
 .productcard .blok {display:block; margin:4px 0; }
 .productcard .price {font-weight: 500; line-height: 1.2; font-size: 1.5rem; display:inline-blok; margin:0 2.5% 0 0; width:50%}
-.productcard .inactiveblok {display:block; margin:5px 0; background:url("/img/tmpotz.png") no-repeat; height:25px; }
+.productcard .inactiveblok, .inactiveblok {display:block; margin:5px 0; background:url("/img/tmpotz.png") no-repeat; height:25px; }
 .productcard .oldprice {font-weight: 500; line-height: 1.2; font-size: 1.3rem; display:inline-blok; width:47%; /*float:right;*/ }
 .productcard .producttitle { margin:10px 0; max-height:38px; overflow:hidden; font-weight:500;}
 
@@ -354,7 +354,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     outline:0;
 }
 .pw-contentblock .contentpadding { padding:10px; }
-/*.pw-contentblock .contentpadding * {max-width:100% }*/
+.pw-contentblock .contentpadding * {max-width:100% }
 
 .paybox .contentpadding  {padding:20px;}
 
@@ -523,3 +523,5 @@ img.zero, .zeroblok {
 #footer .fcontent a {color:#fff}
 .activlink {color: var(--red)!important}
 .cirkul {display:inline-block; width:40px; height:40px; border-radius:40px; }
+.mini {font-size:.85rem}
+.brandlogo {display:inline-block; background-color:transparent; background-position:center; background-size:contain; margin-right:10px; width:150px; height:70px; vertical-align:middle; }

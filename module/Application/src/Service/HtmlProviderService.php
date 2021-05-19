@@ -130,6 +130,12 @@ class HtmlProviderService
             $cena = (int) $product->getPrice();
             $cena = $cena / 100;
             $cena = number_format($cena, 0, "", "&nbsp;");
+            
+            /*$oldprice = (int) $product->getOldPrice();
+            $oldprice = $oldprice/ 100;
+            $oldprice = number_format($oldprice, 0, "", "&nbsp;");*/
+            
+            
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
             $filtrForCategory = $container->filtrForCategory;
@@ -150,7 +156,8 @@ class HtmlProviderService
             if (!$_return[$_id]['image'] and $imageurl = $product->getHttpUrl())
                 $_return[$_id]['image'] = $imageurl;
             $_return[$_id]['brand'] = $product->getBrandTitle();
-            $_return[$_id]['price'] = $cena;
+            $_return[$_id]['price'] = $cena;  
+            $_return[$_id]['oldprice'] = $oldprice;
             $_return[$_id]['art'] = $product->getVendorCode();
             $_return[$_id]['title'] = $product->getTitle();
             $_return[$_id]['cena'] = $cena;
@@ -216,12 +223,10 @@ class HtmlProviderService
     public function productPage($filteredProducts, $category_id = 0)
     {
 
-        $return = []; // new $return;
-        $filters = [];
-        //exit (print_r($filteredProducts));
+        $return =  $filters = [];
+       
         foreach ($filteredProducts as $product) {
 
-            //exit (print_r($product));
             $cena = (int) $product->getPrice();
             $cena = $cena / 100;
             $cena = number_format($cena, 2, ".", "&nbsp;");
@@ -249,7 +254,13 @@ class HtmlProviderService
             $filtersTmp = explode(",", $product->getParamValueList2());
             $filters = array_merge($filters, $filtersTmp);
             $vendor = $product->getVendorCode();
-            $brand = $product->getBrandTitle();
+            $brandtitle = $product->getBrandTitle();
+            
+            //$brandid = $product->getBrandId();
+            // exit($brandid."!");
+            /*$brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid ]); 
+            $brandimage = $brandobject -> getImage();*/
+            
             $description = $product->getDescription();
             $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
             $rst[$product->getStoreId()] = $r;
@@ -267,11 +278,10 @@ class HtmlProviderService
                     foreach ($characterictics as $char) {
                         $bool=["нет","да"];
                         $value=$char->getVal();
-                        
                         if ($char->getType() == 3 )   $value = $bool[$value];    
-                        if ($char->getType() == 6 ) { 
+                        elseif ($char->getType() == 6 ) { 
                             $b = $this->brandRepository->findFirstOrDefault(['id' => $value]); 
-                            $value =$b->getTitle().(($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":""); 
+                            $value = $brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":"").$b->getTitle(); 
                         }
                         elseif ($char->getType() == 7 )   $value="<div class='cirkul' style='background-color:$value'></div>";
                         ($char->getType() == 0 )?$charRow="<h3>{$char->getTitle()}</h3>":
@@ -304,15 +314,16 @@ class HtmlProviderService
         $return['title'] = $title;
         $return['categoryId'] = $categoryId;
         $return['card'] .= ""
+                . "<div class='pw-contentblock cblock-2'>"
+                . "         <div class='inactiveblok'></div>"
+                . "</div>"
+                . "<div class='pw-contentblock gray iblokr cblock-2'>Код товара: $vendor</div>"
                 . "<div class='pw-contentblock cblock-3'>
                     <div class='contentpadding' id=productpageimg>
-                           
                             $speedlable2
                             $imagesready
-<div class='iblok iconimg' style='width:98px;' >$imgicons</div>
-<div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>                               
-
-                                                                         
+                    <div class='iblok iconimg' style='width:98px;' >$imgicons</div>
+                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>   
                      </div>
                  </div>"
                 . "
@@ -342,12 +353,18 @@ class HtmlProviderService
 									"
                 . "				</div>
                                    
-                            
-                          <P class='mini opacity0'><UL><span class='blok'>Артикул: " . $vendor . "</span>"
-                . "       <span class='blok'>Торговая марка: " . $brand . "</span>"
-                . "       <span class='blok'>Остаток: " . $totalRest . "</span>"
-                . "       <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li></ul></P>
-        </div>
+                                        
+                          <div class=brandblok >
+                                <div brandlogo></div>
+                          </div>
+                          <div class='mini opacity0'>
+                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
+                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
+                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
+                    . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
+                            </ul>
+                        </div>
+            </div>
                  </div>
                  "
         ;
