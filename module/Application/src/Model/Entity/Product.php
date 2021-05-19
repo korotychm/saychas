@@ -64,6 +64,10 @@ class Product extends Entity
      * @var string
      */
     protected $brand_title;
+     /**
+     * @var string
+     */
+    protected $brand_id;
 
     /**
      * @var string, length=9
@@ -345,6 +349,15 @@ class Product extends Entity
     public function getBrandTitle()
     {
         return $this->brand_title;
+    }
+    /**
+     * Get brand_title.
+     *
+     * @return string
+     */
+    public function getBrandId()
+    {
+        return $this->brand_id;
     }
 
 }

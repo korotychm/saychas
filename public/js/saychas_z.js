@@ -268,7 +268,14 @@ $(window).resize(function(){leftpanelclose();});
 	})	
 	$("#lefmobiletpanelclose").click(function(){leftpanelclose()})
 	
-
+$(".spoileropenlink").click(function(){
+    var id=$(this).attr("rel");
+    $("#spoiler-show-" + id).show();
+    $("#spoiler-hide-" + id).hide();
+    
+    
+    return false;    
+})
 
 });
 

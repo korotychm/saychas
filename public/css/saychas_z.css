@@ -208,18 +208,26 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 }
 .payblockcard {padding:16px 0 0 0; display:none; text-align:center;}
 .productcard  .content:hover .payblockcard {display:block}
-.paybutton {
+.paybutton, .paybuttonwhite, .paybuttonwhite:hover  {
     display:inline-block; 
+    text-align:center;
     width:100%; 
     /*max-width:150px; */
-    color:#fff; 
-    text-shadow:1px 1px rgba(0,0,0,.05); 
-    background-color:#f53; padding:13px 26px ;  
+    border:2px solid transparent;
     cursor: pointer;   border-radius:10px; 
     font-weight:bold; 
+    color:#fff; 
+    text-shadow:1px 1px rgba(0,0,0,.05); 
+    background-color:#f53; 
+    padding:13px 26px ;  
 
 }
-
+.paybuttonwhite {
+    color: var(--red); 
+    text-shadow:none; 
+    background-color:#fff;  
+    border-color: var(--red);
+}
 
 .errorblock {display:block; padding:10px; background:url(/img/warning.png) left 12px no-repeat; padding-left:28px }
 
@@ -255,6 +263,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .geo16 span {border-bottom:1px dashed #666    }
 
 .none {display:none }
+.relative {position:relative}
 
 .speedlable {
     dispaly:inline-block; 
@@ -521,7 +530,34 @@ img.zero, .zeroblok {
 
 #footer .fcontent {width:100%; max-width: calc(97% - 465px); margin-left:2.5%; margin:68px 0;}
 #footer .fcontent a {color:#fff}
-.activlink {color: var(--red)!important}
+.activlink, .redlink {color: var(--red)!important}
 .cirkul {display:inline-block; width:40px; height:40px; border-radius:40px; }
 .mini {font-size:.85rem}
-.brandlogo {display:inline-block; background-color:transparent; background-position:center; background-size:contain; margin-right:10px; width:150px; height:70px; vertical-align:middle; }
+.brandblok {display:block; margin:20px 0 ;}
+.brandlogo {
+    display:inline-block; 
+    background-color:transparent; 
+    background-position:center; 
+    background-size:contain; 
+    background-repeat:no-repeat; 
+    margin-right:2.5%; 
+    width:47%; 
+    height:70px; vertical-align:middle; 
+    word-break:keep-all; 
+    line-height:70px;  
+    font-weight:600; font-size:18px;
+    text-align:center
+}
+.brandlink {
+    display:inline-block;  
+    color:var(--red); 
+    text-deoration:none;
+    width:49%;
+}    
+.gradientbottom {
+    display:blok; 
+    position:absolute;bottom:0;
+    width:100%; 
+    height:50px; 
+    background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+}

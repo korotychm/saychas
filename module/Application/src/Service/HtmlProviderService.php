@@ -131,9 +131,9 @@ class HtmlProviderService
             $cena = $cena / 100;
             $cena = number_format($cena, 0, "", "&nbsp;");
             
-            /*$oldprice = (int) $product->getOldPrice();
+            $oldprice = 1000; //(int) $product->getOldPrice();
             $oldprice = $oldprice/ 100;
-            $oldprice = number_format($oldprice, 0, "", "&nbsp;");*/
+            $oldprice = number_format($oldprice, 0, "", "&nbsp;");
             
             
             $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -256,12 +256,26 @@ class HtmlProviderService
             $vendor = $product->getVendorCode();
             $brandtitle = $product->getBrandTitle();
             
-            //$brandid = $product->getBrandId();
-            // exit($brandid."!");
-            /*$brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid ]); 
-            $brandimage = $brandobject -> getImage();*/
-            
+           $brandid = $product->getBrandId();
+            //exit($brandid."!");
+            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid ]); 
+            $brandimage = $brandobject -> getImage();
+            //exit($brandimage."!");
             $description = $product->getDescription();
+            
+            $description = (strlen($description) < 501)?"<p>".str_replace("\n","</p><p>", $description)."</p>":""
+                    . "<div  id='spoiler-hide-$id' >"
+                    . "     <p><div class='blok relative'>"
+                    . "         ".substr(strip_tags($description),0, 500)
+                    . "         <div class='gradientbottom'></div>"
+                    . "     </div>"
+                    . "<a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
+                    . "     </p>"
+                    . "</div>"
+                    . "<div  id='spoiler-show-$id'   class='blok' style='display:none' ><p>".str_replace("\n","</p><p>", $description)."</p></div>";
+            
+            
+            
             $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
             $rst[$product->getStoreId()] = $r;
         }
@@ -281,7 +295,7 @@ class HtmlProviderService
                         if ($char->getType() == 3 )   $value = $bool[$value];    
                         elseif ($char->getType() == 6 ) { 
                             $b = $this->brandRepository->findFirstOrDefault(['id' => $value]); 
-                            $value = $brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":"").$b->getTitle(); 
+                            $value = /*$brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":"").*/$b->getTitle(); 
                         }
                         elseif ($char->getType() == 7 )   $value="<div class='cirkul' style='background-color:$value'></div>";
                         ($char->getType() == 0 )?$charRow="<h3>{$char->getTitle()}</h3>":
@@ -342,28 +356,34 @@ class HtmlProviderService
                 . "</div>    "
                 . "<div class='pw-contentblock cblock-3'>
                             <div class='contentpadding'>
-								<div class='paybox' >"
-                . "      			<div class='contentpadding'>
-										<h2 class='blok price'>   " . $cena . " &#8381; <span class='oldprice'>10&nbsp;000&nbsp;&#8381;</span></h2>
-									</div>
-									<div class='volna' ></div>
-									<div class='contentpadding'>
-										доставка
-									</div>
+				<div class='paybox' >"
+                . "     		<div class='contentpadding'>
+						<h2 class='blok price'>   " . $cena . " &#8381; <span class='oldprice'>10&nbsp;000&nbsp;&#8381;</span></h2>
+					</div>
+        				<div class='volna' ></div>
+            				<div class='contentpadding'>
+						доставка
+                                        </div>
+                                        <div class='pw-contentblock cblock-2'>
+                                            <div class='contentpadding'>
+                                                 <div class=paybutton rel='$id' >в корзину</div>
+                                            </div>
+                                            
+                                         </div>   
+                                         <div class='pw-contentblock cblock-2'>
+                                            <div class='contentpadding'>
+                                                 <div class=paybuttonwhite rel='$id' >купить сразу</div>
+                                            </div>
+                                         </div>   
 									"
-                . "				</div>
+                . "             </div>
                                    
                                         
                           <div class=brandblok >
-                                <div brandlogo></div>
+                               ".(($brandimage)?"<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>":" <div class='brandlogo' >$brandtitle</div>")."
+                               <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
                           </div>
-                          <div class='mini opacity0'>
-                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
-                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
-                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
-                    . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
-                            </ul>
-                        </div>
+                          
             </div>
                  </div>
                  "
@@ -371,14 +391,28 @@ class HtmlProviderService
          $return['card'].=""
                  . "<div class=blok  >"
                  . "    <div class='pw-contentblock cblock-5' >
-                            <div class='contentpadding ' >
-                               <p>".str_replace("\n","</p><p>", $description)."</p>" 
+                            <div class='contentpadding ' >"
+                               . $description 
                                 .(($charsmore)?"<h3>Характеристики</h3>
                                 <div class='char-blok-bottom'>
                                     $charsmore
                                 </div>":"")."
                             </div>
                         </div>"
+                 
+                 
+                 . "<div class='pw-contentblock cblock-3' >"
+                 . "<div class='contentpadding ' >"
+                 . "<div class='mini opacity0'>
+                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
+                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
+                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
+                    . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
+                            </ul>
+                      </div>
+                      </div>
+                      </div>
+                      </div>"
                  . "</div>";
 
         return $return;
