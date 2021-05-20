@@ -374,7 +374,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             if (null == $found) {
                 throw new \Exception("Unexpected db error: characteristic with id " . $c->id . " is not found");
             }
-            if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() ) && !empty($c->value)) {
+             if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() )  && !empty($c->value) ) {
                 $value_list[] = $c->value;
             } else {
                 $var_list[] = $c;
@@ -428,7 +428,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      */
     private function replaceCharacteristic($characteristic)
     {
-        if (!empty($characteristic->value)) {
+        //if (!empty($characteristic->value)) {
             $myuuid = Uuid::uuid4();
             $myid = md5($myuuid->toString());
             $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
@@ -437,8 +437,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $q->execute();
 
             return $myid;
-        }
-        return '';
+        //}
+        //return '';
     }
 
     /**
@@ -511,7 +511,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $var_list = Json::decode($arr['var_list']);
                 
                                   foreach ($var_list as $var) {
-                                      if(!empty($var->value)) {
+                                      //if(!empty($var->value)) {
                                           $myuuid = Uuid::uuid4();
                                           $myid = md5($myuuid->toString());
                                           $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
@@ -523,7 +523,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                                               return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                                           }
                                           $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
-                                      }
+                                      //}
                                       $v = $this->replaceCharacteristic($var);
                                       $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
                                   }
