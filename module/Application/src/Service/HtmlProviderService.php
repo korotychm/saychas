@@ -302,7 +302,7 @@ class HtmlProviderService
                             $charRow="<div class='char-row'><span class='char-title'><span>{$char->getTitle()}</span></span><span class=char-value ><span>$value</span></span></div>";
                         
                         
-                       ($j< 10 )?$chars .= $charRow:$charsmore.=$charRow;
+                       ($j< 10 ) ? $chars .= $charRow : $charsmore .= $charRow;
                         $j++;
                     }
                 
