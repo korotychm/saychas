@@ -31,7 +31,7 @@ class UserData extends Entity
      * @var text
      */
     protected $geodata;
-    
+
     /**
      * @var timestamp
      */
@@ -39,7 +39,7 @@ class UserData extends Entity
 
     /**
      * Set id.
-     * 
+     *
      * @param int $id
      * @return $this
      */
@@ -48,6 +48,7 @@ class UserData extends Entity
         $this->id = $id;
         return $this;
     }
+
     /**
      * Get id.
      *
@@ -123,10 +124,10 @@ class UserData extends Entity
     {
         return $this->geodata;
     }
-    
+
     /**
      * Get timestamp
-     * 
+     *
      * @return string
      */
     public function getTimestamp()
@@ -136,7 +137,7 @@ class UserData extends Entity
 
     /**
      * Set timestamp
-     * 
+     *
      * @return $this
      */
     public function setTimestamp($timestamp)
@@ -144,4 +145,5 @@ class UserData extends Entity
         $this->timestamp = $timestamp;
         return $this;
     }
+
 }

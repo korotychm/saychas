@@ -5,6 +5,7 @@
 namespace Application\Model\Entity;
 
 use Application\Model\Repository\UserDataRepository;
+
 /**
  * Description of User
  *
@@ -17,7 +18,7 @@ class User extends Entity
      * @var UserDataRepository
      */
     public static UserDataRepository $userDataRepository;
-    
+
     /**
      * @var int
      */
@@ -37,7 +38,7 @@ class User extends Entity
      * @var string
      */
     protected $email;
-    
+
     /**
      * @var int
      */
@@ -47,24 +48,43 @@ class User extends Entity
      * @var timestamp
      */
     protected $timestamp;
-    
+
+    /**
+     * @var array
+     */
     protected $user_data;
-    
+
+    /**
+     * Set user_data.
+     *
+     * @param array $userData
+     * @return $this
+     */
     public function setUserData(array $userData)
     {
-        foreach($userData as $ud) {
+        foreach ($userData as $ud) {
             $ud->setUserId($this->getId());
             self::$userDataRepository->persist($ud, []);
         }
         return $this;
     }
-    
+
+    /**
+     * Get user_data.
+     *
+     * @return array
+     */
     public function getUserData()
     {
-        $this->user_data = self::$userDataRepository->findAll(['id'=>$this->getId()]);
+        $this->user_data = self::$userDataRepository->findAll(['id' => $this->getId()]);
         return $this->user_data;
     }
-    
+
+    /**
+     * Init UserData
+     *
+     * @return $this
+     */
     public function init()
     {
         $this->setName('');
@@ -74,7 +94,7 @@ class User extends Entity
 
     /**
      * Set id.
-     * 
+     *
      * @param int $id
      * @return $this
      */
@@ -83,6 +103,7 @@ class User extends Entity
         $this->id = $id;
         return $this;
     }
+
     /**
      * Get id.
      *
@@ -158,10 +179,10 @@ class User extends Entity
     {
         return $this->email;
     }
-    
+
     /**
      * Set $email_confirmed.
-     * 
+     *
      * @param bool $emailConfirmed
      * @return $this
      */
@@ -170,10 +191,10 @@ class User extends Entity
         $this->email_confirmed = $emailConfirmed;
         return $this;
     }
-    
+
     /**
      * Get $email_confirmed.
-     * 
+     *
      * @return bool
      */
     public function getEmailConfirmed()
@@ -183,7 +204,7 @@ class User extends Entity
 
     /**
      * Set timestamp.
-     * 
+     *
      * @param timestamp $timestamp
      * @return $this
      */
@@ -192,10 +213,10 @@ class User extends Entity
         $this->timestamp = $timestamp;
         return $this;
     }
-    
+
     /**
      * Get timestamp
-     * 
+     *
      * @return string
      */
     public function getTimestamp()

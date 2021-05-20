@@ -47,10 +47,14 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $this->prototype = $prototype;
     }
 
+    public const HEADER_TYPE = 0;
     public const STRING_TYPE = 1;
     public const INTEGER_TYPE = 2;
     public const BOOL_TYPE = 3;
     public const REFERENCE_TYPE = 4;
+    public const PROVIDER_REFERENCE_TYPE = 5;
+    public const BRAND_REFERENCE_TYPE = 6;
+    public const COLOR_REFERENCE_TYPE = 7;
 
     /**
      * получаем массив характеристик
