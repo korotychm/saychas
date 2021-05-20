@@ -5,7 +5,7 @@ curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [
 curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1", 
 "characteristics": [{"id": "000000070", "is_title": true}] }] }'
 curl -i -L saychas-z.local/receive-product?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1",  
-"characteristics": [{"id": "000000070", "is_title": true, "value": ""}] }] }'
+"characteristics": [{"id": "000000070", "is_title": true, "value": "", "index": "1"},{"id": "000000070", "is_title": true, "value": "000000031", "index":"2"}] }] }'
 curl -i -L saychas-z.local/receive-product --data '[{"id": "1" }]' -X DELETE
 
 
