@@ -8,22 +8,16 @@ $(document).ready(function () {
     };
 });
 $(function () {
-    
-    $('#banzaii').on('click', function(){
-        $.ajax({
-            url: "/banzaii",
-            type: 'POST',
-            cache: false,
-            data: null,
-            success: function (data) {
-                $("#vonzaii").html(data);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $("#vonzaii").html('Error');
-                alert('asdf');
-            }
-        });
-    });
+	
+	show_scrollTop();
+	$(window).scroll( function(){show_scrollTop();} );
+	
+	$("#quicktop").click(function(){ 
+		$("html:not(:animated)" +( !$.browser.opera ? ",body:not(:animated)" : "")).animate({ scrollTop: 0}, 500 );  
+		return false;  
+		});
+	
+
 
     function hidefilteritem() {
         $(".filtritem").removeClass("active");
@@ -366,4 +360,10 @@ function print_r(arr, level) {
         print_red_text = "===>" + arr + "<===(" + typeof (arr) + ")";
     return print_red_text;
 }
+
+function show_scrollTop(){	
+	var wst=$(window).scrollTop();
+	(wst > 500)?$("#quicktop").stop().show(): $("#quicktop").stop().fadeOut()
+		
+};
 	
