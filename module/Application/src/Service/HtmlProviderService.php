@@ -279,7 +279,7 @@ class HtmlProviderService
             $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
             $rst[$product->getStoreId()] = $r;
         }
-        $totalRest = array_sum($rst);
+        $totalRest = (count($rst))?array_sum($rst):0;
         ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
 
         $filters = array_diff($filters, array(''));

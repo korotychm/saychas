@@ -165,6 +165,12 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->userAddress = $TMP -> value;
         
+        
+       /* $userId = $this->identity();
+        $userData = new UserData();
+        $userData->setAddress($container->userAddress);
+        $userData->setGeodata($json); */
+        
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
             $url,
@@ -173,7 +179,7 @@ class AjaxController extends AbstractActionController
                 'http' => array(
                 'method'  => 'POST',
                 'header'  => 'Content-type: application/json',
-                'content' => $post->value
+                'content' => $json
                 )
                 ))
         );
