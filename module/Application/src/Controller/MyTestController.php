@@ -758,5 +758,28 @@ class MyTestController extends AbstractActionController
         return (new ViewModel())->setTerminal(true);
     }
     
+    public function addUserDataAction()
+    {
+        $userId = $this->authService->getIdentity();
+        $userId = $this->identity();
+        $userData = new UserData();
+        $userData->setAddress('address1');
+        $userData->setGeodata('geodata1');
+        //$userData->setTime(time());
+        
+        if(null != $userId) {
+            $user = $this->userRepository->find(['id'=>$userId]);
+            if(null != $user) {
+                $email= $user->getEmail();
+                // User found
+                $user->setUserData([$userData]);
+                $result = $user->getUserData();
+                foreach($result as $r) {
+                    print_r($r->getAddress());
+                }
+            }
+        }
+        return $this->getResponse();
+    }
     
 }
