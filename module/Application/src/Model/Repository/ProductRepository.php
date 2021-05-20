@@ -371,7 +371,7 @@ End of number 1 */
                 throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
             }
             if( ( $this->characteristics::REFERENCE_TYPE == $found->getType()
-                    || $this->characteristics::HEADER_TYPE == $found->getType() )
+                    || 0 == $found->getType() )
                     && !empty($c->value) ) {
                 $value_list[] = $c->value;
             }else{
