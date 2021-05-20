@@ -63,11 +63,11 @@ return [
             ],
         ],
     ],
-    'laminas-cli' => [
-        'commands' => [
-            'package:fetch-images' => \Application\Command\FetchImagesCommand::class,
-        ],
-    ],
+//    'laminas-cli' => [
+//        'commands' => [
+//            'package:fetch-images' => \Application\Command\FetchImagesCommand::class,
+//        ],
+//    ],
 //    'service_manager' => [
 //        'factories' => [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
