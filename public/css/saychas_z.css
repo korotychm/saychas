@@ -507,6 +507,7 @@ img.zero, .zeroblok {
     width: 100%;
 }*/
 .char-blok-bottom .char-title {width:62%}
+
 /*.char-blok-bottom .char-value span {padding:0 0 0 20px}*/
 .char-blok-bottom .char-value {width:35%; /*float:right; text-align:right*/}
 
@@ -576,5 +577,7 @@ img.zero, .zeroblok {
 	background: var(--red) url(data:image/svg+xml,%3Csvg%20width%3D%2218%22%20height%3D%2218%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M7.966%203.742L2.15%209.244a1.004%201.004%200%2001-1.38-1.46L8.312.65a1%201%200%20011.374%200l7.545%207.135a1.004%201.004%200%2001-1.38%201.459l-5.818-5.502V17a1%201%200%2001-1%201h-.068a1%201%200%2001-1-1V3.742z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E) center/37.5% auto no-repeat;
 }
 #quicktop:hover {opacity:1; box-shadow:0 0 12px rgba(0,0,0,0); }
-.favicon {display:inline-block; cursor:pointer; min-height:25px; padding-left:30px; background:url("/img/favoff.png") left center no-repeat; }
-.favicon .favon  {background-image:url("/img/favon.png")}
+.favstar {display:inline-block; cursor:pointer; min-height:25px; padding:   3px  0 0 40px; background:url("/img/favoff.png") left top no-repeat; margin:8px;   }
+.favstar.favon  {background-image:url("/img/favon.png")}
+
+.char-blok-bottom h3, .char-blok h3 {font-size:22px; }

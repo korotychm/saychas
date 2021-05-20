@@ -11,6 +11,7 @@ use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\CountryRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -21,6 +22,7 @@ class HtmlProviderService
 
     private $stockBalanceRepository;
     private $brandRepository;
+    private $countryRepository;
     private $providerRepository;
     private $priceRepository;
     private $characteristicRepository;
@@ -28,6 +30,7 @@ class HtmlProviderService
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
             BrandRepositoryInterface $brandRepository,
+            CountryRepositoryInterface $countryRepository,
             ProviderRepositoryInterface $providerRepository,
             PriceRepositoryInterface $priceRepository,
             CharacteristicRepositoryInterface $characteristicRepository
@@ -35,6 +38,7 @@ class HtmlProviderService
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->brandRepository = $brandRepository;
+        $this->countryRepository = $countryRepository;
         $this->providerRepository = $providerRepository;
         $this->priceRepository = $priceRepository;
         $this->characteristicRepository = $characteristicRepository;
@@ -293,6 +297,10 @@ class HtmlProviderService
                         $bool=["нет","да"];
                         $value=$char->getVal();
                         if ($char->getType() == 3 )   $value = $bool[$value];    
+                        elseif ($char->getType() == 5 ) { 
+                            $b = $this->brandRepository->findFirstOrDefault(['id' => $value]); 
+                            $value = /*$brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":"").*/$b->getTitle(); 
+                        }
                         elseif ($char->getType() == 6 ) { 
                             $b = $this->brandRepository->findFirstOrDefault(['id' => $value]); 
                             $value = /*$brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":"").*/$b->getTitle(); 
@@ -355,7 +363,7 @@ class HtmlProviderService
                 . "</div>"
                 . "</div>    "
                 . "<div class='pw-contentblock cblock-3'>
-                            <div class='contentpadding'>
+                         <div class='contentpadding'>
 				<div class='paybox' >"
                 . "     		<div class='contentpadding'>
 						<h2 class='blok price'>   " . $cena . " &#8381; <span class='oldprice'>10&nbsp;000&nbsp;&#8381;</span></h2>
@@ -368,7 +376,6 @@ class HtmlProviderService
                                             <div class='contentpadding'>
                                                  <div class=paybutton rel='$id' >в корзину</div>
                                             </div>
-                                            
                                          </div>   
                                          <div class='pw-contentblock cblock-2'>
                                             <div class='contentpadding'>
@@ -376,16 +383,17 @@ class HtmlProviderService
                                             </div>
                                          </div>   
 									"
-                . "             </div>
-                                   
-                                        
-                          <div class=brandblok >
+                . "         <div class='contentpadding'>
+                                <div class='favstar favtext'>Добавить в избранное</div>
+                            </div>        
+                      </div>
+                       <div class=brandblok >
                                ".(($brandimage)?"<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>":" <div class='brandlogo' >$brandtitle</div>")."
                                <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
-                          </div>
+                         </div>
                           
-            </div>
-                 </div>
+                    </div>
+                    </div>
                  "
         ;
          $return['card'].=""
