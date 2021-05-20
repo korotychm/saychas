@@ -370,7 +370,9 @@ End of number 1 */
             if(null == $found) {
                 throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
             }
-            if($this->characteristics::REFERENCE_TYPE == $found->getType() && !empty($c->value)) {
+            if( ( $this->characteristics::REFERENCE_TYPE == $found->getType()
+                    || $this->characteristics::HEADER_TYPE == $found->getType() )
+                    && !empty($c->value) ) {
                 $value_list[] = $c->value;
             }else{
                 $var_list[] = $c;
