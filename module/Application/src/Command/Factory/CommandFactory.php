@@ -1,5 +1,6 @@
 <?php
-// src/Command/Factory/FetchImagesCommandFactory.php
+
+// src/Command/Factory/CommandFactory.php
 
 namespace Application\Command\Factory;
 
@@ -13,13 +14,13 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class CommandFactory implements FactoryInterface
 {
-   
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if($requestedName instanceof $requestedName){
-            throw new \Exception("not instanceof ".$requestedName);
+        if ($requestedName instanceof $requestedName) {
+            throw new \Exception("not instanceof " . $requestedName);
         }
-        
+
         //$adapter = $container->get(AdapterInterface::class);
 //        $userRepository = $container->get(UserRepository::class);
 //        $postRepository = $container->get(PostRepository::class);
@@ -30,14 +31,15 @@ class CommandFactory implements FactoryInterface
 //            'username' => 'saychas_z',
 //            'password' => 'saychas_z',
 //        ]);
-        
-        return new $requestedName( // new FetchImagesCommand(
-            $adapter,
-            $requestedName,
-            $container
+
+        return new $requestedName(// new FetchImagesCommand(
+                $adapter,
+                $requestedName,
+                $container
 //            ,
 //            $userRepository,
 //            $postRepository
         );
     }
+
 }
