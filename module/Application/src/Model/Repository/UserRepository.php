@@ -52,6 +52,11 @@ class UserRepository extends Repository implements RepositoryInterface
                     new \Laminas\Hydrator\Filter\MethodMatchFilter('getUserData'),
                     \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
             );
+            $composite->addFilter(
+                    'excludesettimestamp',
+                    new \Laminas\Hydrator\Filter\MethodMatchFilter('setTimeout'),
+                    \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+            );
 
             $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
         }
