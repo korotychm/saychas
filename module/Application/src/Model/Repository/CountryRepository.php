@@ -1,6 +1,6 @@
 <?php
 
-// src/Model/Repository/BrandRepository.php
+// src/Model/Repository/CountryRepository.php
 
 namespace Application\Model\Repository;
 
@@ -8,34 +8,32 @@ namespace Application\Model\Repository;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use Application\Model\Entity\Brand;
-use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\Entity\Country;
+use Application\Model\RepositoryInterface\CountryRepositoryInterface;
 
-class BrandRepository extends Repository implements BrandRepositoryInterface
+class CountryRepository extends Repository implements CountryRepositoryInterface
 {
 
     /**
      * @var string
      */
-    protected $tableName = "brand";
+    protected $tableName = "country";
 
     /**
-     * @var Brand
+     * @var Country
      */
-    protected Brand $prototype;
+    protected Country $prototype;
 
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
-     * @param Brand $prototype
+     * @param Country $prototype
      */
     public function __construct(
             AdapterInterface $db,
             HydratorInterface $hydrator,
-            Brand $prototype
+            Country $prototype
     )
     {
         $this->db = $db;
@@ -44,7 +42,7 @@ class BrandRepository extends Repository implements BrandRepositoryInterface
     }
 
     /**
-     * Adds given brand into it's repository
+     * Adds given country into it's repository
      *
      * @param json
      */

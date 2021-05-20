@@ -33,7 +33,6 @@ class Country extends Entity
     /**
      * @var string
      */
-   
     public function getId()
     {
         return $this->id;
@@ -76,9 +75,9 @@ class Country extends Entity
     }
 
     /**
-     * Set description.
+     * Set code.
      *
-     * @param string $description
+     * @param string code
      *
      * @return Brand
      */
@@ -90,7 +89,7 @@ class Country extends Entity
     }
 
     /**
-     * Get description.
+     * Get code.
      *
      * @return string
      */
@@ -98,7 +97,5 @@ class Country extends Entity
     {
         return $this->code;
     }
-
-    
 
 }
