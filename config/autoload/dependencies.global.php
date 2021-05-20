@@ -10,7 +10,7 @@ return [
     'dependencies' => [
         'factories' => [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
-            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
+//            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
         ],
     ],
 ];
