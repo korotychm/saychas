@@ -21,6 +21,7 @@ class ConfigProvider
         return [
             'commands' => [
                 'package:command-name' => Command\FetchImagesCommand::class,
+                'package:fetch-images' => Command\FetchImagesCommand::class,
             ],
         ];
     }
@@ -29,7 +30,7 @@ class ConfigProvider
     {
         return [
             'factories' => [
-                Command\FetchImagesCommand::class => Command\FetchImagesCommandFactory::class,
+                Command\FetchImagesCommand::class => Command\Factory\CommandFactory::class,
             ],
         ];
     }
