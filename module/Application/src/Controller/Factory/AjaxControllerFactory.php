@@ -17,6 +17,9 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\Repository\UserRepository;
+use Laminas\Authentication\AuthenticationService;
+
 use Application\Service\HtmlProviderService;
 use Application\Controller\AjaxController;
 
@@ -43,7 +46,9 @@ class AjaxControllerFactory implements FactoryInterface
         $entityManager = $container->get('doctrine.entitymanager.orm_default');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
-        return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, $stockBalance, $entityManager, $config, $htmlProvider);
+        $userRepository = $container->get(UserRepository::class);
+        $authService = $container->get(AuthenticationService::class);
+        return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, $stockBalance, $entityManager, $config, $htmlProvider, $userRepository, $authService);
     }
 
 }

@@ -22,6 +22,10 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Service\HtmlProviderService;
+use Application\Model\Entity\UserData;
+use Application\Model\Repository\UserRepository;
+use Application\Adapter\Auth\UserAuthAdapter;
+use Laminas\Authentication\AuthenticationService;
 use Application\Resource\StringResource;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
@@ -43,11 +47,14 @@ class AjaxController extends AbstractActionController
     private $entityManager;
     private $config;
     private $htmlProvider;
+    private $userRepository;
+    private $authService;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
-                CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, $entityManager, $config, HtmlProviderService $htmlProvider)
+                CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, $entityManager, $config,
+                HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -62,6 +69,8 @@ class AjaxController extends AbstractActionController
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
+        $this->userRepository = $userRepository;
+        $this->authService = $authService;
     }
 
     public function previewAction()
@@ -166,10 +175,12 @@ class AjaxController extends AbstractActionController
         $container->userAddress = $TMP -> value;
         
         
-       /* $userId = $this->identity();
+        $userId = $this->identity();
+        $user = $this->userRepository->find(['id'=>$userId]);
         $userData = new UserData();
         $userData->setAddress($container->userAddress);
-        $userData->setGeodata($json); */
+        $userData->setGeodata($json);
+        $user->setUserData([$userData]);
         
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(

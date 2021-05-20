@@ -35,7 +35,7 @@ class UserData extends Entity
     /**
      * @var timestamp
      */
-    protected $time;
+    protected $timestamp;
 
     /**
      * Set id.
@@ -125,23 +125,23 @@ class UserData extends Entity
     }
     
     /**
-     * Get time
+     * Get timestamp
      * 
      * @return string
      */
-    public function getTime()
+    public function getTimestamp()
     {
-        return $this->time;
+        return $this->timestamp;
     }
 
     /**
-     * Set time
+     * Set timestamp
      * 
      * @return $this
      */
-    public function setTime($time)
+    public function setTimestamp($timestamp)
     {
-        $this->time = $time;
+        $this->timestamp = $timestamp;
         return $this;
     }
 }
