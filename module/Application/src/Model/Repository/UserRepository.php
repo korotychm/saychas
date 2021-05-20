@@ -54,7 +54,7 @@ class UserRepository extends Repository implements RepositoryInterface
             );
             $composite->addFilter(
                     'excludesettimestamp',
-                    new \Laminas\Hydrator\Filter\MethodMatchFilter('setTimeout'),
+                    new \Laminas\Hydrator\Filter\MethodMatchFilter('setTimestamp'),
                     \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
             );
 
