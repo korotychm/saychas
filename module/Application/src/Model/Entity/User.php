@@ -37,17 +37,12 @@ class User extends Entity
      * @var string
      */
     protected $email;
-
-    /**
-     * @var text
-     */
-    protected $address;
-
-    /**
-     * @var text
-     */
-    protected $geodata;
     
+    /**
+     * @var int
+     */
+    protected $email_confirmed;
+
     /**
      * @var timestamp
      */
@@ -73,11 +68,8 @@ class User extends Entity
     public function init()
     {
         $this->setName('');
-        //$this->setPhone(0);
-        //$this->setEmail('');
-        $this->setGeodata('');
-        //$this->setTimestamp(mktime(1));
-        $this->setAddress('');        
+        $this->setEmailConfirmed(0);
+        return $this;
     }
 
     /**
@@ -166,51 +158,29 @@ class User extends Entity
     {
         return $this->email;
     }
-
+    
     /**
-     * Set address.
-     *
-     * @param string $address
+     * Set $email_confirmed.
+     * 
+     * @param bool $emailConfirmed
      * @return $this
      */
-    public function setAddress(string $address)
+    public function setEmailConfirmed($emailConfirmed)
     {
-        $this->address = $address;
+        $this->email_confirmed = $emailConfirmed;
         return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * Set geodata.
-     *
-     * @param string $geodata
-     * @return $this
-     */
-    public function setGeodata(string $geodata)
-    {
-        $this->geodata = $geodata;
-        return $this;
-    }
-
-    /**
-     * Get geodata.
-     *
-     * @return string
-     */
-    public function getGeodata()
-    {
-        return $this->geodata;
     }
     
+    /**
+     * Get $email_confirmed.
+     * 
+     * @return bool
+     */
+    public function getEmailConfirmed()
+    {
+        return $this->email_confirmed;
+    }
+
     /**
      * Set timestamp.
      * 

@@ -101,10 +101,7 @@ class UserDataController extends AbstractActionController
         $user = new \Application\Model\Entity\User();
         $user->setId(1);
         $user->setName('user2');
-        $user->setEmail('email4');
-        $user->setGeodata('geodata3');
-        $user->setAddress('address2');
-        $user_id = $this->userRepository->persist($user, []);
+//        $user_id = $this->userRepository->persist($user, []);
         
         $ud = [];
         $userData = new \Application\Model\Entity\UserData();
@@ -133,9 +130,6 @@ class UserDataController extends AbstractActionController
             }
             echo $user->getId().'<br/>';
             echo $user->getName().'<br/>';
-            echo $user->getPhone().'<br/>';
-            echo $user->getEmail().'<br/>';
-            echo $user->getAddress().'<br/>';
         }catch (InvalidQueryException $e) {
             print_r($e->getMessage());
             exit;
