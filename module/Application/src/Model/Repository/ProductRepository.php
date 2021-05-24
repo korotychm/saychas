@@ -374,7 +374,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             if (null == $found) {
                 throw new \Exception("Unexpected db error: characteristic with id " . $c->id . " is not found");
             }
-             if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() )  && !empty($c->value) ) {
+            if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() ) && !empty($c->value)) {
                 $value_list[] = $c->value;
             } else {
                 $var_list[] = $c;
@@ -429,14 +429,14 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     private function replaceCharacteristic($characteristic)
     {
         //if (!empty($characteristic->value)) {
-            $myuuid = Uuid::uuid4();
-            $myid = md5($myuuid->toString());
-            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
+        $myuuid = Uuid::uuid4();
+        $myid = md5($myuuid->toString());
+        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
 
-            $q = $this->db->query($sql);
-            $q->execute();
+        $q = $this->db->query($sql);
+        $q->execute();
 
-            return $myid;
+        return $myid;
         //}
         //return '';
     }
@@ -505,29 +505,47 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         /** $result->data - products */
         foreach ($result->data as $product) {
 
-            $arr = $this->separateCharacteristics($product->characteristics);
+            //$arr = $this->separateCharacteristics($product->characteristics);
+            $arr = $product->characteristics;
 
             if (count($product->characteristics) > 0) {
-                $var_list = Json::decode($arr['var_list']);
-                
-                foreach ($var_list as $var) {
-                    //if(!empty($var->value)) {
-                        $myuuid = Uuid::uuid4();
-                        $myid = md5($myuuid->toString());
-                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
+                //$var_list = Json::decode($arr['var_list']);
+                $var_list = $arr;
 
-                        try {
-                            $q = $this->db->query($sql);
-                            $q->execute();
-                        }catch(InvalidQueryException $e){
-                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-                        }
-                        $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
+                $current = '';
+                foreach ($var_list as $var) {
+                    $found = $this->characteristics->find(['id' => $var->id]);
+                    if (null == $found) {
+                        throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
+                    }
+                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
+                        $current .= ",".$found->getId();
+                    }else{
+                        $myuuid = Uuid::uuid4();
+                        $current .= ",".md5($myuuid->toString());
+                    }
+//                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() ) && !empty($c->value)) {
+//                        $value_list[] = $c->value;
+//                    } else {
+//                        $var_list[] = $c;
+//                    }
+                    //if(!empty($var->value)) {
+                    $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $current, $var->value, $var->id);
+                    continue;
+                    try {
+                        $q = $this->db->query($sql);
+                        $q->execute();
+                    } catch (InvalidQueryException $e) {
+                        return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                    }
+                    $arr['value_list'] = trim($arr['value_list'] . "," . $myid, ',');
                     //}
                     $v = $this->replaceCharacteristic($var);
-                    $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
+                    $arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
                 }
-                 
+                $current = trim($current, ',');
+                return [];
+
 //                try {
 //                    $this->replaceCharacteristicsFromList($arr, $var_list);
 //                } catch (InvalidQueryException $e) {
