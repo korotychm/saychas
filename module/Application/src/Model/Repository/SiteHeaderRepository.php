@@ -48,42 +48,60 @@ class SiteHeaderRepository extends Repository implements SiteHeaderRepositoryInt
      */
     public function replace($content)
     {
-//        try {
-//            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-//            print_r($result);
-//        } catch (\Laminas\Json\Exception\RuntimeException $e) {
-//            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-//        }
-        $strategy = new \Laminas\Hydrator\Strategy\SerializableStrategy(
-            new \Laminas\Serializer\Adapter\Json()
-        );
-
         try {
-            $hydrated = $strategy->hydrate($content);
-        }catch(\Laminas\Json\Exception\RuntimeException $e){
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
-        foreach($hydrated['data'][0] as $d) {
-            print_r($d);
+
+        if ((bool) $result['truncate']) {
+            $this->db->query("truncate table {$this->tableName}")->execute();
         }
 
-        $siteHeader = new SiteHeader();
-        $siteHeader->setId('000000002');
-        $siteHeader->setCategoryId('000000002');
-        $siteHeader->setTitle('title');
-        $this->persist($siteHeader, ['category_id' => $siteHeader->getCategoryId()]);
+        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
+        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
+        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);        
+        foreach ($result['data'] as $row) {
+            foreach($row['categories'] as $cat) {
+                $siteHeader = new SiteHeader();
+                $siteHeader->setId($row['id'])->setTitle($row['title'])
+                ->setIndexNumber($row['index_number'])->setCategoryId($cat['id']);
+                try {
+                    $this->persist($siteHeader, ['category_id' => $siteHeader->getCategoryId()]);
+                } catch (InvalidQueryException $e) {
+                    return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                }
+            }
+        }
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//        $strategy = new \Laminas\Hydrator\Strategy\SerializableStrategy(
+//            new \Laminas\Serializer\Adapter\Json()
+//        );
+//
 //        try {
-//            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-//        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+//            $hydrated = $strategy->hydrate($content);
+//        }catch(\Laminas\Json\Exception\RuntimeException $e){
 //            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
 //        }
-//
-//        if ((bool) $result['truncate']) {
-//            $this->db->query("truncate table {$this->tableName}")->execute();
+//        
+//        foreach($hydrated['data'][0] as $d) {
+//            print_r($d);
 //        }
-//
-//        foreach ($result['data'] as $row) {
 //            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s')",
 //                    $row['id'], $row['title'], $row['description'], $row['image']);
 //            try {
@@ -92,8 +110,3 @@ class SiteHeaderRepository extends Repository implements SiteHeaderRepositoryInt
 //            } catch (InvalidQueryException $e) {
 //                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
 //            }
-//        }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
-    }
-
-}
