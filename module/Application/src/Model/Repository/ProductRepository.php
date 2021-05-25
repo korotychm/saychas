@@ -519,7 +519,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
-                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
+                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() )) {
                         $myid = $var->value;
                         $current .= ",".$myid;
                     }else{
