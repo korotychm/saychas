@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
@@ -44,6 +45,7 @@ class IndexController extends AbstractActionController
     private $productRepository;
     private $filteredProductRepository;
     private $brandRepository;
+    private $settingRepository;
     private $characteristicRepository;
     private $priceRepository;
     private $stockBalanceRepository;
@@ -57,7 +59,8 @@ class IndexController extends AbstractActionController
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
+                ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
+                BrandRepositoryInterface $brandRepository, SettingRepositoryInterface $settingRepository,
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
@@ -70,6 +73,7 @@ class IndexController extends AbstractActionController
         $this->productRepository = $productRepository;
         $this->filteredProductRepository = $filteredProductRepository;
         $this->brandRepository = $brandRepository;
+        $this->settingRepository = $settingRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;

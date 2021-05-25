@@ -15,6 +15,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
@@ -42,6 +43,7 @@ class IndexControllerFactory implements FactoryInterface
         $product = $container->get(ProductRepositoryInterface::class);
         $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
         $brand = $container->get(BrandRepositoryInterface::class);
+        $setting = $container->get(SettingRepositoryInterface::class);
         $characteristic = $container->get(CharacteristicRepositoryInterface::class);
         $price = $container->get(PriceRepositoryInterface::class);
         $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
@@ -52,7 +54,7 @@ class IndexControllerFactory implements FactoryInterface
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
-        return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic,
+        return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $setting, $characteristic,
                 $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService);
     }
 
