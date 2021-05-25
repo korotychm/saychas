@@ -312,6 +312,17 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\SiteHeaderRepositoryInterface::class,
                 ],
             ],
+            'receive-setting' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-setting[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\SettingRepositoryInterface::class,
+                ],
+            ],
             'receive-characteristic' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -583,6 +594,7 @@ return [
             \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
             \Application\Model\RepositoryInterface\SiteHeaderRepositoryInterface::class => \Application\Model\Repository\SiteHeaderRepository::class,
+            \Application\Model\RepositoryInterface\SettingRepositoryInterface::class => \Application\Model\Repository\SettingRepository::class,
             \Application\Model\RepositoryInterface\CountryRepositoryInterface::class => \Application\Model\Repository\CountryRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class => \Application\Model\Repository\CharacteristicRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class => \Application\Model\Repository\CharacteristicValueRepository::class,
@@ -615,6 +627,7 @@ return [
             \Application\Model\Repository\SizeRepository::class => \Application\Model\Factory\SizeRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
             \Application\Model\Repository\SiteHeaderRepository::class => \Application\Model\Factory\SiteHeaderRepositoryFactory::class,
+            \Application\Model\Repository\SettingRepository::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Repository\CountryRepository::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicRepository::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicValueRepository::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
