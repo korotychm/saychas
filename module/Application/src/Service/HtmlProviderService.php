@@ -302,7 +302,7 @@ class HtmlProviderService
                         $value = "<div class='cirkul' style='background-color:$value; border:1px solid var(--gray)'></div>";
                     $charRow = "<div class='char-row'><span class='char-title'><span>{$char->getTitle()} $idchar</span></span><span class=char-value ><span>$value</span></span></div>";
                 } 
-                elseif ($char->getType() == 0)
+                if ($char->getType() == 0)
                     $charRow = "<h3>{$char->getTitle()} $idchar</h3>";
 
 
