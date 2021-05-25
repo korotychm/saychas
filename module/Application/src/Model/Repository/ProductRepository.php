@@ -426,20 +426,20 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @param type $characteristic
      * @return string
      */
-    private function replaceCharacteristic($characteristic)
-    {
-        //if (!empty($characteristic->value)) {
-        $myuuid = Uuid::uuid4();
-        $myid = md5($myuuid->toString());
-        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
-
-        $q = $this->db->query($sql);
-        $q->execute();
-
-        return $myid;
-        //}
-        //return '';
-    }
+//    private function replaceCharacteristic($characteristic)
+//    {
+//        //if (!empty($characteristic->value)) {
+//        $myuuid = Uuid::uuid4();
+//        $myid = md5($myuuid->toString());
+//        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
+//
+//        $q = $this->db->query($sql);
+//        $q->execute();
+//
+//        return $myid;
+//        //}
+//        //return '';
+//    }
 
     /**
      * Replace product characteristics from $var_list.
@@ -448,29 +448,29 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @param array $arr
      * @param array $var_list
      */
-    private function replaceCharacteristicsFromList(array &$arr, array $var_list)
-    {
-        foreach ($var_list as $var) {
-            $v = $this->replaceCharacteristic($var);
-            $arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
-        }
-    }
+//    private function replaceCharacteristicsFromList(array &$arr, array $var_list)
+//    {
+//        foreach ($var_list as $var) {
+//            $v = $this->replaceCharacteristic($var);
+//            $arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
+//        }
+//    }
 
-    private function updateCharacteristicsValueList($product): array
-    {
-        $arr = $this->separateCharacteristics($product->characteristics);
-
-        if (count($product->characteristics) > 0) {
-            $var_list = Json::decode($arr['var_list']);
-            try {
-                $this->replaceCharacteristicsFromList($arr, $var_list);
-            } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
-            }
-        }
-
-        return $arr;
-    }
+//    private function updateCharacteristicsValueList($product): array
+//    {
+//        $arr = $this->separateCharacteristics($product->characteristics);
+//
+//        if (count($product->characteristics) > 0) {
+//            $var_list = Json::decode($arr['var_list']);
+//            try {
+//                $this->replaceCharacteristicsFromList($arr, $var_list);
+//            } catch (InvalidQueryException $e) {
+//                return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
+//            }
+//        }
+//
+//        return $arr;
+//    }
 
     /**
      * Adds given product into it's repository
@@ -511,18 +511,28 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             if (count($product->characteristics) > 0) {
                 //$var_list = Json::decode($arr['var_list']);
                 $var_list = $arr;
+                $jsonCharacteristics = Json::encode($product->characteristics);
 
-                $current = '';
                 foreach ($var_list as $var) {
+                    
                     $found = $this->characteristics->find(['id' => $var->id]);
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
                     if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
-                        $current .= ",".$found->getId();
+                        $myid = $var->value;
+                        $current .= ",".$myid;
                     }else{
                         $myuuid = Uuid::uuid4();
-                        $current .= ",".md5($myuuid->toString());
+                        $myid = md5($myuuid->toString());
+                        $current .= ",".$myid;
+                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
+                        try {
+                            $q = $this->db->query($sql);
+                            $q->execute();
+                        } catch (InvalidQueryException $e) {
+                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                        }
                     }
 //                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() ) && !empty($c->value)) {
 //                        $value_list[] = $c->value;
@@ -530,21 +540,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                        $var_list[] = $c;
 //                    }
                     //if(!empty($var->value)) {
-                    $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $current, $var->value, $var->id);
-                    continue;
-                    try {
-                        $q = $this->db->query($sql);
-                        $q->execute();
-                    } catch (InvalidQueryException $e) {
-                        return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-                    }
-                    $arr['value_list'] = trim($arr['value_list'] . "," . $myid, ',');
+                    //$arr['value_list'] = trim($arr['value_list'] . "," . $myid, ',');
                     //}
-                    $v = $this->replaceCharacteristic($var);
-                    $arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
+                    //$v = $this->replaceCharacteristic($var);
+                    //$arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
                 }
                 $current = trim($current, ',');
-                return [];
 
 //                try {
 //                    $this->replaceCharacteristicsFromList($arr, $var_list);
@@ -553,10 +554,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                }
             }
 
-            $arr1 = $this->updateCharacteristicsValueList($product);
+            //$arr1 = $this->updateCharacteristicsValueList($product);
 
+//            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+//                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
+                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $current, $jsonCharacteristics, $product->brand_id);
 
             try {
                 $query = $this->db->query($sql);
