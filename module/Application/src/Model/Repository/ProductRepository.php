@@ -513,19 +513,20 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $var_list = $arr;
                 $jsonCharacteristics = Json::encode($product->characteristics);
 
+                $current = [];
                 foreach ($var_list as $var) {
                     
                     $found = $this->characteristics->find(['id' => $var->id]);
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
-                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() )) {
+                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
                         $myid = $var->value;
-                        $current .= ",".$myid;
+                        $current[] = $myid;
                     }else{
                         $myuuid = Uuid::uuid4();
                         $myid = md5($myuuid->toString());
-                        $current .= ",".$myid;
+                        $current[] = $myid;
                         $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
                         try {
                             $q = $this->db->query($sql);
@@ -545,8 +546,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     //$v = $this->replaceCharacteristic($var);
                     //$arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
                 }
-                $current = trim($current, ',');
-
+                $filteredCurrent = array_filter($current);
+                $curr = implode(',', $filteredCurrent);
+                
 //                try {
 //                    $this->replaceCharacteristicsFromList($arr, $var_list);
 //                } catch (InvalidQueryException $e) {
@@ -559,7 +561,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $current, $jsonCharacteristics, $product->brand_id);
+                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
             try {
                 $query = $this->db->query($sql);
