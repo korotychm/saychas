@@ -286,8 +286,9 @@ class HtmlProviderService
             $j = 0;
             $bool = ["нет", "да"];
             foreach ($characterictics as $char) {
+                $charRow ="";
                 $idchar= $char->getId();
-                if ($value = $char->getVal() or true) {
+                if ($value = $char->getVal() /*or true*/) {
                     if ($char->getType() == 3)
                         $value = $bool[$value];
 
@@ -299,15 +300,18 @@ class HtmlProviderService
                         $value = /* $brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":""). */$b->getTitle();
                     } elseif ($char->getType() == 7)
                         $value = "<div class='cirkul' style='background-color:$value; border:1px solid var(--gray)'></div>";
-                    $charRow = "<div class='char-row'><span class='char-title'><span>{$char->getTitle()} $idchar</span></span><span class=char-value ><span>$value</span></span></div>";
-                } 
-                if ($char->getType() == 0)
-                    $charRow = "<h3>{$char->getTitle()} $idchar</h3>";
-
+                    $charRow = "<div class='char-row'><span class='char-title'><span>{$char->getTitle()} </span></span><span class=char-value ><span>$value</span></span></div>";
+                
+                     $j++;
+                    } 
+                elseif (0 == $char->getType() ) {
+                    $charRow = "<h3>{$char->getTitle()} </h3>";
+                     $j++;
+                }
 
 
                 ($j < 10 ) ? $chars .= $charRow : $charsmore .= $charRow;
-                $j++;
+               
             }
 
             $join = $chars;
