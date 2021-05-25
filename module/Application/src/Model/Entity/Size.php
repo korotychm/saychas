@@ -1,6 +1,6 @@
 <?php
 
-// src/Model/Entity/Store.php
+// src/Model/Entity/Size.php
 
 namespace Application\Model\Entity;
 

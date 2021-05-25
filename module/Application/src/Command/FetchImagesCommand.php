@@ -64,7 +64,8 @@ class FetchImagesCommand extends Command
     {
         $this->setName(self::$defaultName);
         $this->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Application', 5);
-        $this->addArgument('name', null, 'table name to take filenames from', null);
+        $this->addOption('name', null, InputOption::VALUE_REQUIRED, 'Application', null);
+        //$this->addArgument('name', null, 'table name to take filenames from', null);
     }
 
     /**
@@ -76,7 +77,12 @@ class FetchImagesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $tableName = $input->getArgument('name');
+        //$tableName = $input->getArgument('name');
+        $tableName = $input->getOption('name');
+        if(null == $tableName) {
+            $output->writeln("Please specify a table name\n");
+            return -1;
+        }
         $this->limit = $input->getOption('limit');
         
         if (in_array($tableName, ['provider', 'brand'])) {

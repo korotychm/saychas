@@ -301,6 +301,17 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
                 ],
             ],
+            'receive-site-header' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-site-header[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\SiteHeaderRepositoryInterface::class,
+                ],
+            ],
             'receive-characteristic' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -571,6 +582,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
+            \Application\Model\RepositoryInterface\SiteHeaderRepositoryInterface::class => \Application\Model\Repository\SiteHeaderRepository::class,
             \Application\Model\RepositoryInterface\CountryRepositoryInterface::class => \Application\Model\Repository\CountryRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class => \Application\Model\Repository\CharacteristicRepository::class,
             \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class => \Application\Model\Repository\CharacteristicValueRepository::class,
@@ -602,6 +614,7 @@ return [
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Repository\SizeRepository::class => \Application\Model\Factory\SizeRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Model\Repository\SiteHeaderRepository::class => \Application\Model\Factory\SiteHeaderRepositoryFactory::class,
             \Application\Model\Repository\CountryRepository::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicRepository::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
             \Application\Model\Repository\CharacteristicValueRepository::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
@@ -615,7 +628,7 @@ return [
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
 
-            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\CommandFactory::class,
+            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
             
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,

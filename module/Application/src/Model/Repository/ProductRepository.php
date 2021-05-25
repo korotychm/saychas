@@ -1,4 +1,5 @@
 <?php
+
 // src/Model/Repository/ProductRepository.php
 
 namespace Application\Model\Repository;
@@ -28,10 +29,11 @@ use Ramsey\Uuid\Uuid;
 
 class ProductRepository extends Repository implements ProductRepositoryInterface
 {
+
     /**
      * @var string
      */
-    protected $tableName="product";
+    protected $tableName = "product";
 
     /**
      * @var Product
@@ -41,7 +43,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     /**
      * @var CharacteristicValueRepositoryInterface
      */
-    protected CharacteristicValueRepositoryInterface $characteristicValueRepository;// $predefCharValueRepo;
+    protected CharacteristicValueRepositoryInterface $characteristicValueRepository; // $predefCharValueRepo;
 
     /**
      * @var CharacteristicValueRepositoryInterface
@@ -63,30 +65,30 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      */
     protected $catalogToSaveImages;
 
-
     /**
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Product $prototype
      */
     public function __construct(
-        AdapterInterface $db,
-        HydratorInterface $hydrator,
-        Product $prototype,
-        CharacteristicValueRepositoryInterface $characteristicValueRepository,
-        CharacteristicRepositoryInterface $characteristics,
-        ProductImageRepositoryInterface $productImages,
-        CharacteristicValue2RepositoryInterface $characteristicValue2Repository,
-        $catalogToSaveImages
-    ) {
-        $this->db                               = $db;
-        $this->hydrator                         = $hydrator;
-        $this->prototype                        = $prototype;
-        $this->characteristicValueRepository    = $characteristicValueRepository;
-        $this->characteristics                  = $characteristics;
-        $this->productImages                    = $productImages;
-        $this->characteristicValue2Repository   = $characteristicValue2Repository;
-        $this->catalogToSaveImages              = $catalogToSaveImages;
+            AdapterInterface $db,
+            HydratorInterface $hydrator,
+            Product $prototype,
+            CharacteristicValueRepositoryInterface $characteristicValueRepository,
+            CharacteristicRepositoryInterface $characteristics,
+            ProductImageRepositoryInterface $productImages,
+            CharacteristicValue2RepositoryInterface $characteristicValue2Repository,
+            $catalogToSaveImages
+    )
+    {
+        $this->db = $db;
+        $this->hydrator = $hydrator;
+        $this->prototype = $prototype;
+        $this->characteristicValueRepository = $characteristicValueRepository;
+        $this->characteristics = $characteristics;
+        $this->productImages = $productImages;
+        $this->characteristicValue2Repository = $characteristicValue2Repository;
+        $this->catalogToSaveImages = $catalogToSaveImages;
     }
 
     /**
@@ -98,104 +100,104 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @param array $params
      * @return Product[]
      */
-    public function findProductsByProviderIdAndExtraCondition($storeId, $params=[])  {
-        $sql = new Sql($this ->db);
-        $subSelectAvailbleStore = $sql ->select('store');
-        $subSelectAvailbleStore ->columns(['provider_id']);
+    public function findProductsByProviderIdAndExtraCondition($storeId, $params = [])
+    {
+        $sql = new Sql($this->db);
+        $subSelectAvailbleStore = $sql->select('store');
+        $subSelectAvailbleStore->columns(['provider_id']);
         $subSelectAvailbleStore
-            ->where->equalTo('id', $storeId);
-         /* ->where->and
-            ->where->in('id', $params);/**/
+        ->where->equalTo('id', $storeId);
+        /* ->where->and
+          ->where->in('id', $params);/* */
 
         $select = $sql->select('');
         $select
-            ->from(['p' => 'product'])
-            ->columns(['*'])
-            ->join(
-                ['pr' => 'price'],
-                'p.id = pr.product_id',
-              //'(p.id = pr.product_id and pr.store_id = '.$storeId.")",
-                ['price'],
-                $select::JOIN_LEFT
-            )
-            ->join(
-                ['b' => 'stock_balance'],
-                'p.id = b.product_id',
-                ['rest'],
-                $select::JOIN_LEFT
-            )
-            ->join(
-                ['img' => 'product_image'],
-                'p.id = img.product_id',
-                ['http_url'],
-                $select::JOIN_LEFT
-            )
-            ->join(
-                ['brand' => 'brand'],
-                'p.brand_id = brand.id',
-                ['brand_title'=>'title'],
-                $select::JOIN_LEFT
-            )
-            ->where->in('p.provider_id', $subSelectAvailbleStore)
-            /*->where->and
-            ->where->equalTo('pr.store_id', $storeId) /**/
-            ->where->and
-            ->where->equalTo('b.store_id', $storeId)
-            //->where(['id'=>['000000013', '000000003', '000000014']])
-            //->group('p.id')
+                ->from(['p' => 'product'])
+                ->columns(['*'])
+                ->join(
+                        ['pr' => 'price'],
+                        'p.id = pr.product_id',
+                        //'(p.id = pr.product_id and pr.store_id = '.$storeId.")",
+                        ['price'],
+                        $select::JOIN_LEFT
+                )
+                ->join(
+                        ['b' => 'stock_balance'],
+                        'p.id = b.product_id',
+                        ['rest'],
+                        $select::JOIN_LEFT
+                )
+                ->join(
+                        ['img' => 'product_image'],
+                        'p.id = img.product_id',
+                        ['http_url'],
+                        $select::JOIN_LEFT
+                )
+                ->join(
+                        ['brand' => 'brand'],
+                        'p.brand_id = brand.id',
+                        ['brand_title' => 'title'],
+                        $select::JOIN_LEFT
+                )
+        ->where->in('p.provider_id', $subSelectAvailbleStore)
+        /* ->where->and
+          ->where->equalTo('pr.store_id', $storeId) /* */
+        ->where->and
+        ->where->equalTo('b.store_id', $storeId)
+        //->where(['id'=>['000000013', '000000003', '000000014']])
+        //->group('p.id')
         ;
 //        if(isset($params['filter'])) {
 //            $select->where(['id'=>['000000013', '000000003', '000000014']]);
 //        }
-
 //      Do not delete the following line
 //      $selectString = $sql->buildSqlString($select);
 //      echo $selectString
 //      exit;
 
-        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];
         }
 
         $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
+                $this->hydrator,
+                $this->prototype
         );
         $resultSet->initialize($result);
-        /*/foreach($resultSet as $product) {
-            echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
-        }
-        exit;/**/
+        /* /foreach($resultSet as $product) {
+          echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
+          }
+          exit;/* */
 
         return $resultSet;
     }
 
-    public function filterProductsByStores2($params=[])
+    public function filterProductsByStores2($params = [])
     {
         $sql = new Sql($this->db);
         $w = new Where();
         $w->in('s.id', $params);
         $select = new Select();
         $select->quantifier(Select::QUANTIFIER_DISTINCT);
-        $select->from(['s'=>'store'])->columns(['id', 'provider_id', 'title'])
+        $select->from(['s' => 'store'])->columns(['id', 'provider_id', 'title'])
                 ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $select::JOIN_INNER)
-                ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id'=>'id', 'product_title' => 'title'], $select::JOIN_INNER)
+                ->join(['pr' => 'product'], 'pr.provider_id = s.provider_id', ['product_id' => 'id', 'product_title' => 'title'], $select::JOIN_INNER)
                 ->join(['sb' => 'stock_balance'], 'sb.product_id = pr.id AND sb.store_id = s.id', ['rest' => 'rest'], $select::JOIN_LEFT)
                 ->order(['id ASC'])->where($w);
 
-        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];
         }
 
         $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
+                $this->hydrator,
+                $this->prototype
         );
         $resultSet->initialize($result);
 
@@ -218,15 +220,16 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     private function packParams($params)
     {
         $a = [];
-        foreach($params['filter'] as $p) {
-           $a[] = "find_in_set('$p', param_value_list)"; 
+        foreach ($params['filter'] as $p) {
+            $a[] = "find_in_set('$p', param_value_list)";
         }
         $res = ' 1';
-        if(count($a) > 0) {
-            $res = '('.implode(' OR ', $a).')';
+        if (count($a) > 0) {
+            $res = '(' . implode(' OR ', $a) . ')';
         }
         return $res;
     }
+
     /**
      * Function obtains products of a provider that belong to a set of available stores.
      *
@@ -236,29 +239,27 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @param array $params
      * @return Product[]
      */
-    public function filterProductsByStores(/*$storeId,*/ $params=[])
+    public function filterProductsByStores(/* $storeId, */ $params = [])
     {
-        $sql    = new Sql($this->db);
-/** Number 1
-//        $w = new \Laminas\Db\Sql\Where();
-//        $w->in('s.id', ['000000003', '000000001']);
-//        $sel = new Select();
-//        $sel->from(['s' => 'store'])
-//                ->columns(['provider_id'])
-//                ->join(
-//                    ['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT
-//                )->where($w);
-//        $w2 = new \Laminas\Db\Sql\Where();
-//        $w2->in('pr.provider_id', $sel);
-//        $sel2 = new Select();
-//        $sel2->from(['pr' => 'product'])
-//                ->columns(['*'])
-//                ->where($w2);
+        $sql = new Sql($this->db);
+        /** Number 1
+          //        $w = new \Laminas\Db\Sql\Where();
+          //        $w->in('s.id', ['000000003', '000000001']);
+          //        $sel = new Select();
+          //        $sel->from(['s' => 'store'])
+          //                ->columns(['provider_id'])
+          //                ->join(
+          //                    ['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT
+          //                )->where($w);
+          //        $w2 = new \Laminas\Db\Sql\Where();
+          //        $w2->in('pr.provider_id', $sel);
+          //        $sel2 = new Select();
+          //        $sel2->from(['pr' => 'product'])
+          //                ->columns(['*'])
+          //                ->where($w2);
 
-End of number 1 */
-
+          End of number 1 */
         /** Number 2 */
-
 //      select pr.*, ss.id as store_id, ss.title as store_title
 //      from product pr
 //      left join
@@ -268,11 +269,11 @@ End of number 1 */
 
 
 
-        $whereAppend= ($params['equal'])?'and pr.id = "'.$params['equal'].'"':'';
+        $whereAppend = ($params['equal']) ? 'and pr.id = "' . $params['equal'] . '"' : '';
         //exit ($whereAppend);
 
         $w = new Where();
-        if($params['in']) {
+        if ($params['in']) {
             $w->in('s.id', $params['in']);
         }
 
@@ -285,37 +286,36 @@ End of number 1 */
         $select = new Select();
         $select->from(['pr' => 'product'])
                 ->columns(['*'])
-            ->join(
-                ['pri' => 'price'],
-                'pr.id = pri.product_id',
-                ['price'],
-                $select::JOIN_LEFT
-            )
+                ->join(
+                        ['pri' => 'price'],
+                        'pr.id = pri.product_id',
+                        ['price'],
+                        $select::JOIN_LEFT
+                )
 //            ->join(
 //                ['b' => 'stock_balance'],
 //                'pr.id = b.product_id',
 //                ['rest'],
 //                $select::JOIN_LEFT
 //            )
-            ->join(
-                ['img' => 'product_image'],
-                'pr.id = img.product_id',
-                ['http_url'],
-                $select::JOIN_LEFT
-            )
-            ->join(
-                ['brand' => 'brand'],
-                'pr.brand_id = brand.id',
-                ['brand_title'=>'title'],
-                $select::JOIN_LEFT
-            )
+                ->join(
+                        ['img' => 'product_image'],
+                        'pr.id = img.product_id',
+                        ['http_url'],
+                        $select::JOIN_LEFT
+                )
+                ->join(
+                        ['brand' => 'brand'],
+                        'pr.brand_id = brand.id',
+                        ['brand_title' => 'title'],
+                        $select::JOIN_LEFT
+                )
                 ->join(
                         ['ss' => $sel],
                         'ss.provider_id = pr.provider_id',
-                        ['store_id'=>'id', 'store_title'=>'title'],
+                        ['store_id' => 'id', 'store_title' => 'title'],
                         $select::JOIN_LEFT
-                )->where('1 '.$whereAppend ); //ss.id is not null
-
+                )->where('1 ' . $whereAppend); //ss.id is not null
 //        $params['filter'] = ['000000003', '000000013', '000000014'];
         $s = '';
         if (isset($params['filter'])) {
@@ -326,38 +326,42 @@ End of number 1 */
 //        $selString = $sql->buildSqlString($select);
 //        exit($selString);
 
-        if ($params['order']) { $select->order($params['order']); }
-        if ($params['limit']) { $select->limit($params['limit']); }
-        if ($params['offset']) { $select->offset($params['offset']); }
+        if ($params['order']) {
+            $select->order($params['order']);
+        }
+        if ($params['limit']) {
+            $select->limit($params['limit']);
+        }
+        if ($params['offset']) {
+            $select->offset($params['offset']);
+        }
 
         /** End of number 2 */
-
-        $stmt   = $sql->prepareStatementForSqlObject($select);
+        $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
 
-        if (! $result instanceof ResultInterface || ! $result->isQueryResult()) {
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];
         }
 
         $resultSet = new HydratingResultSet(
-            $this->hydrator,
-            $this->prototype
+                $this->hydrator,
+                $this->prototype
         );
         $resultSet->initialize($result);
 
         return $resultSet;
-
     }
 
     public function filterProductsByCategories($products, $categories)
     {
         $filteredProducts = [];
         foreach ($products as $product) {
-            if(in_array($product->getCategoryId(), $categories)) {
+            if (in_array($product->getCategoryId(), $categories)) {
                 $filteredProducts[] = $product;
             }
         }
-        
+
         return $filteredProducts;
     }
 
@@ -365,28 +369,26 @@ End of number 1 */
     {
         $value_list = [];
         $var_list = [];
-        foreach($characteristics as $c) {
-            $found = $this->characteristics->find(['id'=>$c->id]);
-            if(null == $found) {
-                throw new \Exception("Unexpected db error: characteristic with id ".$c->id." is not found");
+        foreach ($characteristics as $c) {
+            $found = $this->characteristics->find(['id' => $c->id]);
+            if (null == $found) {
+                throw new \Exception("Unexpected db error: characteristic with id " . $c->id . " is not found");
             }
-            if( ( $this->characteristics::REFERENCE_TYPE == $found->getType()
-                    || $this->characteristics::HEADER_TYPE == $found->getType() )
-                    && !empty($c->value) ) {
+            if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() ) && !empty($c->value)) {
                 $value_list[] = $c->value;
-            }else{
+            } else {
                 $var_list[] = $c;
             }
         }
 
-        return ['value_list'=>implode(",", $value_list), 'var_list' => Json::encode($var_list)];
+        return ['value_list' => implode(",", $value_list), 'var_list' => Json::encode($var_list)];
     }
 
     private function extractNonEmptyImages(array $data)
     {
         $result = [];
         foreach ($data as $d) {
-            if(count($d->images) > 0) {
+            if (count($d->images) > 0) {
                 array_push($result, $d);
             }
         }
@@ -402,16 +404,16 @@ End of number 1 */
         // perform connection
         $conn_id = ftp_connect($ftp_server);
         $login_result = ftp_login($conn_id, $username, $password);
-        if( (!$conn_id) || (!$login_result)) {
-            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user '.$username.'.');
+        if ((!$conn_id) || (!$login_result)) {
+            throw new \Exception('FTP connection has failed! Attempted to connect to nas01.saychas.office for user ' . $username . '.');
         }
 
-        foreach($images as $image) {
-            $local_file = realpath($this->catalogToSaveImages)."/".$image;
-            $server_file = "/1CMEDIA/PhotoTovarov/".$image;
+        foreach ($images as $image) {
+            $local_file = realpath($this->catalogToSaveImages) . "/" . $image;
+            $server_file = "/1CMEDIA/PhotoTovarov/" . $image;
 
             // trying to download $server_file and save it to $local_file
-            if( !ftp_get($conn_id, $local_file, $server_file, FTP_BINARY) ) {
+            if (!ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
                 //throw new \Exception('Could not complete the operation');
             }
         }
@@ -424,53 +426,51 @@ End of number 1 */
      * @param type $characteristic
      * @return string
      */
-    private function replaceCharacteristic($characteristic)
-    {
-        if(!empty($characteristic->value)) {
-            $myuuid = Uuid::uuid4();
-            $myid = md5($myuuid->toString());
-            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
-
-            $q = $this->db->query($sql);
-            $q->execute();
-
-            return $myid;
-        }
-        return '';
-
-    }
+//    private function replaceCharacteristic($characteristic)
+//    {
+//        //if (!empty($characteristic->value)) {
+//        $myuuid = Uuid::uuid4();
+//        $myid = md5($myuuid->toString());
+//        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
+//
+//        $q = $this->db->query($sql);
+//        $q->execute();
+//
+//        return $myid;
+//        //}
+//        //return '';
+//    }
 
     /**
      * Replace product characteristics from $var_list.
      * Put the result in $arr[value_list].
-     * 
+     *
      * @param array $arr
      * @param array $var_list
      */
-    private function replaceCharacteristicsFromList(array &$arr, array $var_list)
-    {
-        foreach ($var_list as $var) {
-            $v = $this->replaceCharacteristic($var);
-            $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
-        }
-    }
-    
-    private function updateCharacteristicsValueList($product) : array
-    {
-        $arr = $this->separateCharacteristics($product->characteristics);
+//    private function replaceCharacteristicsFromList(array &$arr, array $var_list)
+//    {
+//        foreach ($var_list as $var) {
+//            $v = $this->replaceCharacteristic($var);
+//            $arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
+//        }
+//    }
 
-        if(count($product->characteristics) > 0)
-        {
-            $var_list = Json::decode($arr['var_list']);
-            try {
-                $this->replaceCharacteristicsFromList($arr, $var_list);
-            }catch(InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
-            }
-        }
-        
-        return $arr;
-    }
+//    private function updateCharacteristicsValueList($product): array
+//    {
+//        $arr = $this->separateCharacteristics($product->characteristics);
+//
+//        if (count($product->characteristics) > 0) {
+//            $var_list = Json::decode($arr['var_list']);
+//            try {
+//                $this->replaceCharacteristicsFromList($arr, $var_list);
+//            } catch (InvalidQueryException $e) {
+//                return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
+//            }
+//        }
+//
+//        return $arr;
+//    }
 
     /**
      * Adds given product into it's repository
@@ -481,11 +481,11 @@ End of number 1 */
     {
         try {
             $result = Json::decode($content);
-        }catch(LaminasJsonRuntimeException $e){
-           return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        } catch (LaminasJsonRuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        if((bool) $result->truncate) {
+        if ((bool) $result->truncate) {
             $this->db->query("truncate table product")->execute();
         }
 
@@ -497,55 +497,76 @@ End of number 1 */
             try {
                 /** returns array of successfully downloaded images */
                 $this->fetchImages($p->images);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
             }
         }
 
         /** $result->data - products */
-        foreach($result->data as $product) {
+        foreach ($result->data as $product) {
 
-            $arr = $this->separateCharacteristics($product->characteristics);
+            //$arr = $this->separateCharacteristics($product->characteristics);
+            $arr = $product->characteristics;
 
-            if(count($product->characteristics) > 0)
-            {
-                $var_list = Json::decode($arr['var_list']);
-/**
-//                foreach ($var_list as $var) {
-//                    if(!empty($var->value)) {
-//                        $myuuid = Uuid::uuid4();
-//                        $myid = md5($myuuid->toString());
-//                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
-//
-//                        try {
-//                            $q = $this->db->query($sql);
-//                            $q->execute();
-//                        }catch(InvalidQueryException $e){
-//                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-//                        }
-//                        $arr['value_list'] = trim($arr['value_list'].",".$myid, ',');
+            if (count($product->characteristics) > 0) {
+                //$var_list = Json::decode($arr['var_list']);
+                $var_list = $arr;
+                $jsonCharacteristics = Json::encode($product->characteristics);
+
+                $current = [];
+                foreach ($var_list as $var) {
+                    
+                    $found = $this->characteristics->find(['id' => $var->id]);
+                    if (null == $found) {
+                        throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
+                    }
+                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
+                        $myid = $var->value;
+                        $current[] = $myid;
+                    }else{
+                        $myuuid = Uuid::uuid4();
+                        $myid = md5($myuuid->toString());
+                        $current[] = $myid;
+                        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
+                        try {
+                            $q = $this->db->query($sql);
+                            $q->execute();
+                        } catch (InvalidQueryException $e) {
+                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                        }
+                    }
+//                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() ) && !empty($c->value)) {
+//                        $value_list[] = $c->value;
+//                    } else {
+//                        $var_list[] = $c;
 //                    }
-//                    $v = $this->replaceCharacteristic($var);
-//                    $arr['value_list'] = trim($arr['value_list'].",".$v, ',');
-//                }
-*/
-                try {
-                    $this->replaceCharacteristicsFromList($arr, $var_list);
-                }catch(InvalidQueryException $e){
-                    return ['result' => false, 'description' => "error executing sql statement. ".$e->getMessage(), 'statusCode' => 418];
+                    //if(!empty($var->value)) {
+                    //$arr['value_list'] = trim($arr['value_list'] . "," . $myid, ',');
+                    //}
+                    //$v = $this->replaceCharacteristic($var);
+                    //$arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
                 }
-
+                $filteredCurrent = array_filter($current);
+                $curr = implode(',', $filteredCurrent);
+                
+//                try {
+//                    $this->replaceCharacteristicsFromList($arr, $var_list);
+//                } catch (InvalidQueryException $e) {
+//                    return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
+//                }
             }
-            
-            $arr1 = $this->updateCharacteristicsValueList($product);
 
+            //$arr1 = $this->updateCharacteristicsValueList($product);
+
+//            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+//                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
-            
+                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
+
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-            }catch(InvalidQueryException $e){
+            } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }

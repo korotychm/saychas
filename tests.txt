@@ -2,6 +2,10 @@ curl -i -L saychas-z.local/receive-provider --data '{"truncate": false, "data": 
 curl -i -L saychas-z.local/receive-provider --data '[{"id": "000004" }]' -X DELETE
 
 curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1" }] }'
+curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1", 
+"characteristics": [{"id": "000000070", "is_title": true}] }] }'
+curl -i -L saychas-z.local/receive-product?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1",  
+"characteristics": [{"id": "000000070", "is_title": true, "value": "", "index": "1"},{"id": "000000070", "is_title": true, "value": "000000031", "index":"2"}, {"id": "000000070", "is_title": true, "value": "000000033", "index":"3"} ] }] }'
 curl -i -L saychas-z.local/receive-product --data '[{"id": "1" }]' -X DELETE
 
 
@@ -50,3 +54,8 @@ curl -i -L saychas-z.local/receive-size --data '{"truncate": false, "data": [{"i
 curl -i -L saychas-z.local/receive-size --data '[{"id": "000000001"}]' -X DELETE
 
 
+
+
+
+curl -i -L saychas-z.local/receive-site-header?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"id": "000000001", "title": "shmitle", "index_number": 1, "categories": [{"id": "000000001"},{"id": "000000011"}]}] }'
+curl -i -L saychas-z.local/receive-site-header --data '[{"id": "1" }]' -X DELETE
