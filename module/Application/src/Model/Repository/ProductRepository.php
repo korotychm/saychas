@@ -4,16 +4,11 @@
 
 namespace Application\Model\Repository;
 
-//use InvalidArgumentException;
-//use RuntimeException;
-// Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Driver\ResultInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
-//use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\Db\Sql\Sql;
-//use Laminas\Db\Sql\Expression;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Where;
@@ -43,7 +38,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     /**
      * @var CharacteristicValueRepositoryInterface
      */
-    protected CharacteristicValueRepositoryInterface $characteristicValueRepository; // $predefCharValueRepo;
+    protected CharacteristicValueRepositoryInterface $characteristicValueRepository;
 
     /**
      * @var CharacteristicValueRepositoryInterface
@@ -107,8 +102,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         $subSelectAvailbleStore->columns(['provider_id']);
         $subSelectAvailbleStore
         ->where->equalTo('id', $storeId);
-        /* ->where->and
-          ->where->in('id', $params);/* */
 
         $select = $sql->select('');
         $select
@@ -117,7 +110,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 ->join(
                         ['pr' => 'price'],
                         'p.id = pr.product_id',
-                        //'(p.id = pr.product_id and pr.store_id = '.$storeId.")",
                         ['price'],
                         $select::JOIN_LEFT
                 )
@@ -140,20 +132,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         $select::JOIN_LEFT
                 )
         ->where->in('p.provider_id', $subSelectAvailbleStore)
-        /* ->where->and
-          ->where->equalTo('pr.store_id', $storeId) /* */
         ->where->and
         ->where->equalTo('b.store_id', $storeId)
-        //->where(['id'=>['000000013', '000000003', '000000014']])
-        //->group('p.id')
         ;
-//        if(isset($params['filter'])) {
-//            $select->where(['id'=>['000000013', '000000003', '000000014']]);
-//        }
-//      Do not delete the following line
-//      $selectString = $sql->buildSqlString($select);
-//      echo $selectString
-//      exit;
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -167,10 +148,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $this->prototype
         );
         $resultSet->initialize($result);
-        /* /foreach($resultSet as $product) {
-          echo $product->getId().' '.$product->getTitle(). ' '. $product->getVendorCode(). ' price = ' . $product->getPrice() . ' rest = ' . $product->getRest() . '<br/>';
-          }
-          exit;/* */
 
         return $resultSet;
     }
@@ -204,19 +181,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         return $resultSet;
     }
 
-//    private function createStoreFilter($params)
-//    {
-//        $w = new Where();
-//        $w->in('s.id', $params);
-//        $sel = new Select();
-//        $sel->from(['s' => 'store'])->columns(['*'])
-//                ->join(['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT)
-//                ->where($w);
-//        $w2 = new Where();
-//        $w2->in('pr.provider_id', $sel);
-//        return $w;
-//    }
-
     private function packParams($params)
     {
         $a = [];
@@ -242,35 +206,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     public function filterProductsByStores(/* $storeId, */ $params = [])
     {
         $sql = new Sql($this->db);
-        /** Number 1
-          //        $w = new \Laminas\Db\Sql\Where();
-          //        $w->in('s.id', ['000000003', '000000001']);
-          //        $sel = new Select();
-          //        $sel->from(['s' => 'store'])
-          //                ->columns(['provider_id'])
-          //                ->join(
-          //                    ['p' => 'provider'], 'p.id = s.provider_id', [], $sel::JOIN_LEFT
-          //                )->where($w);
-          //        $w2 = new \Laminas\Db\Sql\Where();
-          //        $w2->in('pr.provider_id', $sel);
-          //        $sel2 = new Select();
-          //        $sel2->from(['pr' => 'product'])
-          //                ->columns(['*'])
-          //                ->where($w2);
-
-          End of number 1 */
-        /** Number 2 */
-//      select pr.*, ss.id as store_id, ss.title as store_title
-//      from product pr
-//      left join
-//          (select s.* from store s left join provider p on p.id = s.provider_id where s.id in ('000000001','000000002','000000003','000000004','000000005') ) ss
-//          on ss.provider_id=pr.provider_id
-//      where ss.id is not null order by pr.id;
-
-
 
         $whereAppend = ($params['equal']) ? 'and pr.id = "' . $params['equal'] . '"' : '';
-        //exit ($whereAppend);
 
         $w = new Where();
         if ($params['in']) {
@@ -322,9 +259,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $s = $this->packParams($params);
             $select->where($s);
         }
-
-//        $selString = $sql->buildSqlString($select);
-//        exit($selString);
 
         if ($params['order']) {
             $select->order($params['order']);
@@ -422,57 +356,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     }
 
     /**
-     * Replace product characteristic
-     * @param type $characteristic
-     * @return string
-     */
-//    private function replaceCharacteristic($characteristic)
-//    {
-//        //if (!empty($characteristic->value)) {
-//        $myuuid = Uuid::uuid4();
-//        $myid = md5($myuuid->toString());
-//        $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $characteristic->value, $characteristic->id);
-//
-//        $q = $this->db->query($sql);
-//        $q->execute();
-//
-//        return $myid;
-//        //}
-//        //return '';
-//    }
-
-    /**
-     * Replace product characteristics from $var_list.
-     * Put the result in $arr[value_list].
-     *
-     * @param array $arr
-     * @param array $var_list
-     */
-//    private function replaceCharacteristicsFromList(array &$arr, array $var_list)
-//    {
-//        foreach ($var_list as $var) {
-//            $v = $this->replaceCharacteristic($var);
-//            $arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
-//        }
-//    }
-
-//    private function updateCharacteristicsValueList($product): array
-//    {
-//        $arr = $this->separateCharacteristics($product->characteristics);
-//
-//        if (count($product->characteristics) > 0) {
-//            $var_list = Json::decode($arr['var_list']);
-//            try {
-//                $this->replaceCharacteristicsFromList($arr, $var_list);
-//            } catch (InvalidQueryException $e) {
-//                return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
-//            }
-//        }
-//
-//        return $arr;
-//    }
-
-    /**
      * Adds given product into it's repository
      *
      * @param json
@@ -505,12 +388,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         /** $result->data - products */
         foreach ($result->data as $product) {
 
-            //$arr = $this->separateCharacteristics($product->characteristics);
-            $arr = $product->characteristics;
+            //$arr = $product->characteristics;
 
             if (count($product->characteristics) > 0) {
-                //$var_list = Json::decode($arr['var_list']);
-                $var_list = $arr;
+                $var_list = $product->characteristics;// $arr;
                 $jsonCharacteristics = Json::encode($product->characteristics);
 
                 $current = [];
@@ -535,31 +416,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                         }
                     }
-//                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() ) && !empty($c->value)) {
-//                        $value_list[] = $c->value;
-//                    } else {
-//                        $var_list[] = $c;
-//                    }
-                    //if(!empty($var->value)) {
-                    //$arr['value_list'] = trim($arr['value_list'] . "," . $myid, ',');
-                    //}
-                    //$v = $this->replaceCharacteristic($var);
-                    //$arr['value_list'] = trim($arr['value_list'] . "," . $v, ',');
                 }
                 $filteredCurrent = array_filter($current);
                 $curr = implode(',', $filteredCurrent);
                 
-//                try {
-//                    $this->replaceCharacteristicsFromList($arr, $var_list);
-//                } catch (InvalidQueryException $e) {
-//                    return ['result' => false, 'description' => "error executing sql statement. " . $e->getMessage(), 'statusCode' => 418];
-//                }
             }
 
-            //$arr1 = $this->updateCharacteristicsValueList($product);
-
-//            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-//                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $arr1['value_list'], $arr1['var_list'], $product->brand_id);
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
