@@ -1,119 +1,116 @@
 <?php
-
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-/*echo '<br/>';
-echo $this->menu;*/
+/* echo '<br/>';
+  echo $this->menu; */
 ?>
-<div class="container" styele="max-width:1400px">	
+<div class="container" >	
     <div class="card-deck"> 
         <div class="card">
-             <h2 class="card-header">типы характеристик (characteristic_type)</h2>
+            <h2 class="card-header">типы характеристик (characteristic_type)</h2>
             <div class="card-body">
-                <div class="container" ><ul>
-<li>0 - Заголовок</li>
-<li>1 - Строка </li>
-<li>2 - Число </li>
-<li>3 - Булево </li>
-<li>4 - СправочникСсылка.ДопХарактеристикиНоменклатуры</li>
-<li>5 - СправочникСсылка.Поставщики</li>
-<li>6 - СправочникСсылка.Бренды</li>
-<li>7 - СправочникСсылка.Цвета</li></ul>
+                <div class="container" >
+                    <ul>
+                        <li>0 - Заголовок</li>
+                        <li>1 - Строка </li>
+                        <li>2 - Число </li>
+                        <li>3 - Булево </li>
+                        <li>4 - СправочникСсылка.ДопХарактеристикиНоменклатуры</li>
+                        <li>5 - СправочникСсылка.Поставщики</li>
+                        <li>6 - СправочникСсылка.Бренды</li>
+                        <li>7 - СправочникСсылка.Цвета</li>
+                        <li>8 - СправочникСсылка.Страна</li>
+                    </ul>
                 </div>
-             </div>   
+            </div>   
         </div>
-      </div>  
+    </div>  
 </div>
 
-<div class="container" styele="max-width:1400px">	
+<div class="container">	
     <div class="card-deck"> 
-       <div class="card">
-        <h2 class="card-header">Запрос магазинов по адресу</h2>
-        <div class="card-body">
-            <div class="container" >
-	
-             
-                              <input id="address" name="suggestions"  placeholder="укажи адрес доставки"/>
-                              <div id="adesserror" class="errorblock none"></div>
-                 <div id="dadataanswer" style="font-size:12px; "></div>
-                 <div id="dadataask" style="font-size:12px; color:#ccc"></div>                 
-                 
-            </div>  
-        </div>
-       </div> 
-    <div class="card" id="ycard" style="display:none;">
-        <!-- div style='min-heignt:300px;' -->
-   <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&mode=debug" type="text/javascript"></script>
-    <script type="text/javascript">
-        ymaps.ready(init);
-        function init(){
-         myMap = new ymaps.Map("map", {
-                center: [55.71, 37.68],
-                zoom: 7
-            });
-        }
-		  
-    </script>   
-        
-           <div class="card-body" id="map">
-   
-            <!-- 'geo_lat' => "55.7132713"  'geo_lon' => "37.6860004" -->
-            <div id="geocoords"></div>
-           </div>
-       <!-- /div --> 
-	   </div> 
-    </div>        
- <p><hr/></p>
-<div class="card-deck">        
-      
         <div class="card">
+            <h2 class="card-header">Запрос магазинов по адресу</h2>
+            <div class="card-body">
+                <div class="container" >
+                    <input id="address" name="suggestions"  placeholder="укажи адрес доставки"/>
+                    <div id="adesserror" class="errorblock none"></div>
+                    <div id="dadataanswer" style="font-size:12px; "></div>
+                    <div id="dadataask" style="font-size:12px; color:#ccc"></div>                 
+                </div>  
+            </div>
+        </div> 
+        <div class="card" id="ycard" style="display:none;">
+            <!-- div style='min-heignt:300px;' -->
+            <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&mode=debug" type="text/javascript"></script>
+            <script type="text/javascript">
+                ymaps.ready(init);
+                function init() {
+                    myMap = new ymaps.Map("map", {
+                        center: [55.71, 37.68],
+                        zoom: 7
+                    });
+                }
+            </script>   
+
+            <div class="card-body" id="map">
+                <!-- 'geo_lat' => "55.7132713"  'geo_lon' => "37.6860004" -->
+                <div id="geocoords"></div>
+            </div>
+            <!-- /div --> 
+        </div> 
+    </div>        
+    <p><hr/></p>
+<div class="card-deck">        
+
+    <div class="card">
         <h2 class="card-header">Test POST 1C=>Site</h2>
         <div class="card-body">
             <div class="container" >
-		 <div id="ajaxanswer2"></div>
-                 <!-- form method="post" id="formajax2"  ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px" --><br/>
-                 <textarea ID=textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px; width:96%; display:block" >[{"id": "00003","name": "Xiaomi "},{"id": "00003","name": "Xiaomi "}]</textarea> 
-				 </form>
-                 <input type="button" id="sendajax2"   class="btn btn-primary" value='Иммитировать запрос из  1C' />
+                <div id="ajaxanswer2"></div>
+                <!-- form method="post" id="formajax2"  ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px" --><br/>
+                <textarea ID=textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px; width:96%; display:block" >[{"id": "00003","name": "Xiaomi "},{"id": "00003","name": "Xiaomi "}]</textarea> 
+                </form>
+                <input type="button" id="sendajax2"   class="btn btn-primary" value='Иммитировать запрос из  1C' />
             </div>  
         </div>
-        </div>
-		
-		<div class="card">
+    </div>
+
+    <div class="card">
         <h2 class="card-header">Test POST Site=>1C </h2>
         <div class="card-body">
             <div class="container" >
-		 <div id="ajaxanswer"></div>
-                 <form method="post" id="formajax" ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
-                 <input name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ><br/> </form>
-                 <input type="button" id="sendajax"   class="btn btn-primary" value='Отправить запрос в 1C' />
+                <div id="ajaxanswer"></div>
+                <form method="post" id="formajax" ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
+                    <input name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ><br/> </form>
+                <input type="button" id="sendajax"   class="btn btn-primary" value='Отправить запрос в 1C' />
             </div>  
         </div>
-        </div>
-	</div>
-<div class="card-deck"> 	
-	   <div class="card">
-             <h2 class="card-header">Каталог</h2>
-             <div class="container">
-		 <ul id="tree">
-                     <?= $this->menu ?>     
-		 </ul>	
-                 </div>  
-          </div>  
-        <div class="card">
-            <h2 class="card-header">Телефон</h2>
-            <div class="card-body">  
-             <div class="container">
-                 <p><input name=phonesend  val=""  id="phonesend" class="phoneInput" placeholder="+7-999-999-9999" style="margin:5px 0;padding:4px" ></p>
-                 
-                 </div>  
-            </div> 
-        </div> 
-
- 
+    </div>
 </div>
-	</div>    
+<div class="card-deck"> 	
+    <div class="card">
+        <h2 class="card-header">Каталог</h2>
+        <div class="container">
+            <ul id="tree">
+                <?= $this->menu ?>     
+            </ul>	
+        </div>  
+    </div>  
+    <div class="card">
+        <h2 class="card-header">Телефон</h2>
+        <div class="card-body">  
+            <div class="container">
+                <p><input name=phonesend  val=""  id="phonesend" class="phoneInput" placeholder="+7-999-999-9999" style="margin:5px 0;padding:4px" ></p>
+
+            </div>  
+        </div> 
+    </div> 
+
+
+</div>
+</div>    
