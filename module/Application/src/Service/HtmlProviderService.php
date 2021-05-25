@@ -287,7 +287,6 @@ class HtmlProviderService
             $bool = ["нет", "да"];
             foreach ($characterictics as $char) {
                 $idchar= $char->getId();
-                echo 'vadsfdsaf'; print_r($char->getVal());
                 if ($value = $char->getVal() or true) {
                     if ($char->getType() == 3)
                         $value = $bool[$value];
