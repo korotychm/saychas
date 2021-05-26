@@ -28,19 +28,26 @@ $(function () {
     }
 
     function sendfilterform() {
+        //alert("!!!!");
         var dataString = $("#filtrform").serialize();
         $.ajax({
-            // beforeSend : function (){ $("#overload").stop().show(); },
+            beforeSend : function (){ 
+                $("#overload").stop().show(); 
+                
+            },
             url: "/ajax-fltr",
             type: 'POST',
             cache: false,
             data: dataString,
             success: function (data) {
-                // $("#ajaxfiltranswer").html(data);
+                
+                $("#ajaxfiltranswer").html(data);
                 window.location.href = window.location.href
+                //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+                alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
             }
         });
     }
@@ -60,13 +67,13 @@ $(function () {
 
     $(".checkgroup").click(function () {
 
-        console.log("#fltrcheck" + $(this).attr("for"));
+        console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
             $(this).removeClass("zach");
-            $("#fltrcheck" + $(this).attr("for")).prop("checked", false);
+            $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
         } else {
             $(this).addClass("zach");
-            $("#fltrcheck" + $(this).attr("for")).prop("checked", true);
+            $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
     $(".closefilteritem").live("click", function () {

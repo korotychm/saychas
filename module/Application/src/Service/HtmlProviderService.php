@@ -97,26 +97,114 @@ class HtmlProviderService
             $filtred = [];
         //print_r($filtred);
         foreach ($filters as $row) {
-            $arrayTmp[$row->getId()]['title'] = $row->getTitle();
-            $arrayTmp[$row->getId()]['id'] = $row->getId();
-            $arrayTmp[$row->getId()]['count'] += (in_array($row->getValId(), $filtred) ? 1 : 0);
-            $arrayTmp[$row->getId()]['options'] .= "
-                     <div class='nopub checkgroup blok " . (in_array($row->getValId(), $filtred) ? " zach " : "") . "' for='{$row->getValId()}' >{$row->getVal()}
-                               <input type='checkbox' id='fltrcheck{$row->getValId()}' name='fltr[]' class='none' value='{$row->getValId()}'  " . (in_array($row->getValId(), $filtred) ? " checked " : "") . " >
-                     </div>";
+            if ($row->getType()){
+                $arrayTmp[$row->getId()]['title'] = $row->getTitle()."/".$row->getType();
+                $arrayTmp[$row->getId()]['id'] = $row->getId();
+                $arrayTmp[$row->getId()]['type'] = $row->getType();
+                $arrayTmp[$row->getId()]['count'] += (in_array($row->getValId(), $filtred) ? 1 : 0);
+                if($row->getVal())$arrayTmp[$row->getId()]['options'][$row->getValId()]= ['valId'=>$row->getValId(), 'valValue'=>$row->getVal()];
+                         
+                $t="<div class='nopub checkgroup blok relative" . (in_array($row->getValId(), $filtred) ? " zach " : "") . "' for='{$row->getValId()}' >{$row->getVal()} / {$row->getValId()}
+                                   <input 
+                                        type='checkbox' 
+                                        class='none fltrcheck{$row->getValId()}' 
+                                        name='fltr[]' 
+                                       
+                                        value='{$row->getValId()}'  "
+                                        . (in_array($row->getValId(), $filtred) ? " checked " : "") . " >
+                        </div>";
+            }             
         }
+        
+        
         if (!$arrayTmp)
             return;
         //$filtrForCategory[$category_id];
+        //$arrayTmp = array_unique($arrayTmp);
         foreach ($arrayTmp as $row) {
-
-            $return .= '
+        $options="";
+        if (4 == $row['type']) {
+            $options="";
+            foreach ($row['options'] as $option){
+                $options.="<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='".$option['valId']."' >".$option["valValue"]
+                                   ."<input 
+                                        type='checkbox' 
+                                        class='none fltrcheck".$option['valId']."' 
+                                        name='fltr[]' 
+                                        
+                                        value='".$option['valId']."'  "
+                                        . (in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                        </div>";
+                
+            }
+        }
+        elseif (7 == $row['type'] )  {
+            $options="";
+            foreach ($row['options'] as $option){
+                $options.="<div class=iblok ><div class='nopub checkgroup  relative iblok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='".$option['valId']."' style='z-index:3'>"
+                        . "</div> "
+                        . "<div class='cirkul iblok relative' style='background-color:".$option["valValue"]."; border:1px solid var(--gray); left:-45px; top:-8px; z-index:2 '></div>"
+                        ."
+                                   <input 
+                                        type='checkbox' 
+                                        class='none fltrcheck".$option['valId']."' 
+                                        name='fltr[]' 
+                                       
+                                        value='".$option['valId']."'  "
+                                        . (in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                        </div> ";
+                
+            }
+        } 
+            elseif (6 == $row['type'] )  {
+            $options="";
+            foreach ($row['options'] as $option){
+                
+                $options.="<div class='nopub checkgroup  relative iblok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='".$option['valId']."' style='z-index:3'>"
+                           ."{$this->brandRepository->findFirstOrDefault(['id' => $option['valValue']])->getTitle()} / ".$option['valValue']."
+                                   <input 
+                                        type='checkbox' 
+                                        class='none fltrcheck".$option['valId']."' 
+                                        name='fltr[]' 
+                                       
+                                        value='".$option['valId']."'  "
+                                        . (in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                        </div> ";
+                
+            }
+        } elseif (8 == $row['type'] )  {
+            $options="";
+            $arraycountry=[];
+            
+            foreach ($row['options'] as $option){
+                $arraycountry[$option['valValue']][$this->countryRepository->findFirstOrDefault(['id' => $option['valValue']])->getTitle()][]=$option['valId'];
+            }
+                while (list($key, $option )=each($arraycountry)){
+                $options.="<div class='nopub checkgroup  relative iblok " . (in_array($option[0], $filtred) ? " zach " : "") . "' for='".$key."' style='z-index:3'>".key($option);
+                           
+                        foreach ($option[key($option)] as $input){
+                          $options.="<input 
+                                        type='checkbox' 
+                                        class='none2 fltrcheck".$key."' 
+                                        name='fltr[]' 
+                                        
+                                        value='".$input."'  "
+                                        . (in_array($input, $filtred) ? " checked " : "") . " >";
+                        }
+                $options.="</div> ";
+                
+            }
+        } //else $options=$row['options'];  
+        
+            
+            
+          if ($options)  $return .= '
       <div class="ifilterblock"  >
             <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['title'] . (($count = (int) $row['count']) ? "<div class='count' >$count</div>" : "") . '</div>
             <div class="filtritem" id="fi' . $row['id'] . '">
                 <div class="filtritemcontent" id="fc' . $row['id'] . '">
                     <div class="closefilteritem" rel="' . $row['id'] . '">' . $row['title'] . '</div>
-                    ' . $row['options'] . "
+                    ' . $options . "
                     <div class='block'><input type='button' value='применить' class='formsendbutton'  ></div>
                  </div>
             </div>
