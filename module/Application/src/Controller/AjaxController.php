@@ -31,6 +31,7 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Http\Response;
 use Laminas\Session\Container;
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 
 class AjaxController extends AbstractActionController
 {
@@ -174,13 +175,16 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->userAddress = $TMP -> value;
         
-        
-//        $userId = $this->identity();
-//        $user = $this->userRepository->find(['id'=>$userId]);
-//        $userData = new UserData();
-//        $userData->setAddress($container->userAddress);
-//        $userData->setGeodata($json);
-//        $user->setUserData([$userData]);
+        try {
+            $userId = $this->identity();
+            $user = $this->userRepository->find(['id'=>$userId]);
+            $userData = new UserData();
+            $userData->setAddress($container->userAddress);
+            $userData->setGeodata($json);
+            $user->setUserData([$userData]);
+        }catch(InvalidQueryException $e){
+            print_r($e->getMessage());
+        }
         
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
