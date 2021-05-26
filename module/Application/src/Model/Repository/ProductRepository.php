@@ -354,6 +354,41 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         // close connection
         ftp_close($conn_id);
     }
+    
+    /**
+     * @param array $params
+     * @return bool
+     */
+    private function deleteProductCharacteristics($product_id) : bool {
+        $sql = new Sql($this->db);
+        // deleting existing product data
+        $delete = $sql->delete()->from('product_characteristic')->where(['product_id' => $product_id]);
+        $deleteString = $sql->buildSqlString($delete);
+        try {
+            $this->db->query($deleteString, $this->db::QUERY_MODE_EXECUTE);
+        } catch (InvalidQueryException $e) {
+            print_r($deleteString.$e->getMessage());
+            exit;
+        }
+        return true;
+    }
+    
+    private function saveProductCharacteristics($params) : bool {
+        foreach($params as $param) {
+            $sql = new Sql($this->db);
+            $insert = $sql->insert()->into('product_characteristic')
+                    ->columns(['product_id', 'characteristic_id', 'type', 'sort_order', 'value'])
+                    ->values($param);
+            $insertString = $sql->buildSqlString($insert);
+            try {
+                $this->db->query($insertString, $this->db::QUERY_MODE_EXECUTE);
+            } catch (InvalidQueryException $e) {
+                print_r($insertString.$e->getMessage());
+                exit;
+            }
+        }
+        return true;
+    }
 
     /**
      * Adds given product into it's repository
@@ -387,20 +422,29 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
         /** $result->data - products */
         foreach ($result->data as $product) {
-
+            
             //$arr = $product->characteristics;
 
+            $prods = [];
+            $prodChs = [];
             if (count($product->characteristics) > 0) {
                 $var_list = $product->characteristics;// $arr;
                 $jsonCharacteristics = Json::encode($product->characteristics);
 
                 $current = [];
+                $prodChs['product_id'] = $product->id;
                 foreach ($var_list as $var) {
                     
                     $found = $this->characteristics->find(['id' => $var->id]);
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
+                    $prodChs['characteristic_id'] = $var->id;
+                    $prodChs['sort_order'] = $var->index;
+                    $prodChs['value'] = $var->value;
+                    $prodChs['type'] = $found->getType();
+                    $prods[] = $prodChs;
+
                     if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
                         $myid = $var->value;
                         $current[] = $myid;
@@ -421,7 +465,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $curr = implode(',', $filteredCurrent);
                 
             }
-
+            
+            $this->deleteProductCharacteristics($product->id);
+            $this->saveProductCharacteristics($prods);
+            
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
