@@ -175,12 +175,12 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->userAddress = $TMP -> value;
         
-        try {
             $userId = $this->identity();
             $user = $this->userRepository->find(['id'=>$userId]);
             $userData = new UserData();
             $userData->setAddress($container->userAddress);
             $userData->setGeodata($json);
+        try {
             $user->setUserData([$userData]);
         }catch(InvalidQueryException $e){
             print_r($e->getMessage());

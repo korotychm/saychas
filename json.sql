@@ -1,6 +1,6 @@
 CREATE TABLE jemp (
 	c JSON,
-	g INT GENERATED ALWAYS AS (C->"$.ID"),
+	g INT GENERATED ALWAYS AS (c->"$.id"),
 	INDEX i(g)
 );
 
