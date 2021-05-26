@@ -175,12 +175,12 @@ class AjaxController extends AbstractActionController
         $container->userAddress = $TMP -> value;
         
         
-        $userId = $this->identity();
-        $user = $this->userRepository->find(['id'=>$userId]);
-        $userData = new UserData();
-        $userData->setAddress($container->userAddress);
-        $userData->setGeodata($json);
-        $user->setUserData([$userData]);
+//        $userId = $this->identity();
+//        $user = $this->userRepository->find(['id'=>$userId]);
+//        $userData = new UserData();
+//        $userData->setAddress($container->userAddress);
+//        $userData->setGeodata($json);
+//        $user->setUserData([$userData]);
         
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
