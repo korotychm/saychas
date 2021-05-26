@@ -65,7 +65,7 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
     {
         //if ($param['where']) $wereAppend = $param['where'];
 
-        $query = "SELECT `v`.`title` AS val, `v`.`id` as val_id,  `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0,$list' ) " . $param['where'] . "  ORDER BY `tit`.`sort_order` ";
+        $query = "SELECT `v`.`title` AS val, `v`.`id` as val_id,  `tit`.* FROM `{$this->tableName}` AS tit INNER JOIN `{$this->tableValuesName}` AS v ON (`tit`.`id` = `v`.`characteristic_id`) WHERE FIND_IN_SET( `v`.`id`,'0,$list' ) " . $param['where'] . " and  `tit`.`filter` = 1  and tit.type not in (0, 1) ORDER BY `tit`.`sort_order` ";
 
 //        exit ($query);
         
