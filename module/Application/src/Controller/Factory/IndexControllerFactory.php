@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
@@ -54,8 +55,9 @@ class IndexControllerFactory implements FactoryInterface
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
+        $productCharacteristic = $container->get(ProductCharacteristicRepositoryInterface::class);
         return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $setting, $characteristic,
-                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService);
+                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService, $productCharacteristic);
     }
 
 }

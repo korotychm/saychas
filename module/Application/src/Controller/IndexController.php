@@ -25,6 +25,8 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\Entity\ProductCharacteristic;
+use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\Repository\UserRepository;
 
 use Application\Service\HtmlProviderService;
@@ -56,6 +58,7 @@ class IndexController extends AbstractActionController
     private $htmlFormProvider;
     private $userRepository;
     private $authService;
+    private $productCharacteristicRepository;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -64,7 +67,8 @@ class IndexController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService)
+                $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
+                $productCharacteristicRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -84,6 +88,7 @@ class IndexController extends AbstractActionController
         $this->htmlFormProvider = $htmlFormProvider;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
+        $this->productCharacteristicRepository = $productCharacteristicRepository;
     }
 
     public function onDispatch(MvcEvent $e) 

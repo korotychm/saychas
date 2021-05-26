@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 25, 2021 at 06:03 AM
+-- Generation Time: May 26, 2021 at 03:27 AM
 -- Server version: 8.0.23
 -- PHP Version: 7.4.16
 
@@ -1099,7 +1099,45 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 ('352cd341bb86d8617cd11fb373fedb82', '75.7', '000000005'),
 ('523004e9952dc76061cf6ab7be167154', '8.3', '000000006'),
 ('771b22f1f4d28a6b4861a14f51bc7a20', '150.9', '000000007'),
-('7e4cd85f92bf50715f037430525e3109', '194', '000000008');
+('7e4cd85f92bf50715f037430525e3109', '194', '000000008'),
+('f801504914650e442875a5959b9287de', '', '000000017'),
+('4180ed5c98f63da13dc81ee69b696358', '', '000000003'),
+('c3961db1a937f75f9f64b7458c3d27fe', '', '000000004'),
+('d290f99a88c508fbadfbcf1e3d77fe7d', '', '000000001'),
+('50af377835f83c9fb5b68ca036ccceae', '', '000000027'),
+('6de6c9515ff958faa685693065e203b4', '', '000000028'),
+('beeb25c8b57c9fa2937546adf6e3bd78', '6.76', '000000032'),
+('dc7325dda59528f5fe6ab28f9a311d57', '', '000000029'),
+('20753278163808d21af730c2c2897e5f', '', '000000038'),
+('d3bb39073044cbc5081ccffe08604a00', '', '000000039'),
+('1b44fdc19b10df75a4ef482ae0685369', '', '000000043'),
+('6e6bf44d7b1a60e70182e567112c2fdf', '', '000000044'),
+('54603ab12ccf5d4035b7e87ebc72ee31', '', '000000045'),
+('7611c69741e07ae8d93144d336fc1bd0', '', '000000047'),
+('a97b3f49e1294834f6632691c43348dd', '', '000000048'),
+('88c86ff081a5fafdabf2480cb3b12918', '', '000000049'),
+('e8bdecb33c4002ff2ba9627aa5ac6613', '', '000000050'),
+('8095e295c241a91b5b36b1d04bbc2409', '', '000000052'),
+('25ed976a2b9f084ba811dd053d331765', '', '000000053'),
+('33dcb835d9acbc45c2ad1e8e1b111fcc', '', '000000054'),
+('79e39701ce82cf11fd2cf1674ece6d78', '', '000000055'),
+('71e24997c9038df2a67ecd3906cc3c7c', '', '000000057'),
+('1ca3c78c803f3f416c92471c4e0cffe6', '', '000000058'),
+('424a3623d4fa2668cf48fcb5c613075a', '', '000000059'),
+('7733adc85b79e1fae1dd453f07fb3418', '', '000000060'),
+('c416d404adeafd052f64c3fcb3173eb8', '', '000000061'),
+('9e662ddac77167dd28efae895bf0b8bf', '', '000000062'),
+('8bf38f3e402ba63dcb5c61852ea2caad', '', '000000063'),
+('b43654a42903ce222c8fa6034faa87bb', '', '000000064'),
+('40dc2f7f7df78e120311ac0e1671041d', '', '000000065'),
+('5f941c928a518b79dc05c07ccb675091', '', '000000066'),
+('f8ced028bf90fef10cc903b609445218', '', '000000067'),
+('e6b40a7bcba1422f8ba566c29f8e40d6', '', '000000068'),
+('03a798df0cc5c3b368665e4c29712908', '', '000000069'),
+('015603ad1ee12d0222fbb9bad0172d3b', '0.175', '000000005'),
+('aed89ab598e5df1a57183fbf30d7a6bc', '0.055', '000000006'),
+('a5026f17b86454057d0f581ceaa33c18', '0.01', '000000007'),
+('124bc950b3d1e5c97effce5593fa5684', '0.15', '000000008');
 
 -- --------------------------------------------------------
 
@@ -1122,7 +1160,7 @@ CREATE TABLE `characteristic_value2` (
 
 DROP TABLE IF EXISTS `country`;
 CREATE TABLE `country` (
-  `id` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
+  `id` varchar(5) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `code` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1421,6 +1459,32 @@ CREATE TABLE `filtered_product` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `jemp`
+--
+
+DROP TABLE IF EXISTS `jemp`;
+CREATE TABLE `jemp` (
+  `c` json DEFAULT NULL,
+  `g` int GENERATED ALWAYS AS (json_extract(`c`,_utf8mb4'$.ID')) VIRTUAL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `jemp`
+--
+
+INSERT INTO `jemp` (`c`) VALUES
+('{\"id\": \"1\", \"name\": \"Fred\"}'),
+('{\"id\": \"2\", \"name\": \"Wilma\"}'),
+('{\"id\": \"3\", \"name\": \"Barney\"}'),
+('{\"id\": \"4\", \"name\": \"Betty\"}'),
+('{\"id\": \"1\", \"name\": \"Fred\"}'),
+('{\"id\": \"2\", \"name\": \"Wilma\"}'),
+('{\"id\": \"3\", \"name\": \"Barney\"}'),
+('{\"id\": \"4\", \"name\": \"Betty\"}');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `param_title`
 --
 
@@ -1584,7 +1648,7 @@ INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description
 ('000000000020', '00002', '000000006', 'Смартфон iPhone 12 Pro 256GB (серебристый)', 'Это iPhone 12 Pro. A14 Bionic, самый быстрый процессор iPhone. Система камер Pro, которая обеспечивает потрясающее качество снимков при слабом освещении. Это новая прекрасная эра для iPhone.', '15875684', 'dc04cee03d7053a0e20a3c9eb36d381d,000000044,f7453d08eb3dedb7a59dd3d4051614cc,f1799d548ae727ca06883c267fb992b2,76a05f5c7e883dc26ec30f6ff60066a0,28a1652bb2690d222fda2fc155dc0b63,e1e9d66d1ae48d4c78b4705c40618008,fa18cfad338c5268d22b8ee6e5150758,4ab63bc4c40052d0341894e633fcaaae,000000046,000000017,04d8edbe01f14732f9e9f904f54c25fd,085b2dfc1ca34715370acc73e1373c1e,000000045,000000025,000000027,b93612143d6f50b22a3979e36a369b18,fbfe6dc86906b6ae519b635ff6e80552,227127b9bf658b16b63d2d17bcd332ef,000000029,78dc46af13336ec3375f3fb470e6b7b6,801608cb3633ec7b272786c6b663b559,a2694264dca64f4355db2922d6f53c64,fe4773649e3e9f37f8be80e73e6bed21,000000035,f8880ca06d08b00d235d74cb8afe421f,237070deda267e02c1dea1ea2f16bbae,b48b917dd6f0eff531162517abe73cc9,c13ffbe93ad26ad938dc0cf47c82c048,000000043,e5608744ab1a5b7c26edb1688ba47e52,cd1b659308f62a931f837cbfc1394e6b,9c688ae13936178514ec469b813adb1c,3bf6a17a11686d008d5f8b7a8a79ec65,99654825e7f24713cae33a4fa1a00dc1,715d7dfac3579bc5a5deefb9f75fad34,7e7a2aaca5961a5b62eb4b479fbf1e15,2a856cf010652a6738b41a0da0aad47d,5f7c1b410ef7f7b87297a64dd04d3681,038b394cbbb656a5acd2ecac12ca66e4,c10e52a5876c2dc94cd35f35a3348f65,06c09373d5fdf2ce1745d2d14472b597,5ee8204292605d4ab78bd76289ad573e,ce7bc7b05559477e66db796a491da071,78c736fb786aed71773983518a32433e,0f3d0fa75d6cd50fea6644a2cd089162,7a2cd80468c7d02f25854db4664cd53d', '[{\"id\":\"000000017\",\"is_title\":true,\"index\":1,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"index\":2,\"value\":\"000000044\"},{\"id\":\"000000003\",\"is_title\":false,\"index\":3,\"value\":\"000011\"},{\"id\":\"000000025\",\"is_title\":false,\"index\":4,\"value\":\"\"},{\"id\":\"000000004\",\"is_title\":false,\"index\":5,\"value\":\"\"},{\"id\":\"000000001\",\"is_title\":false,\"index\":6,\"value\":\"156\"},{\"id\":\"000000027\",\"is_title\":false,\"index\":7,\"value\":12},{\"id\":\"000000028\",\"is_title\":false,\"index\":8,\"value\":\"u0441u043au0430u043du0435u0440 u043eu0442u043fu0435u0447u0430u0442u043au0430 u043fu0430u043bu044cu0446u0430, u0440u0430u0437u0431u043bu043eu043au0438u0440u043eu0432u043au0430 u043fu043e u043bu0438u0446u0443\"},{\"id\":\"000000032\",\"is_title\":true,\"index\":9,\"value\":\"\"},{\"id\":\"000000029\",\"is_title\":false,\"index\":10,\"value\":6.1},{\"id\":\"000000036\",\"is_title\":false,\"index\":11,\"value\":\"000000046\"},{\"id\":\"000000037\",\"is_title\":false,\"index\":12,\"value\":\"000000017\"},{\"id\":\"000000038\",\"is_title\":false,\"index\":13,\"value\":true},{\"id\":\"000000039\",\"is_title\":true,\"index\":14,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"index\":15,\"value\":\"000000045\"},{\"id\":\"000000041\",\"is_title\":false,\"index\":16,\"value\":\"000000025\"},{\"id\":\"000000042\",\"is_title\":false,\"index\":17,\"value\":\"000000027\"},{\"id\":\"000000043\",\"is_title\":false,\"index\":18,\"value\":\"Apple A14 Bionic\"},{\"id\":\"000000044\",\"is_title\":false,\"index\":19,\"value\":6},{\"id\":\"000000045\",\"is_title\":false,\"index\":20,\"value\":1700},{\"id\":\"000000046\",\"is_title\":false,\"index\":21,\"value\":\"000000029\"},{\"id\":\"000000047\",\"is_title\":true,\"index\":22,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"index\":23,\"value\":\"NFC; Bluetooth 5.0; Wi-Fi 802.11ax\"},{\"id\":\"000000049\",\"is_title\":false,\"index\":24,\"value\":\"3G; 4G; Wi-Fi; LTE-A\"},{\"id\":\"000000050\",\"is_title\":false,\"index\":25,\"value\":\"u0413u041bu041eu041du0410u0421u0421; GPS; BeiDou; Galileo; QZSS\"},{\"id\":\"000000051\",\"is_title\":false,\"index\":26,\"value\":\"000000035\"},{\"id\":\"000000052\",\"is_title\":false,\"index\":27,\"value\":\"nano SIM\"},{\"id\":\"000000053\",\"is_title\":true,\"index\":28,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"index\":29,\"value\":\"Li-polymer\"},{\"id\":\"000000055\",\"is_title\":false,\"index\":30,\"value\":4810},{\"id\":\"000000056\",\"is_title\":false,\"index\":31,\"value\":\"000000043\"},{\"id\":\"000000057\",\"is_title\":true,\"index\":32,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"index\":33,\"value\":12},{\"id\":\"000000059\",\"is_title\":false,\"index\":34,\"value\":12},{\"id\":\"000000060\",\"is_title\":false,\"index\":35,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430\"},{\"id\":\"000000061\",\"is_title\":false,\"index\":36,\"value\":\"AAC; AMR; APE; FLAC; M4V; MKV; MP3; MP4; WAV; XviD\"},{\"id\":\"000000062\",\"is_title\":false,\"index\":37,\"value\":true},{\"id\":\"000000063\",\"is_title\":false,\"index\":38,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u0432u0441u043fu044bu0448u043au0430\"},{\"id\":\"000000064\",\"is_title\":true,\"index\":39,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"index\":40,\"value\":\"u0434u043eu043au0443u043cu0435u043du0442u0430u0446u0438u044f; u0447u0435u0445u043eu043b; USB-u043au0430u0431u0435u043bu044c; u0430u0434u0430u043fu0442u0435u0440; u0433u0430u0440u0430u043du0442u0438u0439u043du044bu0439 u0442u0430u043bu043eu043d\"},{\"id\":\"000000066\",\"is_title\":false,\"index\":41,\"value\":\"IP67\"},{\"id\":\"000000067\",\"is_title\":false,\"index\":42,\"value\":\"u041du0435 u0442u0440u0435u0431u0443u0435u0442 u0441u043fu0435u0446u0438u0430u043bu044cu043du044bu0445 u0443u0441u043bu043eu0432u0438u0439\"},{\"id\":\"000000068\",\"is_title\":false,\"index\":43,\"value\":true},{\"id\":\"000000069\",\"is_title\":true,\"index\":44,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"index\":45,\"value\":75.7},{\"id\":\"000000006\",\"is_title\":false,\"index\":46,\"value\":8.3},{\"id\":\"000000007\",\"is_title\":false,\"index\":47,\"value\":159},{\"id\":\"000000008\",\"is_title\":false,\"index\":48,\"value\":194}]', '000011'),
 ('000000000021', '00002', '000000006', 'Смартфон iPhone 11 64GB (красный)', 'Ничего лишнего. Только самое. Ярко. Мощно. То, что нужно. Сверхширокоугольный взгляд на мир. iPhone 11. Переходите на самое. Снимайте видео 4K, отличные портреты и захватывающие пейзажи с превосходной системой двух камер. Делайте красивейшие снимки при слабом освещении в Ночном режиме. Смотрите фотографии и видео, играйте в игры - на дисплее Liquid Retina 6,1 дюйма всё выглядит естественно и реалистично. Открывайте новые возможности игр, дополненной реальности и фотографии благодаря невероятной производительности процессора A13 Bionic. А с мощным аккумулятором вы сможете делать больше - и меньше времени тратить на зарядку. Устройство защищено от воды (допускается погружение в воду на глубину до 2 метров на 30 минут). Apple перечисляет часть средств от продажи iPhone 11 (PRODUCT)RED в Глобальный фонд для борьбы со СПИДом.', '16023985', '1204c550596ab14ef2b219d251a39e14,000000044,27e20035faa63a78440af8fa38bb551d,e7d2114c002bcc419878479ad2739885,5e91e5c7d41ef8667addb42837850133,d14acaee425fbe8ac263091c419d2e6a,60a2ba4abbdcb3e1e158e46fe89931eb,09e7c4fad68a52bb042ce809689899aa,491bbb431e0f0ffb40b51773f833038f,000000046,000000017,552147af71641c2744ad9436a31775a5,87c0f17a55ecdb102d2acab475bc89bf,000000021,000000025,000000027,7319e0150bde5470a27fb48e48fed7f9,588769022cf85215d18f6c0943b9eb13,5b4837a43b34fe4248a31de555de48f1,000000029,d35ae6ee827a365ce8b0c740a07aeb00,184485f00b7818c246689d3725c1ec6a,35552c0705169b219b838bd9b50bea00,d2fa5354649ab6c2397a72be5f004bd0,000000035,da7de6dcae0a43b996320a1da67d0b23,18b69faa6a3553cee2a1dbd009d383ac,23c8146208e7e4dfbc73404d8daf8c75,75e3f697494c393c44c80cec9c897742,000000043,31a39db56f7599262c7ce47e0a74bf55,ffaa3dc1eba34be7bf59fa6a804b1bd8,09499fbaba28fb1085a38eb45fe7c40d,07aa28df9a3334cb27a5758c163e0112,24dcdda579b61ff69bdca43eefff0c6e,3795f076ba80f7e20abf6c974ca403fd,4abedac0f25cb756dadd1c4fbb80c1b4,f7d69548df009a6236fe2491ecac4875,ee259c15f296ce749f12d7b699c902e5,9752ada78edea2e34d086ec63e1b8889,1ad60e782ab995a452c2d5b9084764dd,fb7dd6d4313d3091ded5a4fed3ada054,ecc45a5b8d93b9f485c474da13794a8f,44e3d391903aa8725fddff7bb9d3db97,dd9c73fb6c6cf6b7edb0a3c9206791d1,58702aab54fac0aaa22acf617d76a0e2,440d8f4dae15dd996fbd68a452956fcc', '[{\"id\":\"000000017\",\"is_title\":true,\"index\":1,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"index\":2,\"value\":\"000000044\"},{\"id\":\"000000003\",\"is_title\":false,\"index\":3,\"value\":\"000011\"},{\"id\":\"000000025\",\"is_title\":false,\"index\":4,\"value\":\"\"},{\"id\":\"000000004\",\"is_title\":false,\"index\":5,\"value\":\"\"},{\"id\":\"000000001\",\"is_title\":false,\"index\":6,\"value\":\"156\"},{\"id\":\"000000027\",\"is_title\":false,\"index\":7,\"value\":12},{\"id\":\"000000028\",\"is_title\":false,\"index\":8,\"value\":\"u0441u043au0430u043du0435u0440 u043eu0442u043fu0435u0447u0430u0442u043au0430 u043fu0430u043bu044cu0446u0430, u0440u0430u0437u0431u043bu043eu043au0438u0440u043eu0432u043au0430 u043fu043e u043bu0438u0446u0443\"},{\"id\":\"000000032\",\"is_title\":true,\"index\":9,\"value\":\"\"},{\"id\":\"000000029\",\"is_title\":false,\"index\":10,\"value\":6.1},{\"id\":\"000000036\",\"is_title\":false,\"index\":11,\"value\":\"000000046\"},{\"id\":\"000000037\",\"is_title\":false,\"index\":12,\"value\":\"000000017\"},{\"id\":\"000000038\",\"is_title\":false,\"index\":13,\"value\":true},{\"id\":\"000000039\",\"is_title\":true,\"index\":14,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"index\":15,\"value\":\"000000021\"},{\"id\":\"000000041\",\"is_title\":false,\"index\":16,\"value\":\"000000025\"},{\"id\":\"000000042\",\"is_title\":false,\"index\":17,\"value\":\"000000027\"},{\"id\":\"000000043\",\"is_title\":false,\"index\":18,\"value\":\"Apple A14 Bionic\"},{\"id\":\"000000044\",\"is_title\":false,\"index\":19,\"value\":6},{\"id\":\"000000045\",\"is_title\":false,\"index\":20,\"value\":1700},{\"id\":\"000000046\",\"is_title\":false,\"index\":21,\"value\":\"000000029\"},{\"id\":\"000000047\",\"is_title\":true,\"index\":22,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"index\":23,\"value\":\"NFC; Bluetooth 5.0; Wi-Fi 802.11ax\"},{\"id\":\"000000049\",\"is_title\":false,\"index\":24,\"value\":\"3G; 4G; Wi-Fi; LTE-A\"},{\"id\":\"000000050\",\"is_title\":false,\"index\":25,\"value\":\"u0413u041bu041eu041du0410u0421u0421; GPS; BeiDou; Galileo; QZSS\"},{\"id\":\"000000051\",\"is_title\":false,\"index\":26,\"value\":\"000000035\"},{\"id\":\"000000052\",\"is_title\":false,\"index\":27,\"value\":\"nano SIM\"},{\"id\":\"000000053\",\"is_title\":true,\"index\":28,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"index\":29,\"value\":\"Li-polymer\"},{\"id\":\"000000055\",\"is_title\":false,\"index\":30,\"value\":4810},{\"id\":\"000000056\",\"is_title\":false,\"index\":31,\"value\":\"000000043\"},{\"id\":\"000000057\",\"is_title\":true,\"index\":32,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"index\":33,\"value\":12},{\"id\":\"000000059\",\"is_title\":false,\"index\":34,\"value\":12},{\"id\":\"000000060\",\"is_title\":false,\"index\":35,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430\"},{\"id\":\"000000061\",\"is_title\":false,\"index\":36,\"value\":\"AAC; AMR; APE; FLAC; M4V; MKV; MP3; MP4; WAV; XviD\"},{\"id\":\"000000062\",\"is_title\":false,\"index\":37,\"value\":true},{\"id\":\"000000063\",\"is_title\":false,\"index\":38,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u0432u0441u043fu044bu0448u043au0430\"},{\"id\":\"000000064\",\"is_title\":true,\"index\":39,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"index\":40,\"value\":\"u0434u043eu043au0443u043cu0435u043du0442u0430u0446u0438u044f; u0447u0435u0445u043eu043b; USB-u043au0430u0431u0435u043bu044c; u0430u0434u0430u043fu0442u0435u0440; u0433u0430u0440u0430u043du0442u0438u0439u043du044bu0439 u0442u0430u043bu043eu043d\"},{\"id\":\"000000066\",\"is_title\":false,\"index\":41,\"value\":\"IP67\"},{\"id\":\"000000067\",\"is_title\":false,\"index\":42,\"value\":\"u041du0435 u0442u0440u0435u0431u0443u0435u0442 u0441u043fu0435u0446u0438u0430u043bu044cu043du044bu0445 u0443u0441u043bu043eu0432u0438u0439\"},{\"id\":\"000000068\",\"is_title\":false,\"index\":43,\"value\":true},{\"id\":\"000000069\",\"is_title\":true,\"index\":44,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"index\":45,\"value\":75.7},{\"id\":\"000000006\",\"is_title\":false,\"index\":46,\"value\":8.3},{\"id\":\"000000007\",\"is_title\":false,\"index\":47,\"value\":159},{\"id\":\"000000008\",\"is_title\":false,\"index\":48,\"value\":194}]', '000011'),
 ('000000000030', '00002', '000000006', 'Смартфон iPhone 12 Pro 128GB (Шелковый оттенок)', '14.jpg', '15875675', '71c70b0f438b896371e0483be0bc10a1,000000044,a684f6ae649add23dd30f1b95b485c05,3fd2994b50c9d00a6f2067caf673d6c9,db765fb6514f43e53e0873b3be9e62d6,63a5a007cd52c41de6d658ace30e723c,3f9dd57ca173a4d0bcc2d8653fb9d6ee,51a07bfd4ad0b331dc49e8008c932b93,9e22fbe617aebca843397479cfd211aa,000000046,000000017,a6473f0a50559d7d9e6a96f4a7271912,f2de273dbc137fbe43cae8eab456623a,000000022,000000023,000000027,81688f5430be94c9324431579e5ed622,cefe7588ddcf10a0689a525b8ac9a1fa,0ac17effa3ec7104fc5ed8ca4ecd3538,000000029,8c43439014c197389cc50b9234c90221,c8c51125ddebc37dad080a6bfac60cf8,a6a04694998866ffb7de9817b1f39ab1,7d42a13ba8f6bb1a245a8e8b4573bf39,000000035,e0b75920420d71e9189afb1d33bc9951,3087a0a1983db5b38c601b2afecb638a,a608792439f42494f1dd04020c602ae4,73967af112cfe7161c67bcfb8e6dce8e,000000043,989434bc3a4e78a3dc6ac9f83fe7b2e5,9383921298a2255c061e1e3485825d27,880082c108a43bf0ae9a116add87d306,c9057b7b74b27c5e51fb29f12081d646,35e4de68975978d77935863cd29841df,76ecb3a95df1649f796f5175bade6b79,85cc8acd4ee53f609fdb7fd2a36f8da5,d8e7d6057d3cf53d930204108b1848e2,71b4299cb4ea8c545dcf1ff090e6a7a4,0c65523c47e23f71fc72d42e83b17d01,eb48142b865ae7da8121669cc8e35ebf,fbfd4728c3f42bb221430b5d230a0a78,be5686d105e76245e24a4c16989f3f74,2f49db3560e0e12c82c0084bff8e3040,c2b8d8b9b98d98b0f41bbbfa2dff3d3b,e90cf5baefbb38d72be6ae7ac6a1dfd3,8e92c5afcceb4d57d8e89d2308a4840a', '[{\"id\":\"000000017\",\"is_title\":true,\"index\":1,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"index\":2,\"value\":\"000000044\"},{\"id\":\"000000003\",\"is_title\":false,\"index\":3,\"value\":\"000011\"},{\"id\":\"000000025\",\"is_title\":false,\"index\":4,\"value\":\"\"},{\"id\":\"000000004\",\"is_title\":false,\"index\":5,\"value\":\"#FFFBF0\"},{\"id\":\"000000001\",\"is_title\":false,\"index\":6,\"value\":\"156\"},{\"id\":\"000000027\",\"is_title\":false,\"index\":7,\"value\":12},{\"id\":\"000000028\",\"is_title\":false,\"index\":8,\"value\":\"u0443u043au0440u0435u043fu043bu0435u043du043du044bu0439 u043au043eu0440u043fu0443u0441\"},{\"id\":\"000000032\",\"is_title\":true,\"index\":9,\"value\":\"\"},{\"id\":\"000000029\",\"is_title\":false,\"index\":10,\"value\":6.1},{\"id\":\"000000036\",\"is_title\":false,\"index\":11,\"value\":\"000000046\"},{\"id\":\"000000037\",\"is_title\":false,\"index\":12,\"value\":\"000000017\"},{\"id\":\"000000038\",\"is_title\":false,\"index\":13,\"value\":true},{\"id\":\"000000039\",\"is_title\":true,\"index\":14,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"index\":15,\"value\":\"000000022\"},{\"id\":\"000000041\",\"is_title\":false,\"index\":16,\"value\":\"000000023\"},{\"id\":\"000000042\",\"is_title\":false,\"index\":17,\"value\":\"000000027\"},{\"id\":\"000000043\",\"is_title\":false,\"index\":18,\"value\":\"Apple A14 Bionic\"},{\"id\":\"000000044\",\"is_title\":false,\"index\":19,\"value\":6},{\"id\":\"000000045\",\"is_title\":false,\"index\":20,\"value\":1700},{\"id\":\"000000046\",\"is_title\":false,\"index\":21,\"value\":\"000000029\"},{\"id\":\"000000047\",\"is_title\":true,\"index\":22,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"index\":23,\"value\":\"NFC; Bluetooth 5.0; Wi-Fi 802.11ax\"},{\"id\":\"000000049\",\"is_title\":false,\"index\":24,\"value\":\"3G; 4G; 2G; 5G\"},{\"id\":\"000000050\",\"is_title\":false,\"index\":25,\"value\":\"u0413u041bu041eu041du0410u0421u0421\"},{\"id\":\"000000051\",\"is_title\":false,\"index\":26,\"value\":\"000000035\"},{\"id\":\"000000052\",\"is_title\":false,\"index\":27,\"value\":\"nano SIM\"},{\"id\":\"000000053\",\"is_title\":true,\"index\":28,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"index\":29,\"value\":\"Li-polymer\"},{\"id\":\"000000055\",\"is_title\":false,\"index\":30,\"value\":4810},{\"id\":\"000000056\",\"is_title\":false,\"index\":31,\"value\":\"000000043\"},{\"id\":\"000000057\",\"is_title\":true,\"index\":32,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"index\":33,\"value\":12},{\"id\":\"000000059\",\"is_title\":false,\"index\":34,\"value\":12},{\"id\":\"000000060\",\"is_title\":false,\"index\":35,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430\"},{\"id\":\"000000061\",\"is_title\":false,\"index\":36,\"value\":\"AAC; AMR; APE; FLAC; M4V; MKV; MP3; MP4; WAV; XviD\"},{\"id\":\"000000062\",\"is_title\":false,\"index\":37,\"value\":true},{\"id\":\"000000063\",\"is_title\":false,\"index\":38,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u0432u0441u043fu044bu0448u043au0430\"},{\"id\":\"000000064\",\"is_title\":true,\"index\":39,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"index\":40,\"value\":\"u0434u043eu043au0443u043cu0435u043du0442u0430u0446u0438u044f; u0447u0435u0445u043eu043b; USB-u043au0430u0431u0435u043bu044c; u0430u0434u0430u043fu0442u0435u0440; u0433u0430u0440u0430u043du0442u0438u0439u043du044bu0439 u0442u0430u043bu043eu043d\"},{\"id\":\"000000066\",\"is_title\":false,\"index\":41,\"value\":\"IP67\"},{\"id\":\"000000067\",\"is_title\":false,\"index\":42,\"value\":\"u041du0435 u0442u0440u0435u0431u0443u0435u0442 u0441u043fu0435u0446u0438u0430u043bu044cu043du044bu0445 u0443u0441u043bu043eu0432u0438u0439\"},{\"id\":\"000000068\",\"is_title\":false,\"index\":43,\"value\":true},{\"id\":\"000000069\",\"is_title\":true,\"index\":44,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"index\":45,\"value\":75.7},{\"id\":\"000000006\",\"is_title\":false,\"index\":46,\"value\":8.3},{\"id\":\"000000007\",\"is_title\":false,\"index\":47,\"value\":159},{\"id\":\"000000008\",\"is_title\":false,\"index\":48,\"value\":194}]', '000011'),
-('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', '8c7e642bee74d3f47015314e4140a406,fbc9258edd758bcb3e82e9bd254ca61f,93f6f4ae14e210e9e5aef5a8032a43c3,6ad8856aace07bf0b2b91f5cba2745d1,d3a0e13959dc9dbc1bc33e186abe873e,aa2fe8240538ff7883ecc63e09409c72,e30245c18b53857f0502c10d9cf05fa1,529b7f4bc05aabe18a1c022265d96bc4,84a2b7b1aab82a97474bb8a9cd4b447b,8c17d8b2db8c6aca693c65e31bfece79,4a9895f8744d05738d21b42fab9a7db5,24cafbc8c55f7c73b000800352823256,8cbbe8017e88944280dd7cdc6378c3b9,e7476d1b09a1bbbdfc6f8ff4dcac7f63,f292107cc40f772ab20a22bff19a527e,d71cf17d7b10e317797244bf97e38de8,954b26213240a69c027c69b386b3af41,3da5a1fdeb40307389a18f63f60fa9f6,469610d23c73b39b8411dfe0737b3b2c,3a76984da713c840e86a0c8316a0de59,df95df327c1ce9a1d5417d23ea3e2d02,67118674faee358d12502d21bdfa7dbf,c6129d078cc831e34400cdcf3ca7beef,12dd20d8c652eee12404ee2bac770565,ffa6c9dbd7fc3adf90f21cfde080082a,4aa21721323ad8d8db13b0f84d7101fb,1ab5c17ac96dac90e86af215eac220a6,0fdbf402c4dfa34bf607b54a74ba30a0,cbc823cca5463f14bb59ff76de5b5c51,3766af626d5365bc1528b90843af1df2,00ecaac053f1077778c961bb82115f96,e445d20da922060a4d1a1f3d45c8b4dc,b200f5d2b1575106040b77ab478c51f1,b78a3cc7d23318edec7454792b551a88,743cf3bbdfc307742778200c0b2da2bf,7552abe1e37162c2ddbc094a2aac7956,4bac033cdf0217f9d1c76e6767294a47,29b75401e51a5fe6c4a0fe2407c8af2a', '[{\"id\":\"000000017\",\"is_title\":true,\"index\":1,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"index\":2,\"value\":\"\"},{\"id\":\"000000003\",\"is_title\":false,\"index\":3,\"value\":\"\"},{\"id\":\"000000025\",\"is_title\":false,\"index\":4,\"value\":\"\"},{\"id\":\"000000004\",\"is_title\":false,\"index\":5,\"value\":\"\"},{\"id\":\"000000001\",\"is_title\":false,\"index\":6,\"value\":\"\"},{\"id\":\"000000027\",\"is_title\":false,\"index\":7,\"value\":\"\"},{\"id\":\"000000028\",\"is_title\":false,\"index\":8,\"value\":\"\"},{\"id\":\"000000032\",\"is_title\":true,\"index\":9,\"value\":6.76},{\"id\":\"000000029\",\"is_title\":false,\"index\":10,\"value\":\"\"},{\"id\":\"000000036\",\"is_title\":false,\"index\":11,\"value\":\"\"},{\"id\":\"000000037\",\"is_title\":false,\"index\":12,\"value\":\"\"},{\"id\":\"000000038\",\"is_title\":false,\"index\":13,\"value\":\"\"},{\"id\":\"000000039\",\"is_title\":true,\"index\":14,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"index\":15,\"value\":\"\"},{\"id\":\"000000041\",\"is_title\":false,\"index\":16,\"value\":\"\"},{\"id\":\"000000042\",\"is_title\":false,\"index\":17,\"value\":\"\"},{\"id\":\"000000043\",\"is_title\":false,\"index\":18,\"value\":\"\"},{\"id\":\"000000044\",\"is_title\":false,\"index\":19,\"value\":\"\"},{\"id\":\"000000045\",\"is_title\":false,\"index\":20,\"value\":\"\"},{\"id\":\"000000046\",\"is_title\":false,\"index\":21,\"value\":\"\"},{\"id\":\"000000047\",\"is_title\":true,\"index\":22,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"index\":23,\"value\":\"\"},{\"id\":\"000000049\",\"is_title\":false,\"index\":24,\"value\":\"\"},{\"id\":\"000000050\",\"is_title\":false,\"index\":25,\"value\":\"\"},{\"id\":\"000000051\",\"is_title\":false,\"index\":26,\"value\":\"\"},{\"id\":\"000000052\",\"is_title\":false,\"index\":27,\"value\":\"\"},{\"id\":\"000000053\",\"is_title\":true,\"index\":28,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"index\":29,\"value\":\"\"},{\"id\":\"000000055\",\"is_title\":false,\"index\":30,\"value\":\"\"},{\"id\":\"000000056\",\"is_title\":false,\"index\":31,\"value\":\"\"},{\"id\":\"000000057\",\"is_title\":true,\"index\":32,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"index\":33,\"value\":\"\"},{\"id\":\"000000059\",\"is_title\":false,\"index\":34,\"value\":\"\"},{\"id\":\"000000060\",\"is_title\":false,\"index\":35,\"value\":\"\"},{\"id\":\"000000061\",\"is_title\":false,\"index\":36,\"value\":\"\"},{\"id\":\"000000062\",\"is_title\":false,\"index\":37,\"value\":\"\"},{\"id\":\"000000063\",\"is_title\":false,\"index\":38,\"value\":\"\"},{\"id\":\"000000064\",\"is_title\":true,\"index\":39,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"index\":40,\"value\":\"\"},{\"id\":\"000000066\",\"is_title\":false,\"index\":41,\"value\":\"\"},{\"id\":\"000000067\",\"is_title\":false,\"index\":42,\"value\":\"\"},{\"id\":\"000000068\",\"is_title\":false,\"index\":43,\"value\":\"\"},{\"id\":\"000000069\",\"is_title\":true,\"index\":44,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"index\":45,\"value\":\"\"},{\"id\":\"000000006\",\"is_title\":false,\"index\":46,\"value\":\"\"},{\"id\":\"000000007\",\"is_title\":false,\"index\":47,\"value\":\"\"},{\"id\":\"000000008\",\"is_title\":false,\"index\":48,\"value\":\"\"}]', '000002'),
+('000000000001', '00003', '000000006', 'Смартфон vivo Y31, голубой океан', '', 'PL_08/17', 'f801504914650e442875a5959b9287de,4180ed5c98f63da13dc81ee69b696358,c3961db1a937f75f9f64b7458c3d27fe,d290f99a88c508fbadfbcf1e3d77fe7d,50af377835f83c9fb5b68ca036ccceae,6de6c9515ff958faa685693065e203b4,beeb25c8b57c9fa2937546adf6e3bd78,dc7325dda59528f5fe6ab28f9a311d57,20753278163808d21af730c2c2897e5f,d3bb39073044cbc5081ccffe08604a00,1b44fdc19b10df75a4ef482ae0685369,6e6bf44d7b1a60e70182e567112c2fdf,54603ab12ccf5d4035b7e87ebc72ee31,7611c69741e07ae8d93144d336fc1bd0,a97b3f49e1294834f6632691c43348dd,88c86ff081a5fafdabf2480cb3b12918,e8bdecb33c4002ff2ba9627aa5ac6613,8095e295c241a91b5b36b1d04bbc2409,25ed976a2b9f084ba811dd053d331765,33dcb835d9acbc45c2ad1e8e1b111fcc,79e39701ce82cf11fd2cf1674ece6d78,71e24997c9038df2a67ecd3906cc3c7c,1ca3c78c803f3f416c92471c4e0cffe6,424a3623d4fa2668cf48fcb5c613075a,7733adc85b79e1fae1dd453f07fb3418,c416d404adeafd052f64c3fcb3173eb8,9e662ddac77167dd28efae895bf0b8bf,8bf38f3e402ba63dcb5c61852ea2caad,b43654a42903ce222c8fa6034faa87bb,40dc2f7f7df78e120311ac0e1671041d,5f941c928a518b79dc05c07ccb675091,f8ced028bf90fef10cc903b609445218,e6b40a7bcba1422f8ba566c29f8e40d6,03a798df0cc5c3b368665e4c29712908,015603ad1ee12d0222fbb9bad0172d3b,aed89ab598e5df1a57183fbf30d7a6bc,a5026f17b86454057d0f581ceaa33c18,124bc950b3d1e5c97effce5593fa5684', '[{\"id\":\"000000017\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000003\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000025\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000004\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000001\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000027\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000028\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000032\",\"is_title\":true,\"value\":6.76},{\"id\":\"000000029\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000036\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000037\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000038\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000039\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000041\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000042\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000043\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000044\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000045\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000046\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000047\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000049\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000050\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000051\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000052\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000053\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000055\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000056\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000057\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000059\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000060\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000061\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000062\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000063\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000064\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000066\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000067\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000068\",\"is_title\":false,\"value\":\"\"},{\"id\":\"000000069\",\"is_title\":true,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"value\":0.175},{\"id\":\"000000006\",\"is_title\":false,\"value\":0.055},{\"id\":\"000000007\",\"is_title\":false,\"value\":0.01},{\"id\":\"000000008\",\"is_title\":false,\"value\":0.15}]', '000002'),
 ('000000000002', '00003', '000000009', 'Наушники True Wireless Huawei Freebuds Pro угольный черный', 'Благодаря эргономичной форме наушники-вкладыши удобно сидят в ухе, обеспечивая полное погружение в мир музыки.\nВ комплект входят силиконовые насадки четырёх размеров. Выберите те, которые подходят именно вам.\nМодель HUAWEI FreeBuds 3i обеспечивает эффективное шумоподавление для высокого качества звучания с эффектом полного погружения.\nВ наушниках HUAWEI FreeBuds 3i установлено два внешних микрофона, которые распознают ваш голос на фоне окружающего шума, и один внутренний микрофон, он улавливает голос внутри ушных каналов, повышая общее качество звучания во время вызовов.\nБлагодаря правильно настроенной высокочувствительной диафрагме наушники HUAWEI FreeBuds 3i обеспечивают оригинальное сбалансированное звучание, а динамики диаметром 10 мм отвечают за мощные басы, чтобы вы могли насладиться каждой нотой.', '50141256', '19cd182b2588aeebaaf3048a2e2e1100,8ec44dcd2cf21341f1bcf6bdd8d03eef,000000002,88f8463ef171732aca4b92bce88395e2,a7104c90d4a4149d5a27cf8fc115c03a', '[{\"id\":\"000000021\",\"is_title\":false,\"index\":1,\"value\":\"29 u041eu043c\"},{\"id\":\"000000016\",\"is_title\":false,\"index\":2,\"value\":\"20 u0413u0446 - 20 u043au0413u0446\"},{\"id\":\"000000015\",\"is_title\":false,\"index\":3,\"value\":\"000000002\"},{\"id\":\"000000030\",\"is_title\":false,\"index\":4,\"value\":true},{\"id\":\"000000031\",\"is_title\":false,\"index\":5,\"value\":true}]', '000003'),
 ('000000000004', '00003', '000000017', 'Молоко', '', 'М-0011', 'cda71fb3e2c6a4a51213700da47dfefb', '[{\"id\":\"000000013\",\"is_title\":false,\"index\":1,\"value\":2.5}]', '000004'),
 ('000000000005', '00003', '000000016', 'Кефир', '', 'К-0012', 'dcb14e0743d8a6c096eb49d6ad97dd27', '[{\"id\":\"000000013\",\"is_title\":false,\"index\":1,\"value\":3.2}]', '000004'),
@@ -1613,6 +1677,21 @@ INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description
 ('000000000031', '00005', '000000006', 'Смартфон Xiaomi Redmi Redmi 9T 4/64 Gb (кирпичный)', 'Смартфон Xiaomi Redmi 9T оснащен камерой из 4 модулей 48+8+2+2, позволяющей делать снимки с высокой детализацией, отличные панорамные снимки, портреты с эффектом боке и осуществлять макросъёмку. Мощный 8-ядерный процессор обеспечит высокую производительность даже в самых требовательных играх. На дисплее 6.53 дюйма с пониженным излучением в синем спектре комфортно выполнять любые привычные задачи даже при длительном использовании. Два динамика создадут эффект полного погружения при просмотре фильма или игре. Сканер отпечатков пальцев, встроенный в кнопке питания, надежно защитит ваши данные. Емкого аккумулятора на 6000 мАч хватит на 17 часов просмотра видео, 56 часов разговора и на 195 часов прослушивания музыки.', '21379342', '4fe83e2cc51d0578f5a607f53045e8d7,000000011,8b914f5cad6f308c910bcd6a863f44f2,000000015,a4a879da38b09a1b85598fff01569112,fe856675099e831c28a873e5290a1be9,a90317143cf3887dc0a12b62a2a4d431,8e5734c18694059d77a6c59368657f76,6f7486a68c3d9d584ad442a4a2f1aac8,e25f8af0596e41e03e8c42ec32ca23de,000000039,000000048,cda4cae5b3c1c4733303cb90b4a92bf4,f48b26e1fec39b3b107a378d6f9f1c52,000000019,000000023,000000026,008ac120e868469d451cb9847112b0fc,738f0657e71daf24a7feda96b9d926bd,1985dfd507db82d2aa06710f97b41ac7,000000028,4306d435d5983ab3314448ba0dcbb139,87da60e9e4630e563e576b8be7f6447e,b2395c50cf56d94d1046c1c2687bebd9,ebd165fcb78ef7768293033e0b54a917,000000035,4d124165f1759b6e5fc576b42ec21167,888322e9e0abbaa76b47905633bd9f07,1b551b7aad15d2640ebfaca114108c0f,b2a16e3b3bdf89e2361ba4ce4e4a7934,000000037,d77bc534ed1a9f5ccbec26518402f673,fcd95ddee3d6327e3cc3975f8d7162f1,bef640d696848b92911a423fba4c0fea,0e766b5e9e282ce016cdca73b9f72fd6,ba7992972eac9f7955fc97edc3749319,0bd00b12032bb8b1082f4e6ad8f88a15,9b54dd7ad002444b0590d6c94ecbca10,c19af46dd3929e2a19f4c6c9092cc3d1,ecf013877479e70912b6376fba0cb3f8,c0018f8741da93bf8ea3fb525d37d65b,656969dea9c4ba60774cf5b558da0ded,1e9ce8280828f267632b9445cbefddc9,fc1eb5588ad2eb15761ef303b886c1ac,a8badcd81d2d952adf8f5082a709c689,31fbf17b668f3e824160e550b35c1786,314b38a4f0057290a768f1dae3f5d927,606170b89d7a208adc287fd647266cd4', '[{\"id\":\"000000017\",\"is_title\":true,\"index\":1,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"index\":2,\"value\":\"000000011\"},{\"id\":\"000000003\",\"is_title\":false,\"index\":3,\"value\":\"000010\"},{\"id\":\"000000025\",\"is_title\":false,\"index\":4,\"value\":\"000000015\"},{\"id\":\"000000004\",\"is_title\":false,\"index\":5,\"value\":\"#800000\"},{\"id\":\"000000001\",\"is_title\":false,\"index\":6,\"value\":\"156\"},{\"id\":\"000000027\",\"is_title\":false,\"index\":7,\"value\":12},{\"id\":\"000000028\",\"is_title\":false,\"index\":8,\"value\":\"u0441u043au0430u043du0435u0440 u043eu0442u043fu0435u0447u0430u0442u043au0430 u043fu0430u043bu044cu0446u0430; u0431u044bu0441u0442u0440u0430u044f u0437u0430u0440u044fu0434u043au0430; u0442u0435u0445u043du043eu043bu043eu0433u0438u044f u0440u0430u0441u043fu043eu0437u043du0430u0432u0430u043du0438u044f u043bu0438u0446u0430\"},{\"id\":\"000000032\",\"is_title\":true,\"index\":9,\"value\":\"\"},{\"id\":\"000000029\",\"is_title\":false,\"index\":10,\"value\":6.5},{\"id\":\"000000036\",\"is_title\":false,\"index\":11,\"value\":\"000000039\"},{\"id\":\"000000037\",\"is_title\":false,\"index\":12,\"value\":\"000000048\"},{\"id\":\"000000038\",\"is_title\":false,\"index\":13,\"value\":true},{\"id\":\"000000039\",\"is_title\":true,\"index\":14,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"index\":15,\"value\":\"000000019\"},{\"id\":\"000000041\",\"is_title\":false,\"index\":16,\"value\":\"000000023\"},{\"id\":\"000000042\",\"is_title\":false,\"index\":17,\"value\":\"000000026\"},{\"id\":\"000000043\",\"is_title\":false,\"index\":18,\"value\":\"MediaTek Helio G35\"},{\"id\":\"000000044\",\"is_title\":false,\"index\":19,\"value\":8},{\"id\":\"000000045\",\"is_title\":false,\"index\":20,\"value\":2000},{\"id\":\"000000046\",\"is_title\":false,\"index\":21,\"value\":\"000000028\"},{\"id\":\"000000047\",\"is_title\":true,\"index\":22,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"index\":23,\"value\":\"Wi-Fi; Bluetooth 5.1; IRDA;  USB;  NFC\"},{\"id\":\"000000049\",\"is_title\":false,\"index\":24,\"value\":\"GSM 900/1800/1900; 3G; 4G; LTE; VoLTE\"},{\"id\":\"000000050\",\"is_title\":false,\"index\":25,\"value\":\"Galileo\"},{\"id\":\"000000051\",\"is_title\":false,\"index\":26,\"value\":\"000000035\"},{\"id\":\"000000052\",\"is_title\":false,\"index\":27,\"value\":\"nano SIM\"},{\"id\":\"000000053\",\"is_title\":true,\"index\":28,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"index\":29,\"value\":\"Li-polymer\"},{\"id\":\"000000055\",\"is_title\":false,\"index\":30,\"value\":4500},{\"id\":\"000000056\",\"is_title\":false,\"index\":31,\"value\":\"000000037\"},{\"id\":\"000000057\",\"is_title\":true,\"index\":32,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"index\":33,\"value\":48},{\"id\":\"000000059\",\"is_title\":false,\"index\":34,\"value\":2},{\"id\":\"000000060\",\"is_title\":false,\"index\":35,\"value\":\"u043cu0430u043au0440u043e-u043eu0431u044au0435u043au0442u0438u0432; u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u0446u0438u0444u0440u043eu0432u043eu0439 u0437u0443u043c\"},{\"id\":\"000000061\",\"is_title\":false,\"index\":36,\"value\":\"Full HD 1080p; AAC; AMR; APE; FLAC; M4V; MKV; MP3; MP4; WAV; XviD; AVI; WMA; WAVE, FLAC; BMP; GIF; J\"},{\"id\":\"000000062\",\"is_title\":false,\"index\":37,\"value\":true},{\"id\":\"000000063\",\"is_title\":false,\"index\":38,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u043du043eu0447u043du0430u044f  u0441u044au0435u043cu043au0430\"},{\"id\":\"000000064\",\"is_title\":true,\"index\":39,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"index\":40,\"value\":\"u0437u0430u0440u044fu0434u043du043eu0435 u0443u0441u0442u0440u043eu0439u0441u0442u0432u043e; u0441u043cu0430u0440u0442u0444u043eu043d; u0434u043eu043au0443u043cu0435u043du0442u0430u0446u0438u044f; u0447u0435u0445u043eu043b; USB-u043au0430u0431u0435u043bu044c; u0430u0434u0430u043fu0442u0435u0440; u0433u0430u0440u0430u043du0442u0438u0439u043du044bu0439 u0442u0430u043bu043eu043d\"},{\"id\":\"000000066\",\"is_title\":false,\"index\":41,\"value\":\"IP67\"},{\"id\":\"000000067\",\"is_title\":false,\"index\":42,\"value\":\"u0425u0440u0443u043fu043au043eu0435\"},{\"id\":\"000000068\",\"is_title\":false,\"index\":43,\"value\":true},{\"id\":\"000000069\",\"is_title\":true,\"index\":44,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"index\":45,\"value\":75.7},{\"id\":\"000000006\",\"is_title\":false,\"index\":46,\"value\":8.3},{\"id\":\"000000007\",\"is_title\":false,\"index\":47,\"value\":150.9},{\"id\":\"000000008\",\"is_title\":false,\"index\":48,\"value\":194}]', '000010');
 INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`) VALUES
 ('000000000032', '00005', '000000006', 'Смартфон Xiaomi Redmi Redmi 9T 4/128 Gb (кирпичный)', 'Смартфон Xiaomi Redmi 9T оснащен камерой из 4 модулей 48+8+2+2, позволяющей делать снимки с высокой детализацией, отличные панорамные снимки, портреты с эффектом боке и осуществлять макросъёмку. Мощный 8-ядерный процессор обеспечит высокую производительность даже в самых требовательных играх. На дисплее 6.53 дюйма с пониженным излучением в синем спектре комфортно выполнять любые привычные задачи даже при длительном использовании. Два динамика создадут эффект полного погружения при просмотре фильма или игре. Сканер отпечатков пальцев, встроенный в кнопке питания, надежно защитит ваши данные. Емкого аккумулятора на 6000 мАч хватит на 17 часов просмотра видео, 56 часов разговора и на 195 часов прослушивания музыки.', '21379343', 'be38f43446b5a8ea34bc3073109369e0,000000011,f9726b243a4f016222a28e616be7210e,000000015,ca208bd9ec2943cfef5095e4b26cbbab,497a55f846553ebb0683460abf69fd79,47e533e7799108d24e5b71f324cf2f16,3a2f50d6baf6e31b21341c095f67972c,1a9e117d7bee2643e85bf857f8da59bd,42f0521e39ce7045713b0227d938e54e,000000039,000000048,2ed110f566d1841574e5146a99df5113,7fdbefee679e4921d81af8a8d5a846b6,000000022,000000023,000000026,87096770b9a0c8a7fa408155b382ef0f,a712c1391108595d40c696074c2a0bea,4c7517ee0563bd9133ffd9ca9aa52799,000000028,91bcf5ccea056babfe0dc7f5c3005377,55fbcaff9d191b01905ad9b3f1826dc7,1f37d6fe707918aed606ea44e7d7222b,dfe27bf319b5077970280746b7750286,000000035,5a12fa37533c829a832c6655487f236d,072efbe9c4acd77415219d9e1f6b6636,4c8428a6948b715105873f75eaa41c54,6a0a1a24a8b2c6072cf3efb1045d289d,000000037,00b2ffe20db460f1a1e2ca57c3cd7cc0,e6b4a9a2693d6262a36c10ede5a594b1,6affdb42099fa879b8cbe7d2aa57a208,3751b3f7a26294d6f48906460fca4501,172b732f77342c9aff024056ea0b5020,90731a77a8696ef1342a42f4a39cac17,572080c298cd68e8bea8bb2f8259c6a7,83d2d73f58d1988edc4295fc7386f342,729ea462b5c195a36ff603d82544419f,37a020a2aeb9d14a9cea01df73f8e527,bcfa997c139cba4546550ddbf922168a,f1dda2fc457c2fc13d4190a10150b6a3,20338f12e7f4e3eb966cfd43b65ef494,352cd341bb86d8617cd11fb373fedb82,523004e9952dc76061cf6ab7be167154,771b22f1f4d28a6b4861a14f51bc7a20,7e4cd85f92bf50715f037430525e3109', '[{\"id\":\"000000017\",\"is_title\":true,\"index\":1,\"value\":\"\"},{\"id\":\"000000014\",\"is_title\":false,\"index\":2,\"value\":\"000000011\"},{\"id\":\"000000003\",\"is_title\":false,\"index\":3,\"value\":\"000010\"},{\"id\":\"000000025\",\"is_title\":false,\"index\":4,\"value\":\"000000015\"},{\"id\":\"000000004\",\"is_title\":false,\"index\":5,\"value\":\"#800000\"},{\"id\":\"000000001\",\"is_title\":false,\"index\":6,\"value\":\"156\"},{\"id\":\"000000027\",\"is_title\":false,\"index\":7,\"value\":12},{\"id\":\"000000028\",\"is_title\":false,\"index\":8,\"value\":\"u0441u043au0430u043du0435u0440 u043eu0442u043fu0435u0447u0430u0442u043au0430 u043fu0430u043bu044cu0446u0430; u0431u044bu0441u0442u0440u0430u044f u0437u0430u0440u044fu0434u043au0430; u0442u0435u0445u043du043eu043bu043eu0433u0438u044f u0440u0430u0441u043fu043eu0437u043du0430u0432u0430u043du0438u044f u043bu0438u0446u0430\"},{\"id\":\"000000032\",\"is_title\":true,\"index\":9,\"value\":\"\"},{\"id\":\"000000029\",\"is_title\":false,\"index\":10,\"value\":6.1},{\"id\":\"000000036\",\"is_title\":false,\"index\":11,\"value\":\"000000039\"},{\"id\":\"000000037\",\"is_title\":false,\"index\":12,\"value\":\"000000048\"},{\"id\":\"000000038\",\"is_title\":false,\"index\":13,\"value\":true},{\"id\":\"000000039\",\"is_title\":true,\"index\":14,\"value\":\"\"},{\"id\":\"000000040\",\"is_title\":false,\"index\":15,\"value\":\"000000022\"},{\"id\":\"000000041\",\"is_title\":false,\"index\":16,\"value\":\"000000023\"},{\"id\":\"000000042\",\"is_title\":false,\"index\":17,\"value\":\"000000026\"},{\"id\":\"000000043\",\"is_title\":false,\"index\":18,\"value\":\"MediaTek Helio G35\"},{\"id\":\"000000044\",\"is_title\":false,\"index\":19,\"value\":8},{\"id\":\"000000045\",\"is_title\":false,\"index\":20,\"value\":2000},{\"id\":\"000000046\",\"is_title\":false,\"index\":21,\"value\":\"000000028\"},{\"id\":\"000000047\",\"is_title\":true,\"index\":22,\"value\":\"\"},{\"id\":\"000000048\",\"is_title\":false,\"index\":23,\"value\":\"Wi-Fi; Bluetooth 5.1; IRDA;  USB;  NFC\"},{\"id\":\"000000049\",\"is_title\":false,\"index\":24,\"value\":\"GSM 900/1800/1900; 3G; 4G; LTE; VoLTE\"},{\"id\":\"000000050\",\"is_title\":false,\"index\":25,\"value\":\"Galileo\"},{\"id\":\"000000051\",\"is_title\":false,\"index\":26,\"value\":\"000000035\"},{\"id\":\"000000052\",\"is_title\":false,\"index\":27,\"value\":\"nano SIM\"},{\"id\":\"000000053\",\"is_title\":true,\"index\":28,\"value\":\"\"},{\"id\":\"000000054\",\"is_title\":false,\"index\":29,\"value\":\"Li-polymer\"},{\"id\":\"000000055\",\"is_title\":false,\"index\":30,\"value\":4500},{\"id\":\"000000056\",\"is_title\":false,\"index\":31,\"value\":\"000000037\"},{\"id\":\"000000057\",\"is_title\":true,\"index\":32,\"value\":\"\"},{\"id\":\"000000058\",\"is_title\":false,\"index\":33,\"value\":48},{\"id\":\"000000059\",\"is_title\":false,\"index\":34,\"value\":2},{\"id\":\"000000060\",\"is_title\":false,\"index\":35,\"value\":\"u043cu0430u043au0440u043e-u043eu0431u044au0435u043au0442u0438u0432; u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u0446u0438u0444u0440u043eu0432u043eu0439 u0437u0443u043c\"},{\"id\":\"000000061\",\"is_title\":false,\"index\":36,\"value\":\"Full HD 1080p; AAC; AMR; APE; FLAC; M4V; MKV; MP3; MP4; WAV; XviD; AVI; WMA; WAVE, FLAC; BMP; GIF; J\"},{\"id\":\"000000062\",\"is_title\":false,\"index\":37,\"value\":true},{\"id\":\"000000063\",\"is_title\":false,\"index\":38,\"value\":\"u0430u0432u0442u043eu043cu0430u0442u0438u0447u0435u0441u043au0430u044f u0444u043eu043au0443u0441u0438u0440u043eu0432u043au0430; u043du043eu0447u043du0430u044f  u0441u044au0435u043cu043au0430\"},{\"id\":\"000000064\",\"is_title\":true,\"index\":39,\"value\":\"\"},{\"id\":\"000000065\",\"is_title\":false,\"index\":40,\"value\":\"u0437u0430u0440u044fu0434u043du043eu0435 u0443u0441u0442u0440u043eu0439u0441u0442u0432u043e; u0441u043cu0430u0440u0442u0444u043eu043d; u0434u043eu043au0443u043cu0435u043du0442u0430u0446u0438u044f; u0447u0435u0445u043eu043b; USB-u043au0430u0431u0435u043bu044c; u0430u0434u0430u043fu0442u0435u0440; u0433u0430u0440u0430u043du0442u0438u0439u043du044bu0439 u0442u0430u043bu043eu043d\"},{\"id\":\"000000066\",\"is_title\":false,\"index\":41,\"value\":\"IP67\"},{\"id\":\"000000067\",\"is_title\":false,\"index\":42,\"value\":\"u0425u0440u0443u043fu043au043eu0435\"},{\"id\":\"000000068\",\"is_title\":false,\"index\":43,\"value\":true},{\"id\":\"000000069\",\"is_title\":true,\"index\":44,\"value\":\"\"},{\"id\":\"000000005\",\"is_title\":false,\"index\":45,\"value\":75.7},{\"id\":\"000000006\",\"is_title\":false,\"index\":46,\"value\":8.3},{\"id\":\"000000007\",\"is_title\":false,\"index\":47,\"value\":150.9},{\"id\":\"000000008\",\"is_title\":false,\"index\":48,\"value\":194}]', '000010');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_characteristic`
+--
+
+DROP TABLE IF EXISTS `product_characteristic`;
+CREATE TABLE `product_characteristic` (
+  `product_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `characteristic_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `type` int NOT NULL,
+  `sort_order` int NOT NULL DEFAULT '0',
+  `value` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1702,6 +1781,25 @@ INSERT INTO `provider` (`id`, `title`, `description`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `setting`
+--
+
+DROP TABLE IF EXISTS `setting`;
+CREATE TABLE `setting` (
+  `id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `setting`
+--
+
+INSERT INTO `setting` (`id`, `value`) VALUES
+('headers', '[{\"id\":\"000000001\",\"title\":\"\\u042d\\u043b\\u0435\\u043a\\u0442\\u0440\\u043e\\u043d\\u0438\\u043a\\u0430\",\"index_number\":1,\"categories\":[{\"id\":\"000000005\"},{\"id\":\"000000006\"},{\"id\":\"000000007\"},{\"id\":\"000000012\"},{\"id\":\"000000020\"},{\"id\":\"000000021\"},{\"id\":\"000000022\"}]}]');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shop`
 --
 
@@ -1725,27 +1823,11 @@ CREATE TABLE `shop` (
 
 DROP TABLE IF EXISTS `site_header`;
 CREATE TABLE `site_header` (
-  `id` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
-  `category_id` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
-  `title` tinytext COLLATE utf8_unicode_ci,
+  `id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `category_id` varchar(9) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `title` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `index_number` int DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `setting`
---
-
-DROP TABLE IF EXISTS `setting`;
-CREATE TABLE `setting` (
-  `id` varchar(255) NOT NULL,
---  `key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `value` text COLLATE utf8_unicode_ci
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
 
 --
 -- Dumping data for table `site_header`
@@ -1901,54 +1983,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
-(1, '', NULL, NULL, 0),
-(2, '', NULL, NULL, 0),
-(3, '', NULL, NULL, 0),
-(4, '', NULL, NULL, 0),
-(5, '', NULL, NULL, 0),
-(6, '', NULL, NULL, 0),
-(7, '', NULL, NULL, 0),
-(8, '', NULL, NULL, 0),
-(9, '', NULL, NULL, 0),
-(10, '', NULL, NULL, 0),
-(11, '', NULL, NULL, 0),
-(12, '', NULL, NULL, 0),
-(13, '', NULL, NULL, 0),
-(14, '', NULL, NULL, 0),
-(15, '', NULL, NULL, 0),
-(16, '', NULL, NULL, 0),
-(17, '', NULL, NULL, 0),
-(18, '', NULL, NULL, 0),
-(19, '', NULL, NULL, 0),
-(20, '', NULL, NULL, 0),
-(21, '', NULL, NULL, 0),
-(22, '', NULL, NULL, 0),
-(23, '', NULL, NULL, 0),
-(24, '', NULL, NULL, 0),
-(25, '', NULL, NULL, 0),
-(26, '', NULL, NULL, 0),
-(27, '', NULL, NULL, 0),
-(28, '', NULL, NULL, 0),
-(29, '', NULL, NULL, 0),
-(30, '', NULL, NULL, 0),
-(31, '', NULL, NULL, 0),
-(32, '', NULL, NULL, 0),
-(33, '', NULL, NULL, 0),
-(34, '', NULL, NULL, 0),
-(35, '', NULL, NULL, 0),
-(36, '', NULL, NULL, 0),
-(37, '', NULL, NULL, 0),
-(38, '', NULL, NULL, 0),
-(39, '', NULL, NULL, 0),
-(40, '', NULL, NULL, 0),
-(41, '', NULL, NULL, 0),
-(42, '', NULL, NULL, 0),
-(43, '', NULL, NULL, 0),
-(44, '', NULL, NULL, 0),
-(45, '', NULL, NULL, 0),
-(46, '', NULL, NULL, 0),
-(47, '', NULL, NULL, 0),
-(48, '', NULL, NULL, 0);
+(52, '', NULL, NULL, 0),
+(53, '', NULL, NULL, 0),
+(54, '', NULL, NULL, 0),
+(55, '', NULL, NULL, 0),
+(56, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1964,6 +2003,13 @@ CREATE TABLE `user_data` (
   `geodata` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `user_data`
+--
+
+INSERT INTO `user_data` (`id`, `user_id`, `address`, `geodata`, `timestamp`) VALUES
+(1, 55, 'г Москва, 1-й Угрешский проезд, д 24', '{\"value\":\"г Москва, 1-й Угрешский проезд, д 24\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, 1-й Угрешский проезд, д 24\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"4cdd215b-55d8-414d-829c-064558cbafd3\",\"street_kladr_id\":\"77000000000347700\",\"street_with_type\":\"1-й Угрешский проезд\",\"street_type\":\"проезд\",\"street_type_full\":\"проезд\",\"street\":\"1-й Угрешский\",\"house_fias_id\":\"74c7a0a9-3655-480a-bcea-245c29afbc0d\",\"house_kladr_id\":\"7700000000034770018\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"24\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"74c7a0a9-3655-480a-bcea-245c29afbc0d\",\"fias_code\":\"77000000000000034770018\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000034770018\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.715063\",\"geo_lon\":\"37.690776\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":[\"проезд Угрешский 1-й\"],\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '2021-05-26 07:06:03');
 
 -- --------------------------------------------------------
 
@@ -2016,6 +2062,12 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `jemp`
+--
+ALTER TABLE `jemp`
+  ADD KEY `i` (`g`);
+
+--
 -- Indexes for table `price`
 --
 ALTER TABLE `price`
@@ -2050,13 +2102,6 @@ ALTER TABLE `shop`
 --
 ALTER TABLE `site_header`
   ADD UNIQUE KEY `site_header_key` (`id`,`category_id`);
-
---
--- Indexes for table `setting`
---
--- ALTER TABLE `setting`
---   ADD PRIMARY KEY (`id`);
-
 
 --
 -- Indexes for table `size`
@@ -2116,13 +2161,13 @@ ALTER TABLE `test`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `user_data`
 --
 ALTER TABLE `user_data`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
