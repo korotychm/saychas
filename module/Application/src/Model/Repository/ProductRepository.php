@@ -383,6 +383,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             try {
                 $this->db->query($insertString, $this->db::QUERY_MODE_EXECUTE);
             } catch (InvalidQueryException $e) {
+                print_r($insertString);
                 print_r($insertString.$e->getMessage());
                 exit;
             }
@@ -483,8 +484,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             $q = $this->db->query($sql);
                             $q->execute();
                         } catch (InvalidQueryException $e) {
-                            print_r($sql);
-                            exit;
                             return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                         }
                     }
