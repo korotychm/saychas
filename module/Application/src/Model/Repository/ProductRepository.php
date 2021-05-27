@@ -375,6 +375,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     
     private function saveProductCharacteristics($params) : bool {
         foreach($params as $param) {
+            if( CharacteristicRepository::HEADER_TYPE == $param['type'] || CharacteristicRepository::STRING_TYPE == $param['type']) {
+                continue;
+            }
             $sql = new Sql($this->db);
             $insert = $sql->insert()->into('product_characteristic')
                     ->columns(['product_id', 'characteristic_id', 'type', 'sort_order', 'value'])
