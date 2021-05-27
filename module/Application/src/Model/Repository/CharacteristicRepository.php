@@ -138,8 +138,8 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $statement->execute();
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s')",
-                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], '', '');
+            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`, `main_characteristic`, `mandatory`, `characteristic_list`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s', %u, %u, %u)",
+                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], '', '', $row['main_characteristic'], $row['mandatory'], $row['characteristic_list']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

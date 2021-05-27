@@ -439,10 +439,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
-                    if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) ) {
+                    if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($var->value) ) {
                         $prodChs['characteristic_id'] = $var->id;
                         $prodChs['sort_order'] = $var->index;
-                        $prodChs['value'] = empty($var->value) ? '' : $var->value;
+                        $prodChs['value'] = $var->value;
                         $prodChs['type'] = $found->getType();
                         $prods[] = $prodChs;
                     }
