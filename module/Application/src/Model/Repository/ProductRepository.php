@@ -444,15 +444,17 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         $prodChs['sort_order'] = $var->index;
                         $isList = $found->getIsList();
                         if($isList) {
-                            try{
-                                Json::decode($var->value, Json::TYPE_ARRAY);
-                            } catch (\Exception $ex) {
-                                print_r($var->value);
-                                exit;
-                                return ['result' => false, 'description' => 'json decoding error', 400];
-                            }
+//                            try{
+//                                Json::decode($var->value, Json::TYPE_ARRAY);
+//                            } catch (\Exception $ex) {
+//                                print_r($var->value);
+//                                exit;
+//                                return ['result' => false, 'description' => 'json decoding error', 400];
+//                            }
+                          $prodChs['value'] = $var->value[0];
+                        }else{
+                          $prodChs['value'] = $var->value;
                         }
-                        $prodChs['value'] = $var->value;
                         $prodChs['type'] = $found->getType();
                         $prods[] = $prodChs;
                     }
