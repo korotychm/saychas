@@ -13,6 +13,7 @@ use Application\Model\RepositoryInterface\CountryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 
 class HtmlProviderServiceFactory implements FactoryInterface
 {
@@ -30,7 +31,9 @@ class HtmlProviderServiceFactory implements FactoryInterface
         $providerRepository = $container->get(ProviderRepositoryInterface::class);
         $priceRepository = $container->get(PriceRepositoryInterface::class);
         $characteristicRepository = $container->get(CharacteristicRepositoryInterface::class);
+        $productCharacteristicRepository = $container->get(ProductCharacteristicRepositoryInterface::class);
         
-        return new HtmlProviderService($stockBalanceRepository, $brandRepository, $countryRepository, $providerRepository, $priceRepository, $characteristicRepository);
+        return new HtmlProviderService($stockBalanceRepository, $brandRepository, $countryRepository, $providerRepository, $priceRepository,
+                $characteristicRepository, $productCharacteristicRepository);
     }
 }

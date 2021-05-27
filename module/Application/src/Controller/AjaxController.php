@@ -180,6 +180,7 @@ class AjaxController extends AbstractActionController
             $userData = new UserData();
             $userData->setAddress($container->userAddress);
             $userData->setGeodata($json);
+            $userData->setTimestamp('1970-01-01');
         try {
             $user->setUserData([$userData]);
         }catch(InvalidQueryException $e){

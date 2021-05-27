@@ -9,6 +9,7 @@ use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserDataRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Hydrator\Strategy\DateTimeFormatterStrategy;
 
 class UserDataRepositoryFactory implements FactoryInterface
 {
@@ -21,9 +22,16 @@ class UserDataRepositoryFactory implements FactoryInterface
 
         $adapter = $container->get(AdapterInterface::class);
 
-        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
-        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
-        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
+//        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
+//        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
+//        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
+        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+        $hydrator->addStrategy(
+            'timestamp',
+            new DateTimeFormatterStrategy(
+                'Y-m-d'
+            )
+        );
 
         $prototype = new UserData;
 

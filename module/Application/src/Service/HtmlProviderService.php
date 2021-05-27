@@ -16,6 +16,7 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 
 class HtmlProviderService
 {
@@ -26,6 +27,7 @@ class HtmlProviderService
     private $providerRepository;
     private $priceRepository;
     private $characteristicRepository;
+    private $productCharacteristicRepository;
 
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
@@ -33,7 +35,8 @@ class HtmlProviderService
             CountryRepositoryInterface $countryRepository,
             ProviderRepositoryInterface $providerRepository,
             PriceRepositoryInterface $priceRepository,
-            CharacteristicRepositoryInterface $characteristicRepository
+            CharacteristicRepositoryInterface $characteristicRepository,
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository
     )
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
@@ -42,6 +45,7 @@ class HtmlProviderService
         $this->providerRepository = $providerRepository;
         $this->priceRepository = $priceRepository;
         $this->characteristicRepository = $characteristicRepository;
+        $this->productCharacteristicRepository = $productCharacteristicRepository;
     }
 
     /**
