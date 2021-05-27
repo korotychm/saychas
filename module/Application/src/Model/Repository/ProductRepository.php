@@ -453,13 +453,13 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                                return ['result' => false, 'description' => 'json decoding error', 400];
 //                            }
                             foreach($var->value as $v) {
-                                $prodChs['characteristic_id'] = $var->id;
+                                $prodChs['characteristic_id'] = empty($var->id) ? '0' : $var->id;
                                 $prodChs['sort_order'] = $var->index;
                                 $prodChs['value'] = $v;//0;//$var->value;
                                 $prodChs['type'] = $found->getType();
                             }
                         }else{
-                            $prodChs['characteristic_id'] = $var->id;
+                            $prodChs['characteristic_id'] = empty($var->id) ? '0' : $var->id;
                             $prodChs['sort_order'] = $var->index;
                             $prodChs['value'] = $var->value;
                             $prodChs['type'] = $found->getType();
