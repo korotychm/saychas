@@ -64,6 +64,21 @@ class Characteristic// extends Entity
      * @var string
      */
     protected $description;
+    
+    /**
+     * @var bool
+     */
+    protected $is_main;
+    
+    /**
+     * @var bool
+     */
+    protected $is_mandatory;
+
+    /**
+     * @var bool
+     */
+    protected $is_list;
 
     /**
      * val
@@ -307,5 +322,72 @@ class Characteristic// extends Entity
     {
         return $this->description;
     }
+    
+    /**
+     * Set is_main
+     * 
+     * @param bool $isMain
+     * @return $this
+     */
+    public function setIsMain($isMain)
+    {
+        $this->is_main = $isMain;
+        return $this;
+    }
+    
+    /**
+     * Get is_main
+     * 
+     * @return bool
+     */
+    public function getIsMain()
+    {
+        return $this->is_main;
+    }
 
+    /**
+     * Set is_mandatory
+     * 
+     * @param bool $isMandatory
+     * @return $this
+     */
+    public function setIsMandatory($isMandatory)
+    {
+        $this->is_mandatory = $isMandatory;
+        return $this;
+    }
+
+    /**
+     * Get is_mandatory
+     * 
+     * @return bool
+     */
+    public function getIsMandatory()
+    {
+        return $this->is_mandatory;
+    }
+
+    /**
+     * Set is_list
+     * 
+     * @param bool $isList
+     * @return $this
+     */
+    public function setIsList($isList)
+    {
+        $this->is_list = $isList;
+        return $this;
+    }
+    
+    /**
+     * Get is_list
+     * 
+     * @return bool
+     */
+    public function getIsList()
+    {
+        return $this->is_list;
+    }
+    
+    
 }

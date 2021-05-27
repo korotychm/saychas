@@ -442,6 +442,14 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($var->value) ) {
                         $prodChs['characteristic_id'] = $var->id;
                         $prodChs['sort_order'] = $var->index;
+                        $isList = $found->getIsList();
+                        if($isList) {
+                            try{
+                                Json::decode($var->value, Json::TYPE_ARRAY);
+                            } catch (Exception $ex) {
+                                return ['result' => false, 'description' => 'json decoding error', 400];
+                            }
+                        }
                         $prodChs['value'] = $var->value;
                         $prodChs['type'] = $found->getType();
                         $prods[] = $prodChs;
