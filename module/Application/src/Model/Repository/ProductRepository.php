@@ -375,9 +375,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     
     private function saveProductCharacteristics($params) : bool {
         foreach($params as $param) {
-            if( CharacteristicRepository::HEADER_TYPE == $param['type'] || CharacteristicRepository::STRING_TYPE == $param['type']) {
-                continue;
-            }
             $sql = new Sql($this->db);
             $insert = $sql->insert()->into('product_characteristic')
                     ->columns(['product_id', 'characteristic_id', 'type', 'sort_order', 'value'])
@@ -442,11 +439,13 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
-                    $prodChs['characteristic_id'] = $var->id;
-                    $prodChs['sort_order'] = $var->index;
-                    $prodChs['value'] = $var->value;
-                    $prodChs['type'] = $found->getType();
-                    $prods[] = $prodChs;
+                    if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) ) {
+                        $prodChs['characteristic_id'] = $var->id;
+                        $prodChs['sort_order'] = $var->index;
+                        $prodChs['value'] = $var->value;
+                        $prodChs['type'] = $found->getType();
+                        $prods[] = $prodChs;
+                    }
 
                     if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
                         $myid = $var->value;
