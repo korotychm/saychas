@@ -446,7 +446,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         if($isList) {
                             try{
                                 Json::decode($var->value, Json::TYPE_ARRAY);
-                            } catch (Exception $ex) {
+                            } catch (\Exception $ex) {
+                                print_r($var->value);
+                                exit;
                                 return ['result' => false, 'description' => 'json decoding error', 400];
                             }
                         }
