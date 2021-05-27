@@ -441,7 +441,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     }
                     if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($var->value) ) {
                         $isList = $found->getIsList();
-                        if($isList) {
+                        if($isList && is_array($var->value)) {
 //                                print_r($var->value);
 //                                exit;
 //                            try{
