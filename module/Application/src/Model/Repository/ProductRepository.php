@@ -453,7 +453,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             $prodChs['sort_order'] = $var->index;
                             $prodChs['value'] = $var->value;
                             $prodChs['type'] = $found->getType();
-                            continue;
                         }
                         $prods[] = $prodChs;
                     }
