@@ -451,7 +451,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                                exit;
 //                                return ['result' => false, 'description' => 'json decoding error', 400];
 //                            }
-                          $prodChs['value'] = $var->value[0];
+                          $prodChs['value'] = 0;//$var->value;
                         }else{
                           $prodChs['value'] = $var->value;
                         }
