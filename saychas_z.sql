@@ -118,9 +118,9 @@ CREATE TABLE `characteristic` (
   `sort_order` int NOT NULL DEFAULT '1',
   `unit` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `description` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `main_characteristic` TINYINT(1) NOT NULL DEFAULT 0,
-  `mandatory` TINYINT(1) NOT NULL DEFAULT 0,
-  `characteristic_list` TINYINT(1) NOT NULL DEFAULT 0
+  `is_main` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_mandatory` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_list` TINYINT(1) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
