@@ -454,7 +454,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             foreach($var->value as $v) {
                                 $prodChs['characteristic_id'] = $var->id;
                                 $prodChs['sort_order'] = $var->index;
-                                $prodChs['value'] = 0;//$var->value;
+                                $prodChs['value'] = $v;//0;//$var->value;
                                 $prodChs['type'] = $found->getType();
                             }
                         }else{
@@ -476,7 +476,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         if(!is_array($var->value)) {
                             $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
                         }else{
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, 'array', $var->id);                            
+                            $title = implode(',', $var->value);
+                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $var->id);                            
                         }
                         try {
                             $q = $this->db->query($sql);
