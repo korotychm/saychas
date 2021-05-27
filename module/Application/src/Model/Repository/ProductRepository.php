@@ -442,7 +442,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) ) {
                         $prodChs['characteristic_id'] = $var->id;
                         $prodChs['sort_order'] = $var->index;
-                        $prodChs['value'] = $var->value;
+                        $prodChs['value'] = empty($var->value) ? '' : $var->value;
                         $prodChs['type'] = $found->getType();
                         $prods[] = $prodChs;
                     }
