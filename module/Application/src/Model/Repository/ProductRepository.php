@@ -444,6 +444,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         $prodChs['sort_order'] = $var->index;
                         $isList = $found->getIsList();
                         if($isList) {
+                                print_r($var->value);
+                                exit;
 //                            try{
 //                                Json::decode($var->value, Json::TYPE_ARRAY);
 //                            } catch (\Exception $ex) {
@@ -454,6 +456,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                           $prodChs['value'] = 0;//$var->value;
                         }else{
                           $prodChs['value'] = $var->value;
+                          continue;
                         }
                         $prodChs['type'] = $found->getType();
                         $prods[] = $prodChs;
