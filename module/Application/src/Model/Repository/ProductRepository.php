@@ -383,7 +383,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             try {
                 $this->db->query($insertString, $this->db::QUERY_MODE_EXECUTE);
             } catch (InvalidQueryException $e) {
-                print_r($insertString);
                 print_r($insertString.$e->getMessage());
                 exit;
             }
@@ -452,14 +451,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                                exit;
 //                                return ['result' => false, 'description' => 'json decoding error', 400];
 //                            }
-                            foreach($var->value as $v) {
-                                $prodChs['characteristic_id'] = empty($var->id) ? '0' : $var->id;
-                                $prodChs['sort_order'] = $var->index;
-                                $prodChs['value'] = $v;//0;//$var->value;
-                                $prodChs['type'] = $found->getType();
-                            }
+                            $prodChs['characteristic_id'] = $var->id;
+                            $prodChs['sort_order'] = $var->index;
+                            $prodChs['value'] = 0;//$var->value;
+                            $prodChs['type'] = $found->getType();
                         }else{
-                            $prodChs['characteristic_id'] = empty($var->id) ? '0' : $var->id;
+                            $prodChs['characteristic_id'] = $var->id;
                             $prodChs['sort_order'] = $var->index;
                             $prodChs['value'] = $var->value;
                             $prodChs['type'] = $found->getType();
@@ -477,8 +474,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         if(!is_array($var->value)) {
                             $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
                         }else{
-                            $title = implode(",", $var->value);
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $var->id);
+                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, 'array', $var->id);                            
                         }
                         try {
                             $q = $this->db->query($sql);
