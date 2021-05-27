@@ -478,15 +478,13 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         }else{
                             $title = implode(",", $var->value);
                             $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $var->id);
-                            if(empty($var->id)){
-                                print_r($sql);
-                                exit;
-                            }
                         }
                         try {
                             $q = $this->db->query($sql);
                             $q->execute();
                         } catch (InvalidQueryException $e) {
+                            print_r($sql);
+                            exit;
                             return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
                         }
                     }
