@@ -477,7 +477,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
                         }else{
                             $title = implode(",", $var->value);
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $var->id);                            
+                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $var->id);
+                            print_r($sql);
+                            exit;
                         }
                         try {
                             $q = $this->db->query($sql);
