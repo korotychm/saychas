@@ -440,25 +440,21 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
                     if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($var->value) ) {
-                        $prodChs['characteristic_id'] = $var->id;
-                        $prodChs['sort_order'] = $var->index;
                         $isList = $found->getIsList();
                         if($isList) {
-                                print_r($var->value);
-                                exit;
-//                            try{
-//                                Json::decode($var->value, Json::TYPE_ARRAY);
-//                            } catch (\Exception $ex) {
-//                                print_r($var->value);
-//                                exit;
-//                                return ['result' => false, 'description' => 'json decoding error', 400];
-//                            }
-                          $prodChs['value'] = 0;//$var->value;
+                            foreach($var->value as $v) {
+                                $pordChs['characteristic_id'] = $var->id;
+                                $prodChs['sort_order'] = $var->index;
+                                $prodChs['value'] = $v;
+                                $prodChs['type'] = $found->getType();
+                            }
                         }else{
-                          $prodChs['value'] = $var->value;
-                          continue;
+                            $prodChs['characteristic_id'] = $var->id;
+                            $prodChs['sort_order'] = $var->index;
+                            $prodChs['value'] = $var->value;
+                            $prodChs['type'] = $found->getType();
+                            continue;
                         }
-                        $prodChs['type'] = $found->getType();
                         $prods[] = $prodChs;
                     }
 
@@ -469,6 +465,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         $myuuid = Uuid::uuid4();
                         $myid = md5($myuuid->toString());
                         $current[] = $myid;
+                        if(is_array($var->value)) {
+                            $var->value = implode(',', $var->value);
+                        }
                         $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
                         try {
                             $q = $this->db->query($sql);
