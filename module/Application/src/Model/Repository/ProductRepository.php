@@ -449,6 +449,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                                 $prodChs['value'] = $v;//0;//$var->value;
                                 $prodChs['type'] = $found->getType();
                             }
+                            if(count($var->value) > 1) {
+                                print_r($prodChs);
+                                exit;
+                            } 
                         }else{
                             $prodChs['product_id'] = $product->id;
                             $prodChs['characteristic_id'] = $var->id;
