@@ -432,7 +432,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $jsonCharacteristics = Json::encode($product->characteristics);
 
                 $current = [];
-                $prodChs['product_id'] = $product->id;
+                //$prodChs['product_id'] = $product->id;
                 foreach ($var_list as $var) {
                     
                     $found = $this->characteristics->find(['id' => $var->id]);
@@ -442,22 +442,15 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($var->value) ) {
                         $isList = $found->getIsList();
                         if($isList && is_array($var->value)) {
-//                                print_r($var->value);
-//                                exit;
-//                            try{
-//                                Json::decode($var->value, Json::TYPE_ARRAY);
-//                            } catch (\Exception $ex) {
-//                                print_r($var->value);
-//                                exit;
-//                                return ['result' => false, 'description' => 'json decoding error', 400];
-//                            }
                             foreach($var->value as $v) {
+                                $prodChs['product_id'] = $product->id;
                                 $prodChs['characteristic_id'] = $var->id;
                                 $prodChs['sort_order'] = $var->index;
                                 $prodChs['value'] = $v;//0;//$var->value;
                                 $prodChs['type'] = $found->getType();
                             }
                         }else{
+                            $prodChs['product_id'] = $product->id;
                             $prodChs['characteristic_id'] = $var->id;
                             $prodChs['sort_order'] = $var->index;
                             $prodChs['value'] = $var->value;
