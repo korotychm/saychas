@@ -448,6 +448,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                                 $prodChs['sort_order'] = $prodChar->index;
                                 $prodChs['value'] = $v;//0;//$prodChar->value;
                                 $prodChs['type'] = $found->getType();
+                                $prods[] = $prodChs;
                             }
                         }else{
                             $prodChs['product_id'] = $product->id;
@@ -455,8 +456,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             $prodChs['sort_order'] = $prodChar->index;
                             $prodChs['value'] = $prodChar->value;
                             $prodChs['type'] = $found->getType();
+                            $prods[] = $prodChs;
                         }
-                        $prods[] = $prodChs;
                     }
 
                     if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
