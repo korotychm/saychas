@@ -428,53 +428,51 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
-                $var_list = $product->characteristics;// $arr;
+                // $var_list = $product->characteristics;// $arr;
                 $jsonCharacteristics = Json::encode($product->characteristics);
 
                 $current = [];
                 //$prodChs['product_id'] = $product->id;
-                foreach ($var_list as $var) {
+                foreach ($product->characteristics as $prodChar) {
                     
-                    $found = $this->characteristics->find(['id' => $var->id]);
+                    $found = $this->characteristics->find(['id' => $prodChar->id]);
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
-                    if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($var->value) ) {
+                    if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($prodChar->value) ) {
                         $isList = $found->getIsList();
-                        if($isList && is_array($var->value)) {
-                            foreach($var->value as $v) {
+                        if($isList && is_array($prodChar->value)) {
+                            foreach($prodChar->value as $v) {
                                 $prodChs['product_id'] = $product->id;
-                                $prodChs['characteristic_id'] = $var->id;
-                                $prodChs['sort_order'] = $var->index;
-                                $prodChs['value'] = $v;//0;//$var->value;
+                                $prodChs['characteristic_id'] = $prodChar->id;
+                                $prodChs['sort_order'] = $prodChar->index;
+                                $prodChs['value'] = $v;//0;//$prodChar->value;
                                 $prodChs['type'] = $found->getType();
                             }
-                            if(count($var->value) > 1) {
-                                print_r($prodChs);
-                                exit;
-                            } 
                         }else{
                             $prodChs['product_id'] = $product->id;
-                            $prodChs['characteristic_id'] = $var->id;
-                            $prodChs['sort_order'] = $var->index;
-                            $prodChs['value'] = $var->value;
+                            $prodChs['characteristic_id'] = $prodChar->id;
+                            $prodChs['sort_order'] = $prodChar->index;
+                            $prodChs['value'] = $prodChar->value;
                             $prodChs['type'] = $found->getType();
                         }
                         $prods[] = $prodChs;
                     }
 
                     if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
-                        $myid = $var->value;
+                        $myid = $prodChar->value;
                         $current[] = $myid;
                     }else{
                         $myuuid = Uuid::uuid4();
                         $myid = md5($myuuid->toString());
                         $current[] = $myid;
-                        if(!is_array($var->value)) {
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $var->value, $var->id);
+                        if(!is_array($prodChar->value)) {
+                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $prodChar->value, $var->id);
+                        }else if(is_array($prodChar->value)) {
+                            $title = implode(',', $prodChar->value);
+                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $prodChar->id);
                         }else{
-                            $title = implode(',', $var->value);
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $var->id);                            
+                            throw new \Exception('Value must be either a scalar or an array');
                         }
                         try {
                             $q = $this->db->query($sql);
