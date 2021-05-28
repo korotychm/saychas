@@ -232,7 +232,46 @@ class MyTestController extends AbstractActionController
     public function helloWorldAction()
     {
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
+
+        $client = new \MongoDB\Client(
+            'mongodb://saychas:saychas@localhost/saychas'
+        );
+        $saychas = $client->saychas;//selectDatabase('saychas');
+
+        foreach ($client->listDatabases() as $databaseInfo) {
+            var_dump($databaseInfo);
+        }
         
+        //$collection = $client->profile;//->email;//selectCollection('saychas', 'profile');
+        
+        $collection = (new \MongoDB\Client)->saychas->profile;
+        
+        $cursor = $collection->find(
+            [
+//                'name' => 'saychas',
+                'flag' => 1,
+            ],
+            [
+                'limit' => 5,
+                'projection' => [
+                    'name' => 1,
+                    'email' => 1,
+                ],
+            ]
+        );
+        
+        foreach ($cursor as $c) {
+            echo '<pre>';
+            print_r($c->name);
+            echo '<br/>';
+            print_r($c->email);
+            echo '</pre>';
+        }
+
+
+        
+        echo 'banzaii';
+        exit;
         echo $this->identity().' '.'shmidentity';// $result1->getIdentity();
         exit;
 

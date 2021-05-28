@@ -423,16 +423,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         /** $result->data - products */
         foreach ($result->data as $product) {
             
-            //$arr = $product->characteristics;
-
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
-                // $var_list = $product->characteristics;// $arr;
                 $jsonCharacteristics = Json::encode($product->characteristics);
 
                 $current = [];
-                //$prodChs['product_id'] = $product->id;
                 foreach ($product->characteristics as $prodChar) {
                     
                     $found = $this->characteristics->find(['id' => $prodChar->id]);
@@ -446,7 +442,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                                 $prodChs['product_id'] = $product->id;
                                 $prodChs['characteristic_id'] = $prodChar->id;
                                 $prodChs['sort_order'] = $prodChar->index;
-                                $prodChs['value'] = $v;//0;//$prodChar->value;
+                                $prodChs['value'] = $v;
                                 $prodChs['type'] = $found->getType();
                                 $prods[] = $prodChs;
                             }
