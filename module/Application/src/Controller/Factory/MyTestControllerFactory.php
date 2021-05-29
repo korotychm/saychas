@@ -59,8 +59,13 @@ class MyTestControllerFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
         $authService = $container->get(AuthenticationService::class);
         $userAdapter = $container->get(UserAuthAdapter::class);
+        
+        $mclient = new \MongoDB\Client(
+            'mongodb://saychas:saychas@localhost/saychas'
+        );
+
         return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic, $characteristicValue,
-                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService, $adapter, $userAdapter);
+                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService, $adapter, $userAdapter, $mclient);
     }
 
 }

@@ -76,6 +76,7 @@ class MyTestController extends AbstractActionController
     private $authService;
     private $db;
     private $userAdapter;
+    private $mclient;
     
     private $logger;
 
@@ -86,7 +87,7 @@ class MyTestController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository, CharacteristicValueRepositoryInterface $characteristicValueRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter)
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter, $mclient)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -109,6 +110,7 @@ class MyTestController extends AbstractActionController
         $this->authService = $authService;
         $this->db = $db;
         $this->userAdapter = $userAdapter;
+        $this->mclient = $mclient;
         
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
@@ -233,23 +235,25 @@ class MyTestController extends AbstractActionController
     {
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
 
-        $client = new \MongoDB\Client(
-            'mongodb://saychas:saychas@localhost/saychas'
-        );
-        $saychas = $client->saychas;//selectDatabase('saychas');
+//        $client = new \MongoDB\Client(
+//            'mongodb://saychas:saychas@localhost/saychas'
+//        );
+//        $saychas = $this->mclient->saychas;//selectDatabase('saychas');
 
-        foreach ($client->listDatabases() as $databaseInfo) {
+        foreach ($this->mclient->listDatabases() as $databaseInfo) {
             var_dump($databaseInfo);
         }
         
         //$collection = $client->profile;//->email;//selectCollection('saychas', 'profile');
         
-        $collection = (new \MongoDB\Client)->saychas->profile;
+        //$collection = (new \MongoDB\Client)->saychas->profile;
+        
+        $collection = $this->mclient->saychas->profile;
         
         $cursor = $collection->find(
             [
 //                'name' => 'saychas',
-                'flag' => 1,
+//                'flag' => 1,
             ],
             [
                 'limit' => 5,
