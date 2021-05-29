@@ -1,0 +1,4 @@
+mongodump -u saychas -p saychas --db=saychas
+mongodump -u admin -p admin --db=admin
+mongorestore -u saychas -p saychas --db=saychas dump/saychas
+
