@@ -59,6 +59,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var string
      */
     protected $catalogToSaveImages;
+    
+    private $mclient;
 
     /**
      * @param AdapterInterface $db
@@ -84,6 +86,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         $this->productImages = $productImages;
         $this->characteristicValue2Repository = $characteristicValue2Repository;
         $this->catalogToSaveImages = $catalogToSaveImages;
+        
+        $this->mclient = new \MongoDB\Client(
+            'mongodb://saychas:saychas@localhost/saychas'
+        );
     }
 
     /**
@@ -402,6 +408,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
+
+//        $this->mclient->saychas->products->insertMany($result->data);
+//        printf("Inserted %d document(s)\n", $this->mclient->saychas->products);
+//        exit;
 
         if ((bool) $result->truncate) {
             $this->db->query("truncate table product")->execute();
