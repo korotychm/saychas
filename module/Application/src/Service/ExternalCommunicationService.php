@@ -29,15 +29,15 @@ class ExternalCommunicationService {
      * Returns Html string
      * @return string
      */
-    public function sendRegistrationSms()
+    public function sendRegistrationSms($phone, $code)
     {
-        $url = $this->config['parameters']['1c_request_links']['get_registration_code'];
+        $url = $this->config['parameters']['1c_request_links']['send_registration_code'];
         
 //        $login = $this->config['1C_order']['login'];
 //        $pass = $this->config['1C_order']['password'];
         $content = [
-            "phone" => 9160010203, // $phone
-            "code" => 7777,
+            "phone" => (int) $phone, // 9160010203, // $phone
+            "code" => (int) $code, // 7777,
         ];
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);

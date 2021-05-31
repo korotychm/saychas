@@ -29,23 +29,23 @@ $(function () {
 //    });
 
     var sendSms = function(code) {
-        var formData = new FormData();
-        formData.append('phone', 9185356024);
-        formData.append('code', 7777);
-        // formData.append('id', $('#controlPanelContentId a.active')[0].id);
+//        var formData = new FormData();
+//        formData.append('phone', '9185356024');
+//        formData.append('code', '7777');
+        data = {'phone': 9185356024, 'code': 7777};
         $.ajax({
             type: "POST",
             url: "/send-registration-sms",
-            dataType: "json",
+            //dataType: "json",
             method: 'post',
-            contentType: false, // Not to set any content header
-            processData: false, // Not to process data
-            data: formData,
+//            contentType: false, // Not to set any content header
+//            processData: false, // Not to process data
+            data: data, // formData,
             success: function (result, status, xhr) {
                 console.log('result = ', result);
             },
             error: function (xhr, status, error) {
-                console.log('Ошибка удаления картинки ', xhr, status);
+                console.log('Sms sending failed', xhr, status);
             }
         });
     };

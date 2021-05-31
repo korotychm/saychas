@@ -133,6 +133,16 @@ return [
                     ],
                 ],
             ],
+            'send-registration-sms' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/send-registration-sms',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'sendRegistrationSms',
+                    ],
+                ],
+            ],
             'home' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -675,7 +685,7 @@ return [
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
             'get_store' => 'http://SRV02:8000/SC/hs/site/get_product',
-            'get_registration_code' => 'http://SRV02:8000/SC/hs/site/get_registration_code',
+            'send_registration_code' => 'http://SRV02:8000/SC/hs/site/send_registration_code',
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [

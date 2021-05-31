@@ -68,6 +68,16 @@ class UserDataController extends AbstractActionController
         return $this->getResponse();
     }
     
+    public function sendRegistrationSmsAction()
+    {
+        //$post = $this->params()->fromPost();
+        $post = $this->getRequest()->getPost();
+        
+        $code = $this->externalCommunicationService->sendRegistrationSms($post->phone, $post->code);
+        print_r($code);
+        return $this->getResponse();
+    }
+    
     public function addUserDataAction()
     {
         $post=$this->getRequest()->getPost();
@@ -90,6 +100,7 @@ class UserDataController extends AbstractActionController
 //                $user->setUserData([$userData]);
 //            }
 //        }
+        exit;
         return $this->getResponse();
     }
     
