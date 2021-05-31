@@ -1,0 +1,56 @@
+/* 
+ * Here comes the text of your license
+ * Each line should be prefixed with  * 
+ */
+
+$(document).ready(function () {
+
+});
+
+$(function () {
+//    $.ajax({
+//        beforeSend : function (){ 
+//            console.log('before send');
+//        },
+//        url: "/send-registration-sms",
+//        type: 'POST',
+//        cache: false,
+//        data: dataString,
+//        success: function (data) {
+//
+//            $("#ajaxfiltranswer").html(data);
+//            window.location.href = window.location.href
+//            //alert("!!!!234");
+//        },
+//        error: function (xhr, ajaxOptions, thrownError) {
+//            $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+//            alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
+//        }
+//    });
+
+    var sendSms = function(code) {
+        var formData = new FormData();
+        formData.append('phone', 9185356024);
+        formData.append('code', 7777);
+        // formData.append('id', $('#controlPanelContentId a.active')[0].id);
+        $.ajax({
+            type: "POST",
+            url: "/send-registration-sms",
+            dataType: "json",
+            method: 'post',
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            data: formData,
+            success: function (result, status, xhr) {
+                console.log('result = ', result);
+            },
+            error: function (xhr, status, error) {
+                console.log('Ошибка удаления картинки ', xhr, status);
+            }
+        });
+    };
+    
+    $('#userDataFormId').click(function(){
+        sendSms(7777);
+    });
+});

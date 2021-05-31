@@ -54,7 +54,6 @@ class UserDataController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $this->externalCommunicationService->sendRegistrationSms();
         return $response;
         
     }

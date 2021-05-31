@@ -305,24 +305,24 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         return $filteredProducts;
     }
 
-    private function separateCharacteristics(array $characteristics)
-    {
-        $value_list = [];
-        $var_list = [];
-        foreach ($characteristics as $c) {
-            $found = $this->characteristics->find(['id' => $c->id]);
-            if (null == $found) {
-                throw new \Exception("Unexpected db error: characteristic with id " . $c->id . " is not found");
-            }
-            if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() ) && !empty($c->value)) {
-                $value_list[] = $c->value;
-            } else {
-                $var_list[] = $c;
-            }
-        }
-
-        return ['value_list' => implode(",", $value_list), 'var_list' => Json::encode($var_list)];
-    }
+//    private function separateCharacteristics(array $characteristics)
+//    {
+//        $value_list = [];
+//        $var_list = [];
+//        foreach ($characteristics as $c) {
+//            $found = $this->characteristics->find(['id' => $c->id]);
+//            if (null == $found) {
+//                throw new \Exception("Unexpected db error: characteristic with id " . $c->id . " is not found");
+//            }
+//            if (( $this->characteristics::REFERENCE_TYPE == $found->getType() || $this->characteristics::HEADER_TYPE == $found->getType() ) && !empty($c->value)) {
+//                $value_list[] = $c->value;
+//            } else {
+//                $var_list[] = $c;
+//            }
+//        }
+//
+//        return ['value_list' => implode(",", $value_list), 'var_list' => Json::encode($var_list)];
+//    }
 
     private function extractNonEmptyImages(array $data)
     {
@@ -437,7 +437,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
-                $jsonCharacteristics = Json::encode($product->characteristics);
+                //$jsonCharacteristics = Json::encode($product->characteristics);
+                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
 
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {

@@ -28,6 +28,7 @@
         
         <?=
                     $this->inlineScript()
+                    ->prependFile($this->basePath('/js/services.js'))
                     ->prependFile($this->basePath('/js/nivo.slider.js'))            
                     ->prependFile($this->basePath('js/jquery.treeview.js'))
                     ->prependFile($this->basePath('js/saychas_z.js?' . time()))
