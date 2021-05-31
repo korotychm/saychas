@@ -41,6 +41,29 @@ class ProductCharacteristicRepository extends Repository implements ProductChara
         $this->prototype = $prototype;
     }
 
+     /**
+     * Get given ProductCharacteristic for  categotyTree
+     *
+     * @param array
+     */
+    public function getCategoryFilter ($categoryTree)
+    {
+        if (count($categoryTree)) {
+            $catgoryIn=join(",",$categoryTree);
+            $sql="SELECT b.`type` as type, b.`title` as `tit`, a.`characteristic_id` as id , GROUP_CONCAT(a.`value`) as `val` "
+                . "FROM `product_characteristic` as a "
+                . "inner join characteristic as b on (a.`characteristic_id` = b.id) "
+                . "WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ($catgoryIn)) "
+                . "and b.`filter`=1 group by `characteristic_id` ";
+
+            try {
+                  $res = $this->db->query($sql, $this->db::QUERY_MODE_EXECUTE);
+                  return $res;
+            } 
+            catch (InvalidQueryException $e) {return "error executing $sql ".print_r($e,true);}  
+        }
+    }   
+    
     /**
      * Adds given ProductCharacteristic into it's repository
      *
@@ -48,27 +71,7 @@ class ProductCharacteristicRepository extends Repository implements ProductChara
      */
     public function replace($content)
     {
-        try {
-            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        } catch (\Laminas\Json\Exception\RuntimeException $e) {
-            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-
-        if ((bool) $result['truncate']) {
-            $this->db->query("truncate table {$this->tableName}")->execute();
-        }
-
-        foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s')",
-                    $row['id'], $row['title'], $row['description'], $row['image']);
-            try {
-                $query = $this->db->query($sql);
-                $query->execute();
-            } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-            }
-        }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => false, 'description' => '', 'statusCode' => 405];
     }
 
 }

@@ -17,6 +17,7 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 
 class HtmlProviderService
 {
@@ -28,6 +29,7 @@ class HtmlProviderService
     private $priceRepository;
     private $characteristicRepository;
     private $productCharacteristicRepository;
+    private $characteristicValueRepository;
 
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
@@ -36,7 +38,8 @@ class HtmlProviderService
             ProviderRepositoryInterface $providerRepository,
             PriceRepositoryInterface $priceRepository,
             CharacteristicRepositoryInterface $characteristicRepository,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository,
+            CharacteristicValueRepositoryInterface $characteristicValueRepository
     )
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
@@ -46,6 +49,7 @@ class HtmlProviderService
         $this->priceRepository = $priceRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->productCharacteristicRepository = $productCharacteristicRepository;
+        $this->characteristicValueRepository = $characteristicValueRepository;
     }
 
     /**
@@ -92,7 +96,7 @@ class HtmlProviderService
         return $where; // (print_r($filter, true));
     }
 
-    public function getCategoryFilterHtml($filters, $category_id)
+    public function getCategoryFilterHtml1($filters, $category_id)
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory = $container->filtrForCategory;
@@ -217,7 +221,81 @@ class HtmlProviderService
 
         return $return;
     }
+  public function getCategoryFilter($category_id = 0)
+    {
+    /*
+      SELECT `characteristic_id`, `type`, `value` FROM `product_characteristic` WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ("000000006"))
+      
+    */
+      
+    }
+//SELECT `characteristic_id`, `type`, `value` FROM `product_characteristic` WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ("000000006"))
+    
+    public function getCategoryFilterHtml($filters, $category_id)
+    {
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $filtrForCategory = $container->filtrForCategory;
+        if (!$filtred = $filtrForCategory[$category_id]['fltr'])  $filtred = [];
+        $return=""; $j=0;
+        foreach ($filters as $row){
+            $row['val']=explode(",",$row['val']);
+            $row['val']=array_unique($row['val']);
+            sort($row['val']);
+            //$row['val']=array_diff ([""], $row['val']);
+            $options="";
+            
+            foreach ($row['val'] as $val ) {
+                $j++;
+                $options.="";
+                if ($val){
+                    $valuetext=$val;                        
+                    if    ($row['type'] == 4 )  $valuetext = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                    elseif($row['type'] == 5 )  $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                    elseif($row['type'] == 6 )  $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $value])->getTitle();
+                    elseif($row['type'] == 7 )  $valuetext = "<div class='cirkul iblok relative' style='background-color:".$val."; border:1px solid var(--gray); left:-45px; top:-8px; z-index:2 '></div>";        
+                    elseif($row['type'] == 8 )  $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();/**/
+                        //$valuetext= $value;
+                        
 
+                    $options.="<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >".$valuetext
+                                       ."<input 
+                                            type='checkbox' 
+                                            class='none fltrcheck$j' 
+                                            name='fltr[".$row['type']."][]' 
+
+                                            value='".$val."'  "
+                                            . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                    </div>";
+                } 
+            }   
+            
+            $row['tit'].="(".$row['type'].")";
+             
+            
+            if ($options) {
+                $return.='<div class="ifilterblock"  >
+                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] . ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '</div>
+                            <span class="mini" >'.$row['id'].'</span>
+                            <div class="filtritem" id="fi' . $row['id'] . '">
+                                <div class="filtritemcontent" id="fc' . $row['id'] . '">
+                                    <div class="closefilteritem" rel="' . $row['id'] . '">' . $row['tit'] . '</div>
+                                    ' . $options . "
+                                    <div class='block'><input type='button' value='применить' class='formsendbuttonnew'  ></div>
+                                 </div>
+                            </div>
+                        </div>";
+            }
+            
+        }
+        
+        return "<h4>getCategoryFilterHtml()</h4>".$return;
+        
+    }    
+    
+    
+    
+    
+    
     public function productCard($filteredProducts, $category_id = 0)
     {
         $return = []; // new $return;

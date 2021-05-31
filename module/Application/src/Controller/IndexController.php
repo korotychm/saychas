@@ -191,7 +191,7 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
       }
     
-    public function catalogAction()
+    public function catalog1Action()
     {
         $category_id=$this->params()->fromRoute('id', '');
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -240,7 +240,7 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
     }
     
-    public function catalog1Action()
+    public function catalogAction()
     {
         $category_id=$this->params()->fromRoute('id', '');
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -258,10 +258,14 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
-        $returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
-        $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
-        $filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
-        $filterForm =  $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);
+        //$returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
+       // $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
+        
+        /*$filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
+        $filterForm =  $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);*/
+        
+        $filters = $this->productCharacteristicRepository->getCategoryFilter($categoryTree);
+        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id );
 
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();

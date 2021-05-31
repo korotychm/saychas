@@ -247,11 +247,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     display:inline-block;
     cursor: pointer;
     background: transparent url('/img/geo16.png') -6px center no-repeat;
-    /*padding:12px; */
     padding-left:24px;
-    /*font-size:18px; 
-    /*font-weight:700;  
-    color:#f62;*/
     vertical-align:top;
 }
 .geo16 span {border-bottom:1px dashed #666    }
