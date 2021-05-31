@@ -64,7 +64,7 @@ class User extends Entity
     {
         foreach ($userData as $ud) {
             $ud->setUserId($this->getId());
-            self::$userDataRepository->persist($ud, []);
+            self::$userDataRepository->persist($ud, ['id' => $ud->getId()]);
         }
         return $this;
     }
@@ -208,20 +208,20 @@ class User extends Entity
      * @param timestamp $timestamp
      * @return $this
      */
-    public function setTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;
-        return $this;
-    }
+//    public function setTimestamp($timestamp)
+//    {
+//        $this->timestamp = $timestamp;
+//        return $this;
+//    }
 
     /**
      * Get timestamp
      *
      * @return string
      */
-    public function getTimestamp()
-    {
-        return $this->timestamp;
-    }
+//    public function getTimestamp()
+//    {
+//        return $this->timestamp;
+//    }
 
 }

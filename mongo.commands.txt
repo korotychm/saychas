@@ -1,0 +1,6 @@
+mongodump -u saychas -p saychas --db=saychas
+mongodump -u admin -p admin --db=admin
+mongorestore -u saychas -p saychas --db=saychas dump/saychas
+
+
+db.products.find({"characteristics": { $elemMatch: {value: "15%"} } }, {"id": 1, "title": 1, "provider_id": 1, "category_id": 1, "description": 1, "characteristics.$": 1, "_id": 0}).pretty()

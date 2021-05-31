@@ -19,6 +19,7 @@ use Application\Resource\StringResource;
 use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
 use Laminas\Session\Container;
+use Application\Service\ExternalCommunicationService;
 
 
 
@@ -29,18 +30,20 @@ class UserDataController extends AbstractActionController
     private $authService;
     private $db;
     private $userAdapter;
+    private $externalCommunicationService;
     
     private $logger;
 
     public function __construct(
             UserRepository $userRepository,
-            $config, $authService, $db, $userAdapter)
+            $config, $authService, $db, $userAdapter, $externalCommunicationService)
     {
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->authService = $authService;
         $this->db = $db;
         $this->userAdapter = $userAdapter;
+        $this->externalCommunicationService = $externalCommunicationService;
         
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
@@ -51,6 +54,7 @@ class UserDataController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
+        $this->externalCommunicationService->sendRegistrationSms();
         return $response;
         
     }
@@ -67,19 +71,26 @@ class UserDataController extends AbstractActionController
     
     public function addUserDataAction()
     {
-        $userId = $this->authService->getIdentity();
-        $userData = new UserData();
-        $userData->setAddress('address1');
-        $userData->setGeodata('geodata1');
-        //$userData->setTime(time());
-        
-        if(null != $userId) {
-            $user = $this->userRepository->find(['id'=>$userId]);
-            if(null != $user) {
-                // User found
-                $user->setUserData([$userData]);
-            }
+        $post=$this->getRequest()->getPost();
+        foreach($post as $key => $vale) {
+            
         }
+        $code = $this->externalCommunicationService->sendRegistrationSms();
+        print_r($code);
+
+//        $userId = $this->authService->getIdentity();
+//        $userData = new UserData();
+//        $userData->setAddress('address1');
+//        $userData->setGeodata('geodata1');
+//        //$userData->setTime(time());
+//        
+//        if(null != $userId) {
+//            $user = $this->userRepository->find(['id'=>$userId]);
+//            if(null != $user) {
+//                // User found
+//                $user->setUserData([$userData]);
+//            }
+//        }
         return $this->getResponse();
     }
     

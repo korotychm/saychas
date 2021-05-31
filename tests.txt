@@ -4,8 +4,13 @@ curl -i -L saychas-z.local/receive-provider --data '[{"id": "000004" }]' -X DELE
 curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1" }] }'
 curl -i -L saychas-z.local/receive-product --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1", 
 "characteristics": [{"id": "000000070", "is_title": true}] }] }'
+
 curl -i -L saychas-z.local/receive-product?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1",  
 "characteristics": [{"id": "000000070", "is_title": true, "value": "", "index": "1"},{"id": "000000070", "is_title": true, "value": "000000031", "index":"2"}, {"id": "000000070", "is_title": true, "value": "000000033", "index":"3"} ] }] }'
+
+curl -i -L saychas-z.local/receive-product?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"id": "1", "title": "0002", "provider_id": "000003", "category_id": "2",  "description": "product 1",
+"characteristics": [{"id": "000000070", "is_title": true, "value": "", "index": "1"},{"id": "000000031", "is_title": true, "value": "000000031", "index":"2"}, {"id": "000000033", "is_title": true, "value": "000000033", "index":"3"} ] }] }'
+
 curl -i -L saychas-z.local/receive-product --data '[{"id": "1" }]' -X DELETE
 
 
@@ -64,3 +69,6 @@ curl -i -L saychas-z.local/receive-site-header --data '[{"id": "1" }]' -X DELETE
 curl -i -L saychas-z.local/receive-setting?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"id": "000000001", "title": "shmitle", "index_number": 1, "categories": [{"id": "000000001"},{"id": "000000011"}]}] }'
 curl -i -L saychas-z.local/receive-setting --data '[{"id": "1" }]' -X DELETE
 
+
+// Telephone code request
+curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 9160010203, "code": 7777}] }'

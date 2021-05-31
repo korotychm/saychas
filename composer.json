@@ -29,7 +29,8 @@
         "laminas/laminas-http": "^2.14",
         "laminas/laminas-view": "^2.12",
         "laminas/laminas-i18n": "^2.11",
-        "laminas/laminas-log": "^2.13"
+        "laminas/laminas-log": "^2.13",
+        "mongodb/mongodb": "^1.8"
     },
     "autoload": {
         "psr-4": {
