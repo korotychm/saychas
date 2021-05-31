@@ -69,7 +69,7 @@ class SettingRepository extends Repository implements SettingRepositoryInterface
         $setting->setId('headers');
         $setting->setValue($encodedData);
         
-        $this->persist($setting, []);
+        $this->persist($setting, ['id' => $setting->getId()]);
         
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }

@@ -172,7 +172,7 @@ abstract class Repository implements RepositoryInterface
             $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator(); //ReflectionHydrator(); //ClassMethodsHydrator();
         }
 
-        $params['id'] = $entity->getId();
+        // $params['id'] = $entity->getId();
         $u = $this->find($params);
 
         $assoc = $hydrator->extract($entity);

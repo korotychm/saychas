@@ -54,7 +54,7 @@ class UserAuthAdapter implements AdapterInterface
         if(!isset($container->userIdentity)) {
             $user = new User();
             $user->init();
-            $userId = $this->userRepository->persist($user, []);
+            $userId = $this->userRepository->persist($user, ['id' => null /* $user->getId() */ ]);
             $this->identity = $container->userIdentity = $userId;
             $code = UserAuthResult::SUCCESS;
         }else{
