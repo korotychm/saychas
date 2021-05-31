@@ -91,7 +91,7 @@ class IndexController extends AbstractActionController
         $this->productCharacteristicRepository = $productCharacteristicRepository;
     }
 
-    public function onDispatch(MvcEvent $e) 
+    public function onDispatch(MvcEvent $e)
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
@@ -115,22 +115,21 @@ class IndexController extends AbstractActionController
         if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
             throw new \Exception('Unknown error in IndexController');
         }
-        
+
         //$this->layout()->setTemplate('layout/mainpage');
         return $response;
-        
+
     }
-      
+
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
-
 
         return new ViewModel([
             'fooItem' => $container->item
         ]);
     }
-    
+
     public function previewAction()
     {
         //$this->layout()->setTemplate('layout/mainpage');
@@ -150,14 +149,14 @@ class IndexController extends AbstractActionController
            /* "providers" => $providers,*/
             "catalog" => $categories,
         ]);
-        
+
     }
-   
+
     private function packParams($params)
     {
         $a = [];
         foreach($params['filter'] as $p) {
-           $a[] = "find_in_set('$p', param_value_list)"; 
+           $a[] = "find_in_set('$p', param_value_list)";
         }
         $res = ' 1';
         if(count($a) > 0) {
@@ -165,7 +164,7 @@ class IndexController extends AbstractActionController
         }
         return $res;
     }
-    
+
     public function productAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
@@ -190,7 +189,7 @@ class IndexController extends AbstractActionController
         ];
         return new ViewModel($vwm);
       }
-    
+
     public function catalogAction()
     {
         $category_id=$this->params()->fromRoute('id', '');
@@ -198,7 +197,7 @@ class IndexController extends AbstractActionController
         $filtrForCategory=$container->filtrForCategory;
         if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
             $filtred=[];
-        }        
+        }
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         $bread = $this->htmlProvider->breadCrumbs($matherCategories);
@@ -213,19 +212,19 @@ class IndexController extends AbstractActionController
         $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
         $filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
         $filterForm =  $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);
-        
+
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
         catch (\Exception $e) {
             $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
-        }     
-        
+        }
+
         if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
         $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
-        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
+        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0;
         $vwm=[
-        
+
             "catalog" => $categories,
             "title" => $categoryTitle,//."/$category_id",
             "id" => $category_id,
@@ -239,7 +238,7 @@ class IndexController extends AbstractActionController
         ];
         return new ViewModel($vwm);
     }
-    
+
     public function catalog1Action()
     {
         $category_id=$this->params()->fromRoute('id', '');
@@ -268,12 +267,12 @@ class IndexController extends AbstractActionController
         }
         catch (\Exception $e) {
             $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
-        }     
-        
-        
+        }
+
+
         if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
         $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
-        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0; 
+        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0;
         $vwm=[
             "catalog" => $categories,
             "title" => $categoryTitle,//."/$category_id",
@@ -283,7 +282,7 @@ class IndexController extends AbstractActionController
             'sortselect' =>[$myKey=> " selected "],
             'hasRestOnly' =>[ $hasRest => " checked "],
             'filterform'=> $filterForm,
-        ];        
+        ];
         return new ViewModel($vwm);
 
     }

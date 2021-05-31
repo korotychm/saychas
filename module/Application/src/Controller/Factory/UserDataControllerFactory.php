@@ -11,6 +11,7 @@ use Application\Controller\UserDataController;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Db\Adapter\AdapterInterface;
 use Application\Adapter\Auth\UserAuthAdapter;
+use Application\Service\ExternalCommunicationService;
 
 /**
  * This is the factory for UserDataController. Its purpose is to instantiate the
@@ -27,7 +28,8 @@ class UserDataControllerFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
         $authService = $container->get(AuthenticationService::class);
         $userAdapter = $container->get(UserAuthAdapter::class);
-        return new UserDataController($userRepository, $config, $authService, $adapter, $userAdapter);
+        $externalCommunicationService = $container->get(ExternalCommunicationService::class);
+        return new UserDataController($userRepository, $config, $authService, $adapter, $userAdapter, $externalCommunicationService);
     }
 
 }
