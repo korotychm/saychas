@@ -166,7 +166,7 @@ class AjaxController extends AbstractActionController
             $TMP = Json::decode($json);
         }
         catch(LaminasJsonRuntimeException $e){
-        exit($e->getMessage());          
+        exit($e->getMessage());
 // return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         $ob=$TMP-> data;
@@ -180,7 +180,7 @@ class AjaxController extends AbstractActionController
             $userData = new UserData();
             $userData->setAddress($container->userAddress);
             $userData->setGeodata($json);
-            $userData->setTimestamp(new \DateTime("now"));
+//            $userData->setTimestamp(new \DateTime("now"));
         try {
             $user->setUserData([$userData]);
         }catch(InvalidQueryException $e){

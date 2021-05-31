@@ -208,20 +208,20 @@ class User extends Entity
      * @param timestamp $timestamp
      * @return $this
      */
-    public function setTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;
-        return $this;
-    }
+//    public function setTimestamp($timestamp)
+//    {
+//        $this->timestamp = $timestamp;
+//        return $this;
+//    }
 
     /**
      * Get timestamp
      *
      * @return string
      */
-    public function getTimestamp()
-    {
-        return $this->timestamp;
-    }
+//    public function getTimestamp()
+//    {
+//        return $this->timestamp;
+//    }
 
 }

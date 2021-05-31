@@ -59,7 +59,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @var string
      */
     protected $catalogToSaveImages;
-    
+
     private $mclient;
 
     /**
@@ -86,7 +86,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         $this->productImages = $productImages;
         $this->characteristicValue2Repository = $characteristicValue2Repository;
         $this->catalogToSaveImages = $catalogToSaveImages;
-        
+
         $this->mclient = new \MongoDB\Client(
             'mongodb://saychas:saychas@localhost/saychas'
         );
@@ -360,7 +360,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         // close connection
         ftp_close($conn_id);
     }
-    
+
     /**
      * @param array $params
      * @return bool
@@ -378,7 +378,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         }
         return true;
     }
-    
+
     private function saveProductCharacteristics($params) : bool {
         foreach($params as $param) {
             $sql = new Sql($this->db);
@@ -433,7 +433,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
         /** $result->data - products */
         foreach ($result->data as $product) {
-            
+
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
@@ -441,7 +441,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {
-                    
+
                     $found = $this->characteristics->find(['id' => $prodChar->id]);
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
@@ -492,12 +492,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 }
                 $filteredCurrent = array_filter($current);
                 $curr = implode(',', $filteredCurrent);
-                
+
             }
-            
+
             $this->deleteProductCharacteristics($product->id);
             $this->saveProductCharacteristics($prods);
-            
+
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
