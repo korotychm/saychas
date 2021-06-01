@@ -128,8 +128,28 @@ return [
                 'options' => [
                     'route' => '/add-user-data',
                     'defaults' => [
-                        'controller' => Controller\UserDataController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action' => 'addUserData',
+                    ],
+                ],
+            ],
+            'send-registration-sms' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/send-registration-sms',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'sendRegistrationSms',
+                    ],
+                ],
+            ],
+            'send-feedback-code' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/send-feedback-code',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'codeFeedback',
                     ],
                 ],
             ],
@@ -479,6 +499,21 @@ return [
                     ],
                 ],
             ],
+            
+            'cat' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/cat[/:id][/:product_id]',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action' => 'cat',
+                    ],
+//                    'constraints' => [
+//                        'product_id' => '(\d)+',
+//                    ],
+                ],
+            ],
+            
             'add-new-post' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -673,6 +708,9 @@ return [
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
             
+            //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
+            \Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
+            
         ],
         'invokables' => [
 //            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
@@ -712,7 +750,7 @@ return [
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
             'get_store' => 'http://SRV02:8000/SC/hs/site/get_product',
-            'get_registration_code' => 'http://SRV02:8000/SC/hs/site/get_registration_code',
+            'send_registration_code' => 'http://SRV02:8000/SC/hs/site/send_registration_code',
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [

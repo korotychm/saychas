@@ -5,6 +5,8 @@ namespace Application\Service;
 
 use Laminas\Config\Config;
 use Laminas\Session\Container;
+use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 
 /**
  * Description of ExternalCommunicationService
@@ -29,15 +31,15 @@ class ExternalCommunicationService {
      * Returns Html string
      * @return string
      */
-    public function sendRegistrationSms()
+    public function sendRegistrationSms($phone, $code)
     {
-        $url = $this->config['parameters']['1c_request_links']['get_registration_code'];
+        $url = $this->config['parameters']['1c_request_links']['send_registration_code'];
         
 //        $login = $this->config['1C_order']['login'];
 //        $pass = $this->config['1C_order']['password'];
         $content = [
-            "phone" => 9160010203, // $phone
-            "code" => 7777,
+            "phone" => (int) $phone, // 9160010203, // $phone
+            "code" => (int) $code, // 7777,
         ];
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);
@@ -50,8 +52,14 @@ class ExternalCommunicationService {
         curl_setopt($curl, CURLOPT_SSLVERSION, 3);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($curl);
-        $arr = json_decode($response);
+//        $arr = json_decode($response, true);
         
-        return $arr;
+        try {
+            $arr = Json::decode($response, Json::TYPE_ARRAY);
+            return $arr;
+        }catch(LaminasJsonRuntimeException $e){
+            return ['result' => 0, 'message' => $e->getMessage()];
+        }
+        
     }
 }
