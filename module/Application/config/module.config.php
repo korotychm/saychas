@@ -24,6 +24,7 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 //use Application\Resource\StringResource;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\Session;
 //use Laminas\Router\Http\Regex;
 //use Laminas\Router\Http\Hostname;
 
@@ -796,6 +797,19 @@ return [
             ]
         ]
     ],
+    'session_manager' => [
+        'config' => [
+            'class' => \Session\Config\SessionConfig::class,
+            'options' => [
+                'name' => 'saychasapp',
+            ],
+        ],
+        'storage' => \Session\Storage\SessionArrayStorage::class,
+        'validators' => [
+            \Session\Validator\RemoteAddr::class,
+            \Session\Validator\HttpUserAgent::class,
+        ],
+    ],    
 //    'session_containers' => [
 //        StringResource::SESSION_NAMESPACE,
 //    ],

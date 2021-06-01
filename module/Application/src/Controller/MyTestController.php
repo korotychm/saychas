@@ -813,8 +813,7 @@ class MyTestController extends AbstractActionController
         if(is_numeric($params['product_id'])) {
             return (new ViewModel($params));//->setTerminal(true);
         }
-        $response = $this->getResponse();
-        
+  
         header("Location: /cat/{$params['id']}", true, 301);
 //        $response = new RedirectResponse('/cat/'.$params['id'], 301);
 //        return $response;

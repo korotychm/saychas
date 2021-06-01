@@ -12,7 +12,6 @@ use Laminas\Authentication\AuthenticationService;
 use Laminas\Db\Adapter\AdapterInterface;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Service\ExternalCommunicationService;
-
 /**
  * This is the factory for UserDataController. Its purpose is to instantiate the
  * controller.

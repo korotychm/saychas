@@ -10,6 +10,13 @@ declare(strict_types=1);
 
 namespace Application;
 
+use Laminas\Mvc\ModuleRouteListener;
+use Laminas\Mvc\MvcEvent;
+use Laminas\Session\SessionManager;
+use Laminas\Session\Config\SessionConfig;
+use Laminas\Session\Container;
+use Laminas\Session\Validator;
+
 //use Application\ConfigProvider;
 
 class Module
@@ -39,5 +46,13 @@ class Module
 //              'catalog' => 'Application\View\Helper\CatalogHelper',
 //           ),
 //        );
-//   }    
+//   }
+
+    public function onBootstrap(MvcEvent $e)
+    {
+//        $eventManager        = $e->getApplication()->getEventManager();
+//        $moduleRouteListener = new ModuleRouteListener();
+//        $moduleRouteListener->attach($eventManager);
+//        $this->bootstrapSession($e);
+    }
 }
