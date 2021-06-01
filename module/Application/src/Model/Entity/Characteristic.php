@@ -4,15 +4,10 @@
 
 namespace Application\Model\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Characteristic
- *
- * @ORM\Table(name="characteristic")
- * @ORM\Entity
  */
-class Characteristic// extends Entity
+class Characteristic extends Entity
 {
 
     /**
@@ -64,12 +59,12 @@ class Characteristic// extends Entity
      * @var string
      */
     protected $description;
-    
+
     /**
      * @var bool
      */
     protected $is_main;
-    
+
     /**
      * @var bool
      */
@@ -322,10 +317,10 @@ class Characteristic// extends Entity
     {
         return $this->description;
     }
-    
+
     /**
      * Set is_main
-     * 
+     *
      * @param bool $isMain
      * @return $this
      */
@@ -334,10 +329,10 @@ class Characteristic// extends Entity
         $this->is_main = $isMain;
         return $this;
     }
-    
+
     /**
      * Get is_main
-     * 
+     *
      * @return bool
      */
     public function getIsMain()
@@ -347,7 +342,7 @@ class Characteristic// extends Entity
 
     /**
      * Set is_mandatory
-     * 
+     *
      * @param bool $isMandatory
      * @return $this
      */
@@ -359,7 +354,7 @@ class Characteristic// extends Entity
 
     /**
      * Get is_mandatory
-     * 
+     *
      * @return bool
      */
     public function getIsMandatory()
@@ -369,7 +364,7 @@ class Characteristic// extends Entity
 
     /**
      * Set is_list
-     * 
+     *
      * @param bool $isList
      * @return $this
      */
@@ -378,16 +373,15 @@ class Characteristic// extends Entity
         $this->is_list = $isList;
         return $this;
     }
-    
+
     /**
      * Get is_list
-     * 
+     *
      * @return bool
      */
     public function getIsList()
     {
         return $this->is_list;
     }
-    
-    
+
 }

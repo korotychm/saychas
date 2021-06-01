@@ -50,6 +50,13 @@ class Product extends Entity
      */
     protected $price;
 
+    
+    /**
+     * @var int
+     */
+    protected $old_price;
+
+    
     /**
      * @var int
      */
@@ -308,7 +315,7 @@ class Product extends Entity
      */
     public function getParamVariableList()
     {
-        return $this->paramVariableList;
+        return $this->param_variable_list;
     }
 
     /**
@@ -319,6 +326,27 @@ class Product extends Entity
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set old_price
+     * 
+     * @param int $oldPrice
+     * @return $this
+     */
+    public function setOldPrice($oldPrice)
+    {
+        $this->old_price = $oldPrice;
+        return $this;
+    }
+    /**
+     * Get old_price.
+     *
+     * @return int
+     */
+    public function getOldPrice()
+    {
+        return $this->old_price;
     }
 
     /**

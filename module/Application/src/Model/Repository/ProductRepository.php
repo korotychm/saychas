@@ -232,7 +232,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 ->join(
                         ['pri' => 'price'],
                         'pr.id = pri.product_id',
-                        ['price'],
+                        ['price', 'old_price'],
                         $select::JOIN_LEFT
                 )
 //            ->join(
@@ -283,14 +283,17 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             return [];
         }
-
+        //exit (count($result));
+        
         $resultSet = new HydratingResultSet(
                 $this->hydrator,
                 $this->prototype
         );
         $resultSet->initialize($result);
 
+        //exit(print_r($resultSet));
         return $resultSet;
+        
     }
 
     public function filterProductsByCategories($products, $categories)

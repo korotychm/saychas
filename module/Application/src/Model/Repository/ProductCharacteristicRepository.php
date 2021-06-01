@@ -48,14 +48,17 @@ class ProductCharacteristicRepository extends Repository implements ProductChara
      */
     public function getCategoryFilter ($categoryTree)
     {
-        if (count($categoryTree)) {
-            $catgoryIn=join(",",$categoryTree);
+        if ($categoryTree and count($categoryTree)) {
+            foreach ($categoryTree as $category) $tree[] = $category[0];         
+            
+            $catgoryIn=join(",",$tree);
             $sql="SELECT b.`type` as type, b.`title` as `tit`, a.`characteristic_id` as id , GROUP_CONCAT(a.`value`) as `val` "
                 . "FROM `product_characteristic` as a "
                 . "inner join characteristic as b on (a.`characteristic_id` = b.id) "
                 . "WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ($catgoryIn)) "
                 . "and b.`filter`=1 group by `characteristic_id` ";
 
+            //exit ($sql);
             try {
                   $res = $this->db->query($sql, $this->db::QUERY_MODE_EXECUTE);
                   return $res;

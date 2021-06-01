@@ -95,149 +95,23 @@ class HtmlProviderService
         $where = "and `tit`.filter=1 and `tit`.category_id in (0," . join(",", $tree) . ")";
         return $where; // (print_r($filter, true));
     }
-
-    public function getCategoryFilterHtml1($filters, $category_id)
-    {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory = $container->filtrForCategory;
-
-        if (!$filtred = $filtrForCategory[$category_id]['fltr'])
-            $filtred = [];
-        //print_r($filtred);
-        foreach ($filters as $row) {
-            if ($row->getType()){
-                $arrayTmp[$row->getId()]['title'] = $row->getTitle()."/".$row->getType();
-                $arrayTmp[$row->getId()]['id'] = $row->getId();
-                $arrayTmp[$row->getId()]['type'] = $row->getType();
-                $arrayTmp[$row->getId()]['count'] += (in_array($row->getValId(), $filtred) ? 1 : 0);
-                if($row->getVal())$arrayTmp[$row->getId()]['options'][$row->getValId()]= ['valId'=>$row->getValId(), 'valValue'=>$row->getVal()];
-                         
-                $t="<div class='nopub checkgroup blok relative" . (in_array($row->getValId(), $filtred) ? " zach " : "") . "' for='{$row->getValId()}' >{$row->getVal()} / {$row->getValId()}
-                                   <input 
-                                        type='checkbox' 
-                                        class='none fltrcheck{$row->getValId()}' 
-                                        name='fltr[]' 
-                                       
-                                        value='{$row->getValId()}'  "
-                                        . (in_array($row->getValId(), $filtred) ? " checked " : "") . " >
-                        </div>";
-            }             
-        }
-        
-        
-        if (!$arrayTmp)
-            return;
-        //$filtrForCategory[$category_id];
-        //$arrayTmp = array_unique($arrayTmp);
-        foreach ($arrayTmp as $row) {
-        $options="";
-        if (4 == $row['type']) {
-            $options="";
-            foreach ($row['options'] as $option){
-                $options.="<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='".$option['valId']."' >".$option["valValue"]
-                                   ."<input 
-                                        type='checkbox' 
-                                        class='none fltrcheck".$option['valId']."' 
-                                        name='fltr[]' 
-                                        
-                                        value='".$option['valId']."'  "
-                                        . (in_array($option['valId'], $filtred) ? " checked " : "") . " >
-                        </div>";
-                
-            }
-        }
-        elseif (7 == $row['type'] )  {
-            $options="";
-            foreach ($row['options'] as $option){
-                $options.="<div class=iblok ><div class='nopub checkgroup  relative iblok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='".$option['valId']."' style='z-index:3'>"
-                        . "</div> "
-                        . "<div class='cirkul iblok relative' style='background-color:".$option["valValue"]."; border:1px solid var(--gray); left:-45px; top:-8px; z-index:2 '></div>"
-                        ."
-                                   <input 
-                                        type='checkbox' 
-                                        class='none fltrcheck".$option['valId']."' 
-                                        name='fltr[]' 
-                                       
-                                        value='".$option['valId']."'  "
-                                        . (in_array($option['valId'], $filtred) ? " checked " : "") . " >
-                        </div> ";
-                
-            }
-        } 
-            elseif (6 == $row['type'] )  {
-            $options="";
-            foreach ($row['options'] as $option){
-                
-                $options.="<div class='nopub checkgroup  relative iblok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='".$option['valId']."' style='z-index:3'>"
-                           ."{$this->brandRepository->findFirstOrDefault(['id' => $option['valValue']])->getTitle()} / ".$option['valValue']."
-                                   <input 
-                                        type='checkbox' 
-                                        class='none fltrcheck".$option['valId']."' 
-                                        name='fltr[]' 
-                                       
-                                        value='".$option['valId']."'  "
-                                        . (in_array($option['valId'], $filtred) ? " checked " : "") . " >
-                        </div> ";
-                
-            }
-        } elseif (8 == $row['type'] )  {
-            $options="";
-            $arraycountry=[];
-            
-            foreach ($row['options'] as $option){
-                $arraycountry[$option['valValue']][$this->countryRepository->findFirstOrDefault(['id' => $option['valValue']])->getTitle()][]=$option['valId'];
-            }
-                while (list($key, $option )=each($arraycountry)){
-                $options.="<div class='nopub checkgroup  relative iblok " . (in_array($option[0], $filtred) ? " zach " : "") . "' for='".$key."' style='z-index:3'>".key($option);
-                           
-                        foreach ($option[key($option)] as $input){
-                          $options.="<input 
-                                        type='checkbox' 
-                                        class='none2 fltrcheck".$key."' 
-                                        name='fltr[]' 
-                                        
-                                        value='".$input."'  "
-                                        . (in_array($input, $filtred) ? " checked " : "") . " >";
-                        }
-                $options.="</div> ";
-                
-            }
-        } //else $options=$row['options'];  
-        
-            
-            
-          if ($options)  $return .= '
-      <div class="ifilterblock"  >
-            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['title'] . (($count = (int) $row['count']) ? "<div class='count' >$count</div>" : "") . '</div>
-            <div class="filtritem" id="fi' . $row['id'] . '">
-                <div class="filtritemcontent" id="fc' . $row['id'] . '">
-                    <div class="closefilteritem" rel="' . $row['id'] . '">' . $row['title'] . '</div>
-                    ' . $options . "
-                    <div class='block'><input type='button' value='применить' class='formsendbutton'  ></div>
-                 </div>
-            </div>
-        </div>";
-        }
-
-        return $return;
-    }
   public function getCategoryFilter($category_id = 0)
     {
-    /*
-      SELECT `characteristic_id`, `type`, `value` FROM `product_characteristic` WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ("000000006"))
-      
-    */
-      
     }
-//SELECT `characteristic_id`, `type`, `value` FROM `product_characteristic` WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ("000000006"))
-    
+
+     /**
+     * Return Html 
+     * @return string
+     */
+
     public function getCategoryFilterHtml($filters, $category_id)
     {
+        if(!$filters or !$category_id) return;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory = $container->filtrForCategory;
         if (!$filtred = $filtrForCategory[$category_id]['fltr'])  $filtred = [];
         $return=""; $j=0;
-        foreach ($filters as $row){
+         foreach ($filters as $row){
             $row['val']=explode(",",$row['val']);
             $row['val']=array_unique($row['val']);
             sort($row['val']);
@@ -252,7 +126,7 @@ class HtmlProviderService
                     if    ($row['type'] == 4 )  $valuetext = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
                     elseif($row['type'] == 5 )  $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
                     elseif($row['type'] == 6 )  $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $value])->getTitle();
-                    elseif($row['type'] == 7 )  $valuetext = "<div class='cirkul iblok relative' style='background-color:".$val."; border:1px solid var(--gray); left:-45px; top:-8px; z-index:2 '></div>";        
+                    //elseif($row['type'] == 7 )  $valuetext = "<div class='cirkul iblok relative' style='background-color:".$val."; border:1px solid var(--gray); left:-45px; top:-8px; z-index:2 '></div>";        
                     elseif($row['type'] == 8 )  $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();/**/
                         //$valuetext= $value;
                         
@@ -288,37 +162,33 @@ class HtmlProviderService
             
         }
         
-        return "<h4>getCategoryFilterHtml()</h4>".$return;
-        
+        return $return;
     }    
-    
-    
-    
     
     
     public function productCard($filteredProducts, $category_id = 0)
     {
         $return = []; // new $return;
         $filters = [];
-        foreach ($filteredProducts as $product) {
-            $cena = (int) $product->getPrice();
+        
+            foreach ($filteredProducts as $product) {
+            $cena = $price = (int) $product->getPrice();
             $cena = $cena / 100;
             $cena = number_format($cena, 0, "", "&nbsp;");
 
-            $oldprice = 1000; //(int) $product->getOldPrice();
-            $oldprice = $oldprice / 100;
-            $oldprice = number_format($oldprice, 0, "", "&nbsp;");
+            $oldprice = (int) $product->getOldPrice();
+            if ($oldprice > $price){
+                $oldprice = $oldprice / 100;
+                $oldprice = number_format($oldprice, 0, "", "&nbsp;");
+            } else $oldprice=0;/**/
 
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
             $filtrForCategory = $container->filtrForCategory;
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $r = (int) $rest->getRest();
-            if (!(!$r and $filtrForCategory[$category_id]['hasRestOnly'])) {
-                $filtersTmp = explode(",", $product->getParamValueList2());
-                $filters = array_merge($filters, $filtersTmp);
-            }
+            $r = (int) $rest->getRest();         
+
             $_id = $product->getId();
             $_return[$_id]['rest'] += $r;
             $_return[$_id]['id'] = $_id;
@@ -350,7 +220,7 @@ class HtmlProviderService
                             . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
                             . "         <div class='inactiveblok'></div>"
                             . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
-                            . "       <span class='oldprice'>" . (int) $Card['oldprice'] . "&#8381;</span>"
+                          .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
                             . "        <div class=payblockcard>"
                             . "             <div class=paybutton rel='" . $Card['id'] . "' >в корзину</div>"
                             . "        </div>"
@@ -371,32 +241,62 @@ class HtmlProviderService
                             //. "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
                             //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
                             . "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
-                            . "       <span class='oldprice'>" . (int) $Card['oldprice'] . "&#8381;</span>"
+                            .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
                             . "   </div>"
                             . "</div>";
                 }
             }
         }
-        $filters = (count($filters)) ? array_diff($filters, array('')) : $filters;
-        if (count($filters)) {
-            $filters = array_unique($filters);
-        }
-        $return['filter'] = $filters;
-        $return['categoryId'] = "00000001";
         return $return;
     }
 
+    private  function valueParce ($v=[], $chType)
+    {   $bool = ["нет", "да"];
+    if(!$v or !is_array($v))     return $v;
+    foreach ($v as  $val){
+               //if ($chArray and is_array($value)) $value=join(", ",$value);
+                            if ($chType == 3)
+                                $value[] = $bool[$val];
+
+                            elseif ($chType == 8) {
+                                $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
+                                $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
+                            } 
+                            elseif ($chType == 4) {
+
+                                $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                            } 
+                            elseif ($chType == 6) {
+                                $b = $this->brandRepository->findFirstOrDefault(['id' => $val]);
+                                $value[] = /* $brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":""). */$b->getTitle();
+                            } 
+                            elseif ($chType == 7){
+                                $value[] = "<div class='cirkul' style='background-color:$val; border:1px solid var(--gray)'></div>";
+                            }
+                            else  $value=$v;
+        }
+        if ($value) return print_r(join(", ", $value),true);
+    }  
+    
     public function productPage($filteredProducts, $category_id = 0)
     {
 
         $return = $filters = [];
-
+        if (!$filteredProducts->count()) {
+             header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
+        }
         foreach ($filteredProducts as $product) {
 
-            $cena = (int) $product->getPrice();
+           $cena = $price = (int) $product->getPrice();
             $cena = $cena / 100;
-            $cena = number_format($cena, 2, ".", "&nbsp;");
+            $cena = number_format($cena, 0, "", "&nbsp;");
 
+            $oldprice = (int) $product->getOldPrice();
+            if ($oldprice > $price){
+                $oldprice = $oldprice / 100;
+                $oldprice = number_format($oldprice, 0, "", "&nbsp;");
+            } else $oldprice=0;/**/
+            
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
 
@@ -408,17 +308,21 @@ class HtmlProviderService
                 $speed = (int) $timeDelevery;
             }
             ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$speed" . "ч</b>" : $speedlable = "";
-            $filtersTmp = explode(",", $product->getParamValueList());
-            $filters = array_merge($filters, $filtersTmp);
+            //$filtersTmp = explode(",", $product->getParamValueList());
+            //$filters = array_merge($filters, $filtersTmp);
 
             $id = $product->getId();
             $title = $product->getTitle();
             $categoryId = $product->getCategoryId();
+            $charNew = $product->getParamVariableList();
+            $charNew = json_decode($charNew, true);
+            $charsNew = "<pre>".print_r($charNew,true)."</pre>";
+            
             //$category = $product->getCategoryTitle();
 
             $img[] = $product->getHttpUrl();
-            $filtersTmp = explode(",", $product->getParamValueList2());
-            $filters = array_merge($filters, $filtersTmp);
+            //$filtersTmp = explode(",", $product->getParamValueList2());
+            //$filters = array_merge($filters, $filtersTmp);
             $vendor = $product->getVendorCode();
             $brandtitle = $product->getBrandTitle();
 
@@ -445,42 +349,40 @@ class HtmlProviderService
         }
         $totalRest = (count($rst)) ? array_sum($rst) : 0;
         ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
-
-        $filters = array_diff($filters, array(''));
-        if (!empty($filters)) {
-            $filters = array_unique($filters);
-
-            $join2 = join(",", $filters);
-            //exit ($join2 );
-            if ($characterictics = $this->characteristicRepository->getCharacteristicFromList($join2))
+        
+        $charNew = array_diff($charNew, array(''));
+        if (!empty($charNew)) {
+            if ($characterictics = $charNew)
             $j = 0;
-            $bool = ["нет", "да"];
+            
             foreach ($characterictics as $char) {
                 $charRow ="";
-                $idchar= $char->getId();
-                if ($value = $char->getVal() /*or true*/) {
-                    if ($char->getType() == 3)
-                        $value = $bool[$value];
-
-                    elseif ($char->getType() == 8) {
-                        $b = $this->countryRepository->findFirstOrDefault(['id' => $value]);
-                        $value = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
-                    } elseif ($char->getType() == 6) {
-                        $b = $this->brandRepository->findFirstOrDefault(['id' => $value]);
-                        $value = /* $brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":""). */$b->getTitle();
-                    } elseif ($char->getType() == 7)
-                        $value = "<div class='cirkul' style='background-color:$value; border:1px solid var(--gray)'></div>";
-                    $charRow = "<div class='char-row'><span class='char-title'><span>{$char->getTitle()} </span></span><span class=char-value ><span>$value</span></span></div>";
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id']]);
+                $chTit = $ch->getTitle();
+                $chType = (int)$ch->getType();
+                $chArray = $ch->getIsList();
+                $chMain = $ch->getIsMain();
                 
-                     $j++;
+                $idchar= $char['id'];
+                if ($value = $char['value'] /*or true /**/) {
+                         
+                         ($chArray)?$v=$value:$v[]=$value;   
+                         $value = $this->valueParce($v,$chType);
+                         unset ($v);
+
+
+                            $charRow = "<div class='char-row'><span class='char-title'><span>".$chTit." </span></span><span class=char-value ><span>$value</span></span></div>";
+                            $j++;
                     } 
-                elseif (0 == $char->getType() ) {
-                    $charRow = "<h3>{$char->getTitle()} </h3>";
+                    elseif ($chType == 0) 
+                    {
+                    $charRow = "<h3>$chTit</h3>";
                      $j++;
                 }
 
 
-                ($j < 10 ) ? $chars .= $charRow : $charsmore .= $charRow;
+                if ($chMain)  $chars .= $charRow ; 
+                $charsmore .= $charRow;
                
             }
 
@@ -535,7 +437,9 @@ class HtmlProviderService
                          <div class='contentpadding'>
 				<div class='paybox' >"
                 . "     		<div class='contentpadding'>
-						<h2 class='blok price'>   " . $cena . " &#8381; <span class='oldprice'>10&nbsp;000&nbsp;&#8381;</span></h2>
+						<h2 class='blok price'>   " . $cena . " &#8381; "
+                                     .(($oldprice)?"<span class='oldprice'>".($oldprice)."&nbsp;&#8381;</span>":"")
+                                        ."</h2>
 					</div>
         				<div class='volna' ></div>
             				<div class='contentpadding'>
@@ -569,8 +473,10 @@ class HtmlProviderService
                 . "<div class=blok  >"
                 . "    <div class='pw-contentblock cblock-5' >
                             <div class='contentpadding ' >"
+                //. $charsNew."!!!"
                 . $description
                 . (($charsmore) ? "<h3>Характеристики</h3>
+                    
                                 <div class='char-blok-bottom'>
                                     $charsmore
                                 </div>" : "") . "

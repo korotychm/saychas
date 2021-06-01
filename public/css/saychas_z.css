@@ -473,6 +473,7 @@ img.zero, .zeroblok {
     width: 100%;
 }
 .char-value {width:47%}
+.char-value img {display:inline-block; vertical-align:middle; position:relative; top:-2px;}
 
 .char-title, .char-value {
     display:inline-block; vertical-align:top;position:relative;

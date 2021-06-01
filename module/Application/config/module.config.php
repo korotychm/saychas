@@ -183,6 +183,7 @@ return [
                     ],
                 ],
             ],
+            /**/
             'catalog' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -202,7 +203,43 @@ return [
                         'action'     => 'product',
                     ],
                 ],
-            ],
+            ],/**/
+            
+            
+            /*'catalog' => [
+                // First we define the basic options for the parent route: \Laminas\Router\Http\
+                'type' => Segment::class,
+                'options' => [
+                    'route'    => '/catalog/:id',
+                    'defaults' => [
+                        'controller' => Controller\indexController::class,
+                        'action'     => 'catalog',
+                    ],
+                    'constraints' => [
+                        'id' => '(\d)+',
+                    ],
+                ],
+                'may_terminate' => true, // \Laminas\Router\Http\
+                'child_routes' => [
+                    'product' => [
+                        'type'    => Segment::class,
+                        'options' => [
+                            'route'    => '[/:product_id]',
+                            'defaults' => [
+                                'controller' => Controller\indexController::class,
+                                'action'     => 'product',
+                            ],
+//                            'constraints' => [
+//                                'product_id' => '(\d)+',
+//                            ],
+                        ],
+                    ],
+                ],
+            ],/**/
+            
+            
+            
+            
             'show-store' => [
                 'type'    => Literal::class,
                 'options' => [

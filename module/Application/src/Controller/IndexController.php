@@ -169,9 +169,12 @@ class IndexController extends AbstractActionController
     {
         $product_id=$this->params()->fromRoute('id', '');
         $params['equal']=$product_id;
+        
         $products = $this->productRepository->filterProductsByStores($params);
+        
         $productPage = $this->htmlProvider->productPage($products);
         $categoryId= $productPage['categoryId'];
+        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
         $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
@@ -190,58 +193,25 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
       }
     
-    public function catalog1Action()
+    
+    
+    public function catalogAction($category_id=false)
     {
-        $category_id=$this->params()->fromRoute('id', '');
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory=$container->filtrForCategory;
-        if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
-            $filtred=[];
-        }
-        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
-        $bread = $this->htmlProvider->breadCrumbs($matherCategories);
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
-        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
-        $params['filter'] = $filtred;
-        $products = $this->productRepository->filterProductsByStores($params);
-        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
-        $returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
-        $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
-        $filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
-        $filterForm =  $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);
-
+        if(!$category_id) $category_id=$this->params()->fromRoute('id', '');
+        
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
         catch (\Exception $e) {
-            $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
+            header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
+            //$categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
         }
-
-        if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
-        $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
-        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0;
-        $vwm=[
-
-            "catalog" => $categories,
-            "title" => $categoryTitle,//."/$category_id",
-            "id" => $category_id,
-            "bread"=> $bread,
-            'priducts'=> $returnProduct,
-            //'filter' =>  print_r($returnProductFilter,true),
-            'addressform'=> $addresForm."",
-            'sortselect' =>[$myKey=> " selected "],
-            'hasRestOnly' =>[ $hasRest => " checked "],
-            'filterform'=> $filterForm,
-        ];
-        return new ViewModel($vwm);
-    }
-    
-    public function catalogAction()
-    {
-        $category_id=$this->params()->fromRoute('id', '');
+        if (!$categoryTitle) { 
+            header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
+            //$categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; 
+            
+        }
+        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
         if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
@@ -249,6 +219,7 @@ class IndexController extends AbstractActionController
         }
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
+        //$matherCategories[]=[0=>$category_id];
         $bread = $this->htmlProvider->breadCrumbs($matherCategories);
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
@@ -257,24 +228,14 @@ class IndexController extends AbstractActionController
         $products = $this->productRepository->filterProductsByStores($params);
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
-        //$returnProductFilter = $this->htmlProvider->productCard($filteredProducts,$category_id)['filter'];
-       // $filterArray = $this->htmlProvider ->getCategoryFilterArray($returnProductFilter, $matherCategories );//
-        
-        /*$filtr= $this->characteristicRepository->getCharacteristicFromList(join(",",$returnProductFilter), ['where'=>$filterArray]);
-        $filterForm =  $this->htmlProvider ->getCategoryFilterHtml($filtr, $category_id);*/
-        
-        $filters = $this->productCharacteristicRepository->getCategoryFilter($categoryTree);
+       
+        $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id );
 
-        try {
-            $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
-        }
-        catch (\Exception $e) {
-            $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
-        }
+        
 
 
-        if (!$categoryTitle) { $categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; }
+        
         $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
         $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0;
         $vwm=[
