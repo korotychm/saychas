@@ -33,6 +33,9 @@ use Application\Resource\StringResource;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
 //use Laminas\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\RedirectResponse;
+
 use Application\Adapter\Auth\UserAuthAdapter;
 
 use Application\Entity\Post;
@@ -799,6 +802,23 @@ class MyTestController extends AbstractActionController
         
         print_r($params);
         return (new ViewModel())->setTerminal(true);
+    }
+    
+    public function catAction()
+    {
+        $params = $this->params()->fromRoute();
+        if(empty($params['product_id'])) {
+            return (new ViewModel($params));//->setTerminal(true);
+        }
+        if(is_numeric($params['product_id'])) {
+            return (new ViewModel($params));//->setTerminal(true);
+        }
+        $response = $this->getResponse();
+        
+        header("Location: /cat/{$params['id']}", true, 301);
+//        $response = new RedirectResponse('/cat/'.$params['id'], 301);
+//        return $response;
+//        return (new ViewModel($params));//->setTerminal(true);
     }
     
     public function addUserDataAction()

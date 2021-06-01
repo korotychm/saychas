@@ -5,6 +5,8 @@ namespace Application\Service;
 
 use Laminas\Config\Config;
 use Laminas\Session\Container;
+use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 
 /**
  * Description of ExternalCommunicationService
@@ -50,8 +52,14 @@ class ExternalCommunicationService {
         curl_setopt($curl, CURLOPT_SSLVERSION, 3);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($curl);
-        $arr = json_decode($response);
+//        $arr = json_decode($response, true);
         
-        return $arr;
+        try {
+            $arr = Json::decode($response, Json::TYPE_ARRAY);
+            return $arr;
+        }catch(LaminasJsonRuntimeException $e){
+            return ['result' => 0, 'message' => $e->getMessage()];
+        }
+        
     }
 }

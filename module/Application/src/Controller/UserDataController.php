@@ -1,7 +1,6 @@
 <?php
-/**
- * changed
- */
+
+// src/Controller/UserDataController.php
 
 declare(strict_types=1);
 
@@ -9,10 +8,8 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\MvcEvent;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
+//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Authentication\AuthenticationService;
-//use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Resource\StringResource;
@@ -20,143 +17,171 @@ use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
 use Laminas\Session\Container;
 use Application\Service\ExternalCommunicationService;
+use Laminas\View\Model\JsonModel;
+use Laminas\Http\Response;
+//use Laminas\Session\SessionManager;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
 
+/**
+ * UserDataController
+ */
+class UserDataController extends AbstractActionController {
 
-
-class UserDataController extends AbstractActionController
-{
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
+
+    /**
+     * @var Laminas/Config/Config
+     */
     private $config;
+
+    /**
+     * @var Laminas\Authentication\AuthenticationService
+     */
     private $authService;
+
+    /**
+     * @var Laminas\Db\Adapter\AdapterInterface
+     */
     private $db;
+
+    /**
+     * @var Application\Adapter\Auth\UserAuthAdapter
+     */
     private $userAdapter;
+
+    /**
+     * @var Application\Service\ExternalCommunicationService
+     */
     private $externalCommunicationService;
-    
+
+    /**
+     * @var Laminas\Log\Logger
+     */
     private $logger;
 
+//    private SessionManager $sessionManager;
+//    private ServiceManager $serviceManager;
+
+    /**
+     * Constructor
+     *
+     * @param UserRepository $userRepository
+     * @param Config $config
+     * @param AuthenticationService $authService
+     * @param AdapterInterface $db
+     * @param UserAuthAdapter $userAdapter
+     * @param ExternalCommunicationService $externalCommunicationService
+     */
     public function __construct(
             UserRepository $userRepository,
-            $config, $authService, $db, $userAdapter, $externalCommunicationService)
-    {
+            $config, $authService, $db, $userAdapter, $externalCommunicationService) {
         $this->userRepository = $userRepository;
         $this->config = $config;
         $this->authService = $authService;
         $this->db = $db;
         $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
-        
+
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
         $this->logger->addWriter($writer);
     }
 
-    public function onDispatch(MvcEvent $e)
-    {
+    /**
+     * Execute the request
+     *
+     * @param MvcEvent $e
+     * @return Laminas\Http\Response
+     */
+    public function onDispatch(MvcEvent $e) {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
         return $response;
-        
     }
 
-    public function clearAction()
-    {
+    /**
+     * Clear identity
+     *
+     * @return Response
+     */
+    public function clearAction() {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         unset($container->userIdentity);
-        if($this->authService->hasIdentity()) {
+        if ($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
         }
         return $this->getResponse();
     }
-    
-    public function sendRegistrationSmsAction()
-    {
-        //$post = $this->params()->fromPost();
+
+    /**
+     * Generate random code to send
+     * to use along with the phone number
+     *
+     * @param int $phone
+     * @return int
+     */
+    private function generateRegistrationCode($phone) {
+        /** @var $phone */
+        /* $phone is meant to be a a session key */
+        // Generate new code and store it in session
+        $code = 7777;
+        return $code;
+    }
+
+    /**
+     * Send registration sms
+     *
+     * @return Response
+     */
+    public function sendRegistrationSmsAction() {
         $post = $this->getRequest()->getPost();
-        
-        $code = $this->externalCommunicationService->sendRegistrationSms($post->phone, $post->code);
-        print_r($code);
-        return $this->getResponse();
-    }
-    
-    public function addUserDataAction()
-    {
-        $post=$this->getRequest()->getPost();
-        foreach($post as $key => $vale) {
-            
-        }
-        $code = $this->externalCommunicationService->sendRegistrationSms();
-        print_r($code);
 
-//        $userId = $this->authService->getIdentity();
-//        $userData = new UserData();
-//        $userData->setAddress('address1');
-//        $userData->setGeodata('geodata1');
-//        //$userData->setTime(time());
-//        
-//        if(null != $userId) {
-//            $user = $this->userRepository->find(['id'=>$userId]);
-//            if(null != $user) {
-//                // User found
-//                $user->setUserData([$userData]);
-//            }
-//        }
-        exit;
-        return $this->getResponse();
+        $code = $this->generateRegistrationCode($post->phone);
+
+        $answer = $this->externalCommunicationService->sendRegistrationSms($post->phone, $code);
+
+        $response = $this->getResponse();
+        if ($answer['result'] != true) {
+            $response->setStatusCode(Response::STATUS_CODE_400);
+        } else {
+            $response->setStatusCode(Response::STATUS_CODE_200);
+        }
+
+        return new JsonModel($answer);
     }
-    
-    public function createAction()
-    {
+
+    /**
+     * Compare feedback code with the generated one
+     *
+     * @return JsonModel
+     */
+    public function codeFeedbackAction() {
+        // Compare feedback with sent registration code
+        $post = $this->getRequest()->getPost();
+        $code = $post->code;
+        if (7777 == $code) {
+            // Registered
+            return new JsonModel(['result' => true]);
+        }
+        return new JsonModel(['result' => false]);
+    }
+
+    /**
+     * Create user record
+     *
+     * @return Response
+     */
+    public function createAction() {
         $userAuthAdapter = new UserAuthAdapter($this->userRepository);
-        $result = $this->authService->authenticate($userAuthAdapter);
-        $identity = $this->identity();// $result->getIdentity();
-        $this->logger->info('identity = '.$identity);
+        // $result = $this->authService->authenticate($userAuthAdapter);
+        $identity = $this->identity(); // $result->getIdentity();
+        $this->logger->info('identity = ' . $identity);
 
-        return $this->getResponse();
-        
-    }
-    
-    public function saveAction()
-    {
-        $post = $this->params()->fromPost();
-
-        $user = new \Application\Model\Entity\User();
-        $user->setId(1);
-        $user->setName('user2');
-//        $user_id = $this->userRepository->persist($user, []);
-        
-        $ud = [];
-        $userData = new \Application\Model\Entity\UserData();
-        $userData->setId(3);
-//        $userData->setUserId(1);
-        $userData->setAddress('address3 - shmadres - asdf');
-        $userData->setGeodata('geodata3 - shmeodata - adsf');
-//        $userData->setTime(time());
-        $ud[] = $userData;
-        $userData1 = new \Application\Model\Entity\UserData();
-        $userData1->setId(4);
-        $userData1->setUserId(1);
-        $userData1->setAddress('address4 - shmnadres');
-        $userData1->setGeodata('geodata4 - shmeodata');
-//        $userData1->setTime(time());
-        $ud[] = $userData1;
-        
-        $user->setUserData($ud);
-        
-        try {
-            $user_data = $user->getUserData();
-            foreach($user_data as $udata) {
-                echo '<pre>';
-                print_r($udata);
-                echo '</pre>';
-            }
-            echo $user->getId().'<br/>';
-            echo $user->getName().'<br/>';
-        }catch (InvalidQueryException $e) {
-            print_r($e->getMessage());
-            exit;
-        }
         return $this->getResponse();
     }
 
-    
 }

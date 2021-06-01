@@ -28,11 +28,11 @@ $(function () {
 //        }
 //    });
 
-    var sendSms = function(code) {
+    var sendSms = function(phone) {
 //        var formData = new FormData();
 //        formData.append('phone', '9185356024');
 //        formData.append('code', '7777');
-        data = {'phone': 9185356024, 'code': 7777};
+        data = {'phone': phone};
         $.ajax({
             type: "POST",
             url: "/send-registration-sms",
@@ -42,7 +42,23 @@ $(function () {
 //            processData: false, // Not to process data
             data: data, // formData,
             success: function (result, status, xhr) {
-                console.log('result = ', result);
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms sending failed', xhr, status);
+            }
+        });
+    };
+    
+    var sendBack = function(code) {
+        data = {'code': code };
+        $.ajax({
+            type: "POST",
+            url: "/send-feedback-code",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
             },
             error: function (xhr, status, error) {
                 console.log('Sms sending failed', xhr, status);
@@ -51,6 +67,9 @@ $(function () {
     };
     
     $('#userDataFormId').click(function(){
-        sendSms(7777);
+        sendSms(9185356024);
+    });
+    $('#codeFeedbackId').click(function(){
+        sendBack(7777);
     });
 });

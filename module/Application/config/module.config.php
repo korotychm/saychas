@@ -128,7 +128,7 @@ return [
                 'options' => [
                     'route' => '/add-user-data',
                     'defaults' => [
-                        'controller' => Controller\UserDataController::class,
+                        'controller' => Controller\MyTestController::class,
                         'action' => 'addUserData',
                     ],
                 ],
@@ -140,6 +140,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
                         'action' => 'sendRegistrationSms',
+                    ],
+                ],
+            ],
+            'send-feedback-code' =>  [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/send-feedback-code',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'codeFeedback',
                     ],
                 ],
             ],
@@ -452,6 +462,21 @@ return [
                     ],
                 ],
             ],
+            
+            'cat' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/cat[/:id][/:product_id]',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action' => 'cat',
+                    ],
+//                    'constraints' => [
+//                        'product_id' => '(\d)+',
+//                    ],
+                ],
+            ],
+            
             'add-new-post' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -645,6 +670,9 @@ return [
             
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
+            
+            //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
+            \Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
             
         ],
         'invokables' => [
