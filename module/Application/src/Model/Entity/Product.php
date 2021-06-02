@@ -95,11 +95,65 @@ class Product extends Entity
      * @var string
      */
     protected $param_value_list;
+    
+    /**
+     * @var string
+     */
+    protected $color;
+
+    /**
+     * @var string
+     */
+    protected $size;
 
     /**
      * @var string (json)
      */
     protected $param_variable_list;
+
+    /**
+     * Set color.
+     * 
+     * @param string $color
+     * @return $this
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+        return $this;
+    }
+    
+    /**
+     * Get color.
+     * 
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+    
+    /**
+     * Set size.
+     * 
+     * @param string $size
+     * @return $this
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+        return $this;
+    }
+    
+    /**
+     * Get size.
+     * 
+     * @return string
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
 
     /**
      * @return string
