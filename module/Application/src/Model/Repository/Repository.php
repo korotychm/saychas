@@ -60,6 +60,9 @@ abstract class Repository implements RepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
+        if (isset($params['columns'])) {
+            $select->columns($params['columns']);
+        }
         if (isset($params['order'])) {
             $select->order($params['order']);
         }

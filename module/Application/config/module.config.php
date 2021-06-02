@@ -104,16 +104,16 @@ return [
                     ],
                 ],
             ],
-            'create-user-data' =>  [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/create-user-data',
-                    'defaults' => [
-                        'controller' => Controller\UserDataController::class,
-                        'action' => 'create',
-                    ],
-                ],
-            ],
+//            'create-user-data' =>  [
+//                'type' => Literal::class,
+//                'options' => [
+//                    'route' => '/create-user-data',
+//                    'defaults' => [
+//                        'controller' => Controller\UserDataController::class,
+//                        'action' => 'create',
+//                    ],
+//                ],
+//            ],
             'clear-user-data' =>  [
                 'type' => Literal::class,
                 'options' => [
@@ -357,6 +357,17 @@ return [
                         'action'     => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
+                ],
+            ],
+            'receive-color' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-color[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\ColorRepositoryInterface::class,
                 ],
             ],
             'receive-setting' => [
@@ -655,6 +666,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
+            \Application\Model\RepositoryInterface\ColorRepositoryInterface::class => \Application\Model\Repository\ColorRepository::class,
             \Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface::class => \Application\Model\Repository\ProductCharacteristicRepository::class,
             \Application\Model\RepositoryInterface\SettingRepositoryInterface::class => \Application\Model\Repository\SettingRepository::class,
             \Application\Model\RepositoryInterface\CountryRepositoryInterface::class => \Application\Model\Repository\CountryRepository::class,
@@ -688,6 +700,7 @@ return [
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Repository\SizeRepository::class => \Application\Model\Factory\SizeRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Model\Repository\ColorRepository::class => \Application\Model\Factory\ColorRepositoryFactory::class,
             \Application\Model\Repository\ProductCharacteristicRepository::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
             \Application\Model\Repository\SettingRepository::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Repository\CountryRepository::class => \Application\Model\Factory\CountryRepositoryFactory::class,
