@@ -11,6 +11,7 @@ use Laminas\Json\Json;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Color;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
+use Laminas\Hydrator\ClassMethodsHydrator;
 
 class ColorRepository extends Repository implements ColorRepositoryInterface
 {
@@ -58,11 +59,10 @@ class ColorRepository extends Repository implements ColorRepositoryInterface
             $this->db->query("truncate table {$this->tableName}")->execute();
         }
 
+        $hydrator = new ClassMethodsHydrator();
         foreach ($result['data'] as $row) {
+            $hydrator->hydrate($row, $this->prototype);
             try{
-                $this->prototype->setId($row['id']);
-                $this->prototype->setTitle($row['title']);
-                $this->prototype->setValue($row['value']);
                 $this->persist($this->prototype, ['id' => $this->prototype->getId()]);
             }catch(Laminas\Db\Adapter\Exception\InvalidQueryException $e){
                 return ['result' => false, 'description' => "error executing", 'statusCode' => 418];
