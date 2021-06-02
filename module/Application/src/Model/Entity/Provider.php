@@ -22,17 +22,17 @@ class Provider extends Entity
     /**
      * @var string | null
      */
-    protected $title;
+    protected $title = '';
 
     /**
      * @var string | null
      */
-    protected $description;
+    protected $description = '';
 
     /**
      * @var string | null
      */
-    protected $icon;
+    protected $icon = '';
 
     /**
      *
