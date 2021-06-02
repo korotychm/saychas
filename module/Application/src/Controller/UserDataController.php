@@ -19,9 +19,10 @@ use Laminas\Session\Container;
 use Application\Service\ExternalCommunicationService;
 use Laminas\View\Model\JsonModel;
 use Laminas\Http\Response;
+
 //use Laminas\Session\SessionManager;
-use Laminas\ServiceManager\Factory\InvokableFactory;
-use Laminas\ServiceManager\ServiceManager;
+//use Laminas\ServiceManager\Factory\InvokableFactory;
+//use Laminas\ServiceManager\ServiceManager;
 
 /**
  * UserDataController
@@ -128,14 +129,16 @@ class UserDataController extends AbstractActionController {
         /** @var $phone */
         /* $phone is meant to be a a session key */
         // Generate new code and store it in session
-        $code = 7777;
+        $container = new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
+        $code = 7777; // simulate generation
+        $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code];
         return $code;
     }
 
     /**
      * Send registration sms
      *
-     * @return Response
+     * @return JsonModel
      */
     public function sendRegistrationSmsAction() {
         $post = $this->getRequest()->getPost();
@@ -145,7 +148,7 @@ class UserDataController extends AbstractActionController {
         $answer = $this->externalCommunicationService->sendRegistrationSms($post->phone, $code);
 
         $response = $this->getResponse();
-        if ($answer['result'] != true) {
+        if (true != $answer['result']) {
             $response->setStatusCode(Response::STATUS_CODE_400);
         } else {
             $response->setStatusCode(Response::STATUS_CODE_200);
@@ -163,25 +166,18 @@ class UserDataController extends AbstractActionController {
         // Compare feedback with sent registration code
         $post = $this->getRequest()->getPost();
         $code = $post->code;
-        if (7777 == $code) {
+        $container = new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
+        $storedCode = $container->userPhoneIdentity['code'];
+        if ($storedCode == $code) {
+            // Unset userPhoneIdentity
+            // We only unset userPhoneIdentity if stored code matches the received one
+            // So the user has a few attempts
+            // Probably we will limit the number of attempts to a certain number;
+            unset($container->userPhoneIdentity);
             // Registered
             return new JsonModel(['result' => true]);
         }
         return new JsonModel(['result' => false]);
-    }
-
-    /**
-     * Create user record
-     *
-     * @return Response
-     */
-    public function createAction() {
-        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
-        // $result = $this->authService->authenticate($userAuthAdapter);
-        $identity = $this->identity(); // $result->getIdentity();
-        $this->logger->info('identity = ' . $identity);
-
-        return $this->getResponse();
     }
 
 }

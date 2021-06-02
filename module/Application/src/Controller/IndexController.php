@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -59,11 +60,12 @@ class IndexController extends AbstractActionController
     private $userRepository;
     private $authService;
     private $productCharacteristicRepository;
+    private $colorRepository;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
-                BrandRepositoryInterface $brandRepository, SettingRepositoryInterface $settingRepository,
+                BrandRepositoryInterface $brandRepository, ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
                 CharacteristicRepositoryInterface $characteristicRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
@@ -77,6 +79,7 @@ class IndexController extends AbstractActionController
         $this->productRepository = $productRepository;
         $this->filteredProductRepository = $filteredProductRepository;
         $this->brandRepository = $brandRepository;
+        $this->colorRepository = $colorRepository;
         $this->settingRepository = $settingRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
@@ -132,6 +135,11 @@ class IndexController extends AbstractActionController
 
     public function previewAction()
     {
+//        $colors = $this->colorRepository->findAll(['columns' => ['id', 'title', 'value']]);
+//        foreach ($colors as $color) {
+//            echo $color->getId(). ' '.$color->getTitle(). ' '.$color->getValue(). "<br/>";
+//        }
+//        exit;
         //$this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([

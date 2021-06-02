@@ -46,6 +46,8 @@ class SizeRepository extends Repository implements SizeRepositoryInterface
      *
      * @param json
      */
+    /** Old fashion code */
+    /**
     public function replace($content)
     {
         try {
@@ -66,5 +68,6 @@ class SizeRepository extends Repository implements SizeRepositoryInterface
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
+    */
 
 }

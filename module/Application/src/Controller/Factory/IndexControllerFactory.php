@@ -15,6 +15,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -56,7 +57,8 @@ class IndexControllerFactory implements FactoryInterface
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
         $productCharacteristic = $container->get(ProductCharacteristicRepositoryInterface::class);
-        return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $setting, $characteristic,
+        $colorRepository = $container->get(ColorRepositoryInterface::class);
+        return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $colorRepository, $setting, $characteristic,
                 $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService, $productCharacteristic);
     }
 
