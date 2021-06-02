@@ -180,6 +180,11 @@ class UserDataController extends AbstractActionController {
         return new JsonModel(['result' => false]);
     }
     
+    /**
+     * Set client info.
+     * 
+     * @return JsonModel
+     */
     public function setClientInfoAction()
     {
         /** $content structure to be sent
@@ -190,10 +195,18 @@ class UserDataController extends AbstractActionController {
          *       "phone" => (int) $phone,
          *   ];
          */
-        $answer = $this->externalCommunicationService->setClientInfo(['name' => 'name1', 'surname' => 'surname', 'middle_name' => '', 'phone' => 9185356024]);
+        $post = $this->getRequest()->getPost()->toArray();
+        $post['phone'] = (int) $post['phone'];
+        // ['name' => 'name1', 'surname' => 'surname', 'middle_name' => 'middle_name1', 'phone' => 9185356024]
+        $answer = $this->externalCommunicationService->setClientInfo($post);
         return new JsonModel($answer);
     }
     
+    /**
+     * Get client info.
+     * 
+     * @return JsonModel
+     */
     public function getClientInfoAction()
     {
         /**
@@ -201,7 +214,10 @@ class UserDataController extends AbstractActionController {
          *      "phone" => 9185356024
          * ];
          */
-        $answer = $this->externalCommunicationService->getClientInfo(['phone' => 9185356024]);
+        // ['phone' => 9185356024]
+        $post = $this->getRequest()->getPost()->toArray();
+        $post['phone'] = (int) $post['phone'];
+        $answer = $this->externalCommunicationService->getClientInfo($post);
         return new JsonModel($answer);
     }
 

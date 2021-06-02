@@ -85,7 +85,7 @@ class ExternalCommunicationService {
          *       "phone" => (int) $phone,
          *   ];
          */
-        $url = $this->config['parameters']['1c_request_links']['get_client_info'];
+        $url = $this->config['parameters']['1c_request_links']['set_client_info'];
         return $this->sendCurlRequest($url, $content);
     }
     

@@ -66,10 +66,50 @@ $(function () {
         });
     };
     
+    var setClientInfo = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/set-client-info",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms sending failed', xhr, status);
+            }
+        });
+    };
+    
+    var getClientInfo = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/get-client-info",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms sending failed', xhr, status);
+            }
+        });
+    };
+    
     $('#userDataFormId').click(function(){
         sendSms(9185356024);
     });
     $('#codeFeedbackId').click(function(){
         sendBack(7777);
+    });
+    
+    $('#setClientInfoId').click(function(){
+        setClientInfo({'name': 'name1', 'surname': 'surname1', 'middle_name': 'middle_name2', 'phone': 9185356024});
+    });
+
+    $('#getClientInfoId').click(function(){
+        getClientInfo({'phone': 9185356024});
     });
 });
