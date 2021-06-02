@@ -11,10 +11,8 @@ use Laminas\Json\Json;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Color;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
-use Laminas\Hydrator\ClassMethodsHydrator;
 
-class ColorRepository extends Repository implements ColorRepositoryInterface
-{
+class ColorRepository extends Repository implements ColorRepositoryInterface {
 
     /**
      * @var string
@@ -35,8 +33,7 @@ class ColorRepository extends Repository implements ColorRepositoryInterface
             AdapterInterface $db,
             HydratorInterface $hydrator,
             Color $prototype
-    )
-    {
+    ) {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
@@ -47,37 +44,26 @@ class ColorRepository extends Repository implements ColorRepositoryInterface
      *
      * @param json
      */
-    public function replace($content)
-    {
-        try {
-            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        } catch (\Laminas\Json\Exception\RuntimeException $e) {
-            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-        }
-
-        if ((bool) $result['truncate']) {
-            $this->db->query("truncate table {$this->tableName}")->execute();
-        }
-
-        $hydrator = new ClassMethodsHydrator();
-        foreach ($result['data'] as $row) {
-            $hydrator->hydrate($row, $this->prototype);
-            try{
-                $this->persist($this->prototype, ['id' => $this->prototype->getId()]);
-            }catch(Laminas\Db\Adapter\Exception\InvalidQueryException $e){
-                return ['result' => false, 'description' => "error executing", 'statusCode' => 418];
-            }
-            /** Old fashion code */
-//            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `value`) VALUES ( '%s', '%s', '%s')",
-//                    $row['id'], $row['title'], $row['value']);
+//    public function replace($content) {
+//        try {
+//            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+//        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+//            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+//        }
+//
+//        if ((bool) $result['truncate']) {
+//            $this->db->query("truncate table {$this->tableName}")->execute();
+//        }
+//
+//        foreach ($result['data'] as $row) {
+//            $this->hydrator->hydrate($row, $this->prototype);
 //            try {
-//                $query = $this->db->query($sql);
-//                $query->execute();
+//                $this->persist($this->prototype, ['id' => $this->prototype->getId()]);
 //            } catch (InvalidQueryException $e) {
-//                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+//                return ['result' => false, 'description' => "error executing", 'statusCode' => 418];
 //            }
-        }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
-    }
+//        }
+//        return ['result' => true, 'description' => '', 'statusCode' => 200];
+//    }
 
 }

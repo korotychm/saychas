@@ -207,14 +207,41 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
+     * Adds given entity into it's repository
+     *
+     * @param json
+     */
+    public function replace($content) {
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+
+        if ((bool) $result['truncate']) {
+            $this->db->query("truncate table {$this->tableName}")->execute();
+        }
+
+        foreach ($result['data'] as $row) {
+            $this->hydrator->hydrate($row, $this->prototype);
+            try {
+                $this->persist($this->prototype, ['id' => $this->prototype->getId()]);
+            } catch (InvalidQueryException $e) {
+                return ['result' => false, 'description' => "error executing", 'statusCode' => 418];
+            }
+        }
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
+
+    /**
      * Adds given user into it's repository
      *
      * @param json
      */
-    public function replace($content)
-    {
-        return ['result' => false, 'description' => '', 'statusCode' => 405];
-    }
+//    public function replace($content)
+//    {
+//        return ['result' => false, 'description' => '', 'statusCode' => 405];
+//    }
 
     /**
      * Returns a single brand.
