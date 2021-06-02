@@ -8,8 +8,7 @@ use Interop\Container\ContainerInterface;
 use Application\Model\Entity\Store;
 use Application\Model\Repository\StoreRepository;
 use Laminas\Db\Adapter\AdapterInterface;
-//use Laminas\Hydrator\ReflectionHydrator;
-use Laminas\Hydrator\ClassMethodsHydrator;
+use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class StoreRepositoryFactory implements FactoryInterface
@@ -25,7 +24,7 @@ class StoreRepositoryFactory implements FactoryInterface
 
         return new StoreRepository(
                 $adapter,
-                new ClassMethodsHydrator(),//ReflectionHydrator(),
+                new ReflectionHydrator(),
                 new Store
         );
     }
