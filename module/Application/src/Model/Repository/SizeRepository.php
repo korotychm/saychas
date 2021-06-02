@@ -46,25 +46,28 @@ class SizeRepository extends Repository implements SizeRepositoryInterface
      *
      * @param json
      */
-//    public function replace($content)
-//    {
-//        try {
-//            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-//        } catch (\Laminas\Json\Exception\RuntimeException $e) {
-//            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-//        }
-//
-//        foreach ($result['data'] as $row) {
-//            $sql = sprintf("replace INTO `size`(`id`, `title`) VALUES ( '%s', '%s')",
-//                    $row['id'], $row['title']);
-//            try {
-//                $query = $this->db->query($sql);
-//                $query->execute();
-//            } catch (InvalidQueryException $e) {
-//                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-//            }
-//        }
-//        return ['result' => true, 'description' => '', 'statusCode' => 200];
-//    }
+    /** Old fashion code */
+    /**
+    public function replace($content)
+    {
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+
+        foreach ($result['data'] as $row) {
+            $sql = sprintf("replace INTO `size`(`id`, `title`) VALUES ( '%s', '%s')",
+                    $row['id'], $row['title']);
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+            } catch (InvalidQueryException $e) {
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+            }
+        }
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
+    */
 
 }
