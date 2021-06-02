@@ -311,7 +311,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     background:url("/img/arrup.png") right no-repeat; 
     margin-right:0;
 }
-.filtritemcontent {display:none}
+.filtritemcontent {display:none; min-width:200px;}
 .filtritemcontent .block {padding:4px 0px; white-space: nowrap }
 .filtritem.active {
     display:inline-block;

@@ -106,6 +106,23 @@ class HtmlProviderService
 
     public function getCategoryFilterHtml($filters, $category_id)
     {
+        
+        
+
+    $typeText[0] = "Заголовок";
+    $typeText[1] = "Строка";
+    $typeText[2] = "Число";
+    $typeText[3] = "Булево";
+    $typeText[4] = "Ссылка.Характеристики";
+    $typeText[5] = "Ссылка.Поставщики";
+    $typeText[6] = "Ссылка.Бренды";
+    $typeText[7] = "Ссылка.Цвета";
+    $typeText[8] = "Ссылка.Страна";
+
+
+        
+        
+        
         if(!$filters or !$category_id) return;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory = $container->filtrForCategory;
@@ -116,18 +133,24 @@ class HtmlProviderService
             $row['val']=array_unique($row['val']);
             sort($row['val']);
             //$row['val']=array_diff ([""], $row['val']);
-            $options="";
-            
+            unset($options);            
             foreach ($row['val'] as $val ) {
                 $j++;
-                $options.="";
+                
                 if ($val){
                     $valuetext=$val;                        
                     if    ($row['type'] == 4 )  $valuetext = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
                     elseif($row['type'] == 5 )  $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                    elseif($row['type'] == 6 )  $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $value])->getTitle();
+                    elseif($row['type'] == 6 )  $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
                     //elseif($row['type'] == 7 )  $valuetext = "<div class='cirkul iblok relative' style='background-color:".$val."; border:1px solid var(--gray); left:-45px; top:-8px; z-index:2 '></div>";        
                     elseif($row['type'] == 8 )  $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();/**/
+                    
+                    if   ($row['type'] == 2 )
+                    {
+                       $options[]=$val;
+                    }
+                    else 
+                        
                         //$valuetext= $value;
                         
 
@@ -143,13 +166,22 @@ class HtmlProviderService
                 } 
             }   
             
-            $row['tit'].="(".$row['type'].")";
+            //$row['tit'].="(".$row['type'].")";
              
             
             if ($options) {
+                if ($row['type'] == 2){
+                    
+                    $min=min($options); $max=max($options);
+                $options = "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; margin-right:10px;' value='$min' >"
+                         . "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; ' value='$max' >";
+                 
+                    
+                }
+                
                 $return.='<div class="ifilterblock"  >
                             <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] . ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '</div>
-                            <span class="mini" >'.$row['id'].'</span>
+                            <span class="blok mini" >'.$typeText[$row['type']].'</span>
                             <div class="filtritem" id="fi' . $row['id'] . '">
                                 <div class="filtritemcontent" id="fc' . $row['id'] . '">
                                     <div class="closefilteritem" rel="' . $row['id'] . '">' . $row['tit'] . '</div>
@@ -161,7 +193,6 @@ class HtmlProviderService
             }
             
         }
-        
         return $return;
     }    
     
@@ -254,7 +285,8 @@ class HtmlProviderService
     {   $bool = ["нет", "да"];
     if(!$v or !is_array($v))     return $v;
     foreach ($v as  $val){
-               //if ($chArray and is_array($value)) $value=join(", ",$value);
+                            if(!$val)    continue;           
+//if ($chArray and is_array($value)) $value=join(", ",$value);
                             if ($chType == 3)
                                 $value[] = $bool[$val];
 
@@ -267,8 +299,7 @@ class HtmlProviderService
                                 $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
                             } 
                             elseif ($chType == 6) {
-                                $b = $this->brandRepository->findFirstOrDefault(['id' => $val]);
-                                $value[] = /* $brdandImage = (($b->getImage())?"<img style='max-height:40px; max-width:100px; margin-right:10px;' src=/images/brand/{$b->getImage()} >":""). */$b->getTitle();
+                                $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
                             } 
                             elseif ($chType == 7){
                                 $value[] = "<div class='cirkul' style='background-color:$val; border:1px solid var(--gray)'></div>";
