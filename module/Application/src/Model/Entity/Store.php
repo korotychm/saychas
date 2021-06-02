@@ -48,17 +48,17 @@ class Store extends Entity
     /**
      * @var string
      */
-    protected $address;
+    protected $address = '';
 
     /**
      * @var string
      */
-    protected $geox;
+    protected $geox = '';
 
     /**
      * @var string
      */
-    protected $geoy;
+    protected $geoy = '';
 
     /**
      * @var string
