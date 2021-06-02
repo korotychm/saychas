@@ -35,12 +35,18 @@ class ExternalCommunicationService {
     {
         $url = $this->config['parameters']['1c_request_links']['send_registration_code'];
         
-//        $login = $this->config['1C_order']['login'];
-//        $pass = $this->config['1C_order']['password'];
         $content = [
             "phone" => (int) $phone, // 9160010203, // $phone
             "code" => (int) $code, // 7777,
         ];
+        return $this->sendCurlRequest($url, $content);
+        
+    }
+    
+    protected function sendCurlRequest($url, $content)
+    {
+//        $login = $this->config['1C_order']['login'];
+//        $pass = $this->config['1C_order']['password'];
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);
         //curl_setopt($curl, CURLOPT_HTTPHEADER, ['BOM_required: false', 'charset_response: UTF-8']);
@@ -61,5 +67,31 @@ class ExternalCommunicationService {
             return ['result' => 0, 'message' => $e->getMessage()];
         }
         
+    }
+
+    /**
+     * Set client info.
+     * 
+     * @param array $content
+     * @return array
+     */
+    public function setClientInfo(array $content) : array
+    {
+        /** $content structure to be sent
+         *   $content = [
+         *       "name" => $name,
+         *       "surname" => $surname,
+         *       "middle_name" => $middle_name,
+         *       "phone" => (int) $phone,
+         *   ];
+         */
+        $url = $this->config['parameters']['1c_request_links']['get_client_info'];
+        return $this->sendCurlRequest($url, $content);
+    }
+    
+    public function getClientInfo(array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['get_client_info'];
+        return $this->sendCurlRequest($url, $content);
     }
 }

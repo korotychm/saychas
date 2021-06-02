@@ -179,5 +179,30 @@ class UserDataController extends AbstractActionController {
         }
         return new JsonModel(['result' => false]);
     }
+    
+    public function setClientInfoAction()
+    {
+        /** $content structure to be sent
+         *   $content = [
+         *       "name" => $name,
+         *       "surname" => $surname,
+         *       "middle_name" => $middle_name,
+         *       "phone" => (int) $phone,
+         *   ];
+         */
+        $answer = $this->externalCommunicationService->setClientInfo(['name' => 'name1', 'surname' => 'surname', 'middle_name' => '', 'phone' => 9185356024]);
+        return new JsonModel($answer);
+    }
+    
+    public function getClientInfoAction()
+    {
+        /**
+         * $content = [
+         *      "phone" => 9185356024
+         * ];
+         */
+        $answer = $this->externalCommunicationService->getClientInfo(['phone' => 9185356024]);
+        return new JsonModel($answer);
+    }
 
 }
