@@ -275,7 +275,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 
 .filterblock  { display:block;  position:relative;    z-index:50;}
 .ifilterblock  {
-    display:inline-block; vertical-align:top;
+    /*display:block; vertical-align:top;*/
     position:relative; 
     /* z-index:10;*/
     box-shadow: 2px 2px 7px  rgba(0,0,0,0); 
@@ -295,7 +295,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     /*white-space: nowrap ;*/
 }
 .filtritemtitle div.count, #zakazcount {
-    dispaly:inline-block; 
+    dispaly:block; 
     position:absolute; 
     /* width:15px; */
     /*height:22px;*/
@@ -311,7 +311,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     background:url("/img/arrup.png") right no-repeat; 
     margin-right:0;
 }
-.filtritemcontent {display:none}
+.filtritemcontent {display:none; min-width:200px;}
 .filtritemcontent .block {padding:4px 0px; white-space: nowrap }
 .filtritem.active {
     display:inline-block;
@@ -338,9 +338,9 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 }
 .nopub22 {width:120px; padding-left:27px}
 .cheker {color:#666; padding-left:28px; }
-.zach   {background-position: 0 -25px; color:#000; font-weight:300 }
-.zach2   {background-position: 0 -50px; font-weight:300 }
-.zach3   {background-position: 0 -75px; color:#191919; font-weight:300 }
+.zach   {background-position: 0 -25px; color:var(--red); }
+.zach2   {background-position: 0 -50px;  }
+.zach3   {background-position: 0 -75px; color:#191919;  }
 .waiting {background:url("/img/loader.gif") left no-repeat}
 
 
