@@ -9,8 +9,8 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\Repository\UserRepository;
 use Application\Controller\UserDataController;
 use Laminas\Authentication\AuthenticationService;
-use Laminas\Db\Adapter\AdapterInterface;
-use Application\Adapter\Auth\UserAuthAdapter;
+//use Laminas\Db\Adapter\AdapterInterface;
+//use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Service\ExternalCommunicationService;
 /**
  * This is the factory for UserDataController. Its purpose is to instantiate the
@@ -23,12 +23,12 @@ class UserDataControllerFactory implements FactoryInterface
     {
         // Instantiate the controller and inject dependencies
         $userRepository = $container->get(UserRepository::class);
-        $config = $container->get('Config');
-        $adapter = $container->get(AdapterInterface::class);
+        //$config = $container->get('Config');
+        //$adapter = $container->get(AdapterInterface::class);
         $authService = $container->get(AuthenticationService::class);
-        $userAdapter = $container->get(UserAuthAdapter::class);
+        //$userAdapter = $container->get(UserAuthAdapter::class);
         $externalCommunicationService = $container->get(ExternalCommunicationService::class);
-        return new UserDataController($userRepository, $config, $authService, $adapter, $userAdapter, $externalCommunicationService);
+        return new UserDataController($userRepository/*, $config*/, $authService/*, $adapter*//*, $userAdapter*/, $externalCommunicationService);
     }
 
 }

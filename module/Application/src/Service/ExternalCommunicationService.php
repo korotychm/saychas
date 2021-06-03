@@ -1,4 +1,5 @@
 <?php
+
 // src\Service\ExternalCommunicationService.php
 
 namespace Application\Service;
@@ -13,36 +14,44 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
  *
  * @author alex
  */
-class ExternalCommunicationService {
-    
+class ExternalCommunicationService
+{
+
     /**
-     * 
+     *
      * @var Config
      */
     private $config;
-    
-    public function __construct($config) {
+
+    public function __construct($config)
+    {
         $this->config = $config;
     }
 
     /**
      * Sends a registration sms
-     * 
+     *
      * Returns Html string
      * @return string
      */
     public function sendRegistrationSms($phone, $code)
     {
         $url = $this->config['parameters']['1c_request_links']['send_registration_code'];
-        
+
         $content = [
             "phone" => (int) $phone, // 9160010203, // $phone
             "code" => (int) $code, // 7777,
         ];
         return $this->sendCurlRequest($url, $content);
-        
     }
-    
+
+    /**
+     * Send curl request.
+     * 
+     * @param string $url
+     * @param array $content
+     * @return array
+     */
     protected function sendCurlRequest($url, $content)
     {
 //        $login = $this->config['1C_order']['login'];
@@ -59,39 +68,97 @@ class ExternalCommunicationService {
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($curl);
 //        $arr = json_decode($response, true);
-        
+
         try {
             $arr = Json::decode($response, Json::TYPE_ARRAY);
             return $arr;
-        }catch(LaminasJsonRuntimeException $e){
-            return ['result' => 0, 'message' => $e->getMessage()];
+        } catch (LaminasJsonRuntimeException $e) {
+            return ['result' => 10, 'message' => $e->getMessage()];
         }
-        
     }
 
     /**
      * Set client info.
-     * 
+     *   Example parameter to pass to setClientInfo:
+     *   $content structure to be sent
+     *   $content = [
+     *       "name" => "name1", // mandatory
+     *       "surname" => "surname1",
+     *       "middle_name" => "middle_name",
+     *       "phone" => (int) 9185356024, // mandatory
+     *       "email" => "my@mail.ru"
+     *   ];
      * @param array $content
      * @return array
      */
-    public function setClientInfo(array $content) : array
+    public function setClientInfo(array $content): array
     {
-        /** $content structure to be sent
-         *   $content = [
-         *       "name" => $name,
-         *       "surname" => $surname,
-         *       "middle_name" => $middle_name,
-         *       "phone" => (int) $phone,
-         *   ];
-         */
         $url = $this->config['parameters']['1c_request_links']['set_client_info'];
+        $content['phone'] = (int) $content['phone'];
         return $this->sendCurlRequest($url, $content);
     }
-    
+
+    /**
+     * Get client info.
+     *
+     * Example parameter to pass to getClientInfo:
+     * $content = [
+     *      "id" => "000000001",
+     * ];
+     *
+     * @param array $content
+     * @return array
+     */
     public function getClientInfo(array $content)
     {
         $url = $this->config['parameters']['1c_request_links']['get_client_info'];
+        $content['phone'] = (int) $content['phone'];
         return $this->sendCurlRequest($url, $content);
     }
+
+    /**
+     * Update client info.
+     *
+     * Example parameter to pass to updateClientInfo:
+     * $content = [
+     *      "id" => "000000001", // mandatory
+     *       "name" => "name1", // optional
+     *       "surname" => "surname1", // optional
+     *       "middle_name" => "middle_name", // optional
+     *       "phone" => (int) 9185356024, // optional
+     *       "email" => "my@mail.ru" // optional
+     * ];
+     *
+     * @param array $content
+     * @return array
+     */
+    public function updateClientInfo(array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['update_client_info'];
+        $content['phone'] = (int) $content['phone'];
+        return $this->sendCurlRequest($url, $content);
+    }
+
+    /**
+     * Change password.
+     * 
+     *   $content = [
+     *       'id' => $id,
+     *       'old_password' => $oldPassword,
+     *       'new_password' => $newPassword,
+     *       'new_password2' => $newPassword,
+     *   ];
+     * @param array $content
+     * @return array
+     */
+    public function changePassword(array $content) : array
+    {
+        $url = $this->config['parameters']['1c_request_links']['change_client_password'];
+        if ($content['new_password'] != $content['new_password2']) {
+            return ['result' => -1, 'message' => 'Passwords are not equal'];
+        }
+
+        return $this->sendCurlRequest($url, $content);
+    }
+
 }

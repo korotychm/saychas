@@ -37,7 +37,7 @@ class UserDataController extends AbstractActionController {
     /**
      * @var Laminas/Config/Config
      */
-    private $config;
+//    private $config;
 
     /**
      * @var Laminas\Authentication\AuthenticationService
@@ -47,12 +47,12 @@ class UserDataController extends AbstractActionController {
     /**
      * @var Laminas\Db\Adapter\AdapterInterface
      */
-    private $db;
+//    private $db;
 
     /**
      * @var Application\Adapter\Auth\UserAuthAdapter
      */
-    private $userAdapter;
+//    private $userAdapter;
 
     /**
      * @var Application\Service\ExternalCommunicationService
@@ -68,23 +68,20 @@ class UserDataController extends AbstractActionController {
 //    private ServiceManager $serviceManager;
 
     /**
-     * Constructor
-     *
+     * Constructor.
+     * 
      * @param UserRepository $userRepository
-     * @param Config $config
-     * @param AuthenticationService $authService
-     * @param AdapterInterface $db
-     * @param UserAuthAdapter $userAdapter
-     * @param ExternalCommunicationService $externalCommunicationService
+     * @param type $authService
+     * @param type $externalCommunicationService
      */
     public function __construct(
             UserRepository $userRepository,
-            $config, $authService, $db, $userAdapter, $externalCommunicationService) {
+            /*$config,*/ $authService, /*$db,*/ /*$userAdapter,*/ $externalCommunicationService) {
         $this->userRepository = $userRepository;
-        $this->config = $config;
+//        $this->config = $config;
         $this->authService = $authService;
-        $this->db = $db;
-        $this->userAdapter = $userAdapter;
+//        $this->db = $db;
+//        $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
 
         $this->logger = new Logger();
@@ -182,22 +179,13 @@ class UserDataController extends AbstractActionController {
     
     /**
      * Set client info.
-     * 
+     *
      * @return JsonModel
      */
     public function setClientInfoAction()
     {
-        /** $content structure to be sent
-         *   $content = [
-         *       "name" => $name,
-         *       "surname" => $surname,
-         *       "middle_name" => $middle_name,
-         *       "phone" => (int) $phone,
-         *   ];
-         */
         $post = $this->getRequest()->getPost()->toArray();
-        $post['phone'] = (int) $post['phone'];
-        // ['name' => 'name1', 'surname' => 'surname', 'middle_name' => 'middle_name1', 'phone' => 9185356024]
+        //$post['phone'] = (int) $post['phone'];
         $answer = $this->externalCommunicationService->setClientInfo($post);
         return new JsonModel($answer);
     }
@@ -209,15 +197,34 @@ class UserDataController extends AbstractActionController {
      */
     public function getClientInfoAction()
     {
-        /**
-         * $content = [
-         *      "phone" => 9185356024
-         * ];
-         */
-        // ['phone' => 9185356024]
         $post = $this->getRequest()->getPost()->toArray();
-        $post['phone'] = (int) $post['phone'];
+        //$post['phone'] = (int) $post['phone'];
         $answer = $this->externalCommunicationService->getClientInfo($post);
+        return new JsonModel($answer);
+    }
+    
+    /**
+     * Update client info.
+     * 
+     * @return JsonModel
+     */
+    public function updateClientInfoAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        //$post['phone'] = (int) $post['phone'];
+        $answer = $this->externalCommunicationService->updateClientInfo($post);
+        return new JsonModel($answer);
+    }
+    
+    /**
+     * Change client password
+     * 
+     * @return JsonModel
+     */
+    public function changeClientPasswordAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $answer = $this->externalCommunicationService->changePassword($post);
         return new JsonModel($answer);
     }
 
