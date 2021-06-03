@@ -26,12 +26,12 @@ class UserDataRepositoryFactory implements FactoryInterface
 //        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
 //        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
         $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-        $hydrator->addStrategy(
-            'timestamp',
-            new DateTimeFormatterStrategy(
-                'Y-m-d'
-            )
-        );
+//        $hydrator->addStrategy(
+//            'timestamp',
+//            new DateTimeFormatterStrategy(
+//                'Y-m-d'
+//            )
+//        );
 
         $prototype = new UserData;
 
