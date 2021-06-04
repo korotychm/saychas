@@ -110,23 +110,16 @@ class HtmlProviderService
 
     public function getCategoryFilterHtml($filters, $category_id)
     {
-        
-        
+            $typeText[0] = "Заголовок";
+            $typeText[1] = "Строка";
+            $typeText[2] = "Число";
+            $typeText[3] = "Булево";
+            $typeText[4] = "Ссылка.Характеристики";
+            $typeText[5] = "Ссылка.Поставщики";
+            $typeText[6] = "Ссылка.Бренды";
+            $typeText[7] = "Ссылка.Цвета";
+            $typeText[8] = "Ссылка.Страна";
 
-    $typeText[0] = "Заголовок";
-    $typeText[1] = "Строка";
-    $typeText[2] = "Число";
-    $typeText[3] = "Булево";
-    $typeText[4] = "Ссылка.Характеристики";
-    $typeText[5] = "Ссылка.Поставщики";
-    $typeText[6] = "Ссылка.Бренды";
-    $typeText[7] = "Ссылка.Цвета";
-    $typeText[8] = "Ссылка.Страна";
-
-
-        
-        
-        
         if(!$filters or !$category_id) return;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory = $container->filtrForCategory;
@@ -155,15 +148,10 @@ class HtmlProviderService
                             . "</div>";
                     }
                     elseif($row['type'] == 8 )  $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();/**/
-                    
-                    if   ($row['type'] == 2 )
-                    {
+                    if   ($row['type'] == 2 ){
                        $options[]=$val;
                     }
                     else 
-                        
-                        //$valuetext= $value;
-                        
 
                     $options.="<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >".$valuetext
                                        ."<input 
@@ -197,10 +185,7 @@ class HtmlProviderService
                         . "<div class=blok ><input type=radio name='fltr[".$row['type']."][]' value=0 > Нет</div>"
                         . "<div class=blok ><input type=radio name='fltr[".$row['type']."][]' value=-1 checked > Не важно</div>"
                         . "</radiogroup>";
-                 
-                    
                 }
-                
                 $return.='<div class="ifilterblock"  >
                             <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] . ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '</div>
                             <span class="blok mini" >'.$typeText[$row['type']].'</span>
@@ -305,50 +290,46 @@ class HtmlProviderService
 
     private  function valueParce ($v=[], $chType)
     {   $bool = ["нет", "да"];
-    if(!$v or !is_array($v))     return $v;
-    foreach ($v as  $val){
-                            if(!$val)    continue;           
-//if ($chArray and is_array($value)) $value=join(", ",$value);
-                            if ($chType == 3)
-                                $value[] = $bool[$val];
+        if(!$v or !is_array($v))     return $v;
+        foreach ($v as  $val){
+                if(!$val)    continue;           
+    //if ($chArray and is_array($value)) $value=join(", ",$value);
+                if ($chType == 3)
+                    $value[] = $bool[$val];
 
-                            elseif ($chType == 8) {
-                                $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
-                                $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
-                            } 
-                            elseif ($chType == 4) {
+                elseif ($chType == 8) {
+                    $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
+                    $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
+                } 
+                elseif ($chType == 4) {
 
-                                $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                            } 
-                            elseif ($chType == 6) {
-                                $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                            } 
-                            elseif ($chType == 7){
-                                
-                                $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
-                        $value[] = 
-                             "<div class='iblok relative'  >"
-                            . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:25px; height:25px; vertical-align:middle'></div>"
-                            . "      {$color->getTitle()}   "
-                            . "</div>";
-                                
-                                // "<div class='cirkul' style='background-color:$val; border:1px solid var(--gray)'></div>";
-                            }
-                            else  $value=$v;
+                    $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                } 
+                elseif ($chType == 6) {
+                    $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                } 
+                elseif ($chType == 7){
+
+                    $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
+                $value[] = 
+                    "<div class='iblok relative'  >"
+                    . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:25px; height:25px; vertical-align:middle'></div>"
+                    . "      {$color->getTitle()}   "
+                    . "</div>";
+             }
+           else  $value=$v;
         }
         if ($value) return print_r(join(", ", $value),true);
     }  
     
     public function productPage($filteredProducts, $category_id = 0)
     {
-
         $return = $filters = [];
         if (!$filteredProducts->count()) {
              header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
         }
         foreach ($filteredProducts as $product) {
-
-           $cena = $price = (int) $product->getPrice();
+            $cena = $price = (int) $product->getPrice();
             $cena = $cena / 100;
             $cena = number_format($cena, 0, "", "&nbsp;");
 
@@ -371,7 +352,6 @@ class HtmlProviderService
             ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$speed" . "ч</b>" : $speedlable = "";
             //$filtersTmp = explode(",", $product->getParamValueList());
             //$filters = array_merge($filters, $filtersTmp);
-
             $id = $product->getId();
             $title = $product->getTitle();
             $categoryId = $product->getCategoryId();
@@ -418,30 +398,25 @@ class HtmlProviderService
             
             foreach ($characterictics as $char) {
                 $charRow ="";
-                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id']]);
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'].":".$categoryId] );
                 $chTit = $ch->getTitle();
                 $chType = (int)$ch->getType();
                 $chArray = $ch->getIsList();
                 $chMain = $ch->getIsMain();
-                
                 $idchar= $char['id'];
                 if ($value = $char['value'] /*or true /**/) {
                          
                          ($chArray)?$v=$value:$v[]=$value;   
                          $value = $this->valueParce($v,$chType);
                          unset ($v);
-
-
-                            $charRow = "<div class='char-row'><span class='char-title'><span>".$chTit." </span></span><span class=char-value ><span>$value</span></span></div>";
+                            $charRow = "<div class='char-row'><span class='char-title'><span>".$chTit."</span></span><span class=char-value ><span>$value</span></span></div>";
                             $j++;
                     } 
                     elseif ($chType == 0) 
                     {
                     $charRow = "<h3>$chTit</h3>";
-                     $j++;
+                    $j++;
                 }
-
-
                 if ($chMain)  $chars .= $charRow ; 
                 $charsmore .= $charRow;
                
@@ -481,8 +456,8 @@ class HtmlProviderService
                      </div>
                  </div>"
                 . "
-              <div class='pw-contentblock cblock-3'>
-                <div class='contentpadding'>
+                 <div class='pw-contentblock cblock-3'>
+                    <div class='contentpadding'>
                       <div class='productpagecard ' >"
                 . "   <div class='content opacity-" . $r . "'>"
         ;
@@ -525,11 +500,10 @@ class HtmlProviderService
                                " . (($brandimage) ? "<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>" : " <div class='brandlogo' >$brandtitle</div>") . "
                                <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
                          </div>
-                          
                     </div>
-                    </div>
+                 </div>
                  "
-        ;
+                ;
         $return['card'] .= ""
                 . "<div class=blok  >"
                 . "    <div class='pw-contentblock cblock-5' >
