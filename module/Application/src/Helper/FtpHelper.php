@@ -6,6 +6,7 @@ namespace Application\Helper;
 
 use Interop\Container\ContainerInterface;
 use Laminas\Stdlib\Exception\InvalidArgumentException;
+
 //use Laminas\I18n\Exception\InvalidArgumentException;
 //use Laminas\Log\Logger;
 
@@ -16,6 +17,24 @@ use Laminas\Stdlib\Exception\InvalidArgumentException;
  */
 class FtpHelper
 {
+
+    /**
+     * Fetch file from ftp
+     *
+     * @param Config $config
+     * @param string $table
+     * @param string $file_name
+     */
+    public static function fetchOne($config, $table, $file_name)
+    {
+        $server_catalog = $config['parameters']['server_catalog'][$table]['path'];
+        $ftp_server = $config['parameters']['ftp_server']['domain']; // "nas01.saychas.office";
+        $username = $config['parameters']['ftp_server']['username']; //"1C";
+        $password = $config['parameters']['ftp_server']['password']; //"ree7EC2A";
+        $filename = "ftp://$username:$password@{$ftp_server}{$server_catalog}{$file_name}";
+        echo file_get_contents($filename, true);
+        exit;
+    }
 
     /**
      * Fetches files from specified ftp catalog
@@ -29,7 +48,7 @@ class FtpHelper
      */
     public static function fetch($container, string $table, array $files, $callback, $update = null): void
     {
-        if(null == $callback) {
+        if (null == $callback) {
             throw new InvalidArgumentException('Callback cannot be null');
         }
         $config = $container->get('Config');
@@ -51,15 +70,14 @@ class FtpHelper
         foreach ($files as $file) {
             $local_file = realpath($local_catalog) . "/" . $file;
             $server_file = $server_catalog . $file;
-            if(!in_array($server_file, $list) && null != $callback) {
-//                $callback($file);
+            if (!in_array($server_file, $list) && null != $callback) {
                 continue;
             }
             // trying to download $server_file and save it to $local_file
             if (!ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
                 self::warn($server_file);
             }
-            if(null != $update) {
+            if (null != $update) {
                 $update($file);
             }
         }
@@ -73,12 +91,9 @@ class FtpHelper
      * @param type $message
      * @param type $extra
      */
-    private static function warn(/*$logger,*/ $message, $extra = [])
+    private static function warn(/* $logger, */ $message, $extra = [])
     {
-        echo 'Failed to download file '.$message;
-//        if (null != $logger) {
-//            $logger->warn('failed to download file ' . $message);
-//        }
+        echo 'Failed to download file ' . $message;
     }
 
 }

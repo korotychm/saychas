@@ -236,6 +236,9 @@ class MyTestController extends AbstractActionController
     
     public function helloWorldAction()
     {
+        $im = \Application\Helper\FtpHelper::fetchOne($this->config, 'product', '1350x.jpg');
+        return $im;
+
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
 
 //        $client = new \MongoDB\Client(

@@ -19,10 +19,12 @@ use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
+use Application\Controller\Factory\FtpControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 //use Application\Resource\StringResource;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\Session;
 //use Laminas\Router\Http\Regex;
@@ -484,6 +486,27 @@ return [
                     ],
                 ],
             ],
+            'get-image' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/get-image',
+                    'defaults' => [
+                        'controller' => Controller\FtpController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            'get-image2' => [
+                'type'    => Segment::class,
+                'options' => [
+                    //'route'    => '/get-image2/table/:table/filename/:fileName',
+                    'route'    => '/get-image2/:table/:fileName',
+                    'defaults' => [
+                        'controller' => Controller\FtpController::class,
+                        'action'     => 'getImage',
+                    ],
+                ],
+            ],
 
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
@@ -676,6 +699,7 @@ return [
             Controller\UserDataController::class => UserDataControllerFactory::class,
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
+            Controller\FtpController::class => FtpControllerFactory::class,
         ],
     ],
     'laminas-cli' => [

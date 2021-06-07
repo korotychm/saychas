@@ -111,6 +111,27 @@ $(function () {
         });
     };
 
+    var getImageFromFtpId = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/get-image",
+            method: 'post',
+            dataType: 'html',
+            async: true,
+            data: data,
+            success: function (result, status, xhr) {
+//                var img = $('<img style="height: 100px; width: 100px;" id="image_id">');
+//                img.attr('src', '/hello-world');
+//                img.appendTo('#image_div');
+                  $('#image_div').html(result);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms updating failed', xhr, status);
+            }
+        });
+    };
+
     $('#userDataFormId').click(function(){
         sendSms($('#inputSomeDataId').val());
     });
@@ -133,5 +154,10 @@ $(function () {
     $('#changeClientPasswordId').click(function(){
         console.log('id = ', $('#inputSomeDataId').val());
         changeClientPassword({'id': $('#inputSomeDataId').val(),'old_password': '4uemOAs', 'new_password': 'newpassword', 'new_password2': 'newpassword'});
+    });
+    
+    $('#getImageFromFtpId').click(function(){
+        console.log('getImageFromFtpId');
+        getImageFromFtpId({'table': 'product', 'fileName': '1350x.jpg'});
     });
 });
