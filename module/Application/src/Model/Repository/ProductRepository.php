@@ -449,6 +449,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     //$found = $this->characteristics->find(['id' => $prodChar->id]);
                     $found = $this->characteristics->find(['id' => implode(':', [$prodChar->id, $product->category_id])]);
                     if (null == $found) {
+                        continue;
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
                     if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($prodChar->value) ) {
