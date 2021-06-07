@@ -473,28 +473,28 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         }
                     }
 
-                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
-                        $myid = $prodChar->value;
-                        $current[] = $myid;
-                    }else{
-                        $myuuid = Uuid::uuid4();
-                        $myid = md5($myuuid->toString());
-                        $current[] = $myid;
-                        if(!is_array($prodChar->value)) {
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $prodChar->value, $var->id);
-                        }else if(is_array($prodChar->value)) {
-                            $title = implode(',', $prodChar->value);
-                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $prodChar->id);
-                        }else{
-                            throw new \Exception('Value must be either a scalar or an array');
-                        }
-                        try {
-                            $q = $this->db->query($sql);
-                            $q->execute();
-                        } catch (InvalidQueryException $e) {
-                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-                        }
-                    }
+//                    if (( $this->characteristics::REFERENCE_TYPE == $found->getType() )) {
+//                        $myid = $prodChar->value;
+//                        $current[] = $myid;
+//                    }else{
+//                        $myuuid = Uuid::uuid4();
+//                        $myid = md5($myuuid->toString());
+//                        $current[] = $myid;
+//                        if(!is_array($prodChar->value)) {
+//                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $prodChar->value, $var->id);
+//                        }else if(is_array($prodChar->value)) {
+//                            $title = implode(',', $prodChar->value);
+//                            $sql = sprintf("replace into characteristic_value( `id`, `title`, `characteristic_id`) values('%s', '%s', '%s')", $myid, $title, $prodChar->id);
+//                        }else{
+//                            throw new \Exception('Value must be either a scalar or an array');
+//                        }
+//                        try {
+//                            $q = $this->db->query($sql);
+//                            $q->execute();
+//                        } catch (InvalidQueryException $e) {
+//                            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+//                        }
+//                    }
                 }
                 $filteredCurrent = array_filter($current);
                 $curr = implode(',', $filteredCurrent);
@@ -506,6 +506,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
             $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
+//            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+//                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
             try {
                 $query = $this->db->query($sql);
