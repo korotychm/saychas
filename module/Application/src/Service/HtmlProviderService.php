@@ -398,7 +398,7 @@ class HtmlProviderService
             
             foreach ($characterictics as $char) {
                 $charRow ="";
-                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'].":".$categoryId] );
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id']."-".$categoryId] );
                 $chTit = $ch->getTitle();
                 $chType = (int)$ch->getType();
                 $chArray = $ch->getIsList();
