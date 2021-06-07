@@ -30,6 +30,8 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
      * @var Characteristic
      */
     protected Characteristic $prototype;
+    
+    protected $mclient;
 
     /**
      * @param AdapterInterface $db
@@ -45,6 +47,9 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        $this->mclient = new \MongoDB\Client(
+            'mongodb://saychas:saychas@localhost/saychas'
+        );        
     }
 
     public const HEADER_TYPE = 0;
@@ -122,6 +127,9 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
+//        $this->mclient->saychas->characteristics->drop();
+//        $this->mclient->saychas->characteristics->insertMany($result['data']);
+
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table characteristic")->execute();
         }
@@ -138,8 +146,10 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $statement->execute();
 
         foreach ($result['data'] as $row) {
+//            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`, `is_main`, `is_mandatory`, `is_list`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s', %u, %u, %u)",
+//                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], $row['unit'], '', $row['is_main'], $row['is_mandatory'], $row['is_list']);
             $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`, `is_main`, `is_mandatory`, `is_list`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s', %u, %u, %u)",
-                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], '', '', $row['is_main'], $row['is_mandatory'], $row['is_list']);
+                    implode('-', [$row['id'], $row['category_id']]), $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], $row['unit'], '', $row['is_main'], $row['is_mandatory'], $row['is_list']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

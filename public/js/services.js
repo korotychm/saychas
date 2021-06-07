@@ -8,25 +8,6 @@ $(document).ready(function () {
 });
 
 $(function () {
-//    $.ajax({
-//        beforeSend : function (){ 
-//            console.log('before send');
-//        },
-//        url: "/send-registration-sms",
-//        type: 'POST',
-//        cache: false,
-//        data: dataString,
-//        success: function (data) {
-//
-//            $("#ajaxfiltranswer").html(data);
-//            window.location.href = window.location.href
-//            //alert("!!!!234");
-//        },
-//        error: function (xhr, ajaxOptions, thrownError) {
-//            $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-//            alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
-//        }
-//    });
 
     var sendSms = function(phone) {
 //        var formData = new FormData();
@@ -66,10 +47,91 @@ $(function () {
         });
     };
     
+    var setClientInfo = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/set-client-info",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms sending failed', xhr, status);
+            }
+        });
+    };
+    
+    var getClientInfo = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/get-client-info",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms sending failed', xhr, status);
+            }
+        });
+    };
+    
+    var updateClientInfo = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/update-client-info",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms updating failed', xhr, status);
+            }
+        });
+    };
+
+    var changeClientPassword = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/change-client-password",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms updating failed', xhr, status);
+            }
+        });
+    };
+
     $('#userDataFormId').click(function(){
-        sendSms(9185356024);
+        sendSms($('#inputSomeDataId').val());
     });
     $('#codeFeedbackId').click(function(){
         sendBack(7777);
+    });
+    
+    $('#setClientInfoId').click(function(){
+        setClientInfo({'name': 'name1', 'surname': 'surname1', 'middle_name': 'middle_name2', 'phone': $('#inputSomeDataId').val(), 'email': 'my@mymail.ru'});
+    });
+
+    $('#getClientInfoId').click(function(){
+        getClientInfo({'id': $('#inputSomeDataId').val()});
+    });
+
+    $('#updateClientInfoId').click(function(){
+        updateClientInfo({'id': $('#inputSomeDataId').val(),'name': 'name2', 'surname': $('#inputSomeDataId').val(), 'middle_name': 'middle_name2', 'phone': '9185356024', 'email': 'my1@mymail.ru'});//9185356025
+    });
+
+    $('#changeClientPasswordId').click(function(){
+        console.log('id = ', $('#inputSomeDataId').val());
+        changeClientPassword({'id': $('#inputSomeDataId').val(),'old_password': '4uemOAs', 'new_password': 'newpassword', 'new_password2': 'newpassword'});
     });
 });

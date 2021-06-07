@@ -4,15 +4,10 @@
 
 namespace Application\Model\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
-
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 /**
  * Store
- *
- * @ORM\Table(name="store")
- * @ORM\Entity
  */
 class Store extends Entity
 {
@@ -30,10 +25,10 @@ class Store extends Entity
     /**
      * @return Provider
      */
-    public function getProvider()
-    {
-        return self::$providerRepository->findFirstOrDefault(['id' => $this->getProviderId()]);
-    }
+//    public function getProvider()
+//    {
+//        return self::$providerRepository->findFirstOrDefault(['id' => $this->getProviderId()]);
+//    }
 
     /**
      * @var string
@@ -53,22 +48,22 @@ class Store extends Entity
     /**
      * @var string
      */
-    protected $address;
+    protected $address = '';
 
     /**
      * @var string
      */
-    protected $geox;
+    protected $geox = '';
 
     /**
      * @var string
      */
-    protected $geoy;
+    protected $geoy = '';
 
     /**
      * @var string
      */
-    protected $icon;
+    protected $icon = '';
 
     /**
      * Get id.
@@ -233,7 +228,7 @@ class Store extends Entity
      */
     public function setIcon($icon)
     {
-        $this->icon = $icon;
+        $this->icon = null==$icon?'':$icon;
 
         return $this;
     }

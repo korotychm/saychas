@@ -404,6 +404,46 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class,
                 ],
             ],
+            'set-client-info' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/set-client-info[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'setClientInfo',
+                    ],
+                ],
+            ],
+            'get-client-info' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/get-client-info[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'getClientInfo',
+                    ],
+                ],
+            ],
+            'update-client-info' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/update-client-info[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'updateClientInfo',
+                    ],
+                ],
+            ],
+            'change-client-password' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/change-client-password[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'changeClientPassword',
+                    ],
+                ],
+            ],
             'hello-world' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -765,6 +805,10 @@ return [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
             'get_store' => 'http://SRV02:8000/SC/hs/site/get_product',
             'send_registration_code' => 'http://SRV02:8000/SC/hs/site/send_registration_code',
+            'get_client_info' => 'http://SRV02:8000/SC/hs/site/get_client_info',
+            'set_client_info' => 'http://SRV02:8000/SC/hs/site/set_client_info',
+            'update_client_info' => 'http://SRV02:8000/SC/hs/site/update_client_info',
+            'change_client_password' => 'http://SRV02:8000/SC/hs/site/change_client_password',
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [
