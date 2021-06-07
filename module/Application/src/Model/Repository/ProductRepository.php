@@ -446,7 +446,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {
 
-                    $found = $this->characteristics->find(['id' => $prodChar->id]);
+                    //$found = $this->characteristics->find(['id' => $prodChar->id]);
+                    $found = $this->characteristics->find(['id' => implode(':', [$prodChar->id, $product->category_id])]);
                     if (null == $found) {
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
@@ -455,7 +456,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         if($isList && is_array($prodChar->value)) {
                             foreach($prodChar->value as $v) {
                                 $prodChs['product_id'] = $product->id;
-                                $prodChs['characteristic_id'] = $prodChar->id;
+                                $prodChs['characteristic_id'] = implode(':', [$prodChar->id, $product->category_id]);
                                 $prodChs['sort_order'] = $prodChar->index;
                                 $prodChs['value'] = $v;
                                 $prodChs['type'] = $found->getType();
@@ -463,7 +464,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                             }
                         }else{
                             $prodChs['product_id'] = $product->id;
-                            $prodChs['characteristic_id'] = $prodChar->id;
+                            $prodChs['characteristic_id'] = implode(':', [$prodChar->id, $product->category_id]);
                             $prodChs['sort_order'] = $prodChar->index;
                             $prodChs['value'] = $prodChar->value;
                             $prodChs['type'] = $found->getType();
