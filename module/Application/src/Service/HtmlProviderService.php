@@ -133,35 +133,47 @@ class HtmlProviderService
             unset($options);            
             foreach ($row['val'] as $val ) {
                 $j++;
-                
+                $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
                 if ($val){
                     $valuetext=$val;                        
-                    if    ($row['type'] == 4 )  $valuetext = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                    if    ($row['type'] == 4 )  $valuetext = $char->getTitle();
                     elseif($row['type'] == 5 )  $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
                     elseif($row['type'] == 6 )  $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
                     elseif($row['type'] == 7 )  {
                         $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                         $valuetext = 
-                             "<div class='iblok relative' style='top:-8px; left:-8px;' >"
-                            . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:16px; height:16px; vertical-align:middle'></div>"
-                            . "      {$color->getTitle()}   "
+                             "<div class='iblok relative' >"
+                            . " <div class=' checkgroup relative cirkulcheck zach' for='$j' style='background-color:{$color->getValue()};' title='  {$color->getTitle()} '></div>"
+                            //. "      {$color->getTitle()}   "
                             . "</div>";
                     }
                     elseif($row['type'] == 8 )  $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();/**/
+                    
                     if   ($row['type'] == 2 ){
                        $options[]=$val;
+                    }
+                    elseif($row['type'] == 7 ){
+                        $options.= $valuetext
+                               ."<input 
+                                    type='checkbox' 
+                                    class='none fltrcheck$j' 
+                                    name='fltr[".$row['type']."][]' 
+
+                                    value='".$val."'  "
+                                    . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                                ";
                     }
                     else 
 
                     $options.="<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >".$valuetext
-                                       ."<input 
-                                            type='checkbox' 
-                                            class='none fltrcheck$j' 
-                                            name='fltr[".$row['type']."][]' 
+                                ."<input 
+                                     type='checkbox' 
+                                     class='none fltrcheck$j' 
+                                     name='fltr[".$row['type']."][]' 
 
-                                            value='".$val."'  "
-                                            . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
-                    </div>";
+                                     value='".$val."'  "
+                                     . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                               </div>";
                 } 
             }   
             
@@ -177,6 +189,9 @@ class HtmlProviderService
                  
                     
                 }
+                
+                
+                
                elseif ($row['type'] == 3){
                     
                 
@@ -186,8 +201,9 @@ class HtmlProviderService
                         . "<div class=blok ><input type=radio name='fltr[".$row['type']."][]' value=-1 checked > Не важно</div>"
                         . "</radiogroup>";
                 }
+                
                 $return.='<div class="ifilterblock"  >
-                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] . ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '</div>
+                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] .(($getUnit=$this->characteristicRepository->findFirstOrDefault(["id"=>$row['id']])->getUnit())?" <span class='gray iblok'>$getUnit</span>":""). ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '</div>
                             <span class="blok mini" >'.$typeText[$row['type']].'</span>
                             <div class="filtritem" id="fi' . $row['id'] . '">
                                 <div class="filtritemcontent" id="fc' . $row['id'] . '">
@@ -200,6 +216,51 @@ class HtmlProviderService
             }
             
         }
+        
+        $return = '
+        <script>
+        $(function(){
+            $("#rangeslider").ionRangeSlider({
+                    hide_min_max: true,
+                    keyboard: true,
+                    min: 12000,
+                    max: 54000,
+                    from: 12000,
+                    to:  54000,
+                    hideMinMax:true,
+                    type: "double",
+                   // step: 10,
+                    postfix: "₽",
+                    grid: false,
+                    onChange: function (obj) {
+                    
+                        $("#minCost2").val(obj.from);
+                        $("#maxCost2").val(obj.to);
+                        $("#minCost span").html(obj.from);
+                        $("#maxCost span").html(obj.to);
+                        $("#sub0").html("!");
+                        $("#submitfiltr").show();
+                        $(".submitfiltr").show();
+		}
+        });
+        })
+        </script> '
+        ."   
+        <div class=blok >
+            <div class='fltrblock'>
+                   <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
+                <div style='padding:0px 6px; display:block; position:relative'>
+                    <div style='display:block; width:100%; position:absolute; top:0px; z-index:150; '>
+                        <div id=minCost style='float:left;margin-left:5px;' class='Cost' >от <span>12000</span>₽</div>
+                        <div id=maxCost style='float:right;margin-right:5px ' class='Cost' >до <span>54000</span>₽ </div>
+                    </div>
+                    <input type='text' id='rangeslider' class='rangeslider'  value='' name='rangeslider'  style=''/>
+                    <input type=hidden2 class='minvaluenum numonly'   pattern='^[ 0-9]+$' name=minmoney id='minCost2' value='12000'  
+                    ><input type=hidden2 class='maxvaluenum numonly'  pattern='^[ 0-9]+$' name=maxmoney id='maxCost2' value='54000' >
+                </div>
+            </div>
+        </div>
+        ".$return;
         return $return;
     }    
     
@@ -409,7 +470,9 @@ class HtmlProviderService
                          ($chArray)?$v=$value:$v[]=$value;   
                          $value = $this->valueParce($v,$chType);
                          unset ($v);
-                            $charRow = "<div class='char-row'><span class='char-title'><span>".$chTit."</span></span><span class=char-value ><span>$value</span></span></div>";
+                            $charRow = "<div class='char-row'><span class='char-title'><span>".$chTit." "
+                                    . "". $ch->getUnit() .""
+                                    . "</span></span><span class=char-value ><span>$value</span></span></div>";
                             $j++;
                     } 
                     elseif ($chType == 0) 
@@ -539,7 +602,7 @@ class HtmlProviderService
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $userAddress = $container->userAddress;
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        return "<span>$userAddress</span   > ";
+        return "<span>$userAddress</span> ";
     }
 
 }

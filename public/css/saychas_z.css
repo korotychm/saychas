@@ -283,7 +283,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     border-radius:8px;    
 }
 .filtritem  {display:block; padding:10px; text-align:left;}
-.filtritemtitle, .closefilteritem {
+.filtritemtitle, .closefilteritem, .filtritemtitleprice {
     font-weight:bold; 
     display:block;
     position:relative;
@@ -294,6 +294,9 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     display:inline-block; 
     /*white-space: nowrap ;*/
 }
+.filtritemtitleprice {background:none}
+.filtritemtitleprice span {font-weight:300}
+
 .filtritemtitle div.count, #zakazcount {
     dispaly:block; 
     position:absolute; 
@@ -325,20 +328,20 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 } 
 .active .filtritemtitle  {margin-right: 0}
 .nenuzh, .nopub, .nopub22, .cheker, .cheker2 {	
-    display:inline-block; cursor:pointer; height:23px; line-height:23px;
-    background:url("/img/check.png") no-repeat;
+    display:inline-block; cursor:pointer; height:38px; line-height:30px;
+    background:url("/img/checkbox.png") 0 -38px no-repeat;
     vertical-align:middle;
     padding-top:0px; 
-    line-height:28px;  
-    padding-left:27px;
+    
+    padding-left:35px;
     margin:5px;
     text-shadow:1px 1px rgba(255,255,255,.5);
-    color:#666;
+   
     white-space: nowrap
 }
 .nopub22 {width:120px; padding-left:27px}
 .cheker {color:#666; padding-left:28px; }
-.zach   {background-position: 0 -25px; color:var(--red); }
+.zach   {background-position: 0 0; color:var(--red); }
 .zach2   {background-position: 0 -50px;  }
 .zach3   {background-position: 0 -75px; color:#191919;  }
 .waiting {background:url("/img/loader.gif") left no-repeat}
@@ -513,7 +516,19 @@ img.zero, .zeroblok {
 #footer .fcontent {width:100%; max-width: calc(97% - 465px); margin-left:2.5%; margin:68px 0;}
 #footer .fcontent a {color:#fff}
 .activlink, .redlink {color: var(--red)!important}
-.cirkul {display:inline-block; width:40px; height:40px; border-radius:40px; }
+.cirkul, .cirkulcheck {display:inline-block; width:40px; height:40px; border-radius:40px; }
+ .cirkulcheck { 
+     border:4px solid #fff;  
+     vertical-align:middle;  
+     
+     border-radius: 50%;
+    height:30px;
+    width:30px;
+    position: relative;
+    box-shadow: 0 0 0 2px var(--gray);
+ }
+ .cirkulcheck.zach {box-shadow: 0 0 0 2px var(--red);} 
+ 
 .mini {font-size:.85rem}
 .brandblok {display:block; margin:20px 0 ;}
 .brandlogo {
@@ -588,4 +603,27 @@ img.zero, .zeroblok {
 	-ms-transform: rotate(180deg);
 	-o-transform: rotate(180deg);
 	transform: rotate(180deg);
+}
+
+ .minvaluenum,  .maxvaluenum { 
+border:1px solid var(--gray);
+padding:6px 12px ;
+width:48%; margin:0; outline:0;
+ -moz-box-sizing: border-box; /* Для Firefox */  
+box-sizing: border-box; /* Ширина блока с полями */
+}
+
+
+
+.minvaluenum {
+    border-top-left-radius: 25px; 
+    border-bottom-left-radius: 25px;
+    padding-left:16px;
+    text-align:left;
+}
+ .maxvaluenum {
+    border-top-right-radius: 25px; 
+    border-bottom-right-radius: 25px;
+    padding-right:16px; 
+    text-align:right;
 }

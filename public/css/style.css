@@ -53,8 +53,8 @@
  .navlink  {float:right; display:inline-block; padding:12px; vertical-align:top }
  .full-wrap {display:block; text-align:center}
  #content {display:inline-block; width:100%; max-width:1600px; text-align:left}
- #left-col {display:inline-block; width:250px; vertical-align:top}  
- #main-col {display:inline-block; width: calc(100% - 260px) ; vertical-align:top; min-width:1001px}
+ #left-col {display:inline-block; width:350px; vertical-align:top}  
+ #main-col {display:inline-block; width: calc(100% - 360px) ; vertical-align:top; min-width:1001px}
  .mainconteiner { position:relative; max-width:1600px; min-height:calc(100vh - 300px) }
  
  #quicksearch {vertical-align:top;  position:relative }

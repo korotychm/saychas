@@ -1,0 +1,1 @@
+<!-- img src='ftp://nas01.saychas.office/1CMEDIA/PhotoTovarov/2.jpg' alt='ftp://nas01.saychas.office/1CMEDIA/PhotoTovarov/2.jpg' -->

@@ -52,7 +52,7 @@ class ProductCharacteristicRepository extends Repository implements ProductChara
             foreach ($categoryTree as $category) $tree[] = $category[0];         
             
             $catgoryIn=join(",",$tree); //GROUP_CONCAT(a.`value`)
-            $sql="SELECT b.`type` as type, b.`title` as `tit`, a.`characteristic_id` as id , GROUP_CONCAT(a.`value`) as `val` "
+            $sql="SELECT b.`type` as type, b.`title` as `tit`, b.unit, a.`characteristic_id` as id , GROUP_CONCAT(a.`value`) as `val` "
                 . "FROM `product_characteristic` as a "
                 . "inner join characteristic as b on (a.`characteristic_id` = b.id) "
                 . "WHERE `product_id` in (SELECT `id` FROM `product` WHERE `category_id` in ($catgoryIn)) "

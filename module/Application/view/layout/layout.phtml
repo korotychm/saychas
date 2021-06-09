@@ -15,7 +15,8 @@
                 //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
                 ->prependStylesheet($this->basePath('css/bs.css'))
                 ->prependStylesheet($this->basePath('css/treeview.css'))
-                ->prependStylesheet($this->basePath('/css/dadata/suggestions.css'))
+                ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
+		->prependStylesheet($this->basePath('css/nouislider.css'))
                 ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
         
         
@@ -29,6 +30,7 @@
         <?=
                     $this->inlineScript()
                     ->prependFile($this->basePath('/js/services.js'))
+                    ->prependFile($this->basePath('/js/nouislider.min.js'))
                     ->prependFile($this->basePath('/js/nivo.slider.js'))            
                     ->prependFile($this->basePath('js/jquery.treeview.js'))
                     ->prependFile($this->basePath('js/saychas_z.js?' . time()))
@@ -66,21 +68,12 @@
             <div id="headermenu" >
                 <div class="headermenucontent">
                     <a  href="<?= $this->url('home') ?>">Home</a>
-                    <!-- a  href="<?= $this->url('preview') ?>">Меню</a-->
-                    <!--a  href="<?= $this->url('provider') ?>" >Магазины</a-->
-                    <a  href="/catalog/000000001" >Каталог</a>
+                       <a  href="/catalog/000000001" >Каталог</a>
                     <a  href="/product/000000000014" >Товар</a>
                     <a  href="<?= $this->url('test-repos') ?>" >Banzaii</a>
                     <a  href="/phpmyadmin" >Sql</a>
                     <a  href="/preview" >Help</a>
-                    <!--a href="#">Частые вопросы</a>
-                    <!-- a href="#">Доставка</a>
-                    <a href="#">Скидки</a>
-                    <a href="#">Контакты</a>
-                    <a href="#">Бренды</a>
-                    <a href="#">Система лояльности</a>  
-                    <a href="#">Стать партнером</a -->
-                    <span  class="parthnerenter" ><b class="brandcolor">:</b><a href="#">Вход для партеров</a>
+                    <span  class="parthnerenter" ><b class="brandcolor">:</b><a href="#">Вход для партеров</a></span>
                 </div>
             </div>
 
@@ -150,36 +143,26 @@
 
                     </div>
                 </div>
-
-
-                <div class="iblok"><?= $this->addressform ?></div>
-                <!-- div style='float:right'>
-                    <a class="navlink " href="<?= $this->url('home') ?>">Home</a>
-                    <a  href="<?= $this->url('preview') ?>">Меню</a>
-                    <a  href="<?= $this->url('provider') ?>" >Магазины</a>
-                    <a  href="<?= $this->url('catalog') ?>" >Каталог</a>
-                    <a  href="<?= $this->url('test-repos') ?>" >Banzaii</a>
-                    <a  href="/phpmyadmin" >Sql</a>
-                </div -->
-                <!--/div-->
+               <div class="iblok"><?= $this->addressform ?></div>
             </div> 
-			<div class="iblok contentwrapper">
-				<div id="topmenu" >
-					<ul>
-						<li><a href="/catalog/000000002" >Электроника</a></li> 
-						<li><a href=# >Аксессуары</a></li> 
-						<li><a href=# >Одежда</a></li> 
-						<li><a href=# >Детям</a></li> 
-						<li><a href=# >Продукты</a></li> 						
-						<li><a href=# >Афиша</a></li> 						
-						<li><a href=# >Билеты</a></li> 						
-						<li><a href=# >Услуги</a></li> 						
-					</ul>
-				</div>
-			</div>
+            <div class="iblok contentwrapper">
+                    <div id="topmenu" >
+                            <ul>
+                                    <li><a href="/catalog/000000002" >Электроника</a></li> 
+                                    <li><a href=# >Аксессуары</a></li> 
+                                    <li><a href=# >Одежда</a></li> 
+                                    <li><a href=# >Детям</a></li> 
+                                    <li><a href=# >Продукты</a></li> 						
+                                    <li><a href=# >Афиша</a></li> 						
+                                    <li><a href=# >Билеты</a></li> 						
+                                    <li><a href=# >Услуги</a></li> 						
+                            </ul>
+                    </div>
+            </div>
             <div class="full-wrap"><div id="content">                          
                     <?= $this->content ?>                    
                 </div></div>
+            </div>
             <footer id="footer" class="blokc">
                 <div class="iblokl contentwrapper">
                     <div class="fitem fcopy"><div class="emptyblock"></div> <div class="emptyblock"></div>
@@ -208,7 +191,7 @@
                     </div>
                     <div class="pw-contentblock cblock-4">
                         <div class="contentpadding footerlink">
-                            <a<a href="#" class="blok" >Частые вопросы</a>
+                            <a href="#" class="blok" >Частые вопросы</a>
                             <a href="#" class="blok" >Доставка</a>
                             <a href="#" class="blok" >Скидки</a>
                             <a href="#" class="blok" >Контакты</a>
@@ -219,10 +202,7 @@
                     </div>
                     <div class="pw-contentblock cblock-4">
                         <div class="contentpadding footerlink">
-                            <span  class="parthnerenter blokr" ><b class="brandcolor">:</b><a href="#">Вход для партеров</a> 
-                                <p>
-                                    <div class="emptyblock" style="position:relative;left:15px;"></div> <div class="emptyblock"></div>
-                                </p>
+                            <span  class="parthnerenter blokr" ><b class="brandcolor">:</b><a href="#">Вход для партеров</a></span> 
                         </div>
                     </div>
                 </div>

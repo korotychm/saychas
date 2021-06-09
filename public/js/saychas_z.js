@@ -9,6 +9,9 @@ $(document).ready(function () {
 });
 $(function () {
 
+$(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).val().replace (/[^0-9+]/g, ''));})
+
+
     show_scrollTop();
     $(window).scroll(function () {
         show_scrollTop();
@@ -69,11 +72,11 @@ $(function () {
 
         console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
+                $(this).removeClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
         } else {
-            $(this).addClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
+                $(this).addClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
     $(".closefilteritem").live("click", function () {
