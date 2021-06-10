@@ -287,7 +287,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     font-weight:bold; 
     display:block;
     position:relative;
-    margin-top:16px;
+    margin:12px 0px 6px 0;
     font-size:1.1rem;
     /*padding-right:14px; 
     margin-right:20px; z-index:5;   
@@ -341,17 +341,26 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
    
     white-space: nowrap
 }
-.onoff {
-    display:inline-block; cursor:pointer; height:18px; line-height:18px;
-    background:url("/img/onoff.svg") 0 -35px no-repeat;
+.onoff, .radio {
+    display:inline-block; cursor:pointer; height:20px; line-height:20px;
+    background:url("/img/onoff.svg") 0 0 no-repeat;
     vertical-align:middle;
     padding-top:0px; 
     padding-left:35px;
     margin:2px 0;
     text-shadow:1px 1px rgba(255,255,255,.5);
-    white-space: nowrap
+    white-space: nowrap;
+    /*margin-right:18px;*/
+        width:48.5%; margin:0; outline:0;
+    box-sizing: border-box;
     }    
-
+.radio {
+    background:url("/img/radio.svg") 0 0 no-repeat;
+    display:block;
+    height:28px; 
+    line-height:28px;
+    margin-bottom:12px;
+}   
 
 .nopub22 {width:120px; padding-left:27px}
 .cheker {color:#666; padding-left:28px; }
@@ -359,7 +368,8 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .zach2   {background-position: 0 -50px;  }
 .zach3   {background-position: 0 -75px; color:#191919;  }
 .waiting {background:url("/img/loader.gif") left no-repeat}
-
+.onoff.zach {background-position:0 -20px;}
+.radio.zach {background-position:0 -38px;}
 
 .pw-contentblock {
     display:inline-block; 
@@ -632,6 +642,7 @@ img.zero, .zeroblok {
     padding:6px 12px ;
     width:49.5%; margin:0; outline:0;
     box-sizing: border-box;
+    margin-bottom:16px;
 }
 
 

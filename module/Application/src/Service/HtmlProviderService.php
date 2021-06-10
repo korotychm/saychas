@@ -259,7 +259,7 @@ class HtmlProviderService
             
         }
         
-        ($return)?$return = '
+        (true or $return)?$return = '
         <script>
         $(function(){
             $("#rangeslider").ionRangeSlider({
@@ -306,12 +306,30 @@ class HtmlProviderService
         </div>
         ".$return."<div class=blok >
             <div class='fltrblock'>
-                   <div class='filtritemtitleprice blokl' >Тест булевое значение</div>
-                   <div class='onoff blok ' rel=123  >Да 
-                    <input type='checkbox' class='none fltrcheck123' name='fltr[".$row['id']."][]' value='".$val."' >
-                   </div>
-                   <div class='onoff zach ' rel=122 >Да
-                   <input type='checkbox' class='none fltrcheck122' name='fltr[".$row['id']."][]' value='".$val."' checked >
+                   <div class='filtritemtitle blokl' >Тест булевое значение</div>
+                    <div class=blok >
+                        <div class='   onoff ' for=123  rel=1 >Нет 
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='fltr[".$row['id']."]' value='0' >
+                        </div>
+                        <div class=' onoff zach ' for=122  rel=1 >Да
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='fltr[".$row['id']."]' value='1' checked >
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class=blok >
+            <div class='fltrblock'>
+                   <div class='filtritemtitle blokl' >Тест радиокнопки</div>
+                    <div class=blok >
+                        <div class='   radio ' for=1232  rel=1 >Нет 
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck1232' name='fltr[".$row['id']."]' value='0' >
+                        </div>
+                        <div class=' radio zach ' for=1222  rel=1 >Да
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck1222' name='fltr[".$row['id']."]' value='1' checked >
+                        </div>
+                        <div class=' radio ' for=12222  rel=1 >По-барабану
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck12222' name='fltr[".$row['id']."]' value='3'  >
+                        </div>
                     </div>
                 </div>
              </div>"

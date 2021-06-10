@@ -79,6 +79,33 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
+    $(".onoff").click(function () {
+        var rel=$(this).attr('rel');
+        //console.log(".fltrcheck" + $(this).attr("for"));
+        if ($(this).hasClass("zach")) {
+                $(this).removeClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
+        } else {
+                $('.onoff[rel^='+rel+']').removeClass("zach");
+                $('.relcheck[rel^='+rel+']').prop("checked", false);;    
+                $(this).addClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
+        }
+    });
+    
+    $(".radio").click(function () {
+        var rel=$(this).attr('rel');
+        //console.log(".fltrcheck" + $(this).attr("for"));
+                $('.radio[rel^='+rel+']').removeClass("zach");
+                $('.relradio[rel^='+rel+']').prop("checked", false);;    
+                $(this).addClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
+        
+    });
+    
+    
+    
+    
     $(".closefilteritem").live("click", function () {
         hidefilteritem();
     });
