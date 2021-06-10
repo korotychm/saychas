@@ -23,6 +23,7 @@
 .mini {font-size:80%}
 .gray {color:#a7a7a7}
 .card, .card-body {position:relative}
+.nobold {font-weight:400 }
 .waiting {
     min-height:50px; min-width:50px; background-image:url(/img/loader.gif);   
     background-position:center; 
@@ -54,7 +55,7 @@
  .full-wrap {display:block; text-align:center}
  #content {display:inline-block; width:100%; max-width:1600px; text-align:left}
  #left-col {display:inline-block; width:350px; vertical-align:top}  
- #main-col {display:inline-block; width: calc(100% - 360px) ; vertical-align:top; min-width:1001px}
+ #main-col {display:inline-block; width: calc(99% - 360px) ; vertical-align:top;}
  .mainconteiner { position:relative; max-width:1600px; min-height:calc(100vh - 300px) }
  
  #quicksearch {vertical-align:top;  position:relative }
@@ -85,7 +86,7 @@
   }
  
  .content-col {display:block; padding:10px;}
- .bread-crumbs{display:block; color:#333; font-size:13px; line-height:1.8em}
+ .bread-crumbs{display:block; color:#333;  line-height:1.8em; margin-top:16px ;}
  .bread-crumbs-item, .bread-crumbs-item a {display:inline-block; text-decoration:none; color:#333; padding:0 4  px ;    }
  
  footer {border-top:1px solid #ccc; height:auto; position:relative }

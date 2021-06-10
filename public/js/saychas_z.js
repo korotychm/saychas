@@ -25,9 +25,9 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
 
 
     function hidefilteritem() {
-        $(".filtritem").removeClass("active");
+        /*$(".filtritem").removeClass("active");
         $(".filtritemcontent").hide();
-        // $(".filtritemtitle").removeClass("closefilteritem");        
+        // $(".filtritemtitle").removeClass("closefilteritem");        */
     }
 
     function sendfilterform() {

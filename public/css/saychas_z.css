@@ -51,7 +51,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 #supermenuinside li ul li { font-size:90%; font-weight:normal; margin-left:1vw}
 #topmenu {display:table;  margin:0; outline:0; padding:0; min-height:56px; max-height:56px; text-align:center; width:100%; max-width:1600px; overflow:hidden;
           background:#f2f2f2;
-          border-radius:25px; position:relative; top:-12px; margin-bottom:12px
+          border-radius:25px; position:relative; top:-12px; margin-bottom:-12px
 }
 #topmenu ul {
     display:table-row;
@@ -276,26 +276,28 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .filterblock  { display:block;  position:relative;    z-index:50;}
 .ifilterblock  {
     /*display:block; vertical-align:top;*/
-    position:relative; 
+    /*position:relative; 
     /* z-index:10;*/
-    box-shadow: 2px 2px 7px  rgba(0,0,0,0); 
+   /* box-shadow: 2px 2px 7px  rgba(0,0,0,0); 
     border:1px solid transparent ;
-    border-radius:8px;    
+    border-radius:8px;    */
 }
 .filtritem  {display:block; padding:10px; text-align:left;}
 .filtritemtitle, .closefilteritem, .filtritemtitleprice {
     font-weight:bold; 
     display:block;
     position:relative;
-    padding-right:14px; 
+    margin-top:16px;
+    font-size:1.1rem;
+    /*padding-right:14px; 
     margin-right:20px; z-index:5;   
-    background:url("/img/arrdown.png") right no-repeat; 
+    /*background:url("/img/arrdown.png") right no-repeat; */
     cursor:pointer; 
     display:inline-block; 
     /*white-space: nowrap ;*/
 }
-.filtritemtitleprice {background:none}
-.filtritemtitleprice span {font-weight:300}
+.filtritemtitleprice {background:none; margin-top:0;}
+.filtritemtitleprice span {font-weight:400}
 
 .filtritemtitle div.count, #zakazcount {
     dispaly:block; 
@@ -314,7 +316,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     background:url("/img/arrup.png") right no-repeat; 
     margin-right:0;
 }
-.filtritemcontent {display:none; min-width:200px;}
+.filtritemcontent {display:block; min-width:200px;}
 .filtritemcontent .block {padding:4px 0px; white-space: nowrap }
 .filtritem.active {
     display:inline-block;
@@ -322,7 +324,7 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     background-color:rgba(255,255,255,.98   );
     border:1px solid #ddd; 
     border-radius:4px;    
-    position:absolute;  
+    /*position:absolute;  */
     top:-11px; left:-11px;
     z-index:100;
 } 
@@ -334,11 +336,23 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
     padding-top:0px; 
     
     padding-left:35px;
-    margin:5px;
+    margin:2px 0;
     text-shadow:1px 1px rgba(255,255,255,.5);
    
     white-space: nowrap
 }
+.onoff {
+    display:inline-block; cursor:pointer; height:18px; line-height:18px;
+    background:url("/img/onoff.svg") 0 -35px no-repeat;
+    vertical-align:middle;
+    padding-top:0px; 
+    padding-left:35px;
+    margin:2px 0;
+    text-shadow:1px 1px rgba(255,255,255,.5);
+    white-space: nowrap
+    }    
+
+
 .nopub22 {width:120px; padding-left:27px}
 .cheker {color:#666; padding-left:28px; }
 .zach   {background-position: 0 0; color:var(--red); }
@@ -522,12 +536,18 @@ img.zero, .zeroblok {
      vertical-align:middle;  
      
      border-radius: 50%;
-    height:30px;
-    width:30px;
+     
+    height:25px;
+    width:25px;
     position: relative;
-    box-shadow: 0 0 0 2px var(--gray);
+    box-shadow: 0 0 0 2px #ebebeb;
+
+    
  }
- .cirkulcheck.zach {box-shadow: 0 0 0 2px var(--red);} 
+ .cirkulcheck.zach {
+    
+    box-shadow: 0 0 0 3px var(--red);
+ } 
  
 .mini {font-size:.85rem}
 .brandblok {display:block; margin:20px 0 ;}
@@ -605,12 +625,13 @@ img.zero, .zeroblok {
 	transform: rotate(180deg);
 }
 
- .minvaluenum,  .maxvaluenum { 
-border:1px solid var(--gray);
-padding:6px 12px ;
-width:48%; margin:0; outline:0;
- -moz-box-sizing: border-box; /* Для Firefox */  
-box-sizing: border-box; /* Ширина блока с полями */
+.numrow {display: flex}
+.minvaluenum,  .maxvaluenum { 
+    display:inline-block;
+    border:1px solid var(--gray);
+    padding:6px 12px ;
+    width:49.5%; margin:0; outline:0;
+    box-sizing: border-box;
 }
 
 
