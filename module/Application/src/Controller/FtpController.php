@@ -27,8 +27,6 @@ class FtpController extends AbstractActionController
      */
     public function indexAction()
     {
-        print_r(FtpHelper::getLocalFtpPath($this->config));
-        exit;
         $post = $this->getRequest()->getPost()->toArray();
         return (new ViewModel(['table' => $post['table'], 'fileName' => $post['fileName']]))->setTerminal(true);
     }
