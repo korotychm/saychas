@@ -8,13 +8,13 @@
 }
 
 .irs {
-    height: 40px;
+    height: 32px;
 }
 .irs-with-grid {
     height: 60px;
 }
 .irs-line {
-    height: 4px; top: 25px;
+    height: 4px; top: 8px;
 }
     .irs-line-left, .irs-line-right,.irs-line-mid   {
         height: 4px;
@@ -30,7 +30,7 @@
     }
 
 .irs-bar {
-    height: 4px; top: 25px;
+    height: 4px; top: 8px;
     /*background-position: 0 -60px;*/
 	background:var(--red);
 	/*background-image: linear-gradient(to top, #169c4f, #027031);*/
@@ -55,7 +55,7 @@
 
 .irs-slider {
     width: 20px; height: 20px; border-radius:50%;
-    top: 16px;
+    top: 0;
     /*background-position: 0 -120px;*/
 	background: #fff;/* radial-gradient( #169c4f, #027031);*/
 	
@@ -79,8 +79,8 @@
 }
 
 .irs-from, .irs-to, .irs-single {
-	display:none;
-    color: #fff;
+    display:none !important;
+    color: transparent;
    /* font-size: 12px; line-height: 1.333;
     text-shadow: none;
     padding: 1px 5px;
@@ -250,3 +250,11 @@
     border-color: transparent !important;
 }
 .Cost  {font-size:11px;}
+.costview{
+    display:block; 
+    width:96%; 
+    position:absolute; 
+    left:2%;
+    top:0px; 
+    z-index:150; 
+}

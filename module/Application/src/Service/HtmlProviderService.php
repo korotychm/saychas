@@ -108,7 +108,7 @@ class HtmlProviderService
      * @return string
      */
 
-    public function getCategoryFilterHtml($filters, $category_id)
+    public function getCategoryFilterHtml($filters, $category_id, $price=["minprice"=>12000, "maxprice"=>54000])
     {
             $typeText[0] = "Заголовок";
             $typeText[1] = "Строка";
@@ -119,6 +119,8 @@ class HtmlProviderService
             $typeText[6] = "Ссылка.Бренды";
             $typeText[7] = "Ссылка.Цвета";
             $typeText[8] = "Ссылка.Страна";
+            $pricesel['maxprice']=$price['maxprice'];
+            $pricesel['minprice']=$price['minprice'];
 
         if(!$filters or !$category_id) return;
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -128,6 +130,7 @@ class HtmlProviderService
          foreach ($filters as $row){
             $row['val']=explode(",",$row['val']);
             $row['val']=array_unique($row['val']);
+            $getUnit=$this->characteristicRepository->findFirstOrDefault(["id"=>$row['id']])->getUnit();
             sort($row['val']);
             //$row['val']=array_diff ([""], $row['val']);
             unset($options);            
@@ -143,7 +146,7 @@ class HtmlProviderService
                         $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                         $valuetext = 
                              "<div class='iblok relative' >"
-                            . " <div class=' checkgroup relative cirkulcheck zach' for='$j' style='background-color:{$color->getValue()};' title='  {$color->getTitle()} '></div>"
+                            . " <div class=' checkgroup relative cirkulcheck ' for='$j' style='background-color:{$color->getValue()};' title='  {$color->getTitle()} '></div>"
                             //. "      {$color->getTitle()}   "
                             . "</div>";
                     }
@@ -157,7 +160,7 @@ class HtmlProviderService
                                ."<input 
                                     type='checkbox' 
                                     class='none fltrcheck$j' 
-                                    name='fltr[".$row['type']."][]' 
+                                    name='fltr[".$row['id']."][]' 
 
                                     value='".$val."'  "
                                     . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
@@ -169,64 +172,103 @@ class HtmlProviderService
                                 ."<input 
                                      type='checkbox' 
                                      class='none fltrcheck$j' 
-                                     name='fltr[".$row['type']."][]' 
+                                     name='fltr[".$row['id']."][]' 
 
                                      value='".$val."'  "
                                      . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
                                </div>";
                 } 
-            }   
-            
-            //$row['tit'].="(".$row['type'].")";
-             
-            
+            }           
             if ($options) {
                 if ($row['type'] == 2){
-                    
                 $min=min($options); $max=max($options);
-                $options = "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; margin-right:10px;' value='$min' >"
-                         . "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; ' value='$max' >";
-                 
-                    
-                }
+               // $options = "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; margin-right:10px;' value='$min' >"
+               //          . "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; ' value='$max' >";
+                $rzn=$max-$min;  
+                $step=1;
+                if ($rzn>10000) $step=100;  
+                elseif ($rzn>1000) $step=10;  
+                elseif ($rzn>100) $step=1;  
+                elseif ($rzn < 10) $step=0.1;  
+
+                $maxsel=$max;
+                $minsel=$min;
+                $rangeId=str_replace("-","",$row['id']);
+        $options = '
+    <script>
+        $(function(){
+            $("#rangeslider'.$rangeId.'").ionRangeSlider({
+                    hide_min_max: true,
+                    keyboard: true,
+                    min: '.$min.',
+                    max: '.$max.',
+                    from:'.$minsel.',
+                    to:  '.$maxsel.',
+                    hideMinMax:true,
+                    type: "double",
+                    step: '.$step.',
+                    postfix: "'.$getUnit.'",
+                    grid: false,
+                    onChange: function (obj) {
+                        $("#minCost2'.$rangeId.'").val(obj.from);
+                        $("#maxCost2-'.$rangeId.'").val(obj.to);
+                        $("#minCost'.$rangeId.'").html(obj.from);
+                        $("#maxCost'.$rangeId.'").html(obj.to);
+              }
+            });
+        })
+     </script> '
+        ."   
+        
+                <div style='padding:0px 6px; display:block; position:relative'>
+                    <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='fltr[".$row['type']."]'  style=''/>
+                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id='minCost$rangeId'>".$minsel."</span>
+                       </div><div  
+                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id='maxCost$rangeId'>".$maxsel."</span></div>
+                    <input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=minPrice id='minCost2$rangeId' value='".$minsel."'  
+                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=maxPrice id='maxCost2$rangeId' value='".$maxsel."' >
+                </div>
+        ";
+        }
                 
                 
                 
                elseif ($row['type'] == 3){
-                    
-                
-                $options = "<radiogroup>"
-                        . "<div class=blok ><input type=radio name='fltr[".$row['type']."][]' value=1 > Да</div>"
-                        . "<div class=blok ><input type=radio name='fltr[".$row['type']."][]' value=0 > Нет</div>"
-                        . "<div class=blok ><input type=radio name='fltr[".$row['type']."][]' value=-1 checked > Не важно</div>"
+                $options = ""
+                        . "<radiogroup>"
+                        . "<div class=blok ><input type=radio name='fltr[".$row['id']."][]' value=1 > Да</div>"
+                        . "<div class=blok ><input type=radio name='fltr[".$row['id']."][]' value=0 > Нет</div>"
+                        . "<div class=blok ><input type=radio name='fltr[".$row['id']."][]' value=-1 checked > Не важно</div>"
                         . "</radiogroup>";
                 }
                 
                 $return.='<div class="ifilterblock"  >
-                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] .(($getUnit=$this->characteristicRepository->findFirstOrDefault(["id"=>$row['id']])->getUnit())?" <span class='gray iblok'>$getUnit</span>":""). ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '</div>
-                            <span class="blok mini" >'.$typeText[$row['type']].'</span>
-                            <div class="filtritem" id="fi' . $row['id'] . '">
+                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] .(($getUnit)?" <span class='gray iblok'>$getUnit</span>":""). ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '
+                                <span class="blok mini gray nobold" >'.$typeText[$row['type']].'</span>
+                             </div>
+                            
+                            <!-- div class="filtritem" id="fi' . $row['id'] . '" -->
                                 <div class="filtritemcontent" id="fc' . $row['id'] . '">
-                                    <div class="blok" ><div class="closefilteritem" rel="' . $row['id'] . '">' . $row['tit'] . '</div></div>
+                                    <!-- div class="blok" ><div class="closefilteritem" rel="' . $row['id'] . '">' . $row['tit'] . '</div></div -->
                                     ' . $options . "
-                                    <div class='block'><input type='button' value='применить' class='formsendbuttonnew'  ></div>
+                                    <!-- div class='block'><input type='button' value='применить' class='formsendbuttonnew'  ></div-->
                                  </div>
-                            </div>
+                            <!-- /div -->
                         </div>";
             }
             
         }
         
-        $return = '
+        ($return)?$return = '
         <script>
         $(function(){
             $("#rangeslider").ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
-                    min: 12000,
-                    max: 54000,
-                    from: 12000,
-                    to:  54000,
+                    min: '.$price['minprice'].',
+                    max: '.$price['maxprice'].',
+                    from:'.$pricesel['minprice'].',
+                    to:  '.$pricesel['maxprice'].',
                     hideMinMax:true,
                     type: "double",
                    // step: 10,
@@ -236,8 +278,8 @@ class HtmlProviderService
                     
                         $("#minCost2").val(obj.from);
                         $("#maxCost2").val(obj.to);
-                        $("#minCost span").html(obj.from);
-                        $("#maxCost span").html(obj.to);
+                        $("#minCost").html(obj.from);
+                        $("#maxCost").html(obj.to);
                         $("#sub0").html("!");
                         $("#submitfiltr").show();
                         $(".submitfiltr").show();
@@ -250,17 +292,31 @@ class HtmlProviderService
             <div class='fltrblock'>
                    <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
                 <div style='padding:0px 6px; display:block; position:relative'>
-                    <div style='display:block; width:100%; position:absolute; top:0px; z-index:150; '>
-                        <div id=minCost style='float:left;margin-left:5px;' class='Cost' >от <span>12000</span>₽</div>
-                        <div id=maxCost style='float:right;margin-right:5px ' class='Cost' >до <span>54000</span>₽ </div>
-                    </div>
+                    
                     <input type='text' id='rangeslider' class='rangeslider'  value='' name='rangeslider'  style=''/>
-                    <input type=hidden2 class='minvaluenum numonly'   pattern='^[ 0-9]+$' name=minmoney id='minCost2' value='12000'  
-                    ><input type=hidden2 class='maxvaluenum numonly'  pattern='^[ 0-9]+$' name=maxmoney id='maxCost2' value='54000' >
+                    
+                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>".$pricesel['minprice']."</span>
+                       </div><div  
+                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>".$pricesel['maxprice']."</span></div>
+                    
+                    <input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=minPrice id='minCost2' value='".$pricesel['minprice']."'  
+                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=maxPrice id='maxCost2' value='".$pricesel['maxprice']."' >
                 </div>
             </div>
         </div>
-        ".$return;
+        ".$return."<div class=blok >
+            <div class='fltrblock'>
+                   <div class='filtritemtitleprice blokl' >Тест булевое значение</div>
+                   <div class='onoff blok ' rel=123  >Да 
+                    <input type='checkbox' class='none fltrcheck123' name='fltr[".$row['id']."][]' value='".$val."' >
+                   </div>
+                   <div class='onoff zach ' rel=122 >Да
+                   <input type='checkbox' class='none fltrcheck122' name='fltr[".$row['id']."][]' value='".$val."' checked >
+                    </div>
+                </div>
+             </div>"
+               :"";
+        //
         return $return;
     }    
     
