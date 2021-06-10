@@ -125,6 +125,7 @@ $(function () {
 //                img.attr('src', '/hello-world');
 //                img.appendTo('#image_div');
                   $('#image_div').html(result);
+                  $('#image_div img').css({'height': '100px', 'width':'200px'});
             },
             error: function (xhr, status, error) {
                 console.log('Sms updating failed', xhr, status);
