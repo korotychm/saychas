@@ -19,6 +19,17 @@ class FtpHelper
 {
 
     /**
+     * Return ftp mount point.
+     * 
+     * @param Config\Config $config
+     * @return string
+     */
+    public static function getLocalFtpPath($config)
+    {
+        return $config['parameters']['server_catalog']['ftp_mountpoint'];
+    }
+    
+    /**
      * Fetch file from ftp
      *
      * @param Config $config

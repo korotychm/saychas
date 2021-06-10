@@ -499,7 +499,6 @@ return [
             'get-image2' => [
                 'type'    => Segment::class,
                 'options' => [
-                    //'route'    => '/get-image2/table/:table/filename/:fileName',
                     'route'    => '/get-image2/:table/:fileName',
                     'defaults' => [
                         'controller' => Controller\FtpController::class,
@@ -827,7 +826,7 @@ return [
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
-            'get_store' => 'http://SRV02:8000/SC/hs/site/get_product',
+            'get_store' => 'http://SRV02:8000/SC/hs/site/get_store',
             'send_registration_code' => 'http://SRV02:8000/SC/hs/site/send_registration_code',
             'get_client_info' => 'http://SRV02:8000/SC/hs/site/get_client_info',
             'set_client_info' => 'http://SRV02:8000/SC/hs/site/set_client_info',
