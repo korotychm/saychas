@@ -285,9 +285,16 @@ class HtmlProviderService
             
         }
         
+        $rzn=$price['maxprice']-$price['minprice'];
+         if ($rzn>10000) $step=100;  
+                elseif ($rzn>1000) $step=10;  
+                elseif ($rzn>10) $step=1;  
+                //elseif ($rzn < 10) $step=0.1;  
+        
+        
         (true or $return)?$return = '
         <div  class="paybutton formsendbutton" > post filter</div>
-        <input type=hidden name="sqlOutline" value="0" id="sqlOutline"  >
+        <input type=hidden name="sqlOutline" value="72" id="sqlOutline"  >
         <input type=hidden name="sqlLimit" value="72" id="sqlOutline"  >
         
 <script>
@@ -301,7 +308,7 @@ class HtmlProviderService
                     to:  '.$pricesel['maxprice'].',
                     hideMinMax:true,
                     type: "double",
-                   // step: 10,
+                    step: '.$step.',
                     postfix: "₽",
                     grid: false,
                     onChange: function (obj) {

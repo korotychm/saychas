@@ -16,7 +16,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 }
 #headermenu .headermenucontent a:hover , #topmenu ul  li a:hover {border-color:#ff5533} 
 .parthnerenter {float:right}
-.brandcolor {color:#f53}
+.brandcolor {color:var(--red)}
 .parthnerenter .brandcolor {font-size:130%}
 
 #quicksearch .blok  {font-size:90%;}
@@ -90,7 +90,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 
 #catalogbutton{display:inline-block; width:200px; margin-top:38px; vertical-align:top; }
-.catalogbutton {color:#fff; text-shadow:1px 1px rgba(0,0,0,.05); display:inline-block;  background-color:#f53; padding:13px 26px ; cursor: pointer;   border-radius:60px; font-weight:bold; font-size:20px}
+.catalogbutton {color:#fff; text-shadow:1px 1px rgba(0,0,0,.05); display:inline-block;  background-color:var(--red); padding:13px 26px ; cursor: pointer;   border-radius:60px; font-weight:bold; font-size:20px}
 .mobile_nav_icon {  
     display:inline-block; vertical-align:top;
     border-bottom: 10px double #ffffff;
@@ -109,7 +109,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 }
 
 #searchtop {
-    display:blok; 
+    display:block; 
     position:absolute;  
     width:40px; 
     height:40px; 
@@ -155,7 +155,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     border:1px solid #ccc   ; 
     font-weight:normal;  
     background: transparent url('/img/geo16.png') left no-repeat;
-    border:2px solid #f53; 
+    border:2px solid var(--red); 
     padding:12px 36px ; 
     padding-right:45px;
     cursor: pointer;  
@@ -185,22 +185,59 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     
 }
 
-.productcard  .content:hover {box-shadow: 2px 2px 16px  rgba(0,0,0,0.25); bprder:1px solid #eee; opacity:1; z-index:3}    
-.productcard .productimage {max-width:100%; border-radius:4px}
-.productcard .blok {display:block; margin:4px 0; }
-.productcard .price {font-weight: 500; line-height: 1.2; font-size: 1.5rem; display:inline-blok; margin:0 2.5% 0 0; width:50%}
-.productcard .inactiveblok, .inactiveblok {display:block; margin:5px 0; background:url("/img/tmpotz.png") no-repeat; height:25px; }
-.productcard .oldprice {font-weight: 500; line-height: 1.2; font-size: 1.3rem; display:inline-blok; width:47%; /*float:right;*/ }
-.productcard .producttitle { margin:10px 0; max-height:38px; overflow:hidden; font-weight:500;}
-
-
+.productcard  .content:hover {
+    box-shadow: 2px 2px 16px  rgba(0,0,0,0.25); 
+    border:1px solid #eee; 
+    opacity:1; 
+    z-index:3;
+}    
+.productcard .productimage {
+    max-width:100%; 
+    border-radius:4px
+}
+.productcard .blok {
+    display:block; 
+    margin:4px 0; 
+}
+.productcard .price {
+    font-weight: 500; 
+    line-height: 1.2; 
+    font-size: 1.5rem; 
+    display:inline-block; 
+    margin:0 2.5% 0 0; 
+    width:50%;
+}
+.productcard .inactiveblok, .inactiveblok {
+    display:block; 
+    margin:5px 0; 
+    background:url("/img/tmpotz.png") no-repeat; 
+    height:25px; 
+}
+.productcard .oldprice {
+    font-weight: 500; 
+    line-height: 1.2; 
+    font-size: 1.3rem; 
+    display:inline-blok; 
+    width:47%;
+    /*float:right;*/ 
+}
+.productcard .producttitle { 
+    margin:10px 0; 
+    max-height:38px; 
+    overflow:hidden; 
+    font-weight:500;
+}
 .productcard {
     width:24.5%; 
     display:inline-block; 
     vertical-align:top; 
     position:relative; 
 }
-.payblockcard {padding:16px 0 0 0; display:none; text-align:center;}
+.payblockcard {
+    padding:16px 0 0 0; 
+    display:none; 
+    text-align:center;
+}
 .productcard  .content:hover .payblockcard {display:block}
 .paybutton, .paybuttonwhite, .paybuttonwhite:hover  {
     display:inline-block; 
@@ -208,11 +245,11 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     width:100%; 
     /*max-width:150px; */
     border:2px solid transparent;
-    cursor: pointer;   border-radius:10px; 
+    cursor: pointer;   border-radius:35px; 
     font-weight:bold; 
     color:#fff; 
     text-shadow:1px 1px rgba(0,0,0,.05); 
-    background-color:#f53; 
+    background-color:var(--red); 
     padding:13px 26px ;  
 
 }
@@ -222,18 +259,20 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     background-color:#fff;  
     border-color: var(--red);
 }
-
-.errorblock {display:block; padding:10px; background:url(/img/warning.png) left 12px no-repeat; padding-left:28px }
+.errorblock {
+    display:block; 
+    padding:10px; 
+    background:url(/img/warning.png) left 12px no-repeat; padding-left:28px }
 
 @media (max-width: 1200px) {
     .productcard {
         width:32.5%; 
     }
-    #quicksearch .blok  {DISPLAY:NONE}
+    #quicksearch .blok  {display: none}
 }
-@media (max-width: 1001px ) {
+@media (max-width: 801px ) {
     .productcard {
-        width:49.5%; 
+        width:49%; 
     }
 
 }
@@ -256,7 +295,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .relative {position:relative}
 
 .speedlable {
-    dispaly:inline-block; 
+    display:inline-block; 
     position:absolute; 
     width:58px; 
     /*height:22px;*/
