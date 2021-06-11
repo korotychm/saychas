@@ -123,7 +123,7 @@ class IndexController extends AbstractActionController
         return $response;
 
     }
-
+    
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -135,11 +135,6 @@ class IndexController extends AbstractActionController
 
     public function previewAction()
     {
-//        $colors = $this->colorRepository->findAll(['columns' => ['id', 'title', 'value']]);
-//        foreach ($colors as $color) {
-//            echo $color->getId(). ' '.$color->getTitle(). ' '.$color->getValue(). "<br/>";
-//        }
-//        exit;
         //$this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
