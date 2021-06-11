@@ -176,8 +176,6 @@ class AjaxController extends AbstractActionController
         $container->userAddress = $TMP -> value;
         
             $userId = $this->identity();
-            print_r('userId = '.$userId);
-            exit;
             $user = $this->userRepository->find(['id'=>$userId]);
             $userData = new UserData();
             $userData->setAddress($container->userAddress);
