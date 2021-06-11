@@ -78,16 +78,15 @@
  .searchicon {position:absolute; right:16px; top:10px; width:30px; height:30px; background:transparent url("/img/searchicon.png") center no-repeat;}
  #profileblock {width:180px; vertical-align:top; padding-top:28px; float:right}
  
- @media (max-width: 1001px ) {
+/* @media (max-width: 1001px ) {
   #left-col, #main-col {
     width:100%; 
     }
     
-  }
+  }/**/
  
  .content-col {display:block; padding:10px;}
- .bread-crumbs{display:block; color:#333;  line-height:1.8em; margin-top:16px ;}
- .bread-crumbs-item, .bread-crumbs-item a {display:inline-block; text-decoration:none; color:#333; padding:0 4  px ;    }
+ 
  
  footer {border-top:1px solid #ccc; height:auto; position:relative }
  footer, #footer {background:#333;  display:block; color:#fff;}

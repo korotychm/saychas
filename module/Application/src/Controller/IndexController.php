@@ -233,8 +233,10 @@ class IndexController extends AbstractActionController
         $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
         $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
        
+        $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
+        //exit(print_r($minMax));
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
-        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id );
+        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
 
         
 

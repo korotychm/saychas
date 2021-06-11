@@ -227,6 +227,7 @@ class HtmlProviderService
                     postfix: "'.$getUnit.'",
                     grid: false,
                     onChange: function (obj) {
+                        
                         $("#minCost2'.$rangeId.'").val(obj.from);
                         $("#maxCost2-'.$rangeId.'").val(obj.to);
                         $("#minCost'.$rangeId.'").html(obj.from);
@@ -285,7 +286,7 @@ class HtmlProviderService
             
         }
         
-        $rzn=$price['maxprice']-$price['minprice'];
+        $rzn=$price['maxprice']/100-$price['minprice']/100;
          if ($rzn>10000) $step=100;  
                 elseif ($rzn>1000) $step=10;  
                 elseif ($rzn>10) $step=1;  
@@ -304,19 +305,22 @@ class HtmlProviderService
                     keyboard: true,
                     min: '.$price['minprice'].',
                     max: '.$price['maxprice'].',
-                    from:'.$pricesel['minprice'].',
-                    to:  '.$pricesel['maxprice'].',
+            //        from:'.$pricesel['minprice'].',
+             //       to:  '.$pricesel['maxprice'].',
                     hideMinMax:true,
                     type: "double",
-                    step: '.$step.',
+                    step: '.($step*100).',
                     postfix: "₽",
                     grid: false,
                     onChange: function (obj) {
+                        console.log('.$step.');
+                        var fmin = new Intl.NumberFormat("ru-RU").format(obj.from/100)
+                        var fmax = new Intl.NumberFormat("ru-RU").format(obj.to/100)
                     
                         $("#minCost2").val(obj.from);
                         $("#maxCost2").val(obj.to);
-                        $("#minCost").html(obj.from);
-                        $("#maxCost").html(obj.to);
+                        $("#minCost").html(fmin);
+                        $("#maxCost").html(fmax);
                         $("#sub0").html("!");
                         $("#submitfiltr").show();
                         $(".submitfiltr").show();
@@ -332,9 +336,9 @@ class HtmlProviderService
                     
                     <input type='text' id='rangeslider' class='rangeslider'  value='' name='rangePrice'  style=''/>
                     
-                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>".$pricesel['minprice']."</span>
+                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>".number_format($pricesel['minprice']/100, 0, ',', ' ')."</span>
                        </div><div  
-                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>".$pricesel['maxprice']."</span></div>
+                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>".number_format($pricesel['maxprice']/100, 0, ',', ' ')."</span></div>
                     
                     
                 </div>
@@ -354,22 +358,7 @@ class HtmlProviderService
                     </div>
                 </div>
              </div-->
-             <div class=blok >
-            <div class='fltrblock'>
-                   <div class='filtritemtitle blokl' >Тест радиокнопки</div>
-                    <div class=blok >
-                        <div class='   radio ' for=1232  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck1232' name='fltr[test][]' value='0' >
-                        </div>
-                        <div class=' radio zach ' for=1222  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck1222' name='fltr[test][]' value='1' checked >
-                        </div>
-                        <div class=' radio ' for=12222  rel=1 >По-барабану
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck12222' name='fltr[test][]' value='3'  >
-                        </div>
-                    </div>
-                </div>
-             </div>"
+             "
                :"";
         //
         return $return;
