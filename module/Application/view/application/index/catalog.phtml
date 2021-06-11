@@ -4,12 +4,13 @@ $this->headTitle($this->title, 'PREPEND');
 ?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">
+            
 
             <form method="post" id="filtrform">
-
+                
                 <input type='hidden' name='category_id' value='<?= $this->id ?>'>
                 <div id="filtrblock" class="container">
-
+<?= $this->breadmenu?>
                     <?= $this->filterform //filter ?><br class="both"/>
                     <!-- div class="iblokl"  >
                         <select id="sort"  name="sortOrder" class="formsend" >
@@ -35,7 +36,7 @@ $this->headTitle($this->title, 'PREPEND');
         </div>               
     </div>
     <div id="main-col">
-        <div class="bread-crumbs"><?= $this->bread ?></div> 
+        <!-- div class="bread-crumbs"><?= $this->bread ?></div--> 
 
 
 
@@ -43,7 +44,7 @@ $this->headTitle($this->title, 'PREPEND');
 
 
             <div id='ajaxfiltranswer'></div><br class="both">
-            <h2><?= $this->title ?>  <?php if ($this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
+            <h1><?= $this->title ?>  <?=($this->id)?"<span>id: ". $this->id ."</span>":""?></h1>
             <div id="tovar-list"><?= $this->priducts ?></div>
         </div>               
     </div>

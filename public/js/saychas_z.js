@@ -45,7 +45,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             success: function (data) {
                 
                 $("#ajaxfiltranswer").html(data);
-                window.location.href = window.location.href
+                //window.location.href = window.location.href
                 //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -220,7 +220,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         });
     })
 
-    $(".formsend").live("change", function () {
+    $("#filtrform input").on("change", function () {
         sendfilterform();
     })
 

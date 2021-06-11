@@ -229,6 +229,7 @@ class IndexController extends AbstractActionController
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         //$matherCategories[]=[0=>$category_id];
         $bread = $this->htmlProvider->breadCrumbs($matherCategories);
+        $breadmenu = $this->htmlProvider->breadCrumbsMenu($matherCategories);
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
         $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
@@ -255,6 +256,7 @@ class IndexController extends AbstractActionController
             'sortselect' =>[$myKey=> " selected "],
             'hasRestOnly' =>[ $hasRest => " checked "],
             'filterform'=> $filterForm,
+            'breadmenu' => $breadmenu,
         ];
         return new ViewModel($vwm);
 

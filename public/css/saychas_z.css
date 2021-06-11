@@ -1,7 +1,7 @@
 .phoneinput {font-size:1.8rem; font-weight:700}
 .opacity0, .opacity0 a {color:#999; text-decoration:none }
 
-h2 span {font-size:14px; font-weight:300; display:block; color:#555}
+h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gray)}
 
 #headermenu {display:block; background:#252525; margin:0; outline:0; padding:0; height:56px; text-align:center; position: relative; z-index:500;}
 #headermenu .headermenucontent {display:inline-block; width:100%; max-width:1600px; min-width:1001px;  max-height:60px; height:auto; overflow:hidden; text-align:left}
@@ -370,6 +370,23 @@ h2 span {font-size:14px; font-weight:300; display:block; color:#555}
 .waiting {background:url("/img/loader.gif") left no-repeat}
 .onoff.zach {background-position:0 -20px;}
 .radio.zach {background-position:0 -38px;}
+ .bread-crumbs{display:block; color:#333;  line-height:1.8em; margin:16px 0 ;}
+ .bread-crumbs-item {
+     display:block; 
+     text-decoration:none; 
+     
+     padding:0 4  px ;  box-sizing: border-box;   }
+ .breadtab1, .breadtab2, .breadtab3, .breadtab4 {
+     background: url("/img/breadarrow.svg") 0px 11px no-repeat; 
+     padding-left:18px;
+ }
+  .breadtab0 {font-weight:600}
+  .breadtab2 {margin-left:18px}
+  .breadtab3 {margin-left:36px}
+  .breadtab4 {margin-left:54px}
+  
+ .bread-crumbs-item a {text-decoration:none; color:#333; }
+
 
 .pw-contentblock {
     display:inline-block; 

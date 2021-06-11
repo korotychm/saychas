@@ -228,10 +228,11 @@ class AjaxController extends AbstractActionController
     {
         
         $post=$this->getRequest()->getPost();
-        $category_id=$post->category_id;
+        
+        exit ("<pre>".print_r($post, true)."</pre>");
         
         
-        foreach ($post as $key=>$value)
+        /*foreach ($post as $key=>$value)
             //echo "$key=>$value <br>"; exit();
             $fltrArray[$key]=$value;
          
@@ -241,7 +242,7 @@ class AjaxController extends AbstractActionController
         $container->filtrForCategory = $filtrForCategory;
         exit();
         //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");
-        //exit (print_r($container->filtrForCategory));
+        //exit (print_r($container->filtrForCategory));/**/
         
        }
 
