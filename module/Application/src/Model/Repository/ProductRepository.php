@@ -412,8 +412,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-//        $this->mclient->saychas->products->drop();
-//        $this->mclient->saychas->products->insertMany($result->data);
+        $this->mclient->saychas->products->drop();
+        $this->mclient->saychas->products->insertMany($result->data);
         //printf("Inserted %d document(s)\n", $this->mclient->saychas->products);
 //        return ['result' => true, 'description' => sprintf("Inserted %d document(s)\n", $this->mclient->saychas->products), 'statusCode' => 200];
 //        exit;
