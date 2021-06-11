@@ -61,7 +61,7 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
         });
      
         reset($products);
-        return ['max' => current($products)['price']->getPrice(), 'min' => end($products)['price']->getPrice()];
+        return ['maxprice' => current($products)['price']->getPrice(), 'minprice' => end($products)['price']->getPrice()];
     }
 
     /**
