@@ -42,6 +42,35 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
         $this->prototype = $prototype;
     }
 
+    /**
+     * Find min and max price value by category
+     * 
+     * Example usage: $categoryId = '000000002'
+     * $categoryTree may be obtained like the following
+     * $categoryTree = $this->categoryRepository->findCategoryTree($categoryId, [$categoryId]);
+     * 
+     * @param array $categoryTree
+     * @return array
+     */
+    public function findMinMaxPriceValueByCategory(array $categoryTree) : array
+    {
+        $products = $this->findAll(['where' => ['category_id' => $categoryTree]])->toArray();
+        
+        usort($products, function($a, $b){
+            return $a['price']->getPrice() < $b['price']->getPrice();
+        });
+     
+        reset($products);
+        return ['max' => current($products)['price']->getPrice(), 'min' => end($products)['price']->getPrice()];
+    }
+
+    /**
+     * Find all entities in the repository
+     * Overrides parent findAll
+     * 
+     * @param array $params
+     * @return Entity[]
+     */
     public function findAll($params)
     {
         $join = new Join();

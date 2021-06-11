@@ -21,6 +21,7 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
@@ -45,6 +46,7 @@ class AjaxController extends AbstractActionController
     private $characteristicRepository;
     private $priceRepository;
     private $stockBalanceRepository;
+    private $handBookRelatedProductRepository;
     private $entityManager;
     private $config;
     private $htmlProvider;
@@ -54,7 +56,8 @@ class AjaxController extends AbstractActionController
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
-                CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository, $entityManager, $config,
+                CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
+                HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
                 HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService)
     {
         $this->testRepository = $testRepository;
@@ -67,6 +70,7 @@ class AjaxController extends AbstractActionController
         $this->characteristicRepository = $characteristicRepository;
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
+        $this->handBookRelatedProductRepository = $handBookProduct;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
