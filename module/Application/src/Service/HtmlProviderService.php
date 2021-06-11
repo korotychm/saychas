@@ -293,7 +293,7 @@ class HtmlProviderService
         
         
         (true or $return)?$return = '
-        <div  class="paybutton formsendbutton" > post filter</div>
+        <div  class="paybutton formsendbutton" > post filter view</div>
         <input type=hidden name="sqlOutline" value="72" id="sqlOutline"  >
         <input type=hidden name="sqlLimit" value="72" id="sqlOutline"  >
         
