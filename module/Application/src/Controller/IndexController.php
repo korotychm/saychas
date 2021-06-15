@@ -127,6 +127,48 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
+        
+//        $params = [
+//            'category_id' => ['000000006'],
+//            'offset' => 0,
+//            'limit' => 1,
+//            'priceRange' => '5399100;5399100',
+//            'characteristics' => [
+//                '[000000001-000000006]' => [
+//                    [0] => 156,
+//                    [1] => 704,
+//                ],
+//                ['000000003-000000006'] => [
+//                    [0] => '000009',
+//                    [1] => '000010',
+//                ],
+//                ['000000014-000000006'] => [
+//                    [0] => '000000011',
+//                    [1] => '000000044',
+//                ],
+//                ['000000029-000000006'] => [
+//                    [0] => '6.3;6.6',
+//                ],
+//            ],
+//        ];
+//        
+//        $where = new \Laminas\Db\Sql\Where();
+//        list($low, $high) = explode(';', $params['priceRange']);
+//        $where->between('price', $low, $high);
+//        $where->in('category_id', $params['category_id']);
+//        
+//        foreach($params['characteristics'] as $c) {
+//            
+//        }
+//        
+//        $params['where'] = $where;
+//        
+//        $products = $this->handBookRelatedProductRepository->findFilteredProducts($params);
+//        foreach($products as $product) {
+//            echo '<pre>';
+//            print_r($product);
+//            echo '</pre>';
+//        }
 
         return new ViewModel([
             'fooItem' => $container->item

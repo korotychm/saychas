@@ -63,6 +63,18 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
         reset($products);
         return ['maxprice' => current($products)['price']->getPrice(), 'minprice' => end($products)['price']->getPrice()];
     }
+    
+    public function findFilteredProducts($params)
+    {
+//        $params = [
+//            'category_id' => ['000000006'],
+//            'offset' => 0,
+//            'limit' => 1,
+//            'priceRange' => '5399100, 5399100',
+//        ];
+//        ['where' => $where, 'limit' => 1, 'offset' => 0 ]
+        return $this->findAll($params);
+    }
 
     /**
      * Find all entities in the repository
