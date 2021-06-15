@@ -6,3 +6,26 @@ mongorestore -u saychas -p saychas --db=saychas dump/saychas
 db.products.find({"characteristics": { $elemMatch: {value: "15%"} } }, {"id": 1, "title": 1, "provider_id": 1, "category_id": 1, "description": 1, "characteristics.$": 1, "_id": 0}).pretty()
 
 db.products.aggregate([{$lookup: {from: "characteristics", "localField": "characteristics.value", "foreignField": "id", as: "characteristic_values"} } ]).pretty();
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{"id": "000000000004"}} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{"price_doc.product_id": "000000000004"}} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{"price_doc.product_id": "000000000004", "price_doc.price": 7400}} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{"price_doc.product_id": "000000000004", "price_doc.price": {$gt: 7000}  }} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{  "price_doc.price": {$gt: 7000}, "price_doc.price": {$lt: 7801} } }, {$limit: 1} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{ "price_doc.price": {$gt: 7000}, "price_doc.price": {$lt: 7801},"category_id": "000000017", "characteristics.value": 3.5 } } ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{ "price_doc.price": {$gt: 7000}, "category_id": "000000017", "characteristics.value": 3.5 } }, {$project:{"_id": 0, "description": 0}} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{ "price_doc.price": {$gt: 7000}, "category_id": "000000017", "characteristics.value": 3.5 } }, {$project:{"_id":0, "characteristics": 1}} ]).pretty()
+
+db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField: "product_id", as: "price_doc"} }, {$match:{ "price_doc.price": {$gt: 7000}, "price_doc.price": {$lte: 7801} } }, {$project:{"id":1, "char_value":{$cond: {if: true, then: "$characteristics.value", else: ''} }, "category_id": 1}} ]).pretty()
+
+
+
+
+db.products.find({}, {"description":0}).forEach(function(myDoc){ myDoc.characteristics.forEach( function(d){ if(d.type == 4) { cursor = db.characteristics.find({"id": d.value}, {"id": 0} ).toArray(); undefined === cursor[0] ? v = 0 : printjson( cursor[0].title ) }else{printjson(d.value)}  } ) })

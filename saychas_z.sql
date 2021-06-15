@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 11, 2021 at 07:21 AM
+-- Generation Time: Jun 15, 2021 at 03:16 AM
 -- Server version: 8.0.25
 -- PHP Version: 7.4.16
 
@@ -5088,7 +5088,14 @@ INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
 (6, '', NULL, NULL, 0),
 (7, '', NULL, NULL, 0),
 (8, '', NULL, NULL, 0),
-(9, '', NULL, NULL, 0);
+(9, '', NULL, NULL, 0),
+(10, '', NULL, NULL, 0),
+(11, '', NULL, NULL, 0),
+(12, '', NULL, NULL, 0),
+(13, '', NULL, NULL, 0),
+(14, '', NULL, NULL, 0),
+(15, '', NULL, NULL, 0),
+(16, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -5241,7 +5248,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user_data`
