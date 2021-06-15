@@ -177,7 +177,7 @@ class HtmlProviderService
                                ."<input 
                                     type='checkbox' 
                                     class='none fltrcheck$j' 
-                                    name='fltr[".$row['id']."][]' 
+                                    name='characteristics[".$row['id']."][]' 
 
                                     value='".$val."'  "
                                     . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
@@ -189,7 +189,7 @@ class HtmlProviderService
                                 ."<input 
                                      type='checkbox' 
                                      class='none fltrcheck$j' 
-                                     name='fltr[".$row['id']."][]' 
+                                     name='characteristics[".$row['id']."][]' 
 
                                      value='".$val."'  "
                                      . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
@@ -239,12 +239,12 @@ class HtmlProviderService
         ."   
         
                 <div style='padding:0px 6px; display:block; position:relative'>
-                    <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='fltr[".$row['id']."][]'  style=''/>
+                    <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='characteristics[".$row['id']."][]'  style=''/>
                         <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id='minCost$rangeId'>".$minsel."</span>
                        </div><div  
                        style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id='maxCost$rangeId'>".$maxsel."</span></div>
-                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"fltr[".$row['id']."]['min']\" id='minCost2$rangeId' value='".$minsel."'  
-                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"fltr[".$row['id']."]['max']\" id='maxCost2$rangeId' value='".$maxsel."' -->
+                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[".$row['id']."]['min']\" id='minCost2$rangeId' value='".$minsel."'  
+                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[".$row['id']."]['max']\" id='maxCost2$rangeId' value='".$maxsel."' -->
                 </div>
         ";
         }
@@ -255,16 +255,16 @@ class HtmlProviderService
                 $options = "
                     <div class=blok >
                         <div class='   onoff ' for=123  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='fltr[".$row['id']."]' value='0' >
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."]' value='0' >
                         </div>
                         <div class=' onoff  ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='fltr[".$row['id']."]' value='1' >
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."]' value='1' >
                         </div>
                     </div>";
                         /*. "<radiogroup>"
-                        . "<div class=blok ><input type=radio name='fltr[".$row['id']."][]' value=1 > Да</div>"
-                        . "<div class=blok ><input type=radio name='fltr[".$row['id']."][]' value=0 > Нет</div>"
-                        . "<div class=blok ><input type=radio name='fltr[".$row['id']."][]' value=-1 checked > Не важно</div>"
+                        . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=1 > Да</div>"
+                        . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=0 > Нет</div>"
+                        . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=-1 checked > Не важно</div>"
                         . "</radiogroup>";*/
                 }
                 
@@ -295,8 +295,8 @@ class HtmlProviderService
         
         (true or $return)?$return = '
         <div  class="paybutton formsendbutton" > post filter view</div>
-        <input type=hidden name="sqlOutline" value="72" id="sqlOutline"  >
-        <input type=hidden name="sqlLimit" value="72" id="sqlOutline"  >
+        <input type=hidden name="offset" value="72" id="sqlOutline"  >
+        <input type=hidden name="limit" value="72" id="sqlOutline"  >
         
 <script>
         $(function(){
@@ -350,15 +350,30 @@ class HtmlProviderService
                    <div class='filtritemtitle blokl' >Тест булевое значение</div>
                     <div class=blok >
                         <div class='   onoff ' for=123  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='fltr[".$row['id']."][]' value='0' >
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."][]' value='0' >
                         </div>
                         <div class=' onoff zach ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='fltr[".$row['id']."][]' value='1' checked >
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."][]' value='1' checked >
                         </div>
                     </div>
                 </div>
-             </div-->
-             "
+             </div>
+             <div class=blok >
+            <div class='fltrblock'>
+                   <div class='filtritemtitle blokl' >Тест радиокнопки</div>
+                    <div class=blok >
+                        <div class='   radio ' for=1232  rel=1 >Нет 
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck1232' name='characteristics[test][]' value='0' >
+                        </div>
+                        <div class=' radio zach ' for=1222  rel=1 >Да
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck1222' name='characteristics[test][]' value='1' checked >
+                        </div>
+                        <div class=' radio ' for=12222  rel=1 >По-барабану
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck12222' name='characteristics[test][]' value='3'  >
+                        </div>
+                    </div>
+                </div>
+             </div -->"
                :"";
         //
         return $return;

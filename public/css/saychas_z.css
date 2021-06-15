@@ -187,7 +187,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 .productcard  .content:hover {
     box-shadow: 2px 2px 16px  rgba(0,0,0,0.25); 
-    border:1px solid #eee; 
+    /*border:1px solid #eee; */
     opacity:1; 
     z-index:3;
 }    
