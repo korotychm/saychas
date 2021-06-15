@@ -14,7 +14,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     padding-bottom:12px;
     margin:0; outline:0;
 }
-#headermenu .headermenucontent a:hover , #topmenu ul  li a:hover {border-color:#ff5533} 
+#headermenu .headermenucontent a:hover , #topmenu ul  li a:hover {border-color:#ff5533; transition: 1s;} 
 .parthnerenter {float:right}
 .brandcolor {color:var(--red)}
 .parthnerenter .brandcolor {font-size:130%}
@@ -183,6 +183,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     opacity:0;
     background:#fff;
     
+    
 }
 
 .productcard  .content:hover {
@@ -190,6 +191,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     /*border:1px solid #eee; */
     opacity:1; 
     z-index:3;
+
 }    
 .productcard .productimage {
     max-width:100%; 
@@ -251,7 +253,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     text-shadow:1px 1px rgba(0,0,0,.05); 
     background-color:var(--red); 
     padding:13px 26px ;  
-
+    
 }
 .paybuttonwhite {
     color: var(--red); 
@@ -407,7 +409,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .zach2   {background-position: 0 -50px;  }
 .zach3   {background-position: 0 -75px; color:#191919;  }
 .waiting {background:url("/img/loader.gif") left no-repeat}
-.onoff.zach {background-position:0 -20px;}
+.onoff.zach {background-position:0 -20px; }
 .radio.zach {background-position:0 -38px;}
  .bread-crumbs{display:block; color:#333;  line-height:1.8em; margin:16px 0 ;}
  .bread-crumbs-item {
@@ -607,12 +609,14 @@ img.zero, .zeroblok {
     width:25px;
     position: relative;
     box-shadow: 0 0 0 2px #ebebeb;
+    
 
     
  }
  .cirkulcheck.zach {
     
-    box-shadow: 0 0 0 3px var(--red);
+    box-shadow: 0 0 0 4px var(--red);
+    transition: .5s;
  } 
  
 .mini {font-size:.85rem}
