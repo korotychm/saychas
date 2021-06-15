@@ -334,7 +334,7 @@ class HtmlProviderService
                    <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
                 <div style='padding:0px 6px; display:block; position:relative'>
                     
-                    <input type='text' id='rangeslider' class='rangeslider'  value='' name='rangePrice'  style=''/>
+                    <input type='text' id='rangeslider' class='rangeslider'  value='' name='priceRange'  style=''/>
                     
                         <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>".number_format($pricesel['minprice']/100, 0, ',', ' ')."</span>
                        </div><div  
