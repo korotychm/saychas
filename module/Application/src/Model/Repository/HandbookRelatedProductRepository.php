@@ -73,6 +73,9 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
 //            'priceRange' => '5399100, 5399100',
 //        ];
 //        ['where' => $where, 'limit' => 1, 'offset' => 0 ]
+        
+//        $result = $this->db->query("call get_products_by_characteristics()")->execute();
+//        return $result;
         return $this->findAll($params);
     }
 
