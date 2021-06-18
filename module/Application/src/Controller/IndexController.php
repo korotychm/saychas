@@ -127,7 +127,7 @@ class IndexController extends AbstractActionController
 
     }
     
-    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
+    private function matchProduct1(HandbookRelatedProduct $product, $characteristics)
     {
         foreach($characteristics as $key => $value) {
             $characteristic = $this->characteristicRepository->find(['id' => $key]);
@@ -137,7 +137,14 @@ class IndexController extends AbstractActionController
             // found
             $type = $characteristic->getType();
             
-            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $characteristic->getId(), 'product_id' => $product->getId()]);
+            $foundCharArr = $this->productCharacteristicRepository->findAll(['where' => ['characteristic_id' => $characteristic->getId(), 'product_id' => $product->getId()] ]);
+            $cnt = $foundCharArr->count();
+            if(0 >= $cnt) {
+                continue;
+            }
+            foreach($foundCharArr as $found) {
+                
+            }
             
             if(CharacteristicRepository::INTEGER_TYPE == $type) {
                 $valArray = explode(';', $value[0]);
@@ -156,6 +163,49 @@ class IndexController extends AbstractActionController
         return true;
     }
     
+    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
+    {
+        $flags = [];
+        foreach($characteristics as $key => $value) {
+//            $characteristic = $this->characteristicRepository->find(['id' => $key]);
+//            if(null == $characteristic) {
+//                throw new Exception("Specified product characteristic does not exists");
+//            }
+            // Characteristic exists
+            
+//            $type = $characteristic->getType();
+            
+//            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $characteristic->getId(), 'product_id' => $product->getId() ]);
+            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId() ]);
+            if(null == $found) {
+                $flags[$key] = false;
+                continue;
+            }
+            $type = $found->getType();
+            switch($type) {
+                case CharacteristicRepository::INTEGER_TYPE:
+                    list($left, $right) = explode(';', $value[0]);
+                    // ($found->getValue() < $left || $found->getValue() > $right) ? $flag = false : $flag = true;
+                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
+                    break;
+                case CharacteristicRepository::BOOL_TYPE:
+                    //$flag = ($found->getValue() == $value);
+                    $flags[$key] = ($found->getValue() == $value);
+                    break;
+                default:
+                    //$flag = in_array($found->getValue(), $value);
+                    $flags[$key] = in_array($found->getValue(), $value);
+                    break;
+            }
+        }
+        foreach($flags as $f) {
+            if(!$f) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -163,35 +213,98 @@ class IndexController extends AbstractActionController
         $params = [
             'category_id' => ['000000006'],
             'offset' => 0,
-            'limit' => 1,
-            'priceRange' => '5399100;5399100',
+            'limit' => 1111,
+            'priceRange' => '580000;3399100',//1210000','5399100;5399100',
+            'characteristics' => [
+//                '000000001-000000006' => [
+//                    '156',
+//                    '704',
+//                ],
+//                '000000003-000000006' => [
+//                    '000009',
+//                    '000010',
+//                ],
+//                '000000014-000000006' => [
+//                    '000000011',
+//                    '000000044',
+//                ],
+//                '000000029-000000006' => [
+//                    '6.5;6.6',
+//                ],
+//                '000000038-000000006' => 1,
+            ],
+        ];
+        
+        
+        $params = [
+            'category_id' => ['000000006'],
+            'offset' => 0,
+            'limit' => 1111,
+            'priceRange' => '580000;5399100',//3399100',//1210000','5399100;5399100',
             'characteristics' => [
                 '000000001-000000006' => [
                     '156',
                     '704',
                 ],
-                '000000003-000000006' => [
-                    '000009',
-                    '000010',
-                ],
-                '000000014-000000006' => [
-                    '000000011',
-                    '000000044',
-                ],
-                '000000029-000000006' => [
-                    '6.3;6.6',
-                ],
-                '000000038-000000006' => 1,
+//
+//                '000000003-000000006' => [
+//                    '000003',
+//                    '000011',
+//                ],
+//
+//                '000000004-000000006' => [
+//                    '000000002',
+//                    '000000011',
+//                    '000000012',
+//                ],
+//
+//                '000000014-000000006' => [
+//                    '000000011',
+//                    '000000044',
+//                ],
+//
+//                '000000029-000000006' => [
+//                    '6.2;6.6',
+//                ],
+//
+//                '000000036-000000006' => [
+//                    '000000040',
+//                    '000000041',
+//                ],
+//
+//                '000000037-000000006' => [
+//                    '000000017',
+//                    '000000042',
+//                ],
+//
+//                '000000040-000000006' => [
+//                    '000000021',
+//                    '000000022',
+//                ],
+//
+//                '000000041-000000006' => [
+//                    '000000024',
+//                    '000000025',
+//                ],
+
+//                '000000051-000000006' => [
+//                        '000000034',
+//                        '000000035',
+//                ],
+//
+//                '000000058-000000006' => [
+//                    '21;93'
+//                ],
             ],
         ];
-        
-        $json = Json::encode($params['characteristics']);
-        
+
         $where = new \Laminas\Db\Sql\Where();
         list($low, $high) = explode(';', $params['priceRange']);
-        $where->between('price', $low, $high);
+        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
         $where->in('category_id', $params['category_id']);
-        
+
+        unset($params['offset']);
+        unset($params['limit']);
         $params['where'] = $where;
         
         $products = $this->handBookRelatedProductRepository->findFilteredProducts($params);
@@ -200,11 +313,8 @@ class IndexController extends AbstractActionController
             $matchResult = $this->matchProduct($product, $params['characteristics']);
             if($matchResult) {
                 echo '<pre>';
-                echo 'matchResult = '.$matchResult."<br/>";
-                print_r($product);
+                echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
                 echo '</pre>';
-            }else{
-                echo 'asdfdsaf';
             }
         }
 

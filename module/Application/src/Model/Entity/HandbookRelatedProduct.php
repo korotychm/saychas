@@ -10,6 +10,7 @@ use Application\Model\Repository\BrandRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
+use Application\Model\Repository\ProductCharacteristicRepository;
 
 /**
  * HandbookRelatedProduct
@@ -39,6 +40,8 @@ class HandbookRelatedProduct extends Entity
      * @var ProviderRepositoryInterface
      */
     public static ProviderRepositoryInterface $providerRepository;
+    
+    public static ProductCharacteristicRepository $productCharacteristicRepository;
 
     /**
      * Get brand
