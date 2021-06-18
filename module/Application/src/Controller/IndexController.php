@@ -73,7 +73,7 @@ class IndexController extends AbstractActionController
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
                 $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
-                $productCharacteristicRepository)
+                ProductCharacteristicRepositoryInterface $productCharacteristicRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -127,55 +127,10 @@ class IndexController extends AbstractActionController
 
     }
     
-    private function matchProduct1(HandbookRelatedProduct $product, $characteristics)
-    {
-        foreach($characteristics as $key => $value) {
-            $characteristic = $this->characteristicRepository->find(['id' => $key]);
-            if(null == $characteristic) {
-                throw new Exception("Specified product characteristic does not exists");
-            }
-            // found
-            $type = $characteristic->getType();
-            
-            $foundCharArr = $this->productCharacteristicRepository->findAll(['where' => ['characteristic_id' => $characteristic->getId(), 'product_id' => $product->getId()] ]);
-            $cnt = $foundCharArr->count();
-            if(0 >= $cnt) {
-                continue;
-            }
-            foreach($foundCharArr as $found) {
-                
-            }
-            
-            if(CharacteristicRepository::INTEGER_TYPE == $type) {
-                $valArray = explode(';', $value[0]);
-                $v = $found->getValue();
-                if($v > $value[1] && $v < $value[0]) {
-                    return 0;
-                }
-            }elseif(CharacteristicRepository::BOOL_TYPE == $type) {
-                return $value;
-            }
-            if( ! in_array($found->getValue(), $value) ) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
     private function matchProduct(HandbookRelatedProduct $product, $characteristics)
     {
         $flags = [];
         foreach($characteristics as $key => $value) {
-//            $characteristic = $this->characteristicRepository->find(['id' => $key]);
-//            if(null == $characteristic) {
-//                throw new Exception("Specified product characteristic does not exists");
-//            }
-            // Characteristic exists
-            
-//            $type = $characteristic->getType();
-            
-//            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $characteristic->getId(), 'product_id' => $product->getId() ]);
             $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId() ]);
             if(null == $found) {
                 $flags[$key] = false;
@@ -185,15 +140,12 @@ class IndexController extends AbstractActionController
             switch($type) {
                 case CharacteristicRepository::INTEGER_TYPE:
                     list($left, $right) = explode(';', $value[0]);
-                    // ($found->getValue() < $left || $found->getValue() > $right) ? $flag = false : $flag = true;
                     $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
                     break;
                 case CharacteristicRepository::BOOL_TYPE:
-                    //$flag = ($found->getValue() == $value);
                     $flags[$key] = ($found->getValue() == $value);
                     break;
                 default:
-                    //$flag = in_array($found->getValue(), $value);
                     $flags[$key] = in_array($found->getValue(), $value);
                     break;
             }
@@ -206,41 +158,39 @@ class IndexController extends AbstractActionController
         return true;
     }
 
+    private function getProducts($params)
+    {
+        $where = new \Laminas\Db\Sql\Where();
+        list($low, $high) = explode(';', $params['priceRange']);
+        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+        $where->equalTo('category_id', $params['category_id']);
+        //$where->in('category_id', $params['category_id']);
+
+        unset($params['offset']);
+        unset($params['limit']);
+        $params['where'] = $where;
+        
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+        $filteredProducts = [];
+        foreach($products as $product) {
+            
+            $matchResult = $this->matchProduct($product, $params['characteristics']);
+            if($matchResult) {
+                $filteredProducts[] = $product;
+            }
+        }
+        return $filteredProducts;
+    }
+    
     public function indexAction()
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         
         $params = [
-            'category_id' => ['000000006'],
+            'category_id' => '000000006',
             'offset' => 0,
             'limit' => 1111,
-            'priceRange' => '580000;3399100',//1210000','5399100;5399100',
-            'characteristics' => [
-//                '000000001-000000006' => [
-//                    '156',
-//                    '704',
-//                ],
-//                '000000003-000000006' => [
-//                    '000009',
-//                    '000010',
-//                ],
-//                '000000014-000000006' => [
-//                    '000000011',
-//                    '000000044',
-//                ],
-//                '000000029-000000006' => [
-//                    '6.5;6.6',
-//                ],
-//                '000000038-000000006' => 1,
-            ],
-        ];
-        
-        
-        $params = [
-            'category_id' => ['000000006'],
-            'offset' => 0,
-            'limit' => 1111,
-            'priceRange' => '580000;5399100',//3399100',//1210000','5399100;5399100',
+            'priceRange' => '580000;8000000',//5399100',//3399100',//1210000','5399100;5399100',
             'characteristics' => [
                 '000000001-000000006' => [
                     '156',
@@ -252,16 +202,17 @@ class IndexController extends AbstractActionController
 //                    '000011',
 //                ],
 //
-//                '000000004-000000006' => [
-//                    '000000002',
-//                    '000000011',
-//                    '000000012',
-//                ],
+                '000000004-000000006' => [
+                    '000000002',
+                    '000000004',
+                    '000000011',
+                    '000000012',
+                ],
 //
-//                '000000014-000000006' => [
-//                    '000000011',
-//                    '000000044',
-//                ],
+                '000000014-000000006' => [
+                    '000000011',
+                    '000000044',
+                ],
 //
 //                '000000029-000000006' => [
 //                    '6.2;6.6',
@@ -297,25 +248,40 @@ class IndexController extends AbstractActionController
 //                ],
             ],
         ];
-
-        $where = new \Laminas\Db\Sql\Where();
-        list($low, $high) = explode(';', $params['priceRange']);
-        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-        $where->in('category_id', $params['category_id']);
-
-        unset($params['offset']);
-        unset($params['limit']);
-        $params['where'] = $where;
         
-        $products = $this->handBookRelatedProductRepository->findFilteredProducts($params);
+//        $clause = [];
+//        foreach($params['characteristics'] as $key=>$value) {
+//            //$clause[] = sprintf("( characteristic_id = '%s' and value in(%s) )", $key, implode(',', $value));
+//            $clause[] = sprintf("( characteristic_id = '%s' and find_in_set(value, '%s') )", $key, implode(',', $value));
+//        }
+//        print_r(implode(' or ', $clause));
+//        exit;
+
+//        $where = new \Laminas\Db\Sql\Where();
+//        list($low, $high) = explode(';', $params['priceRange']);
+//        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+//        $where->in('category_id', $params['category_id']);
+//
+//        unset($params['offset']);
+//        unset($params['limit']);
+//        $params['where'] = $where;
+//        
+//        $products = $this->handBookRelatedProductRepository->findFilteredProducts($params);
+//        foreach($products as $product) {
+//            
+//            $matchResult = $this->matchProduct($product, $params['characteristics']);
+//            if($matchResult) {
+//                echo '<pre>';
+//                echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
+//                echo '</pre>';
+//            }
+//        }
+        
+        $products = $this->getProducts($params);
         foreach($products as $product) {
-            
-            $matchResult = $this->matchProduct($product, $params['characteristics']);
-            if($matchResult) {
-                echo '<pre>';
-                echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
-                echo '</pre>';
-            }
+            echo '<pre>';
+            echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
+            echo '</pre>';
         }
 
         return new ViewModel([

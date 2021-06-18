@@ -1,0 +1,38 @@
+<?php
+//foreach($products as $product) {
+//    echo '<pre>';
+//    print_r($product->getId().' '.$product->getTitle());
+//    echo '</pre>';
+//}
+//exit;
+foreach ($products as $card) {
+    echo $this->partial('application/ajax/partials/card', ['card' => $card]);
+//    if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$card['rest']) and!empty($card)) {
+//        echo "<div class='productcard' >";
+//            echo "<div class='contentabsolute  content opacity" . '$card->getStocBalance()->getRest()' . "'>";
+//            echo "<a  href='/product/" . $card->getId() . "' >";
+////            echo "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . ( ($card->getImage() ) ? $card->getImage() : "nophoto_1.jpeg") . ")'/></div>";
+//            echo "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . "nophoto_1.jpeg" . ")'/></div>";
+//            echo "</a>";
+//            echo "<strong class='blok producttitle'><a  href='/product/" . $card->getId() . "' >" . $card->getTitle() . "</a></strong>";
+//            echo "<div class='inactiveblok'></div>";
+//            echo "<span class='price'>" . /*$card->getCena()*/ 'cena' . "&#8381;</span>";
+////            echo ( ($card->getOldPrice())? "<span class='oldprice'>" . $card->getOldPrice() . "&#8381;</span>":"");
+//            echo ( ($card->getTitle())? "<span class='oldprice'>" . 'oldprice' . "&#8381;</span>":"");
+//            echo       "<div class=payblockcard>";
+//            echo  "         <div class=paybutton rel='" . $card->getId() . "' >в корзину</div>";
+//            echo "         </div>";
+//            echo "</div>";
+//            echo "<div class='content opacity" .'rest'. "'>";
+//            echo "<a  href='/product/" . $card->getId() . "' >";
+//            echo "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . ("nophoto_1.jpeg") . ")'/></div>";
+//            echo "</a>";
+//            echo "       <strong class='blok producttitle'><a  href='/product/" . $card->getId() . "' >" . $card->getTitle() . "</a></strong>";
+//            echo "         <div class='inactiveblok'></div>" . "       <span class='price'>" . 'cena' . "&#8381;</span>";
+////            echo "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $card->getCena() . "&#8381;</span>";
+////            echo (($card->getOldPrice())? "       <span class='oldprice'>" . $card->getOldPrice() . "&#8381;</span>":"");
+//            echo "<span class='oldprice'>" . 'oldprice' . "&#8381;</span>";
+//            echo "</div>";
+//        echo "</div>";
+//    }
+}

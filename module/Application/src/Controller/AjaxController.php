@@ -19,9 +19,12 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
+use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
@@ -33,6 +36,7 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Http\Response;
 use Laminas\Session\Container;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use Laminas\Db\Sql\Where;
 
 class AjaxController extends AbstractActionController
 {
@@ -47,6 +51,7 @@ class AjaxController extends AbstractActionController
     private $priceRepository;
     private $stockBalanceRepository;
     private $handBookRelatedProductRepository;
+    private $productCharacteristicRepository;
     private $entityManager;
     private $config;
     private $htmlProvider;
@@ -58,7 +63,8 @@ class AjaxController extends AbstractActionController
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository, 
                 CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
-                HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService)
+                HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
+                ProductCharacteristicRepositoryInterface $productCharacteristicRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -71,6 +77,7 @@ class AjaxController extends AbstractActionController
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->handBookRelatedProductRepository = $handBookProduct;
+        $this->productCharacteristicRepository = $productCharacteristicRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
@@ -228,12 +235,95 @@ class AjaxController extends AbstractActionController
         
     }    
     
+    /**
+     * Return true if given product matches
+     * the specified characteristics
+     * 
+     * @param HandbookRelatedProduct $product
+     * @param array $characteristics
+     * @return bool
+     */
+    private function matchProduct(HandbookRelatedProduct $product, array $characteristics) : bool
+    {
+        $flags = [];
+        foreach($characteristics as $key => $value) {
+            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId() ]);
+            if(null == $found) {
+                $flags[$key] = false;
+                continue;
+            }
+            $type = $found->getType();
+            switch($type) {
+                case CharacteristicRepository::INTEGER_TYPE:
+                    reset($value);
+                    list($left, $right) = explode(';', current($value));
+                    //list($left, $right) = explode(';', $value[0]);
+                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
+                    break;
+                case CharacteristicRepository::BOOL_TYPE:
+                    $flags[$key] = ($found->getValue() == $value);
+                    break;
+                default:
+                    $flags[$key] = in_array($found->getValue(), $value);
+                    break;
+            }
+        }
+        foreach($flags as $f) {
+            if(!$f) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Return where clause to filter products by price and category
+     * 
+     * @param array $params
+     * @return Where
+     */
+    private function getWhere($params) : Where
+    {
+        $where = new Where();
+        list($low, $high) = explode(';', $params['priceRange']);
+        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+        $where->equalTo('category_id', $params['category_id']);
+        
+        return $where;
+    }
+
+    /**
+     * Return filtered HandbookRelatedProduct filtered products
+     * 
+     * @param array $params
+     * @return HandbookRelatedProduct[]
+     */
+    private function getProducts($params)
+    {
+        unset($params['offset']);
+        unset($params['limit']);
+        $params['where'] = $this->getWhere($params);
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+        $filteredProducts = [];
+        foreach($products as $product) {
+            $matchResult = $this->matchProduct($product, $params['characteristics']);
+            if($matchResult) {
+                $filteredProducts[] = $product;
+            }
+        }
+        return $filteredProducts;
+    }
+    
     public function setFilterForCategoryAction()
     {
         
-        $post=$this->getRequest()->getPost();
+        $post=$this->getRequest()->getPost()->toArray();
         
-        exit ("<pre>".print_r($post, true)."</pre>");
+        $products = $this->getProducts($post);
+        
+        return (new ViewModel(['products'=>$products]))->setTerminal(true);        
+        
+//        exit ("<pre>".print_r($post, true)."</pre>");
         
         
         /*foreach ($post as $key=>$value)
