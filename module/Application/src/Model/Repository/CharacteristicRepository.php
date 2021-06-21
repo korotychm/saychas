@@ -31,7 +31,7 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
      */
     protected Characteristic $prototype;
     
-    protected $mclient;
+    // protected $mclient;
 
     /**
      * @param AdapterInterface $db
@@ -47,9 +47,10 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
-        $this->mclient = new \MongoDB\Client(
-            'mongodb://saychas:saychas@localhost/saychas'
-        );        
+        parent::__construct();
+//        $this->mclient = new \MongoDB\Client(
+//            'mongodb://saychas:saychas@localhost/saychas'
+//        );        
     }
 
     public const HEADER_TYPE = 0;
