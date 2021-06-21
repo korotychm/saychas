@@ -12,6 +12,7 @@ use Application\Model\Repository\PriceRepository;
 use Application\Model\Repository\ProductImageRepository;
 use Application\Model\Repository\ProviderRepository;
 use Application\Model\Repository\ProductCharacteristicRepository;
+use Application\Model\Repository\StockBalanceRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Hydrator\ClassMethodsHydrator;
@@ -33,6 +34,7 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
         $productImageRepository = $container->get(ProductImageRepository::class);
         $providerRepository = $container->get(ProviderRepository::class);
         $productCharacteristicRepository = $container->get(ProductCharacteristicRepository::class);
+//        $stockBalanceRepository = $container->get(StockBalanceRepository::class);
 
         $prototype = new HandbookRelatedProduct;
         $prototype::$brandRepository = $brandRepository;
@@ -40,6 +42,7 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
         $prototype::$productImageRepository = $productImageRepository;
         $prototype::$providerRepository = $providerRepository;
         $prototype::$productCharacteristicRepository = $productCharacteristicRepository;
+//        $prototype::$stockBalanceRepository = $stockBalanceRepositoryRepository;
 
         return new HandbookRelatedProductRepository(
                 $adapter,

@@ -11,6 +11,7 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\Repository\ProductCharacteristicRepository;
+//use Application\Model\Repository\StockBalanceRepository;
 
 /**
  * HandbookRelatedProduct
@@ -42,6 +43,8 @@ class HandbookRelatedProduct extends Entity
     public static ProviderRepositoryInterface $providerRepository;
     
     public static ProductCharacteristicRepository $productCharacteristicRepository;
+    
+//    public static StockBalanceRepository $stockBalanceRepository;
 
     /**
      * Get brand
@@ -99,6 +102,14 @@ class HandbookRelatedProduct extends Entity
         return self::$providerRepository->findFirstOrDefault(['id=?' => $this->getProviderId()]);
     }
 
+//    public function getStockBalance()
+//    {
+//        if (!( self::$stockBalanceRepository instanceof StockBalanceRepositoryInterface )) {
+//            throw new \Exception('StockBalanceRepositoryInterface expected; other type given');
+//        }
+//        return self::$stockBalanceRepository->findFirstOrDefault(['product_id=?' => $this->getProductId(), 'store_id=?' =>$this->getStoreId()]);
+//    }
+//
     /**
      * @var string
      */

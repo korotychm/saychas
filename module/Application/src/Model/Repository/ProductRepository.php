@@ -265,6 +265,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $s = $this->packParams($params);
             $select->where($s);
         }
+        
+        if (isset($params['where'])) {
+            $select->where($params['where']);
+        }
 
         if ($params['order']) {
             $select->order($params['order']);

@@ -243,7 +243,7 @@ class AjaxController extends AbstractActionController
      * @param array $characteristics
      * @return bool
      */
-    private function matchProduct(HandbookRelatedProduct $product, array $characteristics) : bool
+    private function matchProduct(/*HandbookRelatedProduct*/ \Application\Model\Entity\Product $product, array $characteristics) : bool
     {
         $flags = [];
         foreach($characteristics as $key => $value) {
@@ -303,7 +303,12 @@ class AjaxController extends AbstractActionController
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
-        $products = $this->handBookRelatedProductRepository->findAll($params);
+//        $products = $this->handBookRelatedProductRepository->findAll($params);
+//        $orders=["","pr.title ASC", 'price ASC','price DESC',"pr.title DESC"];
+//        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
+//        $params['filter'] = $filtred;
+        $products = $this->productRepository->filterProductsByStores($params);
+        
         $filteredProducts = [];
         foreach($products as $product) {
             $matchResult = $this->matchProduct($product, $params['characteristics']);
