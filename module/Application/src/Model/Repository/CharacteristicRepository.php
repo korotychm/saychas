@@ -47,6 +47,8 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        
+        parent::__construct();
 //        $this->mclient = new \MongoDB\Client(
 //            'mongodb://saychas:saychas@localhost/saychas'
 //        );        
