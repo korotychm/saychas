@@ -1,7 +1,29 @@
 <form method='POST' id='userAuthForm'>
-        <div class='blok' ><input type='phone' name='userPhone' required class="phoneInput"/></div>
-        <div class='blok' ><input type=button  value='Войти' id='userAuthBotton'></div>
-        <div id='userAuthError' ></div>
+    <div class='blok' >
+        <span class='blok mini'>Номер телефона</span>
+        <input type='phone' name='userPhone' required class="phoneInput"/>
+    </div>
+    <div class='blok none  newuser'  id='sms' >
+        <span class='blok mini'>Представьтесь</span>
+        <input type='phone' name='userNameInput' required class="nameInput" id='nameInput' />
+    </div>
+    
+    <div class='blok none  olduser'  id='Olduser' >
+        
+    </div>
+
+    <div class='blok none  newuser'  id='sms' >
+        <span class='blok mini'>Код из СМС (7777)</span>
+        <input type='phone' name='userSmsCode' required class="smsInput"  id=''/>
+    </div>
+    
+    <div class='blok none  olduser'  id='pass' >
+        <span class='blok mini'>Пароль</span>
+        <input type='phone' name='userPass' required class="smsInput"  id=''/>
+    </div>
+    
+    <div class='blok' ><input type=button  value='Войти' id='userAuthBotton'></div>
+    <div id='userAuthError' ></div>
 </form>
 
 <?php

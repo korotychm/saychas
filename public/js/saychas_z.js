@@ -243,11 +243,14 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             data:dataString,
             success: function (data) {
                 console.log(data);
+                if(data.isUser) {$('.olduser').removeClass("none"); $('.newuser').addClass("none"); }
+                else {$('.olduser').addClass("none"); $('.newuser').removeClass("none");}
                 $("#userAuthError").html(data.message);
+                if (!data.error) location = location.href;
                 
             },
              error: function (xhr, ajaxOptions, thrownError) {
-                $("#userAuthError").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+                $("#userAuthError").html("Ошибка соединения, попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
                 
             }
          })

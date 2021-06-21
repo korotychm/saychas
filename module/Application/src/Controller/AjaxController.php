@@ -91,28 +91,45 @@ class AjaxController extends AbstractActionController
 
     public function userAuthAction()
     {
-        $return = ["error" => true, "message" => "Ошибка. "];
+        //userNameInput userSmsCode userPass
+        $password=$smsCode="7777";
+        $return = ["error" => true, "message" => "Ошибка. ", "isUser" => false, "username"=>"" ];
         $post = $this->getRequest()->getPost();
         $return['phone'] = $this->phoneToNum($post->userPhone);
+        $name = $post->userNameInput; 
+        $code = $post->userSmsCode; 
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        
         if(!$return['phone']){$return["message"].="Укажите корректный номер телефона";}
         else {
-            $user = $this->userRepository->find(["phone" => (int)$return['phone']]);
-            if ($userId = $user->getId()){
+            $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
+            if ($user and $userId = $user->getId()){
                $return['userId'] = $userId;
+               $return["isUser"] = true ;
+               if($post->userPass == $password) {
+                    
+                    $container->userIdentity = $return['userId'];
+                    $return["error"] = false ; 
+               }     
+               $return["message"]="Введите пароль для входа ($password)";  //это телефонный номер  юзера
+               $return["username"]= $user->getName();
                
-             
-              $container = new Container(StringResource::SESSION_NAMESPACE);
-              $container->userIdentity = $return['userId'];
-              
-              
-               
-               $return["message"]="Найден пользователь {$user->getName()} #".$return["userId"];  //это телефонный номер  юзера
-               $return["error"] = false ;               
-                
-             } 
+             }
+             else {
+                 if ($name  and  $code == $smsCode ) { 
+                     
+                     $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity ]);   
+                        $user -> setName($post->userNameInput);
+                        $user -> setPhone($return['phone']);
+                     $return["error"] = false ; 
+                     
+                 }
+                 $return["message"]="Введите ваше имя и код из СМС $name / $code";  //это телефонный номер  юзера
+             }
         
         }
         //$return = Json::encode($return, JSON_UNESCAPED_UNICODE);
+        $return['post']=$post;
         $return = json_encode($return, JSON_UNESCAPED_UNICODE);
         exit($return);
         //return (new ViewModel(['return' => $return]))->setTerminal(true);
