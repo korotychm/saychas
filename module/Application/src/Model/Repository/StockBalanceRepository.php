@@ -56,8 +56,8 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $this->mclient->saychas->stock_balance->drop();
-        $this->mclient->saychas->stock_balance->insertMany($result->data);
+        //$this->mclient->saychas->stock_balance->drop();
+        $this->mclient->saychas->stock_balance->insertMany($result['data']);
         
         foreach ($result/*['data']*/ as $row) {
             $sql = sprintf("replace INTO `stock_balance`(`product_id`, `size`, `store_id`, `rest`) VALUES ( '%s', '%s', '%s', %u)",

@@ -265,8 +265,8 @@ class CategoryRepository implements CategoryRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
-        $this->mclient->saychas->category->drop();
-        $this->mclient->saychas->category->insertMany($result->data);        
+        //$this->mclient->saychas->category->drop();
+        $this->mclient->saychas->category->insertMany($result['data']);        
 
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table category")->execute();

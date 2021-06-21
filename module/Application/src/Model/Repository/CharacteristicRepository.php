@@ -128,7 +128,7 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         }
 
 //        $this->mclient->saychas->characteristic->drop();
-//        $this->mclient->saychas->characteristic->insertMany($result['data']);
+        $this->mclient->saychas->characteristic->insertMany($result['data']);
 
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table characteristic")->execute();
