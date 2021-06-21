@@ -39,6 +39,8 @@ class SizeRepository extends Repository implements SizeRepositoryInterface
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        
+        parent::__construct();
     }
 
     /**

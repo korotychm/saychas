@@ -37,6 +37,8 @@ class ColorRepository extends Repository implements ColorRepositoryInterface {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        
+        parent::__construct();
     }
 
     /**
@@ -44,26 +46,29 @@ class ColorRepository extends Repository implements ColorRepositoryInterface {
      *
      * @param json
      */
-//    public function replace($content) {
-//        try {
-//            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-//        } catch (\Laminas\Json\Exception\RuntimeException $e) {
-//            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-//        }
-//
-//        if ((bool) $result['truncate']) {
-//            $this->db->query("truncate table {$this->tableName}")->execute();
-//        }
-//
-//        foreach ($result['data'] as $row) {
-//            $this->hydrator->hydrate($row, $this->prototype);
-//            try {
-//                $this->persist($this->prototype, ['id' => $this->prototype->getId()]);
-//            } catch (InvalidQueryException $e) {
-//                return ['result' => false, 'description' => "error executing", 'statusCode' => 418];
-//            }
-//        }
-//        return ['result' => true, 'description' => '', 'statusCode' => 200];
-//    }
+    public function replace($content) {
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+
+        $this->mclient->saychas->color->drop();
+        $this->mclient->saychas->color->insertMany($result->data);
+
+        if ((bool) $result['truncate']) {
+            $this->db->query("truncate table {$this->tableName}")->execute();
+        }
+
+        foreach ($result['data'] as $row) {
+            $this->hydrator->hydrate($row, $this->prototype);
+            try {
+                $this->persist($this->prototype, ['id' => $this->prototype->getId()]);
+            } catch (InvalidQueryException $e) {
+                return ['result' => false, 'description' => "error executing", 'statusCode' => 418];
+            }
+        }
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
 
 }

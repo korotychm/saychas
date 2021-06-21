@@ -31,7 +31,7 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
      */
     protected Characteristic $prototype;
     
-    // protected $mclient;
+//    protected $mclient;
 
     /**
      * @param AdapterInterface $db
@@ -47,7 +47,6 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
-        parent::__construct();
 //        $this->mclient = new \MongoDB\Client(
 //            'mongodb://saychas:saychas@localhost/saychas'
 //        );        
@@ -128,8 +127,8 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-//        $this->mclient->saychas->characteristics->drop();
-//        $this->mclient->saychas->characteristics->insertMany($result['data']);
+//        $this->mclient->saychas->characteristic->drop();
+//        $this->mclient->saychas->characteristic->insertMany($result['data']);
 
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table characteristic")->execute();
