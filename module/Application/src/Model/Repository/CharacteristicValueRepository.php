@@ -62,8 +62,8 @@ class CharacteristicValueRepository extends Repository implements Characteristic
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $this->mclient->saychas->brand->drop();
-        $this->mclient->saychas->brand->insertMany($result['data']);
+        $this->mclient->saychas->characteristic_value->drop();
+        $this->mclient->saychas->characteristic_value->insertMany($result['data']);
         
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table {$this->tableName}")->execute();
