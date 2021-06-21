@@ -45,6 +45,8 @@ class CharacteristicValueRepository extends Repository implements Characteristic
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        
+        parent::__construct();
     }
 
     /**
@@ -60,6 +62,9 @@ class CharacteristicValueRepository extends Repository implements Characteristic
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
+        $this->mclient->saychas->brand->drop();
+        $this->mclient->saychas->brand->insertMany($result['data']);
+        
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table {$this->tableName}")->execute();
         }
