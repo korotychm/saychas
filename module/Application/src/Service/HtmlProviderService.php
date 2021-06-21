@@ -247,11 +247,8 @@ class HtmlProviderService
                     ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[".$row['id']."]['max']\" id='maxCost2$rangeId' value='".$maxsel."' -->
                 </div>
         ";
-        }
-                
-                
-                
-               elseif ($row['type'] == 3){
+        }    
+        elseif ($row['type'] == 3){
                 $options = "
                     <div class=blok >
                         <div class='   onoff ' for=123  rel=1 >Нет 
@@ -297,7 +294,6 @@ class HtmlProviderService
         <div  class="paybutton formsendbutton" > post filter view</div>
         <input type=hidden name="offset" value="72" id="sqlOutline"  >
         <input type=hidden name="limit" value="72" id="sqlOutline"  >
-        
         <script>
             $(function(){
                 $("#rangeslider").ionRangeSlider({
@@ -333,15 +329,11 @@ class HtmlProviderService
             <div class='fltrblock'>
                    <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
                 <div style='padding:0px 6px; display:block; position:relative'>
-                    
                     <input type='text' id='rangeslider' class='rangeslider'  value='' name='priceRange'  style=''/>
-                    
                         <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>".number_format($pricesel['minprice']/100, 0, ',', ' ')."</span>
                        </div><div  
                        style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>".number_format($pricesel['maxprice']/100, 0, ',', ' ')."</span></div>
-                    
-                    
-                </div>
+                   </div>
             </div>
         </div>
         ".$return."
@@ -402,7 +394,6 @@ class HtmlProviderService
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $r = (int) $rest->getRest();         
-
             $_id = $product->getId();
             $_return[$_id]['rest'] += $r;
             $_return[$_id]['id'] = $_id;
@@ -547,7 +538,7 @@ class HtmlProviderService
                     . "         " . substr(strip_tags($description), 0, 500)
                     . "         <div class='gradientbottom'></div>"
                     . "     </div>"
-                    . "<a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
+                    . "     <a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
                     . "     </p>"
                     . "</div>"
                     . "<div  id='spoiler-show-$id'   class='blok' style='display:none' ><p>" . str_replace("\n", "</p><p>", $description) . "</p></div>";
@@ -710,5 +701,6 @@ class HtmlProviderService
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
         return "<span>$userAddress</span> ";
     }
-
+    
+    
 }

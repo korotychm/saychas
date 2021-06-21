@@ -77,6 +77,15 @@ class AjaxController extends AbstractActionController
         $this->userRepository = $userRepository;
         $this->authService = $authService;
     }
+    
+    public function userAuthAction (){   
+        $return=["error"=>true, "message"=>"Ошибка. "];
+        $post = $this->getRequest()->getPost();
+        
+        $return[]=$post;
+        exit(print_r($return));
+    }
+    
 
     public function previewAction()
     {

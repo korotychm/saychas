@@ -1,0 +1,14 @@
+<li>имя: <?=$user->getName()?></li>
+<li>телефон: <?=$user->getPhone()?></li>
+<?php
+   ///$content.="<li>пароль: {$user->getPassword()}</li>";
+        if(count($userData)){//$uesrId = $user->getId();
+            $content.="<ol>Адреса:"; 
+            foreach($userData as $ud) {
+                $content.="<li><b>{$ud->getAddress()}</b>";
+                //$content.="<span class='blok mini'>{$ud->getTimestamp()}</span>";
+                $content.="</li>";
+            }
+            $content.="</ol>"; 
+        }
+   echo $content;   

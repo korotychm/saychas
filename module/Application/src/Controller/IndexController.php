@@ -300,4 +300,32 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
 
     }
+    public function userAction($category_id=false)
+    {
+        $userId = $this->identity();//authService->getIdentity();//
+        $user = $this->userRepository->find(['id'=>$userId]);
+        $userData = $user->getUserData();
+        
+        /* НАДО!!!
+         * 
+         * $user->getPassword();
+         $userData = getTimestamp()
+         * 
+         * 
+         */
+        
+        $vwm=[
+            //"catalog" => $categories,
+            "user" => $user,
+            "userData" => $userData,
+            "title" => "userpage". $user->getName(),//."/$category_id",
+            "id" => "userid: ".$userId,
+            "bread" => "bread $bread",
+            "auth"=> ($user->getPhone()),
+            "userdata" => "<ul>$content</ul>",
+            
+        ];
+        return new ViewModel($vwm);
+
+    }
 }

@@ -688,6 +688,28 @@ return [
                     ],
                 ],
             ],
+            'user' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/user',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'user',
+                    ],
+                ],
+            ],
+            'user-auth' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/user-auth',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'userAuth',
+                    ],
+                ],
+            ],
+            
+            
         ],
     ],
     'controllers' => [
