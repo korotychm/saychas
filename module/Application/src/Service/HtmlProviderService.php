@@ -298,14 +298,14 @@ class HtmlProviderService
         <input type=hidden name="offset" value="72" id="sqlOutline"  >
         <input type=hidden name="limit" value="72" id="sqlOutline"  >
         
-<script>
-        $(function(){
-            $("#rangeslider").ionRangeSlider({
+        <script>
+            $(function(){
+                $("#rangeslider").ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
                     min: '.$price['minprice'].',
                     max: '.$price['maxprice'].',
-            //        from:'.$pricesel['minprice'].',
+             //        from:'.$pricesel['minprice'].',
              //       to:  '.$pricesel['maxprice'].',
                     hideMinMax:true,
                     type: "double",
@@ -325,7 +325,7 @@ class HtmlProviderService
                         $("#submitfiltr").show();
                         $(".submitfiltr").show();
 		}
-        });
+            });
         })
         </script> '
         ."   
@@ -445,15 +445,6 @@ class HtmlProviderService
                             . "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . (($Card['image']) ? $Card['image'] : "nophoto_1.jpeg") . ")'/></div>"
                             . "</a>"
                             . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
-                            //. "       <span class='blok'>картинка: ". $product->getHttpUrl(). "</span>"
-                            //. "       <span class='blok'>Id: " . $product->getId() . "</span>"
-                            //   . "       <span class='blok'>Артикул: " . $Card['art'] . "</span>"
-                            //  . "       <span class='blok'>Торговая марка: " . $Card['brand'] . "</span>"
-                            //  . "       <span class='blok'>Хар/List: " . $product->getParamValueList2() . "</span>"
-                            //                    . "       <span class='blok'>Хар/Json: " . $product->getParamVariableList2() . "</span>"
-                            //                        . "       <span class='blok'>Остаток: " . $Card['rest'] . "</span>"
-                            //. "       <b><span class='blok'>Магазин: " . $product->getStoreTitle() . " (id:{$product->getStoreId()})" . "</span></b>"
-                            //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
                             . "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
                             .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
                             . "   </div>"
