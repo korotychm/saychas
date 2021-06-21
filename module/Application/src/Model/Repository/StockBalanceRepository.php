@@ -56,7 +56,7 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        //$this->mclient->saychas->stock_balance->drop();
+        $this->mclient->saychas->stock_balance->drop();
         $this->mclient->saychas->stock_balance->insertMany($result);
         
         foreach ($result/*['data']*/ as $row) {

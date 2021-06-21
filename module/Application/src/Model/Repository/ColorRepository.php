@@ -53,7 +53,7 @@ class ColorRepository extends Repository implements ColorRepositoryInterface {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        //$this->mclient->saychas->color->drop();
+        $this->mclient->saychas->color->drop();
         $this->mclient->saychas->color->insertMany($result['data']);
 
         if ((bool) $result['truncate']) {

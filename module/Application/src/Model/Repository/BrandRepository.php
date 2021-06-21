@@ -58,7 +58,7 @@ class BrandRepository extends Repository implements BrandRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        //$this->mclient->saychas->brand->drop();
+        $this->mclient->saychas->brand->drop();
         $this->mclient->saychas->brand->insertMany($result['data']);
 
         if ((bool) $result['truncate']) {

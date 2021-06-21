@@ -101,7 +101,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        //$this->mclient->saychas->price->drop();
+        $this->mclient->saychas->price->drop();
         $this->mclient->saychas->price->insertMany($result);
         
         foreach ($result/*['data']*/ as $row) {

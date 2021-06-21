@@ -228,7 +228,7 @@ abstract class Repository implements RepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        //$this->mclient->saychas->{$this->tableName}->drop();
+        $this->mclient->saychas->{$this->tableName}->drop();
         $this->mclient->saychas->{$this->tableName}->insertMany($result['data']);
         
         if ((bool) $result['truncate']) {
