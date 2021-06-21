@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `basket` (
 	`user_id` INT(11) NOT NULL,
 	`product_id` VARCHAR(12) NOT NULL,
 	`total` INT(11) NOT NULL DEFAULT 0,
-	`order_id` INT(11) NOT NULL,
+	`order_id` INT(11),
 	`price` INT(11) NOT NULL DEFAULT 0,
 	`discount` INT(11) NOT NULL DEFAULT 0,
 	`discount_description` TEXT,
