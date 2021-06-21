@@ -232,7 +232,27 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         var dataString = $("#textarea").val();
         getLocalStores(dataString);
     })
-
+    
+    $("#userAuthBotton").click(function () {
+        var dataString = $("#userAuthForm").serialize();
+        $.ajax({
+            url: "/ajax/user-auth",
+            cache: false,
+            type: 'POST',
+            dataType: 'json',
+            data:dataString,
+            success: function (data) {
+                console.log(data);
+                $("#userAuthError").html(data.message);
+                
+            },
+             error: function (xhr, ajaxOptions, thrownError) {
+                $("#userAuthError").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+                
+            }
+         })
+     })
+        
     $("#sendajaxprovider").click(function () {
         $("#waitprovider").show();
         $.ajax({

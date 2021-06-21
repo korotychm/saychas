@@ -112,6 +112,7 @@ class UserDataController extends AbstractActionController {
         if ($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
         }
+        header("HTTP/1.1 301 Moved Permanently"); header("Location:/user"); //exit();
         return $this->getResponse();
     }
 
