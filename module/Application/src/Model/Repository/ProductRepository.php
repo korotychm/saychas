@@ -412,7 +412,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = Json::decode($content);
+            $result = Json::decode($content, Json::TYPE_ARRAY);
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
