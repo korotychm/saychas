@@ -101,8 +101,9 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $this->mclient->saychas->price->drop();
-        $this->mclient->saychas->price->insertMany($result);
+        $tableName = $this->tableName;
+        $this->mclient->saychas->$tableName->drop();
+        $this->mclient->saychas->$tableName->insertMany($result['data']);
         
         foreach ($result/*['data']*/ as $row) {
             $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, %u, '%s')",
