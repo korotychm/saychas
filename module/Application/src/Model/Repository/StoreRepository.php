@@ -50,6 +50,8 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        
+        parent::__construct();
     }
 
     /**
