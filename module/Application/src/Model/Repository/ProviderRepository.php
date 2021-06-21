@@ -109,8 +109,9 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-//        $this->mclient->saychas->provider->drop();
-//        $this->mclient->saychas->provider->insertMany($result['data']);
+//        $tableName = $this->tableName;
+//        $this->mclient->saychas->$tableName->drop();
+//        $this->mclient->saychas->$tableName->insertMany($result['data']);
         
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table provider")->execute();

@@ -11,6 +11,7 @@ use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\CountryRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -32,6 +33,7 @@ class HtmlProviderService
     private $productCharacteristicRepository;
     private $characteristicValueRepository;
     private $colorRepository;
+    private $basketRepository;
 
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
@@ -42,7 +44,8 @@ class HtmlProviderService
             PriceRepositoryInterface $priceRepository,
             CharacteristicRepositoryInterface $characteristicRepository,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository,
-            CharacteristicValueRepositoryInterface $characteristicValueRepository
+            CharacteristicValueRepositoryInterface $characteristicValueRepository,
+            BasketRepositoryInterface $basketRepository
     )
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
@@ -54,6 +57,7 @@ class HtmlProviderService
         $this->characteristicRepository = $characteristicRepository;
         $this->productCharacteristicRepository = $productCharacteristicRepository;
         $this->characteristicValueRepository = $characteristicValueRepository;
+        $this->basketRepository = $basketRepository;
     }
 
     /**

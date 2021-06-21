@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
@@ -64,6 +65,7 @@ class IndexController extends AbstractActionController
     private $authService;
     private $productCharacteristicRepository;
     private $colorRepository;
+    private $basketRepository;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -73,7 +75,7 @@ class IndexController extends AbstractActionController
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
                 $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
-                ProductCharacteristicRepositoryInterface $productCharacteristicRepository)
+                ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -95,6 +97,7 @@ class IndexController extends AbstractActionController
         $this->userRepository = $userRepository;
         $this->authService = $authService;
         $this->productCharacteristicRepository = $productCharacteristicRepository;
+        $this->basketRepository = $basketRepository;
     }
 
     public function onDispatch(MvcEvent $e)
@@ -184,6 +187,14 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $basket = $this->basketRepository->findAll([]);
+//        
+//        foreach($basket as $b) {
+//            print_r($b);
+//        }
+//        exit;
+//        
+//        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         
         $params = [
@@ -277,12 +288,12 @@ class IndexController extends AbstractActionController
 //            }
 //        }
         
-        $products = $this->getProducts($params);
-        foreach($products as $product) {
-            echo '<pre>';
-            echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
-            echo '</pre>';
-        }
+//        $products = $this->getProducts($params);
+//        foreach($products as $product) {
+//            echo '<pre>';
+//            echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
+//            echo '</pre>';
+//        }
 
         return new ViewModel([
             'fooItem' => $container->item

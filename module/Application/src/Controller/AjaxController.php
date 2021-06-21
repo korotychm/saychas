@@ -18,6 +18,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -57,6 +58,7 @@ class AjaxController extends AbstractActionController
     private $htmlProvider;
     private $userRepository;
     private $authService;
+    private $basketRepository;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -64,7 +66,7 @@ class AjaxController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
                 HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
-                ProductCharacteristicRepositoryInterface $productCharacteristicRepository)
+                ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -83,6 +85,7 @@ class AjaxController extends AbstractActionController
         $this->htmlProvider = $htmlProvider;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
+        $this->basketRepository = $basketRepository;
     }
 
     public function previewAction()

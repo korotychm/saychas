@@ -228,9 +228,9 @@ abstract class Repository implements RepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        $tableName = $this->tableName;
-        $this->mclient->saychas->$tableName->drop();
-        $this->mclient->saychas->$tableName->insertMany($result['data']);
+//        $tableName = $this->tableName;
+//        $this->mclient->saychas->$tableName->drop();
+//        $this->mclient->saychas->$tableName->insertMany($result['data']);
         
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table {$this->tableName}")->execute();

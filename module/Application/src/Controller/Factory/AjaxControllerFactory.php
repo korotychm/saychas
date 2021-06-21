@@ -14,6 +14,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
@@ -52,9 +53,10 @@ class AjaxControllerFactory implements FactoryInterface
         $htmlProvider = $container->get(HtmlProviderService::class);
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
+        $basketRepository = $container->get(BasketRepositoryInterface::class);
         return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, 
                 $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $userRepository, $authService,
-                $productCharacteristicRepository);
+                $productCharacteristicRepository, $basketRepository);
     }
 
 }
