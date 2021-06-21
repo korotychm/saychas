@@ -57,7 +57,7 @@ class StockBalanceRepository extends Repository implements StockBalanceRepositor
         }
 
         //$this->mclient->saychas->stock_balance->drop();
-        $this->mclient->saychas->stock_balance->insertMany($result['data']);
+        $this->mclient->saychas->stock_balance->insertMany($result);
         
         foreach ($result/*['data']*/ as $row) {
             $sql = sprintf("replace INTO `stock_balance`(`product_id`, `size`, `store_id`, `rest`) VALUES ( '%s', '%s', '%s', %u)",
