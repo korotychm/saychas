@@ -9,6 +9,7 @@ use Application\Service\HtmlProviderService;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\CountryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
@@ -36,8 +37,9 @@ class HtmlProviderServiceFactory implements FactoryInterface
         $characteristicRepository = $container->get(CharacteristicRepositoryInterface::class);
         $productCharacteristicRepository = $container->get(ProductCharacteristicRepositoryInterface::class);
         $characteristicValueRepository = $container->get(CharacteristicValueRepositoryInterface::class);
+        $basketRepository = $container->get(BasketRepositoryInterface::class);
         
         return new HtmlProviderService($stockBalanceRepository, $brandRepository, $colorRepository, $countryRepository, $providerRepository, $priceRepository,
-                $characteristicRepository, $productCharacteristicRepository, $characteristicValueRepository);
+                $characteristicRepository, $productCharacteristicRepository, $characteristicValueRepository, $basketRepository);
     }
 }

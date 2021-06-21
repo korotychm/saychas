@@ -236,8 +236,10 @@ class MyTestController extends AbstractActionController
     
     public function helloWorldAction()
     {
-        $im = \Application\Helper\FtpHelper::fetchOne($this->config, 'product', '1350x.jpg');
-        return $im;
+        echo 'adsf';
+        exit;
+//        $im = \Application\Helper\FtpHelper::fetchOne($this->config, 'product', '1350x.jpg');
+//        return $im;
 
         //https://docs.laminas.dev/laminas-hydrator/v3/strategies/collection/
 
@@ -246,29 +248,29 @@ class MyTestController extends AbstractActionController
 //        );
 //        $saychas = $this->mclient->saychas;//selectDatabase('saychas');
 
-        foreach ($this->mclient->listDatabases() as $databaseInfo) {
-            var_dump($databaseInfo);
-        }
-        
-        //$collection = $client->profile;//->email;//selectCollection('saychas', 'profile');
-        
-        //$collection = (new \MongoDB\Client)->saychas->profile;
-        
-        $collection = $this->mclient->saychas->profile;
-        
-        $cursor = $collection->find(
-            [
-//                'name' => 'saychas',
-//                'flag' => 1,
-            ],
-            [
-                'limit' => 5,
-                'projection' => [
-                    'name' => 1,
-                    'email' => 1,
-                ],
-            ]
-        );
+//        foreach ($this->mclient->listDatabases() as $databaseInfo) {
+//            var_dump($databaseInfo);
+//        }
+//        
+//        //$collection = $client->profile;//->email;//selectCollection('saychas', 'profile');
+//        
+//        //$collection = (new \MongoDB\Client)->saychas->profile;
+//        
+//        $collection = $this->mclient->saychas->profile;
+//        
+//        $cursor = $collection->find(
+//            [
+////                'name' => 'saychas',
+////                'flag' => 1,
+//            ],
+//            [
+//                'limit' => 5,
+//                'projection' => [
+//                    'name' => 1,
+//                    'email' => 1,
+//                ],
+//            ]
+//        );
         
         foreach ($cursor as $c) {
             echo '<pre>';

@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
@@ -29,6 +30,9 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\Repository\UserRepository;
+use Application\Model\Repository\CharacteristicRepository;
+use Application\Model\Entity\HandbookRelatedProduct;
+use Laminas\Json\Json;
 
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
@@ -61,6 +65,7 @@ class IndexController extends AbstractActionController
     private $authService;
     private $productCharacteristicRepository;
     private $colorRepository;
+    private $basketRepository;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -70,7 +75,7 @@ class IndexController extends AbstractActionController
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
                 $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
-                $productCharacteristicRepository)
+                ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -92,6 +97,7 @@ class IndexController extends AbstractActionController
         $this->userRepository = $userRepository;
         $this->authService = $authService;
         $this->productCharacteristicRepository = $productCharacteristicRepository;
+        $this->basketRepository = $basketRepository;
     }
 
     public function onDispatch(MvcEvent $e)
@@ -124,49 +130,168 @@ class IndexController extends AbstractActionController
 
     }
     
+    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
+    {
+        $flags = [];
+        foreach($characteristics as $key => $value) {
+            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId() ]);
+            if(null == $found) {
+                $flags[$key] = false;
+                continue;
+            }
+            $type = $found->getType();
+            switch($type) {
+                case CharacteristicRepository::INTEGER_TYPE:
+                    list($left, $right) = explode(';', $value[0]);
+                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
+                    break;
+                case CharacteristicRepository::BOOL_TYPE:
+                    $flags[$key] = ($found->getValue() == $value);
+                    break;
+                default:
+                    $flags[$key] = in_array($found->getValue(), $value);
+                    break;
+            }
+        }
+        foreach($flags as $f) {
+            if(!$f) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function getProducts($params)
+    {
+        $where = new \Laminas\Db\Sql\Where();
+        list($low, $high) = explode(';', $params['priceRange']);
+        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+        $where->equalTo('category_id', $params['category_id']);
+        //$where->in('category_id', $params['category_id']);
+
+        unset($params['offset']);
+        unset($params['limit']);
+        $params['where'] = $where;
+        
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+        $filteredProducts = [];
+        foreach($products as $product) {
+            
+            $matchResult = $this->matchProduct($product, $params['characteristics']);
+            if($matchResult) {
+                $filteredProducts[] = $product;
+            }
+        }
+        return $filteredProducts;
+    }
+    
     public function indexAction()
     {
+//        $basket = $this->basketRepository->findAll([]);
+//        
+//        foreach($basket as $b) {
+//            print_r($b);
+//        }
+//        exit;
+//        
+//        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         
-//        $params = [
-//            'category_id' => ['000000006'],
-//            'offset' => 0,
-//            'limit' => 1,
-//            'priceRange' => '5399100;5399100',
-//            'characteristics' => [
-//                '[000000001-000000006]' => [
-//                    [0] => 156,
-//                    [1] => 704,
+        $params = [
+            'category_id' => '000000006',
+            'offset' => 0,
+            'limit' => 1111,
+            'priceRange' => '580000;8000000',//5399100',//3399100',//1210000','5399100;5399100',
+            'characteristics' => [
+                '000000001-000000006' => [
+                    '156',
+                    '704',
+                ],
+//
+//                '000000003-000000006' => [
+//                    '000003',
+//                    '000011',
 //                ],
-//                ['000000003-000000006'] => [
-//                    [0] => '000009',
-//                    [1] => '000010',
+//
+                '000000004-000000006' => [
+                    '000000002',
+                    '000000004',
+                    '000000011',
+                    '000000012',
+                ],
+//
+                '000000014-000000006' => [
+                    '000000011',
+                    '000000044',
+                ],
+//
+//                '000000029-000000006' => [
+//                    '6.2;6.6',
 //                ],
-//                ['000000014-000000006'] => [
-//                    [0] => '000000011',
-//                    [1] => '000000044',
+//
+//                '000000036-000000006' => [
+//                    '000000040',
+//                    '000000041',
 //                ],
-//                ['000000029-000000006'] => [
-//                    [0] => '6.3;6.6',
+//
+//                '000000037-000000006' => [
+//                    '000000017',
+//                    '000000042',
 //                ],
-//            ],
-//        ];
-//        
+//
+//                '000000040-000000006' => [
+//                    '000000021',
+//                    '000000022',
+//                ],
+//
+//                '000000041-000000006' => [
+//                    '000000024',
+//                    '000000025',
+//                ],
+
+//                '000000051-000000006' => [
+//                        '000000034',
+//                        '000000035',
+//                ],
+//
+//                '000000058-000000006' => [
+//                    '21;93'
+//                ],
+            ],
+        ];
+        
+//        $clause = [];
+//        foreach($params['characteristics'] as $key=>$value) {
+//            //$clause[] = sprintf("( characteristic_id = '%s' and value in(%s) )", $key, implode(',', $value));
+//            $clause[] = sprintf("( characteristic_id = '%s' and find_in_set(value, '%s') )", $key, implode(',', $value));
+//        }
+//        print_r(implode(' or ', $clause));
+//        exit;
+
 //        $where = new \Laminas\Db\Sql\Where();
 //        list($low, $high) = explode(';', $params['priceRange']);
-//        $where->between('price', $low, $high);
+//        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
 //        $where->in('category_id', $params['category_id']);
-//        
-//        foreach($params['characteristics'] as $c) {
-//            
-//        }
-//        
+//
+//        unset($params['offset']);
+//        unset($params['limit']);
 //        $params['where'] = $where;
 //        
 //        $products = $this->handBookRelatedProductRepository->findFilteredProducts($params);
 //        foreach($products as $product) {
+//            
+//            $matchResult = $this->matchProduct($product, $params['characteristics']);
+//            if($matchResult) {
+//                echo '<pre>';
+//                echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
+//                echo '</pre>';
+//            }
+//        }
+        
+//        $products = $this->getProducts($params);
+//        foreach($products as $product) {
 //            echo '<pre>';
-//            print_r($product);
+//            echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
 //            echo '</pre>';
 //        }
 

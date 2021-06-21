@@ -60,7 +60,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      */
     protected $catalogToSaveImages;
 
-    private $mclient;
+//    private $mclient;
 
     /**
      * @param AdapterInterface $db
@@ -87,9 +87,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         $this->characteristicValue2Repository = $characteristicValue2Repository;
         $this->catalogToSaveImages = $catalogToSaveImages;
 
-        $this->mclient = new \MongoDB\Client(
-            'mongodb://saychas:saychas@localhost/saychas'
-        );
+        parent::__construct();
+//        $this->mclient = new \MongoDB\Client(
+//            'mongodb://saychas:saychas@localhost/saychas'
+//        );
     }
 
     /**
@@ -265,6 +266,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $s = $this->packParams($params);
             $select->where($s);
         }
+        
+        if (isset($params['where'])) {
+            $select->where($params['where']);
+        }
 
         if ($params['order']) {
             $select->order($params['order']);
@@ -407,13 +412,14 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = Json::decode($content);
+            $result = Json::decode($content, Json::TYPE_ARRAY);
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-//        $this->mclient->saychas->products->drop();
-//        $this->mclient->saychas->products->insertMany($result->data);
+//        $tableName = $this->tableName;
+//        $this->mclient->saychas->$tableName->drop();
+//        $this->mclient->saychas->$tableName->insertMany($result['data']);
         //printf("Inserted %d document(s)\n", $this->mclient->saychas->products);
 //        return ['result' => true, 'description' => sprintf("Inserted %d document(s)\n", $this->mclient->saychas->products), 'statusCode' => 200];
 //        exit;
