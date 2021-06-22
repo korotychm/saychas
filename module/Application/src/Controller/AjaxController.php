@@ -94,7 +94,20 @@ class AjaxController extends AbstractActionController {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         
-   
+        $where = new Where();
+        $where->equalTo('user_id', $userId);
+        $where->notEqualTo('order_id', 0);
+        /** more conditions come here */
+        $columns = ['user_id', 'product_id', 'order_id'];
+        
+        $basket = $this->basketRepository->findAll(['where'=>$where, 'columns' => $columns]);
+        
+        foreach($basket as $b) {
+            print_r($b);
+        }
+        
+        exit;
+
      }
     
     public function userAuthAction() {

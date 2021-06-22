@@ -34,6 +34,7 @@ use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
 use Laminas\Session\Container;
 use Application\Adapter\Auth\UserAuthAdapter;
+use Laminas\Db\Sql\Where;
 
 class IndexController extends AbstractActionController
 {
