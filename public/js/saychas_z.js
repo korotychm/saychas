@@ -243,6 +243,10 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             data:dataString,
             success: function (data) {
                 console.log(data);
+                if (data.error == false) {
+                    location = location.href;
+                    return false;
+                } 
                 if (data.phone){
                     if(data.isUser ) {
                         $('.olduser').removeClass("none");
@@ -253,7 +257,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                     }
                 }
                 $("#userAuthError").html(data.message);
-                if (!data.error) location = location.href;
+                
                 
             },
              error: function (xhr, ajaxOptions, thrownError) {

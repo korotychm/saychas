@@ -95,7 +95,8 @@ class AjaxController extends AbstractActionController {
         $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
         $return['phone'] = $this->phoneToNum($post->userPhone);
-        $name = $post->userNameInput;
+        $return['name'] = $post->userNameInput;
+        
         $code = $post->userSmsCode;
         $container = new Container(StringResource::SESSION_NAMESPACE);
 
@@ -117,12 +118,12 @@ class AjaxController extends AbstractActionController {
                         ;  
                 $return["username"] = $user->getName();
             } else {
-                if ($name and $code == $smsCode) {
+                if ($return['name'] and $code == $smsCode) {
 
                     $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity]);
-                    $user->setName($post->userNameInput);
+                    $user->setName($return['name']);
                     $user->setPhone($return['phone']);
-                  //  $this->userRepository->persist($user, ['id' => $user->getId()]);
+                   // $this->userRepository->persist($user, ['id' => $user->getId()]);
                     $return["error"] = false;
                 }
                 $return["message"] = StringResource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
