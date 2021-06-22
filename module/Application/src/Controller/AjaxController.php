@@ -39,8 +39,7 @@ use Laminas\Session\Container;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 
-class AjaxController extends AbstractActionController
-{
+class AjaxController extends AbstractActionController {
 
     private $testRepository;
     private $categoryRepository;
@@ -67,8 +66,7 @@ class AjaxController extends AbstractActionController
             CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
-    {
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository) {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
@@ -89,67 +87,54 @@ class AjaxController extends AbstractActionController
         $this->basketRepository = $basketRepository;
     }
 
-    
-    
-    public function userAuthAction()
-    {
+    public function userAuthAction() {
         //userNameInput userSmsCode userPass
-        $password=$smsCode="7777";
-        $return = ["error" => true, "message" => "Ошибка. ", "isUser" => false, "username"=>"" ];
+        $password = $smsCode = "7777";
+        $return = ["error" => true, "message" => "Ошибка. ", "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
         $return['phone'] = $this->phoneToNum($post->userPhone);
-        $name = $post->userNameInput; 
-        $code = $post->userSmsCode; 
+        $name = $post->userNameInput;
+        $code = $post->userSmsCode;
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        
-        if(!$return['phone']){$return["message"].="Укажите корректный номер телефона";}
-        else {
+
+        if (!$return['phone']) {
+            $return["message"] .= "Укажите корректный номер телефона";
+        } else {
             $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
-            if ($user and $userId = $user->getId()){
-               $return['userId'] = $userId;
-               $return["isUser"] = true ;
-               if($post->userPass == $password) {
-                    
+            if ($user and $userId = $user->getId()) {
+                $return['userId'] = $userId;
+                $return["isUser"] = true;
+                if ($post->userPass == $password) {
+
                     $container->userIdentity = $return['userId'];
-                    $return["error"] = false ; 
-               }     
-               $return["message"]="Введите пароль для входа ($password)";  //это телефонный номер  юзера
-               $return["username"]= $user->getName();
-               
-             }
-             else {
-                 if ($name  and  $code == $smsCode ) { 
-                     
-                     $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity ]);   
-                     /*
-                      * 
-                      * надо изменить строку в таблице польщователей!!!!
-                      * 
-                      */   
-                     $user->setName($post->userNameInput);
-                        $user->setPhone($return['phone']);
-                     $return["error"] = false ; 
-                     
-                 }
-                 $return["message"]="Введите ваше имя и код из СМС $name / $code";  //это телефонный номер  юзера
-             }
-        
+                    $return["error"] = false;
+                }
+                $return["message"] = "Введите пароль для входа ($password)";  //это телефонный номер  юзера
+                $return["username"] = $user->getName();
+            } else {
+                if ($name and $code == $smsCode) {
+
+                    $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity]);
+                    $user->setName($post->userNameInput);
+                    $user->setPhone($return['phone']);
+                    $user->setPhone($return['phone']);
+                    $this->userRepository->persist($user, ['id' => $user->getId()]);
+                    $return["error"] = false;
+                }
+                $return["message"] = "Введите ваше имя и код из СМС $name / $code";  //это телефонный номер  юзера
+            }
         }
         //$return = Json::encode($return, JSON_UNESCAPED_UNICODE);
-        $return['post']=$post;
+        $return['post'] = $post;
         $return = json_encode($return, JSON_UNESCAPED_UNICODE);
         exit($return);
         //return (new ViewModel(['return' => $return]))->setTerminal(true);
         /* 
-         * 
          * или напиши как JSON вывести!!!!
-         * 
-         * 
          */
     }
 
-    public function previewAction()
-    {
+    public function previewAction() {
         $this->layout()->setTemplate('layout/preview');
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
@@ -157,10 +142,8 @@ class AjaxController extends AbstractActionController
         ]);
     }
 
-    public function ajaxToWebAction()
-    {
+    public function ajaxToWebAction() {
         $post = $this->getRequest()->getPost();
-
         $url = $this->config['parameters']['1c_request_links']['get_product'];
         $params = array('name' => 'value');
         $result = file_get_contents(
@@ -184,8 +167,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel([]);
     }
 
-    public function ajaxGetStoreAction()
-    {
+    public function ajaxGetStoreAction() {
 
         $post = $this->getRequest()->getPost();
         $json = $post->value;
@@ -229,8 +211,7 @@ class AjaxController extends AbstractActionController
         return $response;
     }
 
-    public function ajaxGetLegalStoreAction()
-    {
+    public function ajaxGetLegalStoreAction() {
         $post = $this->getRequest()->getPost();
         $json = $post->value;
         try {
@@ -280,16 +261,14 @@ class AjaxController extends AbstractActionController
         exit("200");
     }
 
-    public function ajaxSetUserAddressAction()
-    {
+    public function ajaxSetUserAddressAction() {
         $json["userAddress"] = $this->htmlProvider->writeUserAddress();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $json["legalStore"] = $container->legalStore;
         exit(Json::encode($json, JSON_UNESCAPED_UNICODE));
     }
 
-    public function unsetFilterForCategoКyAction()
-    {
+    public function unsetFilterForCategoКyAction() {
         $post = $this->getRequest()->getPost();
         $category_id = $post->category_id;
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -304,8 +283,7 @@ class AjaxController extends AbstractActionController
      * @param array $characteristics
      * @return bool
      */
-    private function matchProduct(/* HandbookRelatedProduct */ \Application\Model\Entity\Product $product, array $characteristics): bool
-    {
+    private function matchProduct(/* HandbookRelatedProduct */ \Application\Model\Entity\Product $product, array $characteristics): bool {
         $flags = [];
         foreach ($characteristics as $key => $value) {
             $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
@@ -343,8 +321,7 @@ class AjaxController extends AbstractActionController
      * @param array $params
      * @return Where
      */
-    private function getWhere($params): Where
-    {
+    private function getWhere($params): Where {
         $where = new Where();
         list($low, $high) = explode(';', $params['priceRange']);
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
@@ -359,8 +336,7 @@ class AjaxController extends AbstractActionController
      * @param array $params
      * @return HandbookRelatedProduct[]
      */
-    private function getProducts($params)
-    {
+    private function getProducts($params) {
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
@@ -380,8 +356,7 @@ class AjaxController extends AbstractActionController
         return $filteredProducts;
     }
 
-    public function setFilterForCategoryAction()
-    {
+    public function setFilterForCategoryAction() {
 
         $post = $this->getRequest()->getPost()->toArray();
 
@@ -405,8 +380,7 @@ class AjaxController extends AbstractActionController
           //exit (print_r($container->filtrForCategory));/* */
     }
 
-    public function ajaxAction($params = array('name' => 'value'))
-    {
+    public function ajaxAction($params = array('name' => 'value')) {
         $id = $this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
         //$param=array(1,2,3,4,5);   
@@ -495,15 +469,13 @@ class AjaxController extends AbstractActionController
         exit();
     }
 
-    public function banzaiiAction()
-    {
+    public function banzaiiAction() {
         //$this->response->setStatusCode(404);
 
         return (new ViewModel(['banzaii' => 'zzappolzaii']))->setTerminal(true);
     }
 
-    public function providerAction()
-    {
+    public function providerAction() {
         $id = $this->params()->fromRoute('id', '');
         $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
@@ -514,8 +486,7 @@ class AjaxController extends AbstractActionController
         ]);
     }
 
-    private function phoneToNum($destination_numbers)
-    {
+    private function phoneToNum($destination_numbers) {
         $numbers = $sort_numbers = [];
         if (!is_array($destination_numbers)) {
             $destination_numbers = trim($destination_numbers);
@@ -542,8 +513,7 @@ class AjaxController extends AbstractActionController
 
                 if (strlen($arInd) < 10 || strlen($arInd) > 15) {
                     continue;
-                } 
-                else {
+                } else {
                     if (strlen($arInd) == 10 && $arInd[0] == '9') {
                         $arInd = '7' . $arInd;
                     }
