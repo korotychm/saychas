@@ -232,7 +232,30 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         var dataString = $("#textarea").val();
         getLocalStores(dataString);
     })
-
+    
+    $("#userAuthBotton").click(function () {
+        var dataString = $("#userAuthForm").serialize();
+        $.ajax({
+            url: "/ajax/user-auth",
+            cache: false,
+            type: 'POST',
+            dataType: 'json',
+            data:dataString,
+            success: function (data) {
+                console.log(data);
+                if(data.isUser) {$('.olduser').removeClass("none"); $('.newuser').addClass("none"); }
+                else {$('.olduser').addClass("none"); $('.newuser').removeClass("none");}
+                $("#userAuthError").html(data.message);
+                if (!data.error) location = location.href;
+                
+            },
+             error: function (xhr, ajaxOptions, thrownError) {
+                $("#userAuthError").html("Ошибка соединения, попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
+                
+            }
+         })
+     })
+        
     $("#sendajaxprovider").click(function () {
         $("#waitprovider").show();
         $.ajax({

@@ -430,7 +430,7 @@ class IndexController extends AbstractActionController
         $userId = $this->identity();//authService->getIdentity();//
         $user = $this->userRepository->find(['id'=>$userId]);
         $userData = $user->getUserData();
-        
+        $title=($user->getName())?$user->getName():"Войти на сайт";
         /* НАДО!!!
          * 
          * $user->getPassword();
@@ -443,7 +443,7 @@ class IndexController extends AbstractActionController
             //"catalog" => $categories,
             "user" => $user,
             "userData" => $userData,
-            "title" => "userpage". $user->getName(),//."/$category_id",
+            "title" => $title ,//."/$category_id",
             "id" => "userid: ".$userId,
             "bread" => "bread $bread",
             "auth"=> ($user->getPhone()),

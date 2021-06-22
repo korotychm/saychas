@@ -5,9 +5,13 @@ $this->headTitle($this->title, 'PREPEND');
     <div id="left-col">
         <div class="content-col">
             <ul class='menu usermenu'>
+                <?php //=$this->partial('application/index/partials/user-menu') 
+                ?>
                 <li><a href='#'>Профиль</a></li>
                 <li><a href='#'>История заказов</a></li>
                 <li><a href='#'>Мои адреса</a></li>
+                <?=($this->auth)?"<li><a href='/clear-user-data' >Выход</a></li>":"";?>
+                
             </ul>    
 
           
