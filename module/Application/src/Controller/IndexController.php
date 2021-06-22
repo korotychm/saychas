@@ -1,9 +1,4 @@
 <?php
-/**
- * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
- * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
- */
 
 declare(strict_types=1);
 
@@ -102,6 +97,13 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
+        $result = $this->authService->authenticate($userAuthAdapter);
+        $code = $result->getCode();
+        if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
+            throw new \Exception('Unknown error in IndexController');
+        }
+
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
 //        $servicemanager = $e->getApplication()->getServiceManager();
@@ -118,13 +120,6 @@ class IndexController extends AbstractActionController
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
         ]);
-        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
-        $result = $this->authService->authenticate($userAuthAdapter);
-        $code = $result->getCode();
-        if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
-            throw new \Exception('Unknown error in IndexController');
-        }
-
         //$this->layout()->setTemplate('layout/mainpage');
         return $response;
 
@@ -187,78 +182,7 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
-//        $basket = $this->basketRepository->findAll([]);
-//        
-//        foreach($basket as $b) {
-//            print_r($b);
-//        }
-//        exit;
-//        
-//        
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        
-        $params = [
-            'category_id' => '000000006',
-            'offset' => 0,
-            'limit' => 1111,
-            'priceRange' => '580000;8000000',//5399100',//3399100',//1210000','5399100;5399100',
-            'characteristics' => [
-                '000000001-000000006' => [
-                    '156',
-                    '704',
-                ],
-//
-//                '000000003-000000006' => [
-//                    '000003',
-//                    '000011',
-//                ],
-//
-                '000000004-000000006' => [
-                    '000000002',
-                    '000000004',
-                    '000000011',
-                    '000000012',
-                ],
-//
-                '000000014-000000006' => [
-                    '000000011',
-                    '000000044',
-                ],
-//
-//                '000000029-000000006' => [
-//                    '6.2;6.6',
-//                ],
-//
-//                '000000036-000000006' => [
-//                    '000000040',
-//                    '000000041',
-//                ],
-//
-//                '000000037-000000006' => [
-//                    '000000017',
-//                    '000000042',
-//                ],
-//
-//                '000000040-000000006' => [
-//                    '000000021',
-//                    '000000022',
-//                ],
-//
-//                '000000041-000000006' => [
-//                    '000000024',
-//                    '000000025',
-//                ],
-
-//                '000000051-000000006' => [
-//                        '000000034',
-//                        '000000035',
-//                ],
-//
-//                '000000058-000000006' => [
-//                    '21;93'
-//                ],
-            ],
-        ];
         
 //        $clause = [];
 //        foreach($params['characteristics'] as $key=>$value) {
@@ -425,6 +349,7 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
 
     }
+    
     public function userAction($category_id=false)
     {
         $userId = $this->identity();//authService->getIdentity();//
@@ -454,3 +379,68 @@ class IndexController extends AbstractActionController
 
     }
 }
+
+
+
+//        $params = [
+//            'category_id' => '000000006',
+//            'offset' => 0,
+//            'limit' => 1111,
+//            'priceRange' => '580000;8000000',//5399100',//3399100',//1210000','5399100;5399100',
+//            'characteristics' => [
+//                '000000001-000000006' => [
+//                    '156',
+//                    '704',
+//                ],
+////
+////                '000000003-000000006' => [
+////                    '000003',
+////                    '000011',
+////                ],
+////
+//                '000000004-000000006' => [
+//                    '000000002',
+//                    '000000004',
+//                    '000000011',
+//                    '000000012',
+//                ],
+////
+//                '000000014-000000006' => [
+//                    '000000011',
+//                    '000000044',
+//                ],
+////
+////                '000000029-000000006' => [
+////                    '6.2;6.6',
+////                ],
+////
+////                '000000036-000000006' => [
+////                    '000000040',
+////                    '000000041',
+////                ],
+////
+////                '000000037-000000006' => [
+////                    '000000017',
+////                    '000000042',
+////                ],
+////
+////                '000000040-000000006' => [
+////                    '000000021',
+////                    '000000022',
+////                ],
+////
+////                '000000041-000000006' => [
+////                    '000000024',
+////                    '000000025',
+////                ],
+//
+////                '000000051-000000006' => [
+////                        '000000034',
+////                        '000000035',
+////                ],
+////
+////                '000000058-000000006' => [
+////                    '21;93'
+////                ],
+//            ],
+//        ];
