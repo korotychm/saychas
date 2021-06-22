@@ -124,8 +124,9 @@ class AjaxController extends AbstractActionController
                       * надо изменить строку в таблице польщователей!!!!
                       * 
                       */   
-                     $user -> setName($post->userNameInput);
-                        $user -> setPhone($return['phone']);
+                     $user->setName($post->userNameInput);
+                     $user->setPhone($return['phone']);
+                     $this->userRepository->persist($user, ['id' => $user->getId()]);
                      $return["error"] = false ; 
                      
                  }
