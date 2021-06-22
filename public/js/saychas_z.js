@@ -243,8 +243,15 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             data:dataString,
             success: function (data) {
                 console.log(data);
-                if(data.isUser) {$('.olduser').removeClass("none"); $('.newuser').addClass("none"); }
-                else {$('.olduser').addClass("none"); $('.newuser').removeClass("none");}
+                if (data.phone){
+                    if(data.isUser ) {
+                        $('.olduser').removeClass("none");
+                        $('.newuser').addClass("none"); 
+                    }
+                    else {
+                        $('.olduser').addClass("none"); $('.newuser').removeClass("none");
+                    }
+                }
                 $("#userAuthError").html(data.message);
                 if (!data.error) location = location.href;
                 

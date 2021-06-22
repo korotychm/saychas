@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
@@ -89,8 +90,9 @@ class AjaxController extends AbstractActionController {
 
     public function userAuthAction() {
         //userNameInput userSmsCode userPass
-        $password = $smsCode = "7777";
-        $return = ["error" => true, "message" => "Ошибка. ", "isUser" => false, "username" => ""];
+        $password = $smsCode = "7777"; //костыль
+        
+        $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
         $return['phone'] = $this->phoneToNum($post->userPhone);
         $name = $post->userNameInput;
@@ -98,7 +100,8 @@ class AjaxController extends AbstractActionController {
         $container = new Container(StringResource::SESSION_NAMESPACE);
 
         if (!$return['phone']) {
-            $return["message"] .= "Укажите корректный номер телефона";
+            
+            $return["message"] .= StringResource::ERROR_INPUT_PHONE_MESSAGE;
         } else {
             $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
             if ($user and $userId = $user->getId()) {
@@ -109,7 +112,9 @@ class AjaxController extends AbstractActionController {
                     $container->userIdentity = $return['userId'];
                     $return["error"] = false;
                 }
-                $return["message"] = "Введите пароль для входа ($password)";  //это телефонный номер  юзера
+                $return["message"] = StringResource::ERROR_INPUT_PASSWORD_MESSAGE
+                        . "($password)"
+                        ;  
                 $return["username"] = $user->getName();
             } else {
                 if ($name and $code == $smsCode) {
@@ -117,21 +122,18 @@ class AjaxController extends AbstractActionController {
                     $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity]);
                     $user->setName($post->userNameInput);
                     $user->setPhone($return['phone']);
-                    $user->setPhone($return['phone']);
-                    $this->userRepository->persist($user, ['id' => $user->getId()]);
+                  //  $this->userRepository->persist($user, ['id' => $user->getId()]);
                     $return["error"] = false;
                 }
-                $return["message"] = "Введите ваше имя и код из СМС $name / $code";  //это телефонный номер  юзера
+                $return["message"] = StringResource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
             }
         }
         //$return = Json::encode($return, JSON_UNESCAPED_UNICODE);
         $return['post'] = $post;
         $return = json_encode($return, JSON_UNESCAPED_UNICODE);
         exit($return);
-        //return (new ViewModel(['return' => $return]))->setTerminal(true);
-        /* 
-         * или напиши как JSON вывести!!!!
-         */
+         //return new JsonModel($return);
+   
     }
 
     public function previewAction() {
