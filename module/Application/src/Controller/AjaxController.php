@@ -119,7 +119,12 @@ class AjaxController extends AbstractActionController
                  if ($name  and  $code == $smsCode ) { 
                      
                      $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity ]);   
-                        $user -> setName($post->userNameInput);
+                     /*
+                      * 
+                      * надо изменить строку в таблице польщователей!!!!
+                      * 
+                      */   
+                     $user -> setName($post->userNameInput);
                         $user -> setPhone($return['phone']);
                      $return["error"] = false ; 
                      
@@ -133,6 +138,12 @@ class AjaxController extends AbstractActionController
         $return = json_encode($return, JSON_UNESCAPED_UNICODE);
         exit($return);
         //return (new ViewModel(['return' => $return]))->setTerminal(true);
+        /* 
+         * 
+         * или напиши как JSON вывести!!!!
+         * 
+         * 
+         */
     }
 
     public function previewAction()
