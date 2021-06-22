@@ -89,6 +89,8 @@ class AjaxController extends AbstractActionController
         $this->basketRepository = $basketRepository;
     }
 
+    
+    
     public function userAuthAction()
     {
         //userNameInput userSmsCode userPass
@@ -124,8 +126,8 @@ class AjaxController extends AbstractActionController
                       * надо изменить строку в таблице польщователей!!!!
                       * 
                       */   
-                     $user -> setName($post->userNameInput);
-                        $user -> setPhone($return['phone']);
+                     $user->setName($post->userNameInput);
+                        $user->setPhone($return['phone']);
                      $return["error"] = false ; 
                      
                  }

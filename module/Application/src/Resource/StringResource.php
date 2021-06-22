@@ -12,4 +12,18 @@ class StringResource
     const PRODUCT_SUCCESS_MESSAGE = "Объект product &nbsp;получен";
     const SESSION_NAMESPACE = "session_namespace";
     const CODE_CONFIRMATION_SESSION_NAMESPACE = "code_confirmation_session_namespace";
+    
+    /*
+     * авторизация
+     */
+    const ERROR_MESSAGE = "Ошибка. ";
+    const ERROR_INPUT_PHONE_MESSAGE = "Укажите корректный номер телефона. ";
+    const ERROR_INPUT_PASSWORD_MESSAGE = "Введите пароль для&nbsp;входа. ";
+    const ERROR_INPUT_NAME_SMS_MESSAGE = "Введите ваше имя и&nbsp;код&nbsp;из&nbsp;СМС. ";
+    
+    
+    
+    
+    
+    
 }
