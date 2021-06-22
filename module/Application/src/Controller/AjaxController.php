@@ -88,6 +88,15 @@ class AjaxController extends AbstractActionController {
         $this->basketRepository = $basketRepository;
     }
 
+     public function basketAddProductAction() 
+     {
+        $post = $this->getRequest()->getPost();
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $userId = $container->userIdentity;
+        
+   
+     }
+    
     public function userAuthAction() {
         //userNameInput userSmsCode userPass
         $password = $smsCode = "7777"; //костыль
@@ -123,7 +132,7 @@ class AjaxController extends AbstractActionController {
                     $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity]);
                     $user->setName($return['name']);
                     $user->setPhone($return['phone']);
-                   // $this->userRepository->persist($user, ['id' => $user->getId()]);
+                    $this->userRepository->persist($user, ['id' => $user->getId()]);
                     $return["error"] = false;
                 }
                 $return["message"] = StringResource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера

@@ -233,7 +233,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         getLocalStores(dataString);
     })
     
-    $("#userAuthBotton").click(function () {
+    $("#userAuthForm").submit(function () {
         var dataString = $("#userAuthForm").serialize();
         $.ajax({
             url: "/ajax/user-auth",
@@ -265,6 +265,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                 
             }
          })
+         return false;
      })
         
     $("#sendajaxprovider").click(function () {
