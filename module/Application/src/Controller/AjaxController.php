@@ -110,7 +110,7 @@ class AjaxController extends AbstractActionController
 
             /* это вызывает 500! 
             */
-            //$this->basketRepository->persist($basketiItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
+            $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
             /* 
             * проверять  в катлоге или на странице товара нажав на кнопку "в корзину"
             */
