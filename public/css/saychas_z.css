@@ -739,6 +739,7 @@ img.zero, .zeroblok {
 }
 
 #bascetbottomblok .content {display:block; padding:20px; pedding-right:35px; padding-bottom:35px;}
+#bascetbottomblok.none  {display:none}
 #bascetbottomblok .content .text {display:inline-block; width: calc(100% - 48px)}
 #bascetbottomblok .content .both {clear:both; margin:5px 0; }
 #bascetbottomblok .content .imgicon {
@@ -751,3 +752,8 @@ img.zero, .zeroblok {
     border:1px solid var(--red);
 }
 
+#bascetbottomblok .close {
+    position:absolute; cursor:pointer; right:8px; top:8px;
+}
+
+#bascetbottomblok .close:before {content:'\00D7' }
