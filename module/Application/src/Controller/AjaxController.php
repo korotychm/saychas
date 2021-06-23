@@ -27,6 +27,7 @@ use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
@@ -61,6 +62,7 @@ class AjaxController extends AbstractActionController
     private $userRepository;
     private $authService;
     private $basketRepository;
+    private $productImageRepository;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -68,7 +70,7 @@ class AjaxController extends AbstractActionController
             CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -88,6 +90,7 @@ class AjaxController extends AbstractActionController
         $this->userRepository = $userRepository;
         $this->authService = $authService;
         $this->basketRepository = $basketRepository;
+        $this->productImageRepository = $productImageRepository;
     }
 
     public function addToBasketAction()
