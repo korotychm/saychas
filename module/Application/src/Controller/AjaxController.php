@@ -102,24 +102,18 @@ class AjaxController extends AbstractActionController
       //exit("<pre>".print_r($post, true));
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        if($productId && $userId ){
+        if($userId ){
             $return['error']=false;    
 
-            $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
-            $basketItemTotal = (int)$basketItem->getTotal();
-            $basketItem->setUserId($userId);
-            $basketItem->setProductId($productId);
-            $basketItem->setTotal($addNum + $basketItemTotal);
-
-            /* это вызывает 500! 
-            */
-            $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
-            /* 
-            * проверять  в катлоге или на странице товара нажав на кнопку "в корзину"
-            */
-            
-            $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);
-
+           if($productId) { 
+                $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
+                $basketItemTotal = (int)$basketItem->getTotal();
+                $basketItem->setUserId($userId);
+                $basketItem->setProductId($productId);
+               // $basketItem->setTotal($addNum + $basketItemTotal);
+                 $basketItem->setTotal(1);
+                $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
+           }
 
             $where = new Where();
             $where->equalTo('user_id', $userId);
@@ -128,17 +122,17 @@ class AjaxController extends AbstractActionController
             $columns = ['product_id', 'order_id', 'total'];
             $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
             foreach ($basket as $b) {
-                $pId=$b->productId;
-                $product = $this->productRepository->find(['id'=>$pId]);
-                
-                $return['products'][]=[
-                    "id" => $pId, 
-                    "name" => $product->getTitle(), 
-                    "count" => $b->total, 
-                    'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
-                   ]; 
-                $return['totlal']+=$b->total;
-                $return['count'] ++;
+                if($pId=$b->productId){
+                    $product = $this->productRepository->find(['id'=>$pId]);
+                    $return['products'][]=[
+                        "id" => $pId, 
+                        "name" => $product->getTitle(), 
+                        "count" => $b->total, 
+                        'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
+                       ]; 
+                    $return['total']+=$b->total;
+                    $return['count'] ++;
+                }
             }
         }
         return new JsonModel($return);    
