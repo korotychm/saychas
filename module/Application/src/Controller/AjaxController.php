@@ -93,10 +93,11 @@ class AjaxController extends AbstractActionController {
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
-        
+        //$userId = 2;
         $where = new Where();
         $where->equalTo('user_id', $userId);
         $where->notEqualTo('order_id', 0);
+        //$where->expression('order_id <> ? AND price <> ?', [0, 1]);
         /** more conditions come here */
         $columns = ['user_id', 'product_id', 'order_id'];
         
@@ -112,6 +113,7 @@ class AjaxController extends AbstractActionController {
     
     public function userAuthAction() {
         //userNameInput userSmsCode userPass
+        $this->basketAddProductAction();
         $password = $smsCode = "7777"; //костыль
         
         $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
