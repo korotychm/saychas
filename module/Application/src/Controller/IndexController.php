@@ -35,6 +35,8 @@ use Application\Resource\StringResource;
 use Laminas\Session\Container;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
+use Application\Model\Entity\User;
+use Application\Model\Entity\UserData;
 
 class IndexController extends AbstractActionController
 {
@@ -185,6 +187,27 @@ class IndexController extends AbstractActionController
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         
+//        $userId = $this->identity();
+//        $userId = 2;
+//        $user = $this->userRepository->find(['id' => $userId]);
+//        $userData = new UserData();
+//        $userData->setAddress('address');
+//        //$userData->setAddress($container->userAddress);
+//        //$userData->setGeodata($json);
+//        $userData->setGeodata('{}');
+//        
+//        $where = new Where();
+//        $where->equalTo('id', 4);
+//        $where->equalTo('user_id', 2);
+//        
+//        $userData2 = $user->getUserData();
+//        
+//        $user->deleteUserData(['where' => $where]);
+//        foreach($userData2 as $ud) {
+//            echo $ud->getId().' '.$ud->getUserId().' '.$ud->getAddress().' '.$ud->getTimestamp(). '<br/>';
+//        }
+//        exit;
+
 //        $clause = [];
 //        foreach($params['characteristics'] as $key=>$value) {
 //            //$clause[] = sprintf("( characteristic_id = '%s' and value in(%s) )", $key, implode(',', $value));

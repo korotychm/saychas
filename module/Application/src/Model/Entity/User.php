@@ -76,8 +76,14 @@ class User extends Entity
      */
     public function getUserData()
     {
-        $this->user_data = self::$userDataRepository->findAll(['id' => $this->getId()]);
+        $this->user_data = self::$userDataRepository->findAll(['where' => ['user_id' => $this->getId()], 'order' => 'timestamp DESC' ]);
         return $this->user_data;
+    }
+    
+    public function deleteUserData($params)
+    {
+        /** $this->user_data = */ self::$userDataRepository->remove($params);
+        return $this;
     }
 
     /**
