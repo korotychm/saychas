@@ -22,7 +22,7 @@
 .iblokc{text-align: center}
 .mini {font-size:80%}
 .gray {color:#a7a7a7}
-.card, .card-body {position:relative}
+.card, .card-body, .relative {position:relative}
 .nobold {font-weight:400 }
 .waiting {
     min-height:50px; min-width:50px; background-image:url(/img/loader.gif);   

@@ -232,8 +232,9 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         var dataString = $("#textarea").val();
         getLocalStores(dataString);
     })
-    $(".paybutton").on("click", function(){
+    $(".paybutton").live("click", function(){
         var product=$(this).attr("rel");
+        var basket = "";
         $.ajax({
             url: "/ajax/add-to-basket",
             cache: false,
@@ -241,8 +242,17 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             //dataType: 'json',
             data:{"product" : product},
             success: function (data) {
-                console.log(data);
-                 $("#bascetbottomblok .content ").html(data);
+                //console.log(data);
+                   $("#bascetbottomblok .content ").empty();
+                $.each(data.products, function(key, value) {
+                        console.log( value); 
+                    //<div class='countitem' >"+ value.count +"</div>    
+                    basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/"+ value.image +"' ><span class='text'>" + value.name + "</span></div>";
+                        
+                        $("#bascetbottomblok .content ").append(basket);
+                       // $("#bascetbottomblok").show().dalay(1000).hide();
+                })
+                
             },
              error: function (xhr, ajaxOptions, thrownError) {
                 $("#bascetbottomblok .content ").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);

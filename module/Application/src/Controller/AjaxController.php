@@ -135,13 +135,14 @@ class AjaxController extends AbstractActionController
                     "id" => $pId, 
                     "name" => $product->getTitle(), 
                     "count" => $b->total, 
-                    //'image'=> $this->,
+                    'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
                    ]; 
                 $return['totlal']+=$b->total;
                 $return['count'] ++;
             }
         }
-        exit("<pre>".print_r($return, true)."</pre>");
+        return new JsonModel($return);    
+    //exit("<pre>".print_r($return, true)."</pre>");
         
     }
 

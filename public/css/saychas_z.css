@@ -242,7 +242,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     text-align:center;
 }
 .productcard  .content:hover .payblockcard {display:block}
-.paybutton, .paybuttonwhite, .paybuttonwhite:hover  {
+.paybutton, .paybuttonwhite, .formsendbutton, .paybuttonwhite:hover  {
     display:inline-block; 
     text-align:center;
     width:100%; 
@@ -341,7 +341,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .filtritemtitleprice {background:none; margin-top:0;}
 .filtritemtitleprice span {font-weight:400}
 
-.filtritemtitle div.count, #zakazcount {
+.filtritemtitle div.count, #zakazcount, .countitem  {
     dispaly:block; 
     position:absolute; 
     /* width:15px; */
@@ -725,14 +725,29 @@ img.zero, .zeroblok {
     display:block;
     width:400px; 
     position: fixed;
-    bottom:-15px;
-    right:-15px;
+    bottom:-1px;
+    right:-1px;
     border-top-left-radius: 16px;
     box-shadow:-10px 0 20px rgba(0,0,0,.2);
     z-index:10000;
     background:#fff;
-    /*height:100px;*/
+    max-height:70vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    
         
 }
 
 #bascetbottomblok .content {display:block; padding:20px; pedding-right:35px; padding-bottom:35px;}
+#bascetbottomblok .content .text {display:inline-block; width: calc(100% - 48px)}
+#bascetbottomblok .content .both {clear:both; margin:5px 0; }
+#bascetbottomblok .content .imgicon {
+    width:40px; 
+    height:40px; 
+    border-radius:40px; 
+    display:inline-block; 
+    margin-right:5px; 
+    vertical-align:top;
+    border:1px solid var(--red);
+}
+
