@@ -232,6 +232,26 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         var dataString = $("#textarea").val();
         getLocalStores(dataString);
     })
+    $(".paybutton").on("click", function(){
+        var product=$(this).attr("rel");
+        $.ajax({
+            url: "/ajax/add-to-basket",
+            cache: false,
+            type: 'POST',
+            //dataType: 'json',
+            data:{"product" : product},
+            success: function (data) {
+                console.log(data);
+                 $("#bascetbottomblok .content ").html(data);
+            },
+             error: function (xhr, ajaxOptions, thrownError) {
+                $("#bascetbottomblok .content ").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
+                
+            }
+         })
+         return false;
+     })
+        
     
     $("#userAuthForm").submit(function () {
         var dataString = $("#userAuthForm").serialize();
@@ -251,6 +271,8 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                     if(data.isUser ) {
                         $('.olduser').removeClass("none");
                         $('.newuser').addClass("none"); 
+                        $('#oldUser').html(data.username);//.show();
+                        
                     }
                     else {
                         $('.olduser').addClass("none"); $('.newuser').removeClass("none");
