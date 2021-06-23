@@ -148,7 +148,6 @@ class AjaxController extends AbstractActionController
     public function userAuthAction()
     {
         //userNameInput userSmsCode userPass
-        $this->basketAddProductAction();
         $password = $smsCode = "7777"; //костыль
 
         $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
