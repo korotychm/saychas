@@ -123,7 +123,15 @@ class AjaxController extends AbstractActionController
             $columns = ['product_id', 'order_id', 'total'];
             $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
             foreach ($basket as $b) {
-                $return['products'][]=["id"=>$b->productId,"count"=>$b->total]; 
+                $pId=$b->productId;
+                $product = $this->productRepository->find(['id'=>$pId]);
+                
+                $return['products'][]=[
+                    "id" => $pId, 
+                    "name" => $product->getTitle(), 
+                    "count" => $b->total, 
+                    //'image'=> $this->,
+                   ]; 
                 $return['totlal']+=$b->total;
                 $return['count'] ++;
             }

@@ -420,7 +420,9 @@ class HtmlProviderService
             foreach ($_return as $Card) {
                 if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$Card['rest']) and!empty($Card)) {
 
-                    $return['card'] .= "<div class='productcard ' >"
+                    $return['card'] 
+                            //.=$this->partial('application/ajax/partials/card', ['card' => $card]);
+                            .= "<div class='productcard ' >"
                             // . $Card['speedlable']
                             . "<div class='contentabsolute  content opacity" . $Card['rest'] . "'>"
                             . "<a  href='/product/" . $Card['id'] . "' >"
@@ -443,7 +445,7 @@ class HtmlProviderService
                             . "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
                             .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
                             . "   </div>"
-                            . "</div>";
+                            . "</div>";/**/
                 }
             }
         }
