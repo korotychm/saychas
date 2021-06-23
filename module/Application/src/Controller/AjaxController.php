@@ -94,41 +94,42 @@ class AjaxController extends AbstractActionController
     {   
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
-        $productId = $post->product;
+        $return['productId']=$productId = $post->product;
         $addNum = 1;
       //exit("<pre>".print_r($post, true));
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $userId = $container->userIdentity;
-        
-        /*$where = new Where();
-        $where->equalTo('user_id', $userId);
-        $where->equalTo('product_id', $productId);
-        $where->notEqualTo('order_id', 0);*/
-        
-        $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
-        $basketItemTotal = (int)$basketItem->getTotal();
-        $basketItem->setUserId($userId);
-        $basketItem->setProductId($productId);
-        $basketItem->setTotal($addNum + $basketItemTotal);
-        
-        /* это вызывает 500! 
-        //$this->basketRepository->persist($basketiItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
-        * 
-        * проверять  в катлоге или на странице товара нажав на кнопку "в корзину"
-        */
-        
-        
-        $where = new Where();
-        $where->equalTo('user_id', $userId);
-        $where->notEqualTo('order_id', 0);
-        /** more conditions come here */
-        $columns = ['product_id', 'order_id', 'total'];
-        $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
-        foreach ($basket as $b) {
-            $return['products'][]=$b; 
+        $return['userId'] = $userId = $container->userIdentity;
+        if($productId && $userId ){
+            $return['error']=false;    
+
+            $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
+            $basketItemTotal = (int)$basketItem->getTotal();
+            $basketItem->setUserId($userId);
+            $basketItem->setProductId($productId);
+            $basketItem->setTotal($addNum + $basketItemTotal);
+
+            /* это вызывает 500! 
+            */
+            //$this->basketRepository->persist($basketiItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
+            /* 
+            * проверять  в катлоге или на странице товара нажав на кнопку "в корзину"
+            */
+
+
+            $where = new Where();
+            $where->equalTo('user_id', $userId);
+            $where->equalTo('order_id', 0);
+            /** more conditions come here */
+            $columns = ['product_id', 'order_id', 'total'];
+            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+            foreach ($basket as $b) {
+                $return['products'][]=["id"=>$b->productId,"count"=>$b->total]; 
+                $return['totlal']+=$b->total;
+                $return['count'] ++;
+            }
         }
         exit("<pre>".print_r($return, true)."</pre>");
-        exit;
+        
     }
 
     public function userAuthAction()
