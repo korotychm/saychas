@@ -290,6 +290,18 @@ abstract class Repository implements RepositoryInterface
 //
 //        return $entity;
 //    }
+    
+    public function remove($params)
+    {
+        $sql = new Sql($this->db);
+        $delete = $sql->delete($this->tableName);
+        if (isset($params['where'])) {
+            $delete->where($params['where']);
+        }
+        $stmt = $sql->prepareStatementForSqlObject($delete);
+        $result = $stmt->execute();
+        return $result;
+    }
 
     /**
      * Delete products specified by json array of objects
