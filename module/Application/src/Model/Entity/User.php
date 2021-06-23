@@ -80,6 +80,12 @@ class User extends Entity
         return $this->user_data;
     }
     
+    /**
+     * Delete user data
+     * 
+     * @param array $params
+     * @return $this
+     */
     public function deleteUserData($params)
     {
         /** $this->user_data = */ self::$userDataRepository->remove($params);
