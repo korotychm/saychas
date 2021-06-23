@@ -17,7 +17,7 @@
         </a>
         <strong class='blok producttitle'><a  href="/product/<?= $card->getId()?>"><?= $card->getTitle() ?> </a></strong>
         <div class="inactiveblok"></div><span class="price"><?= $card->getPrice() / 100 ?>&#8381;</span>
-        <span class='oldprice'><?= $card->getOldPrice() ?>&#8381;</span>
+        <?=($card->getOldPrice())?"<span class='oldprice'>{$card->getOldPrice()} &#8381;</span>":"";?>
     </div>
 </div>
 

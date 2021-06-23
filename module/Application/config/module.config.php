@@ -708,6 +708,17 @@ return [
                     ],
                 ],
             ],
+            ///ajax/add-to-basket
+            'add-to-basket'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/add-to-basket',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'addToBasket',
+                    ],
+                ],
+            ],
             
             
         ],

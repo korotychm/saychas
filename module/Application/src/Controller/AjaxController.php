@@ -40,7 +40,8 @@ use Laminas\Session\Container;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 
-class AjaxController extends AbstractActionController {
+class AjaxController extends AbstractActionController
+{
 
     private $testRepository;
     private $categoryRepository;
@@ -67,7 +68,8 @@ class AjaxController extends AbstractActionController {
             CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository) {
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
+    {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
@@ -88,44 +90,73 @@ class AjaxController extends AbstractActionController {
         $this->basketRepository = $basketRepository;
     }
 
-     public function basketAddProductAction() 
-     {
+    public function addToBasketAction()
+    {   
+        $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
+        $return['productId']=$productId = $post->product;
+        $addNum = 1;
+      //exit("<pre>".print_r($post, true));
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $userId = $container->userIdentity;
-        //$userId = 2;
-        $where = new Where();
-        $where->equalTo('user_id', $userId);
-        $where->notEqualTo('order_id', 0);
-        //$where->expression('order_id <> ? AND price <> ?', [0, 1]);
-        /** more conditions come here */
-        $columns = ['user_id', 'product_id', 'order_id'];
-        
-        $basket = $this->basketRepository->findAll(['where'=>$where, 'columns' => $columns]);
-        
-        foreach($basket as $b) {
-            print_r($b);
-        }
-        
-        exit;
+        $return['userId'] = $userId = $container->userIdentity;
+        if($productId && $userId ){
+            $return['error']=false;    
 
-     }
-    
-    public function userAuthAction() {
+            $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
+            $basketItemTotal = (int)$basketItem->getTotal();
+            $basketItem->setUserId($userId);
+            $basketItem->setProductId($productId);
+            $basketItem->setTotal($addNum + $basketItemTotal);
+
+            /* это вызывает 500! 
+            */
+            //$this->basketRepository->persist($basketiItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
+            /* 
+            * проверять  в катлоге или на странице товара нажав на кнопку "в корзину"
+            */
+            
+            $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);
+
+
+            $where = new Where();
+            $where->equalTo('user_id', $userId);
+            $where->equalTo('order_id', 0);
+            /** more conditions come here */
+            $columns = ['product_id', 'order_id', 'total'];
+            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+            foreach ($basket as $b) {
+                $pId=$b->productId;
+                $product = $this->productRepository->find(['id'=>$pId]);
+                
+                $return['products'][]=[
+                    "id" => $pId, 
+                    "name" => $product->getTitle(), 
+                    "count" => $b->total, 
+                    //'image'=> $this->,
+                   ]; 
+                $return['totlal']+=$b->total;
+                $return['count'] ++;
+            }
+        }
+        exit("<pre>".print_r($return, true)."</pre>");
+        
+    }
+
+    public function userAuthAction()
+    {
         //userNameInput userSmsCode userPass
         $this->basketAddProductAction();
         $password = $smsCode = "7777"; //костыль
-        
+
         $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
         $return['phone'] = $this->phoneToNum($post->userPhone);
         $return['name'] = $post->userNameInput;
-        
         $code = $post->userSmsCode;
         $container = new Container(StringResource::SESSION_NAMESPACE);
 
         if (!$return['phone']) {
-            
+
             $return["message"] .= StringResource::ERROR_INPUT_PHONE_MESSAGE;
         } else {
             $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
@@ -139,7 +170,7 @@ class AjaxController extends AbstractActionController {
                 }
                 $return["message"] = StringResource::ERROR_INPUT_PASSWORD_MESSAGE
                         . "($password)"
-                        ;  
+                ;
                 $return["username"] = $user->getName();
             } else {
                 if ($return['name'] and $code == $smsCode) {
@@ -153,15 +184,15 @@ class AjaxController extends AbstractActionController {
                 $return["message"] = StringResource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
             }
         }
-        //$return = Json::encode($return, JSON_UNESCAPED_UNICODE);
+
         $return['post'] = $post;
-        $return = json_encode($return, JSON_UNESCAPED_UNICODE);
-        exit($return);
-         //return new JsonModel($return);
-   
+        return new JsonModel($return);
+        //$return = json_encode($return, JSON_UNESCAPED_UNICODE);
+        //exit($return);
     }
 
-    public function previewAction() {
+    public function previewAction()
+    {
         $this->layout()->setTemplate('layout/preview');
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
@@ -169,7 +200,8 @@ class AjaxController extends AbstractActionController {
         ]);
     }
 
-    public function ajaxToWebAction() {
+    public function ajaxToWebAction()
+    {
         $post = $this->getRequest()->getPost();
         $url = $this->config['parameters']['1c_request_links']['get_product'];
         $params = array('name' => 'value');
@@ -194,7 +226,8 @@ class AjaxController extends AbstractActionController {
         return new JsonModel([]);
     }
 
-    public function ajaxGetStoreAction() {
+    public function ajaxGetStoreAction()
+    {
 
         $post = $this->getRequest()->getPost();
         $json = $post->value;
@@ -238,7 +271,8 @@ class AjaxController extends AbstractActionController {
         return $response;
     }
 
-    public function ajaxGetLegalStoreAction() {
+    public function ajaxGetLegalStoreAction()
+    {
         $post = $this->getRequest()->getPost();
         $json = $post->value;
         try {
@@ -288,14 +322,16 @@ class AjaxController extends AbstractActionController {
         exit("200");
     }
 
-    public function ajaxSetUserAddressAction() {
+    public function ajaxSetUserAddressAction()
+    {
         $json["userAddress"] = $this->htmlProvider->writeUserAddress();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $json["legalStore"] = $container->legalStore;
         exit(Json::encode($json, JSON_UNESCAPED_UNICODE));
     }
 
-    public function unsetFilterForCategoКyAction() {
+    public function unsetFilterForCategoКyAction()
+    {
         $post = $this->getRequest()->getPost();
         $category_id = $post->category_id;
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -310,7 +346,8 @@ class AjaxController extends AbstractActionController {
      * @param array $characteristics
      * @return bool
      */
-    private function matchProduct(/* HandbookRelatedProduct */ \Application\Model\Entity\Product $product, array $characteristics): bool {
+    private function matchProduct(/* HandbookRelatedProduct */ \Application\Model\Entity\Product $product, array $characteristics): bool
+    {
         $flags = [];
         foreach ($characteristics as $key => $value) {
             $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
@@ -348,7 +385,8 @@ class AjaxController extends AbstractActionController {
      * @param array $params
      * @return Where
      */
-    private function getWhere($params): Where {
+    private function getWhere($params): Where
+    {
         $where = new Where();
         list($low, $high) = explode(';', $params['priceRange']);
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
@@ -363,7 +401,8 @@ class AjaxController extends AbstractActionController {
      * @param array $params
      * @return HandbookRelatedProduct[]
      */
-    private function getProducts($params) {
+    private function getProducts($params)
+    {
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
@@ -383,7 +422,8 @@ class AjaxController extends AbstractActionController {
         return $filteredProducts;
     }
 
-    public function setFilterForCategoryAction() {
+    public function setFilterForCategoryAction()
+    {
 
         $post = $this->getRequest()->getPost()->toArray();
 
@@ -407,7 +447,8 @@ class AjaxController extends AbstractActionController {
           //exit (print_r($container->filtrForCategory));/* */
     }
 
-    public function ajaxAction($params = array('name' => 'value')) {
+    public function ajaxAction($params = array('name' => 'value'))
+    {
         $id = $this->params()->fromRoute('id', '');
         $post = $this->getRequest()->getPost();
         //$param=array(1,2,3,4,5);   
@@ -496,13 +537,15 @@ class AjaxController extends AbstractActionController {
         exit();
     }
 
-    public function banzaiiAction() {
+    public function banzaiiAction()
+    {
         //$this->response->setStatusCode(404);
 
         return (new ViewModel(['banzaii' => 'zzappolzaii']))->setTerminal(true);
     }
 
-    public function providerAction() {
+    public function providerAction()
+    {
         $id = $this->params()->fromRoute('id', '');
         $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
@@ -513,7 +556,8 @@ class AjaxController extends AbstractActionController {
         ]);
     }
 
-    private function phoneToNum($destination_numbers) {
+    private function phoneToNum($destination_numbers)
+    {
         $numbers = $sort_numbers = [];
         if (!is_array($destination_numbers)) {
             $destination_numbers = trim($destination_numbers);

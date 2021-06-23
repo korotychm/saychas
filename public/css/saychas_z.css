@@ -1,7 +1,8 @@
 .phoneinput {font-size:1.8rem; font-weight:700}
 .opacity0, .opacity0 a {color:#999; text-decoration:none }
-
+.PT {font-weight:500; font-size: 1.2rem}
 h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gray)}
+
 
 #headermenu {display:block; background:#252525; margin:0; outline:0; padding:0; height:56px; text-align:center; position: relative; z-index:500;}
 #headermenu .headermenucontent {display:inline-block; width:100%; max-width:1600px; min-width:1001px;  max-height:60px; height:auto; overflow:hidden; text-align:left}
@@ -719,3 +720,19 @@ img.zero, .zeroblok {
     padding-right:16px; 
     text-align:right;
 }
+
+#bascetbottomblok {
+    display:block;
+    width:400px; 
+    position: fixed;
+    bottom:-15px;
+    right:-15px;
+    border-top-left-radius: 16px;
+    box-shadow:-10px 0 20px rgba(0,0,0,.2);
+    z-index:10000;
+    background:#fff;
+    /*height:100px;*/
+        
+}
+
+#bascetbottomblok .content {display:block; padding:20px; pedding-right:35px; padding-bottom:35px;}
