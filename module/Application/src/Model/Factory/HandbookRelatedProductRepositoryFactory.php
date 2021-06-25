@@ -34,7 +34,7 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
         $productImageRepository = $container->get(ProductImageRepository::class);
         $providerRepository = $container->get(ProviderRepository::class);
         $productCharacteristicRepository = $container->get(ProductCharacteristicRepository::class);
-//        $stockBalanceRepository = $container->get(StockBalanceRepository::class);
+        $stockBalanceRepository = $container->get(StockBalanceRepository::class);
 
         $prototype = new HandbookRelatedProduct;
         $prototype::$brandRepository = $brandRepository;
@@ -42,11 +42,22 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
         $prototype::$productImageRepository = $productImageRepository;
         $prototype::$providerRepository = $providerRepository;
         $prototype::$productCharacteristicRepository = $productCharacteristicRepository;
-//        $prototype::$stockBalanceRepository = $stockBalanceRepositoryRepository;
+        $prototype::$stockBalanceRepository = $stockBalanceRepository;
 
+        $hydrator = new ClassMethodsHydrator();
+        
+//        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+//        $composite->addFilter(
+//                'excludeval',
+//                new \Laminas\Hydrator\Filter\MethodMatchFilter('getPrice'),
+//                \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+//        );
+//
+//        $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+        
         return new HandbookRelatedProductRepository(
                 $adapter,
-                new ClassMethodsHydrator(),
+                $hydrator, // new ClassMethodsHydrator(),
                 $prototype
         );
     }

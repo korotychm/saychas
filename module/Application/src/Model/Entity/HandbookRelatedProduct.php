@@ -4,14 +4,12 @@
 
 namespace Application\Model\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
-
-use Application\Model\Repository\BrandRepository;
+use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
-use Application\Model\Repository\ProductCharacteristicRepository;
-//use Application\Model\Repository\StockBalanceRepository;
+use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
+use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 
 /**
  * HandbookRelatedProduct
@@ -25,7 +23,7 @@ class HandbookRelatedProduct extends Entity
     /**
      * @var BrandRepositoryInterface
      */
-    public static BrandRepository $brandRepository;
+    public static BrandRepositoryInterface $brandRepository;
 
     /**
      * @var PriceRepositoryInterface
@@ -42,9 +40,15 @@ class HandbookRelatedProduct extends Entity
      */
     public static ProviderRepositoryInterface $providerRepository;
     
-    public static ProductCharacteristicRepository $productCharacteristicRepository;
+    /**
+     * @var ProductCharacteristicRepositoryInterface
+     */
+    public static ProductCharacteristicRepositoryInterface $productCharacteristicRepository;
     
-//    public static StockBalanceRepository $stockBalanceRepository;
+    /**
+     * @var StockBalanceRepositoryInterface
+     */
+    public static StockBalanceRepositoryInterface $stockBalanceRepository;
 
     /**
      * Get brand
@@ -52,9 +56,9 @@ class HandbookRelatedProduct extends Entity
      * @return Brand
      * @throws \Exception
      */
-    public function getBrand()
+    public function receiveBrandObject()
     {
-        if (!( self::$brandRepository instanceof BrandRepository )) {
+        if (!( self::$brandRepository instanceof BrandRepositoryInterface )) {
             throw new \Exception('BrandRepositoryInterface expected; other type given');
         }
         return self::$brandRepository->findFirstOrDefault(['id' => $this->getBrandId()]);
@@ -66,7 +70,7 @@ class HandbookRelatedProduct extends Entity
      * @return Price
      * @throws \Exception
      */
-    public function getPrice()
+    public function receivePriceObject()
     {
         if (!( self::$priceRepository instanceof PriceRepositoryInterface )) {
             throw new \Exception('PriceRepositoryInterface expected; other type given');
@@ -81,12 +85,29 @@ class HandbookRelatedProduct extends Entity
      * @return ProductImage[]
      * @throws \Exception
      */
-    public function getProductImages()
+    public function receiveProductImages()
     {
         if (!( self::$productImageRepository instanceof ProductImageRepositoryInterface )) {
             throw new \Exception('ProductImageRepositoryInterface expected; other type given');
         }
         return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()]]);
+    }
+    
+    /**
+     * Return first product image from sorted row set;
+     * 
+     * @return string
+     * @throws \Exception
+     */
+    public function receiveFirstImageObject()
+    {
+        if (!( self::$productImageRepository instanceof ProductImageRepositoryInterface )) {
+            throw new \Exception('ProductImageRepositoryInterface expected; other type given');
+        }
+        $images = self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()], 'order' => 'sort_order']);
+        $image = $images->current();
+        
+        return $image;
     }
 
     /**
@@ -102,14 +123,29 @@ class HandbookRelatedProduct extends Entity
         return self::$providerRepository->findFirstOrDefault(['id=?' => $this->getProviderId()]);
     }
 
-//    public function getStockBalance()
-//    {
-//        if (!( self::$stockBalanceRepository instanceof StockBalanceRepositoryInterface )) {
-//            throw new \Exception('StockBalanceRepositoryInterface expected; other type given');
-//        }
-//        return self::$stockBalanceRepository->findFirstOrDefault(['product_id=?' => $this->getProductId(), 'store_id=?' =>$this->getStoreId()]);
-//    }
-//
+    /**
+     * Return summary value for rest
+     * 
+     * @return int
+     * @throws \Exception
+     */
+    public function receiveRest()
+    {
+        if (!( self::$stockBalanceRepository instanceof StockBalanceRepositoryInterface )) {
+            throw new \Exception('StockBalanceRepositoryInterface expected; other type given');
+        }
+        
+        $select = new \Laminas\Db\Sql\Select();
+        
+        $select->from(self::$stockBalanceRepository->getTableName());
+        $expression = new \Laminas\Db\Sql\Expression();
+        $expression->setExpression('sum(rest)');
+               
+        $result = self::$stockBalanceRepository->findAll(['where' => ['product_id' => $this->getId()], 'columns' => ['rest' => $expression], 'group' => ['product_id']/*, 'having' => ['product_id' => $this->getId()]*/ ]);
+        
+        return $result->current()->getRest();   
+    }
+
     /**
      * @var string
      */
@@ -154,7 +190,65 @@ class HandbookRelatedProduct extends Entity
      * @var string
      */
     protected $brand_id;
+    
+    /**
+     * Product price from joined price table
+     * 
+     * @var int
+     */
+    protected $price;
+    
+    /**
+     * Product old_price from joined price table
+     * 
+     * @var int
+     */
+    protected $old_price;
 
+    /**
+     * Get price from one-to-one joined price table
+     * 
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+    
+    /**
+     * Set price. Needed when hydrating; 
+    * 
+     * @param type $price
+     * @return $this
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+        return $this;
+    }
+    
+    /**
+     * Get old_price from one-to-one joined old_price table
+     * 
+     * @return int
+     */
+    public function getOldPrice()
+    {
+        return $this->old_price;
+    }
+    
+    /**
+     * Set old_price. Needed when hydrating; 
+    * 
+     * @param int $oldPrice
+     * @return $this
+     */
+    public function setOldPrice($oldPrice)
+    {
+        $this->old_price = $oldPrice;
+        return $this;
+    }
+    
     /**
      * Get id.
      *
@@ -361,6 +455,17 @@ class HandbookRelatedProduct extends Entity
     public function setBrandId($brandId)
     {
         $this->brand_id = $brandId;
+        return $this;
+    }
+    
+    public function getRest()
+    {
+        return $this->rest;
+    }
+    
+    public function setRest($rest)
+    {
+        $this->rest = $rest;
         return $this;
     }
 

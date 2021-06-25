@@ -656,7 +656,8 @@ class MyTestController extends AbstractActionController
         echo $container->identity;
         echo '<hr/>';
         $this->layout()->setTemplate('layout/mainpage');
-        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '000000014', '1b53a86f9d8c43c09ba1a7687f76685c', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928', '5b4813eb4a21706f492ae4ee2716a7f9'] ]) ]);
+        //$handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll(['where' => $this->packParams(['filter' => ['000000003', '000000014', '1b53a86f9d8c43c09ba1a7687f76685c', '919a484078a309202207bcd5eafefb97', '2ed1f50a2956c78164bdf967ef47c928', '5b4813eb4a21706f492ae4ee2716a7f9'] ]) ]);
+        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);
         
 //        $handBookRelatedProducts = $this->handBookRelatedProductRepository->findAll([]);
         echo '<table style="font-size: 10pt">';
@@ -676,12 +677,12 @@ class MyTestController extends AbstractActionController
             
             echo '<td>'.$provider->getId().' '.$provider->getTitle().'</td><td>'. implode('<br/>', explode(',',  $prod->getParamValueList())).'</td><td>'.$prod->getBrandId().'</td><td>'.$prod->getBrand()->title.'</td><td>'. $prod->getPrice()->getProductId() . '</td><td>' . $prod->getPrice()->getPrice() . '</td><td>'.$prod->title.'</td><td>'.$prod->getPrice()->getProviderId().'</td>';
             echo '</tr>';
-//            echo '<tr colspan="6" align="center"><td>';
-//            $images = $prod->getProductImages();
-//            foreach ($images as $image) {
-//                echo $image->getProductId().' '. $image->getHttpUrl().'<br/>';
-//            }
-//            echo '</td></tr>';
+            echo '<tr colspan="6" align="center"><td>';
+            $images = $prod->receiveProductImages();
+            foreach ($images as $image) {
+                echo $image->getProductId().' '. $image->getHttpUrl().'<br/>';
+            }
+            echo '</td></tr>';
             
         }
         echo '</table>';

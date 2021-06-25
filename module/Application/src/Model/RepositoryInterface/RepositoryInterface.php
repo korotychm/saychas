@@ -47,4 +47,11 @@ interface RepositoryInterface
      * @return void
      */
     public function delete($json);
+    
+    /**
+     * Return repository $tableName
+     * 
+     * @return string
+     */
+    public function getTableName();
 }

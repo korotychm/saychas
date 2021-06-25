@@ -62,6 +62,16 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
+     * Return tableName
+     * 
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+    
+    /**
      * Returns a list of entities
      *
      * @return Entity[]
@@ -82,6 +92,15 @@ abstract class Repository implements RepositoryInterface
         if (isset($params['offset'])) {
             $select->offset($params['offset']);
         }
+        
+        if (isset($params['group'])) {
+            $select->group($params['group']);
+        }
+        
+        if (isset($params['having'])) {
+            $select->having($params['having']);
+        }
+        
         if (isset($params['where'])) {
             $select->where($params['where']);
         }

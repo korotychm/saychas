@@ -1,52 +1,36 @@
+<?php
+//    $price = $card->receivePriceObject()->getPrice();
+//    $oldPrice = $card->receivePriceObject()->getOldPrice();
+    $rest = $card->receiveRest();
+    $price = $card->getPrice();
+    $oldPrice = $card->getOldPrice();
+//    $images = $card->receiveProductImages();
+    $image = $card->receiveFirstImageObject()->getHttpUrl();
+//    $brand = $card->receiveBrandObject();
+?>
 <div class='productcard' >
-    <div class="contentabsolute  content opacity".<?=$card/*->getStockBalance()*/->getRest() ?> >
+    <div class="contentabsolute  content opacity".<?=$rest /*$card->getStockBalance()->getRest() */ ?> >
     <a  href="/product/<?= $card->getId()?>" >
-        <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image: url(/images/product/<?= empty($card->getHttpUrl())?"nophoto_1.jpeg" : $card->getHttpUrl()?>"/></div>
+        <div class="zeroblok">
+            <img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image: url(/images/product/<?= empty($image)?"nophoto_1.jpeg" : $image ?>)"/>
+        </div>
     </a>
     <strong class='blok producttitle'><a  href='/product/<?=$card->getId()?>' ><?=$card->getTitle() ?></a></strong>
     <div class='inactiveblok'></div>
-    <span class='price'><?= $card->getPrice() / 100 ?>&#8381;</span>
-   <?=($card->getOldPrice())?"<span class='oldprice'>{$card->getOldPrice()} &#8381;</span>":"";?>
+    <span class='price'><?= $price / 100 ?>&#8381;</span>
+   <?=($oldPrice)?"<span class='oldprice'>{$oldPrice} &#8381;</span>":"";?>
         <div class='payblockcard'>
         <div class='paybutton' rel='<?=$card->getId()?>' >в корзину</div>
     </div>
     </div>
     <div class="content opacity">
         <a  href="/product/<?= $card->getId() ?>" >
-            <div class='zeroblok'><img src='/img/zero.png' alt='alt' class="productimage zero" style="background-image:url(/images/product/<?= empty($card->getHttpUrl())?"nophoto_1.jpeg" : $card->getHttpUrl()?>)"/></div>
+            <div class='zeroblok'>
+                <img src='/img/zero.png' alt='alt' class="productimage zero" style="background-image:url(/images/product/<?= empty($image)?"nophoto_1.jpeg" : $image?>")/>
+            </div>
         </a>
         <strong class='blok producttitle'><a  href="/product/<?= $card->getId()?>"><?= $card->getTitle() ?> </a></strong>
-        <div class="inactiveblok"></div><span class="price"><?= $card->getPrice() / 100 ?>&#8381;</span>
-        <?=($card->getOldPrice())?"<span class='oldprice'>{$card->getOldPrice()} &#8381;</span>":"";?>
+        <div class="inactiveblok"></div><span class="price"><?= $price / 100 ?>&#8381;</span>
+        <?=($oldPrice)?"<span class='oldprice'>{$oldPrice} &#8381;</span>":"";?>
     </div>
 </div>
-
-<?php
-/**
-        echo "<div class='productcard' >";
-            echo "<div class='contentabsolute  content opacity" . '<?=$card->getRest()?>' . "'>";
-            echo "<a  href='/product/" . $this->card->getId() . "' >";
-//            echo "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . ( ($card->getImage() ) ? $card->getImage() : "nophoto_1.jpeg") . ")'/></div>";
-            echo "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . "nophoto_1.jpeg" . ")'/></div>";
-            echo "</a>";
-            echo "<strong class='blok producttitle'><a  href='/product/" . $card->getId() . "' >" . $card->getTitle() . "</a></strong>";
-            echo "<div class='inactiveblok'></div>";
-            echo "<span class='price'>" . $card->getCena() . 'cena' . "&#8381;</span>";
-//            echo ( ($card->getOldPrice())? "<span class='oldprice'>" . $card->getOldPrice() . "&#8381;</span>":"");
-            echo ( ($card->getTitle())? "<span class='oldprice'>" . 'oldprice' . "&#8381;</span>":"");
-            echo       "<div class=payblockcard>";
-            echo  "         <div class=paybutton rel='" . $card->getId() . "' >в корзину</div>";
-            echo "         </div>";
-            echo "</div>";
-            echo "<div class='content opacity" .'rest'. "'>";
-            echo "<a  href='/product/" . $card->getId() . "' >";
-            echo "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . ("nophoto_1.jpeg") . ")'/></div>";
-            echo "</a>";
-            echo "       <strong class='blok producttitle'><a  href='/product/" . $card->getId() . "' >" . $card->getTitle() . "</a></strong>";
-            echo "         <div class='inactiveblok'></div>" . "       <span class='price'>" . 'cena' . "&#8381;</span>";
-//            echo "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $card->getCena() . "&#8381;</span>";
-//            echo (($card->getOldPrice())? "       <span class='oldprice'>" . $card->getOldPrice() . "&#8381;</span>":"");
-            echo "<span class='oldprice'>" . 'oldprice' . "&#8381;</span>";
-            echo "</div>";
-        echo "</div>";
-*/

@@ -4,8 +4,6 @@
 
 namespace Application\Model\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
-
 /**
  * ProductImage
  *
