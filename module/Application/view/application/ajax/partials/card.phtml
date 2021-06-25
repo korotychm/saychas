@@ -9,7 +9,7 @@
 //    $brand = $card->receiveBrandObject();
 ?>
 <div class='productcard' >
-    <div class="contentabsolute  content opacity".<?=$rest /*$card->getStockBalance()->getRest() */ ?> >
+    <div class="contentabsolute  content opacity".<?=$rest?> >
     <a  href="/product/<?= $card->getId()?>" >
         <div class="zeroblok">
             <img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image: url(/images/product/<?= empty($image)?"nophoto_1.jpeg" : $image ?>)"/>
@@ -18,7 +18,7 @@
     <strong class='blok producttitle'><a  href='/product/<?=$card->getId()?>' ><?=$card->getTitle() ?></a></strong>
     <div class='inactiveblok'></div>
     <span class='price'><?= $price / 100 ?>&#8381;</span>
-   <?=($oldPrice)?"<span class='oldprice'>{$oldPrice} &#8381;</span>":"";?>
+        <?=($oldPrice)?"<span class='oldprice'>{$oldPrice} &#8381;</span>":"";?>
         <div class='payblockcard'>
         <div class='paybutton' rel='<?=$card->getId()?>' >в корзину</div>
     </div>

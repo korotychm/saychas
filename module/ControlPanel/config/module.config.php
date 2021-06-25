@@ -2,17 +2,27 @@
 
 namespace ControlPanel;
 
-use Laminas\Router\Http\Literal;
+//use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
-use Laminas\Router\Http\Hostname;
-use Laminas\ServiceManager\Factory\InvokableFactory;
+//use Laminas\Router\Http\Hostname;
+//use Laminas\ServiceManager\Factory\InvokableFactory;
 //use ControlPanel\Controller\IndexController;
+use ControlPanel\Controller\Factory\IndexControllerFactory;
+use ControlPanel\Service\Factory\HtmlContentProviderFactory;
 
 return [
     'controllers' => [
         'factories' => [
-            \ControlPanel\Controller\IndexController::class => InvokableFactory::class,
+//            \ControlPanel\Controller\IndexController::class => InvokableFactory::class,
+            \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
         ],
+    'controllers' => [
+        'factories' => [
+//            Controller\IndexController::class => InvokableFactory::class,
+            Controller\IndexController::class => IndexControllerFactory::class,
+        ],
+    ],
+        
     ],
     'router' => [
         'routes' => [
@@ -55,6 +65,11 @@ return [
 //                    ],
 //                ],
 //            ],
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            \ControlPanel\Service\HtmlContentProvider::class => \ControlPanel\Service\Factory\HtmlContentProviderFactory::class,
         ],
     ],
     'view_manager' => [
