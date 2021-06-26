@@ -27,7 +27,7 @@ class Basket extends Entity
     /**
      * @var int
      */
-    protected $user_id;
+    protected $user_id = 0;
 
     /**
      * @var string
@@ -37,22 +37,22 @@ class Basket extends Entity
     /**
      * @var int
      */
-    protected $total;
+    protected $total = 0;
 
     /**
      * @var int
      */
-    protected $order_id;
+    protected $order_id = 0;
     
     /**
      * @var int
      */
-    protected $price;
+    protected $price = 0;
     
     /**
      * @var int
      */
-    protected $discount;
+    protected $discount = 0;
 
     /**
      * @var string
@@ -71,7 +71,7 @@ class Basket extends Entity
      */
     public function getUserId()
     {
-        return $this->id;
+        return $this->user_id;
     }
 
     /**
@@ -95,7 +95,7 @@ class Basket extends Entity
      */
     public function setProductId($productId)
     {
-        $this->productId = $productId;
+        $this->product_id = $productId;
 
         return $this;
     }

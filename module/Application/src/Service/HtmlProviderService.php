@@ -295,7 +295,7 @@ class HtmlProviderService
         
         
         (true or $return)?$return = '
-        <div  class="paybutton formsendbutton" > post filter view</div>
+        <div  class="formsendbutton" > post filter view</div>
         <input type=hidden name="offset" value="72" id="sqlOutline"  >
         <input type=hidden name="limit" value="72" id="sqlOutline"  >
         <script>
@@ -420,7 +420,9 @@ class HtmlProviderService
             foreach ($_return as $Card) {
                 if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$Card['rest']) and!empty($Card)) {
 
-                    $return['card'] .= "<div class='productcard ' >"
+                    $return['card'] 
+                            //.=$this->partial('application/ajax/partials/card', ['card' => $card]);
+                            .= "<div class='productcard ' >"
                             // . $Card['speedlable']
                             . "<div class='contentabsolute  content opacity" . $Card['rest'] . "'>"
                             . "<a  href='/product/" . $Card['id'] . "' >"
@@ -430,8 +432,8 @@ class HtmlProviderService
                             . "         <div class='inactiveblok'></div>"
                             . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
                           .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
-                            . "        <div class=payblockcard>"
-                            . "             <div class=paybutton rel='" . $Card['id'] . "' >в корзину</div>"
+                            . "        <div class='payblockcard'>"
+                            . "             <div class='paybutton' rel='" . $Card['id'] . "' >в корзину</div>"
                             . "        </div>"
                             . "   </div>"
                             . "   <div class='content opacity" . $Card['rest'] . "'>"
@@ -443,7 +445,7 @@ class HtmlProviderService
                             . "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
                             .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
                             . "   </div>"
-                            . "</div>";
+                            . "</div>";/**/
                 }
             }
         }

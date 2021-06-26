@@ -1,6 +1,8 @@
 
 $(document).ready(function () {
 
+    showBasket(0);
+    
     $("#tree").delay(500).slideDown("slow");
     $(".overcover").delay(500).fadeOut("slow");
     window.onbeforeunload = function () {
@@ -232,6 +234,14 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         var dataString = $("#textarea").val();
         getLocalStores(dataString);
     })
+    $(".paybutton").live("click", function(){
+        var product=$(this).attr("rel");
+        showBasket(product );
+        $("#bascetbottomblok").slideDown(); 
+     })
+        $("#bascetbottomblok .close").live("click", function(){ 
+            $("#bascetbottomblok").slideUp(); 
+        })
     
     $("#userAuthForm").submit(function () {
         var dataString = $("#userAuthForm").serialize();
@@ -251,6 +261,8 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                     if(data.isUser ) {
                         $('.olduser').removeClass("none");
                         $('.newuser').addClass("none"); 
+                        $('#oldUser').html(data.username);//.show();
+                        
                     }
                     else {
                         $('.olduser').addClass("none"); $('.newuser').removeClass("none");
@@ -458,5 +470,38 @@ function show_scrollTop() {
     (wst > 500) ? $("#quicktop").stop().show() : $("#quicktop").stop().fadeOut()
 
 }
+function showBasket( productadd = 0 ){
+    
+    $.ajax({
+            url: "/ajax/add-to-basket",
+            cache: false,
+            type: 'POST',
+            //dataType: 'json',
+            data:{"product" : productadd },
+            success: function (data) {
+                console.log(data);
+                   $("#bascetbottomblok .content ").empty();
+                $.each(data.products, function(key, value) {
+                //        console.log( value); 
+                    //<div class='countitem' >"+ value.count +"</div>    
+                    var basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/"+ value.image +"' ><span class='text'>" + value.name + "</span></div>";
+                        
+                        $("#bascetbottomblok .content ").append(basket);
+                        
+                        
+                })
+                
+                $("#zakazcount").html(data.count); //data.total
+                
+                
+            },
+             error: function (xhr, ajaxOptions, thrownError) {
+                $("#bascetbottomblok .content ").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
+                
+            }
+         })
+         return false;
+}
+
 ;
 	
