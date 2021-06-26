@@ -153,9 +153,9 @@ class AjaxController extends AbstractActionController {
         }
         //$return = Json::encode($return, JSON_UNESCAPED_UNICODE);
         $return['post'] = $post;
-        $return = json_encode($return, JSON_UNESCAPED_UNICODE);
-        exit($return);
-         //return new JsonModel($return);
+        //$return = json_encode($return, JSON_UNESCAPED_UNICODE);
+        //exit($return);
+         return new JsonModel($return);
    
     }
 
