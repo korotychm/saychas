@@ -1,0 +1,39 @@
+<style>
+tr.line {
+    cursor: pointer;
+}
+.active {
+    color: white;
+    background: #007bff;
+}
+</style>
+
+<div class="container p-0">
+    <div class="main-body mt-5">
+
+        <div class="card" style="height: 50em">
+            <div class="card-header">
+                Магазины
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <head>
+                    <tr>
+                        <th><strong>Id</strong></th>
+                        <th><strong>Название</strong></th>
+                        <th><strong>Адрес</strong></th>
+                    </tr>
+                    </head>
+
+                    <?php foreach ($table as $row): ?>
+<!--                        <a href="#">-->
+                            <?= $this->partial('control-panel/index/partials/stores/list-row', ['row' => $row]); ?>
+<!--                        </a>-->
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>

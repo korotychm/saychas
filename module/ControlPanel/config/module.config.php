@@ -2,7 +2,7 @@
 
 namespace ControlPanel;
 
-//use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 //use Laminas\Router\Http\Hostname;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -26,20 +26,67 @@ return [
     ],
     'router' => [
         'routes' => [
-            'control-panel' => [
-                'type'    => Segment::class,
+            'control-panel' =>  [
+                'type' => Literal::class,
                 'options' => [
-                    'route' => '/control-panel[/:action[/:id]]',
-                    'constraints' => [
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
-                    ],
+                    'route' => '/control-panel',
                     'defaults' => [
                         'controller' => \ControlPanel\Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'show-stores' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-stores',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'show-stores',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-one-store' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/show-one-store[/:id]',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'show-one-store',
+                            ],
+                        ],
+                    ],
+                    'show-products' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-products',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'show-products',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
                     ],
                 ],
             ],
+//            'control-panel' => [
+//                'type'    => Segment::class,
+//                'options' => [
+////                    'route' => '/control-panel[/:action[/:id]]',
+//                    'route' => '/control-panel[/:action]',
+//                    'constraints' => [
+//                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+////                        'id'     => '[0-9]+',
+//                    ],
+//                    'defaults' => [
+//                        'controller' => \ControlPanel\Controller\IndexController::class,
+//                        'action'     => 'index',
+//                    ],
+//                ],
+//                
+//            ],
 //            'lk.saychas.com' => [
 //                'type' => Hostname::class,
 //                'options' => [

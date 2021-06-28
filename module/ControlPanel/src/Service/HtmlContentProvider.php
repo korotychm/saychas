@@ -37,9 +37,21 @@ class HtmlContentProvider
     public function getMenuItems(): array
     {
         return [
-            ['name' => 'Back to site', 'route' => 'home', 'type' => 'left',],
-            ['name' => 'Вход для партнеров', 'route' => 'control-panel', 'type' => 'right',],
+            ['id' => 'item1', 'name' => 'Back to site', 'route' => 'home', 'type' => 'left', 'active' => true,],
+            ['id' => 'item2', 'name' => 'Вход для партнеров', 'route' => 'control-panel', 'type' => 'right', 'active' => false,],
         ];
     }
 
+    /**
+     * Control panel sidebar menu items
+     *
+     * @return array
+     */
+    public function getSidebarMenuItems(): array
+    {
+        return [
+            ['id' => 'storesId', 'url' => '#', 'name' => 'Магазины', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
+            ['id' => 'productsId', 'url' => '#', 'name' => 'Номенклатура', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
+        ];
+    }
 }

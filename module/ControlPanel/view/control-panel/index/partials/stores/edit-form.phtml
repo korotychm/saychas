@@ -1,0 +1,82 @@
+<style>
+/*    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid transparent;
+        border-radius: .25rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+    }
+    .me-2 {
+        margin-right: .5rem!important;
+    }*/
+.field-prefix {
+    min-width: 7em;
+}
+</style>
+<?php
+    $storeId = $title = $address = $geox = $geoy = $description = $icon = "";
+    
+    if($row) {
+        $storeId = $row['id'];
+        $title = $row['title'];
+        $address = $row['address'];
+        $geox = $row['geox'];
+        $geoy = $row['geoy'];
+        $description = $row['description'];
+    }
+?>
+<div class="container p-0">
+    <div class="main-body mt-5 row-content">
+        <div class="row">
+            <div class="col-sm">
+                <div class="card" style="height: 50em">
+                    <div class="card-header"><?= $title ?></div>
+                    <div class="card-body container">
+                        <form>
+                            <div class="input-group mb-2 input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span  class="field-prefix input-group-text">Id</span>
+                                </div>
+                                <input id="store_id" placeholder="ID магазина" name="store_id" class="form-control" type="text" value="<?= $storeId ?>" />
+                            </div>
+                            <div class="input-group mb-2 input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span  class="field-prefix input-group-text">Название</span>
+                                </div>
+                                <input id="title" placeholder="Название" name="title" class="form-control" type="text" value="<?= $title ?>" />
+                            </div>
+                            <div class="input-group mb-2 input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span  class="field-prefix input-group-text">Адрес</span>
+                                </div>
+                                <input id="address" placeholder="Адрес" name="address" class="form-control" type="text" value="<?= $address ?>" />
+                            </div>
+                            <div class="input-group mb-2 input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span  class="field-prefix input-group-text">ГЕОX</span>
+                                </div>
+                                <input id="geox" placeholder="ГЕОX" name="geox" class="form-control" type="text" value="<?= $geox ?>" />
+                            </div>
+                            <div class="input-group mb-2 input-group-sm">
+                                <div class="input-group-prepend">
+                                    <span  class="field-prefix input-group-text">ГЕОY</span>
+                                </div>
+                                <input id="geoy" placeholder="ГЕОY" name="geoy" class="form-control" type="text" value="<?= $geoy ?>" />
+                            </div>
+                            <div class="input-group mb-2 input-group-sm">
+                                <label for="description">Описание:</label>
+                                <textarea class="" style="width:100%;" rows="3" id="description" placeholder="Описание"><?= $description ?></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="fluid-container">
+    <div class="row">
+        <div class="col-sm-6 <?php //bg-success ?>">
+            <?= $this->partial('control-panel/index/partials/stores/list', ['table' => $table]); ?>
+        </div>
+        <div class="col-sm-6 <?php bg-info ?>">
+            <?= $this->partial('control-panel/index/partials/stores/edit-form', ['row' => $table[0]]); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 <?php //bg-primary ?>">
+            <?= $this->partial('control-panel/index/partials/stores/time-table'); ?>
+        </div>
+    </div>
+</div>

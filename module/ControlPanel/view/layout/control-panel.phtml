@@ -12,7 +12,7 @@
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
                 ->prependStylesheet($this->basePath('css/style.css'))
-                //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
                 ->prependStylesheet($this->basePath('css/bs.css'))
                 ->prependStylesheet($this->basePath('css/treeview.css'))
                 ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
@@ -25,7 +25,8 @@
 
         <?=
                 $this->inlineScript()
-                ->prependFile($this->basePath('/js/services.js'))
+                //->prependFile($this->basePath('/js/services.js'))
+                ->prependFile($this->basePath('/js/cpanel.js'))
                 ->prependFile($this->basePath('/js/nouislider.min.js'))
                 ->prependFile($this->basePath('/js/nivo.slider.js'))
                 ->prependFile($this->basePath('js/jquery.treeview.js'))
@@ -36,6 +37,48 @@
                 //->prependFile($this->basePath('js/bootstrap.min.js'))
                 ->prependFile($this->basePath('js/jquery.js'))
         ?>
+        <style>
+            #controlPanelContentId, #controlPanelContentId2, #controlPanelMenu {
+                overflow: hidden;
+            }
+            #controlPanelMenu a {
+                color: whitesmoke;
+            }
+            #controlPanelMenu a:active {
+                color: yellow;
+            }
+            #controlPanelMenu a.active {
+                color: white;
+            }
+/*            .container-dashboard {
+                min-width: 80%;
+            }*/
+            .fluid-container .main-row {
+                min-height: 100vh;
+            }
+            .fluid-container .card {
+                min-height: 100%;
+                height: 100%;
+            }
+            .min-height-50 {
+                min-height: 50vh;
+            }
+            .min-height-100 {
+                min-height: 100vh;
+            }
+            #controlPanelMenu a {
+                color: whitesmoke;
+            }
+            #controlPanelMenu a:active {
+                color: yellow;
+            }
+            #controlPanelMenu a.active {
+                color: white;
+            }
+            
+
+
+        </style>
     </head>
     <body>
         <div id="header" class="blokc" >
@@ -45,8 +88,19 @@
                 </div>
             </div>
         </div>
-        <h1>Banzaii</h1>
-        <?= $this->content ?>
-        <h1>Vonzaii</h1>
+        <div class="fluid-container" style="overflow: hidden"> <?php //  container-dashboard ?>
+            <div class="row main-row">
+                <div class="col-sm-2 mt-0 pr-0">
+                    <div class="card card-body bg-dark">
+                        <ul id="controlPanelMenu" class="nav nav-pills flex-column">
+                            <?= $this->partial('partials/sidebar-menu-items', ['menuItems' => $this->sidebarMenuItems]); ?>
+                        </ul>
+                    </div>
+                </div>
+                <div id="controlPanelContentId" class="col-sm-10 bg-light">
+                    <?php // = $this->content ?>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

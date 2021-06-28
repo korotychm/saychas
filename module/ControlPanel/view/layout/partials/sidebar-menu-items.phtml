@@ -1,0 +1,3 @@
+<?php foreach ($menuItems as $item): ?>
+    <li><a id="<?=$item['id']?>" class="nav-link <?= $item['active'] ? 'active' : '' ?>" href="<?= $item['url'] /* $this->url($item['route']) */ ?>"><?= $item['name'] ?></a></li>
+<?php endforeach; ?>
