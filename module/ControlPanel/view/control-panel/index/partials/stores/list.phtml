@@ -6,7 +6,7 @@
                 <strong>Магазины</strong>
             </div>
             <div class="card-body">
-                <table class="table table-sm">
+                <table class="table table-striped table-sm">
                     <head>
                     <tr>
                         <th><strong>Id</strong></th>
@@ -19,6 +19,7 @@
                         <?= $this->partial('control-panel/index/partials/stores/list-row', ['row' => $row]); ?>
                     <?php endforeach; ?>
                 </table>
+                <?= $this->partial('control-panel/index/partials/stores/pagination'); ?>
             </div>
         </div>
 

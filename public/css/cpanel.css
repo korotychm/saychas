@@ -28,6 +28,11 @@ tr.line {
     background: #007bff;
 }
 
+.table-striped tbody tr.active:nth-child(odd) td {
+    background-color: #007bff;/*red*/
+}
+
 .field-prefix {
     min-width: 7em;
 }
+

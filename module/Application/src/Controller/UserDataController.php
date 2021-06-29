@@ -228,5 +228,17 @@ class UserDataController extends AbstractActionController {
         $answer = $this->externalCommunicationService->changePassword($post);
         return new JsonModel($answer);
     }
+    
+    /**
+     * Login client
+     * 
+     * @return JsonModel
+     */
+    public function clientLoginAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $answer = $this->externalCommunicationService->clientLogin($post);
+        return new JsonModel($answer);
+    }
 
 }

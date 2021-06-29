@@ -46,11 +46,22 @@ class IndexController extends AbstractActionController
         return $response;
     }
 
+    /**
+     * Index action
+     * 
+     * @return ViewModel
+     */
     public function indexAction()
     {
         return new ViewModel();
     }
     
+    /**
+     * Show stores action
+     * Shows a table of stores
+     * 
+     * @return ViewModel
+     */
     public function showStoresAction()
     {
         $view = new ViewModel(['table' => $this->table]);
@@ -58,6 +69,12 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
     
+    /**
+     * showOneStoreAction
+     * Shows one store specified by id
+     * 
+     * @return ViewModel
+     */
     public function showOneStoreAction()
     {
         $params = $this->params()->fromRoute();
@@ -71,6 +88,12 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
     
+    /**
+     * Show products action
+     * Shows a table of products
+     * 
+     * @return ViewModel
+     */
     public function showProductsAction()
     {
         $view = new ViewModel();
