@@ -1,15 +1,15 @@
 <?php
-    $storeId = $title = $address = $geox = $geoy = $description = $icon = "";
-    
-    if($row) {
-        $storeId = $row['id'];
-        $title = $row['title'];
-        $address = $row['address'];
-        $geox = $row['geox'];
-        $geoy = $row['geoy'];
-        $icon = 'icon';
-        $description = $row['description'];
-    }
+$storeId = $title = $address = $geox = $geoy = $description = $icon = "";
+
+if ($row) {
+    $storeId = $row['id'];
+    $title = $row['title'];
+    $address = $row['address'];
+    $geox = $row['geox'];
+    $geoy = $row['geoy'];
+    $icon = 'icon';
+    $description = $row['description'];
+}
 ?>
 <div class="container p-0">
     <div class="main-body mt-1 row-content">
@@ -59,7 +59,7 @@
                                 <label for="description">Описание:</label>
                                 <textarea class="" style="width:100%;" rows="3" id="description" placeholder="Описание"><?= $description ?></textarea>
                             </div>
-                            
+
                             <button type="button" style="position: absolute; bottom: 1em;" class="btn btn-secondary">Сохранить</button>
                         </form>
                     </div>

@@ -54,4 +54,5 @@ class HtmlContentProvider
             ['id' => 'productsId', 'url' => '#', 'name' => 'Номенклатура', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
         ];
     }
+
 }

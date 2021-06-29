@@ -17,11 +17,11 @@ class IndexController extends AbstractActionController
     protected $container;
     protected $htmlContentProvider;
     protected $table = [
-            ['id' => '00001', 'title' => 'MVideo', 'address' => 'Адрес1', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description1', 'active' => 'active',],
-            ['id' => '00002', 'title' => 'Baramba', 'address' => 'Адрес2', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description2', 'active' => '',],
-            ['id' => '00003', 'title' => 'Shmaramba', 'address' => 'Адрес3', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description3', 'active' => '',],
-            ['id' => '00004', 'title' => 'Obamba', 'address' => 'Адрес4', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description4', 'active' => '',],
-        ];
+        ['id' => '00001', 'title' => 'MVideo', 'address' => 'Адрес1', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description1', 'active' => 'active',],
+        ['id' => '00002', 'title' => 'Baramba', 'address' => 'Адрес2', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description2', 'active' => '',],
+        ['id' => '00003', 'title' => 'Shmaramba', 'address' => 'Адрес3', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description3', 'active' => '',],
+        ['id' => '00004', 'title' => 'Obamba', 'address' => 'Адрес4', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description4', 'active' => '',],
+    ];
 
     public function __construct($container)
     {
@@ -48,18 +48,18 @@ class IndexController extends AbstractActionController
 
     /**
      * Index action
-     * 
+     *
      * @return ViewModel
      */
     public function indexAction()
     {
         return new ViewModel();
     }
-    
+
     /**
      * Show stores action
      * Shows a table of stores
-     * 
+     *
      * @return ViewModel
      */
     public function showStoresAction()
@@ -68,18 +68,18 @@ class IndexController extends AbstractActionController
         //$view->setTemplate('control-panel/index/index.phtml');
         return $view->setTerminal(true);
     }
-    
+
     /**
      * showOneStoreAction
      * Shows one store specified by id
-     * 
+     *
      * @return ViewModel
      */
     public function showOneStoreAction()
     {
         $params = $this->params()->fromRoute();
-        foreach($this->table as $row) {
-            if($row['id'] == $params['id']) {
+        foreach ($this->table as $row) {
+            if ($row['id'] == $params['id']) {
                 break;
             }
         }
@@ -87,11 +87,11 @@ class IndexController extends AbstractActionController
         $view->setTemplate('control-panel/index/partials/stores/edit-form.phtml');
         return $view->setTerminal(true);
     }
-    
+
     /**
      * Show products action
      * Shows a table of products
-     * 
+     *
      * @return ViewModel
      */
     public function showProductsAction()
