@@ -237,9 +237,11 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
     $(".paybutton").live("click", function(){
         var product=$(this).attr("rel");
         showBasket(product );
-        
+        $("#bascetbottomblok").slideDown(); 
      })
-        
+        $("#bascetbottomblok .close").live("click", function(){ 
+            $("#bascetbottomblok").slideUp(); 
+        })
     
     $("#userAuthForm").submit(function () {
         var dataString = $("#userAuthForm").serialize();
@@ -485,6 +487,7 @@ function showBasket( productadd = 0 ){
                     var basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/"+ value.image +"' ><span class='text'>" + value.name + "</span></div>";
                         
                         $("#bascetbottomblok .content ").append(basket);
+                        
                         
                 })
                 

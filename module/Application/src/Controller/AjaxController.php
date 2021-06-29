@@ -183,9 +183,8 @@ class AjaxController extends AbstractActionController
         }
 
         $return['post'] = $post;
-        return new JsonModel($return);
-        //$return = json_encode($return, JSON_UNESCAPED_UNICODE);
-        //exit($return);
+
+         return new JsonModel($return);
     }
 
     public function previewAction()
