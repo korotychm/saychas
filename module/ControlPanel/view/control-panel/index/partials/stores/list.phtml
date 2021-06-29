@@ -1,22 +1,12 @@
-<style>
-tr.line {
-    cursor: pointer;
-}
-.active {
-    color: white;
-    background: #007bff;
-}
-</style>
-
 <div class="container p-0">
-    <div class="main-body mt-5">
+    <div class="main-body mt-1">
 
-        <div class="card" style="height: 50em">
+        <div class="card">
             <div class="card-header">
                 <strong>Магазины</strong>
             </div>
             <div class="card-body">
-                <table class="table">
+                <table class="table table-sm">
                     <head>
                     <tr>
                         <th><strong>Id</strong></th>
@@ -26,9 +16,7 @@ tr.line {
                     </head>
 
                     <?php foreach ($table as $row): ?>
-<!--                        <a href="#">-->
-                            <?= $this->partial('control-panel/index/partials/stores/list-row', ['row' => $row]); ?>
-<!--                        </a>-->
+                        <?= $this->partial('control-panel/index/partials/stores/list-row', ['row' => $row]); ?>
                     <?php endforeach; ?>
                 </table>
             </div>
