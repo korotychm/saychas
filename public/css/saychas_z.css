@@ -440,8 +440,85 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 }
 .pw-contentblock .contentpadding { padding:10px; }
 .pw-contentblock .contentpadding * {max-width:100% }
-
-.paybox .contentpadding  {padding:20px;}
+.contentpaddingbox  {
+    padding:16px; 
+    border-radius:16px;
+    display:block; 
+    border:1px solid var(--gray-light); 
+    box-sizing: border-box;
+    min-width:500px;
+ }
+ #checkallavailble {margin-left:25px;}
+ .contentpaddingbox .basketrow.disabled {opacity:.5} 
+ .contentpaddingbox .col {
+     display:inline-block;
+     box-sizing: border-box;
+     vertical-align:middle;
+     padding:8px;
+ }
+ 
+ .contentpaddingbox .col img {max-width:100%; max-height:100%}
+ .contentpaddingbox .col.titleprovider {
+     width: calc(100% - 50px);
+     
+ }
+ .contentpaddingbox .col.titleprovider .brandlogo {
+     width:150px; margin-right:10px;
+     vertical-align:middle;
+     max-height:70px;
+     
+ } 
+ 
+ .contentpaddingbox .col.titleprovider .text-provider {
+     width:calc(100% - 185px);
+     display:inline-block; 
+     vertical-align:middle;
+     
+ } 
+ .contentpaddingbox .col.check {
+     width:40px;
+ }
+ .contentpaddingbox .col.imageproduct {
+     width:80px; height:80px;
+ }
+ .contentpaddingbox .col.countproduct {
+     width:100px; white-space: nowrap;
+ }
+ .contentpaddingbox .col.priceproduct {
+     width:80px;
+ }
+ .contentpaddingbox .col.deleteproduct {
+     width:30px;
+ }
+ .contentpaddingbox .col.addfavproduct {
+     width:30px;
+ }
+ .contentpaddingbox .col.titleproduct {
+     width: calc(100% - 460px);
+ }
+ 
+ .countproductnum, .countproductminus, .countproductplus {display:inline-block; padding: 8px 16px; line-height:1em;  border:1px solid var(--gray); text-align:center}
+ .countproductnum {border-left:none; border-right:none; padding:8px; text-align:center; width:2em }
+ .countproductminus { border-right:none;  border-top-left-radius: 16px; border-bottom-left-radius: 16px; cursor:pointer; font-weight:500; color:var(--red); }
+ .countproductplus { border-left:none;  border-top-right-radius: 16px; border-bottom-right-radius: 16px; cursor:pointer; color:var(--red)}
+ .countproductplus.disabled, .countproductminus.disabled {color:var(--gray)}
+ 
+.countproductmius::before {content:'\2212' }
+.countproductplus::before {content:'+'}
+ 
+ 
+ 
+ 
+.pw-contentblock .contentpadding {padding: 8px;}
+.paybox .contentpadding {padding:24px;}
+.paybox .contentpadding
+.delevery-item {
+    display:block;
+    
+    margin-bottom:.2rem;
+    padding-left:25px; 
+    background:url("/img/saychas-zero.svg") 0 3px no-repeat;
+}
 
 .pw-contentblock.cblock-1 { width: 98%;}
 .pw-contentblock.cblock-2 { width: 48%; }
@@ -540,6 +617,22 @@ img.zero, .zeroblok {
     vertical-align: top;
     width: 50%;
 }
+
+.paybox .char-title {vertical-align:bottom;color:#000}
+.paybox .char-value {text-align:right; vertical-align:bottom; }
+
+.paybox .char-value::before {
+    border-bottom: 1px dashed #ccc;
+    bottom: 5px;
+    content: '';
+    display: block;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    left:-5px;
+}
+
 .char-title span, .char-value span {
     background: #fff;
     font-weight: 400;
@@ -547,6 +640,14 @@ img.zero, .zeroblok {
     position: relative;
     z-index: 1;
 }
+.paybox .char-value span {
+    background: #fff;
+    font-weight: 400;
+    padding: 0 0 0 20px ;
+    position: relative;
+    z-index: 1;
+}
+
 
 .char-title::after {
     border-bottom: 1px dashed #ccc;
@@ -598,7 +699,7 @@ img.zero, .zeroblok {
 
 #footer .fcontent {width:100%; max-width: calc(97% - 465px); margin-left:2.5%; margin:68px 0;}
 #footer .fcontent a {color:#fff}
-.activlink, .redlink {color: var(--red)!important}
+.activlink, .redlink, .red {color: var(--red)!important}
 .cirkul, .cirkulcheck {display:inline-block; width:40px; height:40px; border-radius:40px; }
  .cirkulcheck { 
      border:4px solid #fff;  
