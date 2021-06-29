@@ -1,0 +1,46 @@
+<style>
+.table-hover {
+    cursor: pointer;
+}
+.active {
+    background: #007bff;
+}
+</style>
+<?php
+    $table = [
+        ['id' => '00001', 'title' => 'MVideo', 'address' => 'Адрес1', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description1', 'active' => 'active',],
+        ['id' => '00002', 'title' => 'Baramba', 'address' => 'Адрес2', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description2', 'active' => '',],
+        ['id' => '00003', 'title' => 'Shmaramba', 'address' => 'Адрес3', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description3', 'active' => '',],
+        ['id' => '00004', 'title' => 'Obamba', 'address' => 'Адрес4', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description4', 'active' => '',],
+    ];
+?>
+<div class="container p-0">
+    <div class="main-body mt-5">
+
+        <div class="card" style="height: 50em">
+            <div class="card-header">
+                Магазины
+            </div>
+            <div class="card-body">
+                <div class="table table-hover">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <strong>Id</strong>
+                        </div>
+                        <div class="col-sm-6">
+                            <strong>Название</strong>
+                        </div>
+                        <div class="col-sm-4">
+                            <strong>Адрес</strong>
+                        </div>
+                    </div>
+                    <?php foreach ($table as $row): ?>
+                        <?= $this->partial('control-panel/index/partials/stores/list-row2', ['row' => $row]); ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

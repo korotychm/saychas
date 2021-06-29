@@ -342,7 +342,7 @@ class AjaxController extends AbstractActionController
      * @param array $characteristics
      * @return bool
      */
-    private function matchProduct(/* HandbookRelatedProduct */ \Application\Model\Entity\Product $product, array $characteristics): bool
+    private function matchProduct(HandbookRelatedProduct/*\Application\Model\Entity\Product*/ $product, array $characteristics): bool
     {
         $flags = [];
         foreach ($characteristics as $key => $value) {
@@ -402,20 +402,34 @@ class AjaxController extends AbstractActionController
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
-//        $products = $this->handBookRelatedProductRepository->findAll($params);
-//        $orders=["","pr.title ASC", 'price ASC','price DESC',"pr.title DESC"];
-//        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
-//        $params['filter'] = $filtred;
-        $products = $this->productRepository->filterProductsByStores($params);
+        $products = $this->handBookRelatedProductRepository->findAll($params);
 
         $filteredProducts = [];
         foreach ($products as $product) {
             $matchResult = $this->matchProduct($product, $params['characteristics']);
-            if ($matchResult) {
-                $filteredProducts[] = $product;
+            if ($matchResult && !isset($filteredProducts[$product->getId()]) ) {
+                $filteredProducts[$product->getId()] = $product;
             }
         }
         return $filteredProducts;
+    }
+    
+    private function getProducts1($params)
+    {
+        $where = new Where();
+        $where->greaterThan('rest', 0);
+        $rests = $this->stockBalanceRepository->findAll(['where' => $where]);
+        $products = [];
+        $params['where'] = $this->getWhere($params);
+        foreach($rests as $rest) {
+            $productId = $rest->getProductId();
+            $product = $this->handBookRelatedProductRepository->findFirstOrDefault(['id' => $productId]);
+            $matchResult = $this->matchProduct($product, $params['characteristics']);
+            if ($matchResult && !isset($products[$product->getId()]) ) {
+                $products[$productId] = $product;
+            }
+        }
+        return $products;
     }
 
     public function setFilterForCategoryAction()

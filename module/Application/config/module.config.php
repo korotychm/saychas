@@ -456,6 +456,16 @@ return [
                     ],
                 ],
             ],
+            'client-login' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/client-login[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'clientLogin',
+                    ],
+                ],
+            ],
             'hello-world' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -877,6 +887,7 @@ return [
             'set_client_info' => 'http://SRV02:8000/SC/hs/site/set_client_info',
             'update_client_info' => 'http://SRV02:8000/SC/hs/site/update_client_info',
             'change_client_password' => 'http://SRV02:8000/SC/hs/site/change_client_password',
+            'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [

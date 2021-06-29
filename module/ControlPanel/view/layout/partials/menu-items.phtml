@@ -1,0 +1,7 @@
+<?php foreach ($menuItems as $item): ?>
+    <?php if ($item['type'] == 'left') : ?>
+        <a  href="<?= $this->url($item['route']) ?>"><?= $item['name'] ?></a>
+    <?php elseif ($item['type'] == 'right') : ?>
+        <span  class="parthnerenter" ><b class="brandcolor">:</b><a href="<?= $this->url($item['route']) ?>"><?= $item['name'] ?></a></span>
+    <?php endif; ?>
+<?php endforeach; ?>

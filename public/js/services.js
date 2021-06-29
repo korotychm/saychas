@@ -132,6 +132,22 @@ $(function () {
             }
         });
     };
+    
+    var clientLogin = function(params) {
+        data = params;
+        $.ajax({
+            type: "POST",
+            url: "/client-login",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms updating failed', xhr, status);
+            }
+        });
+    };
 
     $('#userDataFormId').click(function(){
         sendSms($('#inputSomeDataId').val());
@@ -160,5 +176,9 @@ $(function () {
     $('#getImageFromFtpId').click(function(){
         console.log('getImageFromFtpId');
         getImageFromFtpId({'table': 'product', 'fileName': '1350x.jpg'});
+    });
+    
+    $('#clientLogin').click(function(){
+        clientLogin({'phone': '9160010204', 'password': '1112233T'});
     });
 });

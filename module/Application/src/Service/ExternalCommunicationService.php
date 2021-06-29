@@ -47,7 +47,7 @@ class ExternalCommunicationService
 
     /**
      * Send curl request.
-     * 
+     *
      * @param string $url
      * @param array $content
      * @return array
@@ -141,22 +141,39 @@ class ExternalCommunicationService
 
     /**
      * Change password.
-     * 
+     *
      *   $content = [
-     *       'id' => $id,
-     *       'old_password' => $oldPassword,
-     *       'new_password' => $newPassword,
-     *       'new_password2' => $newPassword,
+     *       "id" => $id,
+     *       "old_password" => $oldPassword,
+     *       "new_password" => $newPassword,
+     *       "new_password2" => $newPassword,
      *   ];
      * @param array $content
      * @return array
      */
-    public function changePassword(array $content) : array
+    public function changePassword(array $content): array
     {
         $url = $this->config['parameters']['1c_request_links']['change_client_password'];
         if ($content['new_password'] != $content['new_password2']) {
             return ['result' => -1, 'message' => 'Passwords are not equal'];
         }
+
+        return $this->sendCurlRequest($url, $content);
+    }
+
+    /**
+     * Login client
+     * 
+     *  $content = [
+     *       "phone" => "9160010204",
+     *       "password" => "1112233T"
+     *  ];
+     * @param array $content
+     * @return array
+     */
+    public function clientLogin(array $content): array
+    {
+        $url = $this->config['parameters']['1c_request_links']['client_login'];
 
         return $this->sendCurlRequest($url, $content);
     }
