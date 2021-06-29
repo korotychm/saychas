@@ -10,12 +10,19 @@ use ControlPanel\Service\HtmlContentProvider;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
+use Laminas\Session\Container;
+use ControlPanel\Resource\StringResource;
 
 class IndexController extends AbstractActionController
 {
 
+    /** @var ContainerInterface */
     protected $container;
+
+    /** @var HtmlContentProvider */
     protected $htmlContentProvider;
+
+    /** @var array */
     protected $table = [
         ['id' => '00001', 'title' => 'MVideo', 'address' => 'Адрес1', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description1', 'active' => 'active',],
         ['id' => '00002', 'title' => 'Baramba', 'address' => 'Адрес2', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description2', 'active' => '',],
@@ -36,13 +43,20 @@ class IndexController extends AbstractActionController
 //        $servicemanager = $e->getApplication()->getServiceManager();
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
         // Return the response
-        $menuItems = $this->htmlContentProvider->getMenuItems();
-        $sidebarMenuItems = $this->htmlContentProvider->getSidebarMenuItems();
-        $this->layout()->setVariables([
-            'menuItems' => $menuItems,
-            'sidebarMenuItems' => $sidebarMenuItems,
-        ]);
 
+        $container = new Container(StringResource::CONTROL_PANEL_SESSION);
+        if(!$container->partnerLoggedIn) {
+            $this->layout()->setTemplate('layout/control-panel-login');
+        }else{
+            $menuItems = $this->htmlContentProvider->getMenuItems();
+            $sidebarMenuItems = $this->htmlContentProvider->getSidebarMenuItems();
+            $this->layout()->setTemplate('layout/control-panel');
+            $this->layout()->setVariables([
+                'menuItems' => $menuItems,
+                'sidebarMenuItems' => $sidebarMenuItems,
+            ]);
+        }
+        
         return $response;
     }
 
@@ -100,4 +114,9 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
+    public function partnerLoginAction()
+    {
+        $view = new ViewModel();
+        return $view->setTerminal(true);
+    }
 }

@@ -14,7 +14,11 @@
                         <th><strong>Адрес</strong></th>
                     </tr>
                     </head>
-
+                    <div class="input-group mb-1">
+                      <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                        aria-describedby="search-addon" />
+                      <button type="button" class="btn btn-outline-primary">поиск</button>
+                    </div>
                     <?php foreach ($table as $row): ?>
                         <?= $this->partial('control-panel/index/partials/stores/list-row', ['row' => $row]); ?>
                     <?php endforeach; ?>

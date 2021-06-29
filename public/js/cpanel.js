@@ -33,7 +33,7 @@ $(function(){
                                         $('.row-content').html(result);
                                     },
                                     error: function (xhr, status, error) {
-                                        console.log('Sms sending failed', xhr, status);
+                                        console.log('Store table content', xhr, status);
                                     }
                                 });
                             };

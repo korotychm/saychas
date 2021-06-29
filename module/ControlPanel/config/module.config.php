@@ -69,6 +69,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'partner-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/partner-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'partner-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                 ],
             ],
 //            'control-panel' => [
@@ -124,7 +135,8 @@ return [
             'control-panel' => __DIR__ . '/../view',
         ],
         'template_map' => [
-            'layout/control-panel'           => __DIR__ . '/../view/layout/control-panel.phtml',
+//            'layout/control-panel'           => __DIR__ . '/../view/layout/control-panel.phtml',
+//            'layout/control-panel-login'     => __DIR__ . '/../view/layout/control-panel-login.phtml',
             
             'control-panel/index/index' => __DIR__ . '/../view/control-panel/index/index.phtml',
 //            'error/404'               => __DIR__ . '/../view/error/404.phtml',
