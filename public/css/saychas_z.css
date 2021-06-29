@@ -757,3 +757,4 @@ img.zero, .zeroblok {
 }
 
 #bascetbottomblok .close:before {content:'\00D7' }
+.pwbox {display:block; min-height:40px; border:1px solid red; padding:30px}

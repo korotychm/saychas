@@ -481,7 +481,8 @@ function showBasket( productadd = 0 ){
             success: function (data) {
                 console.log(data);
                    $("#bascetbottomblok .content ").empty();
-                $.each(data.products, function(key, value) {
+                if (data.products){ 
+                    $.each(data.products, function(key, value) {
                 //        console.log( value); 
                     //<div class='countitem' >"+ value.count +"</div>    
                     var basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/"+ value.image +"' ><span class='text'>" + value.name + "</span></div>";
@@ -489,7 +490,8 @@ function showBasket( productadd = 0 ){
                         $("#bascetbottomblok .content ").append(basket);
                         
                         
-                })
+                   })
+                }
                 
                 $("#zakazcount").html(data.count); //data.total
                 

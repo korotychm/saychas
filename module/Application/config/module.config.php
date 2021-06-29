@@ -217,6 +217,16 @@ return [
                     ],
                 ],
             ],
+            'basket' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/basket',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'basket',
+                    ],
+                ],
+            ],
             'product' => [
                 'type'    => Segment::class,
                 'options' => [
