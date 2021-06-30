@@ -123,11 +123,21 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
     
+    /**
+     * Show provider profile
+     * 
+     * @return ViewModel
+     */
     public function profileAction()
     {
+        $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
     
+    /**
+     * Signal ajax script
+     * if provider is not logged in
+     */
     private function assertLoggedIn()
     {
         if(!isset($this->sessionContainer->partnerLoggedIn)){
