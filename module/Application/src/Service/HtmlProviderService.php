@@ -708,5 +708,78 @@ class HtmlProviderService
         return "<span>$userAddress</span> ";
     }
     
+    public function basketData()
+    {
+        $return[]=[
+            "provider_id" => '00004',
+            "provider_enable" => true,
+            "provider_name" =>  "М-Видео",
+            "provider_logo" =>  "mvideo.png",
+            "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
+            "provider_worktime" =>  "Ежедневно, 10:00–22:00 (до закрытия 3 часа)",
+            "products" => [
+                    [
+                        "id" => '000000000009', 
+                        'image' => '79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg' , 
+                        'title' => 'Ноутбук ASUS TUF Gaming FX505DT-HN564T черный ',
+                        'price' => '51000',    
+                        'oldprice' => '',        
+                        'availble' => '10',
+                     ],
+                    [
+                        "id" => '000000000007', 
+                        'image' => '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg' , 
+                        'title' => 'Ноутбук Acer Nitro 5 AN515-43-R45P черный',
+                        'price' => '15800',    
+                        'oldprice' => '17000',        
+                        'availble' => '0',
+                     ],
+                ],
+            
+        ];
+        $return[]=[
+            "provider_id" => '00005',
+            "provider_enable" => true,
+            "provider_name" =>  "DNS",
+            "provider_logo" =>  "00005_DNS.png",
+            "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
+            "provider_worktime" =>  "Ежедневно, 10:00–21:00 (до закрытия 4 часа)",
+            "products" => [
+                    [
+                        "id" => '000000000024', 
+                        'image' => '8.jpg' , 
+                        'title' => 'Смартфон Samsung Galaxy A72 128Gb (черный) ',
+                        'price' => '35990',    
+                        'oldprice' => '40000',        
+                        'availble' => '10',
+                    ],
+                    [
+                        "id" => '000000000011', 
+                        'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' , 
+                        'title' => 'Смартфон Nokia 2.4 ',
+                        'price' => '12500',    
+                        /*'oldprice' => '17000',*/        
+                        'availble' => '0',
+                    ],
+                    [
+                        "id" => '000000000014', 
+                        'image' => '32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg' , 
+                        'title' => 'Xiaomi Redmi Note 10 (голубой)',
+                        'price' => '20000',    
+                        /*'oldprice' => '17000',*/        
+                        'availble' => '10',
+                    ],
+                    
+                ],
+            
+        ];
+        
+       return $return; 
+        
+    }
+    
+    
+    
+    
     
 }

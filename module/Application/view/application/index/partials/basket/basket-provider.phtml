@@ -1,0 +1,21 @@
+<?php foreach ($param as $provider):
+    
+    /*<pre><?php print_r($provider)?></pre>*/
+    ?>
+<div class="contentpaddingbox" id='providerblok-<?=$provider['provider_id']?>'>
+    <div class='blok basketrow'>
+        <div  class='basketcol  check'>
+            <div class='nopub checkallprovider allall' rel='<?=$provider['provider_id']?>' ></div>
+        </div>    
+        <div  class='basketcol  titleprovider'>
+            <div class='brandlogo'  ><img src='/images/provider/<?=$provider['provider_logo']?>' title='<?=$provider['provider_name']?>'></div>
+            <div class='text-provider gray'  >
+                <span class='blok mini'><?=$provider['provider_worktime']?></span>
+                <span class='blok mini'><?=$provider['provider_address']?></span>
+            </div>
+        </div>    
+    </div>
+    <?=$this->partial("/application/index/partials/basket/basket-provider-product", ["param" => $provider['products'], "provider" => provider['provider_id']]) ?>  
+</div>
+
+<?php endforeach;?>

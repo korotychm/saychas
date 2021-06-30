@@ -12,7 +12,7 @@
     background-color: var(--brand-color) !IMPORTANT;
     border-color: var(--brand-color) !IMPORTANT;
 }
-
+#content {min-width:1101px}
 .blok, blokr, .blokc {display:block; clear:both; text-align:left}
 .blokr {text-align:right}
 .blokc {text-align:center}
@@ -46,7 +46,7 @@
     background: rgba(255,255,255,.75) url(/img/loader.gif) center no-repeat;   
     
 }
-#head {display:inline-block; width:100%; max-width:1600px; min-width:1001px; text-align:left; position:relative}
+#head {display:inline-block; width:100%; max-width:1600px; min-width:1101px; text-align:left; position:relative}
 #logo {display:inline-block; width:220px;height:170px; max-width:33.3%;  background:url(/img/logotop.png) left center no-repeat   ;
 /* background-size: contain; */}
 
@@ -92,5 +92,6 @@
  footer, #footer {background:#333;  display:block; color:#fff;}
  #tree.tree {/*font-size:1.1rem;*/ font-weight:500}
 .none {display:none}
+ .grayscale {filter: grayscale(100%);}
  
 
