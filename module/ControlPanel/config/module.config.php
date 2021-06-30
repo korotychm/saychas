@@ -60,17 +60,28 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
-                    'login-form' => [
+                    'profile' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/login-form',
+                            'route' => '/profile',
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\IndexController::class,
-                                'action' => 'login-form',
+                                'action' => 'profile',
                             ],
                         ],
                         // 'may_terminate' => true,
                     ],
+//                    'login-form' => [
+//                        'type' => Literal::class,
+//                        'options' => [
+//                            'route' => '/login-form',
+//                            'defaults' => [
+//                                'controller' => \ControlPanel\Controller\IndexController::class,
+//                                'action' => 'login-form',
+//                            ],
+//                        ],
+//                        // 'may_terminate' => true,
+//                    ],
                     'login' => [
                         'type' => Literal::class,
                         'options' => [

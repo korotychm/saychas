@@ -123,6 +123,11 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
     
+    public function profileAction()
+    {
+        return (new ViewModel())->setTerminal(true);
+    }
+    
     private function assertLoggedIn()
     {
         if(!isset($this->sessionContainer->partnerLoggedIn)){
