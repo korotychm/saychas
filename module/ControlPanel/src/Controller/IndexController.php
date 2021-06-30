@@ -11,13 +11,15 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
-use ControlPanel\Resource\StringResource;
 
 class IndexController extends AbstractActionController
 {
 
     /** @var ContainerInterface */
     protected $container;
+
+    /** @var Container */
+    protected $sessionContainer;
 
     /** @var HtmlContentProvider */
     protected $htmlContentProvider;
@@ -30,9 +32,16 @@ class IndexController extends AbstractActionController
         ['id' => '00004', 'title' => 'Obamba', 'address' => 'Адрес4', 'geox' => '33.234234', 'geoy' => '33.44444', 'description' => 'description4', 'active' => '',],
     ];
 
-    public function __construct($container)
+    /**
+     * Constructor
+     * 
+     * @param ContainerInterface $container
+     * @param Laminas\Session\Container $sessionContainer
+     */
+    public function __construct($container, $sessionContainer)
     {
         $this->container = $container;
+        $this->sessionContainer = $sessionContainer;
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
     }
 
@@ -44,19 +53,17 @@ class IndexController extends AbstractActionController
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
         // Return the response
 
-        $container = new Container(StringResource::CONTROL_PANEL_SESSION);
-        if(!$container->partnerLoggedIn) {
-            $this->layout()->setTemplate('layout/control-panel-login');
-        }else{
-            $menuItems = $this->htmlContentProvider->getMenuItems();
-            $sidebarMenuItems = $this->htmlContentProvider->getSidebarMenuItems();
-            $this->layout()->setTemplate('layout/control-panel');
-            $this->layout()->setVariables([
-                'menuItems' => $menuItems,
-                'sidebarMenuItems' => $sidebarMenuItems,
-            ]);
+        $menuItems = $this->htmlContentProvider->getMenuItems();
+        $sidebarMenuItems = $this->htmlContentProvider->getSidebarMenuItems();
+        $this->layout()->setTemplate('layout/control-panel');
+        $this->layout()->setVariables([
+            'menuItems' => $menuItems,
+            'sidebarMenuItems' => $sidebarMenuItems,
+        ]);
+
+        if (!$this->sessionContainer->partnerLoggedIn) {
+            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
         }
-        
         return $response;
     }
 
@@ -71,7 +78,7 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Show stores action
+     * Show stores action        // $this->sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
      * Shows a table of stores
      *
      * @return ViewModel
@@ -79,13 +86,12 @@ class IndexController extends AbstractActionController
     public function showStoresAction()
     {
         $view = new ViewModel(['table' => $this->table]);
-        //$view->setTemplate('control-panel/index/index.phtml');
         return $view->setTerminal(true);
     }
 
     /**
      * showOneStoreAction
-     * Shows one store specified by id
+     * Shows one store specified by id/login?returnUrl=/control-panel
      *
      * @return ViewModel
      */
@@ -114,9 +120,4 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
-    public function partnerLoginAction()
-    {
-        $view = new ViewModel();
-        return $view->setTerminal(true);
-    }
 }

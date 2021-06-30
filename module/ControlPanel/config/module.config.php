@@ -6,23 +6,14 @@ use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 //use Laminas\Router\Http\Hostname;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
-//use ControlPanel\Controller\IndexController;
-use ControlPanel\Controller\Factory\IndexControllerFactory;
-use ControlPanel\Service\Factory\HtmlContentProviderFactory;
+use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
     'controllers' => [
         'factories' => [
-//            \ControlPanel\Controller\IndexController::class => InvokableFactory::class,
-            \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
-        ],
-    'controllers' => [
-        'factories' => [
-//            Controller\IndexController::class => InvokableFactory::class,
-            Controller\IndexController::class => IndexControllerFactory::class,
-        ],
-    ],
-        
+            \ControlPanel\Controller\IndexController::class => StandardControllerFactory::class,
+            \ControlPanel\Controller\LoginController::class => StandardControllerFactory::class,
+        ],        
     ],
     'router' => [
         'routes' => [
@@ -69,13 +60,46 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
-                    'partner-login' => [
+                    'login-form' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/partner-login',
+                            'route' => '/login-form',
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\IndexController::class,
-                                'action' => 'partner-login',
+                                'action' => 'login-form',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'action' => 'login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'check-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/check-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'action' => 'check-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'logout' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/logout',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'action' => 'logout',
                             ],
                         ],
                         // 'may_terminate' => true,

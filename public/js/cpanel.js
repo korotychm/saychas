@@ -19,7 +19,7 @@ $(function(){
                         $('#'+ths.currentTarget.id).addClass(('active'));
                         
                             var id = ths.currentTarget.id;
-                            console.log('ths = ', id);
+                            //console.log('ths = ', id);
                             var getForm = function(id) {
                                 data = {'id': id };
                                 $.ajax({
@@ -28,7 +28,7 @@ $(function(){
                                     // method: 'get',
                                     // data: data,
                                     success: function (result, status, xhr) {
-                                        console.log('result = ', result, 'status = ', status);
+//                                        console.log('result = ', result, 'status = ', status, ' xhr = ', xhr);
                                         $('.row-content').html();
                                         $('.row-content').html(result);
                                     },

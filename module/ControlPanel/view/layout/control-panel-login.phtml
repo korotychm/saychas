@@ -43,16 +43,16 @@
         <div class="fluid-container" style="overflow: hidden"> <?php //  container-dashboard ?>
             <div class="row">
                 <div id="controlPanelContentId" class="col <?php // bg-light ?>">
-                    <?php // = $this->content ?>
-                    <div class="fluid-container login-form">banzaii</div>
+                    <?= $this->content ?>
+<!--                    <div class="fluid-container login-form">banzaii</div>-->
                 </div>
             </div>
         </div>
-        <script>
+<!--        <script>
             var loginForm = function() {
                 $.ajax({
                     type: "POST",
-                    url: "/control-panel/partner-login",
+                    url: "/control-panel/login-form",
                     success: function (result, status, xhr) {
                         //console.log('result = ', result, 'status = ', status);
                         $('.login-form').html();
@@ -64,6 +64,6 @@
                 });
             };
             loginForm(); 
-        </script>
+        </script>-->
     </body>
 </html>

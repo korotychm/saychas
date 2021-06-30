@@ -52,6 +52,7 @@ class HtmlContentProvider
         return [
             ['id' => 'storesId', 'url' => '#', 'name' => 'Магазины', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
             ['id' => 'productsId', 'url' => '#', 'name' => 'Номенклатура', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
+            ['id' => 'exitId', 'url' => '/control-panel/logout', 'name' => 'Выход', 'route' => 'exit-control-panel', 'type' => 'left', 'active' => false,],
         ];
     }
 
