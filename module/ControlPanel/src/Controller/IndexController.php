@@ -85,6 +85,7 @@ class IndexController extends AbstractActionController
      */
     public function showStoresAction()
     {
+        $this->assertLoggedIn();
         $view = new ViewModel(['table' => $this->table]);
         return $view->setTerminal(true);
     }
@@ -98,6 +99,7 @@ class IndexController extends AbstractActionController
     public function showOneStoreAction()
     {
         $params = $this->params()->fromRoute();
+        $this->assertLoggedIn();
         foreach ($this->table as $row) {
             if ($row['id'] == $params['id']) {
                 break;
@@ -116,8 +118,17 @@ class IndexController extends AbstractActionController
      */
     public function showProductsAction()
     {
+        $this->assertLoggedIn();
         $view = new ViewModel();
         return $view->setTerminal(true);
+    }
+    
+    private function assertLoggedIn()
+    {
+        if(!isset($this->sessionContainer->partnerLoggedIn)){
+            echo 'null';
+            exit;
+        }
     }
 
 }
