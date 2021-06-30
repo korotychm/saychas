@@ -383,26 +383,31 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
    
     white-space: nowrap
 }
-.onoff, .radio {
+.onoff, 
+.radio {
     display:inline-block; cursor:pointer; height:20px; line-height:20px;
-    background:url("/img/onoff.svg") 0 0 no-repeat;
+    background:url("/img/onoff.svg") top right no-repeat;
     vertical-align:middle;
     padding-top:0px; 
-    padding-left:35px;
+    padding-right:35px;
+    line-height:18px;
     margin:2px 0;
     text-shadow:1px 1px rgba(255,255,255,.5);
     white-space: nowrap;
     /*margin-right:18px;*/
-        width:48.5%; margin:0; outline:0;
+         margin:0; outline:0;
     box-sizing: border-box;
     }    
 .radio {
     background:url("/img/radio.svg") 0 0 no-repeat;
     display:block;
+    padding-left:35px;
+    padding-right:0px;
     height:28px; 
     line-height:28px;
     margin-bottom:12px;
 }   
+
 
 .nopub22 {width:120px; padding-left:27px}
 .cheker {color:#666; padding-left:28px; }
@@ -410,7 +415,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .zach2   {background-position: 0 -50px;  }
 .zach3   {background-position: 0 -75px; color:#191919;  }
 .waiting {background:url("/img/loader.gif") left no-repeat}
-.onoff.zach {background-position:0 -20px; }
+.onoff.zach {background-position:right -20px; }
 .radio.zach {background-position:0 -38px;}
  .bread-crumbs{display:block; color:#333;  line-height:1.8em; margin:16px 0 ;}
  .bread-crumbs-item {
@@ -479,9 +484,68 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
  .contentpaddingbox .basketcol.check {
      width:40px;
  }
- .contentpaddingbox .basketcol.imageproduct {
+ .contentpaddingbox .basketcol.imageproduct{
      width:80px; height:80px; text-align:center;
  }
+ .appendproviderbutton {
+     font-size:1.2rem; line-height:1rem;  
+     
+     color:var(--red);
+     border:2px dashed var(--gray);
+     border-radius:50%;
+     width:60px; height:60px; position:relative;
+     
+ }
+ .appendproviderbutton span {position:absolute; top:20px; left:20px; width:16px; height:16px; text-align:center; display:block}
+ .providerbasketdisable {
+     display:inline-block; 
+     background:var(--gray-light); 
+     padding:12px 24px; 
+     border-radius:36px;
+     padding-right:52px; 
+     color:#000; 
+     text-shadow:rgba(255,255,255,.3);
+     position:relative;
+ }
+ .providerbasketdisablehelp {
+     position:absolute; 
+     display:block; 
+     width:32px; height:32px; 
+     background:#fff; 
+     border-radius:16px; top:8px; right:8px;
+     font-weight:blod; 
+     line-height:32px;
+     cursor:pointer;
+     color:var(--red);
+     text-align:center;
+    }
+    .providerbasketdisablehelpcontent   {
+        display:none;
+        position:absolute;
+        padding:12px 24px; 
+        border-radius:16px;
+        color:#000;
+        background:#fff;
+        box-shadow:5px 5px 20px rgba(0,0,0,.1);
+        width:380px; left:-190px;
+        line-height:1.3em;
+        text-align:left;
+        z-index:20;
+        box-sizing: border-box;
+        margin-top:6px;
+        
+        
+    }
+    
+    .providerbasketdisablehelp:hover .providerbasketdisablehelpcontent {display:block}
+    
+    .providerbasketdisablehelpcontent  span.strelka  {
+        position:absolute;
+        top:-12px; left:50%; margin-left:4px;
+        /*box-shadow:5px 5px 20px rgba(0,0,0,.3);*/
+    }
+ 
+ 
  .contentpaddingbox .basketcol.countproduct {
      width:160px; white-space: nowrap;
  }
@@ -508,13 +572,14 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
      width:30px;
  }
  .contentpaddingbox .basketcol.addtofavproduct {
-     width:30px; text-align:right; vertical-align: middle
+     width:30px; text-align:right; vertical-align: middle; float:right; margin-top:20px
  }
  .contentpaddingbox .basketcol.titleproduct {
      width: calc(100% - 498px);
  }
  
- .contentpaddingbox .basketcol.titleproduct.disabled {
+ .contentpaddingbox .basketcol.titleproduct.disabled
+ {
      opacity: .5
  }
  
@@ -880,3 +945,10 @@ img.zero, .zeroblok {
 
 #bascetbottomblok .close:before {content:'\00D7' }
 .pwbox {display:block; min-height:40px; border:1px solid red; padding:30px}
+    .strelka {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 20px solid #fff;
+    }

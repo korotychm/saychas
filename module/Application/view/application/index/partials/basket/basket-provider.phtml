@@ -4,18 +4,64 @@
     ?>
 <div class="contentpaddingbox" id='providerblok-<?=$provider['provider_id']?>'>
     <div class='blok basketrow'>
+
         <div  class='basketcol  check'>
-            <div class='nopub checkallprovider allall' rel='<?=$provider['provider_id']?>' ></div>
+<?php if(!$provider['provider_disable']){?>                       <div class='nopub checkallprovider allall' rel='<?=$provider['provider_id']?>' ></div> 
+<?php }?>
         </div>    
         <div  class='basketcol  titleprovider'>
             <div class='brandlogo'  ><img src='/images/provider/<?=$provider['provider_logo']?>' title='<?=$provider['provider_name']?>'></div>
+<?php if(!$provider['provider_disable']) {?>
             <div class='text-provider gray'  >
                 <span class='blok mini'><?=$provider['provider_worktime']?></span>
                 <span class='blok mini'><?=$provider['provider_address']?></span>
             </div>
+<?php }else {?>
+            
+            <div class='text-provider gray'  >
+              <div class='providerbasketdisable'><?=$provider['provider_disable']?>
+              <div class='providerbasketdisablehelp'>?
+              <div class='providerbasketdisablehelpcontent '><span class='strelka'></span>К сожалению, магазин уже закрылся. Откроется завтра с 9-ти часов <span class='gray blok mini'><?=$provider['provider_worktime']?></span></div>
+              </div>
+              
+              </div>
+            </div>
+            
+<?php }?>            
         </div>    
     </div>
-    <?=$this->partial("/application/index/partials/basket/basket-provider-product", ["param" => $provider['products'], "provider" => provider['provider_id']]) ?>  
+    <?=$this->partial("/application/index/partials/basket/basket-provider-product", ["param" => $provider['products'], "provider" => provider['provider_id'], 'provider_disable'=>$provider['provider_disable']]) ?>  
+<?php if(!$provider['provider_disable']){?>    
+    <div class='blok basketrow'>
+        <div  class='basketcol  check'>
+          
+        </div>    
+        
+       <div  class='basketcol  imageproduct '>
+            <div class='appendproviderbutton'><span>+</span></div>
+        </div>
+        <div  class='basketcol  appendprovider'>
+            <span class='blok'><a href='#<?=$provider['provider_id']?>' class="red" >Добавить еще товаров</a></span>
+                <span class='blok gray'>из этого магазина бесплатно</span>
+            
+        </div>    
+    </div>
+    <div class='blok basketrow'>
+        <div  class='basketcol  check'>
+          
+        </div>    
+        
+       <div  class='basketcol  imageproduct '>
+           
+        </div>
+        <div  class='basketcol selfdelevery'>
+            <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
+            <input type='checkbox' class="none" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='1' name='selfdelevery[<?=$provider['provider_id']?>]' >
+                <span class='blok gray'><?=$provider['provider_worktime']?></span>
+            
+        </div>    
+    </div>
+<?php }?>
 </div>
 
 <?php endforeach;?>

@@ -712,7 +712,7 @@ class HtmlProviderService
     {
         $return[]=[
             "provider_id" => '00004',
-            "provider_enable" => true,
+            "provider_disable" => false,
             "provider_name" =>  "М-Видео",
             "provider_logo" =>  "mvideo.png",
             "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
@@ -739,7 +739,7 @@ class HtmlProviderService
         ];
         $return[]=[
             "provider_id" => '00005',
-            "provider_enable" => true,
+            "provider_disable" => false,
             "provider_name" =>  "DNS",
             "provider_logo" =>  "00005_DNS.png",
             "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
@@ -773,6 +773,37 @@ class HtmlProviderService
                 ],
             
         ];
+        
+         $return[]=[
+            "provider_id" => '00000',
+            "provider_disable" => "Магазин уже закрылся",
+            "provider_name" =>  "5",
+            "provider_logo" =>  "5.png",
+            "provider_address" =>  "Пятерочка. Новочеркасский бульвар, 10, м.Марьино  ",
+            "provider_worktime" =>  "Ежедневно, 10:00–23:00 (до закрытия 5 часов)",
+            "products" => [
+                    [
+                        "id" => '10000000000', 
+                        'image' => '1350x.jpg' , 
+                        'title' => 'Кефир Простоквашинго 2,5%',
+                        'price' => '35',    
+                        'oldprice' => '40',        
+                        'availble' => '10',
+                    ],
+                    [
+                        "id" => '20000000000', 
+                        'image' => '40ec61411c92eac07cd543f0cee4ad81.jpg' , 
+                        'title' => 'Молоко Простоквашинго 2,5%',
+                        'price' => '25',    
+                        /*'oldprice' => '17000',*/        
+                        'availble' => '0',
+                    ],
+                    
+                ],
+            
+        ];
+        
+        
         
        return $return; 
         

@@ -1,11 +1,11 @@
 <?php foreach ($param as $product):
-        $anable = ($product['availble']>0);
+        $anable = ($product['availble']>0 and !$provider_disable);
         $disabled = ($anable)?"":" disabled ";
 ?>
 
 <div class='blok basketrow ' id="<?=$product['id']?>">
         <div  class='basketcol<?=$disabled?>  check'>
- <?php if($anable) {?>
+<?php if($anable) {?>
             <div class='nopub checkallprovider <?=$param['provider']?>  allall' rel='<?=$product['id']?>' provider='provider1' ></div>
             <input type="checkbox" name="poducts[<?=$product['id']?>]" value="1"  class="none povider-<?=$param['provider']?> class-<?=$product['id']?>  allallcheck ">
 <?php }?>
@@ -19,7 +19,7 @@
         <div  class='basketcol<?=$disabled?>  titleproduct'>
            <?=$product['title']?>
         </div>
-
+<?php if(!$provider_disable) {?>
         <div  class='basketcol<?=$disabled?>  deleteproduct'>
             <img src="/img/saychas-zero.svg" class="deleteprop grayscale" rel='<?=$product['id']?>'  />
         </div>
@@ -42,37 +42,12 @@
         <div  class='basketcol<?=$disabled?>  priceproduct disabled' id="priceproduct-product2">
             Товара нет в наличии
         </div>
-<?php }?>
+<?php }
+}?>
         <div  class='basketcol<?=$disabled?>  addtofavproduct'>
             <img src="/img/saychas-zero.svg" class="favtprop" rel='<?=$product['id']?>'  />
         </div>
 
-    </div>    
+ </div>    
 
-    <!-- div class='blok basketrow ' id="product2">
-        <div  class='basketcol<?=$disabled?>  check'>
-            <!-- div class='nopub checkallprovider <?=$param['provider']?>' rel='<?=$product['id']?>' ></div>
-            <input type="checkbox" name="poducts[product2]" value="1" class="none povider-<?=$param['provider']?> class-product2">
-        </div>    
-
-        <div  class='basketcol<?=$disabled?>  imageproduct disabled'>
-            <img src="/images/product/7.jpg" alt="" 
-                 class="product-page-image productimage1 "  title="">
-        </div>
-
-        <div  class='basketcol<?=$disabled?>  titleproduct disabled'>
-            Huawei Honor 10X Lite (розовый) 
-        </div>
-
-        <div  class='basketcol<?=$disabled?>  deleteproduct disabled'>
-            <img src="/img/saychas-zero.svg" class="deleteprop grayscale" rel='product2'    />
-        </div>
-
-      
-
-        <div  class='basketcol<?=$disabled?>  addtofavproduct'>
-            <img src="/img/saychas-zero.svg" class="favtprop" rel='<?=$product['id']?>'  />
-        </div>
-
-    </div--> 
 <?php endforeach;?>
