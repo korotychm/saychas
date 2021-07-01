@@ -1,15 +1,15 @@
 <?php
-    $storeId = $title = $address = $geox = $geoy = $description = $icon = "";
-    
-    if($row) {
-        $storeId = $row['id'];
-        $title = $row['title'];
-        $address = $row['address'];
-        $geox = $row['geox'];
-        $geoy = $row['geoy'];
-        $icon = 'icon';
-        $description = $row['description'];
-    }
+$storeId = $title = $address = $geox = $geoy = $description = $icon = "";
+
+if ($row) {
+    $storeId = $row['id'];
+    $title = $row['title'];
+    $address = $row['address'];
+    $geox = $row['geox'];
+    $geoy = $row['geoy'];
+    $icon = 'icon';
+    $description = $row['description'];
+}
 ?>
 <div class="container p-0">
     <div class="main-body mt-1 row-content">
@@ -37,29 +37,29 @@
                                 </div>
                                 <input id="address" placeholder="Адрес" name="address" class="form-control" type="text" value="<?= $address ?>" />
                             </div>
-                            <div class="input-group mb-2 input-group-sm">
+<!--                            <div class="input-group mb-2 input-group-sm">
                                 <div class="input-group-prepend">
                                     <span  class="field-prefix input-group-text">ГЕОX</span>
                                 </div>
-                                <input id="geox" placeholder="ГЕОX" name="geox" class="form-control" type="text" value="<?= $geox ?>" />
-                            </div>
-                            <div class="input-group mb-2 input-group-sm">
+                                <input id="geox" placeholder="ГЕОX" name="geox" class="form-control" type="text" value="<?php //= $geox ?>" />
+                            </div>-->
+<!--                            <div class="input-group mb-2 input-group-sm">
                                 <div class="input-group-prepend">
                                     <span  class="field-prefix input-group-text">ГЕОY</span>
                                 </div>
-                                <input id="geoy" placeholder="ГЕОY" name="geoy" class="form-control" type="text" value="<?= $geoy ?>" />
-                            </div>
-                            <div class="input-group mb-2 input-group-sm">
+                                <input id="geoy" placeholder="ГЕОY" name="geoy" class="form-control" type="text" value="<?php //= $geoy ?>" />
+                            </div>-->
+<!--                            <div class="input-group mb-2 input-group-sm">
                                 <div class="input-group-prepend">
                                     <span  class="field-prefix input-group-text">Icon</span>
                                 </div>
-                                <input id="icon" placeholder="icon" name="icon" class="form-control" type="text" value="<?= $icon ?>" />
-                            </div>
+                                <input id="icon" placeholder="icon" name="icon" class="form-control" type="text" value="<?php //= $icon ?>" />
+                            </div>-->
                             <div class="input-group mb-2 input-group-sm">
                                 <label for="description">Описание:</label>
-                                <textarea class="" style="width:100%;" rows="3" id="description" placeholder="Описание"><?= $description ?></textarea>
+                                <textarea class="" style="width:100%;" rows="7" id="description" placeholder="Описание"><?= $description ?></textarea>
                             </div>
-                            
+
                             <button type="button" style="position: absolute; bottom: 1em;" class="btn btn-secondary">Сохранить</button>
                         </form>
                     </div>
