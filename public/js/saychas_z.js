@@ -81,25 +81,85 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
-    $(".onoff").click(function () {
+    $(".fltronoff").click(function () {
         var rel=$(this).attr('rel');
         //console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
                 $(this).removeClass("zach");
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
         } else {
-                $('.onoff[rel^='+rel+']').removeClass("zach");
+                $('.fltronoff[rel^='+rel+']').removeClass("zach");
                 $('.relcheck[rel^='+rel+']').prop("checked", false);;    
                 $(this).addClass("zach");
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
     
+    $(".selfdeleveryonoff").click(function () {
+        var rel=$(this).attr('rel');
+        //console.log(".fltrcheck" + $(this).attr("for"));
+        if ($(this).hasClass("zach")) {
+                $(this).removeClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
+                $("#providerblok-" + rel).removeClass("goself");
+        } else {
+                $('.selfdeleveryonoff[rel^='+rel+']').removeClass("zach");
+                $('.relcheck[rel^='+rel+']').prop("checked", false);;    
+                $(this).addClass("zach");
+                $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
+                $("#providerblok-" + rel).addClass("goself");
+        }
+    });
+    $("#checkallavailble").click(function(){
+        if($(this).hasClass("zach")){
+            $(".allall").removeClass("zach");
+            $("#checkallavailble").removeClass("zach");
+            $(".allallcheck").prop("checked", false);
+            
+        }
+        else {
+            $("#checkallavailble").addClass("zach");
+            $(".allall").addClass("zach");
+            $(".allallcheck").prop("checked", true);
+        }
+    })
+    $(".checkallallprovider").click(function(){
+        $("#checkallavailble").removeClass("zach");
+         var rel=$(this).attr('rel');
+        if($(this).hasClass("zach")){
+            $(this).removeClass("zach");
+            $(".provider-"+rel).removeClass("zach");
+            $(".povidercheck" + rel ).prop("checked", false);
+        }
+        else {
+            $(this).addClass("zach");
+            $(".provider-"+rel).addClass("zach");
+            $(".providercheck" + rel ).prop("checked", true);
+        }
+    })
+    
+     $(".checkallprovider").click(function(){
+        
+         var rel=$(this).attr('rel');
+         var provider=$(this).attr('provider');
+         $("#checkallavailble").removeClass("zach");
+         $("#checkallallprovider-"+ provider).removeClass("zach");
+        if($(this).hasClass("zach")){
+            $(this).removeClass("zach");
+            $(".product-" + rel ).prop("checked", false);
+        }
+        else {
+            $(this).addClass("zach");
+            $(".product-" + rel ).prop("checked", true);
+        }
+    })
+    
     $(".radio").click(function () {
         var rel=$(this).attr('rel');
         //console.log(".fltrcheck" + $(this).attr("for"));
                 $('.radio[rel^='+rel+']').removeClass("zach");
                 $('.relradio[rel^='+rel+']').prop("checked", false);;    
+                $('.relradio'+rel).prop("checked", false);;    
                 $(this).addClass("zach");
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         
@@ -481,7 +541,8 @@ function showBasket( productadd = 0 ){
             success: function (data) {
                 console.log(data);
                    $("#bascetbottomblok .content ").empty();
-                $.each(data.products, function(key, value) {
+                if (data.products){ 
+                    $.each(data.products, function(key, value) {
                 //        console.log( value); 
                     //<div class='countitem' >"+ value.count +"</div>    
                     var basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/"+ value.image +"' ><span class='text'>" + value.name + "</span></div>";
@@ -489,7 +550,8 @@ function showBasket( productadd = 0 ){
                         $("#bascetbottomblok .content ").append(basket);
                         
                         
-                })
+                   })
+                }
                 
                 $("#zakazcount").html(data.count); //data.total
                 

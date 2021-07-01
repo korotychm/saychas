@@ -255,10 +255,10 @@ class HtmlProviderService
         elseif ($row['type'] == 3){
                 $options = "
                     <div class=blok >
-                        <div class='   onoff ' for=123  rel=1 >Нет 
+                        <div class='fltronoff   onoff ' for=123  rel=1 >Нет 
                             <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."]' value='0' >
                         </div>
-                        <div class=' onoff  ' for=122  rel=1 >Да
+                        <div class='fltronoff onoff  ' for=122  rel=1 >Да
                                 <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."]' value='1' >
                         </div>
                     </div>";
@@ -345,10 +345,10 @@ class HtmlProviderService
             <div class='fltrblock'>
                    <div class='filtritemtitle blokl' >Тест булевое значение</div>
                     <div class=blok >
-                        <div class='   onoff ' for=123  rel=1 >Нет 
+                        <div class=' fltronoff  onoff ' for=123  rel=1 >Нет 
                             <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."][]' value='0' >
                         </div>
-                        <div class=' onoff zach ' for=122  rel=1 >Да
+                        <div class='fltronoff onoff zach ' for=122  rel=1 >Да
                                 <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."][]' value='1' checked >
                         </div>
                     </div>
@@ -369,7 +369,7 @@ class HtmlProviderService
                         </div>
                     </div>
                 </div>
-             </div -->"
+             </div-->"
                :"";
         //
         return $return;
@@ -707,6 +707,113 @@ class HtmlProviderService
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
         return "<span>$userAddress</span> ";
     }
+    
+    public function basketData()
+    {
+        $return[]=[
+            "provider_id" => '00004',
+            "provider_disable" => false,
+            "provider_name" =>  "М-Видео",
+            "provider_logo" =>  "mvideo.png",
+            "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
+            "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
+            "provider_timeclose" =>  "(до закрытия 3 часа)",
+            "products" => [
+                    [
+                        "id" => '000000000009', 
+                        'image' => '79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg' , 
+                        'title' => 'Ноутбук ASUS TUF Gaming FX505DT-HN564T черный ',
+                        'price' => '51000',    
+                        'oldprice' => '',        
+                        'availble' => '10',
+                     ],
+                    [
+                        "id" => '000000000007', 
+                        'image' => '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg' , 
+                        'title' => 'Ноутбук Acer Nitro 5 AN515-43-R45P черный',
+                        'price' => '15800',    
+                        'oldprice' => '17000',        
+                        'availble' => '0',
+                     ],
+                ],
+            
+        ];
+        $return[]=[
+            "provider_id" => '00005',
+            "provider_disable" => false,
+            "provider_name" =>  "DNS",
+            "provider_logo" =>  "00005_DNS.png",
+            "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
+            "provider_worktime" =>  "Ежедневно, 10:00–21:00 ",
+            "provider_timeclose" =>  "(до закрытия 4 часа)",
+            "products" => [
+                    [
+                        "id" => '000000000024', 
+                        'image' => '8.jpg' , 
+                        'title' => 'Смартфон Samsung Galaxy A72 128Gb (черный) ',
+                        'price' => '35990',    
+                        'oldprice' => '40000',        
+                        'availble' => '10',
+                    ],
+                    [
+                        "id" => '000000000011', 
+                        'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' , 
+                        'title' => 'Смартфон Nokia 2.4 ',
+                        'price' => '12500',    
+                        /*'oldprice' => '17000',*/        
+                        'availble' => '0',
+                    ],
+                    [
+                        "id" => '000000000014', 
+                        'image' => '32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg' , 
+                        'title' => 'Xiaomi Redmi Note 10 (голубой)',
+                        'price' => '20000',    
+                        /*'oldprice' => '17000',*/        
+                        'availble' => '10',
+                    ],
+                    
+                ],
+            
+        ];
+        
+         $return[]=[
+            "provider_id" => '00000',
+            "provider_disable" => "Магазин уже закрылся",
+            "provider_name" =>  "5",
+            "provider_logo" =>  "5.png",
+            "provider_address" =>  "Пятерочка. Новочеркасский бульвар, 10, м.Марьино  ",
+            "provider_worktime" =>  "Ежедневно, 10:00–23:00 ",
+            "provider_timeclose" =>  "(до закрытия 5 часов)",
+            "products" => [
+                    [
+                        "id" => '10000000000', 
+                        'image' => '1350x.jpg' , 
+                        'title' => 'Кефир Простоквашинго 2,5%',
+                        'price' => '35',    
+                        'oldprice' => '40',        
+                        'availble' => '10',
+                    ],
+                    [
+                        "id" => '20000000000', 
+                        'image' => '40ec61411c92eac07cd543f0cee4ad81.jpg' , 
+                        'title' => 'Молоко Простоквашинго 2,5%',
+                        'price' => '25',    
+                        /*'oldprice' => '17000',*/        
+                        'availble' => '0',
+                    ],
+                    
+                ],
+            
+        ];
+        
+        
+        
+       return $return; 
+        
+    }
+    
+    
+    
     
     
 }

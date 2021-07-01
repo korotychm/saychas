@@ -247,7 +247,17 @@ class IndexController extends AbstractActionController
             'fooItem' => $container->item
         ]);
     }
-
+    public function basketAction()
+    {
+        
+     $content = $this->htmlProvider->basketData();   
+     return new ViewModel([
+           /* "providers" => $providers,*/
+            "content" => $content,
+            "title" => "Корзина",
+            
+        ]);   
+    }    
     public function previewAction()
     {
         //$this->layout()->setTemplate('layout/mainpage');

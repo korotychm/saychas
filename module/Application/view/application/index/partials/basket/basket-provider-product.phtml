@@ -1,0 +1,53 @@
+<?php foreach ($param as $product):
+        $anable = ($product['availble']>0 and !$provider_disable);
+        $disabled = ($anable)?"":" disabled ";
+?>
+
+<div class='blok basketrow ' id="<?=$product['id']?>">
+        <div  class='basketcol<?=$disabled?>  check'>
+<?php if($anable) {?>
+            <div class='nopub checkallprovider provider-<?=$provider?>  allall' rel='<?=$product['id']?>' provider='<?=$provider?>' ></div>
+            <input type="checkbox" name="poducts[<?=$product['id']?>]" value="1"  class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck ">
+<?php }?>
+        </div>    
+
+        <div  class='basketcol<?=$disabled?>  imageproduct '>
+            <img src="/images/product/<?=$product['image']?>" alt="" 
+                 class="product-page-image productimage1"  title="">
+        </div>
+
+        <div  class='basketcol<?=$disabled?>  titleproduct'>
+           <?=$product['title'].$provider?>
+        </div>
+<?php if(!$provider_disable) {?>
+        <div  class='basketcol<?=$disabled?>  deleteproduct'>
+            <img src="/img/saychas-zero.svg" class="deleteprop grayscale" rel='<?=$product['id']?>'  />
+        </div>
+<?php if($anable) {?>
+        <div  class='basketcol  countproduct' id="countproduct-<?=$product['id']?>" >
+            <div class="countproductminus disable" rel='<?=$product['id']?>' >&#8722;
+            </div><div class="countproductnum" id="countproductnum-<?=$product['id']?>">1
+            </div><div class="countproductplus" rel='<?=$product['id']?>'></div>
+            <input type="hidden" id="countprhidden-<?=$product['id']?>"  name="countproduct[<?=$product['id']?>]" value="1" />
+        </div>
+
+        <div  class='basketcol<?=$disabled?>  priceproduct' id="priceproduct-<?=$product['id']?>">
+            <span class="price"><?=number_format($product['price'], 0, ',', '&nbsp;');?>&nbsp;₽ </span>
+            <?=($product['oldprice'])
+                ?'<span class="oldprice">'.number_format($product['oldprice'], 0, ',', '&nbsp;').'&nbsp;₽</span>'
+                :''
+            ?>
+        </div>
+<?php } else { ?>
+        <div  class='basketcol<?=$disabled?>  priceproduct disabled' id="priceproduct-product2">
+            Товара нет в наличии
+        </div>
+<?php }
+}?>
+        <div  class='basketcol<?=$disabled?>  addtofavproduct'>
+            <img src="/img/saychas-zero.svg" class="favtprop" rel='<?=$product['id']?>'  />
+        </div>
+
+ </div>    
+
+<?php endforeach;?>
