@@ -25,6 +25,19 @@ $(function () {
             .fail(function (data) {
                 console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
             });
+        } else if('accountManagementId' === ths.currentTarget.id) {
+            $.post('/control-panel/account-management', {post: {}}, function (data) {
+                $('#controlPanelContentId').fadeOut("fast", function () {
+                    redirectIfNotLoggedIn(data);
+                    $('#controlPanelContentId').html("");
+                    $('#controlPanelContentId').html(data);
+                });
+                $('#controlPanelContentId').fadeIn("fast", function () {
+                });
+            })
+            .fail(function (data) {
+                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+            });
         } else if ('storesId' === ths.currentTarget.id) {
             $.post('/control-panel/show-stores', {post: {}}, function (data) {
                 $('#controlPanelContentId').fadeOut("fast", function () {
@@ -60,6 +73,32 @@ $(function () {
             })
             .fail(function (data) {
                 console.log('ShowMenus failed :( data = ', data, ' ', data.statusText);
+            });
+        }else if('actionAndDiscountId' === ths.currentTarget.id) {
+            $.post('/control-panel/action-and-discount', {post: {}}, function (data) {
+                $('#controlPanelContentId').fadeOut("fast", function () {
+                    redirectIfNotLoggedIn(data);
+                    $('#controlPanelContentId').html("");
+                    $('#controlPanelContentId').html(data);
+                });
+                $('#controlPanelContentId').fadeIn("fast", function () {
+                });
+            })
+            .fail(function (data) {
+                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+            });
+        }else if('respondingToReviewsId' === ths.currentTarget.id) {
+            $.post('/control-panel/responding-to-reviews', {post: {}}, function (data) {
+                $('#controlPanelContentId').fadeOut("fast", function () {
+                    redirectIfNotLoggedIn(data);
+                    $('#controlPanelContentId').html("");
+                    $('#controlPanelContentId').html(data);
+                });
+                $('#controlPanelContentId').fadeIn("fast", function () {
+                });
+            })
+            .fail(function (data) {
+                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
             });
         } else if ('productsId' === ths.currentTarget.id) {
             $.post('/control-panel/show-products', {post: {}}, function (data) {

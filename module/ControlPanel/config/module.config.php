@@ -71,6 +71,39 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'account-management' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/account-management',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'account-management',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'action-and-discount' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/action-and-discount',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'action-and-discount',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'responding-to-reviews' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/responding-to-reviews',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'responding-to-reviews',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
 //                    'login-form' => [
 //                        'type' => Literal::class,
 //                        'options' => [

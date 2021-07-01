@@ -133,7 +133,40 @@ class IndexController extends AbstractActionController
         $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
+
+    /**
+     * Show action and discount page
+     * 
+     * @return ViewModel
+     */
+    public function actionAndDiscountAction()
+    {
+        $this->assertLoggedIn();
+        return (new ViewModel())->setTerminal(true);
+    }
     
+    /**
+     * Show account management page
+     * 
+     * @return ViewModel
+     */
+    public function accountManagementAction()
+    {
+        $this->assertLoggedIn();
+        return (new ViewModel())->setTerminal(true);
+    }
+    
+    /**
+     * Show responding to reviews
+     * 
+     * @return ViewModel
+     */
+    public function respondingToReviewsAction()
+    {
+        $this->assertLoggedIn();
+        return (new ViewModel())->setTerminal(true);
+    }
+
     /**
      * Signal ajax script
      * if provider is not logged in
