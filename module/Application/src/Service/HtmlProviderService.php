@@ -341,7 +341,7 @@ class HtmlProviderService
             </div>
         </div>
         ".$return."
-            <div class=blok >
+            <!-- div class=blok >
             <div class='fltrblock'>
                    <div class='filtritemtitle blokl' >Тест булевое значение</div>
                     <div class=blok >
@@ -369,7 +369,7 @@ class HtmlProviderService
                         </div>
                     </div>
                 </div>
-             </div>"
+             </div-->"
                :"";
         //
         return $return;
