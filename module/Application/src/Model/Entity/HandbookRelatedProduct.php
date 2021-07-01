@@ -10,6 +10,7 @@ use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
+use Application\Model\RepositoryInterface\MarkerRepositoryInterface;
 
 /**
  * HandbookRelatedProduct
@@ -39,16 +40,21 @@ class HandbookRelatedProduct extends Entity
      * @var ProviderRepositoryInterface
      */
     public static ProviderRepositoryInterface $providerRepository;
-    
+
     /**
      * @var ProductCharacteristicRepositoryInterface
      */
     public static ProductCharacteristicRepositoryInterface $productCharacteristicRepository;
-    
+
     /**
      * @var StockBalanceRepositoryInterface
      */
     public static StockBalanceRepositoryInterface $stockBalanceRepository;
+
+    /**
+     * @var MarkerRepositoryInterface
+     */
+    public static MarkerRepositoryInterface $markerRepository;
 
     /**
      * Get brand
@@ -92,10 +98,10 @@ class HandbookRelatedProduct extends Entity
         }
         return self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()]]);
     }
-    
+
     /**
      * Return first product image from sorted row set;
-     * 
+     *
      * @return string
      * @throws \Exception
      */
@@ -106,8 +112,24 @@ class HandbookRelatedProduct extends Entity
         }
         $images = self::$productImageRepository->findAll(['where' => ['product_id' => $this->getId()], 'order' => 'sort_order']);
         $image = $images->current();
-        
+
         return $image;
+    }
+
+    /**
+     * Return marker object;
+     *
+     * @return Marker
+     * @throws \Exception
+     */
+    public function receiveMarkerObject()
+    {
+        if (!( self::$markerRepository instanceof MarkerRepositoryInterface )) {
+            throw new \Exception('MarkerRepositoryInterface expected; other type given');
+        }
+        $marker = self::$markerRepository->find(['where' => ['id' => $this->getId()]]);
+
+        return $marker->current();
     }
 
     /**
@@ -125,7 +147,7 @@ class HandbookRelatedProduct extends Entity
 
     /**
      * Return summary value for rest
-     * 
+     *
      * @return int
      * @throws \Exception
      */
@@ -134,16 +156,16 @@ class HandbookRelatedProduct extends Entity
         if (!( self::$stockBalanceRepository instanceof StockBalanceRepositoryInterface )) {
             throw new \Exception('StockBalanceRepositoryInterface expected; other type given');
         }
-        
+
         $select = new \Laminas\Db\Sql\Select();
-        
+
         $select->from(self::$stockBalanceRepository->getTableName());
         $expression = new \Laminas\Db\Sql\Expression();
         $expression->setExpression('sum(rest)');
-               
-        $result = self::$stockBalanceRepository->findAll(['where' => ['product_id' => $this->getId()], 'columns' => ['rest' => $expression], 'group' => ['product_id']/*, 'having' => ['product_id' => $this->getId()]*/ ]);
-        
-        return $result->current()->getRest();   
+
+        $result = self::$stockBalanceRepository->findAll(['where' => ['product_id' => $this->getId()], 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
+
+        return $result->current()->getRest();
     }
 
     /**
@@ -190,34 +212,34 @@ class HandbookRelatedProduct extends Entity
      * @var string
      */
     protected $brand_id;
-    
+
     /**
      * Product price from joined price table
-     * 
+     *
      * @var int
      */
     protected $price;
-    
+
     /**
      * Product old_price from joined price table
-     * 
+     *
      * @var int
      */
     protected $old_price;
 
     /**
      * Get price from one-to-one joined price table
-     * 
+     *
      * @return int
      */
     public function getPrice()
     {
         return $this->price;
     }
-    
+
     /**
-     * Set price. Needed when hydrating; 
-    * 
+     * Set price. Needed when hydrating;
+     *
      * @param type $price
      * @return $this
      */
@@ -226,20 +248,20 @@ class HandbookRelatedProduct extends Entity
         $this->price = $price;
         return $this;
     }
-    
+
     /**
      * Get old_price from one-to-one joined old_price table
-     * 
+     *
      * @return int
      */
     public function getOldPrice()
     {
         return $this->old_price;
     }
-    
+
     /**
-     * Set old_price. Needed when hydrating; 
-    * 
+     * Set old_price. Needed when hydrating;
+     *
      * @param int $oldPrice
      * @return $this
      */
@@ -248,7 +270,7 @@ class HandbookRelatedProduct extends Entity
         $this->old_price = $oldPrice;
         return $this;
     }
-    
+
     /**
      * Get id.
      *
@@ -457,12 +479,12 @@ class HandbookRelatedProduct extends Entity
         $this->brand_id = $brandId;
         return $this;
     }
-    
+
     public function getRest()
     {
         return $this->rest;
     }
-    
+
     public function setRest($rest)
     {
         $this->rest = $rest;
