@@ -6,8 +6,8 @@
 <div class='blok basketrow ' id="<?=$product['id']?>">
         <div  class='basketcol<?=$disabled?>  check'>
 <?php if($anable) {?>
-            <div class='nopub checkallprovider <?=$param['provider']?>  allall' rel='<?=$product['id']?>' provider='provider1' ></div>
-            <input type="checkbox" name="poducts[<?=$product['id']?>]" value="1"  class="none povider-<?=$param['provider']?> class-<?=$product['id']?>  allallcheck ">
+            <div class='nopub checkallprovider provider-<?=$provider?>  allall' rel='<?=$product['id']?>' provider='<?=$provider?>' ></div>
+            <input type="checkbox" name="poducts[<?=$product['id']?>]" value="1"  class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck ">
 <?php }?>
         </div>    
 
@@ -17,7 +17,7 @@
         </div>
 
         <div  class='basketcol<?=$disabled?>  titleproduct'>
-           <?=$product['title']?>
+           <?=$product['title'].$provider?>
         </div>
 <?php if(!$provider_disable) {?>
         <div  class='basketcol<?=$disabled?>  deleteproduct'>

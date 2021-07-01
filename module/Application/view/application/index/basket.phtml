@@ -11,12 +11,17 @@ $this->headTitle($this->title, 'PREPEND');
             <form method='POST' id='user-basket-form'>   
                 <div class="pw-contentblock cblock-5">
                     <div class='nopub ' id='checkallavailble' >Выбрать все</div>
-         <?=$this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content])?>
+        <?=$this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content])?>
+        <?=$this->partial("/application/index/partials/basket/basket-user", ["param" => $this->userData])?>                     
+        <?=$this->partial("/application/index/partials/basket/basket-order-merge")?>      
+        <?=$this->partial("/application/index/partials/basket/basket-self-delevery")?>      
+        <?=$this->partial("/application/index/partials/basket/basket-pay-card")?>                          
                 </div>
                 <div class="pw-contentblock cblock-3">
                     <div class="contentpadding">
                         <!-- div class='blok pwbox'> сервисный блок</div -->
-        <?=$this->partial("/application/index/partials/basket/basket-payinfo")?>               
+        <?=$this->partial("/application/index/partials/basket/basket-payinfo")?>      
+           
                     </div>
                 </div>  
             </form>

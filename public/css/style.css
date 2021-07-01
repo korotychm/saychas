@@ -21,7 +21,10 @@
 .iblokr{text-align: right}
 .iblokc{text-align: center}
 .mini {font-size:80%}
-.gray {color:#a7a7a7}
+.valign-middle {vertical-align:middle}
+.valign-top {vertical-align:top}
+.gray {color:var(--gray)}
+.black{color:var(--black)}
 .card, .card-body, .relative {position:relative}
 .nobold {font-weight:400 }
 .waiting {
@@ -92,6 +95,6 @@
  footer, #footer {background:#333;  display:block; color:#fff;}
  #tree.tree {/*font-size:1.1rem;*/ font-weight:500}
 .none {display:none}
- .grayscale {filter: grayscale(100%);}
+.grayscale {filter: grayscale(100%);}
  
 

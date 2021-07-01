@@ -255,10 +255,10 @@ class HtmlProviderService
         elseif ($row['type'] == 3){
                 $options = "
                     <div class=blok >
-                        <div class='   onoff ' for=123  rel=1 >Нет 
+                        <div class='fltronoff   onoff ' for=123  rel=1 >Нет 
                             <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."]' value='0' >
                         </div>
-                        <div class=' onoff  ' for=122  rel=1 >Да
+                        <div class='fltronoff onoff  ' for=122  rel=1 >Да
                                 <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."]' value='1' >
                         </div>
                     </div>";
@@ -341,14 +341,14 @@ class HtmlProviderService
             </div>
         </div>
         ".$return."
-            <!-- div class=blok >
+            <div class=blok >
             <div class='fltrblock'>
                    <div class='filtritemtitle blokl' >Тест булевое значение</div>
                     <div class=blok >
-                        <div class='   onoff ' for=123  rel=1 >Нет 
+                        <div class=' fltronoff  onoff ' for=123  rel=1 >Нет 
                             <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."][]' value='0' >
                         </div>
-                        <div class=' onoff zach ' for=122  rel=1 >Да
+                        <div class='fltronoff onoff zach ' for=122  rel=1 >Да
                                 <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."][]' value='1' checked >
                         </div>
                     </div>
@@ -369,7 +369,7 @@ class HtmlProviderService
                         </div>
                     </div>
                 </div>
-             </div -->"
+             </div>"
                :"";
         //
         return $return;
@@ -716,7 +716,8 @@ class HtmlProviderService
             "provider_name" =>  "М-Видео",
             "provider_logo" =>  "mvideo.png",
             "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
-            "provider_worktime" =>  "Ежедневно, 10:00–22:00 (до закрытия 3 часа)",
+            "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
+            "provider_timeclose" =>  "(до закрытия 3 часа)",
             "products" => [
                     [
                         "id" => '000000000009', 
@@ -743,7 +744,8 @@ class HtmlProviderService
             "provider_name" =>  "DNS",
             "provider_logo" =>  "00005_DNS.png",
             "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
-            "provider_worktime" =>  "Ежедневно, 10:00–21:00 (до закрытия 4 часа)",
+            "provider_worktime" =>  "Ежедневно, 10:00–21:00 ",
+            "provider_timeclose" =>  "(до закрытия 4 часа)",
             "products" => [
                     [
                         "id" => '000000000024', 
@@ -780,7 +782,8 @@ class HtmlProviderService
             "provider_name" =>  "5",
             "provider_logo" =>  "5.png",
             "provider_address" =>  "Пятерочка. Новочеркасский бульвар, 10, м.Марьино  ",
-            "provider_worktime" =>  "Ежедневно, 10:00–23:00 (до закрытия 5 часов)",
+            "provider_worktime" =>  "Ежедневно, 10:00–23:00 ",
+            "provider_timeclose" =>  "(до закрытия 5 часов)",
             "products" => [
                     [
                         "id" => '10000000000', 
