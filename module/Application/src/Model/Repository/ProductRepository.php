@@ -428,7 +428,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $this->db->query("truncate table product")->execute();
         }
 
-        $products = $this->extractNonEmptyImages($result->data);
+        //$products = $this->extractNonEmptyImages($result->data);
+        $products = $this->extractNonEmptyImages($result['data']);
 
         $this->productImages->replace($products); // $products - products that have non empty array of images
 

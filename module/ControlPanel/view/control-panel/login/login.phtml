@@ -53,6 +53,7 @@ body {
     <div class="row justify-content-center align-items-center" style="height:100vh">
         <div class="col-4">
             <div class="card">
+                <div class="card-header">Чтоб залогиниться просто нажать на Ввод. Если изменить пароль или логин, то залогиниться не удастся.</div>
                 <div class="card-body">
                     <form method="POST" action="<?= $action ?>" autocomplete="off">
                         <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
@@ -69,7 +70,7 @@ body {
                             <input type="password" placeholder="****" class="form-control" value="vonzaii" name="password">
                         </div>
 <!--                        <button type="button" id="sendlogin" class="btn btn-primary">login</button>-->
-                        <input type="submit" id="sendlogin" class="btn btn-primary" value="login" />
+                        <input type="submit" id="sendlogin" class="btn btn-primary" value="Ввод" />
                     </form>
                 </div>
             </div>

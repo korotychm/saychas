@@ -50,9 +50,9 @@ class HtmlContentProvider
     public function getSidebarMenuItems(): array
     {
         return [
-            ['id' => 'profileId', 'url' => '#', 'name' => 'Профиль', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
-            ['id' => 'storesId', 'url' => '#', 'name' => 'Магазины', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
-            ['id' => 'productsId', 'url' => '#', 'name' => 'Номенклатура', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
+            ['id' => 'profileId', 'url' => '#', 'name' => 'Данные профиля', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
+            ['id' => 'storesId', 'url' => '#', 'name' => 'Адреса магазинов', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
+            ['id' => 'productsId', 'url' => '#', 'name' => 'Карточки товаров', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
             ['id' => 'exitId', 'url' => '/control-panel/logout', 'name' => 'Выход', 'route' => 'exit-control-panel', 'type' => 'left', 'active' => false,],
         ];
     }
