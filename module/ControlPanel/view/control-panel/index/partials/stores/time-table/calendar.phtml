@@ -107,34 +107,37 @@ ul {list-style-type: none;}
 <div class="fluid-container align-self-sm-start">
     <div class="row">
         <div class="col-sm-6">
-            <div class="month bg-whitesmoke">
-              <ul>
-                <li class="prev">❮</li>
-                <li class="next">❯</li>
-                <li>
-                  <?php
-                    $months = [
-                        '01' => 'Январь', '02' => 'Февраль', '03' => 'Март', '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
-                        '07' => 'Июль', '08' => 'Август', '09' => 'Сентябрь', '10' => 'Октябрь', '11' => 'Ноябрь', '12' => 'Декабрь',
-                    ];
-                    $leapYear = $year % 4 == 0 ? true : false;
-                    $maxDaysInMonth = cal_days_in_month(CAL_GREGORIAN,$month,$year);
-                  ?>
-                  <?= $months[$month] ?><br>
-                  <span style="font-size:18px"><?= $year; ?></span>
-                </li>
-              </ul>
+            <div id="calendar-left">
+                <div class="month bg-whitesmoke">
+                  <ul>
+                    <li class="prev">❮</li>
+                    <li class="next">❯</li>
+                    <li>
+                      <?php
+                        $months = [
+                            '01' => 'Январь', '02' => 'Февраль', '03' => 'Март', '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
+                            '07' => 'Июль', '08' => 'Август', '09' => 'Сентябрь', '10' => 'Октябрь', '11' => 'Ноябрь', '12' => 'Декабрь',
+                        ];
+                        $maxDaysInMonth = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+                      ?>
+                      <?= $months[$month] ?><br>
+                      <span style="font-size:18px"><?= $year; ?></span>
+                    </li>
+                  </ul>
+                </div>
+                <?= $this->partial('partials/stores/time-table/weekdays'); ?>
+                <ul class="days">  
+                    <?php for($d = 1; $d <= $maxDaysInMonth; ++$d): ?>
+                        <?php $dayText = str_pad($d, 2, '0', STR_PAD_LEFT) ?>
+                        <?= $this->partial('partials/stores/time-table/days', ['day' => $dayText, 'month' => $month, 'year' => $year, 'today' => ( (int) $day ) === $d ? 'active' : '' ]); ?>
+                    <?php endfor; ?>
+                </ul>
             </div>
-            <?= $this->partial('partials/stores/time-table/weekdays'); ?>
-            <ul class="days">  
-                <?php for($d = 1; $d <= $maxDaysInMonth; ++$d): ?>
-                    <?php $dayText = str_pad($d, 2, '0', STR_PAD_LEFT) ?>
-                    <?= $this->partial('partials/stores/time-table/days', ['day' => $dayText, 'today' => ( (int) $day ) === $d ? 'active' : '' ]); ?>
-                <?php endfor; ?>
-            </ul>
         </div>
         <div class="col-sm-6">
-            banzaii
+            <div id="calendar-right">
+                <?= $this->partial('control-panel/index/calendar-details', ['day' => $day, 'month' => $month, 'year' => $year ]); ?>
+            </div>
         </div>
     </div>
 </div>

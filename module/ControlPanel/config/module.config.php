@@ -104,6 +104,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'calendar-details' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/calendar-details[/:id]',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'calendar-details',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
 //                    'login-form' => [
 //                        'type' => Literal::class,
 //                        'options' => [

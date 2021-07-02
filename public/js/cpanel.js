@@ -1,4 +1,41 @@
 $(function () {
+    
+    /** calendar loaded; lets add some event handlers */
+//    $(document).on('calendarLoaded', function(e, data){
+//        $('#calendar-left').unbind();
+//        $('#calendar-left ul.days li span').click(function(ths){
+//            $('li span').removeClass('active');
+//            $(ths.target).addClass('active');
+//            // we need to load apropriate screen below
+//            $('#calendar-right').html(ths.target.id);
+//        });
+//        $('li span.active').click();
+//    });
+//
+    $(document).on('calendarLoaded', function(e, data){
+        $('#calendar-left').unbind();
+        $('#calendar-left ul.days li span').click(function(ths){
+            $('li span').removeClass('active');
+            $(ths.target).addClass('active');
+            // we need to load apropriate screen below
+            //$('#calendar-right').html($(ths.target).html());
+            $.post('/control-panel/calendar-details', {'day': $(ths.target).html(), 'month': $(ths.target).attr('month'), 'year': $(ths.target).attr('year')}, function (data) {
+                $('#calendar-right').fadeOut("fast", function () {
+                    redirectIfNotLoggedIn(data);
+                    $('#calendar-right').html("");
+                    $('#calendar-right').html(data);
+                });
+                $('#calendar-right').fadeIn("fast", function () {
+                });
+            })
+            .fail(function (data) {
+                console.log('Calendar failed to load :( data = ', data, ' ', data.statusText);
+            });
+
+        });
+        /** click a calendar day */
+        // $('li span.active').click();
+    });
 
     var redirectIfNotLoggedIn = function (result) {
         if ('null' === result) {
@@ -44,6 +81,8 @@ $(function () {
                     redirectIfNotLoggedIn(data);
                     $('#controlPanelContentId').html("");
                     $('#controlPanelContentId').html(data);
+                    /** calendar: trigger calendarLoaded event */
+                    $(document).trigger('calendarLoaded');
                 });
                 $('#controlPanelContentId').fadeIn("fast", function () {
                     $('table tr.line').unbind();

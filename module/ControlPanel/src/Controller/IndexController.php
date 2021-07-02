@@ -167,6 +167,13 @@ class IndexController extends AbstractActionController
         $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
+    
+    public function calendarDetailsAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $this->assertLoggedIn();
+        return (new ViewModel(['day'=>$post['day'], 'month'=>$post['month'], 'year'=>$post['year']]))->setTerminal(true);
+    }
 
     /**
      * Signal ajax script
