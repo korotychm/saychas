@@ -20,10 +20,10 @@
                       <button type="button" class="btn btn-outline-primary">поиск</button>
                     </div>
                     <?php foreach ($table as $row): ?>
-                        <?= $this->partial('control-panel/index/partials/stores/list-row', ['row' => $row]); ?>
+                        <?= $this->partial('partials/stores/list-row', ['row' => $row]); ?>
                     <?php endforeach; ?>
                 </table>
-                <?= $this->partial('control-panel/index/partials/stores/pagination'); ?>
+                <?= $this->partial('partials/stores/pagination'); ?>
             </div>
         </div>
 

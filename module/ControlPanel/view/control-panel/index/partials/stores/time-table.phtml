@@ -3,7 +3,7 @@
         <strong>Расписание</strong>
     </div>
     <div class="card-body" style="min-height: 50vh; height: 50vh;">
-        <?= $this->partial('control-panel/index/partials/stores/time-table/calendar'); ?>
+        <?= $this->partial('partials/stores/time-table/calendar', ['year' => $dateTime->format('Y'), 'month' => $dateTime->format('m'), 'day' => $dateTime->format('d')]); ?>
         <button class="btn btn-secondary" style="position: absolute; bottom: 1em;">Banzaii</button>
     </div>
 </div>

@@ -104,7 +104,6 @@ ul {list-style-type: none;}
     .weekdays li, .days li {width: 12.2%;}
 }
 </style>
-
 <div class="fluid-container align-self-sm-start">
     <div class="row">
         <div class="col-sm-6">
@@ -113,54 +112,25 @@ ul {list-style-type: none;}
                 <li class="prev">❮</li>
                 <li class="next">❯</li>
                 <li>
-                  Август<br>
-                  <span style="font-size:18px">2017</span>
+                  <?php
+                    $months = [
+                        '01' => 'Январь', '02' => 'Февраль', '03' => 'Март', '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
+                        '07' => 'Июль', '08' => 'Август', '09' => 'Сентябрь', '10' => 'Октябрь', '11' => 'Ноябрь', '12' => 'Декабрь',
+                    ];
+                    $leapYear = $year % 4 == 0 ? true : false;
+                    $maxDaysInMonth = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+                  ?>
+                  <?= $months[$month] ?><br>
+                  <span style="font-size:18px"><?= $year; ?></span>
                 </li>
               </ul>
             </div>
-
-            <ul class="weekdays">
-              <li>Пн</li>
-              <li>Вт</li>
-              <li>Ср</li>
-              <li>Чт</li>
-              <li>Пт</li>
-              <li><span class="holiday">Сб</span></li>
-              <li><span class="holiday">Вс</span></li>
-            </ul>
-
+            <?= $this->partial('partials/stores/time-table/weekdays'); ?>
             <ul class="days">  
-                <li><span>01</span></li>
-                <li><span>02</span></li>
-                <li><span>03</span></li>
-                <li><span>04</span></li>
-                <li><span>05</span></li>
-                <li><span>06</span></li>
-                <li><span>07</span></li>
-                <li><span>08</span></li>
-                <li><span>09</span></li>
-              <li><span class="active">10</span></li>
-              <li><span class="holiday">11</span></li>
-              <li><span>12<span></li>
-              <li><span>13</span></li>
-              <li><span>14</span></li>
-              <li><span>15</span></li>
-              <li><span>16</span></li>
-              <li><span>17</span></li>
-              <li><span>18</span></li>
-              <li><span>19</span></li>
-              <li><span>20</span></li>
-              <li><span>21</span></li>
-              <li><span>22</span></li>
-              <li><span>23</span></li>
-              <li><span>24</span></li>
-              <li><span>25</span></li>
-              <li><span>26</span></li>
-              <li><span>27</span></li>
-              <li><span>28</span></li>
-              <li><span>29</span></li>
-              <li><span>30</span></li>
-              <li><span>31</span></li>
+                <?php for($d = 1; $d <= $maxDaysInMonth; ++$d): ?>
+                    <?php $dayText = str_pad($d, 2, '0', STR_PAD_LEFT) ?>
+                    <?= $this->partial('partials/stores/time-table/days', ['day' => $dayText, 'today' => ( (int) $day ) === $d ? 'active' : '' ]); ?>
+                <?php endfor; ?>
             </ul>
         </div>
         <div class="col-sm-6">

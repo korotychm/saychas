@@ -86,7 +86,8 @@ class IndexController extends AbstractActionController
     public function showStoresAction()
     {
         $this->assertLoggedIn();
-        $view = new ViewModel(['table' => $this->table]);
+        $dateTime = new \DateTime();
+        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime]);
         return $view->setTerminal(true);
     }
 
