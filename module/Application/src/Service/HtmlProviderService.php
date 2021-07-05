@@ -708,8 +708,43 @@ class HtmlProviderService
         return "<span>$userAddress</span> ";
     }
     
-    public function basketData()
+    public function basketData($basket)
     {
+        
+            //exit (print_r($basket));         
+            foreach ($basket as $b) {
+                if($pId = $b->productId){
+        
+       // exit($pId);
+                    $product = $this->productRepository->find(['id'=> $pId]);
+        
+        //exit (print_r($product));
+                    
+                   /* $item[$product->getProviderId()]['products'][]=[
+                        "id" => $pId, 
+                        'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
+                        "title" => $product->getTitle(), 
+                        "price" => $product->getPrice(), 
+                        'oldprice' => $product->getPrice(),   
+                        'availble' => '10',
+                        //'availble' => $product->getPrice(),   ОСТАТок!!!
+                        "count" => $b->total, 
+                        
+                       ]; 
+                    /*$item['total']+=$b->total;
+                    $item['count'] ++;*/
+                }    
+            }
+        exit (print_r($item));
+        while (list($prov, $prod) = each($item))
+        {
+            
+        }
+        
+        
+        
+        
+        
         $return[]=[
             "provider_id" => '00004',
             "provider_disable" => false,
@@ -724,7 +759,8 @@ class HtmlProviderService
                         'image' => '79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg' , 
                         'title' => 'Ноутбук ASUS TUF Gaming FX505DT-HN564T черный ',
                         'price' => '51000',    
-                        'oldprice' => '',        
+                        'oldprice' => '',  
+                        'count'=> 1,
                         'availble' => '10',
                      ],
                     [
@@ -752,7 +788,8 @@ class HtmlProviderService
                         'image' => '8.jpg' , 
                         'title' => 'Смартфон Samsung Galaxy A72 128Gb (черный) ',
                         'price' => '35990',    
-                        'oldprice' => '40000',        
+                        'oldprice' => '40000',  
+                        'count'=> 1,
                         'availble' => '10',
                     ],
                     [
@@ -760,7 +797,8 @@ class HtmlProviderService
                         'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' , 
                         'title' => 'Смартфон Nokia 2.4 ',
                         'price' => '12500',    
-                        /*'oldprice' => '17000',*/        
+                        /*'oldprice' => '17000',*/  
+                        'count'=> 1,
                         'availble' => '0',
                     ],
                     [
@@ -790,7 +828,8 @@ class HtmlProviderService
                         'image' => '1350x.jpg' , 
                         'title' => 'Кефир Простоквашинго 2,5%',
                         'price' => '35',    
-                        'oldprice' => '40',        
+                        'oldprice' => '40',  
+                        'count'=> 1,
                         'availble' => '10',
                     ],
                     [

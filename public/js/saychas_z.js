@@ -463,6 +463,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2") {
         data: {"value": dataString},
         success: function (data) {
             if (data == "200") {
+                //console.log(data);
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();

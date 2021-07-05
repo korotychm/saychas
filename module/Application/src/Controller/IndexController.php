@@ -249,15 +249,37 @@ class IndexController extends AbstractActionController
     }
     public function basketAction()
     {
+            $userId = $this->identity();
+            $where = new Where();
+            $where->equalTo('user_id', $userId);
+            $where->equalTo('order_id', 0);
+            /** more conditions come here */
+            $columns = ['product_id', 'order_id', 'total'];
+            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+          /* foreach ($basket as $b) {
+                if($pId=$b->productId){
+                    $product = $this->productRepository->find(['id'=>$pId]);
+                    $return['products'][]=[
+                        "id" => $pId, 
+                        "name" => $product->getTitle(), 
+                        "count" => $b->total, 
+                        'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
+                       ]; 
+                    $return['total']+=$b->total;
+                    $return['count'] ++;
+                }    
+            }
+            exit (print_r($return));*/
         
-     $content = $this->htmlProvider->basketData();   
+     $content = $this->htmlProvider->basketData($basket);   
      return new ViewModel([
            /* "providers" => $providers,*/
             "content" => $content,
             "title" => "Корзина",
             
         ]);   
-    }    
+    }
+    
     public function previewAction()
     {
         //$this->layout()->setTemplate('layout/mainpage');
