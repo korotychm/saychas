@@ -345,6 +345,7 @@ class AjaxController extends AbstractActionController
      */
     private function matchProduct(HandbookRelatedProduct/*\Application\Model\Entity\Product*/ $product, array $characteristics): bool
     {
+//        $markerObject = $product->receiveMarkerObject();
         $flags = [];
         foreach ($characteristics as $key => $value) {
             $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);

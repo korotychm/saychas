@@ -6,23 +6,14 @@ use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 //use Laminas\Router\Http\Hostname;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
-//use ControlPanel\Controller\IndexController;
-use ControlPanel\Controller\Factory\IndexControllerFactory;
-use ControlPanel\Service\Factory\HtmlContentProviderFactory;
+use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
     'controllers' => [
         'factories' => [
-//            \ControlPanel\Controller\IndexController::class => InvokableFactory::class,
-            \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
-        ],
-    'controllers' => [
-        'factories' => [
-//            Controller\IndexController::class => InvokableFactory::class,
-            Controller\IndexController::class => IndexControllerFactory::class,
-        ],
-    ],
-        
+            \ControlPanel\Controller\IndexController::class => StandardControllerFactory::class,
+            \ControlPanel\Controller\LoginController::class => StandardControllerFactory::class,
+        ],        
     ],
     'router' => [
         'routes' => [
@@ -65,6 +56,105 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\IndexController::class,
                                 'action' => 'show-products',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'profile' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/profile',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'profile',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'account-management' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/account-management',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'account-management',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'action-and-discount' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/action-and-discount',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'action-and-discount',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'responding-to-reviews' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/responding-to-reviews',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'responding-to-reviews',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'calendar-details' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/calendar-details[/:id]',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'calendar-details',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+//                    'login-form' => [
+//                        'type' => Literal::class,
+//                        'options' => [
+//                            'route' => '/login-form',
+//                            'defaults' => [
+//                                'controller' => \ControlPanel\Controller\IndexController::class,
+//                                'action' => 'login-form',
+//                            ],
+//                        ],
+//                        // 'may_terminate' => true,
+//                    ],
+                    'login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'action' => 'login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'check-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/check-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'action' => 'check-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'logout' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/logout',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'action' => 'logout',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -124,7 +214,8 @@ return [
             'control-panel' => __DIR__ . '/../view',
         ],
         'template_map' => [
-            'layout/control-panel'           => __DIR__ . '/../view/layout/control-panel.phtml',
+//            'layout/control-panel'           => __DIR__ . '/../view/layout/control-panel.phtml',
+//            'layout/control-panel-login'     => __DIR__ . '/../view/layout/control-panel-login.phtml',
             
             'control-panel/index/index' => __DIR__ . '/../view/control-panel/index/index.phtml',
 //            'error/404'               => __DIR__ . '/../view/error/404.phtml',
