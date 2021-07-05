@@ -18,6 +18,7 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
 class HtmlProviderServiceFactory implements FactoryInterface
 {
@@ -40,8 +41,9 @@ class HtmlProviderServiceFactory implements FactoryInterface
         $characteristicValueRepository = $container->get(CharacteristicValueRepositoryInterface::class);
         $basketRepository = $container->get(BasketRepositoryInterface::class);
         $productRepository = $container->get(HandbookRelatedProductRepositoryInterface::class);
+        $productImageRepository = $container->get(ProductImageRepositoryInterface::class);
         
         return new HtmlProviderService($stockBalanceRepository, $brandRepository, $colorRepository, $countryRepository, $providerRepository, $priceRepository,
-                $characteristicRepository, $productCharacteristicRepository, $characteristicValueRepository, $basketRepository, $productRepository);
+                $characteristicRepository, $productCharacteristicRepository, $characteristicValueRepository, $basketRepository, $productRepository, $productImageRepository);
     }
 }

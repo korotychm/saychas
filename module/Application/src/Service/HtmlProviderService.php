@@ -20,7 +20,7 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
-use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 
 class HtmlProviderService
 {
@@ -36,6 +36,7 @@ class HtmlProviderService
     private $colorRepository;
     private $basketRepository;
     private $productRepository;
+    private $productImageRepository;
 
     public function __construct(
             StockBalanceRepositoryInterface $stockBalanceRepository,
@@ -48,7 +49,8 @@ class HtmlProviderService
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository,
             CharacteristicValueRepositoryInterface $characteristicValueRepository,
             BasketRepositoryInterface $basketRepository,
-            HandbookRelatedProductRepositoryInterface $productRepository
+            HandbookRelatedProductRepositoryInterface $productRepository,
+            ProductImageRepositoryInterface $productImageRepository
     )
     {
         $this->stockBalanceRepository = $stockBalanceRepository;
@@ -62,6 +64,7 @@ class HtmlProviderService
         $this->characteristicValueRepository = $characteristicValueRepository;
         $this->basketRepository = $basketRepository;
         $this->productRepository = $productRepository;
+        $this->productImageRepository = $productImageRepository;
     }
 
     /**
