@@ -32,7 +32,7 @@ class Provider extends Entity
     /**
      * @var string | null
      */
-    protected $icon = '';
+    protected $image = '';
 
     /**
      *
@@ -97,9 +97,9 @@ class Provider extends Entity
      * @param string | null $icon
      * @return $this
      */
-    public function setIcon($icon = null)
+    public function setImage($image = null)
     {
-        $this->icon = $icon;
+        $this->image = $image;
 
         return $this;
     }
@@ -107,9 +107,9 @@ class Provider extends Entity
     /**
      * @return string | null
      */
-    public function getIcon()
+    public function getImage()
     {
-        return $this->icon;
+        return $this->image;
     }
 
 }
