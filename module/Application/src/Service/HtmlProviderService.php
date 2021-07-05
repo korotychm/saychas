@@ -20,7 +20,7 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
-use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+//use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 class HtmlProviderService
 {
@@ -724,14 +724,14 @@ class HtmlProviderService
         
         //exit (print_r($product));
                     
-                   /* $item[$product->getProviderId()]['products'][]=[
+                    $item[$product->getProviderId()]['products'][]=[
                         "id" => $pId, 
                         'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
-                        "title" => $product->getTitle(), 
+                        "title" => $product->getTitle()."!!!", 
                         "price" => $product->getPrice(), 
-                        'oldprice' => $product->getPrice(),   
+                        'oldprice' => $product->getOldPrice(),   
                         'availble' => '10',
-                        //'availble' => $product->getPrice(),   ОСТАТок!!!
+                        'availble' => $product->getRest(), //   ОСТАТок!!!
                         "count" => $b->total, 
                         
                        ]; 
@@ -739,9 +739,22 @@ class HtmlProviderService
                     $item['count'] ++;*/
                 }    
             }
-        exit (print_r($item));
-        while (list($prov, $prod) = each($item))
-        {
+        //exit (print_r($item));
+        while (list($prov, $prod) = each($item)) {
+            
+            $provider = $this->providerRepository->find(['id' => $prov]);
+            
+            $return[]=[
+            "provider_id" => $prov,
+            "provider_disable" => false,
+            "provider_name" =>  $provider->getTitle(),
+          //  "provider_logo" =>  $provider->getImage(),
+            "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
+            "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
+            "provider_timeclose" =>  "(до закрытия 3 часа)",
+             "products" => $prod
+            ];
+            
             
         }
         
