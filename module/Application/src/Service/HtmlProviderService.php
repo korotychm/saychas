@@ -750,8 +750,8 @@ class HtmlProviderService
             if($store->count()){
                 $provider_disable = false;
                 $provider_address = $store->getAdress();
-                $provider_worktime = $store->getWorktime();  //text
-                $provider_timeclose = $store->getTimeColse();
+//                $provider_worktime = $store->getWorkingHours();  //text
+//                $provider_timeclose = $store->getClosingTime();
             }
             else {
                 $provider_disable = true;
