@@ -746,25 +746,33 @@ class HtmlProviderService
         while (list($prov, $prod) = each($item)) {
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
-            if($store->count() <= 0)
-            {
-                echo 'adsfafds';
-                exit;
+            
+            if($store->count()){
+                $provider_disable = false;
+                $provider_address = $store->getAdress();
+                $provider_worktime = $store->getWorktime();  //text
+                $provider_timeclose = $store->getTimeColse();
+            }
+            else {
+                $provider_disable = true;
+                $provider_address = 
+                $provider_worktime = 
+                $provider_timeclose = "";
             }
             $s = $store->current();
             //$store = $this->storeRepository->find([provider_id=>])
             $return[]=[
             "provider_id" => $prov,
-            "provider_disable" => false,
+            "provider_disable" => $provider_disable,
             "provider_name" =>  $provider->getTitle(),
             "provider_logo" =>  $provider->getImage(),
-            "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
-            "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
+            "provider_address" =>  $provider_address,
+            "provider_worktime" =>   $provider_worktime,
             "provider_timeclose" =>  "(до закрытия 3 часа)",
              "products" => $prod
             ];
        } 
-        /**/ $return[]=[
+        /*/ $return[]=[
             "provider_id" => '00004',
             "provider_disable" => false,
             "provider_name" =>  "М-Видео",
