@@ -1,8 +1,7 @@
 <?php
-//$this->headTitle($this->title, 'PREPEND');
-//$this->headTitle(, 'PREPEND');
-$this->headTitle($this->title, 'PREPEND');
-?><div class="container mainconteiner"  >
+    $this->headTitle($this->title, 'PREPEND');
+?>
+<div class="container mainconteiner"  >
     <div  class="contentwrapper">
         <?= $this->bread ?> 
 
@@ -10,120 +9,18 @@ $this->headTitle($this->title, 'PREPEND');
         <div id="user-basket">
             <form method='POST' id='user-basket-form'>   
                 <div class="pw-contentblock cblock-5">
-                    <div class='nopub ' id='checkallavailble' >Выбрать все</div>
-                    <div class="contentpaddingbox">
-                  
-                        <div class='blok basketrow'>
-                            <div class='col check'>
-                                <div class='nopub checkallprovider' rel='1mvideo' ></div>
-                            </div>    
-                            <div class='col titleprovider'>
-                                <div class='brandlogo'  ><img src='/images/provider/mvideo.png'></div>
-                                <div class='text-provider gray'  >
-                                    <span class='blok'>Ежедневно, 10:00–22:00 (до закрытия 3 часа)</span>
-                                    <span class='blok'>Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)</span>
-                                </div>
-                            </div>    
-                        </div>
-                          
-                        <div class='blok basketrow'>
-                            <div class='col check'>
-                                <div class='nopub checkallprovider' rel='1mvideo' ></div>
-                            </div>    
-                            
-                            <div class='col imageproduct'>
-                                <img src="/images/product/79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg" alt="" 
-                                     class="product-page-image productimage1"  title="">
-                            </div>
-                            
-                            <div class='col titleproduct'>
-                             Ноутбук ASUS TUF Gaming FX505DT-HN564T черный 
-                            </div>
-                            
-                             <div class='col deleteproduct'>
-                             <img src="/img/saychas-zero.svg" class="deletprop" />
-                            </div>
-                            
-                             <div class='col countproduct'>
-                                 <div class="countproductminus">&#8722;</div><div class="countproductnum" id="countproductnum1mvideo">1</div><div class="countproductplus"> </div>
-                                 <input type="hidden" class="countprhidden1mvideo"  name="countproduct[1mvideo]" value="1" />
-                            </div>
-                                 <div class='col countproduct'>
-                                 <div class="countproductminus">&#8722;</div><div class="countproductnum" id="countproductnum1mvideo">1</div><div class="countproductplus"> </div>
-                                 <input type="hidden" class="countprhidden1mvideo"  name="countproduct[1mvideo]" value="1" />
-                            </div>
-                            
-                            </div>    
-                        
-                        
-                    </div>
+                    <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
+                    <?= $this->partial("/application/index/partials/basket/basket-user", ["param" => $this->userData]) ?>                     
+                    <?= $this->partial("/application/index/partials/basket/basket-order-merge") ?>      
+                    <?= $this->partial("/application/index/partials/basket/basket-self-delevery") ?>      
+                    <?= $this->partial("/application/index/partials/basket/basket-pay-card") ?>                          
                 </div>
                 <div class="pw-contentblock cblock-3">
                     <div class="contentpadding">
                         <!-- div class='blok pwbox'> сервисный блок</div -->
-                        <div class='contentpadding'>
-                            <div class='paybox' >
-                                <div class='contentpadding'>
-                                    <div class='delevery-item delevery-door' > 
-                                        <b class='blok'>Доставка</b>
-                                        <div class='blok'>Информация о времени доставки</div>
-                                        <div class='blok'>Адрес доставки. Например: Угрешская улица, д.2 стр. 34, офис 333 </div>
-                                    </div>
-
-                                    <div class='delevery-item delevery-self' > 
-                                        <b class='blok'>Самовывоз</b>
-                                        <div class='blok'>Информация о времени актуальности</div>
-                                        <div class='blok'>Информация о магазинах </div>
-                                    </div>
-
-                                    <div class='delevery-item delevery-self' > 
-                                        <b class='blok'>Оплата</b>
-                                        <div class='blok'>Информация о типе оплаты</div>
-                                        <div class='blok'>Пример: Онлайн, картой <span class="red">5213 2487 **** 0817&darr;</span></div>
-                                    </div>
-
-
-                                </div>
-                                <div class='volna' ></div>  
-                                <div class='contentpadding'>
-                                    <h2 class='blok price'>28 123&#8381; 
-                                        <span class='oldprice'>32 123&nbsp;&#8381;</span>
-                                    </h2>
-                                    <div class='char-row'>
-                                        <span class='char-title'>
-                                            <span>Товары(#)</span>
-                                        </span><span class=char-value >
-                                            <span>28 000&#8381; <tag class='oldprice'>32 000&#8381;</tag> </span>
-                                        </span>
-                                    </div>
-                                    <div class='char-row'>
-                                        <span class='char-title'>
-                                            <span><strong>Доставка за час</strong></span>
-                                        </span><span class=char-value >
-                                            <span><strong>123&#8381;</strong></span>
-                                        </span>
-                                    </div>
-                                    <div class='char-row'>
-                                        <span class='char-title'>
-                                            <span>Самовывоз</span>
-                                        </span><span class=char-value >
-                                            <span>0&#8381;</span>
-                                        </span>
-                                    </div>
-
-                                    <div class='contentpadding'>
-                                        <div class=paybutton  >перейти к оплате</div>
-                                    </div>
-
-                                    <div class='contentpadding'>
-                                        <div class='gray '  >Нажимая на кнопку, вы соглашаетесь с <a href=# class="red" >Условиями обработки перс. данных</a>, а также с <a href=# class="red" >Условиями продажи</a></div>
-                                    </div>
-
-                                </div>    
-                            </div>
-                        </div>
+                        <?= $this->partial("/application/index/partials/basket/basket-payinfo") ?>      
                     </div>
                 </div>  
-            </form>
-        </div>
+        </form>
     </div>
+</div>

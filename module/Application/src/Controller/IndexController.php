@@ -249,9 +249,11 @@ class IndexController extends AbstractActionController
     }
     public function basketAction()
     {
+        
+     $content = $this->htmlProvider->basketData();   
      return new ViewModel([
            /* "providers" => $providers,*/
-            "content" => "Контент",
+            "content" => $content,
             "title" => "Корзина",
             
         ]);   

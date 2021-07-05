@@ -287,6 +287,7 @@ class AjaxController extends AbstractActionController
         $userId = $this->identity();
         $user = $this->userRepository->find(['id' => $userId]);
         $userData = new UserData();
+        $userData->setUserId($userId);
         $userData->setAddress($container->userAddress);
         $userData->setGeodata($json);
 //            $userData->setTimestamp(new \DateTime("now"));
