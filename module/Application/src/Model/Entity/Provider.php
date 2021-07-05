@@ -46,6 +46,19 @@ class Provider extends Entity
         }
         return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()]]);
     }
+    
+    /**
+     * @param array $list
+     * @return Store []
+     * @throws \Exception
+     */
+    public function recieveStoresInList(array $list)
+    {
+        if (!( self::$storeRepository instanceof StoreRepositoryInterface )) {
+            throw new \Exception('StoreRepositoryInterface expected; other type given');
+        }
+        return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()], 'sequence' => $list])->current();
+    }
 
     /**
      * @return string

@@ -27,6 +27,7 @@ use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterfa
 use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\Entity\HandbookRelatedProduct;
+use Application\Model\Entity\Provider;
 use Laminas\Json\Json;
 
 use Application\Service\HtmlProviderService;
