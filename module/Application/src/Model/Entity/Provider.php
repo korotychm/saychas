@@ -57,7 +57,7 @@ class Provider extends Entity
         if (!( self::$storeRepository instanceof StoreRepositoryInterface )) {
             throw new \Exception('StoreRepositoryInterface expected; other type given');
         }
-        return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()], 'sequence' => $list])->current();
+        return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()], 'sequence' => $list]);
     }
 
     /**

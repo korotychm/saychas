@@ -32,9 +32,9 @@
         </div>
 
         <div  class='basketcol<?=$disabled?>  priceproduct' id="priceproduct-<?=$product['id']?>">
-            <span class="price"><?=number_format($product['price'], 0, ',', '&nbsp;');?>&nbsp;₽ </span>
+            <span class="price"><?=number_format(((int)$product['price']/100), 0, ',', '&nbsp;');?>&nbsp;₽ </span>
             <?=($product['oldprice'])
-                ?'<span class="oldprice">'.number_format($product['oldprice'], 0, ',', '&nbsp;').'&nbsp;₽</span>'
+                ?'<span class="oldprice">'.number_format(((int)$product['oldprice']/100), 0, ',', '&nbsp;').'&nbsp;₽</span>'
                 :''
             ?>
         </div>

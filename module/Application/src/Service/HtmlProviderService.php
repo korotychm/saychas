@@ -733,17 +733,25 @@ class HtmlProviderService
                             , 
                         "price" => $price, // $product->getPrice(), 
                         'oldprice' => $product->receivePriceObject()->getOldPrice(),   
-                        'availble' => '1',
-                       // 'availble' => $product->getRest(), //   ОСТАТок!!!
+                       // 'availble' => '1',
+                        'availble' => $product->receiveRest(), //   ОСТАТок!!!
                         "count" => $b->total, 
                         
                        ]; 
                 }    
             }
         if (!count($item)) return [];
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $legalStore = array_keys($container->legalStore);
         while (list($prov, $prod) = each($item)) {
             $provider = $this->providerRepository->find(['id' => $prov]);
-            //$store = $provider->recieveStoresInList()->current();
+            $store = $provider->recieveStoresInList($legalStore);
+            if($store->count() <= 0)
+            {
+                echo 'adsfafds';
+                exit;
+            }
+            $s = $store->current();
             //$store = $this->storeRepository->find([provider_id=>])
             $return[]=[
             "provider_id" => $prov,
