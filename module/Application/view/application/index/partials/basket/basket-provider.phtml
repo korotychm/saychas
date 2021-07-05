@@ -1,4 +1,6 @@
-<?php foreach ($param as $provider):
+<?php
+if (count($param)){
+foreach ($param as $provider):
     
     /*<pre><?php print_r($provider)?></pre>*/
     ?>
@@ -70,4 +72,7 @@
 <?php }?>
 </div>
 
-<?php endforeach;?>
+<?php 
+endforeach;
+}
+else {echo "<h1>Корзина пуста</h1>";}?>

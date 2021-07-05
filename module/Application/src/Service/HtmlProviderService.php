@@ -14,6 +14,7 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\CountryRepositoryInterface;
+use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -718,55 +719,42 @@ class HtmlProviderService
     
     public function basketData($basket)
     {
-        
-            //exit (print_r($basket));         
-            foreach ($basket as $b) {
+           foreach ($basket as $b) {
                 if($pId = $b->productId){
-        
-       // exit($pId);
+                    /** @var HandbookRelatedProduct */
                     $product = $this->productRepository->find(['id'=> $pId]);
-        
-        //exit (print_r($product));
-                    
-                    $item[$product->getProviderId()]['products'][]=[
+                    $item[$product->getProviderId()][]=[
                         "id" => $pId, 
                         'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
-                        "title" => $product->getTitle()."!!!", 
+                        "title" => $product->getTitle()
+                            ."<span class='blok mini'> (остаток:".(int)$product->getRest()."; цена: ".(int)$product->getPrice().")"
+                            , 
                         "price" => $product->getPrice(), 
                         'oldprice' => $product->getOldPrice(),   
-                        'availble' => '10',
-                        'availble' => $product->getRest(), //   ОСТАТок!!!
+                        'availble' => '1',
+                       // 'availble' => $product->getRest(), //   ОСТАТок!!!
                         "count" => $b->total, 
                         
                        ]; 
-                    /*$item['total']+=$b->total;
-                    $item['count'] ++;*/
                 }    
             }
-        //exit (print_r($item));
+        if (!count($item)) return [];
         while (list($prov, $prod) = each($item)) {
-            
             $provider = $this->providerRepository->find(['id' => $prov]);
-            
+            //$store = $provider->recieveStoresInList()->current();
+            //$store = $this->storeRepository->find([provider_id=>])
             $return[]=[
             "provider_id" => $prov,
             "provider_disable" => false,
             "provider_name" =>  $provider->getTitle(),
-          //  "provider_logo" =>  $provider->getImage(),
+            "provider_logo" =>  $provider->getImage(),
             "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
             "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
             "provider_timeclose" =>  "(до закрытия 3 часа)",
              "products" => $prod
             ];
-            
-            
-        }
-        
-        
-        
-        
-        
-        $return[]=[
+       } 
+        /**/ $return[]=[
             "provider_id" => '00004',
             "provider_disable" => false,
             "provider_name" =>  "М-Видео",
@@ -818,7 +806,7 @@ class HtmlProviderService
                         'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' , 
                         'title' => 'Смартфон Nokia 2.4 ',
                         'price' => '12500',    
-                        /*'oldprice' => '17000',*/  
+                        //'oldprice' => '17000',
                         'count'=> 1,
                         'availble' => '0',
                     ],
@@ -827,7 +815,7 @@ class HtmlProviderService
                         'image' => '32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg' , 
                         'title' => 'Xiaomi Redmi Note 10 (голубой)',
                         'price' => '20000',    
-                        /*'oldprice' => '17000',*/        
+                        //'oldprice' => '17000',*       
                         'availble' => '10',
                     ],
                     
@@ -858,7 +846,7 @@ class HtmlProviderService
                         'image' => '40ec61411c92eac07cd543f0cee4ad81.jpg' , 
                         'title' => 'Молоко Простоквашинго 2,5%',
                         'price' => '25',    
-                        /*'oldprice' => '17000',*/        
+                        //'oldprice' => '17000',
                         'availble' => '0',
                     ],
                     
@@ -866,14 +854,7 @@ class HtmlProviderService
             
         ];
         
-        
-        
+        /**/
        return $return; 
-        
     }
-    
-    
-    
-    
-    
 }
