@@ -165,7 +165,11 @@ class HandbookRelatedProduct extends Entity
 
         $result = self::$stockBalanceRepository->findAll(['where' => ['product_id' => $this->getId()], 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
 
-        return $result->current()->getRest();
+        $current = $result->current();
+        if(null != $current) {
+            return $current->getRest();
+        }
+        return '';
     }
 
     /**

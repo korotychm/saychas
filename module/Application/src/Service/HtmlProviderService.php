@@ -724,14 +724,15 @@ class HtmlProviderService
                 if($pId = $b->productId){
                     /** @var HandbookRelatedProduct */
                     $product = $this->productRepository->find(['id'=> $pId]);
+                    $price = (int)$product->receivePriceObject()->getPrice();
                     $item[$product->getProviderId()][]=[
                         "id" => $pId, 
                         'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
                         "title" => $product->getTitle()
-                            ."<span class='blok mini'> (остаток:".(int)$product->getRest()."; цена: ".(int)$product->getPrice().")"
+                            ."<span class='blok mini'> (остаток:".(int)$product->receiveRest()."; цена: ".$price.")"
                             , 
-                        "price" => $product->getPrice(), 
-                        'oldprice' => $product->getOldPrice(),   
+                        "price" => $price, // $product->getPrice(), 
+                        'oldprice' => $product->receivePriceObject()->getOldPrice(),   
                         'availble' => '1',
                        // 'availble' => $product->getRest(), //   ОСТАТок!!!
                         "count" => $b->total, 
