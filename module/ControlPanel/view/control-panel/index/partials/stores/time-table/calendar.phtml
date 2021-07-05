@@ -1,0 +1,143 @@
+<style>
+* {box-sizing: border-box;}
+ul {list-style-type: none;}
+/*body {font-family: Verdana, sans-serif;}*/
+
+.month {
+    padding: 35px 25px;
+    width: 100%;
+    background: #1abc9c;
+    text-align: center;
+}
+
+.month ul {
+    margin: 0;
+    padding: 0;
+}
+
+.month ul li {
+    color: #007bff; /*white;*/
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.month .prev {
+    float: left;
+    cursor: pointer;
+    padding-top: 10px;
+}
+
+.month .next {
+    float: right;
+    cursor: pointer;
+    padding-top: 10px;
+}
+
+.month .next:hover, .prev:hover {
+    color: yellowgreen;
+}
+
+.weekdays {
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ddd;
+}
+
+.weekdays li {
+    display: inline-block;
+    width: 13.6%;
+    color: #666;
+    text-align: center;
+}
+
+.days {
+    padding: 10px 0;
+    background: #eee;
+    margin: 0;
+}
+
+.days li {
+    list-style-type: none;
+    display: inline-block;
+    width: 13.6%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size:12px;
+    color: #777;
+    cursor: auto;
+}
+
+.days li span:hover {
+    background-color: yellowgreen;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.days li .active {
+    padding: 5px;
+    background: #007bff; /*#1abc9c;*/
+    color: white !important
+}
+
+.bg-whitesmoke {
+    background-color: whitesmoke;
+}
+
+.holiday {
+/*    padding: 5px;
+    background: red;*/
+    color: red;
+}
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+    .weekdays li, .days li {width: 13.1%;}
+}
+
+@media screen and (max-width: 420px) {
+    .weekdays li, .days li {width: 12.5%;}
+    .days li .active {padding: 2px;}
+}
+
+@media screen and (max-width: 290px) {
+    .weekdays li, .days li {width: 12.2%;}
+}
+</style>
+<div class="fluid-container align-self-sm-start">
+    <div class="row">
+        <div class="col-sm-6">
+            <div id="calendar-left">
+                <div class="month bg-whitesmoke">
+                  <ul>
+                    <li class="prev">❮</li>
+                    <li class="next">❯</li>
+                    <li>
+                      <?php
+                        $months = [
+                            '01' => 'Январь', '02' => 'Февраль', '03' => 'Март', '04' => 'Апрель', '05' => 'Май', '06' => 'Июнь',
+                            '07' => 'Июль', '08' => 'Август', '09' => 'Сентябрь', '10' => 'Октябрь', '11' => 'Ноябрь', '12' => 'Декабрь',
+                        ];
+                        $maxDaysInMonth = cal_days_in_month(CAL_GREGORIAN,$month,$year);
+                      ?>
+                      <?= $months[$month] ?><br>
+                      <span style="font-size:18px"><?= $year; ?></span>
+                    </li>
+                  </ul>
+                </div>
+                <?= $this->partial('partials/stores/time-table/weekdays'); ?>
+                <ul class="days">  
+                    <?php for($d = 1; $d <= $maxDaysInMonth; ++$d): ?>
+                        <?php $dayText = str_pad($d, 2, '0', STR_PAD_LEFT) ?>
+                        <?= $this->partial('partials/stores/time-table/days', ['day' => $dayText, 'month' => $month, 'year' => $year, 'today' => ( (int) $day ) === $d ? 'active' : '' ]); ?>
+                    <?php endfor; ?>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div id="calendar-right">
+                <?= $this->partial('control-panel/index/calendar-details', ['day' => $day, 'month' => $month, 'year' => $year ]); ?>
+            </div>
+        </div>
+    </div>
+</div>

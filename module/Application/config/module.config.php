@@ -416,6 +416,17 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class,
                 ],
             ],
+            'receive-marker' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-marker[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class,
+                ],
+            ],
             'set-client-info' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -782,6 +793,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
+            \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class => \Application\Model\Repository\MarkerRepository::class,
             \Application\Model\RepositoryInterface\BasketRepositoryInterface::class => \Application\Model\Repository\BasketRepository::class,
             \Application\Model\RepositoryInterface\ColorRepositoryInterface::class => \Application\Model\Repository\ColorRepository::class,
             \Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface::class => \Application\Model\Repository\ProductCharacteristicRepository::class,
@@ -817,6 +829,7 @@ return [
             \Application\Model\Repository\StockBalanceRepository::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Repository\SizeRepository::class => \Application\Model\Factory\SizeRepositoryFactory::class,
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Model\Repository\MarkerRepository::class => \Application\Model\Factory\MarkerRepositoryFactory::class,
             \Application\Model\Repository\BasketRepository::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Repository\ColorRepository::class => \Application\Model\Factory\ColorRepositoryFactory::class,
             \Application\Model\Repository\ProductCharacteristicRepository::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,

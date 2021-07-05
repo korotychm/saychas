@@ -13,6 +13,7 @@ use Application\Model\Repository\ProductImageRepository;
 use Application\Model\Repository\ProviderRepository;
 use Application\Model\Repository\ProductCharacteristicRepository;
 use Application\Model\Repository\StockBalanceRepository;
+use Application\Model\Repository\MarkerRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Hydrator\ReflectionHydrator;
 use Laminas\Hydrator\ClassMethodsHydrator;
@@ -35,6 +36,7 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
         $providerRepository = $container->get(ProviderRepository::class);
         $productCharacteristicRepository = $container->get(ProductCharacteristicRepository::class);
         $stockBalanceRepository = $container->get(StockBalanceRepository::class);
+        $markerRepository = $container->get(MarkerRepository::class);
 
         $prototype = new HandbookRelatedProduct;
         $prototype::$brandRepository = $brandRepository;
@@ -43,6 +45,7 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
         $prototype::$providerRepository = $providerRepository;
         $prototype::$productCharacteristicRepository = $productCharacteristicRepository;
         $prototype::$stockBalanceRepository = $stockBalanceRepository;
+        $prototype::$markerRepository = $markerRepository;
 
         $hydrator = new ClassMethodsHydrator();
         

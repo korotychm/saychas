@@ -72,6 +72,9 @@ curl -i -L saychas-z.local/receive-setting --data '[{"id": "1" }]' -X DELETE
 curl -i -L saychas-z.local/receive-color --data '{"truncate": true, "data": [{"id": "00000000003", "title": "Violet","value": "#010101" }, {"id": "00000000004", "title": "Silver", "value": "#111111"}] }'
 curl -i -L saychas-z.local/receive-color?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": true, "data": [{"id": "00000000003", "title": "Violet","value": "#010101" }, {"id": "00000000004", "title": "Silver", "value": "#111111"}, {"id": "00000000001", "title": "Silver", "value": "#aabbff"}] }'
 
+curl -i -L saychas-z.local/receive-marker?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": true, "data": [{"product_id": "1", "marker_index": "0" } ] }'
+curl -i -L saychas-z.local/receive-marker --data '[{"product_id": "1", "product_id": "1" }]' -X DELETE
+
 
 // Telephone code request
 curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 9160010203, "code": 7777}] }'

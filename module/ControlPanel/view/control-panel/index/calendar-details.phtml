@@ -1,0 +1,42 @@
+<style>
+    .field-prefix {
+        width: 20em;
+    }
+</style>
+<div class="container">
+    <div class="row" style="width: 100%; height: 26vh">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">Расписание на: <?= $day ?>.<?= $month ?>.<?= $year ?></div>
+                <div class="card-body">
+                    <form method="POST" autocomplete="off">
+                        <div class="input-group mb-2 input-group-sm">
+                            <div class="input-group-prepend">
+                                <span  class="field-prefix input-group-text">Рабочие</span>
+                            </div>
+                            <input type="text" placeholder="" class="form-control" value='00:00 - 00:59' name="period1">
+                        </div>
+                        <div class="input-group mb-2 input-group-sm">
+                            <div class="input-group-prepend">
+                                <span  class="field-prefix input-group-text">Праздничные</span>
+                            </div>
+                            <input type="text" placeholder="" class="form-control" value="00:00 - 00:00" name="period2">
+                        </div>
+                        <div class="input-group mb-2 input-group-sm">
+                            <div class="input-group-prepend">
+                                <span  class="field-prefix input-group-text">Суббота</span>
+                            </div>
+                            <input type="text" placeholder="" class="form-control" value="10:00 - 18:00" name="period2">
+                        </div>
+                        <div class="input-group mb-2 input-group-sm">
+                            <div class="input-group-prepend">
+                                <span  class="field-prefix input-group-text">Воскресенье</span>
+                            </div>
+                            <input type="text" placeholder="" class="form-control" value="10:00 - 21:00" name="period2">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
