@@ -22,6 +22,7 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
+use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 
 
 class HtmlProviderService
