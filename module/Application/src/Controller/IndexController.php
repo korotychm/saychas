@@ -111,7 +111,11 @@ class IndexController extends AbstractActionController
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
 //        $servicemanager = $e->getApplication()->getServiceManager();
-        $userAddressHtml = $this->htmlProvider->writeUserAddress();
+        
+         $userId = $this->identity();
+        $user = $this->userRepository->find(['id'=>$userId]);
+        
+        $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
 
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
 //        $category = $this->categoryRepository->findCategory(29);

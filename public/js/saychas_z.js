@@ -2,6 +2,7 @@
 $(document).ready(function () {
 
     showBasket(0);
+    getLegalStores($("#geodatadadata").val());
     
     $("#tree").delay(500).slideDown("slow");
     $(".overcover").delay(500).fadeOut("slow");
@@ -10,6 +11,8 @@ $(document).ready(function () {
     };
 });
 $(function () {
+
+
 
 $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).val().replace (/[^0-9+]/g, ''));})
 
@@ -223,6 +226,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
 
             //return ;
             var dataString = JSON.stringify(suggestion);
+            $("#geodatadadata").val(dataString);
             getLegalStores(dataString, '#useradesserror');
         }
     });

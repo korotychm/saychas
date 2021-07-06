@@ -282,13 +282,13 @@ class AjaxController extends AbstractActionController
             return (StringResource::USER_ADDREES_ERROR_MESSAGE);
 
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $container->userAddress = $TMP->value;
+        //$container->userAddress = $TMP->value;
 
         $userId = $this->identity();
         $user = $this->userRepository->find(['id' => $userId]);
         $userData = new UserData();
         $userData->setUserId($userId);
-        $userData->setAddress($container->userAddress);
+        $userData->setAddress($TMP->value);
         $userData->setGeodata($json);
 //            $userData->setTimestamp(new \DateTime("now"));
         try {
@@ -321,7 +321,11 @@ class AjaxController extends AbstractActionController
 
     public function ajaxSetUserAddressAction()
     {
-        $json["userAddress"] = $this->htmlProvider->writeUserAddress();
+        $userId = $this->identity();
+        $user = $this->userRepository->find(['id'=>$userId]);
+        //echo $this->identity();
+        //exit;
+        $json["userAddress"] = $this->htmlProvider->writeUserAddress ($user);
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $json["legalStore"] = $container->legalStore;
         exit(Json::encode($json, JSON_UNESCAPED_UNICODE));
