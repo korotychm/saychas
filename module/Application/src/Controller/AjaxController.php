@@ -274,7 +274,7 @@ class AjaxController extends AbstractActionController
         try {
             $TMP = Json::decode($json);
         } catch (LaminasJsonRuntimeException $e) {
-            exit($e->getMessage());
+            exit($e->getMessage().$TMP."!!!");
 // return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         $ob = $TMP->data;
@@ -309,7 +309,9 @@ class AjaxController extends AbstractActionController
             )
                 ))
         );
+        
         $legalStore = Json::decode($result, true);
+        
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['deliverySpeedInHours'];
         }

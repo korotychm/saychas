@@ -730,10 +730,14 @@ class HtmlProviderService
         if (null != $usdat) {
             $userAddress = $usdat->getAddress(); //$container->userAddress;
             $userGeodata = $usdat->getGeoData();
+            //exit ($userGeodata);
         }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        return "<span>$username, $userAddress</span>"
-                //. "<textarea id='#geodatadadata' class='none' > ".($userGeodata)?$userGeodata:""."</textarea>"
+        return "<span>$userAddress</span>"
+                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea>"
+               //. "<h1></h1>"
+               //
+               //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
                 ;
     }
     
@@ -744,11 +748,12 @@ class HtmlProviderService
                     /** @var HandbookRelatedProduct */
                     $product = $this->productRepository->find(['id'=> $pId]);
                     $price = (int)$product->receivePriceObject()->getPrice();
+                    if ($product->receiveRest()) $availblechek[$product->getProviderId()]=true;
                     $item[$product->getProviderId()][]=[
                         "id" => $pId, 
                         'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
                         "title" => $product->getTitle()
-                            ."<span class='blok mini'> (остаток:".(int)$product->receiveRest()."; цена: ".$price.")"
+                            //."<span class='blok mini'> (остаток:".(int)$product->receiveRest()."; цена: ".$price.")"
                             , 
                         "price" => $price, // $product->getPrice(), 
                         'oldprice' => $product->receivePriceObject()->getOldPrice(),   
@@ -766,40 +771,57 @@ class HtmlProviderService
             $container->legalStore = [];
         }
         $legalStore = array_keys($container->legalStore);
-        $return=[];
+        $return=[]; $g=0;
         while (list($prov, $prod) = each($item)) {
+            $j++;
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
             if(null != $store /*$store->count()*/){
                 $provider_disable = false;
-                $returnprefix="0";
+                $returnprefix=$j*-1;
                 $provider_address = $store->getAddress();
+                $provider_address_tmp = explode(",", $provider_address);
+                unset($provider_address_tmp[0]);
+                unset($provider_address_tmp[1]);
+                unset($provider_address_tmp[2]);
+                //$provider_addressappend = jpin$provider_address_tmp[3];
+                if ($store->getDescription()) $provider_address_tmp[]=$store->getDescription();
+                $provider_addressappend = join(", ", $provider_address_tmp);
                // $provider_worktime = $store->getWorktime();  //text
                // $provider_timeclose = $store->getTimeColse();
             }
             else {
-                $provider_disable = true;
-                $returnprefix="1";
+                $provider_disable = "Магазин недоступен";
+                $returnprefix=$j;
                 $provider_address = 
                 $provider_worktime = 
                 $provider_timeclose = "";
+                $provider_store_off = "Комментарий из 1с";
             }
-            
-            $returvar[$returnprefix]=
-    $return[]=                    [
+    
+    $return[$returnprefix]=   
+                    [
             "provider_id" => $prov,
+            "availblechek" => $availblechek[$prov],
             "provider_disable" => $provider_disable,
             "provider_name" =>  $provider->getTitle(),
             "provider_logo" =>  $provider->getImage(),
             "provider_address" =>  $provider_address,
+            "provider_addressappend" =>  $provider_addressappend,
             "provider_worktime" =>   $provider_worktime,
-            "provider_timeclose" =>  "(до закрытия 3 часа)",
+            "provider_timeclose" =>  "",
+             "provider_store_off" => $provider_store_off, 
              "products" => $prod
             ];
        }
+       ksort($return);
+       //array_push($return, $returnvar[0]);// $returvar[1]);
+       //array_push($return, $returnvar[1]);
+       //$return=$return[0];
+      // exit (print_r($return));
        //array_push($returvar[0],  $returvar[1]);
        //$return = $returvar[0];
-    /**/    $return[]=[
+    /*/    $return[]=[
             "provider_id" => '00004',
             "provider_disable" => false,
             "provider_name" =>  "М-Видео",
