@@ -40,6 +40,7 @@ use Laminas\Http\Response;
 use Laminas\Session\Container;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
+use Application\Helper\ArrayHelper;
 
 class AjaxController extends AbstractActionController
 {
@@ -389,10 +390,21 @@ class AjaxController extends AbstractActionController
      */
     private function getWhere($params): Where
     {
+        $category_id = $params['category_id'];
+        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $where = new Where();
         list($low, $high) = explode(';', $params['priceRange']);
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-        $where->equalTo('category_id', $params['category_id']);
+//        $where->equalTo('category_id', $params['category_id']);
+        
+//        $categories = $this->categoryRepository->findAll(['id' => '000000006']);
+//        foreach($categories as $c) {
+//            echo '<pre>';
+//            print_r($c);
+//            echo '</pre>';
+//        }
+//        exit;
+        $where->in('category_id', $categoryTree);
 
         return $where;
     }
@@ -408,11 +420,13 @@ class AjaxController extends AbstractActionController
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
+        //$params['order'] = ['price ASC'];
         $products = $this->handBookRelatedProductRepository->findAll($params);
 
         $filteredProducts = [];
         foreach ($products as $product) {
-            $matchResult = $this->matchProduct($product, $params['characteristics']);
+            $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+            $matchResult = $this->matchProduct($product, /*$params['characteristics']*/ $characteristics);
             if ($matchResult && !isset($filteredProducts[$product->getId()]) ) {
                 $filteredProducts[$product->getId()] = $product;
             }
@@ -420,23 +434,23 @@ class AjaxController extends AbstractActionController
         return $filteredProducts;
     }
     
-    private function getProducts1($params)
-    {
-        $where = new Where();
-        $where->greaterThan('rest', 0);
-        $rests = $this->stockBalanceRepository->findAll(['where' => $where]);
-        $products = [];
-        $params['where'] = $this->getWhere($params);
-        foreach($rests as $rest) {
-            $productId = $rest->getProductId();
-            $product = $this->handBookRelatedProductRepository->findFirstOrDefault(['id' => $productId]);
-            $matchResult = $this->matchProduct($product, $params['characteristics']);
-            if ($matchResult && !isset($products[$product->getId()]) ) {
-                $products[$productId] = $product;
-            }
-        }
-        return $products;
-    }
+//    private function getProducts1($params)
+//    {
+//        $where = new Where();
+//        $where->greaterThan('rest', 0);
+//        $rests = $this->stockBalanceRepository->findAll(['where' => $where]);
+//        $products = [];
+//        $params['where'] = $this->getWhere($params);
+//        foreach($rests as $rest) {
+//            $productId = $rest->getProductId();
+//            $product = $this->handBookRelatedProductRepository->findFirstOrDefault(['id' => $productId]);
+//            $matchResult = $this->matchProduct($product, $params['characteristics']);
+//            if ($matchResult && !isset($products[$product->getId()]) ) {
+//                $products[$productId] = $product;
+//            }
+//        }
+//        return $products;
+//    }
 
     public function setFilterForCategoryAction()
     {
