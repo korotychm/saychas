@@ -23,6 +23,8 @@ use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterfa
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\Entity\User;
+use Application\Model\Entity\UserData;
 
 
 class HtmlProviderService
@@ -710,12 +712,29 @@ class HtmlProviderService
         return $return;
     }
 
-    public function writeUserAddress()
+    public function writeUserAddress( $user = null )
     {
+        //$userId = $this->identity();
+        /*$userData = new UserData();
+        $userData->getUserId($userId)
+            ->getAddress()
+            ->getGeodata();*/
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $userAddress = $container->userAddress;
+        
+        
+        $username = $user->getName();
+        $userData = $user->getUserData();
+        
+        
+        $usdat=$userData->current();
+        if (null != $usdat) {
+            $userAddress = $usdat->getAddress(); //$container->userAddress;
+            $userGeodata = $usdat->getGeoData();
+        }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        return "<span>$userAddress</span> ";
+        return "<span>$username, $userAddress</span>"
+                //. "<textarea id='#geodatadadata' class='none' > ".($userGeodata)?$userGeodata:""."</textarea>"
+                ;
     }
     
     public function basketData($basket)
@@ -740,28 +759,34 @@ class HtmlProviderService
                        ]; 
                 }    
             }
-        if (!count($item)) return [];
+        if (!$item or !count($item)) return [];
+        
         $container = new Container(StringResource::SESSION_NAMESPACE);
+        if(empty($container->legalStore)) {
+            $container->legalStore = [];
+        }
         $legalStore = array_keys($container->legalStore);
+        $return=[];
         while (list($prov, $prod) = each($item)) {
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
-            
-            if($store->count()){
+            if(null != $store /*$store->count()*/){
                 $provider_disable = false;
-                $provider_address = $store->getAdress();
-                $provider_worktime = $store->getWorktime();  //text
-                $provider_timeclose = $store->getTimeColse();
+                $returnprefix="0";
+                $provider_address = $store->getAddress();
+               // $provider_worktime = $store->getWorktime();  //text
+               // $provider_timeclose = $store->getTimeColse();
             }
             else {
                 $provider_disable = true;
+                $returnprefix="1";
                 $provider_address = 
                 $provider_worktime = 
                 $provider_timeclose = "";
             }
-            $s = $store->current();
-            //$store = $this->storeRepository->find([provider_id=>])
-            $return[]=[
+            
+            $returvar[$returnprefix]=
+    $return[]=                    [
             "provider_id" => $prov,
             "provider_disable" => $provider_disable,
             "provider_name" =>  $provider->getTitle(),
@@ -771,8 +796,10 @@ class HtmlProviderService
             "provider_timeclose" =>  "(до закрытия 3 часа)",
              "products" => $prod
             ];
-       } 
-        /*/ $return[]=[
+       }
+       //array_push($returvar[0],  $returvar[1]);
+       //$return = $returvar[0];
+    /**/    $return[]=[
             "provider_id" => '00004',
             "provider_disable" => false,
             "provider_name" =>  "М-Видео",
