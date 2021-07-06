@@ -2,7 +2,8 @@
 $(document).ready(function () {
 
     showBasket(0);
-    getLegalStores($("#geodatadadata").val());
+    getLegalStores($("#geodatadadata").text(), ".testlegalstor", false);
+    //console.log($("#geodatadadata").text());
     
     $("#tree").delay(500).slideDown("slow");
     $(".overcover").delay(500).fadeOut("slow");
@@ -105,12 +106,14 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                 $(this).removeClass("zach");
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
                 $("#providerblok-" + rel).removeClass("goself");
+                $("#provider_addressappend" + rel).hide();
         } else {
                 $('.selfdeleveryonoff[rel^='+rel+']').removeClass("zach");
                 $('.relcheck[rel^='+rel+']').prop("checked", false);;    
                 $(this).addClass("zach");
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
                 $("#providerblok-" + rel).addClass("goself");
+                $("#provider_addressappend" + rel).show();
         }
     });
     $("#checkallavailble").click(function(){
@@ -316,7 +319,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             dataType: 'json',
             data:dataString,
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 if (data.error == false) {
                     location = location.href;
                     return false;
@@ -458,7 +461,7 @@ function getLocalStores(dataString, obj = "#ajaxanswer2") {
         }
     });
 }
-function getLegalStores(dataString, obj = "#ajaxanswer2") {
+function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
     $.ajax({
         //url: "/ajax/getstore",
         url: "/ajax-get-legal-store",
@@ -471,8 +474,10 @@ function getLegalStores(dataString, obj = "#ajaxanswer2") {
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
-                window.location.href = window.location.href;
-                return setUserAddrees();
+                setUserAddrees();
+               if (wrelaoad) window.location.href = window.location.href;
+                
+                
             }
 
             $(obj).html(data);
@@ -497,9 +502,9 @@ function setUserAddrees() {
         dataType: 'json',
         cache: false,
         success: function (html) {
-            console.log(html.legalStore);
+            //console.log(html.legalStore);
             $(".user_address_set").html(html.userAddress);
-            $(".testlegalstor").html("<h2>доступные магазины</h2></pre>" + print_r(html.legalStore) + "</pre>");//.css("border:1px soli red"); 
+            //$(".testlegalstor").html("<h2>доступные магазины</h2></pre>" + print_r(html.legalStore) + "</pre>");//.css("border:1px soli red"); 
             return true;
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -544,7 +549,7 @@ function showBasket( productadd = 0 ){
             //dataType: 'json',
             data:{"product" : productadd },
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                    $("#bascetbottomblok .content ").empty();
                 if (data.products){ 
                     $.each(data.products, function(key, value) {

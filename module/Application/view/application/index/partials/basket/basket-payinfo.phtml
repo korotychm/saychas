@@ -23,14 +23,15 @@
         </div>
         <div class='volna' ></div>  
         <div class='contentpadding'>
-            <h2 class='blok price'>28 123&#8381; 
-                <span class='oldprice'>32 123&nbsp;&#8381;</span>
+            <h2 class='blok price' ><tag id="basketpricetotalall"><?=(int)$basketpricetotalall?></tag>&#8381; 
+    <?php if($basketoldpricetotalall){?> <span class='oldprice' ><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span>&nbsp;&#8381;</span><?php }?>
             </h2>
             <div class='char-row'>
                 <span class='char-title'>
-                    <span>Товары(#)</span>
+                    <span>Товары(<tag id="basketproductcount"><?=(int)$basketproductcount?></tag>)</span>
                 </span><span class=char-value >
-                    <span>28 000&#8381; <tag class='oldprice'>32 000&#8381;</tag> </span>
+                    <span><?=(int)$basketpricetotal?>&#8381; 
+    <?php if($basketoldpricetotal) {?><tag class='oldprice'><?=$basketoldpricetotal?>&#8381;</tag> <?php }?></span>
                 </span>
             </div>
             <div class='char-row'>

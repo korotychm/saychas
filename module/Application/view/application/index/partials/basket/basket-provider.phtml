@@ -1,5 +1,8 @@
 <?php
 if (count($param)){
+?>    
+<div class="nopub allall" id="checkallavailble" >Выбрать все</div>
+<?php 
 foreach ($param as $provider):
     
     /*<pre><?php print_r($provider)?></pre>*/
@@ -8,7 +11,7 @@ foreach ($param as $provider):
     <div class='blok basketrow'>
 
         <div  class='basketcol  check'>
-<?php if(!$provider['provider_disable']){?>                       
+<?php if(!$provider['provider_disable'] and $provider['availblechek']){?>                       
             <div class='nopub checkallallprovider allall' rel='<?=$provider['provider_id']?>' id='checkallallprovider-<?=$provider['provider_id']?>'></div> 
 <?php }?>
         </div>    
@@ -25,7 +28,7 @@ foreach ($param as $provider):
               <div class='providerbasketdisable'><?=$provider['provider_disable']?>
               <div class='providerbasketdisablehelp'>?
                 <div class='providerbasketdisablehelpcontent '>
-                    <span class='strelka'></span>К сожалению, магазин уже закрылся. Откроется завтра с 10 -ти часов 
+                    <span class='strelka'></span><?=$provider['provider_store_off']?>
                     <span class='gray blok mini'><?=$provider['provider_worktime']?></span>
                     <span class='blok gray mini'><?=$provider['provider_address']?></span>
                 </div>
@@ -64,6 +67,7 @@ foreach ($param as $provider):
         <div  class='basketcol selfdelevery'>
             <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
             <input type='checkbox' class="none" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='1' name='selfdelevery[<?=$provider['provider_id']?>]' >
+            <span class='blok gray none' id="provider_addressappend<?=$provider['provider_id']?>"><?=$provider['provider_addressappend']?></span>
                 <span class='blok gray'><?=$provider['provider_worktime']?></span>
                  
             
