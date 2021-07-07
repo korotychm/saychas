@@ -105,14 +105,20 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         if($userId ){
             $return['error']=false;    
+              if($productId) { 
 
-           if($productId) { 
                 $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
                 $basketItemTotal = (int)$basketItem->getTotal();
                 $basketItem->setUserId($userId);
                 $basketItem->setProductId($productId);
-               // $basketItem->setTotal($addNum + $basketItemTotal);
-                 $basketItem->setTotal(1);
+
+//$productadd = $this->handBookRelatedProductRepository->findAll(['id'=>$productId, "limit"=>1]);//->current(); 
+                $productadd = $this->handBookRelatedProductRepository->findAll([ 'where'=>['id'=>$productId]])->current(); 
+                $productaddPrice = (int)$productadd->getPrice();
+//exit ($productaddPrice."==/==".$productId."==/==".$productadd->getId());
+                $basketItem->setPrice($productaddPrice);
+// $basketItem->setTotal($addNum + $basketItemTotal);
+                $basketItem->setTotal(1);
                 $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
            }
 
@@ -187,7 +193,15 @@ class AjaxController extends AbstractActionController
 
          return new JsonModel($return);
     }
-
+    
+    public function calculateBasketItemAction()
+    {   
+        $post = $this->getRequest()->getPost();
+        $return['post'] = $post ;
+        $return['productId']=$productId = $post->product;
+        return new JsonModel($return);
+    }
+    
     public function previewAction()
     {
         $this->layout()->setTemplate('layout/preview');
@@ -287,7 +301,7 @@ class AjaxController extends AbstractActionController
 
         $userId = $this->identity();
         $user = $this->userRepository->find(['id' => $userId]);
-        $userData = new UserData();
+        /*$userData = new UserData();
         $userData->setUserId($userId);
         $userData->setAddress($TMP->value);
         $userData->setGeodata($json);
@@ -296,18 +310,18 @@ class AjaxController extends AbstractActionController
             $user->setUserData([$userData]);
         } catch (InvalidQueryException $e) {
             print_r($e->getMessage());
-        }
+        }*/
 
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
                 false,
                 stream_context_create(array(
-            'http' => array(
+                'http' => array(
                 'method' => 'POST',
                 'header' => 'Content-type: application/json',
                 'content' => $json
-            )
+                )
                 ))
         );
         
@@ -322,14 +336,56 @@ class AjaxController extends AbstractActionController
         exit("200");
     }
 
+     public function ajaxAddUserAddressAction()
+    {
+        $userId = $this->identity();
+        $user = $this->userRepository->find(['id'=>$userId]);
+        $post = $this->getRequest()->getPost();
+        /*$return['dadata'] = "{$post->dadata}/{$post->address}";
+        $return['adddess'] = "/{$post->address}";*/
+        
+        $return["user"]=$userId;
+        //$return['dadata'] = $post->dadata;
+        if($userId and $post->address and $post->dadata){
+            $return["error"] = "Успешно ";
+            $return["ok"]="присвоен адрес: {$post->address}";
+            $userData = new UserData();
+            $userData->setUserId($userId);
+            $userData->setAddress($post->address);
+            $userData->setGeodata($post->dadata);
+    //            $userData->setTimestamp(new \DateTime("now"));
+            try {
+                $user->setUserData([$userData]);
+            } catch (InvalidQueryException $e) {
+                $return['error']=$e->getMessage();
+            }/**/
+        } else $return["error"] = "Ошибка";
+        
+        return new JsonModel($return);    
+        
+    } 
+    
     public function ajaxSetUserAddressAction()
     {
         $userId = $this->identity();
         $user = $this->userRepository->find(['id'=>$userId]);
+        
+
+        /*$userData = new UserData();
+        $userData->setUserId($userId);
+        $userData->setAddress($TMP->value);
+        $userData->setGeodata($json);
+//            $userData->setTimestamp(new \DateTime("now"));
+        try {
+            $user->setUserData([$userData]);
+        } catch (InvalidQueryException $e) {
+            print_r($e->getMessage());
+        }*/
+        
         //echo $this->identity();
         //exit;
         $json["userAddress"] = $this->htmlProvider->writeUserAddress ($user);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        //$container = new Container(StringResource::SESSION_NAMESPACE);
         $json["legalStore"] = $container->legalStore;
         exit(Json::encode($json, JSON_UNESCAPED_UNICODE));
     }
