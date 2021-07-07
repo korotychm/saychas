@@ -786,7 +786,9 @@ class HtmlProviderService
                 unset($provider_address_tmp[2]);
                 //$provider_addressappend = jpin$provider_address_tmp[3];
                 if ($store->getDescription()) $provider_address_tmp[]=$store->getDescription();
-                $provider_addressappend = join(", ", $provider_address_tmp);
+                $provider_store=$store->getTitle();
+                ksort($provider_address_tmp);
+                $provider_addressappend =  join(", ", $provider_address_tmp);
                // $provider_worktime = $store->getWorktime();  //text
                // $provider_timeclose = $store->getTimeColse();
             }
@@ -810,8 +812,9 @@ class HtmlProviderService
             "provider_addressappend" =>  $provider_addressappend,
             "provider_worktime" =>   $provider_worktime,
             "provider_timeclose" =>  "",
-             "provider_store_off" => $provider_store_off, 
-             "products" => $prod
+            "provider_store" =>  $provider_store,
+            "provider_store_off" => $provider_store_off, 
+            "products" => $prod
             ];
        }
        ksort($return);

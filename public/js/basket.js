@@ -26,8 +26,30 @@ $(function(){
         var count=count=($("#countprhidden-"+ id).val())*1;
         var newcount=count - 1;
         
-        if (count <= 1) {newcount = 1; $(this).addClass("disabled");  }
+        if (newcount <= 1) {newcount = 1; $(this).addClass("disabled");  }
+        $("#countprhidden-"+ id).val(newcount);
+        
+        $("#countproductnum-"+ id).html(newcount);
+        $('.countproductplus[rel^='+id+']').removeClass("disabled");
+        calculateBasketItem (id);
+        return false
+    })
+    $(".countproductplus").live("click", function(){
+        if($(this).hasClass("disabled")) return false;
+         
+        var id=$(this).attr("rel");
+        
+        var max = ($("#countproductnum-"+ id).attr("max"))*1;
+        var count = ($("#countprhidden-"+ id).val())*1;
+        var newcount = count + 1;
+        if (newcount > 1) $('.countproductminus[rel^='+id+']').removeClass("disabled");
+        if (newcount >= max ) {newcount = max; $(this).addClass("disabled");  }
+        
         $("#countprhidden-"+ id).val(newcount);
         $("#countproductnum-"+ id).html(newcount);
+        calculateBasketItem (id);
+        return false
     })
+    
+    
 })
