@@ -31,9 +31,9 @@
             <input type="hidden" id="countprhidden-<?=$product['id']?>"  name="countproduct[<?=$product['id']?>]" value="<?=$product['count']?>" />
         </div>
 
-        <div  class='basketcol<?=$disabled?>  priceproduct' id="priceproduct-<?=$product['id']?>">
-            <span class="price"><?=number_format(((int)$product['price']/100), 0, ',', '&nbsp;');?>&nbsp;₽ </span>
-            <?=($product['oldprice'])
+        <div  class='basketcol<?=$disabled?>  priceproduct' >
+            <span class="price" ><tag id="priceproduct-<?=$product['id']?>"><?=number_format(((int)($product['price']*$product['count'])/100), 0, ',', '&nbsp;');?></tag>&nbsp;₽ </span>
+            <?=(false and $product['oldprice'])
                 ?'<span class="oldprice">'.number_format(((int)$product['oldprice']/100), 0, ',', '&nbsp;').'&nbsp;₽</span>'
                 :''
             ?>

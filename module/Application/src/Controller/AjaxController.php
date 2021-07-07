@@ -95,32 +95,28 @@ class AjaxController extends AbstractActionController
     }
 
     public function addToBasketAction()
-    {   
+    {
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
-        $return['productId']=$productId = $post->product;
+        $return['productId'] = $productId = $post->product;
         $addNum = 1;
-      //exit("<pre>".print_r($post, true));
+        //exit("<pre>".print_r($post, true));
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        if($userId ){
-            $return['error']=false;    
-              if($productId) { 
+        if ($userId) {
+            $return['error'] = false;
+            if ($productId) {
 
-                $basketItem = $this->basketRepository->findFirstOrDefault(['user_id'=>$userId,'product_id'=>$productId, 'order_id'=>"0" ]);
-                $basketItemTotal = (int)$basketItem->getTotal();
+                $basketItem = $this->basketRepository->findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                $basketItemTotal = (int) $basketItem->getTotal();
                 $basketItem->setUserId($userId);
                 $basketItem->setProductId($productId);
-
-//$productadd = $this->handBookRelatedProductRepository->findAll(['id'=>$productId, "limit"=>1]);//->current(); 
-                $productadd = $this->handBookRelatedProductRepository->findAll([ 'where'=>['id'=>$productId]])->current(); 
-                $productaddPrice = (int)$productadd->getPrice();
-//exit ($productaddPrice."==/==".$productId."==/==".$productadd->getId());
+                $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
+                $productaddPrice = (int) $productadd->getPrice();
                 $basketItem->setPrice($productaddPrice);
-// $basketItem->setTotal($addNum + $basketItemTotal);
                 $basketItem->setTotal(1);
-                $this->basketRepository->persist($basketItem, ['user_id'=>$userId, 'product_id'=>$productId, 'order_id'=>0]);    
-           }
+                $this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
+            }
 
             $where = new Where();
             $where->equalTo('user_id', $userId);
@@ -129,22 +125,21 @@ class AjaxController extends AbstractActionController
             $columns = ['product_id', 'order_id', 'total'];
             $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
             foreach ($basket as $b) {
-                if($pId=$b->productId){
-                    $product = $this->productRepository->find(['id'=>$pId]);
-                    $return['products'][]=[
-                        "id" => $pId, 
-                        "name" => $product->getTitle(), 
-                        "count" => $b->total, 
-                        'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
-                       ]; 
-                    $return['total']+=$b->total;
-                    $return['count'] ++;
+                if ($pId = $b->productId) {
+                    $product = $this->productRepository->find(['id' => $pId]);
+                    $return['products'][] = [
+                        "id" => $pId,
+                        "name" => $product->getTitle(),
+                        "count" => $b->total,
+                        'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
+                    ];
+                    $return['total'] += $b->total;
+                    $return['count']++;
                 }
             }
         }
-        return new JsonModel($return);    
-    //exit("<pre>".print_r($return, true)."</pre>");
-        
+        return new JsonModel($return);
+        //exit("<pre>".print_r($return, true)."</pre>");
     }
 
     public function userAuthAction()
@@ -191,17 +186,30 @@ class AjaxController extends AbstractActionController
 
         $return['post'] = $post;
 
-         return new JsonModel($return);
-    }
-    
-    public function calculateBasketItemAction()
-    {   
-        $post = $this->getRequest()->getPost();
-        $return['post'] = $post ;
-        $return['productId']=$productId = $post->product;
         return new JsonModel($return);
     }
-    
+
+    public function calculateBasketItemAction()
+    {
+        $post = $this->getRequest()->getPost();
+        if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true]);
+        
+        $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
+        if (null == $product  
+                or !$productPrice = (int)$product->getPrice()
+                or !$productCount = (int)$post->count
+                or $productCount < 1
+                
+            ) {
+                return new JsonModel(["error" => true]);
+             }
+        
+        $return['totalNum'] = (int) $productPrice * $productCount; 
+        $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
+
+        return new JsonModel($return);
+    }
+
     public function previewAction()
     {
         $this->layout()->setTemplate('layout/preview');
@@ -289,105 +297,68 @@ class AjaxController extends AbstractActionController
         try {
             $TMP = Json::decode($json);
         } catch (LaminasJsonRuntimeException $e) {
-            exit($e->getMessage().$TMP."!!!");
-// return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+            exit($e->getMessage() . $TMP . "!!!");
         }
         $ob = $TMP->data;
         if (!$ob->house)
             return (StringResource::USER_ADDREES_ERROR_MESSAGE);
-
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        //$container->userAddress = $TMP->value;
-
-        $userId = $this->identity();
-        $user = $this->userRepository->find(['id' => $userId]);
-        /*$userData = new UserData();
-        $userData->setUserId($userId);
-        $userData->setAddress($TMP->value);
-        $userData->setGeodata($json);
-        $userData->setTimestamp((new \DateTime("now"))->date);
-        try {
-            $user->setUserData([$userData]);
-        } catch (InvalidQueryException $e) {
-            print_r($e->getMessage());
-        }*/
-
+        //$userId = $this->identity();
+        //$user = $this->userRepository->find(['id' => $userId]);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
                 false,
                 stream_context_create(array(
-                'http' => array(
+            'http' => array(
                 'method' => 'POST',
                 'header' => 'Content-type: application/json',
                 'content' => $json
-                )
+            )
                 ))
         );
-        
+
         $legalStore = Json::decode($result, true);
-        
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['deliverySpeedInHours'];
         }
-
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
-        //exit(print_r($container->legalStore));
         exit("200");
     }
 
-     public function ajaxAddUserAddressAction()
+    public function ajaxAddUserAddressAction()
     {
         $userId = $this->identity();
-        $user = $this->userRepository->find(['id'=>$userId]);
+        $user = $this->userRepository->find(['id' => $userId]);
         $post = $this->getRequest()->getPost();
-        /*$return['dadata'] = "{$post->dadata}/{$post->address}";
-        $return['adddess'] = "/{$post->address}";*/
-        
-        $return["user"]=$userId;
-        //$return['dadata'] = $post->dadata;
-        if($userId and $post->address and $post->dadata){
+        $return["user"] = $userId;
+        if ($userId and $post->address and $post->dadata) {
             $return["error"] = "Успешно ";
-            $return["ok"]="присвоен адрес: {$post->address}";
+            $return["ok"] = "присвоен адрес: {$post->address}";
             $userData = new UserData();
             $userData->setUserId($userId);
             $userData->setAddress($post->address);
             $userData->setGeodata($post->dadata);
-    //            $userData->setTimestamp(new \DateTime("now"));
+            $userData->setTimestamp( ( new \DateTime("now") )->date );
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {
-                $return['error']=$e->getMessage();
+                $return['error'] = $e->getMessage();
             }/**/
-        } else $return["error"] = "Ошибка";
-        
-        return new JsonModel($return);    
-        
-    } 
-    
+        } else
+            $return["error"] = "Ошибка";
+
+        return new JsonModel($return);
+    }
+
     public function ajaxSetUserAddressAction()
     {
         $userId = $this->identity();
-        $user = $this->userRepository->find(['id'=>$userId]);
+        $user = $this->userRepository->find(['id' => $userId]);
+        $return["userAddress"] = $this->htmlProvider->writeUserAddress($user);
+        $return["legalStore"] = $container->legalStore;
+        return new JsonModel($return);
         
-
-        /*$userData = new UserData();
-        $userData->setUserId($userId);
-        $userData->setAddress($TMP->value);
-        $userData->setGeodata($json);
-//            $userData->setTimestamp(new \DateTime("now"));
-        try {
-            $user->setUserData([$userData]);
-        } catch (InvalidQueryException $e) {
-            print_r($e->getMessage());
-        }*/
-        
-        //echo $this->identity();
-        //exit;
-        $json["userAddress"] = $this->htmlProvider->writeUserAddress ($user);
-        //$container = new Container(StringResource::SESSION_NAMESPACE);
-        $json["legalStore"] = $container->legalStore;
-        exit(Json::encode($json, JSON_UNESCAPED_UNICODE));
     }
 
     public function unsetFilterForCategoКyAction()
@@ -406,7 +377,7 @@ class AjaxController extends AbstractActionController
      * @param array $characteristics
      * @return bool
      */
-    private function matchProduct(HandbookRelatedProduct/*\Application\Model\Entity\Product*/ $product, array $characteristics): bool
+    private function matchProduct(HandbookRelatedProduct /* \Application\Model\Entity\Product */ $product, array $characteristics): bool
     {
 //        $markerObject = $product->receiveMarkerObject();
         $flags = [];
@@ -454,7 +425,6 @@ class AjaxController extends AbstractActionController
         list($low, $high) = explode(';', $params['priceRange']);
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
 //        $where->equalTo('category_id', $params['category_id']);
-        
 //        $categories = $this->categoryRepository->findAll(['id' => '000000006']);
 //        foreach($categories as $c) {
 //            echo '<pre>';
@@ -484,14 +454,14 @@ class AjaxController extends AbstractActionController
         $filteredProducts = [];
         foreach ($products as $product) {
             $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
-            $matchResult = $this->matchProduct($product, /*$params['characteristics']*/ $characteristics);
-            if ($matchResult && !isset($filteredProducts[$product->getId()]) ) {
+            $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
+            if ($matchResult && !isset($filteredProducts[$product->getId()])) {
                 $filteredProducts[$product->getId()] = $product;
             }
         }
         return $filteredProducts;
     }
-    
+
 //    private function getProducts1($params)
 //    {
 //        $where = new Where();
