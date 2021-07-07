@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\UserDataRepository;
+use Laminas\Json\Json;
+
 /**
  * Description of UserData
  *
@@ -11,11 +14,13 @@ namespace Application\Model\Entity;
  */
 class UserData extends Entity
 {
+    
+//    public static UserDataRepository $userDataRepository;
 
     /**
      * @var int
      */
-    protected $id;
+//    protected $id;
 
     /**
      * @var int
@@ -36,6 +41,26 @@ class UserData extends Entity
      * @var timestamp
      */
     protected $timestamp;
+    
+    /**
+     * Length 36
+     * @var UUID
+     */
+    protected $fias_id;
+    
+    /**
+     * @var int
+     */
+    protected $fias_level;
+    
+    private function parseJson($json)
+    {
+        try {
+            return Json::decode($json, Json::TYPE_ARRAY);
+        }catch(\Exception $e){
+            throw new Exception($e->getMessage());
+        }
+    }
 
     /**
      * Set id.
@@ -43,21 +68,21 @@ class UserData extends Entity
      * @param int $id
      * @return $this
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
+//    public function setId($id)
+//    {
+//        $this->id = $id;
+//        return $this;
+//    }
 
     /**
      * Get id.
      *
      * @return type
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+//    public function getId()
+//    {
+//        return $this->id;
+//    }
 
     /**
      * Set user_id.
@@ -112,6 +137,10 @@ class UserData extends Entity
     public function setGeodata(string $geodata)
     {
         $this->geodata = $geodata;
+        $arr = $this->parseJson($geodata);
+        $data = $arr['data'];
+        $this->fias_id = $data['fias_id'];
+        $this->fias_level = $data['fias_level'];
         return $this;
     }
 
@@ -144,6 +173,50 @@ class UserData extends Entity
     {
         $this->timestamp = $timestamp;
         return $this;
+    }
+    
+    /**
+     * Set fias_id
+     * 
+     * @param string $fiasId
+     * @return $this
+     */
+    public function setFiasId($fiasId)
+    {
+        $this->fias_id = $fiasId;
+        return $this;
+    }
+    
+    /**
+     * Get fias_id
+     * 
+     * @return string
+     */
+    public function getFiasId()
+    {
+        return $this->fias_id;
+    }
+    
+    /**
+     * Set fias_level
+     * 
+     * @param int $fiasLevel
+     * @return $this
+     */
+    public function setFiasLevel($fiasLevel)
+    {
+        $this->fias_level = $fiasLevel;
+        return $this;
+    }
+    
+    /**
+     * Get fias_level
+     * 
+     * @return int
+     */
+    public function getFiasLevel()
+    {
+        return $this->fias_level;
     }
 
 }

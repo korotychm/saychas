@@ -64,7 +64,8 @@ class User extends Entity
     {
         foreach ($userData as $ud) {
             $ud->setUserId($this->getId());
-            self::$userDataRepository->persist($ud, ['id' => $ud->getId()]);
+            //self::$userDataRepository->persist($ud, ['id' => $ud->getId()]);
+            self::$userDataRepository->persist($ud, ['user_id' => $ud->getUserId(), 'fias_id' => $ud->getFiasId(), 'fias_level' => $ud->getFiasLevel()]);
         }
         return $this;
     }
