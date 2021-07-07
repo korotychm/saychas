@@ -689,6 +689,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-add-user-address'=>[
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-add-user-address',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxAddUserAddress',
+                    ],
+                ],
+            ],
             'ajax-get-legal-store'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -747,6 +757,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'addToBasket',
+                    ],
+                ],
+            ],
+            'calculate-basket-item'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/calculate-basket-item',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'calculateBasketItem',
                     ],
                 ],
             ],

@@ -25,10 +25,10 @@
         </div>
 <?php if($anable) {?>
         <div  class='basketcol  countproduct' id="countproduct-<?=$product['id']?>" >
-            <div class="countproductminus disable" rel='<?=$product['id']?>' >&#8722;
-            </div><div class="countproductnum" id="countproductnum-<?=$product['id']?>">1
-            </div><div class="countproductplus" rel='<?=$product['id']?>'></div>
-            <input type="hidden" id="countprhidden-<?=$product['id']?>"  name="countproduct[<?=$product['id']?>]" value="1" />
+            <div class="countproductminus <?=($product['count'] < 2)?"disabled":""?>" rel='<?=$product['id']?>' >&#8722;
+            </div><div class="countproductnum " id="countproductnum-<?=$product['id']?>" max="<?=$product['availble']?>"><?=$product['count']?>
+            </div><div class="countproductplus <?=($product['count'] >= $product['availble'])?"disabled":""?>" rel='<?=$product['id']?>'></div>
+            <input type="hidden" id="countprhidden-<?=$product['id']?>"  name="countproduct[<?=$product['id']?>]" value="<?=$product['count']?>" />
         </div>
 
         <div  class='basketcol<?=$disabled?>  priceproduct' id="priceproduct-<?=$product['id']?>">

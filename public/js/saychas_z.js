@@ -13,7 +13,7 @@ $(document).ready(function () {
 });
 $(function () {
 
-
+$("#test").click(function(){addUserAddrees();})
 
 $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).val().replace (/[^0-9+]/g, ''));})
 
@@ -220,6 +220,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         type: "ADDRESS",
         onSelect: function (suggestion) {
             $("#adesserror").hide();
+            console.log(suggestion.data);
             if (!suggestion.data.house)
             {
                 $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
@@ -230,7 +231,11 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             //return ;
             var dataString = JSON.stringify(suggestion);
             $("#geodatadadata").val(dataString);
+            
             getLegalStores(dataString, '#useradesserror');
+            //setUserAddrees();
+            addUserAddrees(dataString,$("#useraddress").val());
+            //
         }
     });
 
@@ -474,8 +479,8 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
-                setUserAddrees();
-               if (wrelaoad) window.location.href = window.location.href;
+                
+               
                 
                 
             }
@@ -495,14 +500,38 @@ function leftpanelclose() {
     $("#lefmobiletpanel").stop().animate({left: "-110%"}, 300);
 }
 
+function addUserAddrees(dadata=$("#geodatadadata").text(), address = $("#uadress span").text() ) {
+    //var dadata = $("#geodatadadata").text();
+     
+    $.ajax({
+        url: "/ajax-add-user-address",
+        type: 'POST',
+        data: {'dadata':dadata, "address":address},
+        dataType: 'json',
+        cache: false,
+        success: function (html) {
+           console.log(html);
+           window.location.href = window.location.href; 
+            return true;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+            return true;
+        }
+    });
+    }
+
 function setUserAddrees() {
+    var dadata = $("#geodatadadata").text();
+    var address = $("#uadress").text();
+    
     $.ajax({
         url: "/ajax-set-user-address",
         type: 'POST',
         dataType: 'json',
         cache: false,
         success: function (html) {
-            //console.log(html.legalStore);
+           //console.log(html.legalStore);
             $(".user_address_set").html(html.userAddress);
             //$(".testlegalstor").html("<h2>доступные магазины</h2></pre>" + print_r(html.legalStore) + "</pre>");//.css("border:1px soli red"); 
             return true;
@@ -549,7 +578,7 @@ function showBasket( productadd = 0 ){
             //dataType: 'json',
             data:{"product" : productadd },
             success: function (data) {
-                //console.log(data);
+                console.log(data);
                    $("#bascetbottomblok .content ").empty();
                 if (data.products){ 
                     $.each(data.products, function(key, value) {
