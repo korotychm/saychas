@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 08, 2021 at 02:35 AM
+-- Generation Time: Jul 07, 2021 at 07:50 AM
 -- Server version: 8.0.25
 -- PHP Version: 7.4.16
 
@@ -80,8 +80,7 @@ INSERT INTO `basket` (`user_id`, `product_id`, `total`, `order_id`, `price`, `di
 (50, '000000000016', 1, 0, 0, 0, NULL),
 (50, '000000000004', 1, 0, 0, 0, NULL),
 (50, '000000000005', 1, 0, 0, 0, NULL),
-(50, '000000000006', 1, 0, 0, 0, NULL),
-(172, '000000000018', 1, 0, 5399100, 0, NULL);
+(50, '000000000006', 1, 0, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -2138,30 +2137,7 @@ INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
 (159, '', NULL, NULL, 0),
 (160, '', NULL, NULL, 0),
 (161, '', NULL, NULL, 0),
-(162, '', NULL, NULL, 0),
-(163, '', NULL, NULL, 0),
-(164, '', NULL, NULL, 0),
-(165, '', NULL, NULL, 0),
-(166, '', NULL, NULL, 0),
-(167, '', NULL, NULL, 0),
-(168, '', NULL, NULL, 0),
-(169, '', NULL, NULL, 0),
-(170, '', NULL, NULL, 0),
-(171, '', NULL, NULL, 0),
-(172, '', NULL, NULL, 0),
-(173, '', NULL, NULL, 0),
-(174, '', NULL, NULL, 0),
-(175, '', NULL, NULL, 0),
-(176, '', NULL, NULL, 0),
-(177, '', NULL, NULL, 0),
-(178, '', NULL, NULL, 0),
-(179, '', NULL, NULL, 0),
-(180, '', NULL, NULL, 0),
-(181, '', NULL, NULL, 0),
-(182, '', NULL, NULL, 0),
-(183, '', NULL, NULL, 0),
-(184, '', NULL, NULL, 0),
-(185, '', NULL, NULL, 0);
+(162, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -2174,11 +2150,10 @@ CREATE TABLE `user_data` (
   `user_id` int DEFAULT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `geodata` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
---  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fias_id` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fias_level` int DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -2310,7 +2285,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
