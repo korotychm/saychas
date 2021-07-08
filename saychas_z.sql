@@ -2175,7 +2175,7 @@ CREATE TABLE `user_data` (
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `geodata` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
 --  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `fias_id` varchar(36) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fias_level` int DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
