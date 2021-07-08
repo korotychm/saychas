@@ -53,11 +53,6 @@ class UserData extends Entity
      */
     protected $fias_level;
     
-    public function __construct()
-    {
-        $this->timestamp = ( new \DateTime("now") )->date;
-    }
-    
     private function parseJson($json)
     {
         try {
@@ -174,11 +169,14 @@ class UserData extends Entity
      *
      * @return $this
      */
-//    public function setTimestamp($timestamp)
-//    {
-//        $this->timestamp = $timestamp;
-//        return $this;
-//    }
+    public function setTimestamp($timestamp)
+    {
+        if( null == $timestamp ) {
+            $timestamp = (new \DateTime("now"))->date;
+        }
+        $this->timestamp = $timestamp;
+        return $this;
+    }
     
     /**
      * Set fias_id
