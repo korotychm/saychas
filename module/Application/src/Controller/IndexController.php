@@ -190,6 +190,14 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $user = $this->userRepository->find(['id' => $this->identity()]);
+//        if(null != $user) {
+//            $basketData = $user->getBasketData();
+//        }
+//        foreach($basketData as $b) {
+//            print_r($b);
+//        }
+//        exit;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         
 //        $userId = $this->identity();
@@ -447,7 +455,8 @@ class IndexController extends AbstractActionController
     public function userAction($category_id=false)
     {
         $userId = $this->identity();//authService->getIdentity();//
-        $user = $this->userRepository->find(['id'=>$userId]);
+        // $user = $this->userRepository->find(['id'=>$userId]);
+        $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
         $title=($user->getName())?$user->getName():"Войти на сайт";
         /* НАДО!!!

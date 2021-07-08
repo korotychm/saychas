@@ -9,6 +9,7 @@ use Application\Model\Entity\User;
 //use Application\Model\Entity\Entity;
 use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\UserDataRepository;
+use Application\Model\Repository\BasketRepository;
 //use Application\Model\Repository\PostRepository;
 //use Laminas\Hydrator\Aggregate\HydrateEvent;
 use Laminas\Db\Adapter\AdapterInterface;
@@ -29,6 +30,7 @@ class UserRepositoryFactory implements FactoryInterface
 
         $adapter = $container->get(AdapterInterface::class);
         $userDataRepository = $container->get(UserDataRepository::class);
+        $basketRepository = $container->get(BasketRepository::class);
 //        $cache             = new \Laminas\Cache\Storage\Adapter\Memory;// new Memory();
 //        $userListener = function (HydrateEvent $event) use ($postRepository) {
 //            $data = $event->getHydrationData();//
@@ -58,14 +60,29 @@ class UserRepositoryFactory implements FactoryInterface
 //        $hydrator = new UserHydrator($postRepository);
 //        $hydrator->getEventManager()->attach(HydrateEvent::EVENT_HYDRATE, $userListener, 1000);
 
+//        $prototype = new UserData;
+//        $prototype::$userDataRepository = new UserDataRepository(
+//                $adapter,
+//                $hydrator,
+//                $prototype
+//        );
+        
         $prototype = new User;
-        $prototype::$userDataRepository = $userDataRepository;
-
-        return new UserRepository(
+        $prototype::$repository = new UserRepository(
                 $adapter,
                 $hydrator,
                 $prototype
         );
+        $prototype::$userDataRepository = $userDataRepository;
+        $prototype::$basketRepository = $basketRepository;
+        
+        return $prototype::$repository;
+
+//        return new UserRepository(
+//                $adapter,
+//                $hydrator,
+//                $prototype
+//        );
     }
 
 }
