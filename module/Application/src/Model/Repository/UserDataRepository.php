@@ -39,38 +39,6 @@ class UserDataRepository extends Repository implements RepositoryInterface
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
-    }
-    /**
-     * remove this function if not working on main server
-     * 
-     * @param type $entity
-     * @param type $params
-     * @param \Laminas\Hydrator\ClassMethodsHydrator $hydrator
-     * @return type
-     */
-    public function persist($entity, $params, $hydrator = null)
-    {
-        if (null == $hydrator) {
-            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-
-            $composite = new \Laminas\Hydrator\Filter\FilterComposite();
-            $composite->addFilter(
-                    'excludegettimestamp',
-                    new \Laminas\Hydrator\Filter\MethodMatchFilter('getTimestamp'),
-                    \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
-            );
-//            $composite->addFilter(
-//                    //'excludesettimestamp',
-//                    'excludegettimestamp',
-//                    new \Laminas\Hydrator\Filter\MethodMatchFilter('getTimestamp'),
-//                    \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
-//            );
-
-            $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
-        }
-
-        return parent::persist($entity, $params, $hydrator);
-    }
-    
+    }    
 
 }
