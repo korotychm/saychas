@@ -1,36 +1,42 @@
-<div class='contentpadding'>
-    <div class='paybox' >
-        <div class='contentpadding'>
+  <?php if($delevery):?>  <div class='contentpadding'>
             <div class='delevery-item delevery-door' > 
                 <b class='blok'>Доставка</b>
                 <div class='blok'>Информация о времени доставки</div>
                 <div class='blok'>Адрес доставки. Например: Угрешская улица, д.2 стр. 34, офис 333 </div>
             </div>
 
+  <?php endif;?>
+  <?php if($selfdelevery):?>            
             <div class='delevery-item delevery-self' > 
                 <b class='blok'>Самовывоз</b>
                 <div class='blok'>Информация о времени актуальности</div>
                 <div class='blok'>Информация о магазинах </div>
             </div>
-
+<?php endif; ?>
+<?php if($paycardinfo):?>
             <div class='delevery-item delevery-self' > 
                 <b class='blok'>Оплата</b>
                 <div class='blok'>Информация о типе оплаты</div>
                 <div class='blok'>Пример: Онлайн, картой <span class="red">5213 2487 **** 0817&darr;</span></div>
             </div>
-
+<?php endif;?>
+      
+      <?php
+      print_r($this->post)
+      ;?>
 
         </div>
+
         <div class='volna' ></div>  
         <div class='contentpadding'>
-            <h2 class='blok price' ><tag id="basketpricetotalall"><?=(int)$basketpricetotalall?></tag>&#8381; 
+            <h2 class='blok price' ><tag id="basketpricetotalall"><?=number_format(((int)$basketpricetotalall/100), 0, ',', '&nbsp;')?></tag>&#8381; 
     <?php if($basketoldpricetotalall){?> <span class='oldprice' ><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span>&nbsp;&#8381;</span><?php }?>
             </h2>
             <div class='char-row'>
                 <span class='char-title'>
-                    <span>Товары(<tag id="basketproductcount"><?=(int)$basketproductcount?></tag>)</span>
+                    <span>Товары(<tag id="basketproductcount"><?=$count?></tag>)</span>
                 </span><span class=char-value >
-                    <span><?=(int)$basketpricetotal?>&#8381; 
+                    <span><?=number_format(((int)$total/100), 0, ',', '&nbsp;')?>&#8381; 
     <?php if($basketoldpricetotal) {?><tag class='oldprice'><?=$basketoldpricetotal?>&#8381;</tag> <?php }?></span>
                 </span>
             </div>
@@ -58,5 +64,3 @@
             </div>
 
         </div>    
-    </div>
-</div>

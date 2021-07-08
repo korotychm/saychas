@@ -7,7 +7,8 @@
         <div  class='basketcol<?=$disabled?>  check'>
 <?php if($anable) {?>
             <div class='nopub checkallprovider provider-<?=$provider?>  allall zach' rel='<?=$product['id']?>' provider='<?=$provider?>' ></div>
-            <input type="checkbox" checked name="poducts[<?=$product['id']?>]" value="1"  class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck ">
+            <input type="checkbox" checked name="products[<?=$product['id']?>]" value="<?=$product['count']?>"  
+                   class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck " id="countprhidden-<?=$product['id']?>">
 <?php }?>
         </div>    
 
@@ -28,7 +29,7 @@
             <span><div class="countproductminus <?=($product['count'] < 2)?"disabled":""?>" rel='<?=$product['id']?>' >
             </div></span><div class="countproductnum " id="countproductnum-<?=$product['id']?>" max="<?=$product['availble']?>"><?=$product['count']?>
             </div><div class="countproductplus <?=($product['count'] >= $product['availble'])?"disabled":""?>" rel='<?=$product['id']?>'></div>
-            <input type="hidden" id="countprhidden-<?=$product['id']?>"  name="countproduct[<?=$product['id']?>]" value="<?=$product['count']?>" />
+            <!-- input type="hidden" id="countprhidden-<?=$product['id']?>"  name="countproduct[<?=$product['id']?>]" value="<?=$product['count']?>" /-->
         </div>
 
         <div  class='basketcol<?=$disabled?>  priceproduct' >

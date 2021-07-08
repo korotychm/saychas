@@ -38,6 +38,7 @@ use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Helper\StringHelper;
 
 class IndexController extends AbstractActionController
 {
@@ -263,22 +264,12 @@ class IndexController extends AbstractActionController
     
     
     
-    private function phoneFromNum ($from){
-        return "+"
-            .sprintf("%s (%s) %s-%s-%s",
-                substr($from, 0, 1),
-                substr($from, 1, 3),
-                substr($from, 4, 3),
-                substr($from, 7, 2),
-                substr($from, 9)
-            );
-    }
+    
     public function basketAction()
     {
             $userId = $this->identity();
             $user = $this->userRepository->find(['id'=>$userId]);
             $basketUser['phone'] = $user->getPhone();
-            $basketUser['phoneformated'] = $this -> phoneFromNum($basketUser['phone']);
             //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
             $basketUser['name'] = $user->getName();
             $userData = $user->getUserData();
@@ -288,7 +279,7 @@ class IndexController extends AbstractActionController
                 header("Location: /user");
                 exit();   
             }
-            
+            $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
             $basketUser['address'] = $userData->current()->getAddress();
             $userAddress = $userData->current()->getGeoData();
             //exit ($userPhone." / ".$userAddress);*/
@@ -458,6 +449,7 @@ class IndexController extends AbstractActionController
         // $user = $this->userRepository->find(['id'=>$userId]);
         $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
+        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
         $title=($user->getName())?$user->getName():"Войти на сайт";
         /* НАДО!!!
          * 
@@ -471,6 +463,7 @@ class IndexController extends AbstractActionController
             //"catalog" => $categories,
             "user" => $user,
             "userData" => $userData,
+            "userPhone" => $userPhone,
             "title" => $title ,//."/$category_id",
             "id" => "userid: ".$userId,
             "bread" => "bread $bread",
