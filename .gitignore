@@ -6,7 +6,7 @@ data/cache
 public/images/product/*
 public/images/product
 !data/cache/.gitkeep
-composer.lock
+# composer.lock
 phpunit.xml
 .phpunit.result.cache
 nbproject/*
