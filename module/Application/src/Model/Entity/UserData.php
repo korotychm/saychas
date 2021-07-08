@@ -155,14 +155,17 @@ class UserData extends Entity
     }
 
     /**
+     * comment out getTimestamp and setTimestamp if not working on main server
+     */
+    /**
      * Get timestamp
      *
      * @return string
      */
-//    public function getTimestamp()
-//    {
-//        return $this->timestamp;
-//    }
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
 
     public function receiveTimestamp()
     {
@@ -174,11 +177,11 @@ class UserData extends Entity
      *
      * @return $this
      */
-//    public function setTimestamp($timestamp)
-//    {
-//        $this->timestamp = $timestamp;
-//        return $this;
-//    }
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
+    }
     
     /**
      * Set fias_id
