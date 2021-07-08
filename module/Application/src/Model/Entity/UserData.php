@@ -159,10 +159,10 @@ class UserData extends Entity
      *
      * @return string
      */
-    public function getTimestamp()
-    {
-        return $this->timestamp;
-    }
+//    public function getTimestamp()
+//    {
+//        return $this->timestamp;
+//    }
 
     /**
      * Set timestamp
