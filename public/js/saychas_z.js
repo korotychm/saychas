@@ -135,12 +135,12 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         if($(this).hasClass("zach")){
             $(this).removeClass("zach");
             $(".provider-"+rel).removeClass("zach");
-            $(".povidercheck" + rel ).prop("checked", false);
+            $(".povidercheck-" + rel ).prop("checked", false);
         }
         else {
             $(this).addClass("zach");
             $(".provider-"+rel).addClass("zach");
-            $(".providercheck" + rel ).prop("checked", true);
+            $(".povidercheck-" + rel ).prop("checked", true);
         }
     })
     

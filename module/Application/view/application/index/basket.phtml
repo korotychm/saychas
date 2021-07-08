@@ -11,7 +11,7 @@
             <form method='POST' id='user-basket-form'>   
                 <div class="pw-contentblock cblock-5">
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
-                    <?= $this->partial("/application/index/partials/basket/basket-user", ["param" => $this->userData]) ?>                     
+                    <?= $this->partial("/application/index/partials/basket/basket-user", ["basketUser" => $this->basketUser]) ?>                     
                     <?= $this->partial("/application/index/partials/basket/basket-order-merge") ?>      
                     <?= $this->partial("/application/index/partials/basket/basket-self-delevery") ?>      
                     <?= $this->partial("/application/index/partials/basket/basket-pay-card") ?>                          

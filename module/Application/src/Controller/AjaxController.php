@@ -303,19 +303,11 @@ class AjaxController extends AbstractActionController
         if (!$ob->house)
             return (StringResource::USER_ADDREES_ERROR_MESSAGE);
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        //$userId = $this->identity();
-        //$user = $this->userRepository->find(['id' => $userId]);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
                 false,
-                stream_context_create(array(
-            'http' => array(
-                'method' => 'POST',
-                'header' => 'Content-type: application/json',
-                'content' => $json
-            )
-                ))
+                stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
         );
 
         $legalStore = Json::decode($result, true);

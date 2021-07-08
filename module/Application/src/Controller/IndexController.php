@@ -252,9 +252,39 @@ class IndexController extends AbstractActionController
             'fooItem' => $container->item
         ]);
     }
+    
+    
+    
+    private function phoneFromNum ($from){
+        return "+"
+            .sprintf("%s (%s) %s-%s-%s",
+                substr($from, 0, 1),
+                substr($from, 1, 3),
+                substr($from, 4, 3),
+                substr($from, 7, 2),
+                substr($from, 9)
+            );
+    }
     public function basketAction()
     {
             $userId = $this->identity();
+            $user = $this->userRepository->find(['id'=>$userId]);
+            $basketUser['phone'] = $user->getPhone();
+            //$basketUser['phoneformated'] = phoneFromNum($basketUser['phone']);
+            $basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
+            $basketUser['name'] = $user->getName();
+            $userData = $user->getUserData();
+            $count = $userData->count();
+            if(!$basketUser['phone'] or !$basketUser['name'] or $count <=0 ){
+                header("HTTP/1.1 301 Moved Permanently");
+                header("Location: /user");
+                exit();   
+            }
+            
+            $basketUser['address'] = $userData->current()->getAddress();
+            $userAddress = $userData->current()->getGeoData();
+            //exit ($userPhone." / ".$userAddress);*/
+            
             $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
@@ -281,6 +311,7 @@ class IndexController extends AbstractActionController
            /* "providers" => $providers,*/
             "content" => $content,
             "title" => "Корзина",
+            "basketUser" => $basketUser, 
             
         ]);   
     }
@@ -307,6 +338,7 @@ class IndexController extends AbstractActionController
 
     }
 
+    
     private function packParams($params)
     {
         $a = [];

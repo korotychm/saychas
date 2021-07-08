@@ -593,7 +593,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
  .countproductplus { border-left:none;  border-top-right-radius: 24px; border-bottom-right-radius: 24px; cursor:pointer; color:var(--red)}
  .countproductplus.disabled, .countproductminus.disabled {color:var(--gray)}
  
-.countproductmius::before {content:'\2212' }
+.countproductminus::before {content:'\2212' }
 .countproductplus::before {content:'+'}
  
  
