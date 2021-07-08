@@ -164,6 +164,11 @@ class UserData extends Entity
 //        return $this->timestamp;
 //    }
 
+    public function receiveTimestamp()
+    {
+        return $this->timestamp;
+    }
+    
     /**
      * Set timestamp
      *
