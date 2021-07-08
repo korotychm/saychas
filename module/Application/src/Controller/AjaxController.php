@@ -41,6 +41,7 @@ use Laminas\Session\Container;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
+use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController
 {
@@ -149,7 +150,7 @@ class AjaxController extends AbstractActionController
 
         $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
-        $return['phone'] = $this->phoneToNum($post->userPhone);
+        $return['phone'] = StringHelper::phoneToNum($post->userPhone);// $this->phoneToNum($post->userPhone);
         $return['name'] = $post->userNameInput;
         $code = $post->userSmsCode;
         $container = new Container(StringResource::SESSION_NAMESPACE);
