@@ -56,5 +56,15 @@ class StringHelper
         }
         return $numbers[0];
     }
+    public static function phoneFromNum ($from){
+        return "+"
+            .sprintf("%s (%s) %s-%s-%s",
+                substr($from, 0, 1),
+                substr($from, 1, 3),
+                substr($from, 4, 3),
+                substr($from, 7, 2),
+                substr($from, 9)
+            );
+    }
 
 }
