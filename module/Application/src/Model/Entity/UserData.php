@@ -174,11 +174,11 @@ class UserData extends Entity
      *
      * @return $this
      */
-    public function setTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;
-        return $this;
-    }
+//    public function setTimestamp($timestamp)
+//    {
+//        $this->timestamp = $timestamp;
+//        return $this;
+//    }
     
     /**
      * Set fias_id
