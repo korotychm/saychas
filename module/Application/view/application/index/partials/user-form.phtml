@@ -5,7 +5,7 @@
         if(count($userData)){//$uesrId = $user->getId();
             $content.="<ol>Адреса:"; 
             foreach($userData as $ud) {
-                $content.="<li><b>{$ud->getAddress()}</b>";
+                $content.="<li><strong>{$ud->getAddress()}</strong><span class='blok mini gray'>{$ud->receiveTimestamp()}</span>";
                 //$content.="<span class='blok mini'>{$ud->getTimestamp()}</span>";
                 $content.="</li>";
             }

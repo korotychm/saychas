@@ -270,8 +270,8 @@ class IndexController extends AbstractActionController
             $userId = $this->identity();
             $user = $this->userRepository->find(['id'=>$userId]);
             $basketUser['phone'] = $user->getPhone();
-            //$basketUser['phoneformated'] = phoneFromNum($basketUser['phone']);
-            $basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
+            $basketUser['phoneformated'] = $this -> phoneFromNum($basketUser['phone']);
+            //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
             $basketUser['name'] = $user->getName();
             $userData = $user->getUserData();
             $count = $userData->count();
