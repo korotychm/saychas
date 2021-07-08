@@ -22,10 +22,10 @@ class UserDataRepositoryFactory implements FactoryInterface
 
         $adapter = $container->get(AdapterInterface::class);
 
-        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
-        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
-        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
-//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+//        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
+//        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
+//        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
+        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
 //        $hydrator->addStrategy(
 //            'timestamp',
 //            new DateTimeFormatterStrategy(
