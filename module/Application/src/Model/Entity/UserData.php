@@ -161,6 +161,9 @@ class UserData extends Entity
      */
     public function getTimestamp()
     {
+        if(null == $this->timestamp) {
+            $this->timestamp = (new DateTime("now"))->date;
+        }
         return $this->timestamp;
     }
 
@@ -169,11 +172,11 @@ class UserData extends Entity
      *
      * @return $this
      */
-//    public function setTimestamp($timestamp)
-//    {
-//        $this->timestamp = $timestamp;
-//        return $this;
-//    }
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
+    }
     
     /**
      * Set fias_id
