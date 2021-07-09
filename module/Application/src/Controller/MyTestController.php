@@ -249,6 +249,7 @@ class MyTestController extends AbstractActionController
         $productFavorites->setUserId(44);
         $productFavorites->setProductId('000000000001');
         $productFavorites->persist(['user_id' => $productFavorites->getUserId(), 'product_id' => $productFavorites->getProductId()]);
+        $productFavorites = ProductFavorites::findFirstOrDefault(['user_id' => $productFavorites->getUserId(), 'product_id' => $productFavorites->getProductId()]);
         $ts = $productFavorites->receiveTimestamp();
         $userId = $productFavorites->getUserId();
         $productId = $productFavorites->getProductId();
@@ -259,6 +260,7 @@ class MyTestController extends AbstractActionController
         $productHistory->setUserId(45);
         $productHistory->setProductId('000000000001');
         $productHistory->persist(['user_id' => $productHistory->getUserId(), 'product_id' => $productHistory->getProductId()]);
+        $productHistory = ProductHistory::findFirstOrDefault(['user_id' => $productHistory->getUserId(), 'product_id' => $productHistory->getProductId()]);
         $ts = $productHistory->receiveTimestamp();
         $userId = $productHistory->getUserId();
         $productId = $productHistory->getProductId();
