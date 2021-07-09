@@ -37,9 +37,9 @@ class ProductFavorites extends Entity
     protected $product_id;
 
     /**
-     * @var ts
+     * @var timestamp
      */
-    protected $ts;
+    protected $timestamp;
 
     /**
      * Get user_id.
@@ -88,14 +88,24 @@ class ProductFavorites extends Entity
     }
     
     /**
+     * Receive timestamp
+     * 
+     * @return timestamp
+     */
+    public function receiveTimestamp()
+    {
+        return $this->timestamp;
+    }
+    
+    /**
      * Get ts
      * 
      * @return timestamp
      */
-    public function getTs()
-    {
-        return $this->ts;
-    }
+//    public function getTs()
+//    {
+//        return $this->ts;
+//    }
     
     /**
      * Get ts
@@ -103,10 +113,10 @@ class ProductFavorites extends Entity
      * @param type $ts
      * @return ProductFavorites
      */
-    public function setTs($ts)
-    {
-        $this->ts = $ts;
-        return $this;
-    }
+//    public function setTs($ts)
+//    {
+//        $this->ts = $ts;
+//        return $this;
+//    }
 
 }

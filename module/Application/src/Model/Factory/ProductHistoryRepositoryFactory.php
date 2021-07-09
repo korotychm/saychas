@@ -9,7 +9,7 @@ use Application\Model\Entity\ProductHistory;
 use Application\Model\Repository\ProductHistoryRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Hydrator\ReflectionHydrator;
-use Laminas\Hydrator\ClassMethodsHydrator;
+//use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class ProductHistoryRepositoryFactory implements FactoryInterface
@@ -23,7 +23,8 @@ class ProductHistoryRepositoryFactory implements FactoryInterface
 
         $adapter = $container->get(AdapterInterface::class);
 
-        $hydrator = new ClassMethodsHydrator;
+//        $hydrator = new ClassMethodsHydrator;
+        $hydrator = new \Laminas\Hydrator\ReflectionHydrator;
         $prototype = new ProductHistory;
         $prototype::$repository = new ProductHistoryRepository(
                 $adapter,

@@ -1747,7 +1747,7 @@ DROP TABLE IF EXISTS `product_favorites`;
 CREATE TABLE `product_favorites` (
   `user_id` int NOT NULL,
   `product_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1761,7 +1761,7 @@ DROP TABLE IF EXISTS `product_history`;
 CREATE TABLE `product_history` (
   `user_id` int NOT NULL,
   `product_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

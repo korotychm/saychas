@@ -37,9 +37,9 @@ class ProductHistory extends Entity
     protected $product_id;
 
     /**
-     * @var ts
+     * @var timestamp
      */
-    protected $ts;
+    protected $timestamp;
 
     /**
      * Get user_id.
@@ -89,14 +89,24 @@ class ProductHistory extends Entity
     
     
     /**
+     * Receive timestamp
+     * 
+     * @return timestamp
+     */
+    public function receiveTimestamp()
+    {
+        return $this->timestamp;
+    }
+
+    /**
      * Get ts
      * 
      * @return timestamp
      */
-    public function getTs()
-    {
-        return $this->ts;
-    }
+//    public function getTs()
+//    {
+//        return $this->ts;
+//    }
     
     /**
      * Get ts
@@ -104,11 +114,11 @@ class ProductHistory extends Entity
      * @param type $ts
      * @return ProductHistory
      */
-    public function setTs($ts)
-    {
-        $this->ts = $ts;
-        return $this;
-    }
+//    public function setTs($ts)
+//    {
+//        $this->ts = $ts;
+//        return $this;
+//    }
     
 
 }
