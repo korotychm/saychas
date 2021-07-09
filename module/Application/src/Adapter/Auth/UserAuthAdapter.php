@@ -11,7 +11,9 @@ use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
 use Application\Adapter\Auth\UserAuthResult;
 use Application\Resource\StringResource;
 use Application\Model\Repository\UserRepository;
+//use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
+use Application\Model\Entity\UserData;
 use Laminas\Session\Container;
 
 /**
@@ -22,7 +24,7 @@ use Laminas\Session\Container;
 class UserAuthAdapter implements AdapterInterface
 {
 
-    private $userRepository;
+//    private $userRepository;
     private ?DbAdapter $adapter;
 
     /**
@@ -30,14 +32,26 @@ class UserAuthAdapter implements AdapterInterface
      *
      * @return void
      */
-    public function __construct(UserRepository $userRepository, ?DbAdapter $adapter = null, $identity = '', $credential = '')
+    public function __construct(/*UserRepository $userRepository,*/ ?DbAdapter $adapter = null, $identity = '', $credential = '')
     {
-        $this->userRepository = $userRepository;
+//        $this->userRepository = $userRepository;
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
     }
 
+    private function updateUserData(User $oldUser, $container)
+    {
+        $userOldData = $oldUser->getUserData();//->current();
+        foreach($userOldData as $ud) {
+            $userData = new UserData();
+            $userData->setAddress($ud->getAddress());
+            $userData->setFiasId($ud->getFiasId());
+            $userData->setFiasLevel($ud->getFiasLevel());
+            $userData->setUserId($container->userIdentity);
+            $userData->persist(['user_id' => $container->userIdentity, 'fias_id' => $ud->getFiasId(), $ud->getFiasLevel()]);
+        }
+    }
     /**
      * Performs an authentication attempt
      *
@@ -54,11 +68,23 @@ class UserAuthAdapter implements AdapterInterface
         if(!isset($container->userIdentity)) {
             $user = new User();
             $user->init();
-            $userId = $this->userRepository->persist($user, ['id' => null /* $user->getId() */ ]);
-            $this->identity = $container->userIdentity = $userId;
+            $userId = $user->persist(['id' => null ]);
+//            $userId = $this->userRepository->persist($user, ['id' => null /* $user->getId() */ ]);
+            $container->userIdentity = $userId;
+            $container->userOldIdentity = $userId;
+            $this->identity = $userId;
             $code = UserAuthResult::SUCCESS;
         }else{
-            $user = $this->userRepository->find(['id' => $container->userIdentity]);
+//            $user = $this->userRepository->find(['id' => $container->userIdentity]);
+            $user = User::find(['id' => $container->userIdentity]);
+            if(!$container->userOldIdentity) {
+                throw new \Exception('Unexpected error: no data found for registered user');
+            }
+            if($container->userIdentity != $container->userOldIdentity) {
+                $oldUser = User::find(['id' => $container->userOldIdentity]);
+                $this->updateUserData($oldUser, $container);
+            }
+            
             $this->identity = $container->userIdentity;
             if(null == $user) {
                 throw new \Exception('Unknown identity error');
@@ -71,3 +97,23 @@ class UserAuthAdapter implements AdapterInterface
     }
 
 }
+
+
+
+
+
+                
+
+
+
+
+//                $userOldData = $oldUser->getUserData();//->current();
+//                foreach($userOldData as $ud) {
+//                    $userData = new UserData();
+//                    $userData->setAddress($ud->getAddress());
+//                    $userData->setFiasId($ud->getFiasId());
+//                    $userData->setFiasLevel($ud->getFiasLevel());
+//                    $userData->setUserId($container->userIdentity);
+//                    $userData->persist(['user_id' => $container->userIdentity, 'fias_id' => $ud->getFiasId(), $ud->getFiasLevel()]);
+//                }
+                

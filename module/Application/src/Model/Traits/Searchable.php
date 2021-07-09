@@ -1,5 +1,7 @@
 <?php
 
+// src/Model/Traits/Searchable.php
+
 namespace Application\Model\Traits;
 
 /**

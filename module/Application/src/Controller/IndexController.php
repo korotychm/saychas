@@ -105,7 +105,7 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
+        $userAuthAdapter = new UserAuthAdapter(/*$this->userRepository*/);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
         if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {

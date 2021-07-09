@@ -37,13 +37,13 @@ class UserDataRepositoryFactory implements FactoryInterface
         //$userDataRepository = $container->get(UserDataRepository::class);
         
         $prototype = new UserData;
-        $prototype::$userDataRepository = new UserDataRepository(
+        $prototype::$repository = new UserDataRepository(
                 $adapter,
                 $hydrator,
                 $prototype
         );
 
-        return $prototype::$userDataRepository;
+        return $prototype::$repository;
 //        return new UserDataRepository(
 //                $adapter,
 //                $hydrator,

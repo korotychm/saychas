@@ -10,10 +10,13 @@ use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\User;
 use Application\Model\RepositoryInterface\RepositoryInterface;
+// use Application\Model\Traits\SingletonConstructor;
 //use Laminas\Db\Sql\Sql;
 
 class UserRepository extends Repository implements RepositoryInterface
 {
+    
+    // use SingletonConstructor;
 
     /**
      * @var string
@@ -40,7 +43,7 @@ class UserRepository extends Repository implements RepositoryInterface
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
-    
+
     public function persist($entity, $params, $hydrator = null)
     {
         if (null == $hydrator) {
@@ -69,7 +72,6 @@ class UserRepository extends Repository implements RepositoryInterface
 
         return parent::persist($entity, $params, $hydrator);
     }
-    
 
 }
 
