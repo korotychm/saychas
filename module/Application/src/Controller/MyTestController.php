@@ -245,7 +245,7 @@ class MyTestController extends AbstractActionController
     
     public function helloWorldAction()
     {
-        $productFavorites = ProductFavorites::findFirstOrDefault([]);//['user_id' => 44, 'product_id' => '000000000001']
+        $productFavorites = new ProductFavorites;// ProductFavorites::findFirstOrDefault([]);//['user_id' => 44, 'product_id' => '000000000001']
         $productFavorites->setUserId(44);
         $productFavorites->setProductId('000000000001');
         $productFavorites->persist(['user_id' => $productFavorites->getUserId(), 'product_id' => $productFavorites->getProductId()]);
@@ -256,7 +256,7 @@ class MyTestController extends AbstractActionController
         
         echo "$userId : $productId : $ts<br/>";
 
-        $productHistory = ProductHistory::findFirstOrDefault([]);
+        $productHistory = new ProductHistory;// ProductHistory::findFirstOrDefault([]);
         $productHistory->setUserId(45);
         $productHistory->setProductId('000000000001');
         $productHistory->persist(['user_id' => $productHistory->getUserId(), 'product_id' => $productHistory->getProductId()]);

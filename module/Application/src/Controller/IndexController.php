@@ -40,6 +40,9 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Helper\StringHelper;
 
+use Application\Model\Entity\ProductFavorites;
+use Application\Model\Entity\ProductHistory;
+
 class IndexController extends AbstractActionController
 {
     /**
