@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
+use Application\Model\Entity\Basket;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -41,6 +42,7 @@ use Laminas\Session\Container;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
+use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController
 {
@@ -107,15 +109,19 @@ class AjaxController extends AbstractActionController
             $return['error'] = false;
             if ($productId) {
 
-                $basketItem = $this->basketRepository->findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                // $basketItem = $this->basketRepository->findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
                 $basketItemTotal = (int) $basketItem->getTotal();
+                
                 $basketItem->setUserId($userId);
                 $basketItem->setProductId($productId);
                 $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
                 $productaddPrice = (int) $productadd->getPrice();
                 $basketItem->setPrice($productaddPrice);
-                $basketItem->setTotal(1);
-                $this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
+                //$basketItemTotal = 0;
+                $basketItem->setTotal($basketItemTotal+1);
+                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);
+                //$this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
             }
 
             $where = new Where();
@@ -123,7 +129,8 @@ class AjaxController extends AbstractActionController
             $where->equalTo('order_id', 0);
             /** more conditions come here */
             $columns = ['product_id', 'order_id', 'total'];
-            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+//            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+            $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
             foreach ($basket as $b) {
                 if ($pId = $b->productId) {
                     $product = $this->productRepository->find(['id' => $pId]);
@@ -149,7 +156,7 @@ class AjaxController extends AbstractActionController
 
         $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
-        $return['phone'] = $this->phoneToNum($post->userPhone);
+        $return['phone'] = StringHelper::phoneToNum($post->userPhone);// $this->phoneToNum($post->userPhone);
         $return['name'] = $post->userNameInput;
         $code = $post->userSmsCode;
         $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -209,6 +216,28 @@ class AjaxController extends AbstractActionController
 
         return new JsonModel($return);
     }
+    
+    public function basketPayInfoAction()
+    {
+        //sleep(2);
+        $post = $this->getRequest()->getPost();
+        $row= $this->htmlProvider->basketPayInfoData($post);
+                //basketPayInfoData($post);
+        
+        //exit (print_r($row));
+        $view = new ViewModel([
+            //$row
+            'basketpricetotalall' => $row['basketpricetotalall'],
+            'post' => $row['post'],
+            'count' => $row['count'],
+            'total' => $row['total'],/**/
+           ]);
+        $view->setTemplate('application/common/basket-payinfo');
+        return $view->setTerminal(true);
+        
+    }
+    
+    
 
     public function previewAction()
     {
@@ -293,7 +322,8 @@ class AjaxController extends AbstractActionController
     public function ajaxGetLegalStoreAction()
     {
         $post = $this->getRequest()->getPost();
-        $json = $post->value;
+        if(!$json = $post->value) return;
+        
         try {
             $TMP = Json::decode($json);
         } catch (LaminasJsonRuntimeException $e) {
@@ -303,19 +333,11 @@ class AjaxController extends AbstractActionController
         if (!$ob->house)
             return (StringResource::USER_ADDREES_ERROR_MESSAGE);
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        //$userId = $this->identity();
-        //$user = $this->userRepository->find(['id' => $userId]);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
                 false,
-                stream_context_create(array(
-            'http' => array(
-                'method' => 'POST',
-                'header' => 'Content-type: application/json',
-                'content' => $json
-            )
-                ))
+                stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
         );
 
         $legalStore = Json::decode($result, true);
@@ -339,7 +361,7 @@ class AjaxController extends AbstractActionController
             $userData->setUserId($userId);
             $userData->setAddress($post->address);
             $userData->setGeodata($post->dadata);
-            $userData->setTimestamp( ( new \DateTime("now") )->date );
+            // $userData->setTimestamp( ( new \DateTime("now") )->date );
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {
@@ -612,48 +634,6 @@ class AjaxController extends AbstractActionController
             "providers" => $providers,
             "catalog" => $categories,
         ]);
-    }
-
-    private function phoneToNum($destination_numbers)
-    {
-        $numbers = $sort_numbers = [];
-        if (!is_array($destination_numbers)) {
-            $destination_numbers = trim($destination_numbers);
-            $dest_length = strlen($destination_numbers);
-            $destination_numbers = str_replace(array(",", "\n"), ";", $destination_numbers);
-            $sort_numbers = explode(';', $destination_numbers);
-        } else {
-            $sort_numbers = $destination_numbers;
-        }
-
-        foreach ($sort_numbers as $arInd) {
-            $arInd = trim($arInd);
-            $symbol = false;
-            $spec_sym = array("+", "(", ")", " ", "-", "_");
-            for ($i = 0; $i < strlen($arInd); $i++) {
-                if (!is_numeric($arInd[$i]) && !in_array($arInd[$i], $spec_sym)) {
-                    $symbol = true;
-                }
-            }
-            if ($symbol) {
-                $numbers[] = $arInd;
-            } else {
-                $arInd = str_replace($spec_sym, "", $arInd);
-
-                if (strlen($arInd) < 10 || strlen($arInd) > 15) {
-                    continue;
-                } else {
-                    if (strlen($arInd) == 10 && $arInd[0] == '9') {
-                        $arInd = '7' . $arInd;
-                    }
-                    if (strlen($arInd) == 11 && $arInd[0] == '8') {
-                        $arInd[0] = "7";
-                    }
-                    $numbers[] = $arInd;
-                }
-            }
-        }
-        return $numbers[0];
     }
 
 }

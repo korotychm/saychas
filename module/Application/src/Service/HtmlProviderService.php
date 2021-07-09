@@ -26,7 +26,6 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 
-
 class HtmlProviderService
 {
 
@@ -98,21 +97,22 @@ class HtmlProviderService
             return join('<b class="brandcolor"> : </b>', $return);
         endif;
     }
-    
+
     public function breadCrumbsMenu($a = [])
     {
-        if ($a and count($a)){
+        if ($a and count($a)) {
             //<span class='bread-crumbs-item'></span>"
             //$return[] = "<a href=# class='catalogshow'>Каталог</a>";
             $a = array_reverse($a);
-            $j=0;
+            $j = 0;
             foreach ($a as $b) {
-                
+
                 $return[] = "<span class='bread-crumbs-item breadtab$j'><a href=/catalog/" . $b[0] . ">" . $b[1] . "</a></span>";
-                if ($j < 4) $j++;
+                if ($j < 4)
+                    $j++;
             }
-           return "<div  class='bread-crumbs'>" . join("", $return) . "</div>";
-           // return join('<b class="brandcolor"> : </b>', $return);
+            return "<div  class='bread-crumbs'>" . join("", $return) . "</div>";
+            // return join('<b class="brandcolor"> : </b>', $return);
         }
     }
 
@@ -132,159 +132,166 @@ class HtmlProviderService
         $where = "and `tit`.filter=1 and `tit`.category_id in (0," . join(",", $tree) . ")";
         return $where; // (print_r($filter, true));
     }
-  public function getCategoryFilter($category_id = 0)
+
+    public function getCategoryFilter($category_id = 0)
     {
+        
     }
 
-     /**
+    /**
      * Return Html 
      * @return string
      */
-
-    public function getCategoryFilterHtml($filters, $category_id, $price=["minprice"=>12000, "maxprice"=>54000])
+    public function getCategoryFilterHtml($filters, $category_id, $price = ["minprice" => 12000, "maxprice" => 54000])
     {
-            $typeText[0] = "Заголовок";
-            $typeText[1] = "Строка";
-            $typeText[2] = "Число";
-            $typeText[3] = "Булево";
-            $typeText[4] = "Ссылка.Характеристики";
-            $typeText[5] = "Ссылка.Поставщики";
-            $typeText[6] = "Ссылка.Бренды";
-            $typeText[7] = "Ссылка.Цвета";
-            $typeText[8] = "Ссылка.Страна";
-            $pricesel['maxprice']=$price['maxprice'];
-            $pricesel['minprice']=$price['minprice'];
+        $typeText[0] = "Заголовок";
+        $typeText[1] = "Строка";
+        $typeText[2] = "Число";
+        $typeText[3] = "Булево";
+        $typeText[4] = "Ссылка.Характеристики";
+        $typeText[5] = "Ссылка.Поставщики";
+        $typeText[6] = "Ссылка.Бренды";
+        $typeText[7] = "Ссылка.Цвета";
+        $typeText[8] = "Ссылка.Страна";
+        $pricesel['maxprice'] = $price['maxprice'];
+        $pricesel['minprice'] = $price['minprice'];
 
-        if(!$filters or !$category_id) return;
+        if (!$filters or!$category_id)
+            return;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory = $container->filtrForCategory;
-        if (!$filtred = $filtrForCategory[$category_id]['fltr'])  $filtred = [];
-        $return=""; $j=0;
-         foreach ($filters as $row){
-            $row['val']=explode(",",$row['val']);
-            $row['val']=array_unique($row['val']);
-            $getUnit=$this->characteristicRepository->findFirstOrDefault(["id"=>$row['id']])->getUnit();
+        if (!$filtred = $filtrForCategory[$category_id]['fltr'])
+            $filtred = [];
+        $return = "";
+        $j = 0;
+        foreach ($filters as $row) {
+            $row['val'] = explode(",", $row['val']);
+            $row['val'] = array_unique($row['val']);
+            $getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
             //$row['val']=array_diff ([""], $row['val']);
-            unset($options);            
-            foreach ($row['val'] as $val ) {
+            unset($options);
+            foreach ($row['val'] as $val) {
                 $j++;
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
-                if ($val){
-                    $valuetext=$val;                        
-                    if    ($row['type'] == 4 )  $valuetext = $char->getTitle();
-                    elseif($row['type'] == 5 )  $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                    elseif($row['type'] == 6 )  $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                    elseif($row['type'] == 7 )  {
+                if ($val) {
+                    $valuetext = $val;
+                    if ($row['type'] == 4)
+                        $valuetext = $char->getTitle();
+                    elseif ($row['type'] == 5)
+                        $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                    elseif ($row['type'] == 6)
+                        $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                    elseif ($row['type'] == 7) {
                         $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
-                        $valuetext = 
-                             "<div class='iblok relative' >"
-                            . " <div class=' checkgroup relative cirkulcheck ' for='$j' style='background-color:{$color->getValue()};' title='  {$color->getTitle()} '></div>"
-                            //. "      {$color->getTitle()}   "
-                            . "</div>";
-                    }
-                    elseif($row['type'] == 8 )  $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();/**/
-                    
-                    if   ($row['type'] == 2 ){
-                       $options[]=$val;
-                    }
-                    elseif($row['type'] == 7 ){
-                        $options.= $valuetext
-                               ."<input 
+                        $valuetext = "<div class='iblok relative' >"
+                                . " <div class=' checkgroup relative cirkulcheck ' for='$j' style='background-color:{$color->getValue()};' title='  {$color->getTitle()} '></div>"
+                                //. "      {$color->getTitle()}   "
+                                . "</div>";
+                    } elseif ($row['type'] == 8)
+                        $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
+
+                    if ($row['type'] == 2) {
+                        $options[] = $val;
+                    } elseif ($row['type'] == 7) {
+                        $options .= $valuetext
+                                . "<input 
                                     type='checkbox' 
                                     class='none fltrcheck$j' 
-                                    name='characteristics[".$row['id']."][]' 
+                                    name='characteristics[" . $row['id'] . "][]' 
 
-                                    value='".$val."'  "
-                                    . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                                    value='" . $val . "'  "
+                                . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
                                 ";
-                    }
-                    else 
-
-                    $options.="<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >".$valuetext
-                                ."<input 
+                    } else
+                        $options .= "<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >" . $valuetext
+                                . "<input 
                                      type='checkbox' 
                                      class='none fltrcheck$j' 
-                                     name='characteristics[".$row['id']."][]' 
+                                     name='characteristics[" . $row['id'] . "][]' 
 
-                                     value='".$val."'  "
-                                     . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
+                                     value='" . $val . "'  "
+                                . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
                                </div>";
-                } 
-            }           
+                }
+            }
             if ($options) {
-                if ($row['type'] == 2){
-                $min=min($options); $max=max($options);
-               // $options = "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; margin-right:10px;' value='$min' >"
-               //          . "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; ' value='$max' >";
-                $rzn=$max-$min;  
-                $step=1;
-                if ($rzn>10000) $step=100;  
-                elseif ($rzn>1000) $step=10;  
-                elseif ($rzn>100) $step=1;  
-                elseif ($rzn < 10) $step=0.1;  
+                if ($row['type'] == 2) {
+                    $min = min($options);
+                    $max = max($options);
+                    // $options = "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; margin-right:10px;' value='$min' >"
+                    //          . "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; ' value='$max' >";
+                    $rzn = $max - $min;
+                    $step = 1;
+                    if ($rzn > 10000)
+                        $step = 100;
+                    elseif ($rzn > 1000)
+                        $step = 10;
+                    elseif ($rzn > 100)
+                        $step = 1;
+                    elseif ($rzn < 10)
+                        $step = 0.1;
 
-                $maxsel=$max;
-                $minsel=$min;
-                $rangeId=str_replace("-","",$row['id']);
-        $options = '
+                    $maxsel = $max;
+                    $minsel = $min;
+                    $rangeId = str_replace("-", "", $row['id']);
+                    $options = '
     <script>
         $(function(){
-            $("#rangeslider'.$rangeId.'").ionRangeSlider({
+            $("#rangeslider' . $rangeId . '").ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
-                    min: '.$min.',
-                    max: '.$max.',
-                    from:'.$minsel.',
-                    to:  '.$maxsel.',
+                    min: ' . $min . ',
+                    max: ' . $max . ',
+                    from:' . $minsel . ',
+                    to:  ' . $maxsel . ',
                     hideMinMax:true,
                     type: "double",
-                    step: '.$step.',
-                    postfix: "'.$getUnit.'",
+                    step: ' . $step . ',
+                    postfix: "' . $getUnit . '",
                     grid: false,
                     onChange: function (obj) {
                         
-                        $("#minCost2'.$rangeId.'").val(obj.from);
-                        $("#maxCost2-'.$rangeId.'").val(obj.to);
-                        $("#minCost'.$rangeId.'").html(obj.from);
-                        $("#maxCost'.$rangeId.'").html(obj.to);
+                        $("#minCost2' . $rangeId . '").val(obj.from);
+                        $("#maxCost2-' . $rangeId . '").val(obj.to);
+                        $("#minCost' . $rangeId . '").html(obj.from);
+                        $("#maxCost' . $rangeId . '").html(obj.to);
               }
             });
         })
      </script> '
-        ."   
+                            . "   
         
                 <div style='padding:0px 6px; display:block; position:relative'>
-                    <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='characteristics[".$row['id']."][]'  style=''/>
-                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id='minCost$rangeId'>".$minsel."</span>
+                    <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='characteristics[" . $row['id'] . "][]'  style=''/>
+                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id='minCost$rangeId'>" . $minsel . "</span>
                        </div><div  
-                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id='maxCost$rangeId'>".$maxsel."</span></div>
-                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[".$row['id']."]['min']\" id='minCost2$rangeId' value='".$minsel."'  
-                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[".$row['id']."]['max']\" id='maxCost2$rangeId' value='".$maxsel."' -->
+                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id='maxCost$rangeId'>" . $maxsel . "</span></div>
+                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['min']\" id='minCost2$rangeId' value='" . $minsel . "'  
+                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['max']\" id='maxCost2$rangeId' value='" . $maxsel . "' -->
                 </div>
         ";
-        }    
-        elseif ($row['type'] == 3){
-                $options = "
+                } elseif ($row['type'] == 3) {
+                    $options = "
                     <div class=blok >
                         <div class='fltronoff   onoff ' for=123  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."]' value='0' >
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[" . $row['id'] . "]' value='0' >
                         </div>
                         <div class='fltronoff onoff  ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."]' value='1' >
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[" . $row['id'] . "]' value='1' >
                         </div>
                     </div>";
-                        /*. "<radiogroup>"
-                        . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=1 > Да</div>"
-                        . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=0 > Нет</div>"
-                        . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=-1 checked > Не важно</div>"
-                        . "</radiogroup>";*/
+                    /* . "<radiogroup>"
+                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=1 > Да</div>"
+                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=0 > Нет</div>"
+                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=-1 checked > Не важно</div>"
+                      . "</radiogroup>"; */
                 }
-                
-                $return.='<div class="ifilterblock"  >
-                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] .(($getUnit)?" <span class='gray iblok'>$getUnit</span>":""). ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '
-                                <span class="blok mini gray nobold" >'.$typeText[$row['type']].'</span>
-                                     <span class="blok mini gray nobold" >id: '.$row['id'].'</span>
+
+                $return .= '<div class="ifilterblock"  >
+                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] . (($getUnit) ? " <span class='gray iblok'>$getUnit</span>" : "") . ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '
+                                <span class="blok mini gray nobold" >' . $typeText[$row['type']] . '</span>
+                                     <span class="blok mini gray nobold" >id: ' . $row['id'] . '</span>
                              </div>
                             
                             <!-- div class="filtritem" id="fi' . $row['id'] . '" -->
@@ -296,17 +303,19 @@ class HtmlProviderService
                             <!-- /div -->
                         </div>";
             }
-            
         }
-        
-        $rzn=$price['maxprice']/100-$price['minprice']/100;
-         if ($rzn>10000) $step=100;  
-                elseif ($rzn>1000) $step=10;  
-                elseif ($rzn>10) $step=1;  
-                //elseif ($rzn < 10) $step=0.1;  
-        
-        
-        (true or $return)?$return = '
+
+        $rzn = $price['maxprice'] / 100 - $price['minprice'] / 100;
+        if ($rzn > 10000)
+            $step = 100;
+        elseif ($rzn > 1000)
+            $step = 10;
+        elseif ($rzn > 10)
+            $step = 1;
+        //elseif ($rzn < 10) $step=0.1;  
+
+
+        (true or $return) ? $return = '
         <div  class="formsendbutton" > post filter view</div>
         <input type=hidden name="offset" value="72" id="sqlOutline"  >
         <input type=hidden name="limit" value="72" id="sqlOutline"  >
@@ -315,17 +324,17 @@ class HtmlProviderService
                 $("#rangeslider").ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
-                    min: '.$price['minprice'].',
-                    max: '.$price['maxprice'].',
-             //        from:'.$pricesel['minprice'].',
-             //       to:  '.$pricesel['maxprice'].',
+                    min: ' . $price['minprice'] . ',
+                    max: ' . $price['maxprice'] . ',
+             //        from:' . $pricesel['minprice'] . ',
+             //       to:  ' . $pricesel['maxprice'] . ',
                     hideMinMax:true,
                     type: "double",
-                    step: '.($step*100).',
+                    step: ' . ($step * 100) . ',
                     postfix: "₽",
                     grid: false,
                     onChange: function (obj) {
-                        console.log('.$step.');
+                        console.log(' . $step . ');
                         var fmin = new Intl.NumberFormat("ru-RU").format(obj.from/100)
                         var fmax = new Intl.NumberFormat("ru-RU").format(obj.to/100)
                     
@@ -340,28 +349,28 @@ class HtmlProviderService
             });
         })
         </script> '
-        ."   
+                        . "   
         <div class=blok >
             <div class='fltrblock'>
                    <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
                 <div style='padding:0px 6px; display:block; position:relative'>
                     <input type='text' id='rangeslider' class='rangeslider'  value='' name='priceRange'  style=''/>
-                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>".number_format($pricesel['minprice']/100, 0, ',', ' ')."</span>
+                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>" . number_format($pricesel['minprice'] / 100, 0, ',', ' ') . "</span>
                        </div><div  
-                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>".number_format($pricesel['maxprice']/100, 0, ',', ' ')."</span></div>
+                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>" . number_format($pricesel['maxprice'] / 100, 0, ',', ' ') . "</span></div>
                    </div>
             </div>
         </div>
-        ".$return."
+        " . $return . "
             <!-- div class=blok >
             <div class='fltrblock'>
                    <div class='filtritemtitle blokl' >Тест булевое значение</div>
                     <div class=blok >
                         <div class=' fltronoff  onoff ' for=123  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[".$row['id']."][]' value='0' >
+                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[" . $row['id'] . "][]' value='0' >
                         </div>
                         <div class='fltronoff onoff zach ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[".$row['id']."][]' value='1' checked >
+                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[" . $row['id'] . "][]' value='1' checked >
                         </div>
                     </div>
                 </div>
@@ -381,35 +390,34 @@ class HtmlProviderService
                         </div>
                     </div>
                 </div>
-             </div-->"
-               :"";
+             </div-->" : "";
         //
         return $return;
-    }    
-    
-    
+    }
+
     public function productCard($filteredProducts, $category_id = 0)
     {
         $return = []; // new $return;
         $filters = [];
-        
-            foreach ($filteredProducts as $product) {
+
+        foreach ($filteredProducts as $product) {
             $cena = $price = (int) $product->getPrice();
             $cena = $cena / 100;
             $cena = number_format($cena, 0, "", "&nbsp;");
 
             $oldprice = (int) $product->getOldPrice();
-            if ($oldprice > $price){
+            if ($oldprice > $price) {
                 $oldprice = $oldprice / 100;
                 $oldprice = number_format($oldprice, 0, "", "&nbsp;");
-            } else $oldprice=0;/**/
+            } else
+                $oldprice = 0; /**/
 
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
             $filtrForCategory = $container->filtrForCategory;
             $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $r = (int) $rest->getRest();         
+            $r = (int) $rest->getRest();
             $_id = $product->getId();
             $_return[$_id]['rest'] += $r;
             $_return[$_id]['id'] = $_id;
@@ -432,9 +440,8 @@ class HtmlProviderService
             foreach ($_return as $Card) {
                 if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$Card['rest']) and!empty($Card)) {
 
-                    $return['card'] 
-                            //.=$this->partial('application/ajax/partials/card', ['card' => $card]);
-                            .= "<div class='productcard ' >"
+                    $return['card']
+                            //.=$this->partial('application/ajax/partials/card', ['card' => $card]); .= "<div class='productcard ' >"
                             // . $Card['speedlable']
                             . "<div class='contentabsolute  content opacity" . $Card['rest'] . "'>"
                             . "<a  href='/product/" . $Card['id'] . "' >"
@@ -443,7 +450,7 @@ class HtmlProviderService
                             . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
                             . "         <div class='inactiveblok'></div>"
                             . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
-                          .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
+                            . (($Card['oldprice']) ? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>" : "")
                             . "        <div class='payblockcard'>"
                             . "             <div class='paybutton' rel='" . $Card['id'] . "' >в корзину</div>"
                             . "        </div>"
@@ -455,54 +462,56 @@ class HtmlProviderService
                             . "</a>"
                             . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
                             . "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
-                            .(($Card['oldprice'])? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>":"")
+                            . (($Card['oldprice']) ? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>" : "")
                             . "   </div>"
-                            . "</div>";/**/
+                            . "</div>"; /**/
                 }
             }
         }
         return $return;
     }
 
-    private  function valueParce ($v=[], $chType)
-    {   $bool = ["нет", "да"];
-        if(!$v or !is_array($v))     return $v;
-        foreach ($v as  $val){
-                if(!$val)    continue;           
-    //if ($chArray and is_array($value)) $value=join(", ",$value);
-                if ($chType == 3)
-                    $value[] = $bool[$val];
+    private function valueParce($v = [], $chType)
+    {
+        $bool = ["нет", "да"];
+        if (!$v or!is_array($v))
+            return $v;
+        foreach ($v as $val) {
+            if (!$val)
+                continue;
+            //if ($chArray and is_array($value)) $value=join(", ",$value);
+            if ($chType == 3)
+                $value[] = $bool[$val];
 
-                elseif ($chType == 8) {
-                    $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
-                    $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
-                } 
-                elseif ($chType == 4) {
+            elseif ($chType == 8) {
+                $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
+                $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
+            } elseif ($chType == 4) {
 
-                    $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                } 
-                elseif ($chType == 6) {
-                    $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                } 
-                elseif ($chType == 7){
+                $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
+            } elseif ($chType == 6) {
+                $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+            } elseif ($chType == 7) {
 
-                    $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
-                $value[] = 
-                    "<div class='iblok relative'  >"
-                    . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:25px; height:25px; vertical-align:middle'></div>"
-                    . "      {$color->getTitle()}   "
-                    . "</div>";
-             }
-           else  $value=$v;
+                $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
+                $value[] = "<div class='iblok relative'  >"
+                        . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:25px; height:25px; vertical-align:middle'></div>"
+                        . "      {$color->getTitle()}   "
+                        . "</div>";
+            } else
+                $value = $v;
         }
-        if ($value) return print_r(join(", ", $value),true);
-    }  
-    
+        if ($value)
+            return print_r(join(", ", $value), true);
+    }
+
     public function productPage($filteredProducts, $category_id = 0)
     {
         $return = $filters = [];
         if (!$filteredProducts->count()) {
-             header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location:/");
+            exit();
         }
         foreach ($filteredProducts as $product) {
             $cena = $price = (int) $product->getPrice();
@@ -510,11 +519,12 @@ class HtmlProviderService
             $cena = number_format($cena, 0, "", "&nbsp;");
 
             $oldprice = (int) $product->getOldPrice();
-            if ($oldprice > $price){
+            if ($oldprice > $price) {
                 $oldprice = $oldprice / 100;
                 $oldprice = number_format($oldprice, 0, "", "&nbsp;");
-            } else $oldprice=0;/**/
-            
+            } else
+                $oldprice = 0; /**/
+
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
 
@@ -533,8 +543,8 @@ class HtmlProviderService
             $categoryId = $product->getCategoryId();
             $charNew = $product->getParamVariableList();
             $charNew = json_decode($charNew, true);
-            $charsNew = "<pre>".print_r($charNew,true)."</pre>";
-            
+            $charsNew = "<pre>" . print_r($charNew, true) . "</pre>";
+
             //$category = $product->getCategoryTitle();
 
             $img[] = $product->getHttpUrl();
@@ -566,38 +576,36 @@ class HtmlProviderService
         }
         $totalRest = (count($rst)) ? array_sum($rst) : 0;
         ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
-        
+
         $charNew = array_diff($charNew, array(''));
         if (!empty($charNew)) {
             if ($characterictics = $charNew)
-            $j = 0;
-            
+                $j = 0;
+
             foreach ($characterictics as $char) {
-                $charRow ="";
-                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id']."-".$categoryId] );
+                $charRow = "";
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                 $chTit = $ch->getTitle();
-                $chType = (int)$ch->getType();
+                $chType = (int) $ch->getType();
                 $chArray = $ch->getIsList();
                 $chMain = $ch->getIsMain();
-                $idchar= $char['id'];
-                if ($value = $char['value'] /*or true /**/) {
-                         
-                         ($chArray)?$v=$value:$v[]=$value;   
-                         $value = $this->valueParce($v,$chType);
-                         unset ($v);
-                            $charRow = "<div class='char-row'><span class='char-title'><span>".$chTit." "
-                                    . "". $ch->getUnit() .""
-                                    . "</span></span><span class=char-value ><span>$value</span></span></div>";
-                            $j++;
-                    } 
-                    elseif ($chType == 0) 
-                    {
+                $idchar = $char['id'];
+                if ($value = $char['value'] /* or true /* */) {
+
+                    ($chArray) ? $v = $value : $v[] = $value;
+                    $value = $this->valueParce($v, $chType);
+                    unset($v);
+                    $charRow = "<div class='char-row'><span class='char-title'><span>" . $chTit . " "
+                            . "" . $ch->getUnit() . ""
+                            . "</span></span><span class=char-value ><span>$value</span></span></div>";
+                    $j++;
+                } elseif ($chType == 0) {
                     $charRow = "<h3>$chTit</h3>";
                     $j++;
                 }
-                if ($chMain)  $chars .= $charRow ; 
+                if ($chMain)
+                    $chars .= $charRow;
                 $charsmore .= $charRow;
-               
             }
 
             $join = $chars;
@@ -652,8 +660,8 @@ class HtmlProviderService
 				<div class='paybox' >"
                 . "     		<div class='contentpadding'>
 						<h2 class='blok price'>   " . $cena . " &#8381; "
-                                     .(($oldprice)?"<span class='oldprice'>".($oldprice)."&nbsp;&#8381;</span>":"")
-                                        ."</h2>
+                . (($oldprice) ? "<span class='oldprice'>" . ($oldprice) . "&nbsp;&#8381;</span>" : "")
+                . "</h2>
 					</div>
         				<div class='volna' ></div>
             				<div class='contentpadding'>
@@ -681,7 +689,7 @@ class HtmlProviderService
                     </div>
                  </div>
                  "
-                ;
+        ;
         $return['card'] .= ""
                 . "<div class=blok  >"
                 . "    <div class='pw-contentblock cblock-5' >
@@ -712,21 +720,19 @@ class HtmlProviderService
         return $return;
     }
 
-    public function writeUserAddress( $user = null )
+    public function writeUserAddress($user = null)
     {
         //$userId = $this->identity();
-        /*$userData = new UserData();
-        $userData->getUserId($userId)
-            ->getAddress()
-            ->getGeodata();*/
+        /* $userData = new UserData();
+          $userData->getUserId($userId)
+          ->getAddress()
+          ->getGeodata(); */
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        
-        
+
         $username = $user->getName();
         $userData = $user->getUserData();
-        
-        
-        $usdat=$userData->current();
+
+        $usdat = $userData->current();
         if (null != $usdat) {
             $userAddress = $usdat->getAddress(); //$container->userAddress;
             $userGeodata = $usdat->getGeoData();
@@ -735,196 +741,224 @@ class HtmlProviderService
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
         return "<span>$userAddress</span>"
                 . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea>"
-               //. "<h1></h1>"
-               //
-               //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
-                ;
+        //. "<h1></h1>"
+        //
+        //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
+        ;
     }
+
+    public function basketPayInfoData($post)
+    {
+        $return["post"]="<pre>".print_r($post,true)."</pre>";
+        $products = $post->products;
+        $j=0;
+        if(!empty($products))
+            while (list($p, $c)=each($products)){
+                
+                $product = $this->productRepository->find(['id' => $p]);
+                if(null== $product) continue;
+                if(!$price = (int) $product->receivePriceObject()->getPrice())continue;
+                $total += ($price * $c);
+                $j+=$c;
+                
+            }
+          $return["basketpricetotalall"]=
+          
+          $return["total"]  = $total;
+          
+          $return["count"]  = $j;
+          
+          return $return;
+          
+    }
+    
     
     public function basketData($basket)
     {
-           foreach ($basket as $b) {
-                if($pId = $b->productId){
-                    /** @var HandbookRelatedProduct */
-                    $product = $this->productRepository->find(['id'=> $pId]);
-                    $price = (int)$product->receivePriceObject()->getPrice();
-                    if ($product->receiveRest()) $availblechek[$product->getProviderId()]=true;
-                    $item[$product->getProviderId()][]=[
-                        "id" => $pId, 
-                        'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
-                        "title" => $product->getTitle()
-                            //."<span class='blok mini'> (остаток:".(int)$product->receiveRest()."; цена: ".$price.")"
-                            , 
-                        "price" => $price, // $product->getPrice(), 
-                        'oldprice' => $product->receivePriceObject()->getOldPrice(),   
-                       // 'availble' => '1',
-                        'availble' => $product->receiveRest(), //   ОСТАТок!!!
-                        "count" => $b->total, 
-                        
-                       ]; 
-                }    
+        foreach ($basket as $b) {
+            if ($pId = $b->productId) {
+                /** @var HandbookRelatedProduct */
+                $product = $this->productRepository->find(['id' => $pId]);
+                $price = (int) $product->receivePriceObject()->getPrice();
+                if ($product->receiveRest())
+                    $availblechek[$product->getProviderId()] = true;
+                $rest = $product->receiveRest();
+                $count = $b->total;
+                if ($count > $rest)
+                    $count = $rest;
+                $item[$product->getProviderId()][] = [
+                    'id' => $pId,
+                    'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
+                    'title' => $product->getTitle(),
+                    'price' => $price,
+                    'oldprice' => $product->receivePriceObject()->getOldPrice(),
+                    // 'availble' => '1',
+                    'availble' => $rest,
+                    'count' => $count,
+                ];
             }
-        if (!$item or !count($item)) return [];
-        
+        }
+        if (!$item or!count($item))
+            return [];
+
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        if(empty($container->legalStore)) {
+        if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
         $legalStore = array_keys($container->legalStore);
-        $return=[]; $g=0;
+        $return = [];
+        $g = 0;
         while (list($prov, $prod) = each($item)) {
             $j++;
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
-            if(null != $store /*$store->count()*/){
+            if (null != $store /* $store->count() */) {
                 $provider_disable = false;
-                $returnprefix=$j*-1;
+                $returnprefix = $j * -1;
                 $provider_address = $store->getAddress();
                 $provider_address_tmp = explode(",", $provider_address);
                 unset($provider_address_tmp[0]);
                 unset($provider_address_tmp[1]);
                 unset($provider_address_tmp[2]);
                 //$provider_addressappend = jpin$provider_address_tmp[3];
-                if ($store->getDescription()) $provider_address_tmp[]=$store->getDescription();
-                $provider_store=$store->getTitle();
+                if ($store->getDescription())
+                    $provider_address_tmp[] = $store->getDescription();
+                $provider_store = $store->getTitle();
                 ksort($provider_address_tmp);
-                $provider_addressappend =  join(", ", $provider_address_tmp);
-               // $provider_worktime = $store->getWorktime();  //text
-               // $provider_timeclose = $store->getTimeColse();
-            }
-            else {
-                $provider_disable = "Магазин недоступен";
-                $returnprefix=$j;
-                $provider_address = 
-                $provider_worktime = 
-                $provider_timeclose = "";
+                $provider_addressappend = join(", ", $provider_address_tmp);
+                // $provider_worktime = $store->getWorktime();  //text
+                // $provider_timeclose = $store->getTimeColse();
+            } else {
+                $provider_disable = "Сейчас доставка недоступна";
+                $returnprefix = $j;
+                $provider_address = $provider_worktime = $provider_timeclose = "";
                 $provider_store_off = "Комментарий из 1с";
             }
-    
-    $return[$returnprefix]=   
-                    [
-            "provider_id" => $prov,
-            "availblechek" => $availblechek[$prov],
-            "provider_disable" => $provider_disable,
-            "provider_name" =>  $provider->getTitle(),
-            "provider_logo" =>  $provider->getImage(),
-            "provider_address" =>  $provider_address,
-            "provider_addressappend" =>  $provider_addressappend,
-            "provider_worktime" =>   $provider_worktime,
-            "provider_timeclose" =>  "",
-            "provider_store" =>  $provider_store,
-            "provider_store_off" => $provider_store_off, 
-            "products" => $prod
+
+            $return[$returnprefix] = [
+                        "provider_id" => $prov,
+                        "availblechek" => $availblechek[$prov],
+                        "provider_disable" => $provider_disable,
+                        "provider_name" => $provider->getTitle(),
+                        "provider_logo" => $provider->getImage(),
+                        "provider_address" => $provider_address,
+                        "provider_addressappend" => $provider_addressappend,
+                        "provider_worktime" => $provider_worktime,
+                        "provider_timeclose" => "",
+                        "provider_store" => $provider_store,
+                        "provider_store_off" => $provider_store_off,
+                        "products" => $prod
             ];
-       }
-       ksort($return);
-       //array_push($return, $returnvar[0]);// $returvar[1]);
-       //array_push($return, $returnvar[1]);
-       //$return=$return[0];
-      // exit (print_r($return));
-       //array_push($returvar[0],  $returvar[1]);
-       //$return = $returvar[0];
-    /*/    $return[]=[
-            "provider_id" => '00004',
-            "provider_disable" => false,
-            "provider_name" =>  "М-Видео",
-            "provider_logo" =>  "mvideo.png",
-            "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
-            "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
-            "provider_timeclose" =>  "(до закрытия 3 часа)",
-            "products" => [
-                    [
-                        "id" => '000000000009', 
-                        'image' => '79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg' , 
-                        'title' => 'Ноутбук ASUS TUF Gaming FX505DT-HN564T черный ',
-                        'price' => '51000',    
-                        'oldprice' => '',  
-                        'count'=> 1,
-                        'availble' => '10',
-                     ],
-                    [
-                        "id" => '000000000007', 
-                        'image' => '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg' , 
-                        'title' => 'Ноутбук Acer Nitro 5 AN515-43-R45P черный',
-                        'price' => '15800',    
-                        'oldprice' => '17000',        
-                        'availble' => '0',
-                     ],
-                ],
-            
-        ];
-        $return[]=[
-            "provider_id" => '00005',
-            "provider_disable" => false,
-            "provider_name" =>  "DNS",
-            "provider_logo" =>  "00005_DNS.png",
-            "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
-            "provider_worktime" =>  "Ежедневно, 10:00–21:00 ",
-            "provider_timeclose" =>  "(до закрытия 4 часа)",
-            "products" => [
-                    [
-                        "id" => '000000000024', 
-                        'image' => '8.jpg' , 
-                        'title' => 'Смартфон Samsung Galaxy A72 128Gb (черный) ',
-                        'price' => '35990',    
-                        'oldprice' => '40000',  
-                        'count'=> 1,
-                        'availble' => '10',
-                    ],
-                    [
-                        "id" => '000000000011', 
-                        'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' , 
-                        'title' => 'Смартфон Nokia 2.4 ',
-                        'price' => '12500',    
-                        //'oldprice' => '17000',
-                        'count'=> 1,
-                        'availble' => '0',
-                    ],
-                    [
-                        "id" => '000000000014', 
-                        'image' => '32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg' , 
-                        'title' => 'Xiaomi Redmi Note 10 (голубой)',
-                        'price' => '20000',    
-                        //'oldprice' => '17000',*       
-                        'availble' => '10',
-                    ],
-                    
-                ],
-            
-        ];
-        
-         $return[]=[
-            "provider_id" => '00000',
-            "provider_disable" => "Магазин уже закрылся",
-            "provider_name" =>  "5",
-            "provider_logo" =>  "5.png",
-            "provider_address" =>  "Пятерочка. Новочеркасский бульвар, 10, м.Марьино  ",
-            "provider_worktime" =>  "Ежедневно, 10:00–23:00 ",
-            "provider_timeclose" =>  "(до закрытия 5 часов)",
-            "products" => [
-                    [
-                        "id" => '10000000000', 
-                        'image' => '1350x.jpg' , 
-                        'title' => 'Кефир Простоквашинго 2,5%',
-                        'price' => '35',    
-                        'oldprice' => '40',  
-                        'count'=> 1,
-                        'availble' => '10',
-                    ],
-                    [
-                        "id" => '20000000000', 
-                        'image' => '40ec61411c92eac07cd543f0cee4ad81.jpg' , 
-                        'title' => 'Молоко Простоквашинго 2,5%',
-                        'price' => '25',    
-                        //'oldprice' => '17000',
-                        'availble' => '0',
-                    ],
-                    
-                ],
-            
-        ];
-        
-        /**/
-       return $return; 
+        }
+        ksort($return);
+        //array_push($return, $returnvar[0]);// $returvar[1]);
+        //array_push($return, $returnvar[1]);
+        //$return=$return[0];
+        // exit (print_r($return));
+        //array_push($returvar[0],  $returvar[1]);
+        //$return = $returvar[0];
+        /* /    $return[]=[
+          "provider_id" => '00004',
+          "provider_disable" => false,
+          "provider_name" =>  "М-Видео",
+          "provider_logo" =>  "mvideo.png",
+          "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
+          "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
+          "provider_timeclose" =>  "(до закрытия 3 часа)",
+          "products" => [
+          [
+          "id" => '000000000009',
+          'image' => '79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg' ,
+          'title' => 'Ноутбук ASUS TUF Gaming FX505DT-HN564T черный ',
+          'price' => '51000',
+          'oldprice' => '',
+          'count'=> 1,
+          'availble' => '10',
+          ],
+          [
+          "id" => '000000000007',
+          'image' => '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg' ,
+          'title' => 'Ноутбук Acer Nitro 5 AN515-43-R45P черный',
+          'price' => '15800',
+          'oldprice' => '17000',
+          'availble' => '0',
+          ],
+          ],
+
+          ];
+          $return[]=[
+          "provider_id" => '00005',
+          "provider_disable" => false,
+          "provider_name" =>  "DNS",
+          "provider_logo" =>  "00005_DNS.png",
+          "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
+          "provider_worktime" =>  "Ежедневно, 10:00–21:00 ",
+          "provider_timeclose" =>  "(до закрытия 4 часа)",
+          "products" => [
+          [
+          "id" => '000000000024',
+          'image' => '8.jpg' ,
+          'title' => 'Смартфон Samsung Galaxy A72 128Gb (черный) ',
+          'price' => '35990',
+          'oldprice' => '40000',
+          'count'=> 1,
+          'availble' => '10',
+          ],
+          [
+          "id" => '000000000011',
+          'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' ,
+          'title' => 'Смартфон Nokia 2.4 ',
+          'price' => '12500',
+          //'oldprice' => '17000',
+          'count'=> 1,
+          'availble' => '0',
+          ],
+          [
+          "id" => '000000000014',
+          'image' => '32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg' ,
+          'title' => 'Xiaomi Redmi Note 10 (голубой)',
+          'price' => '20000',
+          //'oldprice' => '17000',*
+          'availble' => '10',
+          ],
+
+          ],
+
+          ];
+
+          $return[]=[
+          "provider_id" => '00000',
+          "provider_disable" => "Магазин уже закрылся",
+          "provider_name" =>  "5",
+          "provider_logo" =>  "5.png",
+          "provider_address" =>  "Пятерочка. Новочеркасский бульвар, 10, м.Марьино  ",
+          "provider_worktime" =>  "Ежедневно, 10:00–23:00 ",
+          "provider_timeclose" =>  "(до закрытия 5 часов)",
+          "products" => [
+          [
+          "id" => '10000000000',
+          'image' => '1350x.jpg' ,
+          'title' => 'Кефир Простоквашинго 2,5%',
+          'price' => '35',
+          'oldprice' => '40',
+          'count'=> 1,
+          'availble' => '10',
+          ],
+          [
+          "id" => '20000000000',
+          'image' => '40ec61411c92eac07cd543f0cee4ad81.jpg' ,
+          'title' => 'Молоко Простоквашинго 2,5%',
+          'price' => '25',
+          //'oldprice' => '17000',
+          'availble' => '0',
+          ],
+
+          ],
+
+          ];
+
+          /* */
+        return $return;
     }
+
 }

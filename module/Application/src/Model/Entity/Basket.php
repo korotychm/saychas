@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\BasketRepository;
+use Application\Model\Traits\Searchable;
+
 /**
  * Basket
  *
@@ -12,18 +15,17 @@ namespace Application\Model\Entity;
  */
 class Basket extends Entity
 {
-    
-//CREATE TABLE IF NOT EXISTS `basket` (
-//        `user_id` INT(11) NOT NULL,
-//        `product_id` VARCHAR(12) NOT NULL,
-//        `total` INT(11) NOT NULL DEFAULT 0,
-//        `order_id` INT(11) NOT NULL,
-//        `price` INT(11) NOT NULL DEFAULT 0,
-//        `discount` INT(11) NOT NULL DEFAULT 0,
-//        `discount_description` TEXT,
-//        `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-//) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-    
+
+    /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var BasketRepository
+     */
+    public static BasketRepository $repository;
+
     /**
      * @var int
      */
@@ -43,12 +45,12 @@ class Basket extends Entity
      * @var int
      */
     protected $order_id = 0;
-    
+
     /**
      * @var int
      */
     protected $price = 0;
-    
+
     /**
      * @var int
      */
@@ -180,13 +182,13 @@ class Basket extends Entity
     {
         return $this->total;
     }
+
     /**
      * Set order_id.
      *
      * @param int $orderId
      * @return Basket
      */
-
     public function setOrderId($orderId)
     {
         $this->order_id = $orderId;
@@ -203,7 +205,7 @@ class Basket extends Entity
     {
         return $this->order_id;
     }
-    
+
     /**
      * Set price.
      *
@@ -226,5 +228,5 @@ class Basket extends Entity
     {
         return $this->price;
     }
-    
+
 }

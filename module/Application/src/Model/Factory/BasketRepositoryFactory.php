@@ -23,11 +23,21 @@ class BasketRepositoryFactory implements FactoryInterface
 
         $adapter = $container->get(AdapterInterface::class);
 
-        return new BasketRepository(
+        $hydrator = new ClassMethodsHydrator;
+        $prototype = new Basket;
+        $prototype::$repository = new BasketRepository(
                 $adapter,
-                new ClassMethodsHydrator,
-                new Basket
+                $hydrator,
+                $prototype
         );
+
+        return $prototype::$repository;
+        
+//        return new BasketRepository(
+//                $adapter,
+//                $hydrator, // new ClassMethodsHydrator,
+//                $prototype // new Basket
+//        );
     }
 
 }

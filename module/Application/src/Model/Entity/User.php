@@ -4,7 +4,10 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\UserDataRepository;
+use Application\Model\Repository\BasketRepository;
+use Application\Model\Traits\Searchable;
 
 /**
  * Description of User
@@ -14,10 +17,22 @@ use Application\Model\Repository\UserDataRepository;
 class User extends Entity
 {
 
+    use Searchable;
+
+    /**
+     * @var UserRepository
+     */
+    public static UserRepository $repository;
+
     /**
      * @var UserDataRepository
      */
     public static UserDataRepository $userDataRepository;
+
+    /**
+     * @var BasketRepository
+     */
+    public static BasketRepository $basketRepository;
 
     /**
      * @var int
@@ -55,6 +70,11 @@ class User extends Entity
     protected $user_data;
 
     /**
+     * @var array
+     */
+    protected $basket_data;
+
+    /**
      * Set user_data.
      *
      * @param array $userData
@@ -77,13 +97,13 @@ class User extends Entity
      */
     public function getUserData()
     {
-        $this->user_data = self::$userDataRepository->findAll(['where' => ['user_id' => $this->getId()], 'order' => 'timestamp DESC' ]);
+        $this->user_data = self::$userDataRepository->findAll(['where' => ['user_id' => $this->getId()], 'order' => 'timestamp DESC']);
         return $this->user_data;
     }
-    
+
     /**
      * Delete user data
-     * 
+     *
      * @param array $params
      * @return $this
      */
@@ -91,6 +111,12 @@ class User extends Entity
     {
         /** $this->user_data = */ self::$userDataRepository->remove($params);
         return $this;
+    }
+
+    public function getBasketData()
+    {
+        $this->basket_data = self::$basketRepository->findAll(['where' => ['user_id' => $this->getId()]]);
+        return $this->basket_data;
     }
 
     /**
@@ -236,5 +262,4 @@ class User extends Entity
 //    {
 //        return $this->timestamp;
 //    }
-
 }

@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Хост: localhost
--- Время создания: Июл 08 2021 г., 00:26
--- Версия сервера: 8.0.25
--- Версия PHP: 7.4.16
+-- Host: localhost
+-- Generation Time: Jul 07, 2021 at 07:50 AM
+-- Server version: 8.0.25
+-- PHP Version: 7.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `saychas_z`
+-- Database: `saychas_z`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `basket`
+-- Table structure for table `basket`
 --
 
 DROP TABLE IF EXISTS `basket`;
@@ -40,7 +40,7 @@ CREATE TABLE `basket` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `basket`
+-- Dumping data for table `basket`
 --
 
 INSERT INTO `basket` (`user_id`, `product_id`, `total`, `order_id`, `price`, `discount`, `discount_description`) VALUES
@@ -80,13 +80,12 @@ INSERT INTO `basket` (`user_id`, `product_id`, `total`, `order_id`, `price`, `di
 (50, '000000000016', 1, 0, 0, 0, NULL),
 (50, '000000000004', 1, 0, 0, 0, NULL),
 (50, '000000000005', 1, 0, 0, 0, NULL),
-(50, '000000000006', 1, 0, 0, 0, NULL),
-(172, '000000000018', 1, 0, 5399100, 0, NULL);
+(50, '000000000006', 1, 0, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `brand`
+-- Table structure for table `brand`
 --
 
 DROP TABLE IF EXISTS `brand`;
@@ -98,7 +97,7 @@ CREATE TABLE `brand` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `brand`
+-- Dumping data for table `brand`
 --
 
 INSERT INTO `brand` (`id`, `title`, `description`, `image`) VALUES
@@ -118,7 +117,7 @@ INSERT INTO `brand` (`id`, `title`, `description`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `category`
+-- Table structure for table `category`
 --
 
 DROP TABLE IF EXISTS `category`;
@@ -132,7 +131,7 @@ CREATE TABLE `category` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci COMMENT='Категории товаров';
 
 --
--- Дамп данных таблицы `category`
+-- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort_order`) VALUES
@@ -361,7 +360,7 @@ INSERT INTO `category` (`id`, `parent_id`, `title`, `description`, `icon`, `sort
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `characteristic`
+-- Table structure for table `characteristic`
 --
 
 DROP TABLE IF EXISTS `characteristic`;
@@ -381,7 +380,7 @@ CREATE TABLE `characteristic` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `characteristic`
+-- Dumping data for table `characteristic`
 --
 
 INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `group`, `sort_order`, `unit`, `description`, `is_main`, `is_mandatory`, `is_list`) VALUES
@@ -575,7 +574,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `characteristic_value`
+-- Table structure for table `characteristic_value`
 --
 
 DROP TABLE IF EXISTS `characteristic_value`;
@@ -586,7 +585,7 @@ CREATE TABLE `characteristic_value` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `characteristic_value`
+-- Dumping data for table `characteristic_value`
 --
 
 INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
@@ -643,7 +642,7 @@ INSERT INTO `characteristic_value` (`id`, `title`, `characteristic_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `color`
+-- Table structure for table `color`
 --
 
 DROP TABLE IF EXISTS `color`;
@@ -654,7 +653,7 @@ CREATE TABLE `color` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `color`
+-- Dumping data for table `color`
 --
 
 INSERT INTO `color` (`id`, `value`, `title`) VALUES
@@ -680,7 +679,7 @@ INSERT INTO `color` (`id`, `value`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `country`
+-- Table structure for table `country`
 --
 
 DROP TABLE IF EXISTS `country`;
@@ -691,7 +690,7 @@ CREATE TABLE `country` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `country`
+-- Dumping data for table `country`
 --
 
 INSERT INTO `country` (`id`, `title`, `code`) VALUES
@@ -950,7 +949,7 @@ INSERT INTO `country` (`id`, `title`, `code`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `customer`
+-- Table structure for table `customer`
 --
 
 DROP TABLE IF EXISTS `customer`;
@@ -965,8 +964,8 @@ CREATE TABLE `customer` (
 -- --------------------------------------------------------
 
 --
--- Дублирующая структура для представления `filtered_product`
--- (См. Ниже фактическое представление)
+-- Stand-in structure for view `filtered_product`
+-- (See below for the actual view)
 --
 DROP VIEW IF EXISTS `filtered_product`;
 CREATE TABLE `filtered_product` (
@@ -984,7 +983,7 @@ CREATE TABLE `filtered_product` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `marker`
+-- Table structure for table `marker`
 --
 
 DROP TABLE IF EXISTS `marker`;
@@ -995,7 +994,7 @@ CREATE TABLE `marker` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `marker`
+-- Dumping data for table `marker`
 --
 
 INSERT INTO `marker` (`id`, `product_id`, `marker_index`) VALUES
@@ -1005,7 +1004,7 @@ INSERT INTO `marker` (`id`, `product_id`, `marker_index`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `param_title`
+-- Table structure for table `param_title`
 --
 
 DROP TABLE IF EXISTS `param_title`;
@@ -1021,7 +1020,7 @@ CREATE TABLE `param_title` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `param_value`
+-- Table structure for table `param_value`
 --
 
 DROP TABLE IF EXISTS `param_value`;
@@ -1036,7 +1035,7 @@ CREATE TABLE `param_value` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `post`
+-- Table structure for table `post`
 --
 
 DROP TABLE IF EXISTS `post`;
@@ -1047,7 +1046,7 @@ CREATE TABLE `post` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `post`
+-- Dumping data for table `post`
 --
 
 INSERT INTO `post` (`id`, `email`, `blog`) VALUES
@@ -1058,7 +1057,7 @@ INSERT INTO `post` (`id`, `email`, `blog`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `price`
+-- Table structure for table `price`
 --
 
 DROP TABLE IF EXISTS `price`;
@@ -1073,7 +1072,7 @@ CREATE TABLE `price` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `price`
+-- Dumping data for table `price`
 --
 
 INSERT INTO `price` (`product_id`, `reserve`, `store_id`, `unit`, `price`, `old_price`, `provider_id`) VALUES
@@ -1113,7 +1112,7 @@ INSERT INTO `price` (`product_id`, `reserve`, `store_id`, `unit`, `price`, `old_
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `product`
+-- Table structure for table `product`
 --
 
 DROP TABLE IF EXISTS `product`;
@@ -1132,7 +1131,7 @@ CREATE TABLE `product` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `product`
+-- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `color`, `size`) VALUES
@@ -1175,7 +1174,7 @@ INSERT INTO `product` (`id`, `provider_id`, `category_id`, `title`, `description
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `product_characteristic`
+-- Table structure for table `product_characteristic`
 --
 
 DROP TABLE IF EXISTS `product_characteristic`;
@@ -1188,7 +1187,7 @@ CREATE TABLE `product_characteristic` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `product_characteristic`
+-- Dumping data for table `product_characteristic`
 --
 
 INSERT INTO `product_characteristic` (`product_id`, `characteristic_id`, `type`, `sort_order`, `value`) VALUES
@@ -1739,7 +1738,7 @@ INSERT INTO `product_characteristic` (`product_id`, `characteristic_id`, `type`,
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `product_image`
+-- Table structure for table `product_image`
 --
 
 DROP TABLE IF EXISTS `product_image`;
@@ -1751,7 +1750,7 @@ CREATE TABLE `product_image` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `product_image`
+-- Dumping data for table `product_image`
 --
 
 INSERT INTO `product_image` (`product_id`, `ftp_url`, `http_url`, `sort_order`) VALUES
@@ -1799,7 +1798,7 @@ INSERT INTO `product_image` (`product_id`, `ftp_url`, `http_url`, `sort_order`) 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `provider`
+-- Table structure for table `provider`
 --
 
 DROP TABLE IF EXISTS `provider`;
@@ -1811,7 +1810,7 @@ CREATE TABLE `provider` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `provider`
+-- Dumping data for table `provider`
 --
 
 INSERT INTO `provider` (`id`, `title`, `description`, `image`) VALUES
@@ -1824,7 +1823,7 @@ INSERT INTO `provider` (`id`, `title`, `description`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `setting`
+-- Table structure for table `setting`
 --
 
 DROP TABLE IF EXISTS `setting`;
@@ -1834,7 +1833,7 @@ CREATE TABLE `setting` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `setting`
+-- Dumping data for table `setting`
 --
 
 INSERT INTO `setting` (`id`, `value`) VALUES
@@ -1843,7 +1842,7 @@ INSERT INTO `setting` (`id`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `size`
+-- Table structure for table `size`
 --
 
 DROP TABLE IF EXISTS `size`;
@@ -1853,7 +1852,7 @@ CREATE TABLE `size` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `size`
+-- Dumping data for table `size`
 --
 
 INSERT INTO `size` (`id`, `title`) VALUES
@@ -1863,7 +1862,7 @@ INSERT INTO `size` (`id`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `stock_balance`
+-- Table structure for table `stock_balance`
 --
 
 DROP TABLE IF EXISTS `stock_balance`;
@@ -1875,7 +1874,7 @@ CREATE TABLE `stock_balance` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
--- Дамп данных таблицы `stock_balance`
+-- Dumping data for table `stock_balance`
 --
 
 INSERT INTO `stock_balance` (`product_id`, `rest`, `size`, `store_id`) VALUES
@@ -1929,7 +1928,7 @@ INSERT INTO `stock_balance` (`product_id`, `rest`, `size`, `store_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `store`
+-- Table structure for table `store`
 --
 
 DROP TABLE IF EXISTS `store`;
@@ -1945,7 +1944,7 @@ CREATE TABLE `store` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `store`
+-- Dumping data for table `store`
 --
 
 INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`) VALUES
@@ -1959,7 +1958,7 @@ INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `ge
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `user`
+-- Table structure for table `user`
 --
 
 DROP TABLE IF EXISTS `user`;
@@ -1973,7 +1972,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 --
--- Дамп данных таблицы `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
@@ -2138,29 +2137,12 @@ INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
 (159, '', NULL, NULL, 0),
 (160, '', NULL, NULL, 0),
 (161, '', NULL, NULL, 0),
-(162, '', NULL, NULL, 0),
-(163, '', NULL, NULL, 0),
-(164, '', NULL, NULL, 0),
-(165, '', NULL, NULL, 0),
-(166, '', NULL, NULL, 0),
-(167, '', NULL, NULL, 0),
-(168, '', NULL, NULL, 0),
-(169, '', NULL, NULL, 0),
-(170, '', NULL, NULL, 0),
-(171, '', NULL, NULL, 0),
-(172, '', NULL, NULL, 0),
-(173, '', NULL, NULL, 0),
-(174, '', NULL, NULL, 0),
-(175, '', NULL, NULL, 0),
-(176, '', NULL, NULL, 0),
-(177, '', NULL, NULL, 0),
-(178, '', NULL, NULL, 0),
-(179, '', NULL, NULL, 0);
+(162, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `user_data`
+-- Table structure for table `user_data`
 --
 
 DROP TABLE IF EXISTS `user_data`;
@@ -2176,7 +2158,7 @@ CREATE TABLE `user_data` (
 -- --------------------------------------------------------
 
 --
--- Структура для представления `filtered_product`
+-- Structure for view `filtered_product`
 --
 DROP TABLE IF EXISTS `filtered_product`;
 
@@ -2184,126 +2166,126 @@ DROP VIEW IF EXISTS `filtered_product`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER VIEW `filtered_product`  AS  select distinct `s`.`id` AS `id`,`s`.`provider_id` AS `provider_id`,`s`.`title` AS `title`,`pr`.`id` AS `product_id`,`pr`.`title` AS `product_title`,`sb`.`rest` AS `rest`,`pri`.`price` AS `price`,`pr`.`param_value_list` AS `param_value_list`,`pr`.`param_variable_list` AS `param_variable_list` from ((((`store` `s` join `provider` `p` on((`p`.`id` = `s`.`provider_id`))) join `product` `pr` on((`pr`.`provider_id` = `s`.`provider_id`))) left join `stock_balance` `sb` on(((`sb`.`product_id` = `pr`.`id`) and (`sb`.`store_id` = `s`.`id`)))) left join `price` `pri` on(((`pri`.`product_id` = `pr`.`id`) and (`pri`.`provider_id` = `p`.`id`)))) ;
 
 --
--- Индексы сохранённых таблиц
+-- Indexes for dumped tables
 --
 
 --
--- Индексы таблицы `basket`
+-- Indexes for table `basket`
 --
 ALTER TABLE `basket`
   ADD PRIMARY KEY (`user_id`,`product_id`);
 
 --
--- Индексы таблицы `brand`
+-- Indexes for table `brand`
 --
 ALTER TABLE `brand`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `category`
+-- Indexes for table `category`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `characteristic`
+-- Indexes for table `characteristic`
 --
 ALTER TABLE `characteristic`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `characteristic_value`
+-- Indexes for table `characteristic_value`
 --
 ALTER TABLE `characteristic_value`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `country`
+-- Indexes for table `country`
 --
 ALTER TABLE `country`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `customer`
+-- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `marker`
+-- Indexes for table `marker`
 --
 ALTER TABLE `marker`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `price`
+-- Indexes for table `price`
 --
 ALTER TABLE `price`
   ADD PRIMARY KEY (`product_id`,`provider_id`);
 
 --
--- Индексы таблицы `product`
+-- Indexes for table `product`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `product_characteristic`
+-- Indexes for table `product_characteristic`
 --
 ALTER TABLE `product_characteristic`
   ADD UNIQUE KEY `product_id` (`product_id`,`characteristic_id`,`value`);
 
 --
--- Индексы таблицы `product_image`
+-- Indexes for table `product_image`
 --
 ALTER TABLE `product_image`
   ADD PRIMARY KEY (`product_id`,`ftp_url`);
 
 --
--- Индексы таблицы `provider`
+-- Indexes for table `provider`
 --
 ALTER TABLE `provider`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `size`
+-- Indexes for table `size`
 --
 ALTER TABLE `size`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `stock_balance`
+-- Indexes for table `stock_balance`
 --
 ALTER TABLE `stock_balance`
   ADD PRIMARY KEY (`product_id`,`size`,`store_id`);
 
 --
--- Индексы таблицы `store`
+-- Indexes for table `store`
 --
 ALTER TABLE `store`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT для сохранённых таблиц
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT для таблицы `customer`
+-- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT для таблицы `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=180;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

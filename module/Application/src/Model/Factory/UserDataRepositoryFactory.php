@@ -25,7 +25,8 @@ class UserDataRepositoryFactory implements FactoryInterface
 //        $hydrator = new \Laminas\Hydrator\Aggregate\AggregateHydrator();
 //        $hydrator->add(new \Laminas\Hydrator\ClassMethodsHydrator);
 //        $hydrator->add(new \Laminas\Hydrator\ReflectionHydrator);
-        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+//        $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+        $hydrator = new \Laminas\Hydrator\ReflectionHydrator;
 //        $hydrator->addStrategy(
 //            'timestamp',
 //            new DateTimeFormatterStrategy(
@@ -36,18 +37,18 @@ class UserDataRepositoryFactory implements FactoryInterface
         //$userDataRepository = $container->get(UserDataRepository::class);
         
         $prototype = new UserData;
-//        $prototype::$userDataRepository = new UserDataRepository(
-//                $adapter,
-//                $hydrator,
-//                $prototype
-//        );
-
-        //return $prototype::$userDataRepository;
-        return new UserDataRepository(
+        $prototype::$userDataRepository = new UserDataRepository(
                 $adapter,
                 $hydrator,
                 $prototype
         );
+
+        return $prototype::$userDataRepository;
+//        return new UserDataRepository(
+//                $adapter,
+//                $hydrator,
+//                $prototype
+//        );
     }
 
 }

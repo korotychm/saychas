@@ -5,6 +5,7 @@
 namespace Application\Model\Entity;
 
 use Application\Model\Repository\UserDataRepository;
+use Application\Model\Traits\Searchable;
 use Laminas\Json\Json;
 
 /**
@@ -14,8 +15,16 @@ use Laminas\Json\Json;
  */
 class UserData extends Entity
 {
-    
-//    public static UserDataRepository $userDataRepository;
+
+    /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var UserDataRepository
+     */
+    public static UserDataRepository $userDataRepository;
 
     /**
      * @var int
@@ -41,23 +50,23 @@ class UserData extends Entity
      * @var timestamp
      */
     protected $timestamp;
-    
+
     /**
      * Length 36
      * @var UUID
      */
     protected $fias_id;
-    
+
     /**
      * @var int
      */
     protected $fias_level;
-    
+
     private function parseJson($json)
     {
         try {
             return Json::decode($json, Json::TYPE_ARRAY);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
@@ -159,7 +168,12 @@ class UserData extends Entity
      *
      * @return string
      */
-    public function getTimestamp()
+//    public function getTimestamp()
+//    {
+//        return $this->timestamp;
+//    }
+
+    public function receiveTimestamp()
     {
         return $this->timestamp;
     }
@@ -169,15 +183,15 @@ class UserData extends Entity
      *
      * @return $this
      */
-    public function setTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;
-        return $this;
-    }
-    
+//    public function setTimestamp($timestamp)
+//    {
+//        $this->timestamp = $timestamp;
+//        return $this;
+//    }
+
     /**
      * Set fias_id
-     * 
+     *
      * @param string $fiasId
      * @return $this
      */
@@ -186,20 +200,20 @@ class UserData extends Entity
         $this->fias_id = $fiasId;
         return $this;
     }
-    
+
     /**
      * Get fias_id
-     * 
+     *
      * @return string
      */
     public function getFiasId()
     {
         return $this->fias_id;
     }
-    
+
     /**
      * Set fias_level
-     * 
+     *
      * @param int $fiasLevel
      * @return $this
      */
@@ -208,10 +222,10 @@ class UserData extends Entity
         $this->fias_level = $fiasLevel;
         return $this;
     }
-    
+
     /**
      * Get fias_level
-     * 
+     *
      * @return int
      */
     public function getFiasLevel()
