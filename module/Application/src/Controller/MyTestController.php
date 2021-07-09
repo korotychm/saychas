@@ -51,6 +51,9 @@ use Laminas\Http\Header;
 use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
 
+use Application\Model\Entity\ProductFavorites;
+use Application\Model\Entity\ProductHistory;
+
 
 
 class MyTestController extends AbstractActionController
@@ -80,6 +83,8 @@ class MyTestController extends AbstractActionController
     private $db;
     private $userAdapter;
     private $mclient;
+    private $productFavorites;
+    private $productHistory;
     
     private $logger;
 
@@ -90,7 +95,9 @@ class MyTestController extends AbstractActionController
                 CharacteristicRepositoryInterface $characteristicRepository, CharacteristicValueRepositoryInterface $characteristicValueRepository,
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct, UserRepository $userRepository,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter, $mclient)
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, $authService, $db, $userAdapter, $mclient
+            /**,
+            $productFavorites, $productHistory*/)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -114,6 +121,8 @@ class MyTestController extends AbstractActionController
         $this->db = $db;
         $this->userAdapter = $userAdapter;
         $this->mclient = $mclient;
+//        $this->productFavorites = $productFavorites;
+//        $this->productHistory = $productHistory;
         
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
@@ -236,6 +245,24 @@ class MyTestController extends AbstractActionController
     
     public function helloWorldAction()
     {
+        $productFavorites = ProductFavorites::findFirstOrDefault(['user_id' => 44, 'product_id' => '000000000001']);
+        $productFavorites->setUserId(44);
+        $productFavorites->setProductId('000000000001');
+        $productFavorites->persist(['user_id' => $productFavorites->getUserId(), 'product_id' => $productFavorites->getProductId()]);
+        $ts = $productFavorites->getTs();
+        $userId = $productFavorites->getUserId();
+        $productId = $productFavorites->getProductId();
+        
+        echo "$userId : $productId : $ts<br/>";
+
+        $productHistory = ProductHistory::findFirstOrDefault([]);
+        $productHistory->setUserId(44);
+        $productHistory->setProductId('000000000001');
+        $productHistory->persist(['user_id' => $productHistory->getUserId(), 'product_id' => $productHistory->getProductId()]);
+        $ts = $productHistory->getTs();
+        $userId = $productHistory->getUserId();
+        $productId = $productHistory->getProductId();
+        echo "$userId : $productId : $ts<br/>";
         echo 'adsf';
         exit;
 //        $im = \Application\Helper\FtpHelper::fetchOne($this->config, 'product', '1350x.jpg');
