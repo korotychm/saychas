@@ -412,7 +412,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = Json::decode($content, Json::TYPE_ARRAY);
+            $result = Json::decode($content, Json::TYPE_OBJECT);
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
@@ -428,8 +428,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $this->db->query("truncate table product")->execute();
         }
 
-        //$products = $this->extractNonEmptyImages($result->data);
-        $products = $this->extractNonEmptyImages($result['data']);
+        $products = $this->extractNonEmptyImages($result->data);
+        //$products = $this->extractNonEmptyImages($result['data']);
 
         $this->productImages->replace($products); // $products - products that have non empty array of images
 

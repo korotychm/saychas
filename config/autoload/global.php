@@ -63,6 +63,16 @@ return [
             ],
         ],
     ],
+    'session_containers' => [
+        Laminas\Session\Container::class,
+    ],
+    'session_storage' => [
+        'type' => Laminas\Session\Storage\SessionArrayStorage::class,
+    ],
+    'session_config'  => [
+        'gc_maxlifetime' => 7200,
+        // …
+    ],
 //    'laminas-cli' => [
 //        'commands' => [
 //            'package:fetch-images' => \Application\Command\FetchImagesCommand::class,

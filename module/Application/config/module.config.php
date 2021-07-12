@@ -982,20 +982,27 @@ return [
             ]
         ]
     ],
-    'session_manager' => [
-        'config' => [
-            'class' => \Session\Config\SessionConfig::class,
-            'options' => [
-                'name' => 'saychasapp',
-            ],
-        ],
-        'storage' => \Session\Storage\SessionArrayStorage::class,
-        'validators' => [
-            \Session\Validator\RemoteAddr::class,
-            \Session\Validator\HttpUserAgent::class,
-        ],
-    ],    
+//    'session_manager' => [
+//        'config' => [
+//            'class' => \Session\Config\SessionConfig::class,
+//            'options' => [
+//                'name' => 'saychasapp',
+//            ],
+//        ],
+//        'storage' => \Session\Storage\SessionArrayStorage::class,
+//        'validators' => [
+//            \Session\Validator\RemoteAddr::class,
+//            \Session\Validator\HttpUserAgent::class,
+//        ],
+//    ],    
 //    'session_containers' => [
 //        StringResource::SESSION_NAMESPACE,
+//    ],
+//    'session_storage' => [
+//        'type' => Laminas\Session\Storage\SessionArrayStorage::class,
+//    ],
+//    'session_config'  => [
+//        'gc_maxlifetime' => 7200,
+//        // …
 //    ],
 ];
