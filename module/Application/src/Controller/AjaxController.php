@@ -20,6 +20,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
+use Application\Model\Entity\Basket;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -108,7 +109,8 @@ class AjaxController extends AbstractActionController
             $return['error'] = false;
             if ($productId) {
 
-                $basketItem = $this->basketRepository->findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                // $basketItem = $this->basketRepository->findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
                 $basketItemTotal = (int) $basketItem->getTotal();
                 
                 $basketItem->setUserId($userId);
@@ -118,7 +120,8 @@ class AjaxController extends AbstractActionController
                 $basketItem->setPrice($productaddPrice);
                 //$basketItemTotal = 0;
                 $basketItem->setTotal($basketItemTotal+1);
-                $this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
+                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);
+                //$this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
             }
 
             $where = new Where();
@@ -126,7 +129,8 @@ class AjaxController extends AbstractActionController
             $where->equalTo('order_id', 0);
             /** more conditions come here */
             $columns = ['product_id', 'order_id', 'total'];
-            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+//            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+            $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
             foreach ($basket as $b) {
                 if ($pId = $b->productId) {
                     $product = $this->productRepository->find(['id' => $pId]);

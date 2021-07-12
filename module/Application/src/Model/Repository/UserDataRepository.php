@@ -39,6 +39,6 @@ class UserDataRepository extends Repository implements RepositoryInterface
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
-    }
+    }    
 
 }
