@@ -749,30 +749,42 @@ class HtmlProviderService
 
     public function basketPayInfoData($post)
     {
-        $return["post"]="<pre>".print_r($post,true)."</pre>";
+        $return["post"] = "<pre>" . print_r($post, true) . "</pre>";
         $products = $post->products;
-        $j=0;
-        if(!empty($products))
-            while (list($p, $c)=each($products)){
-                
-                $product = $this->productRepository->find(['id' => $p]);
-                if(null== $product) continue;
-                if(!$price = (int) $product->receivePriceObject()->getPrice())continue;
-                $total += ($price * $c);
-                $j+=$c;
-                
+        if ($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery)) {
+            foreach ($selfdelevery as $providerinfo) {
+                //$provider = $this->storeReposi
             }
-          $return["basketpricetotalall"]=
-          
-          $return["total"]  = $total;
-          
-          $return["count"]  = $j;
-          
-          return $return;
-          
+        }
+
+
+        $j = 0;
+        if (!empty($products))
+            while (list($p, $c) = each($products)) {
+
+                $product = $this->productRepository->find(['id' => $p]);
+                if (null == $product)
+                    continue;
+                if (!$price = (int) $product->receivePriceObject()->getPrice())
+                    continue;
+                $total += ($price * $c);
+                $j += $c;
+                if ($providerId = $product->getProviderId())
+                    $provider[$providerId] = 1;
+            }
+        if ($provider)
+            $countDelevery = count($provider);
+        $countDelevery = (int) $countDelevery - $countSelfdelevery;
+
+        $return["textDelevery"] = "за час";
+        $return["basketpricetotalall"] = $return["total"] = $total;
+        $return["count"] = $j;
+        $return["countSelfdelevery"] = $countSelfdelevery;
+        $return["countDelevery"] = $countDelevery;
+
+        return $return;
     }
-    
-    
+
     public function basketData($basket)
     {
         foreach ($basket as $b) {
@@ -836,18 +848,18 @@ class HtmlProviderService
             }
 
             $return[$returnprefix] = [
-                        "provider_id" => $prov,
-                        "availblechek" => $availblechek[$prov],
-                        "provider_disable" => $provider_disable,
-                        "provider_name" => $provider->getTitle(),
-                        "provider_logo" => $provider->getImage(),
-                        "provider_address" => $provider_address,
-                        "provider_addressappend" => $provider_addressappend,
-                        "provider_worktime" => $provider_worktime,
-                        "provider_timeclose" => "",
-                        "provider_store" => $provider_store,
-                        "provider_store_off" => $provider_store_off,
-                        "products" => $prod
+                "provider_id" => $prov,
+                "availblechek" => $availblechek[$prov],
+                "provider_disable" => $provider_disable,
+                "provider_name" => $provider->getTitle(),
+                "provider_logo" => $provider->getImage(),
+                "provider_address" => $provider_address,
+                "provider_addressappend" => $provider_addressappend,
+                "provider_worktime" => $provider_worktime,
+                "provider_timeclose" => "",
+                "provider_store" => $provider_store,
+                "provider_store_off" => $provider_store_off,
+                "products" => $prod
             ];
         }
         ksort($return);

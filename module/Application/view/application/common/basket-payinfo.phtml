@@ -1,8 +1,8 @@
-  <?php if($delevery):?>  <div class='contentpadding'>
+  <?php if($countDelevery and $addressDelevery):?>  <div class='contentpadding'>
             <div class='delevery-item delevery-door' > 
                 <b class='blok'>Доставка</b>
-                <div class='blok'>Информация о времени доставки</div>
-                <div class='blok'>Адрес доставки. Например: Угрешская улица, д.2 стр. 34, офис 333 </div>
+                <div class='blok'><?=$timeDelevery?></div>
+                <div class='blok'><?=$addressDelevery?></div>
             </div>
 
   <?php endif;?>
@@ -34,27 +34,29 @@
             </h2>
             <div class='char-row'>
                 <span class='char-title'>
-                    <span>Товары(<tag id="basketproductcount"><?=$count?></tag>)</span>
+                    <span>Товары(<tag id="basketproductcount"><?=$productcount?></tag>)</span>
                 </span><span class=char-value >
-                    <span><?=number_format(((int)$total/100), 0, ',', '&nbsp;')?>&#8381; 
+                    <span><?=number_format(((int)$producttotal/100), 0, ',', '&nbsp;')?>&#8381; 
     <?php if($basketoldpricetotal) {?><tag class='oldprice'><?=$basketoldpricetotal?>&#8381;</tag> <?php }?></span>
                 </span>
             </div>
+    <?php if ($countDelevery) {?>            
             <div class='char-row'>
                 <span class='char-title'>
-                    <span><strong>Доставка за час</strong></span>
+                    <span><strong>Доставка <?=$dosttypetext?>(<?=$countDelevery?>)</strong></span>
                 </span><span class=char-value >
-                    <span><strong>123&#8381;</strong></span>
+                    <span><strong><?=($priceDelevery * $countDelevery)?>&#8381;</strong></span>
                 </span>
             </div>
-            <div class='char-row'>
+    <?php }?>        
+    <?php if ($countSelfdelevery) {?>        <div class='char-row'>
                 <span class='char-title'>
-                    <span>Самовывоз</span>
+                    <span>Самовывоз(<?=$countSelfdelevery?>)</span>
                 </span><span class=char-value >
-                    <span>0&#8381;</span>
+                    <span><?=($countSelfdelevery * $priceSelfdelevery) ?>&#8381;</span>
                 </span>
             </div>
-
+   <?php }?>
             <div class='contentpadding'>
                 <div class=paybutton  >перейти к оплате</div>
             </div>
