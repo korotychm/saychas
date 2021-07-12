@@ -194,6 +194,7 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $this->htmlProvider->testHtml();
 //        $user = $this->userRepository->find(['id' => $this->identity()]);
 //        if(null != $user) {
 //            $basketData = $user->getBasketData();

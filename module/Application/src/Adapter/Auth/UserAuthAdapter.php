@@ -10,10 +10,11 @@ use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
 //use Laminas\Authentication\Result;
 use Application\Adapter\Auth\UserAuthResult;
 use Application\Resource\StringResource;
-use Application\Model\Repository\UserRepository;
+//use Application\Model\Repository\UserRepository;
 //use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
+//use Application\Model\Entity\UserData;
+//use Application\Model\Entity\Basket;
 use Laminas\Session\Container;
 
 /**
@@ -40,18 +41,32 @@ class UserAuthAdapter implements AdapterInterface
         $this->credential = $credential;
     }
 
+    /**
+     * Update user data after login
+     * 
+     * @param User $oldUser
+     * @param type $container
+     */
     private function updateUserData(User $oldUser, $container)
     {
         $userOldData = $oldUser->getUserData();//->current();
         foreach($userOldData as $ud) {
-            $userData = new UserData();
-            $userData->setAddress($ud->getAddress());
-            $userData->setFiasId($ud->getFiasId());
-            $userData->setFiasLevel($ud->getFiasLevel());
+            $userData = clone $ud;
             $userData->setUserId($container->userIdentity);
             $userData->persist(['user_id' => $container->userIdentity, 'fias_id' => $ud->getFiasId(), $ud->getFiasLevel()]);
         }
     }
+    
+    private function updateBasketData(User $oldUser, $container)
+    {
+        $userOldBasket = $oldUser->getBasketData();
+        foreach($userOldBasket as $basket) {
+            $basketData = clone $basket;
+            $basketData->setUserId($container->userIdentity);
+            $basketData->persist(['user_id'=>$container->userIdentity, 'product_id' => $basket->getProductId()]);
+        }
+    }
+    
     /**
      * Performs an authentication attempt
      *
@@ -83,6 +98,7 @@ class UserAuthAdapter implements AdapterInterface
             if($container->userIdentity != $container->userOldIdentity) {
                 $oldUser = User::find(['id' => $container->userOldIdentity]);
                 $this->updateUserData($oldUser, $container);
+                $this->updateBasketData($oldUser, $container);
             }
             
             $this->identity = $container->userIdentity;
@@ -117,3 +133,39 @@ class UserAuthAdapter implements AdapterInterface
 //                    $userData->persist(['user_id' => $container->userIdentity, 'fias_id' => $ud->getFiasId(), $ud->getFiasLevel()]);
 //                }
                 
+
+
+
+
+
+
+
+
+
+
+
+
+//            $basketData = new Basket();
+//            $basketData->setUserId($container->userIdentity);
+//            $basketData->setProductId($basket->getProductId());
+//            $basketData->setOrderId($basket->getOrderId());
+//            $basketData->setPrice($basket->getPrice());
+//            $basketData->setDiscount($basket->getDiscount());
+//            $basketData->setDiscountDescription($basket->getDiscountDescription());
+//            $basketData->setTotal($basket->getTotal());
+
+
+
+
+
+
+
+
+
+
+
+//            $userData = new UserData();
+//            $userData->setAddress($ud->getAddress());
+//            $userData->setFiasId($ud->getFiasId());
+//            $userData->setFiasLevel($ud->getFiasLevel());
+

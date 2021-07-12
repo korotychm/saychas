@@ -43,9 +43,9 @@ class HtmlProviderServiceFactory implements FactoryInterface
         $basketRepository = $container->get(BasketRepositoryInterface::class);
         $productRepository = $container->get(HandbookRelatedProductRepositoryInterface::class);
         $productImageRepository = $container->get(ProductImageRepositoryInterface::class);
-        $storeRepository = $container->get(StoreRepositoryInterface::class);
+        /** $storeRepository = */ $container->get(StoreRepositoryInterface::class);
         
         return new HtmlProviderService($stockBalanceRepository, $brandRepository, $colorRepository, $countryRepository, $providerRepository, $priceRepository,
-                $characteristicRepository, $productCharacteristicRepository, $characteristicValueRepository, $basketRepository, $productRepository, $productImageRepository, $storeRepository);
+                $characteristicRepository, $productCharacteristicRepository, $characteristicValueRepository, $basketRepository, $productRepository, $productImageRepository /**, $storeRepository*/);
     }
 }

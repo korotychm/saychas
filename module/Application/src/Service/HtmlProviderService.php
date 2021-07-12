@@ -25,6 +25,7 @@ use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Model\Entity\Store;
 
 class HtmlProviderService
 {
