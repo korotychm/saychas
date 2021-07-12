@@ -15,7 +15,7 @@ use Application\Resource\StringResource;
 use Application\Model\Entity\User;
 //use Application\Model\Entity\UserData;
 //use Application\Model\Entity\Basket;
-use Laminas\Session\Container;
+use Laminas\Session\Container as SessionContainer;
 
 /**
  * Description of AuthAdapter
@@ -27,18 +27,20 @@ class UserAuthAdapter implements AdapterInterface
 
 //    private $userRepository;
     private ?DbAdapter $adapter;
+    private $sessionContainer;
 
     /**
      * Sets username and password for authentication
      *
      * @return void
      */
-    public function __construct(/*UserRepository $userRepository,*/ ?DbAdapter $adapter = null, $identity = '', $credential = '')
+    public function __construct(/*UserRepository $userRepository,*/SessionContainer $sessionContainer, ?DbAdapter $adapter = null, $identity = '', $credential = '')
     {
 //        $this->userRepository = $userRepository;
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
+        $this->sessionContainer = $sessionContainer;
     }
 
     /**
@@ -76,7 +78,7 @@ class UserAuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
 
         $code = UserAuthResult::FAILURE;
 

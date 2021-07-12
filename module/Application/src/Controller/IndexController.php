@@ -33,7 +33,8 @@ use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
-use Laminas\Session\Container;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\Session\SessionManager;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
@@ -69,6 +70,8 @@ class IndexController extends AbstractActionController
     private $productCharacteristicRepository;
     private $colorRepository;
     private $basketRepository;
+    private $sessionContainer;
+    private $sessionManager;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -78,7 +81,7 @@ class IndexController extends AbstractActionController
                 PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
                 HandbookRelatedProductRepositoryInterface $handBookProduct,
                 $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
-                ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository)
+                ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, $sessionContainer, $sessionManager)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -101,17 +104,26 @@ class IndexController extends AbstractActionController
         $this->authService = $authService;
         $this->productCharacteristicRepository = $productCharacteristicRepository;
         $this->basketRepository = $basketRepository;
+        $this->sessionContainer = $sessionContainer;
+        $this->sessionManager = $sessionManager;
     }
 
     public function onDispatch(MvcEvent $e)
     {
-        $userAuthAdapter = new UserAuthAdapter(/*$this->userRepository*/);
+        SessionContainer::setDefaultManager($this->sessionManager);
+        $userAuthAdapter = new UserAuthAdapter(/*$this->userRepository*/$this->sessionContainer);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
         if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
             throw new \Exception('Unknown error in IndexController');
         }
-
+//        if($this->sessionManager->sessionExists()) {
+//            echo $this->sessionManager->getName();
+//            unset($this->sessionContainer->userIdentity);
+//            unset($this->sessionContainer->userOldIdentity);
+//        }else{
+//            echo 'not exists';
+//        }
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
 //        $servicemanager = $e->getApplication()->getServiceManager();
@@ -203,7 +215,7 @@ class IndexController extends AbstractActionController
 //            print_r($b);
 //        }
 //        exit;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         
 //        $userId = $this->identity();
 //        $userId = 2;
@@ -365,7 +377,7 @@ class IndexController extends AbstractActionController
         $productPage = $this->htmlProvider->productPage($products);
         $categoryId= $productPage['categoryId'];
         
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
         $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
         $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
@@ -402,7 +414,7 @@ class IndexController extends AbstractActionController
             
         }
         
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         $filtrForCategory=$container->filtrForCategory;
         if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
             $filtred=[];

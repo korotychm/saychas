@@ -13,7 +13,11 @@
  */
 
 use Laminas\Db\Adapter;
-//use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Laminas\Session\Container as SessionContainer;
+use Laminas\Session\Storage\SessionArrayStorage;
+use Laminas\Session\Config\SessionConfig;
+use Laminas\Session\Validator\RemoteAddr;
+use Laminas\Session\Validator\HttpUserAgent;//use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 //use Laminas\Session;
 //echo __DIR__ . '/../src/Entity';
 //exit;
@@ -64,15 +68,34 @@ return [
         ],
     ],
     'session_containers' => [
-        Laminas\Session\Container::class,
+        //Laminas\Session\Container::class,
+        SessionContainer::class,
     ],
     'session_storage' => [
-        'type' => Laminas\Session\Storage\SessionArrayStorage::class,
+        'type' => SessionArrayStorage::class,
     ],
     'session_config'  => [
-        'gc_maxlifetime' => 7200,
+        // Session data will be stored on server maximum for 30 days.
+        'gc_maxlifetime' => 60*60*24*30,//7200,
+        // Session cookie will expire in 1 hour.
+        'cookie_lifetime' => 60*60*1,
+        //'remember_me_seconds' => 10,
         // …
     ],
+    'session_manager' => [
+        'config' => [
+            'class' => SessionConfig::class,
+            'options' => [
+                'name' => 'myapp',
+            ],
+        ],
+        'storage' => SessionArrayStorage::class,
+        'validators' => [
+            RemoteAddr::class,
+            HttpUserAgent::class,
+        ],
+    ],
+
 //    'laminas-cli' => [
 //        'commands' => [
 //            'package:fetch-images' => \Application\Command\FetchImagesCommand::class,
@@ -87,19 +110,6 @@ return [
 //    'dependencies' => [
 //        'factories' => [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
-//        ],
-//    ],
-//    'session_manager' => [
-//        'config' => [
-//            'class' => Session\Config\SessionConfig::class,
-//            'options' => [
-//                'name' => 'myapp',
-//            ],
-//        ],
-//        'storage' => Session\Storage\SessionArrayStorage::class,
-//        'validators' => [
-//            Session\Validator\RemoteAddr::class,
-//            Session\Validator\HttpUserAgent::class,
 //        ],
 //    ],
     

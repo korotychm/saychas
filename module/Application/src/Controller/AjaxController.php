@@ -38,7 +38,7 @@ use Application\Resource\StringResource;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Http\Response;
-use Laminas\Session\Container;
+use Laminas\Session\Container as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
@@ -66,6 +66,7 @@ class AjaxController extends AbstractActionController
     private $authService;
     private $basketRepository;
     private $productImageRepository;
+    private $sessionContainer;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -73,7 +74,8 @@ class AjaxController extends AbstractActionController
             CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository)
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository,
+            SessionContainer $sessionContainer)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -94,6 +96,7 @@ class AjaxController extends AbstractActionController
         $this->authService = $authService;
         $this->basketRepository = $basketRepository;
         $this->productImageRepository = $productImageRepository;
+        $this->sessionContainer = $sessionContainer;
     }
 
     public function addToBasketAction()
@@ -103,7 +106,7 @@ class AjaxController extends AbstractActionController
         $return['productId'] = $productId = $post->product;
         $addNum = 1;
         //exit("<pre>".print_r($post, true));
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         if ($userId) {
             $return['error'] = false;
@@ -159,7 +162,7 @@ class AjaxController extends AbstractActionController
         $return['phone'] = StringHelper::phoneToNum($post->userPhone);// $this->phoneToNum($post->userPhone);
         $return['name'] = $post->userNameInput;
         $code = $post->userSmsCode;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
 
         if (!$return['phone']) {
 
@@ -353,7 +356,7 @@ class AjaxController extends AbstractActionController
         $ob = $TMP->data;
         if (!$ob->house)
             return (StringResource::USER_ADDREES_ERROR_MESSAGE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
@@ -408,7 +411,7 @@ class AjaxController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost();
         $category_id = $post->category_id;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         unset($container->filtrForCategory[$category_id]);
     }
 
