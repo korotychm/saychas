@@ -24,7 +24,7 @@ class UserData extends Entity
     /**
      * @var UserDataRepository
      */
-    public static UserDataRepository $userDataRepository;
+    public static UserDataRepository $repository;
 
     /**
      * @var int

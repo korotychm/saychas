@@ -24,6 +24,9 @@ use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\Repository\UserRepository;
 use Laminas\Authentication\AuthenticationService;
 
+use Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
+
 use Application\Service\HtmlProviderService;
 use Application\Controller\AjaxController;
 
@@ -56,6 +59,10 @@ class AjaxControllerFactory implements FactoryInterface
         $authService = $container->get(AuthenticationService::class);
         $basketRepository = $container->get(BasketRepositoryInterface::class);
         $productImageRepository = $container->get(ProductImageRepositoryInterface::class);
+        
+        $container->get(ProductFavoritesRepositoryInterface::class);
+        $container->get(ProductHistoryRepositoryInterface::class);
+        
         return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, 
                 $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $userRepository, $authService,
                 $productCharacteristicRepository, $basketRepository, $productImageRepository);

@@ -9,6 +9,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Model\Repository\UserRepository;
+use Application\Model\Repository\UserDataRepository;
 
 class UserAuthAdapterFactory implements FactoryInterface
 {
@@ -20,10 +21,11 @@ class UserAuthAdapterFactory implements FactoryInterface
         }
 
         $adapter = $container->get(AdapterInterface::class);
-        $userRepository = $container->get(UserRepository::class);
+        /** $userRepository = */ $container->get(UserRepository::class);
+        /** $userDataRepository = */ $container->get(UserDataRepository::class);
 
         return new UserAuthAdapter(
-                $userRepository,
+//                $userRepository,
                 $adapter
         );
     }

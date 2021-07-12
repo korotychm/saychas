@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 08, 2021 at 04:05 AM
+-- Generation Time: Jul 09, 2021 at 01:06 AM
 -- Server version: 8.0.25
 -- PHP Version: 7.4.16
 
@@ -81,7 +81,8 @@ INSERT INTO `basket` (`user_id`, `product_id`, `total`, `order_id`, `price`, `di
 (50, '000000000004', 1, 0, 0, 0, NULL),
 (50, '000000000005', 1, 0, 0, 0, NULL),
 (50, '000000000006', 1, 0, 0, 0, NULL),
-(172, '000000000018', 1, 0, 5399100, 0, NULL);
+(172, '000000000018', 1, 0, 5399100, 0, NULL),
+(201, '000000000018', 1, 0, 5399100, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -399,7 +400,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000002-000000020', '000000020', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000002-000000021', '000000021', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000002-000000022', '000000022', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
-('000000002-000000028', '000000028', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
+('000000006-000000028', '000000028', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
 ('000000002-000000029', '000000029', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000002-000000030', '000000030', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000002-000000031', '000000031', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
@@ -411,7 +412,6 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000002-000000204', '000000204', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000002-000000205', '000000205', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000002-000000024', '000000024', 'Поставщик', 5, 0, 0, 5, '', '', 0, 0, 0),
-('000000003-000000028', '000000028', 'Бренд', 6, 0, 0, 3, '', '', 0, 0, 0),
 ('000000003-000000022', '000000022', 'Бренд', 6, 0, 0, 3, '', '', 0, 0, 0),
 ('000000003-000000021', '000000021', 'Бренд', 6, 0, 0, 3, '', '', 0, 0, 0),
 ('000000003-000000035', '000000035', 'Бренд', 6, 0, 0, 3, '', '', 0, 0, 0),
@@ -430,7 +430,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000003-000000024', '000000024', 'Бренд', 6, 0, 0, 7, '', '', 0, 0, 0),
 ('000000017-000000006', '000000006', 'Основные характеристики', 0, 0, 0, 1, '', '', 0, 0, 0),
 ('000000004-000000024', '000000024', 'Цвет', 7, 0, 0, 2, '', '', 0, 0, 0),
-('000000004-000000028', '000000028', 'Цвет', 7, 0, 0, 4, '', '', 0, 0, 0),
+('000000005-000000028', '000000028', 'Длина', 2, 0, 0, 5, 'м.', '', 0, 0, 0),
 ('000000004-000000021', '000000021', 'Цвет', 7, 0, 0, 4, '', '', 0, 0, 0),
 ('000000004-000000022', '000000022', 'Цвет', 7, 0, 0, 4, '', '', 0, 0, 0),
 ('000000004-000000029', '000000029', 'Цвет', 7, 0, 0, 4, '', '', 0, 0, 0),
@@ -451,7 +451,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000028-000000006', '000000006', 'Дополнительные опции', 1, 1, 0, 8, '', '', 0, 0, 0),
 ('000000029-000000006', '000000006', 'Диагональ (дюйм)', 2, 1, 0, 10, '', '', 0, 0, 0),
 ('000000007-000000024', '000000024', 'Высота', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
-('000000007-000000028', '000000028', 'Высота', 2, 0, 0, 7, 'м.', '', 0, 0, 0),
+('000000004-000000028', '000000028', 'Цвет', 7, 0, 0, 4, '', '', 0, 1, 0),
 ('000000007-000000021', '000000021', 'Высота', 2, 0, 0, 7, 'м.', '', 0, 0, 0),
 ('000000007-000000022', '000000022', 'Высота', 2, 0, 0, 7, 'м.', '', 0, 0, 0),
 ('000000007-000000020', '000000020', 'Высота', 2, 0, 0, 7, 'м.', '', 0, 0, 0),
@@ -474,7 +474,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000001-000000031', '000000031', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
 ('000000001-000000032', '000000032', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
 ('000000001-000000021', '000000021', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
-('000000001-000000028', '000000028', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
+('000000003-000000028', '000000028', 'Бренд', 6, 0, 0, 3, '', '', 0, 0, 0),
 ('000000001-000000022', '000000022', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
 ('000000001-000000035', '000000035', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
 ('000000001-000000042', '000000042', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
@@ -486,7 +486,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000001-000000024', '000000024', 'Страна-производитель', 8, 0, 0, 4, '', '', 0, 0, 0),
 ('000000001-000000006', '000000006', 'Страна-производитель', 8, 1, 0, 6, '', '', 1, 0, 0),
 ('000000005-000000024', '000000024', 'Длина', 2, 0, 0, 1, 'м.', '', 0, 0, 0),
-('000000005-000000028', '000000028', 'Длина', 2, 0, 0, 5, 'м.', '', 0, 0, 0),
+('000000002-000000028', '000000028', 'Поставщик', 5, 0, 0, 2, '', '', 0, 0, 0),
 ('000000005-000000021', '000000021', 'Длина', 2, 0, 0, 5, 'м.', '', 0, 0, 0),
 ('000000005-000000022', '000000022', 'Длина', 2, 0, 0, 5, 'м.', '', 0, 0, 0),
 ('000000005-000000035', '000000035', 'Длина', 2, 0, 0, 5, 'м.', '', 0, 0, 0),
@@ -503,7 +503,6 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000005-000000205', '000000205', 'Длина', 2, 0, 0, 5, 'м.', '', 0, 0, 0),
 ('000000005-000000006', '000000006', 'Длина', 2, 0, 0, 45, 'м.', '', 0, 0, 0),
 ('000000008-000000024', '000000024', 'Вес', 2, 0, 0, 3, 'кг.', '', 0, 0, 0),
-('000000008-000000028', '000000028', 'Вес', 2, 0, 0, 8, 'кг.', '', 0, 0, 0),
 ('000000008-000000022', '000000022', 'Вес', 2, 0, 0, 8, 'кг.', '', 0, 0, 0),
 ('000000008-000000021', '000000021', 'Вес', 2, 0, 0, 8, 'кг.', '', 0, 0, 0),
 ('000000008-000000020', '000000020', 'Вес', 2, 0, 0, 8, 'кг.', '', 0, 0, 0),
@@ -528,7 +527,7 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000006-000000031', '000000031', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
 ('000000006-000000021', '000000021', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
 ('000000006-000000022', '000000022', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
-('000000006-000000028', '000000028', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
+('000000001-000000028', '000000028', 'Страна-производитель', 8, 0, 0, 1, '', '', 0, 0, 0),
 ('000000006-000000204', '000000204', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
 ('000000006-000000203', '000000203', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
 ('000000006-000000042', '000000042', 'Ширина', 2, 0, 0, 6, 'м.', '', 0, 0, 0),
@@ -570,7 +569,9 @@ INSERT INTO `characteristic` (`id`, `category_id`, `title`, `type`, `filter`, `g
 ('000000067-000000006', '000000006', 'Транспортировка', 1, 0, 0, 42, '', '', 0, 0, 0),
 ('000000068-000000006', '000000006', 'Хрупкость', 3, 0, 0, 43, '', '', 0, 0, 0),
 ('000000069-000000006', '000000006', 'Габариты, вес', 0, 0, 0, 44, '', '', 0, 0, 0),
-('000000070-000000011', '000000011', 'Заголовок', 0, 0, 0, 1, '', '', 0, 0, 0);
+('000000070-000000011', '000000011', 'Заголовок', 0, 0, 0, 1, '', '', 0, 0, 0),
+('000000007-000000028', '000000028', 'Высота', 2, 0, 0, 7, 'м.', '', 0, 0, 0),
+('000000008-000000028', '000000028', 'Вес', 2, 0, 0, 8, 'кг.', '', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1739,6 +1740,33 @@ INSERT INTO `product_characteristic` (`product_id`, `characteristic_id`, `type`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `product_favorites`
+--
+
+DROP TABLE IF EXISTS `product_favorites`;
+CREATE TABLE `product_favorites` (
+  `user_id` int NOT NULL,
+  `product_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_history`
+--
+
+DROP TABLE IF EXISTS `product_history_view`;
+DROP TABLE IF EXISTS `product_history`;
+CREATE TABLE `product_history` (
+  `user_id` int NOT NULL,
+  `product_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product_image`
 --
 
@@ -2162,7 +2190,51 @@ INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
 (183, '', NULL, NULL, 0),
 (184, '', NULL, NULL, 0),
 (185, '', NULL, NULL, 0),
-(186, '', NULL, NULL, 0);
+(186, '', NULL, NULL, 0),
+(187, '', NULL, NULL, 0),
+(188, '', NULL, NULL, 0),
+(189, '', NULL, NULL, 0),
+(190, '', NULL, NULL, 0),
+(191, '', NULL, NULL, 0),
+(192, '', NULL, NULL, 0),
+(193, '', NULL, NULL, 0),
+(194, '', NULL, NULL, 0),
+(195, '', NULL, NULL, 0),
+(196, '', NULL, NULL, 0),
+(197, '', NULL, NULL, 0),
+(198, '', NULL, NULL, 0),
+(199, '', NULL, NULL, 0),
+(200, '', NULL, NULL, 0),
+(201, '', NULL, NULL, 0),
+(202, '', NULL, NULL, 0),
+(203, '', NULL, NULL, 0),
+(204, '', NULL, NULL, 0),
+(205, '', NULL, NULL, 0),
+(206, '', NULL, NULL, 0),
+(207, '', NULL, NULL, 0),
+(208, '', NULL, NULL, 0),
+(209, '', NULL, NULL, 0),
+(210, '', NULL, NULL, 0),
+(211, '', NULL, NULL, 0),
+(212, '', NULL, NULL, 0),
+(213, '', NULL, NULL, 0),
+(214, '', NULL, NULL, 0),
+(215, '', NULL, NULL, 0),
+(216, '', NULL, NULL, 0),
+(217, '', NULL, NULL, 0),
+(218, '', NULL, NULL, 0),
+(219, '', NULL, NULL, 0),
+(220, '', NULL, NULL, 0),
+(221, '', NULL, NULL, 0),
+(222, '', NULL, NULL, 0),
+(223, '', NULL, NULL, 0),
+(224, '', NULL, NULL, 0),
+(225, '', NULL, NULL, 0),
+(226, '', NULL, NULL, 0),
+(227, '', NULL, NULL, 0),
+(228, '', NULL, NULL, 0),
+(229, '', NULL, NULL, 0),
+(230, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -2179,6 +2251,16 @@ CREATE TABLE `user_data` (
   `fias_id` varchar(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `fias_level` int DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `user_data`
+--
+
+INSERT INTO `user_data` (`user_id`, `address`, `geodata`, `fias_id`, `fias_level`) VALUES
+(186, 'г Москва, ул Шаболовка, д 37 стр 2, кв 2', '{\"value\":\"г Москва, ул Шаболовка, д 37 стр 2, кв 2\",\"unrestricted_value\":\"115162, г Москва, Донской р-н, ул Шаболовка, д 37 стр 2, кв 2\",\"data\":{\"postal_code\":\"115162\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Донской р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Донской\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"d1febe9c-11b9-46db-891e-30f3083d5611\",\"street_kladr_id\":\"77000000000313300\",\"street_with_type\":\"ул Шаболовка\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шаболовка\",\"house_fias_id\":\"f9462eb5-216a-4897-934f-bafa832d9c88\",\"house_kladr_id\":\"7700000000031330036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"37\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"2\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"2\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"f9462eb5-216a-4897-934f-bafa832d9c88\",\"fias_code\":\"77000000000000031330036\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000031330036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296561000\",\"oktmo\":\"45915000\",\"tax_office\":\"7725\",\"tax_office_legal\":\"7725\",\"timezone\":null,\"geo_lat\":\"55.7181023\",\"geo_lon\":\"37.6117459\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', 'f9462eb5-216a-4897-934f-bafa832d9c88', 8),
+(50, 'г Москва, ул Угрешская, д 2 ', '{\"value\":\"г Москва, ул Угрешская, д 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":null,\"house_kladr_id\":null,\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"fias_code\":\"77000000000000002230000\",\"fias_level\":\"7\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"77000000000022300\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7112789\",\"geo_lon\":\"37.6835843\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '966e6baf-a2da-4e70-8ac3-ba2c1a2a699a', 7),
+(50, 'г Москва, ул Угрешская, д 1Б ', '{\"value\":\"г Москва, ул Угрешская, д 1Б\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 1Б\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"b16fe441-e089-4283-9805-f45563f3179a\",\"house_kladr_id\":\"7700000000002230243\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"1Б\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"b16fe441-e089-4283-9805-f45563f3179a\",\"fias_code\":\"77000000000000002230243\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230243\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7132713\",\"geo_lon\":\"37.6860004\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', 'b16fe441-e089-4283-9805-f45563f3179a', 8),
+(207, 'г Москва, ул Угрешская, д 2 стр 2, кв 2', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 2, кв 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 2, кв 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"house_kladr_id\":\"7700000000002230009\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"2\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"2\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"fias_code\":\"77000000000000002230009\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230009\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7110452\",\"geo_lon\":\"37.6840653\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '02fd4c17-a8b7-4840-968b-9e417957f0d3', 8);
 
 -- --------------------------------------------------------
 
@@ -2326,7 +2408,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=187;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
