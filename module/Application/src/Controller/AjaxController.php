@@ -230,9 +230,14 @@ class AjaxController extends AbstractActionController
         
        /**/ 
         
-        
+        $param = [
+           "hourPrice" => 29900,  //цена доставки за час
+           "mergePrice" => 5000, //цена доставки за три часа
+           "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
+           "mergecount" => 4, //количество объеденямых магазинов
+        ];
         $post = $this->getRequest()->getPost();
-        $row= $this->htmlProvider->basketPayInfoData($post);
+        $row= $this->htmlProvider->basketPayInfoData($post, $param);
         
         
         
@@ -243,7 +248,11 @@ class AjaxController extends AbstractActionController
             //$row
             "textDelevery" =>  $row["textDelevery"],
             'priceDelevery' => 333,
+            'ordermerge' => $post->ordermerge,
+            'priceDeleveryMerge' => 50,
+            'priceDeleveryMergeFirst' => 150,
             'countDelevery' => $row["countDelevery"],
+            'priceDelevery' => $row['priceDelevery'],            
             'addressDelevery' => $basketUser['address'],
             'priceSelfdelevery' => 0,
             'basketpricetotalall' => $row['basketpricetotalall'],
@@ -251,6 +260,7 @@ class AjaxController extends AbstractActionController
             'productcount' => $row['count'],
             'producttotal' => $row['total'],
             'countSelfdelevery' => $row['countSelfdelevery'],
+            'storeAdress' => $row["storeAdress"],
             /**/
            ]);
         $view->setTemplate('application/common/basket-payinfo');

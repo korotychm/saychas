@@ -26,6 +26,8 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Entity\Store;
+use Application\Helper\ArrayHelper;
+use Application\Helper\StringHelper;
 
 class HtmlProviderService
 {
@@ -748,13 +750,28 @@ class HtmlProviderService
         ;
     }
 
-    public function basketPayInfoData($post)
+    public function basketPayInfoData($post, $param)
     {
+        /*   $param = [
+           "hourPrice"=> 333,
+           "mergePrice"=> 50,
+         
+           "mergePriceFirst"=> 150,
+        ];*/
+        
         $return["post"] = "<pre>" . print_r($post, true) . "</pre>";
         $products = $post->products;
+        $storeAdress=[];
         if ($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery)) {
             foreach ($selfdelevery as $providerinfo) {
                 //$provider = $this->storeReposi
+                $stores = Store::findAll(['where' =>['provider_id' => $providerinfo]]);
+                $store = $stores->current();
+                //$address = explode(",", $store->getAddress());/**/
+                
+                $storeAdress[] = StringHelper::cutAddress( $store->getAddress());/**/
+                //$storeAdress[]= print_r($stores, true);
+                //$storeAdress[] = $providerinfo;
             }
         }
 
@@ -776,12 +793,23 @@ class HtmlProviderService
         if ($provider)
             $countDelevery = count($provider);
         $countDelevery = (int) $countDelevery - $countSelfdelevery;
+        if (!$post->ordermerge){
+            $priceDelevery =  $countDelevery * $param['hourPrice'];                   
+        }
+        else {
+            
+            $priceDelevery = $countDelevery*$param['mergePrice'] +  ceil($countDelevery/$param['mergecount'])* $param['mergePriceFirst'];
+            $countDelevery = ceil($countDelevery/$param['mergecount']);        
+            
+        }
 
         $return["textDelevery"] = "за час";
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;
         $return["countSelfdelevery"] = $countSelfdelevery;
-        $return["countDelevery"] = $countDelevery;
+        $return["priceDelevery"] = $priceDelevery;
+        $return["countDelevery"] = $countDelevery ;
+        $return["storeAdress"] = $storeAdress ;
 
         return $return;
     }
@@ -829,16 +857,18 @@ class HtmlProviderService
                 $provider_disable = false;
                 $returnprefix = $j * -1;
                 $provider_address = $store->getAddress();
-                $provider_address_tmp = explode(",", $provider_address);
+               /* $provider_address_tmp = explode(",", $provider_address);
                 unset($provider_address_tmp[0]);
                 unset($provider_address_tmp[1]);
-                unset($provider_address_tmp[2]);
+                unset($provider_address_tmp[2]);*/
                 //$provider_addressappend = jpin$provider_address_tmp[3];
-                if ($store->getDescription())
-                    $provider_address_tmp[] = $store->getDescription();
+                
+                $provider_address .= ($store->getDescription())?", ".$store->getDescription():"";
                 $provider_store = $store->getTitle();
-                ksort($provider_address_tmp);
-                $provider_addressappend = join(", ", $provider_address_tmp);
+                //ksort($provider_address_tmp);
+                $provider_addressappend = StringHelper::cutAddress($provider_address);
+                        
+                        //= join(", ", $provider_address_tmp);
                 // $provider_worktime = $store->getWorktime();  //text
                 // $provider_timeclose = $store->getTimeColse();
             } else {
@@ -863,7 +893,7 @@ class HtmlProviderService
                 "products" => $prod
             ];
         }
-        ksort($return);
+        if(is_array($return))     ksort($return);
         //array_push($return, $returnvar[0]);// $returvar[1]);
         //array_push($return, $returnvar[1]);
         //$return=$return[0];

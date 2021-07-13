@@ -45,6 +45,7 @@ function loadPayInfo(){
 
 $(function(){
     loadPayInfo();
+    $(".radiomergebut").live("click dblclick", function(){loadPayInfo()});
     $(".countproductminus").live("click dblclick", function(){
         if($(this).hasClass("disabled")) return false;
         

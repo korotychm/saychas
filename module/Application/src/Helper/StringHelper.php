@@ -66,5 +66,12 @@ class StringHelper
                 substr($from, 9)
             );
     }
+    public static function cutAddress ($address)
+    {
+           $address_tmp = explode(",", $address);
+           unset($address_tmp[0], $address_tmp[1], $address_tmp[2]);
+           return join("," , $address_tmp);
+                
+    }
 
 }
