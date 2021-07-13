@@ -43,6 +43,8 @@ class IndexController extends AbstractActionController
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
+//        $this->rbacAssertionManager = $this->container->get(\ControlPanel\Service\RbacAssertionManager::class);
+        $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
     }
 
     public function onDispatch(MvcEvent $e)

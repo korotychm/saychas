@@ -15,9 +15,10 @@
 use Laminas\Db\Adapter;
 use Laminas\Session\Container as SessionContainer;
 use Laminas\Session\Storage\SessionArrayStorage;
-use Laminas\Session\Config\SessionConfig;
-use Laminas\Session\Validator\RemoteAddr;
-use Laminas\Session\Validator\HttpUserAgent;//use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+//use Laminas\Session\Config\SessionConfig;
+//use Laminas\Session\Validator\RemoteAddr;
+//use Laminas\Session\Validator\HttpUserAgent;
+//use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 //use Laminas\Session;
 //echo __DIR__ . '/../src/Entity';
 //exit;
@@ -76,23 +77,45 @@ return [
     ],
     'session_config'  => [
         // Session data will be stored on server maximum for 30 days.
-        'gc_maxlifetime' => 60*60*24*30,//7200,
+        'gc_maxlifetime' => 60*60*24*30,
         // Session cookie will expire in 1 hour.
-        'cookie_lifetime' => 60*60*1,
+        'cookie_lifetime' => 60*60*24*30,// 60*60*1,
         //'remember_me_seconds' => 10,
         // …
     ],
-    'session_manager' => [
-        'config' => [
-            'class' => SessionConfig::class,
-            'options' => [
-                'name' => 'myapp',
+/** We will use the session_manager later on */
+//    'session_manager' => [
+//        'config' => [
+//            'class' => SessionConfig::class,
+//            'options' => [
+//                'name' => 'saychas',
+//            ],
+//        ],
+//        'storage' => SessionArrayStorage::class,
+//        'validators' => [
+//            RemoteAddr::class,
+//            HttpUserAgent::class,
+//        ],
+//    ],
+    // Cache configuration.
+    'caches' => [
+        'FilesystemCache' => [
+            'adapter' => [
+                'name'    => \Laminas\Cache\Storage\Adapter\Filesystem::class,
+                'options' => [
+                    // Store cached data in this directory.
+                    'cache_dir' => './data/cache',
+                    // Store cached data for 1 hour.
+                    'ttl' => 60*60*1 
+                ],
             ],
-        ],
-        'storage' => SessionArrayStorage::class,
-        'validators' => [
-            RemoteAddr::class,
-            HttpUserAgent::class,
+            'plugins' => [
+                [
+                    'name' => 'serializer',
+                    'options' => [                        
+                    ],
+                ],
+            ],
         ],
     ],
 

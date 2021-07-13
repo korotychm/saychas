@@ -94,10 +94,10 @@ class UserAuthAdapter implements AdapterInterface
         }else{
 //            $user = $this->userRepository->find(['id' => $container->userIdentity]);
             $user = User::find(['id' => $container->userIdentity]);
-            if(!$container->userOldIdentity) {
-                throw new \Exception('Unexpected error: no data found for registered user');
-            }
-            if($container->userIdentity != $container->userOldIdentity) {
+//            if(!$container->userOldIdentity) {
+//                throw new \Exception('Unexpected error: no data found for registered user');
+//            }
+            if($container->userOldIdentity && ($container->userIdentity != $container->userOldIdentity)) {
                 $oldUser = User::find(['id' => $container->userOldIdentity]);
                 $this->updateUserData($oldUser, $container);
                 $this->updateBasketData($oldUser, $container);

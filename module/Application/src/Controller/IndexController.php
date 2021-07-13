@@ -111,19 +111,14 @@ class IndexController extends AbstractActionController
     public function onDispatch(MvcEvent $e)
     {
         SessionContainer::setDefaultManager($this->sessionManager);
+        $expirationSeconds = $this->config['session_config']['cookie_lifetime'];
+        $this->sessionContainer->setExpirationSeconds($expirationSeconds/*, 'userIdentity'*/);
         $userAuthAdapter = new UserAuthAdapter(/*$this->userRepository*/$this->sessionContainer);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
         if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
             throw new \Exception('Unknown error in IndexController');
         }
-//        if($this->sessionManager->sessionExists()) {
-//            echo $this->sessionManager->getName();
-//            unset($this->sessionContainer->userIdentity);
-//            unset($this->sessionContainer->userOldIdentity);
-//        }else{
-//            echo 'not exists';
-//        }
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
 //        $servicemanager = $e->getApplication()->getServiceManager();
@@ -206,73 +201,8 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
-//        $this->htmlProvider->testHtml();
-//        $user = $this->userRepository->find(['id' => $this->identity()]);
-//        if(null != $user) {
-//            $basketData = $user->getBasketData();
-//        }
-//        foreach($basketData as $b) {
-//            print_r($b);
-//        }
-//        exit;
         $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         
-//        $userId = $this->identity();
-//        $userId = 2;
-//        $user = $this->userRepository->find(['id' => $userId]);
-//        $userData = new UserData();
-//        $userData->setAddress('address');
-//        //$userData->setAddress($container->userAddress);
-//        //$userData->setGeodata($json);
-//        $userData->setGeodata('{}');
-//        
-//        $where = new Where();
-//        $where->equalTo('id', 4);
-//        $where->equalTo('user_id', 2);
-//        
-//        $userData2 = $user->getUserData();
-//        
-//        $user->deleteUserData(['where' => $where]);
-//        foreach($userData2 as $ud) {
-//            echo $ud->getId().' '.$ud->getUserId().' '.$ud->getAddress().' '.$ud->getTimestamp(). '<br/>';
-//        }
-//        exit;
-
-//        $clause = [];
-//        foreach($params['characteristics'] as $key=>$value) {
-//            //$clause[] = sprintf("( characteristic_id = '%s' and value in(%s) )", $key, implode(',', $value));
-//            $clause[] = sprintf("( characteristic_id = '%s' and find_in_set(value, '%s') )", $key, implode(',', $value));
-//        }
-//        print_r(implode(' or ', $clause));
-//        exit;
-
-//        $where = new \Laminas\Db\Sql\Where();
-//        list($low, $high) = explode(';', $params['priceRange']);
-//        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-//        $where->in('category_id', $params['category_id']);
-//
-//        unset($params['offset']);
-//        unset($params['limit']);
-//        $params['where'] = $where;
-//        
-//        $products = $this->handBookRelatedProductRepository->findFilteredProducts($params);
-//        foreach($products as $product) {
-//            
-//            $matchResult = $this->matchProduct($product, $params['characteristics']);
-//            if($matchResult) {
-//                echo '<pre>';
-//                echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
-//                echo '</pre>';
-//            }
-//        }
-        
-//        $products = $this->getProducts($params);
-//        foreach($products as $product) {
-//            echo '<pre>';
-//            echo $product->getId().' '.$product->getTitle().' '.$product->getPrice()->getPrice(). '<br/>';
-//            echo '</pre>';
-//        }
-
         return new ViewModel([
             'fooItem' => $container->item
         ]);
