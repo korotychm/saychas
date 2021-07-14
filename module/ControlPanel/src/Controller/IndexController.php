@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace ControlPanel\Controller;
 
 use ControlPanel\Service\HtmlContentProvider;
+use ControlPanel\Service\RbacManager;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
@@ -23,6 +24,9 @@ class IndexController extends AbstractActionController
 
     /** @var HtmlContentProvider */
     protected $htmlContentProvider;
+    
+    /** @var RbacManager */
+    protected $rbacManager;
 
     /** @var array */
     protected $table = [
@@ -76,6 +80,7 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
+        $this->rbacManager->init(true);
         return new ViewModel();
     }
 
