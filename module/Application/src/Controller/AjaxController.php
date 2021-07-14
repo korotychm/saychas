@@ -320,13 +320,13 @@ class AjaxController extends AbstractActionController
         $result = file_get_contents(
                 $url,
                 false,
-                stream_context_create(array(
-            'http' => array(
-                'method' => 'POST',
-                'header' => 'Content-type: application/json',
-                'content' => $post->value
-            )
-                ))
+                stream_context_create([
+                    'http' => [
+                        'method' => 'POST',
+                        'header' => 'Content-type: application/json',
+                        'content' => $post->value
+                    ]
+                ])
         );
 
         $r = print_r(json_decode($result, true), true);
@@ -374,7 +374,8 @@ class AjaxController extends AbstractActionController
         if (!$result) exit("1c не отвечает");
         $legalStore = Json::decode($result, true);
         foreach ($legalStore as $store) {
-            $sessionLegalStore[$store['store_id']] = $store['deliverySpeedInHours'];
+            $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
+            $sessionLegalStoreArray[$store['store_id']] = $store ;
         }
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         exit("200");

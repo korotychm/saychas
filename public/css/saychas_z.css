@@ -974,8 +974,10 @@ img.zero, .zeroblok {
     border-radius:40px;
     padding-right:40px;
     background: url("/img/saychas-zero.png") right 9px  no-repeat;
-    margin-top: 16px;
+    margin-top: 16px; box-sizing:border-box;
 }
+#basketuseradress.lableinfo,
+#basketusercomment.lableinfo {padding-right:16px; background:none; display:block; position:relative; top:-16px; margin-bottom:-16px; width:100%}
 
 .hr-saychas {border:none; border-top:3px dotted var(--gray-light)}
 .goself {background:#fff url("/img/goself.png") right bottom no-repeat }

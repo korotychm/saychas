@@ -3,25 +3,39 @@
         <div class='contentpadding'><h2>Доставка</h2></div>
     </div>
     <div class='pw-contentblock cblock-4'>
-        <div class='contentpadding blokr' style='padding-top:16px;'><a href=# class="redlink">Изменить</a></div>
+        <!--div class='contentpadding blokr' style='padding-top:16px;'><a href=# class="redlink">Изменить</a></div-->
     </div>
-     
     <div class='contentpadding' id='basketuserdata'>
-        
         <div class="char-row">
             <span class="char-title"><span>Адрес доставки </span>
-            </span><span class="char-value"><span><?=$basketUser['address']?></span></span>
+            </span><span class="char-value">
+                <input type="text" id="basketuseradress"  value="<?= $basketUser['address'] ?>" class="lableinfo">
+                <span class="mini red blok" id="basketuseradresserror"></span>    
+                <span class="mini gray">При изменении адреса изменяется доступность товаров в корзине</span>
+            </span>
         </div>    
-        
+
         <div class="char-row">
             <span class="char-title"><span>Получатель </span>
-            </span><span class="char-value"><span><?=$basketUser['name'] ?> <div class='blok'><?=$basketUser['phoneformated'] ?></div></span></span>
+            </span><span class="char-value">
+                <span>
+        <div class="pw-contentblock cblock-5">
+            <?= $basketUser['name'] ?> <div class='blok'><?= $basketUser['phoneformated'] ?></div>
+            </div>
+                    <div class="pw-contentblock cblock-4 iblokr"><div class="contentpadding"><a href="/clear-user-data" class=""><img src="/img/saychas-zero.svg" class="grayscale contentpadding">Выход</a></div></div>
+                    
+                    
+                </span>
+            </span>
+            
         </div>
-        
         <div class="char-row">
             <span class="char-title"><span>Комменатрий курьеру </span>
-            </span><span class="char-value"><span>Перед подъездом открытый люк! Домофон не работает. Предварительно позвонить</span></span>
+            </span><span class="char-value">
+                <input type="text" id="basketusercomment"   class="lableinfo" placeholder="О чем должен знать курьер?">
+                <span class="mini gray"></span>
+
+            </span>
         </div>
-        
     </div>
 </div>
