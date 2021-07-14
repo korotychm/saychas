@@ -340,6 +340,7 @@ class AjaxController extends AbstractActionController
                 stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
         );
 
+        if (!$result) exit("1c не отвечает");
         $legalStore = Json::decode($result, true);
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['deliverySpeedInHours'];
