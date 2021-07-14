@@ -412,6 +412,8 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 #basketordermerge .zach, #paycardblok .zach{color:var(--black)}
 #basketordermerge .radio, #paycardblok .radio{line-height:1.3em; margin-bottom:.7rem; padding-top:5px;}
 
+
+
 .nopub22 {width:120px; padding-left:27px}
 .cheker {color:#666; padding-left:28px; }
 .zach   {background-position: 0 0; color:var(--red); }
@@ -600,7 +602,8 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
  
  
 .pw-contentblock .contentpadding {padding: 8px;}
-.paybox .contentpadding {padding:24px;}
+.paybox .contentpadding {padding:8px 24px ;}
+.paybox .contentpadding ol {padding-left:18px;;}
 .paybox .contentpadding
 .delevery-item {
     display:block;

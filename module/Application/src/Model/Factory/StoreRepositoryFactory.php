@@ -22,11 +22,21 @@ class StoreRepositoryFactory implements FactoryInterface
 
         $adapter = $container->get(AdapterInterface::class);
 
-        return new StoreRepository(
+        $prototype = new Store;
+        $hydrator = new ReflectionHydrator();
+        $prototype::$repository = new StoreRepository(
                 $adapter,
-                new ReflectionHydrator(),
-                new Store
+                $hydrator,
+                $prototype
         );
+  
+        return $prototype::$repository;
+        
+//        return new StoreRepository(
+//                $adapter,
+//                $hydrator, // new ReflectionHydrator(),
+//                new Store
+//        );
     }
 
 }

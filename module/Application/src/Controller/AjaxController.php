@@ -220,17 +220,48 @@ class AjaxController extends AbstractActionController
     public function basketPayInfoAction()
     {
         //sleep(2);
+        $userId = $this->identity();
+        $user = $this->userRepository->find(['id'=>$userId]);
+        $basketUser['phone'] = $user->getPhone();
+        /**/    //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
+            $basketUser['name'] = $user->getName();
+            $userData = $user->getUserData();
+            if ($userData->count() > 0 ) $basketUser['address'] = $userData->current()->getAddress();
+        
+       /**/ 
+        
+        $param = [
+           "hourPrice" => 29900,  //цена доставки за час
+           "mergePrice" => 5000, //цена доставки за три часа
+           "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
+           "mergecount" => 4, //количество объеденямых магазинов
+        ];
         $post = $this->getRequest()->getPost();
-        $row= $this->htmlProvider->basketPayInfoData($post);
+        $row= $this->htmlProvider->basketPayInfoData($post, $param);
+        
+        
+        
                 //basketPayInfoData($post);
         
         //exit (print_r($row));
         $view = new ViewModel([
             //$row
+            "textDelevery" =>  $row["textDelevery"],
+            'priceDelevery' => 333,
+            'ordermerge' => $post->ordermerge,
+            'priceDeleveryMerge' => 50,
+            'priceDeleveryMergeFirst' => 150,
+            'countDelevery' => $row["countDelevery"],
+            'priceDelevery' => $row['priceDelevery'],            
+            'addressDelevery' => $basketUser['address'],
+            'priceSelfdelevery' => 0,
             'basketpricetotalall' => $row['basketpricetotalall'],
             'post' => $row['post'],
-            'count' => $row['count'],
-            'total' => $row['total'],/**/
+            'productcount' => $row['count'],
+            'producttotal' => $row['total'],
+            'countSelfdelevery' => $row['countSelfdelevery'],
+            'storeAdress' => $row["storeAdress"],
+            /**/
            ]);
         $view->setTemplate('application/common/basket-payinfo');
         return $view->setTerminal(true);

@@ -40,6 +40,9 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Helper\StringHelper;
 
+use Application\Model\Entity\ProductFavorites;
+use Application\Model\Entity\ProductHistory;
+
 class IndexController extends AbstractActionController
 {
     /**
@@ -102,7 +105,7 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
+        $userAuthAdapter = new UserAuthAdapter(/*$this->userRepository*/);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
         if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
@@ -191,6 +194,7 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $this->htmlProvider->testHtml();
 //        $user = $this->userRepository->find(['id' => $this->identity()]);
 //        if(null != $user) {
 //            $basketData = $user->getBasketData();

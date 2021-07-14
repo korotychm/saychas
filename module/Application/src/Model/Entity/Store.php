@@ -4,6 +4,8 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Traits\Searchable;
+use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 
 /**
@@ -11,7 +13,14 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
  */
 class Store extends Entity
 {
+    
+    use Searchable;
 
+    /**
+     * @var StoreRepository
+     */
+    public static StoreRepositoryInterface $repository;
+    
     /**
      * @var ProviderRepository
      */

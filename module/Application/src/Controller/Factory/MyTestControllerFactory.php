@@ -19,6 +19,8 @@ use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
@@ -60,12 +62,17 @@ class MyTestControllerFactory implements FactoryInterface
         $authService = $container->get(AuthenticationService::class);
         $userAdapter = $container->get(UserAuthAdapter::class);
         
+        $container->get(ProductFavoritesRepositoryInterface::class);
+        $container->get(ProductHistoryRepositoryInterface::class);
+        
         $mclient = new \MongoDB\Client(
             'mongodb://saychas:saychas@localhost/saychas'
         );
 
         return new MyTestController($test, $category, $provider, $store, $providerRelatedStore, $product, $filteredProduct, $brand, $characteristic, $characteristicValue,
-                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService, $adapter, $userAdapter, $mclient);
+                $price, $stockBalance, $handBookProduct, $userRepository, $entityManager, $config, $htmlProvider, $htmlFormProvider, $authService, $adapter, $userAdapter, $mclient
+                /**,
+                $productFavorites, $productHistory*/);
     }
 
 }

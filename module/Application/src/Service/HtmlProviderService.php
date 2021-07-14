@@ -25,6 +25,9 @@ use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Model\Entity\Store;
+use Application\Helper\ArrayHelper;
+use Application\Helper\StringHelper;
 
 class HtmlProviderService
 {
@@ -747,32 +750,70 @@ class HtmlProviderService
         ;
     }
 
-    public function basketPayInfoData($post)
+    public function basketPayInfoData($post, $param)
     {
-        $return["post"]="<pre>".print_r($post,true)."</pre>";
+        /*   $param = [
+           "hourPrice"=> 333,
+           "mergePrice"=> 50,
+         
+           "mergePriceFirst"=> 150,
+        ];*/
+        
+        $return["post"] = "<pre>" . print_r($post, true) . "</pre>";
         $products = $post->products;
-        $j=0;
-        if(!empty($products))
-            while (list($p, $c)=each($products)){
+        $storeAdress=[];
+        if ($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery)) {
+            foreach ($selfdelevery as $providerinfo) {
+                //$provider = $this->storeReposi
+                $stores = Store::findAll(['where' =>['provider_id' => $providerinfo]]);
+                $store = $stores->current();
+                //$address = explode(",", $store->getAddress());/**/
                 
-                $product = $this->productRepository->find(['id' => $p]);
-                if(null== $product) continue;
-                if(!$price = (int) $product->receivePriceObject()->getPrice())continue;
-                $total += ($price * $c);
-                $j+=$c;
-                
+                $storeAdress[] = StringHelper::cutAddress( $store->getAddress());/**/
+                //$storeAdress[]= print_r($stores, true);
+                //$storeAdress[] = $providerinfo;
             }
-          $return["basketpricetotalall"]=
-          
-          $return["total"]  = $total;
-          
-          $return["count"]  = $j;
-          
-          return $return;
-          
+        }
+
+
+        $j = 0;
+        if (!empty($products))
+            while (list($p, $c) = each($products)) {
+
+                $product = $this->productRepository->find(['id' => $p]);
+                if (null == $product)
+                    continue;
+                if (!$price = (int) $product->receivePriceObject()->getPrice())
+                    continue;
+                $total += ($price * $c);
+                $j += $c;
+                if ($providerId = $product->getProviderId())
+                    $provider[$providerId] = 1;
+            }
+        if ($provider)
+            $countDelevery = count($provider);
+        $countDelevery = (int) $countDelevery - $countSelfdelevery;
+        if (!$post->ordermerge){
+            $priceDelevery =  $countDelevery * $param['hourPrice'];                   
+        }
+        else {
+            
+            $priceDelevery = $countDelevery*$param['mergePrice'] +  ceil($countDelevery/$param['mergecount'])* $param['mergePriceFirst'];
+            $countDelevery = ceil($countDelevery/$param['mergecount']);        
+            
+        }
+
+        $return["textDelevery"] = "за час";
+        $return["basketpricetotalall"] = $return["total"] = $total;
+        $return["count"] = $j;
+        $return["countSelfdelevery"] = $countSelfdelevery;
+        $return["priceDelevery"] = $priceDelevery;
+        $return["countDelevery"] = $countDelevery ;
+        $return["storeAdress"] = $storeAdress ;
+
+        return $return;
     }
-    
-    
+
     public function basketData($basket)
     {
         foreach ($basket as $b) {
@@ -816,16 +857,18 @@ class HtmlProviderService
                 $provider_disable = false;
                 $returnprefix = $j * -1;
                 $provider_address = $store->getAddress();
-                $provider_address_tmp = explode(",", $provider_address);
+               /* $provider_address_tmp = explode(",", $provider_address);
                 unset($provider_address_tmp[0]);
                 unset($provider_address_tmp[1]);
-                unset($provider_address_tmp[2]);
+                unset($provider_address_tmp[2]);*/
                 //$provider_addressappend = jpin$provider_address_tmp[3];
-                if ($store->getDescription())
-                    $provider_address_tmp[] = $store->getDescription();
+                
+                $provider_address .= ($store->getDescription())?", ".$store->getDescription():"";
                 $provider_store = $store->getTitle();
-                ksort($provider_address_tmp);
-                $provider_addressappend = join(", ", $provider_address_tmp);
+                //ksort($provider_address_tmp);
+                $provider_addressappend = StringHelper::cutAddress($provider_address);
+                        
+                        //= join(", ", $provider_address_tmp);
                 // $provider_worktime = $store->getWorktime();  //text
                 // $provider_timeclose = $store->getTimeColse();
             } else {
@@ -836,21 +879,21 @@ class HtmlProviderService
             }
 
             $return[$returnprefix] = [
-                        "provider_id" => $prov,
-                        "availblechek" => $availblechek[$prov],
-                        "provider_disable" => $provider_disable,
-                        "provider_name" => $provider->getTitle(),
-                        "provider_logo" => $provider->getImage(),
-                        "provider_address" => $provider_address,
-                        "provider_addressappend" => $provider_addressappend,
-                        "provider_worktime" => $provider_worktime,
-                        "provider_timeclose" => "",
-                        "provider_store" => $provider_store,
-                        "provider_store_off" => $provider_store_off,
-                        "products" => $prod
+                "provider_id" => $prov,
+                "availblechek" => $availblechek[$prov],
+                "provider_disable" => $provider_disable,
+                "provider_name" => $provider->getTitle(),
+                "provider_logo" => $provider->getImage(),
+                "provider_address" => $provider_address,
+                "provider_addressappend" => $provider_addressappend,
+                "provider_worktime" => $provider_worktime,
+                "provider_timeclose" => "",
+                "provider_store" => $provider_store,
+                "provider_store_off" => $provider_store_off,
+                "products" => $prod
             ];
         }
-        ksort($return);
+        if(is_array($return))     ksort($return);
         //array_push($return, $returnvar[0]);// $returvar[1]);
         //array_push($return, $returnvar[1]);
         //$return=$return[0];
