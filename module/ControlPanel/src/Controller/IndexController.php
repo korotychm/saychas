@@ -27,6 +27,8 @@ class IndexController extends AbstractActionController
     
     /** @var RbacManager */
     protected $rbacManager;
+    
+    protected $entityManager;
 
     /** @var array */
     protected $table = [
@@ -42,13 +44,14 @@ class IndexController extends AbstractActionController
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
-    public function __construct($container, $sessionContainer)
+    public function __construct($container, $sessionContainer, $entityManager)
     {
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
 //        $this->rbacAssertionManager = $this->container->get(\ControlPanel\Service\RbacAssertionManager::class);
         $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
+        $this->entityManager = $entityManager;
     }
 
     public function onDispatch(MvcEvent $e)
@@ -80,6 +83,7 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
+        //$roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
         $this->rbacManager->init(true);
         return new ViewModel();
     }

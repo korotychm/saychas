@@ -212,6 +212,11 @@ return [
             \ControlPanel\Service\HtmlContentProvider::class => \ControlPanel\Service\Factory\HtmlContentProviderFactory::class,
             \ControlPanel\Service\RbacAssertionManager::class => \ControlPanel\Service\Factory\RbacAssertionManagerFactory::class,
             \ControlPanel\Service\RbacManager::class => \ControlPanel\Service\Factory\RbacManagerFactory::class,
+            
+            /** Entity manager */
+            'laminas.entity.manager' => \ControlPanel\Service\Factory\EntityManagerFactory::class,            
+            /** Entities */
+            \ControlPanel\Model\Entity\Role::class => \ControlPanel\Model\Repository\Factory\RoleRepositoryFactory::class,
         ],
     ],
     'view_manager' => [
