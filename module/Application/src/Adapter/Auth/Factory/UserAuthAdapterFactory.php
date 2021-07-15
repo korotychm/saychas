@@ -10,6 +10,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\UserDataRepository;
+use Laminas\Session\Container as SessionContainer;
 
 class UserAuthAdapterFactory implements FactoryInterface
 {
@@ -23,9 +24,11 @@ class UserAuthAdapterFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
         /** $userRepository = */ $container->get(UserRepository::class);
         /** $userDataRepository = */ $container->get(UserDataRepository::class);
+        $sessionContainer = $container->get(SessionContainer::class);
 
         return new UserAuthAdapter(
 //                $userRepository,
+                $sessionContainer,
                 $adapter
         );
     }

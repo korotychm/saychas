@@ -204,9 +204,14 @@ return [
 //            ],
         ],
     ],
+    'rbac_manager' => [
+        'assertions' => [\ControlPanel\Service\RbacAssertionManager::class],
+    ],
     'service_manager' => [
         'factories' => [
             \ControlPanel\Service\HtmlContentProvider::class => \ControlPanel\Service\Factory\HtmlContentProviderFactory::class,
+            \ControlPanel\Service\RbacAssertionManager::class => \ControlPanel\Service\Factory\RbacAssertionManagerFactory::class,
+            \ControlPanel\Service\RbacManager::class => \ControlPanel\Service\Factory\RbacManagerFactory::class,
         ],
     ],
     'view_manager' => [
