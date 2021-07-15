@@ -11,6 +11,7 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+                ->prependStylesheet($this->basePath('css/custom_select.css'))        
                 ->prependStylesheet($this->basePath('css/style.css'))
                 //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
                 ->prependStylesheet($this->basePath('css/bs.css'))
@@ -29,6 +30,7 @@
         
         <?=
                     $this->inlineScript()
+                    ->prependFile($this->basePath('/js/custom_select.js'))            
                     ->prependFile($this->basePath('/js/services.js'))
                     ->prependFile($this->basePath('/js/nouislider.min.js'))
                     ->prependFile($this->basePath('/js/nivo.slider.js'))            

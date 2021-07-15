@@ -217,6 +217,34 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
     
+    public function basketOrderMergeAction() {
+        $param = [
+           "hourPrice" => 29900,  //цена доставки за час
+           "mergePrice" => 5000, //цена доставки за три часа
+           "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
+           "mergecount" => 4, //количество объеденямых магазинов
+        ];
+        $userId = $this->identity();
+        if(!$userId) {
+            header('HTTP/1.0 401 Unauthorized'); exit();
+        }
+        $post = $this->getRequest()->getPost();
+        $return = $this->htmlProvider->basketMergeData($post, $param);
+        $view = new ViewModel([
+            'ordermerge' => $post->ordermerge, 
+            'timeClose'  => $return['timeClose'], 
+            'countStors' => $return["count"], 
+            'hourPrice'  => $return["hourPrice"], 
+            'hour3Price' => $return["hour3Price"],
+            'select1hour'=> $return["select1hour"],
+            'select3hour'=> $return["select3hour"],
+            ]);        
+        $view->setTemplate('application/common/basket-order-merge');
+        return $view->setTerminal(true);
+        
+    }
+    
+    
     public function basketPayInfoAction()
     {
         //sleep(2);
@@ -247,10 +275,10 @@ class AjaxController extends AbstractActionController
         $view = new ViewModel([
             //$row
             "textDelevery" =>  $row["textDelevery"],
-            'priceDelevery' => 333,
+            'priceDelevery' => $param['hourPrice'],
             'ordermerge' => $post->ordermerge,
-            'priceDeleveryMerge' => 50,
-            'priceDeleveryMergeFirst' => 150,
+            'priceDeleveryMerge' => $param['mergePrice'],
+            'priceDeleveryMergeFirst' => $param['mergePriceFirst'],
             'countDelevery' => $row["countDelevery"],
             'priceDelevery' => $row['priceDelevery'],            
             'addressDelevery' => $basketUser['address'],
@@ -261,6 +289,8 @@ class AjaxController extends AbstractActionController
             'producttotal' => $row['total'],
             'countSelfdelevery' => $row['countSelfdelevery'],
             'storeAdress' => $row["storeAdress"],
+            "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
+            'paycard' => $post->paycard,
             /**/
            ]);
         $view->setTemplate('application/common/basket-payinfo');
@@ -375,9 +405,12 @@ class AjaxController extends AbstractActionController
         $legalStore = Json::decode($result, true);
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
+            if($store['time_until_closing']) $store['time_until_closing']+=time();
             $sessionLegalStoreArray[$store['store_id']] = $store ;
         }
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
+        $container->legalStoreArray = $sessionLegalStoreArray;
+        //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true);
         exit("200");
     }
 

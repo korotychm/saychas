@@ -25,12 +25,14 @@
             </div>
        </div> 
   <?php } ?>
-<?php if($paycardinfo):?>
+<?php if(true ):?>
     <div class='contentpadding nopad'>
             <div class='delevery-item delevery-self' > 
                 <b class='blok'>Оплата</b>
-                <div class='blok'>Информация о типе оплаты</div>
-                <div class='blok'>Пример: Онлайн, картой <span class="red">5213 2487 **** 0817&darr;</span></div>
+               
+                <div class='blok'>
+                    
+<?=($paycard and $cardinfo)?"Оплата с привязанной карты <span class='blok gray'>$cardinfo</span>":"Оплатиь банковской картой"?></div>
             </div>
     </div>
 <?php endif;?>

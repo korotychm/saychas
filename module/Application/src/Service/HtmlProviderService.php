@@ -810,10 +810,84 @@ class HtmlProviderService
         $return["priceDelevery"] = $priceDelevery;
         $return["countDelevery"] = $countDelevery ;
         $return["storeAdress"] = $storeAdress ;
+        //$return["paycardinfo"] = "4276 5555 **** <span class='red'>1234&darr;</span>";
 
         return $return;
     }
 
+    public function basketMergeData($post, $param)
+    {
+        /*$param = [
+           "hourPrice" => 29900,  //цена доставки за час
+           "mergePrice" => 5000, //цена доставки за три часа
+           "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
+           "mergecount" => 4, //количество объеденямых магазинов
+        ];*/
+        $return = [];
+        $products = $post->products;
+        //return ['count' => print_r($products , true)];  
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        if (empty($container->legalStore)) {
+            $container->legalStore = [];
+        }
+        $legalStore = array_keys($container->legalStore);
+        $legalStoresArray = (!empty($container->legalStoreArray))?$container->legalStoreArray:[]; 
+        
+        if( $products and !empty($products)){
+            $products = array_keys($products);
+            foreach($products as $pId){
+                //$return["count"] = print_r($pId, true);         break;
+                $product = $this->productRepository->find(['id' => $pId]);
+                //$return["count"] = print_r($product, true);
+                
+                $providerId = $product->getProviderId();
+                $provider = $this->providerRepository->find(['id' => $providerId]);
+                
+                $store = $provider->recieveStoresInList($legalStore);
+                $idStore = $store->getId();
+                //
+                //
+                //$return["count"] = print_r($idStore, true);         break;
+                $timeClose[$idStore] =$legalStoresArray[$idStore]['time_until_closing']; 
+                
+            }
+            $return['timeClose'] = min($timeClose);
+            
+            for ($i = 1; $i <= 12; $i++) {
+                $timeStart = time() + 3600 * $i; 
+                $timeEnd = time() + 3600 * $i + 3600; 
+                $time3End = time() + 3600 * $i + 3600 * 3; 
+                if($timeEnd > $return['timeClose']) break;
+                
+                $timeDelevery1Hour[]=[
+                    "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $timeEnd).":00",
+                    "value" => date("H", $timeStart),
+                    ];
+                
+                if($time3End < $return['timeClose']) {
+                    $timeDelevery3Hour[]=[
+                    "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $time3End).":00",
+                    "value" => date("H", $timeStart),
+                    
+                    ];
+                }
+            }
+            
+            
+            //$return["count"] = min($timeClose);
+            $return["count"] = count($timeClose);
+            $return["select1hour"] = $timeDelevery1Hour;
+            $return["select3hour"] = $timeDelevery3Hour;
+            $return["hourPrice"] = $return["count"]*$param["hourPrice"];
+            $return["hour3Price"] = $return["count"]*$param['mergePrice'] +  ceil($return["count"]/$param['mergecount'])* $param['mergePriceFirst'];
+            
+            
+            
+        }
+        return $return;
+    }
+    
+    
     public function basketData($basket)
     {
         foreach ($basket as $b) {
@@ -836,46 +910,66 @@ class HtmlProviderService
                     // 'availble' => '1',
                     'availble' => $rest,
                     'count' => $count,
+                    
                 ];
             }
         }
         if (!$item or!count($item))
-            return [];
+            return ;
 
         $container = new Container(StringResource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
         $legalStore = array_keys($container->legalStore);
-        $return = [];
+        $legalStoresArray =  $container->legalStoreArray; 
+        //$return = [];
         $g = 0;
         while (list($prov, $prod) = each($item)) {
             $j++;
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
-            if (null != $store /* $store->count() */) {
-                $provider_disable = false;
-                $returnprefix = $j * -1;
-                $provider_address = $store->getAddress();
-               /* $provider_address_tmp = explode(",", $provider_address);
-                unset($provider_address_tmp[0]);
-                unset($provider_address_tmp[1]);
-                unset($provider_address_tmp[2]);*/
-                //$provider_addressappend = jpin$provider_address_tmp[3];
+            //exit( print_r($store));
+            unset($idStore );
+            $infostore1c="";
+            if (null != $store){
+                $idStore = $store->getId();
+                //exit(print_r($legalStoresArray));
                 
-                $provider_address .= ($store->getDescription())?", ".$store->getDescription():"";
-                $provider_store = $store->getTitle();
-                //ksort($provider_address_tmp);
-                $provider_addressappend = StringHelper::cutAddress($provider_address);
+                $infostore1c .=($legalStoresArray[$idStore]['working_hours_from'])?
+                        "сегодня с ".substr($legalStoresArray[$idStore]['working_hours_from'],0,-3)." до ".substr($legalStoresArray[$idStore]['working_hours_to'],0,-3)
+                        :"";
                         
-                        //= join(", ", $provider_address_tmp);
-                // $provider_worktime = $store->getWorktime();  //text
-                // $provider_timeclose = $store->getTimeColse();
-            } else {
+                $infostore1c .=($legalStoresArray[$idStore]['time_until_closing'])
+                        ?"<span class='blok mini'>заказать возможно до  ".date("Y.m.d H:i",$legalStoresArray[$idStore]['time_until_closing'])."</span>"
+                        :"";
+            }
+            /*status] => 1
+            [working_hours_from] => 7:00:00
+            [working_hours_to] => 22:00:00
+            [time_until_closing] => 0/**/
+            if (null != $store){
+                 if($legalStoresArray[$idStore]['status'] ) {
+                    $provider_disable = false;
+                    $returnprefix = $j * -1;
+                    $provider_address = $store->getAddress().$ifostore1c;
+                    $provider_address .= ($store->getDescription())?", ".$store->getDescription():"";
+                    $provider_store = $store->getTitle();
+                    $provider_addressappend = StringHelper::cutAddress($provider_address);
+                 }
+                 else {
+                    $provider_disable = "Сейчас доставка недоступна";
+                    $returnprefix = $j;
+                    if(!$infostore1c) $infostore1c="Магазин закрыт";
+                     
+                 }
+            } 
+            else {
                 $provider_disable = "Сейчас доставка недоступна";
-                $returnprefix = $j;
+                $returnprefix = $j+100;
                 $provider_address = $provider_worktime = $provider_timeclose = "";
-                $provider_store_off = "Комментарий из 1с";
+                $infostore1c = "Эти товары сейчас нельзя доставить по вашему адресу";
+                //$provider_store_off = "Комментарий из 1с ".$ifostore1c;
             }
 
             $return[$returnprefix] = [
@@ -890,7 +984,8 @@ class HtmlProviderService
                 "provider_timeclose" => "",
                 "provider_store" => $provider_store,
                 "provider_store_off" => $provider_store_off,
-                "products" => $prod
+                "products" => $prod,
+                "infostore1c" => $infostore1c,
             ];
         }
         if(is_array($return))     ksort($return);
@@ -1001,6 +1096,7 @@ class HtmlProviderService
           ];
 
           /* */
+        
         return $return;
     }
 

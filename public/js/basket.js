@@ -22,15 +22,41 @@ function calculateBasketItem (productId)
     
 }
 
+function calculateBasketMerge (dataString)
+{
+    
+    $.ajax({
+            beforeSend : function (){ $("#basket-ordermerge-cover").stop().fadeIn(); },
+            
+            url: "/ajax-basket-order-merge",
+            type: 'POST',
+            cache: false,
+            data: dataString,
+            success: function (data) {
+                $("#basketordermerge").html(data);
+                $("#basket-ordermerge-cover").hide();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#basketordermerge").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                $("#basket-ordermerge-cover").hide();
+                return false;
+            }
+        });
+    
+}
+
 
 function loadPayInfo(){
     var dataString = $("#user-basket-form").serialize();
     $.ajax({
-            beforeSend : function (){ $("#basket-payinfo-cover").stop().fadeIn(); },
+            beforeSend : function (){ 
+                $("#basket-payinfo-cover").stop().fadeIn(); 
+                calculateBasketMerge (dataString);
+                },
             url: "/ajax-basket-pay-info",
             type: 'POST',
             cache: false,
-            data: dataString,
+            data: $("#user-basket-form").serialize(),
             success: function (data) {
                 $("#basket-payinfo").html(data);
                 $("#basket-payinfo-cover").hide();
@@ -44,8 +70,9 @@ function loadPayInfo(){
 
 
 $(function(){
+    $("#user-basket-form").serialize()
     loadPayInfo();
-    $(".radiomergebut").live("click dblclick", function(){loadPayInfo()});
+    $(".radiomergebut, .loadpayinfo").live("click dblclick", function(){loadPayInfo()});
     $(".countproductminus").live("click dblclick", function(){
         if($(this).hasClass("disabled")) return false;
         

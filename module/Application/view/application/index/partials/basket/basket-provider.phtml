@@ -1,5 +1,6 @@
 <?php
 if (count($param)){
+    
 ?>    
 <div class="nopub allall" id="checkallavailble" >Выбрать все</div>
 <?php 
@@ -21,6 +22,7 @@ foreach ($param as $provider):
             <div class='text-provider gray'  >
                 <span class='blok mini'><?=$provider['provider_worktime'].$provider["provider_timeclose"]?></span>
                 <span class='blok mini'><?=$provider['provider_address']?></span>
+                <span class='blok mini gray'><?=$provider['infostore1c']?></span>
             </div>
 <?php }else {?>
             
@@ -28,7 +30,8 @@ foreach ($param as $provider):
               <div class='providerbasketdisable'><?=$provider['provider_disable']?>
               <div class='providerbasketdisablehelp'>?
                 <div class='providerbasketdisablehelpcontent '>
-                    <span class='strelka'></span><?=$provider['provider_store_off']?>
+                    <span class='strelka'></span><span class='blok'><?=$provider['infostore1c']?></span>
+                    
                     <span class='gray blok mini'><?=$provider['provider_worktime']?></span>
                     <span class='blok gray mini'><?=$provider['provider_address']?></span>
                 </div>

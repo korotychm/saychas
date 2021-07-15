@@ -10,11 +10,15 @@
         <div id="user-basket">
             <form method='POST' id='user-basket-form'>   
                 <div class="pw-contentblock cblock-5">
+                    <?php //exit(print_r($this->content)); ?>
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
+                    
                     <?= $this->partial("/application/index/partials/basket/basket-user", ["basketUser" => $this->basketUser]) ?>                     
-                    <?= $this->partial("/application/index/partials/basket/basket-order-merge") ?>      
+                    <div class='pw-contentblock cblock-1' id='basketordermerge'></div>            
+                    <?php /* $this->partial("/application/common/basket-order-merge") */ ?>      
                     <?= $this->partial("/application/index/partials/basket/basket-self-delevery") ?>      
-                    <?= $this->partial("/application/index/partials/basket/basket-pay-card") ?>                          
+                    <?= $this->partial("/application/index/partials/basket/basket-pay-card", ['cardinfo' => $this->cardinfo]) ?>    
+                    
                 </div>
                 <div class="pw-contentblock cblock-3">
                     <div class="contentpadding">

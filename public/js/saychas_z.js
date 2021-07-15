@@ -74,7 +74,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         return false;
     });
 
-    $(".checkgroup").click(function () {
+    $(".checkgroup").live("click", function () {
 
         console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
@@ -85,7 +85,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
-    $(".fltronoff").click(function () {
+    $(".fltronoff").live("click", function () {
         var rel=$(this).attr('rel');
         //console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
@@ -101,7 +101,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
     
     
     
-    $(".radio").click(function () {
+    $(".radio").live("click", function () {
         var rel=$(this).attr('rel');
         //console.log(".fltrcheck" + $(this).attr("for"));
                 $('.radio[rel^='+rel+']').removeClass("zach");

@@ -3,14 +3,14 @@
     
         <div class='pw-contentblock cblock-2'>
             <div class='contentpadding'>
-                <div class='radio zach  black' rel='paynew' for='paynewoff'> 
+                <div class='radio zach  black loadpayinfo' rel='paynew' for='paynewoff'> 
                     <b> 
                          <span class='iblok valign-middle '>Оплата с привязанной карты </span> 
                        
 					</b>
 		</div>
              
-                <span class='lableinfo text'>4276 5555 **** <span class='red'>1122</span></span>
+                <span class='lableinfo text'><?=$cardinfo ?>1</span>
                 
                  
              </div>
@@ -19,7 +19,7 @@
         
         <div class='pw-contentblock cblock-2'>
             <div class='contentpadding'>
-                <div class='radio black' rel='paynew' for='paynewon'> 
+                <div class='radio black loadpayinfo' rel='paynew' for='paynewon'> 
                      <b>
                          <span class='iblok valign-middle '>Оплата новой картой</span> 
                      </b>
@@ -30,8 +30,8 @@
                
                 
             </div>
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewon' value='1' >
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewoff' value='0' checked  >
+            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewon' value='0' >
+            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewoff' value='1' checked  >
         </div>
     </div>
 </div>

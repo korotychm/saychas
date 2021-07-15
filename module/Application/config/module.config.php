@@ -751,6 +751,7 @@ return [
                     ],
                 ],
             ],
+            
             'user-auth' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -761,7 +762,17 @@ return [
                     ],
                 ],
             ],
-            ///ajax/add-to-basket
+            //basketOrderMergeAction
+            'ajax-basket-order-merge'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-basket-order-merge',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'basketOrderMerge',
+                    ],
+                ],
+            ],
             'add-to-basket'=> [
                 'type'    => Literal::class,
                 'options' => [

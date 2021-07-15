@@ -315,6 +315,7 @@ class IndexController extends AbstractActionController
             "content" => $content,
             "title" => "Корзина",
             "basketUser" => $basketUser, 
+            "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
             
         ]);   
     }
