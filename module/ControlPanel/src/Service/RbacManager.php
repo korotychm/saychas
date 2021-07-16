@@ -105,12 +105,21 @@ class RbacManager
     private function initRoles2()
     {
         $roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
-        $parents = $roleRepository->findAll([]);
-        foreach($parents as $parent) {
-            echo '<pre>';
-            print_r($parent);
-            echo '</pre>';
-        }
+        $roleHierarchyRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\RoleHierarchy::class);
+        
+        $roles = $roleRepository->findAll([]);
+        
+//        echo "###############<br/>";
+//        foreach($roles as $role) {
+//            echo '<pre>';
+//            $parentRoles = $role->receiveParantRoles();
+//            foreach($parentRoles as $pr){
+//                print_r($pr);
+//            }
+//            echo '</pre>';
+//        }
+//        exit;
+        //$tree = \Application\Helper\ArrayHelper::buildTree($ps);
 //        exit;
         // Create role hierarchy
         $rbac = new Rbac();

@@ -5,6 +5,7 @@
 namespace ControlPanel\Model\Entity;
 
 use Application\Model\Entity\Entity;
+use ControlPanel\Model\Repository\RoleHierarchyRepository;
 
 /**
  * Description of Role
@@ -13,6 +14,8 @@ use Application\Model\Entity\Entity;
  */
 class Role extends Entity
 {
+    
+    public static RoleHierarchyRepository $roleHierarchyRepository;
 
     /** @var int */
     protected $id;
@@ -29,6 +32,11 @@ class Role extends Entity
     /** @var string */
     protected $date_created;
 
+    public function receiveParantRoles()
+    {
+        return self::$roleHierarchyRepository->findAll(['where' => ['parent_role_id' => $this->getId()] ]);
+    }
+    
     /**
      * Set id
      * 
