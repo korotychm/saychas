@@ -8,7 +8,7 @@ use Interop\Container\ContainerInterface;
 //use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Authentication\AuthenticationService;
-use Laminas\Session\Container as SessionContainer;
+use Laminas\Session\Container;// as SessionContainer;
 use Laminas\Session\SessionManager;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
@@ -69,12 +69,12 @@ class IndexControllerFactory implements FactoryInterface
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
         
-        $sessionContainer = $container->get(SessionContainer::class);
+        //$sessionContainer = $container->get(SessionContainer::class);
         $sessionManager = $container->get(SessionManager::class);
         
         return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $colorRepository, $setting, $characteristic,
                 $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService, $productCharacteristic,
-                $basketRepository, $sessionContainer, $sessionManager);
+                $basketRepository/*, $sessionContainer*/, $sessionManager);
     }
 
 }

@@ -26,8 +26,10 @@ class RbacManagerFactory
                 $assertionManagers[$serviceName] = $container->get($serviceName);
             }
         }
+        
+        $entityManager = $container->get('laminas.entity.manager');
 
-        return new RbacManager($authService, $cache, $assertionManagers);
+        return new RbacManager($entityManager, $authService, $cache, $assertionManagers);
     }
 
 }

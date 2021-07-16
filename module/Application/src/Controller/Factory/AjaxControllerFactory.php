@@ -7,7 +7,7 @@ namespace Application\Controller\Factory;
 use Interop\Container\ContainerInterface;
 //use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\Session\Container as SessionContainer;
+//use Laminas\Session\Container as SessionContainer;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
@@ -64,11 +64,11 @@ class AjaxControllerFactory implements FactoryInterface
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
         
-        $sessionContainer = $container->get(SessionContainer::class);
+        //$sessionContainer = $container->get(SessionContainer::class);
         
         return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, 
                 $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $userRepository, $authService,
-                $productCharacteristicRepository, $basketRepository, $productImageRepository, $sessionContainer);
+                $productCharacteristicRepository, $basketRepository, $productImageRepository/*, $sessionContainer*/);
     }
 
 }

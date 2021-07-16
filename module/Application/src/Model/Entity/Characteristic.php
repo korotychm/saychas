@@ -23,7 +23,7 @@ class Characteristic extends Entity
     protected $title;
 
     /**
-     * * characteristic_type
+     * characteristic_type
      * @var int
      */
     protected $type;

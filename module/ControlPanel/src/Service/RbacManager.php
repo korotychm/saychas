@@ -72,8 +72,9 @@ class RbacManager
      * @param type $cache
      * @param array $assertionManagers
      */
-    public function __construct($authService, $cache, $assertionManagers)
+    public function __construct($entityManager, $authService, $cache, $assertionManagers)
     {
+        $this->entityManager = $entityManager;
         $this->authService = $authService;
         $this->cache = $cache;
         $this->assertionManagers = $assertionManagers;
@@ -103,6 +104,14 @@ class RbacManager
     
     private function initRoles2()
     {
+        $roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
+        $parents = $roleRepository->findAll([]);
+        foreach($parents as $parent) {
+            echo '<pre>';
+            print_r($parent);
+            echo '</pre>';
+        }
+//        exit;
         // Create role hierarchy
         $rbac = new Rbac();
         $this->rbac = $rbac;
