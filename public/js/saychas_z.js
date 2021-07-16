@@ -1,4 +1,27 @@
-
+function sendfilterform() {
+        //alert("!!!!");
+        var dataString = $("#filtrform").serialize();
+        $.ajax({
+            beforeSend : function (){ 
+                $("#overload").stop().show(); 
+                
+            },
+            url: "/ajax-fltr",
+            type: 'POST',
+            cache: false,
+            data: dataString,
+            success: function (data) {
+                
+                $("#tovar-list").html(data);
+                //window.location.href = window.location.href
+                //alert("!!!!234");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+                alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
+            }
+        });
+    }
 $(document).ready(function () {
 
     showBasket(0);
@@ -36,30 +59,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         // $(".filtritemtitle").removeClass("closefilteritem");        */
     }
 
-    function sendfilterform() {
-        //alert("!!!!");
-        var dataString = $("#filtrform").serialize();
-        $.ajax({
-            beforeSend : function (){ 
-                $("#overload").stop().show(); 
-                
-            },
-            url: "/ajax-fltr",
-            type: 'POST',
-            cache: false,
-            data: dataString,
-            success: function (data) {
-                
-                $("#tovar-list").html(data);
-                //window.location.href = window.location.href
-                //alert("!!!!234");
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-                alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
-            }
-        });
-    }
+    
 
 
 

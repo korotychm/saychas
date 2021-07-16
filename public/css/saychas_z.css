@@ -604,14 +604,17 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .pw-contentblock .contentpadding {padding: 8px;}
 .paybox .contentpadding {padding:8px 24px ;}
 .paybox .contentpadding ol {padding-left:18px;;}
-.paybox .contentpadding
+
 .delevery-item {
     display:block;
-    
-    margin-bottom:.2rem;
     padding-left:25px; 
     background:url("/img/saychas-zero.svg") 0 3px no-repeat;
 }
+.paybox .contentpadding
+.delevery-item {margin-bottom:.2rem;}
+.contentpadding.seldeleverybloklogo {padding-left:0 }
+.contentpadding.seldeleveryblokinfo2 {padding-right:0 }
+.zeroblok.selfdeleveryproductimage {width:55px; height:55px;  margin:8px; border-radius:50%; border:1px solid var(--red); overflow:hidden}
 
 .pw-contentblock.cblock-1 { width: 98%;}
 .pw-contentblock.cblock-2 { width: 48%; }
@@ -838,6 +841,8 @@ img.zero, .zeroblok {
     font-weight:600; font-size:18px;
     text-align:center
 }
+.seldeleverybloklogo .brandlogo  {width:100%; height:44px; margin-bottom:8px; position:relative; top:-12px; text-align:left}
+.brandlogo img {max-height:100%; max-width:100%}
 .brandlink {
     display:inline-block;  
     color:var(--red); 

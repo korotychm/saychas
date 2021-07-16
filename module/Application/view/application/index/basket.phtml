@@ -16,7 +16,7 @@
                     <?= $this->partial("/application/index/partials/basket/basket-user", ["basketUser" => $this->basketUser]) ?>                     
                     <div class='pw-contentblock cblock-1' id='basketordermerge'></div>            
                     <?php /* $this->partial("/application/common/basket-order-merge") */ ?>      
-                    <?= $this->partial("/application/index/partials/basket/basket-self-delevery") ?>      
+                    <?= $this->partial("/application/index/partials/basket/basket-self-delevery" , ["param" => $this->content] ) ?>      
                     <?= $this->partial("/application/index/partials/basket/basket-pay-card", ['cardinfo' => $this->cardinfo]) ?>    
                     
                 </div>

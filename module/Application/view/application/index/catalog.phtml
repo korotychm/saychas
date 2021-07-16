@@ -1,6 +1,7 @@
 <?php
 $this->headTitle('Каталог товаров', 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">

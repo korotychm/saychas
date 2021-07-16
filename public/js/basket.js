@@ -21,6 +21,16 @@ function calculateBasketItem (productId)
          })
     
 }
+function calculateSelfDelevery ()
+{
+    var store = $(".seldeleveryblokrowcountme").length;
+    var product = $(".seldeleveryblokrowcountme .selfdeleverycountme").length
+    //console.log();
+    if(store > 0) $("#selfdeleverymainblok").show(); else $("#selfdeleverymainblok").hide();
+    $("#selfdeleverycountproduct").html(product);
+    $("#selfdeleverycountstore").html(store);
+}
+
 
 function calculateBasketMerge (dataString)
 {
@@ -52,6 +62,7 @@ function loadPayInfo(){
             beforeSend : function (){ 
                 $("#basket-payinfo-cover").stop().fadeIn(); 
                 calculateBasketMerge (dataString);
+                calculateSelfDelevery();
                 },
             url: "/ajax-basket-pay-info",
             type: 'POST',
@@ -116,6 +127,8 @@ $(function(){
                 $("#selfdeleverycheckbox-" + rel).prop("checked", false);
                 $("#providerblok-" + rel).removeClass("goself");
                 $("#provider_addressappend" + rel).hide();
+                $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
+                
         } else {
                 $('.selfdeleveryonoff[rel^='+rel+']').removeClass("zach");
                 $('.relcheck[rel^='+rel+']').prop("checked", false);;    
@@ -124,6 +137,7 @@ $(function(){
                 
                 $("#providerblok-" + rel).addClass("goself");
                 $("#provider_addressappend" + rel).show();
+                $("#seldeleveryblokrow-" + rel).addClass('seldeleveryblokrowcountme').show();
         }
         loadPayInfo();
     });
@@ -132,12 +146,14 @@ $(function(){
             $(".allall").removeClass("zach");
             $("#checkallavailble").removeClass("zach");
             $(".allallcheck").prop("checked", false);
+            $(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
             
         }
         else {
             $("#checkallavailble").addClass("zach");
             $(".allall").addClass("zach");
             $(".allallcheck").prop("checked", true);
+            $(".selfdeleveryallall").addClass("selfdeleverycountme").show();
         }
         loadPayInfo();
     })
@@ -148,11 +164,13 @@ $(function(){
             $(this).removeClass("zach");
             $(".provider-"+rel).removeClass("zach");
             $(".povidercheck-" + rel ).prop("checked", false);
+             $(".selfdeleveryallprovider-" + rel ).removeClass("selfdeleverycountme").hide();
         }
         else {
             $(this).addClass("zach");
             $(".provider-"+rel).addClass("zach");
             $(".povidercheck-" + rel ).prop("checked", true);
+            $(".selfdeleveryallprovider-" + rel ).addClass("selfdeleverycountme").show();
         }
         loadPayInfo();
     })
@@ -166,10 +184,13 @@ $(function(){
         if($(this).hasClass("zach")){
             $(this).removeClass("zach");
             $(".product-" + rel ).prop("checked", false);
+            $(".selfdeleveryproduct-" + rel ).removeClass("selfdeleverycountme").hide();
+            
         }
         else {
             $(this).addClass("zach");
             $(".product-" + rel ).prop("checked", true);
+            $(".selfdeleveryproduct-" + rel ).addClass("selfdeleverycountme").show();
         }
         loadPayInfo();
     })

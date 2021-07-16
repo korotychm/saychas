@@ -1,7 +1,78 @@
-<div class='pw-contentblock cblock-1'>
-    <div class='contentpadding'>
-        <h2>Самовывоз</h2>
-        <p class="blok"><b>ХХХ товаров из ХХХ магазинов</b></p>
-        <hr class='hr-saychas' />
-    </div>
-       </div>
+<?php
+if (count($param)) {
+    ?>    
+    <div class='pw-contentblock cblock-1' id="selfdeleverymainblok">
+        <div class='contentpadding'>
+            <h2>Самовывоз</h2>
+            <p class="blok"><b><span id="selfdeleverycountproduct">#</span> товаров из <span id="selfdeleverycountstore">#</span> магазинов</b></p>
+            <?php
+            foreach ($param as $provider) {
+                ?>
+
+                <div class="none seldeleveryblokrow " id="seldeleveryblokrow-<?= $provider['provider_id'] ?>">
+                   <hr class='hr-saychas' />
+                    <div class="pw-contentblock cblock-4">
+                        <div class="contentpadding seldeleverybloklogo">
+                            <div class="blok">
+                                <div class="brandlogo">
+                                    <img src="/images/provider/<?= $provider['provider_logo'] ?>" alt="<?= $provider['provider_name'] ?>" title="<?= $provider['provider_name'] ?>"/>
+                                </div>
+                            </div>    
+                            <div class="blok">
+                                <?php foreach ($provider['products'] as $product) { ?>
+                                    <?php if ($product['availble']) { ?>  
+                                        
+
+                                        <div class='zeroblok iblok 
+                                             selfdeleveryallall
+                                             selfdeleveryallprovider-<?= $provider['provider_id'] ?>
+                                             selfdeleveryproduct-<?=$product['id']?>
+                                             selfdeleveryproductimage 
+                                             selfdeleverycountme 
+                                             '>
+                                            
+                                            <img src='/img/zero.png' 
+                                                 title="<?= $product["title"] ?>"  
+                                                 class='productimage zero ' 
+                                                 style='background-image:url("/images/product/<?= (($product["image"] ) ? $product["image"] : "nophoto_1.jpeg") ?>")'
+                                                 />
+                                        </div>
+
+
+                                        <?php }?>  
+                                    <?php } ?>                                
+                                
+                            </div>
+                            </div>
+                        </div> 
+                        <div class="pw-contentblock cblock-6 ">
+                            <div class="pw-contentblock cblock-2 redbox">
+                                <div class="contentpadding">
+                                    <div class="delevery-item">
+                                        <?= $provider['infostore1c'] ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pw-contentblock cblock-2 redbox">
+                                <div class="contentpadding seldeleveryblokinfo2">
+                                    <div class="delevery-item">
+                                        <?= $provider['provider_addressappend'] ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>    
+            <?php } //endforeach ?>
+                  
+
+                </div>
+            </div>
+            <pre>
+                <?php
+                // print_r($provider);
+                //break;
+            //endforeach
+
+    }
+    ?></pre>
