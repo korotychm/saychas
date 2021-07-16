@@ -15,7 +15,7 @@ use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Resource\StringResource;
 use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
-use Laminas\Session\Container as SessionContainer;
+use Laminas\Session\Container;// as SessionContainer;
 use Application\Service\ExternalCommunicationService;
 use Laminas\View\Model\JsonModel;
 use Laminas\Http\Response;
@@ -59,7 +59,7 @@ class UserDataController extends AbstractActionController {
      */
     private $externalCommunicationService;
     
-    private $sessionContainer;
+//    private $sessionContainer;
 
     /**
      * @var Laminas\Log\Logger
@@ -78,12 +78,12 @@ class UserDataController extends AbstractActionController {
      */
     public function __construct(
             UserRepository $userRepository,
-            /*$config,*/ $authService, /*$db,*/ /*$userAdapter,*/ $externalCommunicationService, $sessionContainer) {
+            /*$config,*/ $authService, /*$db,*/ /*$userAdapter,*/ $externalCommunicationService/*, $sessionContainer*/) {
         $this->userRepository = $userRepository;
 //        $this->config = $config;
         $this->authService = $authService;
         
-        $this->sessionContainer = $sessionContainer;
+//        $this->sessionContainer = $sessionContainer;
 //        $this->db = $db;
 //        $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
@@ -111,7 +111,8 @@ class UserDataController extends AbstractActionController {
      * @return Response
      */
     public function clearAction() {
-        $container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
+        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(StringResource::SESSION_NAMESPACE);
         unset($container->userIdentity);
         if ($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
@@ -131,7 +132,8 @@ class UserDataController extends AbstractActionController {
         /** @var $phone */
         /* $phone is meant to be a a session key */
         // Generate new code and store it in session
-        $container = $this->sessionContainer;// new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
+        //$container = $this->sessionContainer;// new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
+        $container = new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
         $code = 7777; // simulate generation
         $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code];
         return $code;
@@ -168,7 +170,8 @@ class UserDataController extends AbstractActionController {
         // Compare feedback with sent registration code
         $post = $this->getRequest()->getPost();
         $code = $post->code;
-        $container = $this->sessionContainer;// new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
+        //$container = $this->sessionContainer;// new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
+        $container = new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
         $storedCode = $container->userPhoneIdentity['code'];
         if ($storedCode == $code) {
             // Unset userPhoneIdentity
