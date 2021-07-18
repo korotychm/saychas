@@ -12,7 +12,7 @@ use ControlPanel\Model\Repository\RoleRepository;
  */
 class RoleHierarchy extends Entity
 {
-    public static RoleRepository $roleRepository;
+    public static /*RoleRepository*/ $roleRepository;
 
     protected $id;
     
@@ -22,7 +22,7 @@ class RoleHierarchy extends Entity
     
     public function receiveRole()
     {
-        return self::$roleRepository->find(['id' => $this->getParentRoleId()]);
+        return static::$roleRepository->find(['id' => $this->getParentRoleId()]);
     }
     
     public function setId($id)

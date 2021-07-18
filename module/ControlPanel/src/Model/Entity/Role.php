@@ -34,7 +34,7 @@ class Role extends Entity
 
     public function receiveParantRoles()
     {
-        return self::$roleHierarchyRepository->findAll(['where' => ['parent_role_id' => $this->getId()] ]);
+        return static::$roleHierarchyRepository->findAll(['where' => ['parent_role_id' => $this->getId()] ]);
     }
     
     /**
