@@ -386,7 +386,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .onoff, 
 .radio {
     display:inline-block; cursor:pointer; height:20px; line-height:20px;
-    background:url("/img/onoff.svg") top right no-repeat;
+    background:url("/img/onoff.png") top right no-repeat;
     vertical-align:middle;
     padding-top:0px; 
     padding-right:35px;
