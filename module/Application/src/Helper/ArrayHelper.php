@@ -69,7 +69,7 @@ class ArrayHelper
             if($node[$nodeKey] == $needle) {
                 return $node;
             } elseif ( isset($node[$childrenKey]) ) {
-                $result = treeSearch($needle, $node[$childrenKey]);
+                $result = self::searchTree($needle, $node[$childrenKey], $nodeKey, $childrenKey);
                 if ($result !== false){
                     return $result;
                 }
@@ -89,11 +89,11 @@ class ArrayHelper
      * @param string $parentKey
      * @return array
      */
-    public static function getParents($node, $hierarchy, $allParentIds=[], $nodeKey = 'id', $parentKey = 'parent_id') {
+    public static function getParents($node, $hierarchy, $allParentIds=[], $nodeKey = 'id', $parentKey = 'parent_id', $childrenKey = 'children') {
         if($node[$parentKey] != 0) {
-            $parentNode = self::searchTree($node[$parentKey], $hierarchy);
+            $parentNode = self::searchTree($node[$parentKey], $hierarchy, $nodeKey, $childrenKey);
             $allParentIds[] = $parentNode[$nodeKey];
-            $result = self::getParents($parentNode, $hierarchy, $allParentIds);
+            $result = self::getParents($parentNode, $hierarchy, $allParentIds, $nodeKey, $parentKey);
 
             if ($result !== false){
                 return $result;
@@ -104,39 +104,3 @@ class ArrayHelper
     }
 
 }
-
-
-
-
-
-
-//    public static function getParentNodes($arr, $child_node_id) {
-//
-//        $elements[] = ['id' => 1, 'parent_id' => 0];
-//        $elements[] = ['id' => 2, 'parent_id' => 1];
-//        $elements[] = ['id' => 3, 'parent_id' => 1];
-//        $elements[] = ['id' => 4, 'parent_id' => 2];
-//
-//        $result = [];
-//        $parents = [];
-//
-//        foreach($arr as $item) {
-//
-////            if($item['parent_id'] == $child_node_id) {
-////                $result[] = $item['id'];
-////            }
-//
-//            if($item['id'] == $child_node_id) {
-////                $result[] = $item['parent_id'];
-//                $item['children'] = self::getParentNodes($item['children'], $item['parent_id']);
-//            }
-//
-//            if(!empty($item['children'])) {
-//                $result[] = self::getParentNodes($item['children'], $child_node_id);
-//            }
-//
-//        }
-//
-//        return $result;
-//    }
-//    

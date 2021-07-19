@@ -128,14 +128,17 @@ class RbacManager
         foreach($roleHierarchy as $element) {
             $terminal = $element->getTerminal();
             $elements[] = ['id' => $element->getId(), 'parent_id' => 1 == $terminal ? 0 : $element->getParentRoleId()];
-        }        
+        }
+        echo '<pre>';
+        print_r($elements);
+        echo '</pre>';
 
         $tree = \Application\Helper\ArrayHelper::buildTree($elements, 0);
         echo '<pre>';
         print_r($tree);
         echo '</pre>';
         
-        $parents = \Application\Helper\ArrayHelper::getParents(['id' => 7, 'parent_id' => 3], $elements);
+        $parents = \Application\Helper\ArrayHelper::getParents(['id' => 6, 'parent_id' => 5], $elements);
         echo '<pre>';
         print_r($parents);
         echo '</pre>';
@@ -196,22 +199,34 @@ class RbacManager
 
             $rbac->setCreateMissingRoles(true);
 
-//            $this->initRoles2();
+            $this->initRoles2();
             
             // $roles = $this->roles;
             // $roles = $this->entityManager->getRepository(Role::class)->findBy([], ['id' => 'ASC']);
             $roles = $this->entityManager->getRepository(CPRole::class)->findAll([], ['id' => 'ASC']);
-//            foreach ($roles as $r => $p) {
-            foreach ($roles as $r) {
-                  $role = $r;
+            $hierarchyRepo = $this->entityManager->getRepository(RoleHierarchy::class);//->findAll([]);
+            $elements = [];
+            foreach($hierarchyRepo as $element) {
+                $terminal = $element->getTerminal();
+                $elements[] = ['id' => $element->getId(), 'parent_id' => 1 == $terminal ? 0 : $element->getParentRoleId()];
+            }
+            
+            foreach ($roles as $role) {
 //                $role = new \Laminas\Permissions\Rbac\Role($r->getName());
                 $roleName = $role->getName();
 
                 $parentRoleNames = [];
-                foreach ($role->receiveParantRoles() as $parentRole) {
-//                foreach ($role->getParents() as $parentRole) {
-                    $parentRoleNames[] = $parentRole->getName();
-                }
+                
+//                $roleId = $role->getId();
+//                $currentRole = $hierarchyRepo->find(['id' => $roleId]);
+//                $param = ['id' => $currentRole->getId(), 'parent_id' => $currentRole->getParentRoleId()];
+//                $parents = \Application\Helper\ArrayHelper::getParents($param, $elements);
+                
+//                $parentRoles = $role->receiveParentRoles();
+//              foreach ($role->getParents() as $parentRole) {
+//                foreach ($role->receiveParentRoles() as $parentRole) {
+//                    $parentRoleNames[] = $parentRole->getName();
+//                }
 //
 //                $rbac->addRole($roleName, $parentRoleNames);
 //
