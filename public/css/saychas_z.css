@@ -399,7 +399,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     box-sizing: border-box;
     }    
 .radio {
-    background:url("/img/radio.svg") 0 0 no-repeat;
+    background:url("/img/radio.png") 0 0 no-repeat;
     display:block;
     padding-left:35px;
     padding-right:0px;

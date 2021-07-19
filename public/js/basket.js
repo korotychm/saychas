@@ -193,6 +193,7 @@ $(function(){
                 if($("#providerblok-" + provider + " .basketrowproduct").length < 1){
                     $("#providerblok-" + provider).remove();
                 }
+                loadPayInfo();
                 //console.log($("#providerblok-" + provider + " .basketrowproduct").lenght);
             },
             error: function (xhr, ajaxOptions, thrownError) {
