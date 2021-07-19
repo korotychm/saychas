@@ -3,7 +3,7 @@
         $disabled = ($anable)?"":" disabled ";
 ?>
 
-<div class='blok basketrow ' id="<?=$product['id']?>">
+<div class='blok basketrow  basketrowproduct  ' id="basketrow-<?=$product['id']?>">
         <div  class='basketcol<?=$disabled?>  check'>
 <?php if($anable) {?>
             <div class='nopub checkallprovider provider-<?=$provider?>  allall zach' rel='<?=$product['id']?>' provider='<?=$provider?>' ></div>
@@ -21,8 +21,8 @@
            <?=$product['title']?>
         </div>
 <?php if(!$provider_disable) {?>
-        <div  class='basketcol<?=$disabled?>  deleteproduct'>
-            <img src="/img/saychas-zero.svg" class="deleteprop grayscale" rel='<?=$product['id']?>'  />
+        <div  class='basketcol<?=$disabled?>  deleteproduct' rel='<?=$product['id']?>' provider='<?=$provider?>' >
+            <img src="/img/saychas-zero.svg" class="grayscale"   />
         </div>
 <?php if($anable) {?>
         <div  class='basketcol  countproduct' id="countproduct-<?=$product['id']?>" >
@@ -40,7 +40,7 @@
             ?>
         </div>
 <?php } else { ?>
-        <div  class='basketcol<?=$disabled?>  priceproduct disabled' id="priceproduct-product2">
+        <div  class='basketcol<?=$disabled?>  priceproduct disabled' id="priceproduct-<?=$product['id']?>">
             Товара нет в наличии
         </div>
 <?php }

@@ -26,6 +26,11 @@ trait Searchable
     {
         return self::$repository->find($params);
     }
+    
+    public static function remove($params)
+    {
+        return self::$repository->remove($params);
+    }
 
     public function persist($params)
     {

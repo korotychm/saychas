@@ -175,6 +175,37 @@ $(function(){
         loadPayInfo();
     })
     
+    $(".basketrow .deleteproduct").click(function(){
+        var productId= $(this).attr("rel");
+        var provider = $(this).attr("provider");
+        
+        //console.log($("#providerblok-" + provider + " .basketrowproduct").length);
+       /* */$.ajax({
+            beforeSend : function (){ 
+                },
+            url: "/ajax/del-from-basket",
+            type: 'POST',
+            cache: false,
+            data: {"productId": productId},
+            success: function (data) {
+                //console.log(data);
+                $("#basketrow-" + productId).remove();
+                if($("#providerblok-" + provider + " .basketrowproduct").length < 1){
+                    $("#providerblok-" + provider).remove();
+                }
+                //console.log($("#providerblok-" + provider + " .basketrowproduct").lenght);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                $("#basket-payinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                
+                
+            }
+        });/**/
+    })
+    //timepoint-dostmergeon
+    
+    
      $(".checkallprovider").click(function(){
         
          var rel=$(this).attr('rel');

@@ -99,6 +99,17 @@ class AjaxController extends AbstractActionController
 //        $this->sessionContainer = $sessionContainer;
     }
 
+    public function delFromBasketAction()
+    {
+        $return = ["error" => true, "count" => 0];
+        $post = $this->getRequest()->getPost();
+        $return['productId'] = $productId = $post->productId;
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $return['userId'] = $userId = $container->userIdentity;
+        $basketItem = Basket::remove(['where' => ['user_id' => $userId, 'product_id' => $productId] ]);
+        return new JsonModel($return);
+     }
+    
     public function addToBasketAction()
     {
         $return = ["error" => true, "count" => 0];
@@ -234,6 +245,9 @@ class AjaxController extends AbstractActionController
             header('HTTP/1.0 401 Unauthorized'); exit();
         }
         $post = $this->getRequest()->getPost();
+        $timepoint = $post->timepoint;
+        $selectedtimepoint[0][$timepoint[0]] = " selected ";
+        $selectedtimepoint[1][$timepoint[1]] = " selected ";
         $return = $this->htmlProvider->basketMergeData($post, $param);
         $view = new ViewModel([
             'ordermerge' => $post->ordermerge, 
@@ -243,6 +257,8 @@ class AjaxController extends AbstractActionController
             'hour3Price' => $return["hour3Price"],
             'select1hour'=> $return["select1hour"],
             'select3hour'=> $return["select3hour"],
+            'selectedtimepoint' => $selectedtimepoint,
+            
             ]);        
         $view->setTemplate('application/common/basket-order-merge');
         return $view->setTerminal(true);

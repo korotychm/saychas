@@ -825,6 +825,7 @@ class HtmlProviderService
         ];*/
         $return = [];
         $products = $post->products;
+        if(!$selfdelevery = $post->selfdelevery) $countSelfdelevery = 0;  else $countSelfdelevery = count($selfdelevery);
         //return ['count' => print_r($products , true)];  
         $container = new Container(StringResource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
@@ -849,6 +850,7 @@ class HtmlProviderService
                 //
                 //$return["count"] = print_r($idStore, true);         break;
                 $timeClose[$idStore] =$legalStoresArray[$idStore]['time_until_closing']; 
+                //$legalStoresArray[$idStore]['time_until_closing'];
                 
             }
             $return['timeClose'] = min($timeClose);
@@ -875,7 +877,7 @@ class HtmlProviderService
             
             
             //$return["count"] = min($timeClose);
-            $return["count"] = count($timeClose);
+            $return["count"] = count($timeClose)-$countSelfdelevery;
             $return["select1hour"] = $timeDelevery1Hour;
             $return["select3hour"] = $timeDelevery3Hour;
             $return["hourPrice"] = $return["count"]*$param["hourPrice"];

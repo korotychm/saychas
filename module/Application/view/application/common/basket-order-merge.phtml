@@ -20,7 +20,7 @@
                 <select  class='lableinfo text timepoint' name="timepoint[0]" id="timepoint--dostmergeon" >
                        <option value="0">сейчас за час</option>
                 <?php foreach($select1hour as $option){?>
-                    <option value="<?=$option['value']?>"><?=$option['lable']?></option>
+                    <option value="<?=$option['value']?>" <?=$selectedtimepoint[0][$option['value']]?> ><?=$option['lable']?></option>
                <?php } ?>                 
         </select>
 <!--pre><?=print_r($select1hour)?></pre -->
@@ -47,13 +47,13 @@
                     <span class="mini">крайнее время заказа: <?=date("r", $timeClose - 3600*3)?></span>
                 </span>
           <?php if($select3hour and !empty($select3hour)){?>                
-                <select  class='lableinfo text timepoint' name="timepoint[0]" id="timepoint-dostmergeon" >
+                <select  class='lableinfo text timepoint' name="timepoint[1]" id="timepoint-dostmergeon" >
                        
                 <?php foreach($select3hour as $option3){?>
-                    <option value="<?=$option3['value']?>"><?=$option3['lable']?></option>
+                    <option value="<?=$option3['value']?>" <?=$selectedtimepoint[1][$option3['value']]?>><?=$option3['lable']?></option>
                <?php } ?>                 
         </select>
-                <!--pre><?=print_r($select3hour)?></pre -->
+                <!-- pre><?=print_r($selectedtimepoint)?></pre -->
 
                 
 <?php } else { echo "<h4>Нет доставки</h4>"; }?>    

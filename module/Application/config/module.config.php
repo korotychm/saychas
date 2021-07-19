@@ -783,6 +783,16 @@ return [
                     ],
                 ],
             ],
+             'del-from-basket'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/del-from-basket',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'delFromBasket',
+                    ],
+                ],
+            ],
             'calculate-basket-item'=> [
                 'type'    => Literal::class,
                 'options' => [
