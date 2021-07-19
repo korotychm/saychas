@@ -196,14 +196,11 @@ class RbacManager
 
             $rbac->setCreateMissingRoles(true);
 
-            $this->initRoles2();
+//            $this->initRoles2();
             
             // $roles = $this->roles;
             // $roles = $this->entityManager->getRepository(Role::class)->findBy([], ['id' => 'ASC']);
             $roles = $this->entityManager->getRepository(CPRole::class)->findAll([], ['id' => 'ASC']);
-//            foreach ($roles as $r1) {
-//                print_r($r1);
-//            }
 //            foreach ($roles as $r => $p) {
             foreach ($roles as $r) {
                   $role = $r;
@@ -211,7 +208,6 @@ class RbacManager
                 $roleName = $role->getName();
 
                 $parentRoleNames = [];
-                $role->getParentRoles();
                 foreach ($role->receiveParantRoles() as $parentRole) {
 //                foreach ($role->getParents() as $parentRole) {
                     $parentRoleNames[] = $parentRole->getName();
