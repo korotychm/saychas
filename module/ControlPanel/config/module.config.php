@@ -217,6 +217,7 @@ return [
             'laminas.entity.manager' => \ControlPanel\Service\Factory\EntityManagerFactory::class,            
             /** Entities */
             \ControlPanel\Model\Entity\Role::class => \ControlPanel\Model\Repository\Factory\RoleRepositoryFactory::class,
+            \ControlPanel\Model\Entity\RoleHierarchy::class => \ControlPanel\Model\Repository\Factory\RoleHierarchyRepositoryFactory::class,
         ],
     ],
     'view_manager' => [
