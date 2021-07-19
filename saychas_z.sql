@@ -38,9 +38,10 @@ INSERT INTO `role` (name, description) values ('admin', 'Administrator'), ('edit
 
 -- DROP TABLE IF EXISTS `role_hierarchy`;
 CREATE TABLE `role_hierarchy` (
-	`id`	int(11) NOT NULL auto_increment,
+	`id`	int(11) auto_increment,
 	`parent_role_id` int(11) NOT NULL,
 	`child_role_id`  int(11) NOT NULL,
+	`terminal` int(1) NOT NULL DEFAULT 0,
 	INDEX `par_ind` (`parent_role_id`),
 	INDEX `chld_ind` (`child_role_id`),
 	FOREIGN KEY `role_role_parent_role_id_fk` (`parent_role_id`) REFERENCES `role` (`id`)
@@ -53,7 +54,9 @@ CREATE TABLE `role_hierarchy` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 -- ALTER TABLE `role` DROP COLUMN `parent_role_id`;
-INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`) values(1,2),(2,3),(4,2),(1,5),(7,6),(1,7);
+-- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`) values(1,2),(2,3),(4,2),(1,5),(7,6),(1,7);
+INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,2,1),(1,3,0),(1,2,0),(2,5,0),(4,6,0),(5,7,0),(3,4,0);
+
 
 /**
 CREATE TABLE child (

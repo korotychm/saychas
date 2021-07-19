@@ -9,6 +9,8 @@ use Laminas\Permissions\Rbac\Role;
 use Laminas\Cache\Storage\StorageInterface;
 use Laminas\Authentication\AuthenticationService;
 use ControlPanel\Model\Identity;
+use ControlPanel\Model\Entity\Role as CPRole;
+use ControlPanel\Model\Entity\RoleHierarchy;
 use ControlPanel\Model\Repository\RoleRepository;
 use ControlPanel\Model\Repository\RoleHierarchyRepository;
 /**
@@ -105,59 +107,39 @@ class RbacManager
     
     private function initRoles2()
     {
-//        $roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
-//        $roleHierarchyRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\RoleHierarchy::class);
-//        
-//        $roles = $roleRepository->findAll([]);
-//        
-//        echo "###############<br/>";
-//        $ps = [];
-//        foreach($roles as $role) {
-//            echo '<pre>';
-//            $parentRoles = $role->receiveParantRoles();
-//            foreach($parentRoles as $pr){
-////                print_r($pr);
-//                $ps [] = $pr->getParentRoleId();
-//                
-//            }
-////            print_r($ps);
-//            echo '</pre>';
-//        }
-////        exit;
-//        $elements[] = ['id' => 1, 'parent_id' => 0];
-//        $elements[] = ['id' => 2, 'parent_id' => 1];
-//        $elements[] = ['id' => 3, 'parent_id' => 1];
-//        $elements[] = ['id' => 4, 'parent_id' => 2];
-//        $elements[] = ['id' => 5, 'parent_id' => 3];
-//        $elements[] = ['id' => 6, 'parent_id' => 5];
-        
-//+----+----------------+---------------+
-//|  1 |              1 |             2 |
-//|  4 |              1 |             5 |
-//|  6 |              1 |             7 |
-//|  2 |              2 |             3 |
-//|  3 |              4 |             2 |
-//|  5 |              7 |             6 |
-//+----+----------------+---------------+
 //        $elements[] = ['id' => 1, 'parent_id' => 0];
 //        $elements[] = ['id' => 2, 'parent_id' => 1];
 //        $elements[] = ['id' => 3, 'parent_id' => 1];
 //        $elements[] = ['id' => 4, 'parent_id' => 2];
 //        $elements[] = ['id' => 5, 'parent_id' => 4];
 //        $elements[] = ['id' => 6, 'parent_id' => 5];
-//
-//        $tree = \Application\Helper\ArrayHelper::buildTree($elements, 0);
-//        echo '<pre>';
-//        print_r($tree);
-//        echo '</pre>';
-//        
-//        //$parents = \Application\Helper\ArrayHelper::getParentNodes($elements, 4);
-//        //$parents = \Application\Helper\ArrayHelper::treeSearch(4, $elements);
-//        $parents = \Application\Helper\ArrayHelper::getParents(['id' => 6, 'parent_id' => 5], $elements);
-//        echo '<pre>';
-//        print_r($parents);
-//        echo '</pre>';
-//        exit;
+
+//        $elements[] = ['id' => 1, 'parent_id' => 1, 'terminal' => 1];
+//        $elements[] = ['id' => 2, 'parent_id' => 1, 'terminal' => 0];
+//        $elements[] = ['id' => 3, 'parent_id' => 1, 'terminal' => 0];
+//        $elements[] = ['id' => 4, 'parent_id' => 2, 'terminal' => 0];
+//        $elements[] = ['id' => 5, 'parent_id' => 4, 'terminal' => 0];
+//        $elements[] = ['id' => 6, 'parent_id' => 5, 'terminal' => 0];
+//        $elements[] = ['id' => 7, 'parent_id' => 5, 'terminal' => 0];
+        
+        
+        
+        $roleHierarchy = $this->entityManager->getRepository(RoleHierarchy::class)->findAll([], ['id' => 'ASC']);
+        foreach($roleHierarchy as $element) {
+            $terminal = $element->getTerminal();
+            $elements[] = ['id' => $element->getId(), 'parent_id' => 1 == $terminal ? 0 : $element->getParentRoleId()];
+        }        
+
+        $tree = \Application\Helper\ArrayHelper::buildTree($elements, 0);
+        echo '<pre>';
+        print_r($tree);
+        echo '</pre>';
+        
+        $parents = \Application\Helper\ArrayHelper::getParents(['id' => 7, 'parent_id' => 3], $elements);
+        echo '<pre>';
+        print_r($parents);
+        echo '</pre>';
+        exit;
         // Create role hierarchy
         $rbac = new Rbac();
         $this->rbac = $rbac;
@@ -216,24 +198,31 @@ class RbacManager
 
             $this->initRoles2();
             
-//            $roles = $this->roles;//$this->entityManager->getRepository(Role::class)->findBy([], ['id' => 'ASC']);
+            // $roles = $this->roles;
+            // $roles = $this->entityManager->getRepository(Role::class)->findBy([], ['id' => 'ASC']);
+            $roles = $this->entityManager->getRepository(CPRole::class)->findAll([], ['id' => 'ASC']);
+//            foreach ($roles as $r1) {
+//                print_r($r1);
+//            }
 //            foreach ($roles as $r => $p) {
-//
-//                $role = new \Laminas\Permissions\Rbac\Role($r);
-//                $roleName = $role->getName();
-//
-//                $parentRoleNames = [];
-//                //foreach ($role->getParentRoles() as $parentRole) {
+            foreach ($roles as $r) {
+                  $role = $r;
+//                $role = new \Laminas\Permissions\Rbac\Role($r->getName());
+                $roleName = $role->getName();
+
+                $parentRoleNames = [];
+                $role->getParentRoles();
+                foreach ($role->receiveParantRoles() as $parentRole) {
 //                foreach ($role->getParents() as $parentRole) {
-//                    $parentRoleNames[] = $parentRole->getName();
-//                }
+                    $parentRoleNames[] = $parentRole->getName();
+                }
 //
 //                $rbac->addRole($roleName, $parentRoleNames);
 //
 //                foreach ($role->getPermissions() as $permission) {
 //                    $rbac->getRole($roleName)->addPermission($permission->getName());
 //                }
-//            }
+            }
 
             // Save Rbac container to cache.
             $this->cache->setItem('rbac_container', $rbac);

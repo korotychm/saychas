@@ -20,6 +20,9 @@ class RoleHierarchy extends Entity
     
     protected $child_role_id;
     
+    protected $terminal;
+
+
     public function receiveRole()
     {
         return static::$roleRepository->find(['id' => $this->getParentRoleId()]);
@@ -55,5 +58,17 @@ class RoleHierarchy extends Entity
     public function getChildRoleId()
     {
         return $this->child_role_id;
+    }
+    
+    
+    public function setTerminal($terminal)
+    {
+        $this->terminal = $terminal;
+        return $this;
+    }
+    
+    public function getTerminal()
+    {
+        return $this->terminal;
     }
 }
