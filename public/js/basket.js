@@ -1,5 +1,57 @@
 
 //ajax/calculate-basket-item
+function calculateBasketHeader (productId)
+{
+    var totalshops = 0,  totalproduct = 0; 
+    
+    $.each($(".basketproviderblok"), function(index,value){
+      var id = $(this).attr("id"), rel = $(this).attr("rel");
+      var products = $("#" + id + " .checkallprovider.zach ").length ;
+    console.log($("#" + id + " .checkallprovider ").length + " / " + $("#" + id + " .checkallprovider.zach ").length + " / #checkallallprovider" + rel);
+        
+        if ($("#" + id + " .checkallprovider.zach ").length == $("#" + id + " .checkallprovider").length ){
+          
+          
+          $("#checkallallprovider-" + rel ).addClass("zach");
+      }
+      
+      if ($(".checkprovider.zach ").length == $(".checkprovider").length ){
+          $("#checkallavailble").addClass("zach");
+      }
+      
+      
+      if  (products > 0) {totalshops ++ ; totalproduct +=products; 
+        $("#" + id + " .basketrowselfdelevery").show();
+        }
+      else {
+          //console.log(id + ":" +products );
+            //console.log($("#selfdeleveryonoff-" + rel));
+            $("#selfdeleveryonoff-" + rel).removeClass("zach");
+            $("#" + id + " .basketrowselfdelevery").hide();
+            
+            $("#selfdeleverycheckbox-" + rel).prop("checked", false);
+            $("#providerblok-" + rel).removeClass("goself");
+            $("#provider_addressappend" + rel).hide();
+            $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
+          
+          
+      }
+      //console.log(id + ":" +products );
+      
+    })
+    
+    var h1 = "";
+    if (totalproduct < 1) h1 ="Товары не выбраны";
+    else {
+        if (totalproduct == 1 ) h1 = totalproduct + " наименование ";
+        else if (totalproduct > 1 &&  totalproduct < 5 ) h1 = totalproduct + " наименования ";
+        else h1 = totalproduct + " наименований ";
+        if (totalshops == 1) h1 += " из " + totalshops + " магазина ";
+        else h1 += " из " + totalshops + " магазинов ";
+    }
+    $("#h1title").text(h1);//console.log("Магазинов" + totalshops + "; продуктов " + totalproduct );
+}
+
 function calculateBasketItem (productId)
 {
     var count=$("#countprhidden-"+ productId).val();
@@ -21,6 +73,7 @@ function calculateBasketItem (productId)
          })
     
 }
+
 function calculateSelfDelevery ()
 {
     var store = $(".seldeleveryblokrowcountme").length;
@@ -55,12 +108,38 @@ function calculateBasketMerge (dataString)
     
 }
 
+function calculateBasketPayCard ()
+{
+    var dataString = $("#user-basket-form").serialize();
+    $.ajax({
+            url: "/ajax-basket-pay-card-info",
+            type: 'POST',
+            cache: false,
+            data: dataString,
+            success: function (data) {
+                $("#baskepaycardinfo").html(data);
+                
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#baskepaycardinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                
+                return false;
+            }
+        });
+    
+}
+
+
+
+
 
 function loadPayInfo(){
     var dataString = $("#user-basket-form").serialize();
     $.ajax({
             beforeSend : function (){ 
                 $("#basket-payinfo-cover").stop().fadeIn(); 
+                calculateBasketPayCard();
+                calculateBasketHeader();
                 calculateBasketMerge (dataString);
                 calculateSelfDelevery();
                 },
@@ -81,10 +160,11 @@ function loadPayInfo(){
 
 
 $(function(){
-    $("#user-basket-form").serialize()
+    
+    //$("#user-basket-form").serialize()
     loadPayInfo();
-    $(".radiomergebut, .loadpayinfo").live("click dblclick", function(){loadPayInfo()});
-    $(".countproductminus").live("click dblclick", function(){
+    $("body").on("click dblclick", ".radiomergebut, .loadpayinfo", function(){loadPayInfo()});
+    $("body").on("click dblclick", ".countproductminus", function(){
         if($(this).hasClass("disabled")) return false;
         
         var id=$(this).attr("rel");
@@ -103,7 +183,7 @@ $(function(){
         loadPayInfo();
         return false
     })
-    $(".countproductplus").live("click dblclick", function(){
+    $("body").on("click dblclick", ".countproductplus", function(){
         if($(this).hasClass("disabled")) return false;
         var id=$(this).attr("rel");
         var max = ($("#countproductnum-"+ id).attr("max"))*1;
@@ -119,6 +199,11 @@ $(function(){
         loadPayInfo();
         return false
     })
+    
+    
+    
+        
+    
     $(".selfdeleveryonoff").click(function () {
         var rel=$(this).attr('rel');
         //console.log(".fltrcheck" + $(this).attr("for"));

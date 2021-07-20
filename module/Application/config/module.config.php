@@ -237,6 +237,16 @@ return [
                     ],
                 ],
             ],
+            'basket-pay-card-info' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/ajax-basket-pay-card-info',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'basketPayCardInfo',
+                    ],
+                ],
+            ],
             //basketPayInfo
             
             'product' => [

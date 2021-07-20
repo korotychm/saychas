@@ -38,7 +38,7 @@ $(function () {
 
 $("#test").click(function(){addUserAddrees();})
 
-$(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).val().replace (/[^0-9+]/g, ''));})
+$("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(this).val().replace (/[^0-9+]/g, ''));})
 
 
     show_scrollTop();
@@ -47,7 +47,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
     });
 
     $("#quicktop").click(function () {
-        $("html:not(:animated)" + (!$.browser.opera ? ",body:not(:animated)" : "")).animate({scrollTop: 0}, 500);
+        $("html:not(:animated)").animate({scrollTop: 0}, 500);
         return false;
     });
 
@@ -74,7 +74,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         return false;
     });
 
-    $(".checkgroup").live("click", function () {
+    $("body").on("click",".checkgroup", function () {
 
         console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
@@ -85,7 +85,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
                 $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
         }
     });
-    $(".fltronoff").live("click", function () {
+    $("body").on("click", ".fltronoff", function () {
         var rel=$(this).attr('rel');
         //console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
@@ -101,9 +101,11 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
     
     
     
-    $(".radio").live("click", function () {
+    $("body").on("click", ".radio", function () {
         var rel=$(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
+        
+        //alert(rel);
+        console.log(".fltrcheck" + $(this).attr("for"));
                 $('.radio[rel^='+rel+']').removeClass("zach");
                 $('.relradio[rel^='+rel+']').prop("checked", false);;    
                 $('.relradio'+rel).prop("checked", false);;    
@@ -115,7 +117,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
     
     
     
-    $(".closefilteritem").live("click", function () {
+    $("body").on("click", ".closefilteritem", function () {
         hidefilteritem();
     });
     $(".filtritemtitle").click(function () {
@@ -264,11 +266,11 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         });
     })
 
-    $("#filtrform input").on("change", function () {
+    $("#filtrform").on("change", " input", function () {
         sendfilterform();
     })
 
-    $(".formsendbutton").live("click", function () {
+    $("body").on("click",".formsendbutton", function () {
         sendfilterform();
     })
 
@@ -276,12 +278,12 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         var dataString = $("#textarea").val();
         getLocalStores(dataString);
     })
-    $(".paybutton").live("click", function(){
+    $("body").on("click", ".paybutton", function(){
         var product=$(this).attr("rel");
         showBasket(product );
         $("#bascetbottomblok").slideDown(); 
      })
-        $("#bascetbottomblok .close").live("click", function(){ 
+        $("#bascetbottomblok").on("click", ".close", function(){ 
             $("#bascetbottomblok").slideUp(); 
         })
     
@@ -339,7 +341,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
         })
     });
 
-    $(".provider-list").live("click", function () {
+    $(".provider-list").on("click", function () {
         $("#products").hide();
         $("#shops").show();
         $("#waitprovider").show();
@@ -364,7 +366,7 @@ $(".numonly").on("keyUp, blur, focus, change", function(){$(this).val($(this).va
             }
         });
     });
-    $(".shop-list").live("click", function () {
+    $(".shop-list").on("click", function () {
         $("#waitproduct").show();
         $("#waitshops").show();
         $("#products").show();

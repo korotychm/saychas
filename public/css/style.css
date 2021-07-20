@@ -92,8 +92,8 @@
  .content-col {display:block; padding:10px;}
  
  
- footer {border-top:1px solid #ccc; height:auto; position:relative }
- footer, #footer {background:#333;  display:block; color:#fff;}
+ footer {border-top:1px solid #ccc; height:auto; position:relative; }
+ footer, #footer {background:#333;  display:block; color:#fff;  margin-top:64px;}
  #tree.tree {/*font-size:1.1rem;*/ font-weight:500}
 .none {display:none}
 .grayscale {filter: grayscale(100%);}

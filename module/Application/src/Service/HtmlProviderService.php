@@ -874,9 +874,7 @@ class HtmlProviderService
                     ];
                 }
             }
-            
-            
-            //$return["count"] = min($timeClose);
+             //$return["count"] = min($timeClose);
             $return["count"] = count($timeClose)-$countSelfdelevery;
             $return["select1hour"] = $timeDelevery1Hour;
             $return["select3hour"] = $timeDelevery3Hour;
@@ -892,6 +890,8 @@ class HtmlProviderService
     
     public function basketData($basket)
     {
+        $countproducts = 0;
+        $countprovider=[];
         foreach ($basket as $b) {
             if ($pId = $b->productId) {
                 /** @var HandbookRelatedProduct */
@@ -900,9 +900,17 @@ class HtmlProviderService
                 if ($product->receiveRest())
                     $availblechek[$product->getProviderId()] = true;
                 $rest = $product->receiveRest();
+                
                 $count = $b->total;
                 if ($count > $rest)
                     $count = $rest;
+                //if ($rest) $countproducts +=$count ;
+                if ($rest) {
+                    $countproducts ++; 
+                    //$countproducts +=$count ;
+                    $countprovider[$product->getProviderId()]=1;
+                  }
+                
                 $item[$product->getProviderId()][] = [
                     'id' => $pId,
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
@@ -936,20 +944,13 @@ class HtmlProviderService
             $infostore1c="";
             if (null != $store){
                 $idStore = $store->getId();
-                //exit(print_r($legalStoresArray));
-                
                 $infostore1c .=($legalStoresArray[$idStore]['working_hours_from'])?
                         "сегодня с ".substr($legalStoresArray[$idStore]['working_hours_from'],0,-3)." до ".substr($legalStoresArray[$idStore]['working_hours_to'],0,-3)
                         :"";
-                        
                 $infostore1c .=($legalStoresArray[$idStore]['time_until_closing'])
                         ?"<span class='blok mini'>заказать возможно до  ".date("Y.m.d H:i",$legalStoresArray[$idStore]['time_until_closing'])."</span>"
                         :"";
             }
-            /*status] => 1
-            [working_hours_from] => 7:00:00
-            [working_hours_to] => 22:00:00
-            [time_until_closing] => 0/**/
             if (null != $store){
                  if($legalStoresArray[$idStore]['status'] ) {
                     $provider_disable = false;
@@ -974,7 +975,7 @@ class HtmlProviderService
                 //$provider_store_off = "Комментарий из 1с ".$ifostore1c;
             }
 
-            $return[$returnprefix] = [
+            $return["product"][$returnprefix] = [
                 "provider_id" => $prov,
                 "availblechek" => $availblechek[$prov],
                 "provider_disable" => $provider_disable,
@@ -990,115 +991,13 @@ class HtmlProviderService
                 "infostore1c" => $infostore1c,
             ];
         }
-        if(is_array($return))     ksort($return);
-        //array_push($return, $returnvar[0]);// $returvar[1]);
-        //array_push($return, $returnvar[1]);
-        //$return=$return[0];
-        // exit (print_r($return));
-        //array_push($returvar[0],  $returvar[1]);
-        //$return = $returvar[0];
-        /* /    $return[]=[
-          "provider_id" => '00004',
-          "provider_disable" => false,
-          "provider_name" =>  "М-Видео",
-          "provider_logo" =>  "mvideo.png",
-          "provider_address" =>  "Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38) ",
-          "provider_worktime" =>  "Ежедневно, 10:00–22:00 ",
-          "provider_timeclose" =>  "(до закрытия 3 часа)",
-          "products" => [
-          [
-          "id" => '000000000009',
-          'image' => '79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg' ,
-          'title' => 'Ноутбук ASUS TUF Gaming FX505DT-HN564T черный ',
-          'price' => '51000',
-          'oldprice' => '',
-          'count'=> 1,
-          'availble' => '10',
-          ],
-          [
-          "id" => '000000000007',
-          'image' => '1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg' ,
-          'title' => 'Ноутбук Acer Nitro 5 AN515-43-R45P черный',
-          'price' => '15800',
-          'oldprice' => '17000',
-          'availble' => '0',
-          ],
-          ],
-
-          ];
-          $return[]=[
-          "provider_id" => '00005',
-          "provider_disable" => false,
-          "provider_name" =>  "DNS",
-          "provider_logo" =>  "00005_DNS.png",
-          "provider_address" =>  "Новочеркасский бульвар., 36, м.Марьино (ТЦ Марьинский Пассаж, магазин DNS) ",
-          "provider_worktime" =>  "Ежедневно, 10:00–21:00 ",
-          "provider_timeclose" =>  "(до закрытия 4 часа)",
-          "products" => [
-          [
-          "id" => '000000000024',
-          'image' => '8.jpg' ,
-          'title' => 'Смартфон Samsung Galaxy A72 128Gb (черный) ',
-          'price' => '35990',
-          'oldprice' => '40000',
-          'count'=> 1,
-          'availble' => '10',
-          ],
-          [
-          "id" => '000000000011',
-          'image' => '5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg' ,
-          'title' => 'Смартфон Nokia 2.4 ',
-          'price' => '12500',
-          //'oldprice' => '17000',
-          'count'=> 1,
-          'availble' => '0',
-          ],
-          [
-          "id" => '000000000014',
-          'image' => '32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg' ,
-          'title' => 'Xiaomi Redmi Note 10 (голубой)',
-          'price' => '20000',
-          //'oldprice' => '17000',*
-          'availble' => '10',
-          ],
-
-          ],
-
-          ];
-
-          $return[]=[
-          "provider_id" => '00000',
-          "provider_disable" => "Магазин уже закрылся",
-          "provider_name" =>  "5",
-          "provider_logo" =>  "5.png",
-          "provider_address" =>  "Пятерочка. Новочеркасский бульвар, 10, м.Марьино  ",
-          "provider_worktime" =>  "Ежедневно, 10:00–23:00 ",
-          "provider_timeclose" =>  "(до закрытия 5 часов)",
-          "products" => [
-          [
-          "id" => '10000000000',
-          'image' => '1350x.jpg' ,
-          'title' => 'Кефир Простоквашинго 2,5%',
-          'price' => '35',
-          'oldprice' => '40',
-          'count'=> 1,
-          'availble' => '10',
-          ],
-          [
-          "id" => '20000000000',
-          'image' => '40ec61411c92eac07cd543f0cee4ad81.jpg' ,
-          'title' => 'Молоко Простоквашинго 2,5%',
-          'price' => '25',
-          //'oldprice' => '17000',
-          'availble' => '0',
-          ],
-
-          ],
-
-          ];
-
-          /* */
-        
+        if ($countproducts){
+            $countproviders = (int)count($countprovider);
+            $return["title"]  = ($countproducts == 1)?"$countproducts наименование ":($countproducts >1 and $countproducts < 5)?"$countproducts наименования ":"$countproducts наименований ";
+            $return["title"] .= "из ";
+            $return["title"] .=($countproviders == 1)?"$countproducts магазина ": "$countproducts магазинов ";
+        }
+        if(is_array($return["product"]))     ksort($return["product"]);
         return $return;
     }
 

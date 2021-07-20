@@ -1,9 +1,10 @@
-<div class='pw-contentblock cblock-1' id='paycardblok'>
-    <div class='contentpadding'>
+<?php if($cardinfo) {?> 
+
     
-        <div class='pw-contentblock cblock-2'>
+    
+        <div class='pw-contentblock cblock-2  borderredhalf <?=($paycard)?"left":""?>'>
             <div class='contentpadding'>
-                <div class='radio zach  black loadpayinfo' rel='paynew' for='paynewoff'> 
+                <div class='radio <?=($paycard)?"zach":""?>  black loadpayinfo' rel='paynew' for='paynewoff'> 
                     <b> 
                          <span class='iblok valign-middle '>Оплата с привязанной карты </span> 
                        
@@ -16,10 +17,10 @@
              </div>
         </div>
         
-        
-        <div class='pw-contentblock cblock-2'>
+<?php }  ?>        
+        <div class='pw-contentblock cblock-2  borderredhalf <?=(!$paycard)?"right":""?>  <?=(!$cardinfo)?" left":""?>  '>
             <div class='contentpadding'>
-                <div class='radio black loadpayinfo' rel='paynew' for='paynewon'> 
+                <div class='radio black <?=(!$paycard or !$cardinfo)?"zach":""?> loadpayinfo' rel='paynew' for='paynewon'> 
                      <b>
                          <span class='iblok valign-middle '>Оплата новой картой</span> 
                      </b>
@@ -30,8 +31,7 @@
                
                 
             </div>
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewon' value='0' >
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewoff' value='1' checked  >
+            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewon' value='0' <?=(!$paycard or !$cardinfo)?"checked":""?>  >
+            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewoff' value='1' <?=($paycard and $cardinfo)?"checked":""?>  >
         </div>
-    </div>
-</div>
+    

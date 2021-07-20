@@ -8,12 +8,12 @@ foreach ($param as $provider):
     
     /*<pre><?php print_r($provider)?></pre>*/
     ?>
-<div class="contentpaddingbox " id='providerblok-<?=$provider['provider_id']?>'>
+<div class="contentpaddingbox basketproviderblok " id='providerblok-<?=$provider['provider_id']?>' rel='<?=$provider['provider_id']?>'>
     <div class='blok basketrow'>
 
         <div  class='basketcol  check'>
 <?php if(!$provider['provider_disable'] and $provider['availblechek']){?>                       
-            <div class='nopub checkallallprovider allall zach' rel='<?=$provider['provider_id']?>' id='checkallallprovider-<?=$provider['provider_id']?>'></div> 
+            <div class='nopub checkallallprovider checkprovider  allall zach' rel='<?=$provider['provider_id']?>' id='checkallallprovider-<?=$provider['provider_id']?>'></div> 
 <?php }?>
         </div>    
         <div  class='basketcol  titleprovider'>
@@ -59,7 +59,7 @@ foreach ($param as $provider):
             
         </div>    
     </div>
-    <div class='blok basketrow'>
+    <div class='blok basketrow basketrowselfdelevery ' >
         <div  class='basketcol  check'>
           
         </div>    
@@ -68,7 +68,7 @@ foreach ($param as $provider):
            
         </div>
         <div  class='basketcol selfdelevery'>
-            <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
+            <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' id='selfdeleveryonoff-<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
             <input type='checkbox' class="none" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_id']?>' name='selfdelevery[]' >
             <span class='blok gray none' id="provider_addressappend<?=$provider['provider_id']?>">
         <?=($provider['provider_store'])?"<b class='blok'>".$provider['provider_store']."</b>":""?>

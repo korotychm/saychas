@@ -227,7 +227,14 @@ class AjaxController extends AbstractActionController
                 return new JsonModel(["error" => true]);
              }
         
+             
         $return['totalNum'] = (int) $productPrice * $productCount; 
+        
+        /*$basket = Basket::findFirstOrDefault(['id' => 1234]);
+        $basket->setTotal(1234);
+        $basket->persist([]);*/
+        
+        
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
 
         return new JsonModel($return);
@@ -263,6 +270,19 @@ class AjaxController extends AbstractActionController
         $view->setTemplate('application/common/basket-order-merge');
         return $view->setTerminal(true);
         
+    }
+    public function basketPayCardInfoAction()
+    {
+        $cardinfo = "4276 5555 **** <span class='red'>1234&darr;</span>";
+        $post = $this->getRequest()->getPost();
+        $paycard = $post->paycard;
+        $view = new ViewModel([
+            'paycard'  => $paycard,
+            'cardinfo' => $cardinfo,
+            
+            ]);   
+        $view->setTemplate('application/common/basket-pay-card');
+        return $view->setTerminal(true);
     }
     
     

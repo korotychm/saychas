@@ -235,7 +235,7 @@ class IndexController extends AbstractActionController
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
             /** more conditions come here */
-            $columns = ['product_id', 'order_id', 'total'];
+            $columns = ['product_id', 'order_id', 'total', 'price'];
             $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
           /* foreach ($basket as $b) {
                 if($pId=$b->productId){
@@ -255,8 +255,9 @@ class IndexController extends AbstractActionController
      $content = $this->htmlProvider->basketData($basket);   
      return new ViewModel([
            /* "providers" => $providers,*/
-            "content" => $content,
-            "title" => "Корзина",
+            "content" => $content["product"],
+            "title" => "Корзина",   
+            "titleH" => $content["title"],
             "basketUser" => $basketUser, 
             "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
             

@@ -1,7 +1,7 @@
 <?php    if ($countStors < 2 ) {  $ordermerge = false;  }?>   
 <?php    if( $countStors) {?>
-    <div class='contentpadding'>
-        <div class='pw-contentblock cblock-2'>
+    <div class=' bordergetcontainer '>
+        <div class='pw-contentblock cblock-2  borderredhalf <?=(!$ordermerge)?"  left ":""?>  <?=($countStors < 2 )?" right ":""?>'>
             <div class='contentpadding'>
                 <div class='radio <?=(!$ordermerge)?"zach":""?>  black radiomergebut' rel='dostmerge' for='dostmergeoff'> 
                     <b> 
@@ -25,14 +25,15 @@
         </select>
 <!--pre><?=print_r($select1hour)?></pre -->
                 
-<?php } else { echo "<h4>Нет доставки</h4>"; }?>                
+<?php } else {?><div class="lableinfo text timepoint">Нет доставки</div> <?php }?>                    
              </div>
+            <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeoff' value='0'  radio <?=(!$ordermerge)?"checked":""?>>
         </div>
         
  <?php    if($countStors > 1) {?>       
-        <div class='pw-contentblock cblock-2'>
+        <div class='pw-contentblock cblock-2  borderredhalf <?=($ordermerge)?"  right ":""?> '>
             <div class='contentpadding'>
-                <div class='radio radio <?=($ordermerge)?"zach":""?> black radiomergebut' rel='dostmerge' for='dostmergeon'> 
+                <div class='radio <?=($ordermerge)?"zach":""?> black radiomergebut' rel='dostmerge' for='dostmergeon'> 
                      <b>
                          <span class='iblok valign-middle '>Объеденить заказы </span> 
                          <span class='iblok valign-middle saychas'>за 3 часа</span> 
@@ -53,15 +54,11 @@
                     <option value="<?=$option3['value']?>" <?=$selectedtimepoint[1][$option3['value']]?>><?=$option3['lable']?></option>
                <?php } ?>                 
         </select>
-                <!-- pre><?=print_r($selectedtimepoint)?></pre -->
-
-                
-<?php } else { echo "<h4>Нет доставки</h4>"; }?>    
+                <?php } else {?><div class="lableinfo text timepoint">Нет доставки</div> <?php }?>    
                 
             </div>
         <?php } ?>    
             <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeon' value='1'  radio <?=($ordermerge)?"checked":""?>>
-            <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeoff' value='0' checked <?=(!$ordermerge)?"checked":""?> >
         </div>
     </div>
 <?php } ?>  
