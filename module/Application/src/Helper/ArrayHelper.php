@@ -44,7 +44,7 @@ class ArrayHelper
 
         foreach ($elements as $element) {
             if ($element[$parentKey] == $parentId) {
-                $children = self::buildTree($elements, $element[$key]);
+                $children = self::buildTree($elements, $element[$key], $parentKey, $key);
                 if ($children) {
                     $element['children'] = $children;
                 }
@@ -54,23 +54,24 @@ class ArrayHelper
 
         return $branch;
     }
-    
+
     /**
      * Search tree haystack for given needle
-     * 
+     *
      * @param int $needle
      * @param array $haystack
      * @param string $nodeKey
      * @param string $childrenKey
      * @return boolean
      */
-    public static function searchTree($needle, $haystack, $nodeKey = 'id', $childrenKey = 'children') {
-        foreach($haystack as $node) {
-            if($node[$nodeKey] == $needle) {
+    public static function searchTree($needle, $haystack, $nodeKey = 'id', $childrenKey = 'children')
+    {
+        foreach ($haystack as $node) {
+            if ($node[$nodeKey] == $needle) {
                 return $node;
-            } elseif ( isset($node[$childrenKey]) ) {
+            } elseif (isset($node[$childrenKey])) {
                 $result = self::searchTree($needle, $node[$childrenKey], $nodeKey, $childrenKey);
-                if ($result !== false){
+                if ($result !== false) {
                     return $result;
                 }
             }
@@ -78,10 +79,10 @@ class ArrayHelper
 
         return false;
     }
-   
+
     /**
      * Get parents for given node in the hierarchy
-     * 
+     *
      * @param array $node
      * @param array $hierarchy
      * @param array $allParentIds
@@ -89,13 +90,14 @@ class ArrayHelper
      * @param string $parentKey
      * @return array
      */
-    public static function getParents($node, $hierarchy, $allParentIds=[], $nodeKey = 'id', $parentKey = 'parent_id', $childrenKey = 'children') {
-        if($node[$parentKey] != 0) {
+    public static function getParents($node, $hierarchy, $allParentIds = [], $nodeKey = 'id', $parentKey = 'parent_id', $childrenKey = 'children')
+    {
+        if ($node[$parentKey] != 0) {
             $parentNode = self::searchTree($node[$parentKey], $hierarchy, $nodeKey, $childrenKey);
             $allParentIds[] = $parentNode[$nodeKey];
-            $result = self::getParents($parentNode, $hierarchy, $allParentIds, $nodeKey, $parentKey);
+            $result = self::getParents($parentNode, $hierarchy, $allParentIds, $nodeKey, $parentKey, $childrenKey);
 
-            if ($result !== false){
+            if ($result !== false) {
                 return $result;
             }
         }
