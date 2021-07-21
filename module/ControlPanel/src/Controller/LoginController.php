@@ -23,18 +23,24 @@ class LoginController extends AbstractActionController
 
     /** @var Container */
     protected $sessionContainer;
+    
+    protected $entityManager;
+
+    protected $userManager;
 
     /**
      * Constructor
      *
      * @param ContainerInterface $container
      */
-    public function __construct($container, $sessionContainer)
+    public function __construct($container, $sessionContainer, $entityManager, $userManager)
     {
         /** @var ContainerInterface */
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
+        $this->entityManager = $entityManager;
+        $this->userManager = $userManager;
     }
 
     /**

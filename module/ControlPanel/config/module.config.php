@@ -218,6 +218,18 @@ return [
             /** Entities */
             \ControlPanel\Model\Entity\Role::class => \ControlPanel\Model\Repository\Factory\RoleRepositoryFactory::class,
             \ControlPanel\Model\Entity\RoleHierarchy::class => \ControlPanel\Model\Repository\Factory\RoleHierarchyRepositoryFactory::class,
+            /** Curl Request Manager */
+            \ControlPanel\Service\CurlRequestManager::class => \ControlPanel\Service\Factory\CurlRequestManagerFactory::class,
+            /** User Manager */
+            \ControlPanel\Service\UserManager::class => \ControlPanel\Service\Factory\UserManagerFactory::class,
+        ],
+    ],
+    'parameters' => [
+        '1c_provider_links' => [
+            'lk_provider_login' => 'http://SRV02:8000/SC/hs/site/lk_provider_login',
+            'lk_create_user' => 'http://SRV02:8000/SC/hs/site/lk_create_user',
+            'lk_update_user' => 'http://SRV02:8000/SC/hs/site/lk_update_user',
+            'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
         ],
     ],
     'view_manager' => [

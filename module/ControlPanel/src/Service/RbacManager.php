@@ -6,13 +6,8 @@ namespace ControlPanel\Service;
 
 use Laminas\Permissions\Rbac\Rbac;
 use Laminas\Permissions\Rbac\Role;
-use Laminas\Cache\Storage\StorageInterface;
-use Laminas\Authentication\AuthenticationService;
-use ControlPanel\Model\Identity;
 use ControlPanel\Model\Entity\Role as CPRole;
-use ControlPanel\Model\Entity\RoleHierarchy;
-use ControlPanel\Model\Repository\RoleRepository;
-use ControlPanel\Model\Repository\RoleHierarchyRepository;
+
 /**
  * Description of RbacManager
  *
@@ -44,33 +39,30 @@ class RbacManager
      * @var array
      */
     private $assertionManagers = [];
-    
+
     /**
      * Temp variable to be replaced later on after roles are loaded from a repository
-     * 
+     *
      * @var array
      */
     private $roles = ['Admin' => ['user.manage', 'permission.manage', 'role.manage', 'profile.any.manage', 'profile.own.manage',],
         'Editor' => ['profile.own.manage',], 'Author' => ['article.own.create', 'article.own.update', 'article.any.view',],
-        'Viewer' => ['article.any.view', 'profile.own.manage',] ];
-    
+        'Viewer' => ['article.any.view', 'profile.own.manage',]];
     private $permissions = ['user.manage', 'permission.manage', 'role.manage', 'profile.any.manage', 'profile.own.manage',];
-    
-    private $users = ['admin' => ['roles' => ['Admin',], 'permissions' => [], ],
-                      'mario' => ['roles' => ['Editor', 'Author',], 'permissions' => [], ],
-                      'shmario' => ['roles' => ['Viewer',], 'permissions' => [], ],];
-    
+    private $users = ['admin' => ['roles' => ['Admin',], 'permissions' => [],],
+        'mario' => ['roles' => ['Editor', 'Author',], 'permissions' => [],],
+        'shmario' => ['roles' => ['Viewer',], 'permissions' => [],],];
     private $defaultPermissions = [
-            'user.manage' => 'Manage users',
-            'permission.manage' => 'Manage permissions',
-            'role.manage' => 'Manage roles',
-            'profile.any.view' => 'View anyone\'s profile',
-            'profile.own.view' => 'View own profile',
-        ];
+        'user.manage' => 'Manage users',
+        'permission.manage' => 'Manage permissions',
+        'role.manage' => 'Manage roles',
+        'profile.any.view' => 'View anyone\'s profile',
+        'profile.own.view' => 'View own profile',
+    ];
 
     /**
      * Constructs the service.
-     * 
+     *
      * @param Laminas\Authentication\AuthenticationService $authService
      * @param type $cache
      * @param array $assertionManagers
@@ -82,98 +74,27 @@ class RbacManager
         $this->cache = $cache;
         $this->assertionManagers = $assertionManagers;
     }
-    
-//    private function initRoles($userName = '')
+
+//    private function initRoles()
 //    {
-//        $userRole = new Role($userName);
 //        foreach($this->roles as $roleName => $permissions){
-//            $userRole->addChild(new Role($roleName));
+//            $role = new Role($roleName);
 //            foreach($permissions as $permission) {
-//                $userRole->addPermission($permission);
+//                $role->addPermission($permission);
 //            }
+//            $this->rbac->addRole($role);
 //        }
-//        $this->rbac->addRole($userRole);
 //    }
-    private function initRoles()
-    {
-        foreach($this->roles as $roleName => $permissions){
-            $role = new Role($roleName);
-            foreach($permissions as $permission) {
-                $role->addPermission($permission);
-            }
-            $this->rbac->addRole($role);
-        }
-    }
-    
-    private function initRoles2()
-    {
-//        $elements[] = ['id' => 1, 'parent_id' => 0];
-//        $elements[] = ['id' => 2, 'parent_id' => 1];
-//        $elements[] = ['id' => 3, 'parent_id' => 1];
-//        $elements[] = ['id' => 4, 'parent_id' => 2];
-//        $elements[] = ['id' => 5, 'parent_id' => 4];
-//        $elements[] = ['id' => 6, 'parent_id' => 5];
-
-//        $elements[] = ['id' => 1, 'parent_id' => 1, 'terminal' => 1];
-//        $elements[] = ['id' => 2, 'parent_id' => 1, 'terminal' => 0];
-//        $elements[] = ['id' => 3, 'parent_id' => 1, 'terminal' => 0];
-//        $elements[] = ['id' => 4, 'parent_id' => 2, 'terminal' => 0];
-//        $elements[] = ['id' => 5, 'parent_id' => 4, 'terminal' => 0];
-//        $elements[] = ['id' => 6, 'parent_id' => 5, 'terminal' => 0];
-//        $elements[] = ['id' => 7, 'parent_id' => 5, 'terminal' => 0];
-        
-        
-        
-        $roleHierarchy = $this->entityManager->getRepository(RoleHierarchy::class)->findAll([], ['id' => 'ASC']);
-        foreach($roleHierarchy as $element) {
-            $terminal = $element->getTerminal();
-            $elements[] = ['id' => $element->getId(), 'parent_id' => 1 == $terminal ? 0 : $element->getParentRoleId()];
-        }        
-
-        $tree = \Application\Helper\ArrayHelper::buildTree($elements, 0);
-        echo '<pre>';
-        print_r($tree);
-        echo '</pre>';
-        
-        $parents = \Application\Helper\ArrayHelper::getParents(['id' => 7, 'parent_id' => 3], $elements);
-        echo '<pre>';
-        print_r($parents);
-        echo '</pre>';
-        exit;
-        // Create role hierarchy
-        $rbac = new Rbac();
-        $this->rbac = $rbac;
-        $editor = new Role('Editor');
-        $editor->addPermission('post.edit');
-        $rbac->addRole('Viewer', [$editor, new Role('Author')]);
-        $rbac->addRole('Editor', [new Role('Administrator')]);
-        $rbac->addRole('Author');
-        $rbac->addRole('Administrator');
-
-        // Assign permissions to the Viewer role.
-        $rbac->getRole('Viewer')->addPermission('post.view');
-
-        // Assign permissions to the Author role.
-        $rbac->getRole('Author')->addPermission('post.own.edit');
-        $rbac->getRole('Author')->addPermission('post.own.publish');
-
-        // Assign permissions to the Editor role.
-        //$rbac->getRole('Editor')->addPermission('post.edit');
-        $rbac->getRole('Editor')->addPermission('post.publish');
-
-        // Assign permissions to the Administrator role.
-        $rbac->getRole('Administrator')->addPermission('post.delete');
-    }
+//
 
     /**
      * Initializes the RBAC container.
-     * 
+     *
      * @param bool $forceCreate
      * @return void
      */
     public function init($forceCreate = false)
     {
-//        $this->initRoles();
         if ($this->rbac != null && !$forceCreate) {
             // Already initialized; do nothing.
             return;
@@ -196,33 +117,100 @@ class RbacManager
 
             $rbac->setCreateMissingRoles(true);
 
-//            $this->initRoles2();
-            
-            // $roles = $this->roles;
-            // $roles = $this->entityManager->getRepository(Role::class)->findBy([], ['id' => 'ASC']);
-            $roles = $this->entityManager->getRepository(CPRole::class)->findAll([], ['id' => 'ASC']);
-//            foreach ($roles as $r => $p) {
-            foreach ($roles as $r) {
-                  $role = $r;
-//                $role = new \Laminas\Permissions\Rbac\Role($r->getName());
-                $roleName = $role->getName();
+            $repo = $this->entityManager->getRepository(CPRole::class);
+            $roles = $repo->findAll([], ['id' => 'ASC'])->toArray();
 
+            $parents = [];
+            foreach ($roles as $role) {
+                $roleName = $role['name'];
+                // get parents
+                $parents = \Application\Helper\ArrayHelper::getParents(['id' => $role['id'], 'parent_role_id' => $role['parent_role_id']], $roles, [], 'id', 'parent_role_id');
                 $parentRoleNames = [];
-                foreach ($role->receiveParantRoles() as $parentRole) {
-//                foreach ($role->getParents() as $parentRole) {
+                foreach ($parents as $parentId) {
+                    $parentRole = $repo->find(['id' => $parentId]);
                     $parentRoleNames[] = $parentRole->getName();
                 }
-//
-//                $rbac->addRole($roleName, $parentRoleNames);
-//
-//                foreach ($role->getPermissions() as $permission) {
-//                    $rbac->getRole($roleName)->addPermission($permission->getName());
-//                }
-            }
 
+                $rolePermissions = $repo->getPermissions($role['id']);
+
+                $rbac->addRole($roleName, $parentRoleNames);
+
+                foreach ($rolePermissions as $permission) {
+                    $rbac->getRole($roleName)->addPermission($permission->getPermissionName());
+                }
+            }
+//            $this->isGranted(null, []);
+            //$this->isGranted(null, 'general');
             // Save Rbac container to cache.
             $this->cache->setItem('rbac_container', $rbac);
         }
+    }
+
+    /**
+     * Checks whether the given user has permission.
+     * @param User|null $user
+     * @param string $permission
+     * @param array|null $params
+     */
+    public function isGranted($user, $permission, $params = null)
+    {
+        if ($this->rbac == null) {
+            $this->init();
+        }
+        
+//        echo 'admin: delete.personal = '. $this->rbac->isGranted('admin', 'delete.personal').'<br/>';
+//        echo 'editor: view.profile = '. $this->rbac->isGranted('editor', 'view.profile').'<br/>';
+//        echo 'supervisor: edit.profile = '. $this->rbac->isGranted('supervisor', 'edit.profile').'<br/>';
+//        echo 'guest: view.profile = '. $this->rbac->isGranted('guest', 'view.profile').'<br/>';
+//        echo 'guest: general = '. $this->rbac->isGranted('guest', 'general').'<br/>';
+//        
+//        
+//        exit;
+        
+
+        if ($user == null) {
+
+            $identity = $this->authService->getIdentity();
+            if ($identity == null) {
+                return false;
+            }
+
+            $user = $this->entityManager->getRepository(User::class)
+                    ->findOneByEmail($identity);
+            if ($user == null) {
+                // Oops.. the identity presents in session, but there is no such user in database.
+                // We throw an exception, because this is a possible security problem.
+                throw new \Exception('There is no user with such identity');
+            }
+        }
+
+        $roles = $user->getRoles();
+
+        foreach ($roles as $role) {
+            if ($this->rbac->isGranted($role->getName(), $permission)) {
+
+                if ($params == null) {
+                    return true;
+                }
+
+                foreach ($this->assertionManagers as $assertionManager) {
+                    if ($assertionManager->assert($this->rbac, $permission, $params)) {
+                        return true;
+                    }
+                }
+            }
+
+            // Since we are pulling the user from the database again the init() function above is overridden?
+            // we don't seem to be taking into account the parent roles without the following code
+            $parentRoles = $role->getParentRoles();
+            foreach ($parentRoles as $parentRole) {
+                if ($this->rbac->isGranted($parentRole->getName(), $permission)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }

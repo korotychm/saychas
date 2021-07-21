@@ -6,6 +6,8 @@ namespace ControlPanel\Model\Entity;
 
 use Application\Model\Entity\Entity;
 use ControlPanel\Model\Repository\RoleHierarchyRepository;
+use ControlPanel\Model\Repository\RoleRepository;
+use Application\Model\Traits\Searchable;
 
 /**
  * Description of Role
@@ -14,42 +16,31 @@ use ControlPanel\Model\Repository\RoleHierarchyRepository;
  */
 class Role extends Entity
 {
+
+    use Searchable;
     
     public static RoleHierarchyRepository $roleHierarchyRepository;
+    
+    public static RoleRepository $repository;
 
     /** @var int */
     protected $id;
-    
+
     /** @var int */
 //    protected $parent_role_id;
-    
+
     /** @var string */
     protected $name;
-    
+
     /** @var string */
     protected $description;
-    
+
     /** @var string */
     protected $date_created;
 
-    public function receiveParantRoles()
-    {
-//        $parentRoles = static::$roleHierarchyRepository->findAll(['where' => ['parent_role_id' => $this->getId()] ]);
-//        return $parentRoles;
-        $parentRoles = [];
-        $role = static::$roleHierarchyRepository->find(['id' => $this->getId()]);
-        return $parentRoles;
-    }
-    
-    public function getParentRoles()
-    {
-        echo 'banzaii';
-        exit;
-    }
-    
     /**
      * Set id
-     * 
+     *
      * @param int $id
      * @return $this
      */
@@ -61,39 +52,39 @@ class Role extends Entity
 
     /**
      * Get id
-     * 
+     *
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     /**
      * Set parent_role_id
-     * 
+     *
      * @param int $parentRoleId
      * @return $this
      */
-//    public function setParentRoleId($parentRoleId)
-//    {
-//        $this->parent_role_id = $parentRoleId;
-//        return $this;
-//    }
+    public function setParentRoleId($parentRoleId)
+    {
+        $this->parent_role_id = $parentRoleId;
+        return $this;
+    }
 
     /**
      * Get parent_role_id
-     * 
+     *
      * @return int
      */
-//    public function getParentRoleId()
-//    {
-//        return $this->parent_role_id;
-//    }
+    public function getParentRoleId()
+    {
+        return $this->parent_role_id;
+    }
 
     /**
      * Set name
-     * 
+     *
      * @param string $name
      * @return $this
      */
@@ -105,7 +96,7 @@ class Role extends Entity
 
     /**
      * Get name
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -115,7 +106,7 @@ class Role extends Entity
 
     /**
      * Set description
-     * 
+     *
      * @param string $description
      * @return $this
      */
@@ -127,7 +118,7 @@ class Role extends Entity
 
     /**
      * Get description
-     * 
+     *
      * @return string
      */
     public function getDescription()
@@ -137,7 +128,7 @@ class Role extends Entity
 
     /**
      * Set date_created
-     * 
+     *
      * @param string $dateCreated
      * @return $this
      */
@@ -149,7 +140,7 @@ class Role extends Entity
 
     /**
      * Get date_created
-     * 
+     *
      * @return string
      */
     public function getDateCreated()
