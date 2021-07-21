@@ -17,21 +17,19 @@
                     <span class="mini">крайнее время заказа: <?=date("r", $timeClose - 3600)?></span>
                 </span>
 <?php if($select1hour and !empty($select1hour)){?>                
-                <select  class='lableinfo text timepoint' name="timepoint[0]" id="timepoint--dostmergeon" >
-                       <option value="0">сейчас за час</option>
+                <select  class='lableinfo margin16 text timepoint' name="timepoint[0]" id="timepoint-dostmerge1" rel="timepointtext1" >
+                       
                 <?php foreach($select1hour as $option){?>
-                    <option value="<?=$option['value']?>" <?=$selectedtimepoint[0][$option['value']]?> ><?=$option['lable']?></option>
+                    <option value="<?=$option['value']?>" rel="<?=$option['rel']?><?=$option3['lable']?>"  <?=$selectedtimepoint[0][$option['value']] ?> ><?=$option['lable']?></option>
                <?php } ?>                 
         </select>
 <!--pre><?=print_r($select1hour)?></pre -->
                 
-<?php } else {?><div class="lableinfo text timepoint">Нет доставки</div> <?php }?>                    
+<?php } else {?><div class="lableinfo margin16 text timepoint">Нет доставки</div> <?php }?>                    
              </div>
             <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeoff' value='0'  radio <?=(!$ordermerge)?"checked":""?>>
-        </div>
-        
- <?php    if($countStors > 1) {?>       
-        <div class='pw-contentblock cblock-2  borderredhalf <?=($ordermerge)?"  right ":""?> '>
+        </div><?php    if($countStors > 1) 
+        {?><div class='pw-contentblock cblock-2  borderredhalf <?=($ordermerge)?"  right ":""?> '>
             <div class='contentpadding'>
                 <div class='radio <?=($ordermerge)?"zach":""?> black radiomergebut' rel='dostmerge' for='dostmergeon'> 
                      <b>
@@ -48,17 +46,23 @@
                     <span class="mini">крайнее время заказа: <?=date("r", $timeClose - 3600*3)?></span>
                 </span>
           <?php if($select3hour and !empty($select3hour)){?>                
-                <select  class='lableinfo text timepoint' name="timepoint[1]" id="timepoint-dostmergeon" >
+                <select  class='lableinfo margin16 text timepoint' name="timepoint[1]" id="timepoint-dostmerge3" rel="timepointtext3" >
                        
                 <?php foreach($select3hour as $option3){?>
-                    <option value="<?=$option3['value']?>" <?=$selectedtimepoint[1][$option3['value']]?>><?=$option3['lable']?></option>
+                    <option value="<?=$option3['value']?>" rel="<?=$option['rel']?><?=$option3['lable']?>" <?=$selectedtimepoint[1][$option3['value']]?>><?=$option3['lable']?></option>
                <?php } ?>                 
         </select>
-                <?php } else {?><div class="lableinfo text timepoint">Нет доставки</div> <?php }?>    
+                <?php } else {?><div class="lableinfo margin16 text ">Нет доставки</div> <?php }?>    
                 
             </div>
         <?php } ?>    
-            <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeon' value='1'  radio <?=($ordermerge)?"checked":""?>>
+            <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeon' value='1'   <?=($ordermerge)?"checked":""?>>
+            
         </div>
+        <input type="hidden" name="timepointtext1" id="timepointtext1"  value="<?=$timepointtext1?>">
+        <input type="hidden" name="timepointtext3" id="timepointtext3"  value="<?=$timepointtext3?>">
+        
     </div>
+<!--?=$printr?-->
+
 <?php } ?>  

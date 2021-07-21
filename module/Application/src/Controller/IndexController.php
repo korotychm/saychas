@@ -214,7 +214,7 @@ class IndexController extends AbstractActionController
     
     public function basketAction()
     {
-            $userId = $this->identity();
+            $basketUser['id'] = $userId = $this->identity();
             $user = $this->userRepository->find(['id'=>$userId]);
             $basketUser['phone'] = $user->getPhone();
             //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
@@ -226,9 +226,10 @@ class IndexController extends AbstractActionController
                 header("Location: /user");
                 exit();   
             }
+            
             $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
             $basketUser['address'] = $userData->current()->getAddress();
-            $userAddress = $userData->current()->getGeoData();
+            $basketUser['geodata'] = $userData->current()->getGeoData();
             //exit ($userPhone." / ".$userAddress);*/
             
             $where = new Where();

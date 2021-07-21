@@ -785,8 +785,8 @@ class HtmlProviderService
                     continue;
                 if (!$price = (int) $product->receivePriceObject()->getPrice())
                     continue;
-                $total += ($price * $c);
-                $j += $c;
+                $total += ($price * $c['count']);
+                $j += $c["count"];
                 if ($providerId = $product->getProviderId())
                     $provider[$providerId] = 1;
             }
@@ -798,17 +798,24 @@ class HtmlProviderService
         }
         else {
             
+            $timeDelevery=(!$post->ordermerge)?$post->timepointtext1:$post->timepointtext3;
+            
             $priceDelevery = $countDelevery*$param['mergePrice'] +  ceil($countDelevery/$param['mergecount'])* $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery/$param['mergecount']);        
             
         }
 
+        
+        //$return['payEnable'] =($total>0 and  ($countSelfdelevery or ($countDelevery and $timeDelevery)))?true:false; 
         $return["textDelevery"] = "за час";
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;
+        $return["timeDelevery"] = $timeDelevery;
         $return["countSelfdelevery"] = $countSelfdelevery;
         $return["priceDelevery"] = $priceDelevery;
         $return["countDelevery"] = $countDelevery ;
+        $return["countDeleveryText"] = $countDelevery ;
+        $return["countDeleveryText"] .= ($countDelevery < 2 )?" доставка ":(($countDelevery > 1 and $countDelevery < 5)?" доставки":" доставок ");
         $return["storeAdress"] = $storeAdress ;
         //$return["paycardinfo"] = "4276 5555 **** <span class='red'>1234&darr;</span>";
 
@@ -854,23 +861,31 @@ class HtmlProviderService
                 
             }
             $return['timeClose'] = min($timeClose);
-            
+            //<option value="0" rel=" в течение часа ">сейчас за час</option>
+            $timeDelevery1Hour[]=[
+                    "lable" => "сейчас за час",
+                    "value" => 0,
+                    "rel" => "в течение часа",
+                    ];
+                    
             for ($i = 1; $i <= 12; $i++) {
                 $timeStart = time() + 3600 * $i; 
                 $timeEnd = time() + 3600 * $i + 3600; 
                 $time3End = time() + 3600 * $i + 3600 * 3; 
                 if($timeEnd > $return['timeClose']) break;
+                $rel = (date("d", $timeStart) == date("d"))?" сегодня ":" завтра ";
                 
                 $timeDelevery1Hour[]=[
                     "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $timeEnd).":00",
                     "value" => date("H", $timeStart),
+                    "rel" => $rel,
                     ];
                 
                 if($time3End < $return['timeClose']) {
                     $timeDelevery3Hour[]=[
                     "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $time3End).":00",
                     "value" => date("H", $timeStart),
-                    
+                    "rel" => $rel,
                     ];
                 }
             }

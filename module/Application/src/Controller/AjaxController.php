@@ -265,6 +265,9 @@ class AjaxController extends AbstractActionController
             'select1hour'=> $return["select1hour"],
             'select3hour'=> $return["select3hour"],
             'selectedtimepoint' => $selectedtimepoint,
+            'timepointtext1' => $post->timepointtext1,
+            'timepointtext3' => $post->timepointtext3,
+            'printr'=> "<pre>".print_r($post, true)."</pre>",
             
             ]);        
         $view->setTemplate('application/common/basket-order-merge');
@@ -295,7 +298,8 @@ class AjaxController extends AbstractActionController
         /**/    //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
             $basketUser['name'] = $user->getName();
             $userData = $user->getUserData();
-            if ($userData->count() > 0 ) $basketUser['address'] = $userData->current()->getAddress();
+            if ($userData->count() > 0 ) 
+                $basketUser['address'] = $userData->current()->getAddress();
         
        /**/ 
         
@@ -308,21 +312,24 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $row= $this->htmlProvider->basketPayInfoData($post, $param);
         
-        
+        $timeDelevery=(!$post->ordermerge)?$post->timepointtext1:$post->timepointtext3;
+        $row['payEnable'] =($row['total'] >0 and  ($row['countSelfdelevery'] or ($row['countDelevery'] /*and $timeDelevery*/)))?true:false; 
         
                 //basketPayInfoData($post);
-        
+         //$row["payEnable"]=true;
         //exit (print_r($row));
         $view = new ViewModel([
             //$row
+            "payEnable" =>  $row["payEnable"],
             "textDelevery" =>  $row["textDelevery"],
             'priceDelevery' => $param['hourPrice'],
             'ordermerge' => $post->ordermerge,
             'priceDeleveryMerge' => $param['mergePrice'],
             'priceDeleveryMergeFirst' => $param['mergePriceFirst'],
             'countDelevery' => $row["countDelevery"],
+            'countDeleveryText' => $row["countDeleveryText"],
             'priceDelevery' => $row['priceDelevery'],            
-            'addressDelevery' => $basketUser['address'],
+            'addressDelevery' => StringHelper::cutAddressCity($basketUser['address']),
             'priceSelfdelevery' => 0,
             'basketpricetotalall' => $row['basketpricetotalall'],
             'post' => $row['post'],
@@ -332,6 +339,7 @@ class AjaxController extends AbstractActionController
             'storeAdress' => $row["storeAdress"],
             "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
             'paycard' => $post->paycard,
+            'timeDelevery' => $timeDelevery,
             /**/
            ]);
         $view->setTemplate('application/common/basket-payinfo');

@@ -9,7 +9,7 @@
         <div class="char-row">
             <span class="char-title"><span>Адрес доставки </span>
             </span><span class="char-value">
-                <input type="text" id="basketuseradress"  value="<?= $basketUser['address'] ?>" class="lableinfo">
+                <input type="text" id="basketuseradress"  value="<?= $basketUser['address'] ?>" class="lableinfo" name=basketuseradress" >
                 <span class="mini red blok" id="basketuseradresserror"></span>    
                 <span class="mini gray">При изменении адреса изменяется доступность товаров в корзине</span>
             </span>
@@ -30,7 +30,7 @@
             
         </div>
         <div class="char-row">
-            <span class="char-title"><span>Комменатрий курьеру </span>
+            <span class="char-title"><span>Комментарий курьеру </span>
             </span><span class="char-value">
                 <input type="text" id="basketusercomment"   class="lableinfo" placeholder="О чем должен знать курьер?">
                 <span class="mini gray"></span>

@@ -72,5 +72,12 @@ class StringHelper
            return join("," , $address_tmp);
                 
     }
+    public static function cutAddressCity ($address)
+    {
+           $address_tmp = explode(",", $address);
+           unset($address_tmp[0]);
+           return join("," , $address_tmp);
+                
+    }
 
 }

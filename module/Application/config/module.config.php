@@ -968,6 +968,7 @@ return [
             'update_client_info' => 'http://SRV02:8000/SC/hs/site/update_client_info',
             'change_client_password' => 'http://SRV02:8000/SC/hs/site/change_client_password',
             'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
+            'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [

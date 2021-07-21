@@ -1,4 +1,14 @@
-
+function setTimepointText(loadinfo=false){
+    $.each($(".timepoint"), function(index,value){
+        var rel=$(this).attr("rel");
+        var settext = $('option:selected',this).attr('rel')
+        $("#"+rel).val(settext + ", ");
+                //$(this).find('option:selected').attr("rel");
+       // console.log(rel + settext);
+        
+    })
+    if (loadinfo) loadPayInfo();
+}
 //ajax/calculate-basket-item
 function calculateBasketHeader (productId)
 {
@@ -7,7 +17,7 @@ function calculateBasketHeader (productId)
     $.each($(".basketproviderblok"), function(index,value){
       var id = $(this).attr("id"), rel = $(this).attr("rel");
       var products = $("#" + id + " .checkallprovider.zach ").length ;
-    console.log($("#" + id + " .checkallprovider ").length + " / " + $("#" + id + " .checkallprovider.zach ").length + " / #checkallallprovider" + rel);
+    //console.log($("#" + id + " .checkallprovider ").length + " / " + $("#" + id + " .checkallprovider.zach ").length + " / #checkallallprovider" + rel);
         
         if ($("#" + id + " .checkallprovider.zach ").length == $("#" + id + " .checkallprovider").length ){
           
@@ -62,7 +72,7 @@ function calculateBasketItem (productId)
             dataType: 'json',
             data:{"product" : productId, "count":count },
             success: function (data) {
-              console.log(data);
+              //console.log(data);
               $("#priceproduct-"+ productId).html(data.totalFomated);
                 
              },
@@ -85,11 +95,15 @@ function calculateSelfDelevery ()
 }
 
 
-function calculateBasketMerge (dataString)
+function calculateBasketMerge (dataString, loadinfo = false)
 {
     
     $.ajax({
-            beforeSend : function (){ $("#basket-ordermerge-cover").stop().fadeIn(); },
+            beforeSend : function (){ 
+                $("#basket-ordermerge-cover").stop().fadeIn(); 
+                setTimepointText(loadinfo);
+                
+            },
             
             url: "/ajax-basket-order-merge",
             type: 'POST',
@@ -98,6 +112,7 @@ function calculateBasketMerge (dataString)
             success: function (data) {
                 $("#basketordermerge").html(data);
                 $("#basket-ordermerge-cover").hide();
+                setTimepointText();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $("#basketordermerge").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
@@ -117,30 +132,24 @@ function calculateBasketPayCard ()
             cache: false,
             data: dataString,
             success: function (data) {
-                $("#baskepaycardinfo").html(data);
-                
-            },
+                $("#baskepaycardinfo").html(data); },
             error: function (xhr, ajaxOptions, thrownError) {
                 $("#baskepaycardinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
-                
                 return false;
             }
         });
     
 }
 
-
-
-
-
 function loadPayInfo(){
     var dataString = $("#user-basket-form").serialize();
     $.ajax({
             beforeSend : function (){ 
                 $("#basket-payinfo-cover").stop().fadeIn(); 
+                
+                calculateBasketMerge (dataString);
                 calculateBasketPayCard();
                 calculateBasketHeader();
-                calculateBasketMerge (dataString);
                 calculateSelfDelevery();
                 },
             url: "/ajax-basket-pay-info",
@@ -160,6 +169,8 @@ function loadPayInfo(){
 
 
 $(function(){
+    
+    calculateBasketMerge ($("#user-basket-form").serialize(), true);
     
     //$("#user-basket-form").serialize()
     loadPayInfo();
@@ -282,7 +293,7 @@ $(function(){
                 //console.log($("#providerblok-" + provider + " .basketrowproduct").lenght);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "");
                 $("#basket-payinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
                 
                 

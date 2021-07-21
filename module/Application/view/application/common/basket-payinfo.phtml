@@ -1,14 +1,13 @@
 <div class="contentpadding"><?php
-     print_r($this->post)
+    //print_r($this->post)
 ;?>
 </div>
 
-<?php if($countDelevery and $addressDelevery):?>  
+<?php if($countDelevery and $addressDelevery and $payEnable):?>  
 <div class='contentpadding nopad'>
 <div class='delevery-item delevery-door' > 
                 <b class='blok'>Доставка </b>
-                <div class='blok'><?=$timeDelevery?></div>
-                <div class='blok'><?=$addressDelevery?></div>
+                <div class='blok'><?=$countDeleveryText?>, <?=$timeDelevery?> <?=$addressDelevery?></div>
             </div>
 </div>
   <?php endif;?>
@@ -25,7 +24,7 @@
             </div>
        </div> 
   <?php } ?>
-<?php if(true ):?>
+<?php if($payEnable ):?>
     <div class='contentpadding nopad'>
             <div class='delevery-item delevery-self' > 
                 <b class='blok'>Оплата</b>
@@ -35,9 +34,10 @@
 <?=($paycard and $cardinfo)?"Оплата с привязанной карты <span class='blok gray'>$cardinfo</span>":"Оплатить банковской картой"?></div>
             </div>
     </div>
-<?php endif;?>
+
 
         <div class='volna' ></div>  
+<?php endif;?>
         <div class='contentpadding '>
             <h2 class='blok price' ><tag id="basketpricetotalall"><?=number_format(((int)($basketpricetotalall + $priceDelevery )/100), 0, ',', '&nbsp;')?></tag>&#8381; 
     <?php if($basketoldpricetotalall){?> <span class='oldprice' ><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span>&nbsp;&#8381;</span><?php }?>
@@ -67,8 +67,10 @@
                 </span>
             </div>
    <?php }?>
-            <div class='contentpadding'>
-                <div class=paybutton  >перейти к оплате</div>
+            <div class='contentpadding relative'>
+              <?php if(!$payEnable){?>  <div class="overcoverlocal"></div> <?php }?>
+                    <div class=paybutton  >перейти к оплате</div>
+                
             </div>
 
             <div class='contentpadding'>

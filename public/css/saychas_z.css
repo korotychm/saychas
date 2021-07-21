@@ -22,6 +22,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 #quicksearch .blok  {font-size:90%;}
 .overcoverblack {width:100%; height:100%;position:fixed; display:block; background:rgba(0,0,0,.5);z-index:600; top:0 }
+.overcoverlocal {width:100%; height:100%;position:absolute; display:block; background:rgba(255,255,255,.7);z-index:10; top:0 }
 #lefmobiletpanel  {
     position:fixed; 
     display:block; 
@@ -976,18 +977,28 @@ img.zero, .zeroblok {
 .lableinfo {
     display:inline-block;
     padding:8px 16px;
-    border:1pt solid var(--gray);
-    border-radius:40px;
+    border:1pt solid var(--gray) ;
+    border-radius:40px ;
+    outline:none !important;
     padding-right:40px;
     background: url("/img/saychas-zero.png") right 9px  no-repeat;
-    margin: 16px; box-sizing:border-box;
+    margin:16px 0;
+    box-sizing:border-box;
 }
+.lableinfo:focus {border-color:var(--red)}
+.margin16 {margin:16px;}
 #basketuseradress.lableinfo,
 #basketusercomment.lableinfo {padding-right:16px; background:none; display:block; position:relative; top:-18px; margin-bottom:-18px; width:100%}
 
 .hr-saychas {border:none; border-top:3px dotted var(--gray-light)}
 .goself {background:#fff url("/img/goself.png") right bottom no-repeat }
 .borderredhalf {border:2px solid transparent; /*opacity:.5*/}
+
+.borderredhalf .lableinfo {opacity:.4}
+.borderredhalf.left .lableinfo ,
+.borderredhalf.right .lableinfo {
+    opacity:1
+}
 .borderredhalf.left {
     border-top-left-radius: 24px;
     border-bottom-left-radius: 24px;
@@ -1000,4 +1011,4 @@ img.zero, .zeroblok {
     border-color:var(--red);
     transition: 1; opacity:1
 }
-.borderredhalf.right:before, .borderredhalf.left:before {transition: 3; opacity:1} 
+.borderredhalf.right .lableinfo:before, .borderredhalf.left .lableinfo:before {transition: 3; opacity:1} 
