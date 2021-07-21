@@ -29,6 +29,8 @@ class IndexController extends AbstractActionController
     protected $rbacManager;
     
     protected $entityManager;
+    
+    protected $userManager;
 
     /** @var array */
     protected $table = [
@@ -44,7 +46,7 @@ class IndexController extends AbstractActionController
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
-    public function __construct($container, $sessionContainer, $entityManager)
+    public function __construct($container, $sessionContainer, $entityManager, $userManager)
     {
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
@@ -52,6 +54,7 @@ class IndexController extends AbstractActionController
 //        $this->rbacAssertionManager = $this->container->get(\ControlPanel\Service\RbacAssertionManager::class);
         $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
         $this->entityManager = $entityManager;
+        $this->userManager = $userManager;
     }
 
     public function onDispatch(MvcEvent $e)

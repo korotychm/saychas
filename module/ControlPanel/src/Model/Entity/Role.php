@@ -6,6 +6,8 @@ namespace ControlPanel\Model\Entity;
 
 use Application\Model\Entity\Entity;
 use ControlPanel\Model\Repository\RoleHierarchyRepository;
+use ControlPanel\Model\Repository\RoleRepository;
+use Application\Model\Traits\Searchable;
 
 /**
  * Description of Role
@@ -15,7 +17,11 @@ use ControlPanel\Model\Repository\RoleHierarchyRepository;
 class Role extends Entity
 {
 
+    use Searchable;
+    
     public static RoleHierarchyRepository $roleHierarchyRepository;
+    
+    public static RoleRepository $repository;
 
     /** @var int */
     protected $id;

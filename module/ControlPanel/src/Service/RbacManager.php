@@ -139,6 +139,7 @@ class RbacManager
                     $rbac->getRole($roleName)->addPermission($permission->getPermissionName());
                 }
             }
+//            $this->isGranted(null, []);
             //$this->isGranted(null, 'general');
             // Save Rbac container to cache.
             $this->cache->setItem('rbac_container', $rbac);
@@ -156,6 +157,16 @@ class RbacManager
         if ($this->rbac == null) {
             $this->init();
         }
+        
+//        echo 'admin: delete.personal = '. $this->rbac->isGranted('admin', 'delete.personal').'<br/>';
+//        echo 'editor: view.profile = '. $this->rbac->isGranted('editor', 'view.profile').'<br/>';
+//        echo 'supervisor: edit.profile = '. $this->rbac->isGranted('supervisor', 'edit.profile').'<br/>';
+//        echo 'guest: view.profile = '. $this->rbac->isGranted('guest', 'view.profile').'<br/>';
+//        echo 'guest: general = '. $this->rbac->isGranted('guest', 'general').'<br/>';
+//        
+//        
+//        exit;
+        
 
         if ($user == null) {
 
