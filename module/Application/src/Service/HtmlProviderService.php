@@ -327,10 +327,10 @@ class HtmlProviderService
                 $("#rangeslider").ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
-                    min: ' . $price['minprice'] . ',
-                    max: ' . $price['maxprice'] . ',
-             //        from:' . $pricesel['minprice'] . ',
-             //       to:  ' . $pricesel['maxprice'] . ',
+                    min: ' . (int)$price['minprice'] . ',
+                    max: ' . (int)$price['maxprice'] . ',
+             //        from:' . (int)$pricesel['minprice'] . ',
+             //       to:  ' . (int)$pricesel['maxprice'] . ',
                     hideMinMax:true,
                     type: "double",
                     step: ' . ($step * 100) . ',
@@ -749,6 +749,27 @@ class HtmlProviderService
         //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
         ;
     }
+    
+    public function getUserInfo($user)
+    {
+        //$container = new Container(StringResource::SESSION_NAMESPACE);
+        
+        
+        $return['id'] = $user->getId();
+        $return['username'] = $user->getName();
+        $return['phone'] = $user->getName();
+        $userData = $user->getUserData();
+
+        $usdat = $userData->current();
+        if (null != $usdat) {
+            $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
+            $return['userGeodata'] = $usdat->getGeoData();
+            //exit ($userGeodata);
+        }
+       //exit (print_r($return));
+        return $return;
+    }
+    
 
     public function basketPayInfoData($post, $param)
     {
@@ -863,9 +884,9 @@ class HtmlProviderService
             $return['timeClose'] = min($timeClose);
             //<option value="0" rel=" в течение часа ">сейчас за час</option>
             $timeDelevery1Hour[]=[
-                    "lable" => "сейчас за час",
+                    "lable" => StringResource::BASKET_SAYCHAS_title,
                     "value" => 0,
-                    "rel" => "в течение часа",
+                    "rel" => StringResource::BASKET_SAYCHAS_do ,
                     ];
                     
             for ($i = 1; $i <= 12; $i++) {
@@ -873,19 +894,24 @@ class HtmlProviderService
                 $timeEnd = time() + 3600 * $i + 3600; 
                 $time3End = time() + 3600 * $i + 3600 * 3; 
                 if($timeEnd > $return['timeClose']) break;
+                
+                $value  = "c ".date("H", $timeStart).":00"." до ".date("H", $timeEnd).":00";
+                $value3 = "c ".date("H", $timeStart).":00"." до ".date("H", $time3End).":00";
+                
                 $rel = (date("d", $timeStart) == date("d"))?" сегодня ":" завтра ";
                 
+                
                 $timeDelevery1Hour[]=[
-                    "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $timeEnd).":00",
+                    "lable" => $value,
                     "value" => date("H", $timeStart),
-                    "rel" => $rel,
+                    "rel" => $rel.$value,
                     ];
                 
                 if($time3End < $return['timeClose']) {
                     $timeDelevery3Hour[]=[
-                    "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $time3End).":00",
+                    "lable" => $value3,
                     "value" => date("H", $timeStart),
-                    "rel" => $rel,
+                    "rel" => $rel.$value3,
                     ];
                 }
             }
@@ -974,6 +1000,7 @@ class HtmlProviderService
                     $provider_address .= ($store->getDescription())?", ".$store->getDescription():"";
                     $provider_store = $store->getTitle();
                     $provider_addressappend = StringHelper::cutAddress($provider_address);
+                    $countprovider ++;
                  }
                  else {
                     $provider_disable = "Сейчас доставка недоступна";
@@ -1012,6 +1039,8 @@ class HtmlProviderService
             $return["title"] .= "из ";
             $return["title"] .=($countproviders == 1)?"$countproducts магазина ": "$countproducts магазинов ";
         }
+        $return ["countproviders"] = $countproviders;
+        $return ["countprducts"] = $countproducts;
         if(is_array($return["product"]))     ksort($return["product"]);
         return $return;
     }

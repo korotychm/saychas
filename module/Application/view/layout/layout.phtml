@@ -140,10 +140,12 @@
                         </div>
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding  blokc'>
-                            <a href="/basket" >    <div class="emptyblock">
-                                    <div id="zakazcount">2</div>
+<?=(true or $this->addressLegal)?'<a href="/basket" >':'<div class="open-user-address-form ">'?>                     
+                                <div class="emptyblock">
+                                    <div id="zakazcount">0</div>
                                 </div>
-                                <div class="blokc">корзина</div></a>
+                                <div class="blokc">корзина</div>
+<?=(true or  $this->addressLegal)?'</a>':'</div>'?>                     
                             </div>
                         </div>
 

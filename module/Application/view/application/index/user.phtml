@@ -23,7 +23,7 @@ $this->headTitle($this->title, 'PREPEND');
             <div id='ajaxfiltranswer'></div>
             <br class="both">
             <h1><?= $this->title ?>  <?=($this->id)?"<span>id: ". $this->id ."</span>":""?></h1>
-            <div id="userdata"><?=(!$this->auth)?$this->partial('application/index/partials/auth-form'):$this->partial('application/index/partials/user-form') ?></div>
+            <div id="userdata"><?=(!$this->auth)?$this->partial('application/common/auth-form'):$this->partial('application/common/user-form') ?></div>
         </div>               
     </div>
 </div>

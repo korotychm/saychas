@@ -457,11 +457,28 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     padding:16px; 
     border-radius:16px;
     display:block; 
-    border:1px solid var(--gray-light); 
+    border:1px solid var(--gray); 
     box-sizing: border-box;
     min-width:500px;
-    margin-bottom:24px
+    margin:16px 0;
+    
 }
+.contentpaddinguserbox  {
+    padding:16px; 
+    border-radius:16px;
+    display:block; 
+    border:1px solid var(--gray); 
+    box-sizing: border-box;
+    min-width:300px;
+    margin:16px 0;
+    max-width:99%;
+    position:relative;
+    top:-24px; 
+    margin-bottom:-8px;
+    margin-top:24px;
+}
+.contentpaddinguserbox .basketcol {box-sizing: border-box}
+
 #checkallavailble {margin-left:25px;}
 .contentpaddingbox .basketrow.disabled {opacity:.5} 
 .contentpaddingbox .basketcol {
@@ -474,6 +491,28 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol img {max-width:100%; max-height:100%}
 .contentpaddingbox .basketcol.titleprovider {
     width: calc(100% - 50px);
+
+}
+
+.contentpaddingbox .basketcol.titleuser {
+    width: calc(100% - 220px);
+
+}
+.avatar, .avatar2ch {
+    width:60px; 
+    height:60px; 
+    line-height:60px; 
+    text-align:center; 
+    font-size:28px;
+    font-weight:600; 
+    color:#fff;
+    background: var(--gray);
+    overflow:hidden; 
+    display:block;
+}
+
+.contentpaddingbox .basketcol.exituser {
+    width: 120px;
 
 }
 .contentpaddingbox .basketcol.titleprovider .brandlogo {
@@ -492,9 +531,13 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol.check {
     width:40px;
 }
+
 .contentpaddingbox .basketcol.imageproduct{
     width:80px; height:80px; text-align:center;
 }
+.basketcol.imageproduct img, 
+.basketcol.imageproduct .avatar {border-radius:80px; width:60px; height:60px;  }
+.basketcol.imageproduct img {border:1px solid var(--gray-light)}
 .appendproviderbutton {
     font-size:1.2rem; line-height:1rem;  
 
@@ -585,7 +628,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol.titleproduct {
     width: calc(100% - 498px);
 }
-
+.contentpaddingbox .basketcol.titleproduct.product {font-size:1.05rem}
 .contentpaddingbox .basketcol.titleproduct.disabled
 {
     opacity: .5
@@ -992,7 +1035,11 @@ img.zero, .zeroblok {
 
 .hr-saychas {border:none; border-top:3px dotted var(--gray-light)}
 .goself {background:#fff url("/img/goself.png") right bottom no-repeat }
-.borderredhalf {border:2px solid transparent; /*opacity:.5*/}
+.flex-row { display: flex;   flex-direction: row; justify-content: flex-start; align-items: top;}
+.borderredhalf {border:2px solid  transparent}; /*opacity:.5*/ 
+	/*display: flex;   flex-direction: row; justify-content: flex-start; align-items: top;/*display: flex;
+        var(--gray-light*/  
+
 
 .borderredhalf .lableinfo {opacity:.4}
 .borderredhalf.left .lableinfo ,

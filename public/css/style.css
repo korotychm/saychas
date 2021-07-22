@@ -97,5 +97,6 @@
  #tree.tree {/*font-size:1.1rem;*/ font-weight:500}
 .none {display:none}
 .grayscale {filter: grayscale(100%);}
+.open-user-address-form  {cursor:pointer}
  
 

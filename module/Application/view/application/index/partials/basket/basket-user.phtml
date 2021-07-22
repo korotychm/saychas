@@ -17,15 +17,22 @@
 
         <div class="char-row">
             <span class="char-title"><span>Получатель </span>
-            </span><span class="char-value">
-                <span>
-        <div class="pw-contentblock cblock-5">
-            <?= $basketUser['name'] ?> <div class='blok'><?= $basketUser['phoneformated'] ?></div>
+            </span><span class="char-value"><div class="contentpaddingbox contentpaddinguserbox">   
+                    <div class="basketrow">
+                        <div class="basketcol imageproduct">
+                            <div class="avatar"><?=mb_substr(trim($basketUser['name']),0,1)?></div>
+                        </div>
+             <div class="basketcol titleuser">
+                <b><?= $basketUser['name'] ?></b> <div class='blok'><?= $basketUser['phoneformated'] ?></div>
             </div>
-                    <div class="pw-contentblock cblock-4 iblokr"><div class="contentpadding"><a href="/clear-user-data" class=""><img src="/img/saychas-zero.svg" class="grayscale contentpadding">Выход</a></div></div>
+                    <div class="basketcol exituser">
+                        
+                            <div class="contentpadding"><a href="/clear-user-data" class=""><img src="/img/saychas-zero.svg" class="grayscale contentpadding">Выход</a></div>
+                        
+                    </div>
                     
-                    
-                </span>
+                </div>
+                </div>
             </span>
             
         </div>

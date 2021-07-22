@@ -97,7 +97,7 @@ function calculateSelfDelevery ()
 
 function calculateBasketMerge (dataString, loadinfo = false)
 {
-    
+    //return;
     $.ajax({
             beforeSend : function (){ 
                 $("#basket-ordermerge-cover").stop().fadeIn(); 
@@ -169,7 +169,10 @@ function loadPayInfo(){
 
 
 $(function(){
-    
+    /**/
+    $("body").on("change",".timepoint", function(){
+     calculateBasketMerge ($("#user-basket-form").serialize(), true);   
+    })/**/
     calculateBasketMerge ($("#user-basket-form").serialize(), true);
     
     //$("#user-basket-form").serialize()
@@ -235,7 +238,8 @@ $(function(){
                 $("#provider_addressappend" + rel).show();
                 $("#seldeleveryblokrow-" + rel).addClass('seldeleveryblokrowcountme').show();
         }
-        loadPayInfo();
+        
+        calculateBasketMerge ($("#user-basket-form").serialize(), true);
     });
     $("#checkallavailble").click(function(){
         if($(this).hasClass("zach")){
@@ -243,6 +247,7 @@ $(function(){
             $("#checkallavailble").removeClass("zach");
             $(".allallcheck").prop("checked", false);
             $(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
+            $(".selfdeleverycheckbox").prop("checked", false);
             
         }
         else {
@@ -268,6 +273,7 @@ $(function(){
             $(".povidercheck-" + rel ).prop("checked", true);
             $(".selfdeleveryallprovider-" + rel ).addClass("selfdeleverycountme").show();
         }
+        calculateBasketHeader();
         loadPayInfo();
     })
     
@@ -289,6 +295,7 @@ $(function(){
                 if($("#providerblok-" + provider + " .basketrowproduct").length < 1){
                     $("#providerblok-" + provider).remove();
                 }
+                calculateBasketHeader();
                 loadPayInfo();
                 //console.log($("#providerblok-" + provider + " .basketrowproduct").lenght);
             },
@@ -320,6 +327,7 @@ $(function(){
             $(".product-" + rel ).prop("checked", true);
             $(".selfdeleveryproduct-" + rel ).addClass("selfdeleverycountme").show();
         }
+        calculateBasketHeader();
         loadPayInfo();
     })
 

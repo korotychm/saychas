@@ -73,6 +73,7 @@ class IndexController extends AbstractActionController
     //private $sessionContainer;
     private $sessionManager;
 
+    
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
                 ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
                 ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
@@ -106,6 +107,8 @@ class IndexController extends AbstractActionController
         $this->basketRepository = $basketRepository;
 //        $this->sessionContainer = $sessionContainer;
         $this->sessionManager = $sessionManager;
+
+        
     }
 
     public function onDispatch(MvcEvent $e)
@@ -123,22 +126,31 @@ class IndexController extends AbstractActionController
         $response = parent::onDispatch($e);
 //        $servicemanager = $e->getApplication()->getServiceManager();
         
-         $userId = $this->identity();
+        $userId = $this->identity();
         $user = $this->userRepository->find(['id'=>$userId]);
         
+        
+        
         $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
+        $userInfo = $this->htmlProvider->getUserInfo($user);
+       
 
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
 //        $category = $this->categoryRepository->findCategory(29);
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
+        $addressLegal = ($userInfo["userAddress"])?true:false;
+        
+        
         // Return the response
         $this->layout()->setVariables([
             'headerText' => $this->htmlProvider->testHtml(),
             'footerText' => 'banzaii',
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
+            'addressLegal' =>  $addressLegal,
         ]);
+        $this->layout()->setVariable('banzaii', 'vonzaii');
         //$this->layout()->setTemplate('layout/mainpage');
         return $response;
 
@@ -221,16 +233,29 @@ class IndexController extends AbstractActionController
             $basketUser['name'] = $user->getName();
             $userData = $user->getUserData();
             $count = $userData->count();
-            if(!$basketUser['phone'] or !$basketUser['name'] or $count <=0 ){
-                header("HTTP/1.1 301 Moved Permanently");
-                header("Location: /user");
-                exit();   
+            if ($count <=0){
+                /*header("HTTP/1.1 301 Moved Permanently");
+                header("Location: /");
+                exit();   */
             }
-            
-            $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
-            $basketUser['address'] = $userData->current()->getAddress();
+            else
+            {
+                 $basketUser['address'] = $userData->current()->getAddress();
             $basketUser['geodata'] = $userData->current()->getGeoData();
+            
+            }    
+            $legalUser=true; 
+            
+            
+            if(!$basketUser['phone'] or !$basketUser['name']   ){
+                $legalUser=false; 
+            }
+            $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
+           
+            
+            
             //exit ($userPhone." / ".$userAddress);*/
+            
             
             $where = new Where();
             $where->equalTo('user_id', $userId);
@@ -252,8 +277,10 @@ class IndexController extends AbstractActionController
                 }    
             }
             exit (print_r($return));*/
+            
         
      $content = $this->htmlProvider->basketData($basket);   
+     //exit (print_r($content));
      return new ViewModel([
            /* "providers" => $providers,*/
             "content" => $content["product"],
@@ -261,6 +288,12 @@ class IndexController extends AbstractActionController
             "titleH" => $content["title"],
             "basketUser" => $basketUser, 
             "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
+            "countproviders" => $content["countproviders"],
+            "countprducts" => $content["countproducts"],
+            "legalUser" => $legalUser,
+            "legalAddress" => $legalAddress,  
+            'textdefault' => \Application\Resource\StringResource::BASKET_SAYCHAS_do.", ",
+     
             
         ]);   
     }

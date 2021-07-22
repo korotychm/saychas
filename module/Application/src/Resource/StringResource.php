@@ -12,6 +12,8 @@ class StringResource
     const PRODUCT_SUCCESS_MESSAGE = "Объект product &nbsp;получен";
     const SESSION_NAMESPACE = "session_namespace";
     const CODE_CONFIRMATION_SESSION_NAMESPACE = "code_confirmation_session_namespace";
+    const BASKET_SAYCHAS_title = "сейчас за час";
+    const BASKET_SAYCHAS_do = "в течение часа";
     
     /*
      * авторизация
