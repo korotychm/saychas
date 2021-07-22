@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel/src/Controller/IndexController.php
+// ControlPanel/src/Controller/AuthController.php
 
 declare(strict_types=1);
 
@@ -12,7 +12,7 @@ use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 
-class LoginController extends AbstractActionController
+class AuthController extends AbstractActionController
 {
 
     /** @var ContainerInterface */
@@ -23,9 +23,11 @@ class LoginController extends AbstractActionController
 
     /** @var Container */
     protected $sessionContainer;
-    
+
+    /** @var EntityManager */
     protected $entityManager;
 
+    /** @var UserManager */
     protected $userManager;
 
     /**
@@ -53,7 +55,7 @@ class LoginController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $this->layout()->setTemplate('layout/control-panel-login');
+        $this->layout()->setTemplate('layout/control-panel-auth');
         return $response;
     }
 
@@ -97,6 +99,18 @@ class LoginController extends AbstractActionController
     {
         unset($this->sessionContainer->partnerLoggedIn);
         return $this->redirect()->toUrl('/control-panel');
+    }
+
+    /**
+     * Displays the "Not Authorized" page.
+     *
+     * @return ViewModel
+     */
+    public function notAuthorizedAction()
+    {
+        $this->getResponse()->setStatusCode(403);
+
+        return new ViewModel();
     }
 
 }

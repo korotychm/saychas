@@ -6,15 +6,40 @@ use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 //use Laminas\Router\Http\Hostname;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
-use ControlPanel\Controller\Factory\StandardControllerFactory;
+use ControlPanel\Controller\Factory\IndexControllerFactory;
+use ControlPanel\Controller\Factory\AuthControllerFactory;
+//use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
     'controllers' => [
         'factories' => [
-            \ControlPanel\Controller\IndexController::class => StandardControllerFactory::class,
-            \ControlPanel\Controller\LoginController::class => StandardControllerFactory::class,
+//            \ControlPanel\Controller\IndexController::class => StandardControllerFactory::class,
+//            \ControlPanel\Controller\AuthController::class => StandardControllerFactory::class,
+            \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
+            \ControlPanel\Controller\AuthController::class => AuthControllerFactory::class,
         ],        
     ],
+    // The 'access_filter' key is used by the User module to restrict or permit
+    // access to certain controller actions for unauthorized visitors.
+    'access_filter' => [
+        'controllers' => [
+            Controller\UserController::class => [
+                // Give access to "resetPassword", "message" and "setPassword" actions
+                // to anyone.
+                ['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
+                // Give access to "index", "add", "edit", "view", "changePassword" actions to users having the "user.manage" permission.
+                ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '+user.manage']
+            ],
+            Controller\RoleController::class => [
+                // Allow access to authenticated users having the "role.manage" permission.
+                ['actions' => '*', 'allow' => '+role.manage']
+            ],
+            Controller\PermissionController::class => [
+                // Allow access to authenticated users having "permission.manage" permission.
+                ['actions' => '*', 'allow' => '+permission.manage']
+            ],
+        ]
+    ],    
     'router' => [
         'routes' => [
             'control-panel' =>  [
@@ -131,7 +156,7 @@ return [
                         'options' => [
                             'route' => '/login',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'controller' => \ControlPanel\Controller\AuthController::class,
                                 'action' => 'login',
                             ],
                         ],
@@ -142,7 +167,7 @@ return [
                         'options' => [
                             'route' => '/check-login',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'controller' => \ControlPanel\Controller\AuthController::class,
                                 'action' => 'check-login',
                             ],
                         ],
@@ -153,8 +178,19 @@ return [
                         'options' => [
                             'route' => '/logout',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\LoginController::class,
+                                'controller' => \ControlPanel\Controller\AuthController::class,
                                 'action' => 'logout',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'not-authorized' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/not-authorized',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'not-authorized',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -222,6 +258,8 @@ return [
             \ControlPanel\Service\CurlRequestManager::class => \ControlPanel\Service\Factory\CurlRequestManagerFactory::class,
             /** User Manager */
             \ControlPanel\Service\UserManager::class => \ControlPanel\Service\Factory\UserManagerFactory::class,
+            /** Auth Manager */
+            \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
         ],
     ],
     'parameters' => [
@@ -238,7 +276,7 @@ return [
         ],
         'template_map' => [
 //            'layout/control-panel'           => __DIR__ . '/../view/layout/control-panel.phtml',
-//            'layout/control-panel-login'     => __DIR__ . '/../view/layout/control-panel-login.phtml',
+//            'layout/control-panel-auth'     => __DIR__ . '/../view/layout/control-panel-auth.phtml',
             
             'control-panel/index/index' => __DIR__ . '/../view/control-panel/index/index.phtml',
 //            'error/404'               => __DIR__ . '/../view/error/404.phtml',

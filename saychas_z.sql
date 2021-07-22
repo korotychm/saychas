@@ -22,9 +22,9 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `role_hierarchy`;
 DROP TABLE IF EXISTS `role_permission`;
 DROP TABLE IF EXISTS `permission`;
-DROP TABLE IF EXISTS `role_hierarchy`;
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
 	`id`	int(11) NOT NULL auto_increment,
@@ -37,11 +37,11 @@ CREATE TABLE `role` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
--- INSERT INTO `role` (name, description) values ('admin', 'Administrator'), ('editor', 'Editor'), ('author', 'Author'), ('audit', 'Audit'), ('supervisor', 'Supervisor'), ('guest', 'Guest'), ('visitor', 'Visitor');
+INSERT INTO `role` (name, description) values ('admin', 'Administrator'), ('editor', 'Editor'), ('author', 'Author'), ('audit', 'Audit'), ('supervisor', 'Supervisor'), ('guest', 'Guest'), ('visitor', 'Visitor');
 
 -- DROP TABLE IF EXISTS `role_hierarchy`;
-
-/* CREATE TABLE `role_hierarchy` (
+/*
+CREATE TABLE `role_hierarchy` (
 	`id`	int(11) auto_increment,
 	`parent_role_id` int(11) NOT NULL,
 	`child_role_id`  int(11) NOT NULL,
@@ -59,46 +59,48 @@ CREATE TABLE `role` (
 */
 
 CREATE TABLE `role_hierarchy` (
-        `id`    int(11) NOT NULL,
+        `id`    int(11) NOT NULL auto_increment,
         `parent_role_id` int(11) NOT NULL,
         `child_role_id`  int(11) NOT NULL,
-        `terminal` int(1) NOT NULL DEFAULT 0 -- ,
---        PRIMARY KEY (`id`)
+        `terminal` int(1) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
 
 
 -- ALTER TABLE `role` DROP COLUMN `parent_role_id`;
 -- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`) values(1,2),(2,3),(4,2),(1,5),(7,6),(1,7);
--- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,2,1),(1,3,0),(1,2,0),(2,5,0),(4,6,0),(5,7,0),(3,4,0);
+INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,1,1),(1,2,0),(1,3,0),(2,4,0),(4,5,0),(5,6,0),(3,7,0);
 
+/*
 INSERT INTO `role` (name, description) values ('admin', 'Administrator');
 select LAST_INSERT_ID() into @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,0,2,1);
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,0,1,1);
 
 INSERT INTO `role` (name, description) values ('editor', 'Editor');
 select LAST_INSERT_ID() into @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,3,0);
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,2,0);
 
 INSERT INTO `role` (name, description) values ('author', 'Author');
 select LAST_INSERT_ID() INTO @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,2,0);
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,3,0);
 
 INSERT INTO `role` (name, description) values ('audit', 'Audit');
 select LAST_INSERT_ID() into @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,2,5,0);
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,2,4,0);
 
 INSERT INTO `role` (name, description) values ('supervisor', 'Supervisor');
 select LAST_INSERT_ID() into @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,4,6,0);
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,4,5,0);
 
 INSERT INTO `role` (name, description) values ('guest', 'Guest');
 select LAST_INSERT_ID() into @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,5,7,0);
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,5,6,0);
 
 INSERT INTO `role` (name, description) values ('visitor', 'Visitor');
 select LAST_INSERT_ID() into @l;
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,3,4,0);
-
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,3,7,0);
+*/
 -- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,2,1),(1,3,0),(1,2,0),(2,5,0),(4,6,0),(5,7,0),(3,4,0);
 
 CREATE TABLE `permission` (
@@ -169,7 +171,8 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (6, 3);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (7, 3);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (7, 4);
 
-CREATE VIEW `role_permissions` (`role_id`, `role_name`, `permission_name`)
+
+CREATE OR REPLACE VIEW `role_permissions` (`role_id`, `role_name`, `permission_name`)
 AS
 	SELECT r.id AS role_id, r.name AS role_name, p.name AS permission_name FROM role r
 	LEFT JOIN role_permission rp ON rp.role_id=r.id
