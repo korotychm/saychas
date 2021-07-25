@@ -293,7 +293,8 @@ class IndexController extends AbstractActionController
             "legalUser" => $legalUser,
             "legalAddress" => $legalAddress,  
             'textdefault' => \Application\Resource\StringResource::BASKET_SAYCHAS_do.", ",
-     
+            "register_title" => StringResource::MESSAGE_ENTER_OR_REGISTER_TITLE,
+            "register_text" => StringResource::MESSAGE_ENTER_OR_REGISTER_TEXT,
             
         ]);   
     }

@@ -99,7 +99,7 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
         }
     });
     
-    
+    $("body").on("click",".user-modal-open",function(){$('#usermodalwindow').modal('show')})
     
     $("body").on("click", ".radio", function () {
         var rel=$(this).attr('rel');

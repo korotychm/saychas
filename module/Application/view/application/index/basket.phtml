@@ -2,34 +2,42 @@
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
 ?>
-<?=(!$this->legalUser)?$this->partial("/application/common/user-modal-win", ["param" => []]):"" ?>  
+<?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
 <div class="container mainconteiner"  >
     <div  class="contentwrapper">
         <?= $this->bread ?> 
         <h2 id='h1title'><?= $this->titleH ?></h2> 
         <div id="user-basket">
             <form method='POST' id='user-basket-form'>   
-                <input type="hidden" name="userId" value="<?=$this->basketUser['id']?>">
-                <textarea class="none" name="userGeoLocation" ><?=$this->basketUser['geodata']?></textarea>
+                <input type="hidden" name="userId" value="<?= $this->basketUser['id'] ?>">
+                <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
                 <div class="pw-contentblock cblock-5">
                     <?php //exit(print_r($this->content)); ?>
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
 
-                    <?= $this->partial("/application/index/partials/basket/basket-user", ["basketUser" => $this->basketUser]) ?>                     
+                    <?=
+                    $this->partial("/application/index/partials/basket/basket-user",
+                            [
+                                "legalUser" => $this->legalUser,
+                                "basketUser" => $this->basketUser,
+                                'register_title' => $this->register_title,
+                                'register_text' => $this->register_text,
+                    ])
+                    ?>                     
                     <div class='pw-contentblock flex-row ' id='basketordermerge'>
-                    <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault ])  ?>          
+                    <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>          
                     </div>            
-                    
-                    <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>      
+
+                        <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>      
                     <div  id='baskepaycardinfo'>
-                        <?=$this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1]) 
-                            ?>    
+<?= $this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1])
+?>    
                     </div>    
                 </div>
                 <div class="pw-contentblock cblock-3">
                     <div class="contentpadding">
                         <!-- div class='blok pwbox'> сервисный блок</div -->
-                        <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>      
+<?= $this->partial("/application/index/partials/basket/basket-paysection") ?>      
                     </div>
                 </div>  
             </form>

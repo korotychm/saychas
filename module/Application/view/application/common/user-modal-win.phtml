@@ -2,17 +2,12 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"  data-show="true" data-keyboard="false" data-backdrop="static" id="usermodalwindow">
     <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="usermodaltitle">Вход или регистрация</h5>
-        <button type="button" class="close none2" data-dismiss="modal" aria-label="Close" id="usermodalclose">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <p>
-              <?= $this->partial("/application/common/auth-form", ["param" => []]) ?>  
-          </p>
-      </div>
+  
+              <?= $this->partial("/application/common/auth-form-in-modal", [
+                  "title"=>"Вход или регистрация",
+                  "buttonLable" => "Продолжить",
+                  
+                  ]) ?>  
       <div class="modal-footer">
         
         

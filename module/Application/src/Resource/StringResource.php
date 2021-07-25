@@ -22,6 +22,8 @@ class StringResource
     const ERROR_INPUT_PHONE_MESSAGE = "Укажите корректный номер телефона. ";
     const ERROR_INPUT_PASSWORD_MESSAGE = "Введите пароль для&nbsp;входа. ";
     const ERROR_INPUT_NAME_SMS_MESSAGE = "Введите ваше имя и&nbsp;код&nbsp;из&nbsp;СМС. ";
+    const MESSAGE_ENTER_OR_REGISTER_TITLE = "Войти или зарегистрироваться";
+    const MESSAGE_ENTER_OR_REGISTER_TEXT = "Для продолжения необходимо зарегистрироваться";
     
     
     

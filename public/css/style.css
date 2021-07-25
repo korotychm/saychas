@@ -27,11 +27,15 @@
 .black{color:var(--black)}
 .card, .card-body, .relative {position:relative}
 .nobold {font-weight:400 }
+.nobg {background:none}
+.pointer {cursor:pointer}
 .waiting {
     min-height:50px; min-width:50px; background-image:url(/img/loader.gif);   
     background-position:center; 
     background-repeat:no-repeat;
 }
+.graybg {border-color:var(--gray-light); background-color:var(--gray-light);}
+.user-modal-open {cursor:pointer}
 .waitcover {
     display:block; 
     position:absolute; 

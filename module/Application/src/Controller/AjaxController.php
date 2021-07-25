@@ -432,7 +432,7 @@ class AjaxController extends AbstractActionController
     public function ajaxGetLegalStoreAction()
     {
         $post = $this->getRequest()->getPost();
-        exit ( print_r($post));
+       // exit ( print_r($post));
         if(!$json = $post->value) return;
         
         try {

@@ -1,27 +1,54 @@
-<form method='POST' id='userAuthForm'>
-    <div class='blok' >
-        <span class='blok mini'>Номер телефона</span>
-        <input type='phone' name='userPhone' required class="phoneInput"/>
-    </div>
+<form method='POST' id='userAuthForm' class="blok" style="max-width:500px;">
+   
+   <div class="blok">
+        <div class='pw-contentblock cblock-3 valign-middle iblokr' >
+            <b >Телефон:</b>
+        </div>
+        <div class='pw-contentblock cblock-5 valign-middle' >
+            <input type='phone' name='userPhone' required class="phoneInput lableinfo short nobg"/>
+        </div>
+   </div>
+   
     <div class='blok none  newuser'  id='sms' >
-        <span class='blok mini'>Представьтесь</span>
-        <input type='phone' name='userNameInput' class="nameInput" id='nameInput' />
+           <div class='pw-contentblock cblock-3 valign-middle iblokr' >
+            <b >Представьтесь</span></b>
+        </div>
+        <div class='pw-contentblock cblock-5 valign-middle' >
+            <input type='phone' name='userNameInput' class="nameInput  lableinfo short nobg" id='nameInput' />
+         </div>   
     </div>
     
-    <div class='blok none  olduser PT'  id='oldUser' >...</div>
+    
 
     <div class='blok none  newuser'  id='sms' >
+        <div class='pw-contentblock cblock-3 valign-middle iblokr' >
         <span class='blok mini'>Код из СМС (7777)</span>
-        <input type='phone' name='userSmsCode'  class="smsInput"  id=''/>
-    </div>
+        </div>
+    <div class='pw-contentblock cblock-5 valign-middle' >
+        <input type='phone' name='userSmsCode'  class="smsInput  lableinfo short nobg"  id=''/>
+    </div></div>
     
     <div class='blok none  olduser'  id='pass' >
-        <span class='blok mini'>Пароль</span>
-        <input type='phone' name='userPass'  class="smsInput"  id=''/>
+        <div class='pw-contentblock cblock-3 valign-middle iblokr' >
+        <b>
+            <span class=''  id='oldUser' ></span>, введи пароль</b>
+        </div>
+        <div class='pw-contentblock cblock-5 valign-middle' >
+            <input type='password' name='userPass'  class="  lableinfo short nobg"  id=''/>
     </div>
+        </div>
+   
     
-    <div class='blok' ><input type="submit" value='Войти' id='userAuthBotton'></div>
-    <div id='userAuthError' ></div>
+    <div class='blok' >
+        <div class='pw-contentblock cblock-3 valign-middle iblokr' >
+        
+        </div>
+        <div class='pw-contentblock cblock-5 valign-middle' >
+        <input type="submit" value='Войти' id='userAuthBotton' class="userformsendbutton short"></div>
+        </div>
+    
+     <p><div id='userAuthError' class="contentpadding red" ></div></p>
+    
 </form>
 
 <?php
