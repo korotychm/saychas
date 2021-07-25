@@ -6,7 +6,7 @@ namespace ControlPanel\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use ControlPanel\Service\RbacAssertionManager;
-use Laminas\Authentication\AuthenticationService;
+//use Laminas\Authentication\AuthenticationService;
 
 /**
  * This is the factory class for RbacAssertionManager service. The purpose of the factory
@@ -20,7 +20,8 @@ class RbacAssertionManagerFactory
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $authService = $container->get(AuthenticationService::class);
+        //$authService = $container->get(AuthenticationService::class);
+        $authService = $container->get('my_auth_service');
 
         return new RbacAssertionManager($authService);
     }

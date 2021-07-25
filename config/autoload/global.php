@@ -13,8 +13,8 @@
  */
 
 use Laminas\Db\Adapter;
-//use Laminas\Session\Container as SessionContainer;
-//use Laminas\Session\Storage\SessionArrayStorage;
+use Laminas\Session\Container;// as SessionContainer;
+use Laminas\Session\Storage\SessionArrayStorage;
 //use Laminas\Session\Config\SessionConfig;
 //use Laminas\Session\Validator\RemoteAddr;
 //use Laminas\Session\Validator\HttpUserAgent;
@@ -68,10 +68,10 @@ return [
             ],
         ],
     ],
-    'session_containers' => [
-        //Laminas\Session\Container::class,
-        SessionContainer::class,
-    ],
+//    'session_containers' => [
+//        //Laminas\Session\Container::class,
+//        Container::class,
+//    ],
     'session_storage' => [
         'type' => SessionArrayStorage::class,
     ],
@@ -80,8 +80,13 @@ return [
         'gc_maxlifetime' => 60*60*24*30,
         // Session cookie will expire in 1 hour.
         'cookie_lifetime' => 60*60*24*30,// 60*60*1,
-        //'remember_me_seconds' => 10,
+        //'remember_me_seconds' => 1,// 60*60*24*30,
         // …
+        'cache_expire' => 60*60*24*30,// 60*24,
+//        'options' => [
+//            //'remember_me_seconds' => 1,
+//            'name' => 'laminas-shlaminas',
+//        ],
     ],
 /** We will use the session_manager later on */
 //    'session_manager' => [

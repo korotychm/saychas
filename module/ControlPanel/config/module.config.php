@@ -260,6 +260,12 @@ return [
             \ControlPanel\Service\UserManager::class => \ControlPanel\Service\Factory\UserManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
+            /** Auth Adapter */
+            \ControlPanel\Service\AuthAdapter::class => \ControlPanel\Service\Factory\AuthAdapterFactory::class,
+            /** Authentication Service */
+            //\Laminas\Authentication\AuthenticationService::class => Service\Factory\AuthenticationServiceFactory::class,
+            'my_auth_service' => \ControlPanel\Service\Factory\AuthenticationServiceFactory::class,
+            
         ],
     ],
     'parameters' => [

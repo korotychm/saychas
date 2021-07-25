@@ -10,6 +10,7 @@ use Laminas\Session\Container;
 use ControlPanel\Resource\StringResource;
 //use Application\Service\EntityManager;
 use ControlPanel\Service\UserManager;
+use ControlPanel\Service\AuthManager;
 
 /**
  * This is the factory for Auth Controllers. Its purpose is to instantiate the
@@ -24,7 +25,8 @@ class AuthControllerFactory implements FactoryInterface
         $sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
         $entityManager = $container->get('laminas.entity.manager');
         $userManager = $container->get(UserManager::class);
-        return new $requestName($container, $sessionContainer, $entityManager, $userManager);
+        $authManager = $container->get(AuthManager::class);
+        return new $requestName($container, $sessionContainer, $entityManager, $userManager, $authManager);
     }
 
 }

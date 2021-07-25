@@ -11,6 +11,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
+use Laminas\Authentication\Result;
 
 class AuthController extends AbstractActionController
 {
@@ -30,12 +31,15 @@ class AuthController extends AbstractActionController
     /** @var UserManager */
     protected $userManager;
 
+    /** @var AuthManager */
+    protected $authManager;
+    
     /**
      * Constructor
      *
      * @param ContainerInterface $container
      */
-    public function __construct($container, $sessionContainer, $entityManager, $userManager)
+    public function __construct($container, $sessionContainer, $entityManager, $userManager, $authManager)
     {
         /** @var ContainerInterface */
         $this->container = $container;
@@ -43,6 +47,7 @@ class AuthController extends AbstractActionController
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
+        $this->authManager = $authManager;
     }
 
     /**
@@ -67,6 +72,14 @@ class AuthController extends AbstractActionController
      */
     public function loginAction()
     {
+//        $answer = $this->getAllUsers([
+//            'provider_id' => '00002',
+////            'login' => 'Banzaii',
+////            'password' => '1234', // 'ODx7hdsjK9',
+////            'roles' => ["000000002", "000000003", "000000003",],
+////            'access_is_allowed' => true,
+//        ]);
+        
         $returnUrl = $this->params()->fromQuery('returnUrl');
         return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl]);
     }
@@ -80,13 +93,19 @@ class AuthController extends AbstractActionController
     public function checkLoginAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        if ('banzaii' == $post['username'] && 'vonzaii' == $post['password']) {
+        $result = $this->authManager->login(['provider_id' => '00002', 'login' => 'Banzaii', 'password' => '1234',]);
+//        if ('banzaii' == $post['username'] && 'vonzaii' == $post['password']) {
+        if($result->getCode() == Result::SUCCESS) {
             // set session
-            $this->sessionContainer->partnerLoggedIn = true;
+            //$this->sessionContainer->partnerLoggedIn = $result->getIdentity();
+            
+            $post['username'] = 'Banzaii';
+            $post['password'] = '1234';
 
             return $this->redirect()->toUrl($post['returnUrl']);
         }
-        unset($this->sessionContainer->partnerLoggedIn);
+        //unset($this->sessionContainer->partnerLoggedIn);
+        $this->authManager->logout();
         return $this->redirect()->toUrl($post['returnUrl']);
     }
 
@@ -97,7 +116,9 @@ class AuthController extends AbstractActionController
      */
     public function logoutAction()
     {
-        unset($this->sessionContainer->partnerLoggedIn);
+        //unset($this->sessionContainer->partnerLoggedIn);
+//        return $this->redirect()->toUrl('/control-panel');
+        $this->authManager->logout();
         return $this->redirect()->toUrl('/control-panel');
     }
 

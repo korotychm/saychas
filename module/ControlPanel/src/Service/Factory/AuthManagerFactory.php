@@ -6,10 +6,10 @@ namespace ControlPanel\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\Authentication\AuthenticationService;
+//use Laminas\Authentication\AuthenticationService;
 use Laminas\Session\SessionManager;
 use ControlPanel\Service\AuthManager;
-//use ControlPanel\Service\UserManager;
+use ControlPanel\Service\UserManager;
 use ControlPanel\Service\RbacManager;
 
 /**
@@ -25,9 +25,11 @@ class AuthManagerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         // Instantiate dependencies.
-        $authenticationService = $container->get(AuthenticationService::class);
+        //$authenticationService = $container->get(AuthenticationService::class);
+        $authenticationService = $container->get('my_auth_service');
         $sessionManager = $container->get(SessionManager::class);
         $rbacManager = $container->get(RbacManager::class);
+        $userManager = $container->get(UserManager::class);
 
         // Get contents of 'access_filter' config key (the AuthManager service
         // will use this data to determine whether to allow currently logged in user
@@ -40,7 +42,7 @@ class AuthManagerFactory implements FactoryInterface
         }
 
         // Instantiate the AuthManager service and inject dependencies to its constructor.
-        return new AuthManager($authenticationService, $sessionManager, $config, $rbacManager);
+        return new AuthManager($authenticationService, $sessionManager, $config, $rbacManager, $userManager);
     }
 
 }
