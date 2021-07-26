@@ -56,18 +56,39 @@ class Module implements ConfigProviderInterface
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
         
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
-        
-        if ($controllerName != AuthController::class) {
-//            $uri = $event->getApplication()->getRequest()->getUri();
-//            $uri->setScheme(null)
-//                ->setHost(null)
-//                ->setPort(null)
-//                ->setUserInfo(null);
-//            $redirectUrl = $uri->toString();
-//
-//            // Redirect the user to the "Login" page.
+
+//        if ($controllerName != AuthController::class && $controllerName != \Application\Controller\InexController::class && 
+//                $controllerName != \Application\Controller\AjaxController::class && $controllerName != \Application\Controller\UserDataController::class) {
+        if ($controllerName != AuthController::class &&
+            $controllerName != \Application\Controller\IndexController::class &&
+            $controllerName != \Application\Controller\UserDataController::class &&
+            $controllerName != \Application\Controller\AjaxController::class &&
+            $controllerName != \Application\Controller\ReceivingController::class &&
+            $controllerName != \Application\Controller\FtpController::class &&
+            $controllerName != \Application\Controller\MyTestController::class) {
+            
+            $result = $authManager->filterAccess($controllerName, $actionName);
+            
+            if($result == AuthManager::AUTH_REQUIRED) {
+                $uri = $event->getApplication()->getRequest()->getUri();
+                $uri->setScheme(null)
+                    ->setHost(null)
+                    ->setPort(null)
+                    ->setUserInfo(null);
+                $redirectUrl = $uri->toString();
+                return $controller->redirect()->toUrl('control-panel/login');
+            }else if ($result==AuthManager::ACCESS_DENIED) {
+                // Redirect the user to the "Not Authorized" page.
+                return $controller->redirect()->toRoute('control-panel/not-authorized');
+            }
+
+
+//        $returnUrl = $this->params()->fromQuery('returnUrl');
+//        return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl]);
+            // Redirect the user to the "Login" page.
 //            return $controller->redirect()->toRoute('control-panel/login', [], 
 //                ['query'=>['redirectUrl'=>$redirectUrl]]);
+//            return $this->redirect()->toUrl($post['returnUrl']);
         }
         
     }

@@ -99,8 +99,8 @@ class AuthController extends AbstractActionController
             // set session
             //$this->sessionContainer->partnerLoggedIn = $result->getIdentity();
             
-            $post['username'] = 'Banzaii';
-            $post['password'] = '1234';
+//            $post['username'] = 'Banzaii';
+//            $post['password'] = '1234';
 
             return $this->redirect()->toUrl($post['returnUrl']);
         }
