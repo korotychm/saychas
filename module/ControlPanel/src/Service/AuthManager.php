@@ -122,8 +122,9 @@ class AuthManager
         // access to it is permitted to anyone (even for not logged in users.
         // Restrictive mode is more secure and recommended to use.
         $mode = isset($this->config['options']['mode']) ? $this->config['options']['mode'] : 'restrictive';
-        if ($mode != 'restrictive' && $mode != 'permissive')
+        if ($mode != 'restrictive' && $mode != 'permissive') {
             throw new \Exception('Invalid access filter mode (expected either restrictive or permissive mode');
+        }
 
         if (isset($this->config['controllers'][$controllerName])) {
             $items = $this->config['controllers'][$controllerName];
