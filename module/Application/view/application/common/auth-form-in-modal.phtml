@@ -21,7 +21,7 @@ $testMode = false;
             </div>
             <div class='pw-contentblock cblock-5 valign-top modaluserinf' >
          <?php  if(!$sengingPhone or $error["phone"])  {?>     
-                <input type='phone' name='userPhone' id='userPhone'  value="<?=$sengingPhone?>" required class="phoneInput lableinfo short nobg <?=($error["phone"])?"error":""?>"/>
+                <input type='phone' name='userPhone' id='userPhone' placeholder="+7(999)999-9999"  value="<?=$sengingPhone?>" required class="phoneInput lableinfo short nobg <?=($error["phone"])?"error":""?>"/>
                 <span class="formcomment blok red errormessage"><?=$error["phone"]?></span>
     <?php }
          else {?><div class="lableinfo short nobg noborder"><?=$sengingPhoneFormated?></div>
