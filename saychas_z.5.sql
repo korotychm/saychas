@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 26, 2021 at 10:15 AM
+-- Generation Time: Jul 15, 2021 at 07:47 AM
 -- Server version: 8.0.25
 -- PHP Version: 7.4.16
 
@@ -22,6 +22,162 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `role_hierarchy`;
+DROP TABLE IF EXISTS `role_permission`;
+DROP TABLE IF EXISTS `permission`;
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+	`id`	int(11) NOT NULL auto_increment,
+	-- `parent_role_id` int(11) DEFAULT 0,
+	-- `child_role_id` int(11) DEFAULT 0,
+	`name`	VARCHAR(255),
+	`description` TEXT,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE INDEX `name_idx` (`name`),
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `role` (name, description) values ('admin', 'Administrator'), ('editor', 'Editor'), ('author', 'Author'), ('audit', 'Audit'), ('supervisor', 'Supervisor'), ('guest', 'Guest'), ('visitor', 'Visitor');
+
+-- DROP TABLE IF EXISTS `role_hierarchy`;
+/*
+CREATE TABLE `role_hierarchy` (
+	`id`	int(11) auto_increment,
+	`parent_role_id` int(11) NOT NULL,
+	`child_role_id`  int(11) NOT NULL,
+	`terminal` int(1) NOT NULL DEFAULT 0,
+	INDEX `par_ind` (`parent_role_id`),
+	INDEX `chld_ind` (`child_role_id`),
+	FOREIGN KEY `role_role_parent_role_id_fk` (`parent_role_id`) REFERENCES `role` (`id`)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	FOREIGN KEY `role_role_child_role_id_fk` (`child_role_id`) REFERENCES `role` (`id`)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+*/
+
+CREATE TABLE `role_hierarchy` (
+        `id`    int(11) NOT NULL auto_increment,
+        `parent_role_id` int(11) NOT NULL,
+        `child_role_id`  int(11) NOT NULL,
+        `terminal` int(1) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+
+
+-- ALTER TABLE `role` DROP COLUMN `parent_role_id`;
+-- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`) values(1,2),(2,3),(4,2),(1,5),(7,6),(1,7);
+INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,1,1),(1,2,0),(1,3,0),(2,4,0),(4,5,0),(5,6,0),(3,7,0);
+
+/*
+INSERT INTO `role` (name, description) values ('admin', 'Administrator');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,0,1,1);
+
+INSERT INTO `role` (name, description) values ('editor', 'Editor');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,2,0);
+
+INSERT INTO `role` (name, description) values ('author', 'Author');
+select LAST_INSERT_ID() INTO @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,3,0);
+
+INSERT INTO `role` (name, description) values ('audit', 'Audit');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,2,4,0);
+
+INSERT INTO `role` (name, description) values ('supervisor', 'Supervisor');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,4,5,0);
+
+INSERT INTO `role` (name, description) values ('guest', 'Guest');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,5,6,0);
+
+INSERT INTO `role` (name, description) values ('visitor', 'Visitor');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,3,7,0);
+*/
+-- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,2,1),(1,3,0),(1,2,0),(2,5,0),(4,6,0),(5,7,0),(3,4,0);
+
+CREATE TABLE `permission` (
+	`id`	int(11) NOT NULL auto_increment,
+	`name` VARCHAR(255),
+	`description` TEXT,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE INDEX `name_idx` (`name`),
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `permission` (`name`) VALUES ('edit.own.profile');
+INSERT INTO `permission` (`name`) VALUES ('edit.profile');
+INSERT INTO `permission` (`name`) VALUES ('general');
+INSERT INTO `permission` (`name`) VALUES ('view.profile');
+INSERT INTO `permission` (`name`) VALUES ('add.personal');
+INSERT INTO `permission` (`name`) VALUES ('delete.own.personal');
+INSERT INTO `permission` (`name`) VALUES ('delete.personal');
+
+CREATE TABLE `role_permission` (
+	`id`		int(11) NOT NULL auto_increment,
+	`role_id`	int(11) NOT NULL,
+	`permission_id`	int(11)	NOT NULL,
+        FOREIGN KEY `role_permission_role_id_fk` (`role_id`) REFERENCES `role` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+	FOREIGN KEY `role_permission_permission_id_fk` (`permission_id`) REFERENCES `permission` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+-- admin
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 1);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 2);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 3);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 5);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 6);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 7);
+
+-- editor
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 2);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 3);
+
+-- author
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 1);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 3);
+
+-- audit
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 3);
+
+-- supervisor
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 3);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 5);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 6);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 7);
+
+-- guest
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (6, 3);
+
+-- visitor
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (7, 3);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (7, 4);
+
+
+CREATE OR REPLACE VIEW `role_permissions` (`role_id`, `role_name`, `permission_name`)
+AS
+	SELECT r.id AS role_id, r.name AS role_name, p.name AS permission_name FROM role r
+	LEFT JOIN role_permission rp ON rp.role_id=r.id
+	RIGHT JOIN permission p ON rp.permission_id = p.id ORDER BY role_id;
+
 
 --
 -- Table structure for table `basket`
@@ -105,16 +261,7 @@ INSERT INTO `basket` (`user_id`, `product_id`, `total`, `order_id`, `price`, `di
 (363, '000000000005', 1, 0, 7800, 0, NULL),
 (369, '000000000036', 1, 0, 3199001, 0, NULL),
 (44, '000000000013', 1, 0, 1600000, 0, NULL),
-(44, '000000000024', 1, 0, 3599000, 0, NULL),
-(453, '000000000001', 1, 0, 580000, 0, NULL),
-(453, '000000000007', 1, 0, 5400000, 0, NULL),
-(453, '000000000009', 1, 0, 5100000, 0, NULL),
-(453, '000000000036', 1, 0, 3199001, 0, NULL),
-(470, '000000000001', 1, 0, 580000, 0, NULL),
-(341, '000000000007', 1, 0, 5400000, 0, NULL),
-(341, '000000000009', 1, 0, 5100000, 0, NULL),
-(470, '000000000029', 1, 0, 1583100, 0, NULL),
-(470, '000000000003', 1, 0, 5699000, 0, NULL);
+(44, '000000000024', 1, 0, 3599000, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -2047,8 +2194,7 @@ INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `ge
 ('000000005', '00004', 'На Волгоградке (м-видео)', 'вход со двора', 'РОССИЯ, 109316, Москва г, пр-кт Волгоградский, д. 32А', '55.721462', '37.697468', ''),
 ('000000001', '00001', 'Ситилинк(ул. 5-я кожуховская)', 'вход через арку', 'РОССИЯ, 115193, Москва г, ул Петра Романова, д. 20', '55.704362', '37.683324', ''),
 ('000000008', '00006', 'Спортмастер \"На Кожуховской\"', '', 'РОССИЯ, 115432, Москва г, ул 5-я Кожуховская, д. 8, стр. 2', '55.704571', '37.66451', ''),
-('000000009', '00002', '\"На Дубровке\"', '', 'РОССИЯ, 115088, Москва г, ул 1-я Машиностроения, д. 5', '55.715145', '37.673834', ''),
-('000000010', '00004', 'Люберецкий', '', 'РОССИЯ, 140007, Московская обл, г Люберцы, ул Ленина, д. 25', '55.693474', '37.875408', '');
+('000000009', '00002', '\"На Дубровке\"', '', 'РОССИЯ, 115088, Москва г, ул 1-я Машиностроения, д. 5', '55.715145', '37.673834', '');
 
 -- --------------------------------------------------------
 
@@ -2507,63 +2653,7 @@ INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
 (434, '', NULL, NULL, 0),
 (435, '', NULL, NULL, 0),
 (436, '', NULL, NULL, 0),
-(437, '', NULL, NULL, 0),
-(438, '', NULL, NULL, 0),
-(439, '', NULL, NULL, 0),
-(440, '', NULL, NULL, 0),
-(441, '', NULL, NULL, 0),
-(442, '', NULL, NULL, 0),
-(443, '', NULL, NULL, 0),
-(444, '', NULL, NULL, 0),
-(445, '', NULL, NULL, 0),
-(446, '', NULL, NULL, 0),
-(447, '', NULL, NULL, 0),
-(448, '', NULL, NULL, 0),
-(449, '', NULL, NULL, 0),
-(450, '', NULL, NULL, 0),
-(451, '', NULL, NULL, 0),
-(452, '', NULL, NULL, 0),
-(453, '', NULL, NULL, 0),
-(454, '', NULL, NULL, 0),
-(455, '', NULL, NULL, 0),
-(456, '', NULL, NULL, 0),
-(457, '', NULL, NULL, 0),
-(458, 'Сергей', 79099768770, NULL, 0),
-(459, '', NULL, NULL, 0),
-(460, '', NULL, NULL, 0),
-(461, '', NULL, NULL, 0),
-(462, '', NULL, NULL, 0),
-(463, '', NULL, NULL, 0),
-(464, '', NULL, NULL, 0),
-(465, '', NULL, NULL, 0),
-(466, '', NULL, NULL, 0),
-(467, '', NULL, NULL, 0),
-(468, '', NULL, NULL, 0),
-(469, '', NULL, NULL, 0),
-(470, 'Алексей', 79254647151, NULL, 0),
-(471, '', NULL, NULL, 0),
-(472, '', NULL, NULL, 0),
-(473, '', NULL, NULL, 0),
-(474, '', NULL, NULL, 0),
-(475, '', NULL, NULL, 0),
-(476, '', NULL, NULL, 0),
-(477, '', NULL, NULL, 0),
-(478, '', NULL, NULL, 0),
-(479, '', NULL, NULL, 0),
-(480, '', NULL, NULL, 0),
-(481, '', NULL, NULL, 0),
-(482, '', NULL, NULL, 0),
-(483, '', NULL, NULL, 0),
-(484, '', NULL, NULL, 0),
-(485, '', NULL, NULL, 0),
-(486, '', NULL, NULL, 0),
-(487, '', NULL, NULL, 0),
-(488, '', NULL, NULL, 0),
-(489, '', NULL, NULL, 0),
-(490, '', NULL, NULL, 0),
-(491, '', NULL, NULL, 0),
-(492, '', NULL, NULL, 0),
-(493, '', NULL, NULL, 0);
+(437, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -2594,11 +2684,7 @@ INSERT INTO `user_data` (`user_id`, `address`, `geodata`, `fias_id`, `fias_level
 (44, 'г Москва, ул Угрешская, д 2 стр 2, кв 2', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 2, кв 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 2, кв 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"house_kladr_id\":\"7700000000002230009\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"2\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"2\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"fias_code\":\"77000000000000002230009\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230009\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7110452\",\"geo_lon\":\"37.6840653\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '02fd4c17-a8b7-4840-968b-9e417957f0d3', 8),
 (341, 'г Москва, ул Угрешская, д 3Б ', '{\"value\":\"г Москва, ул Угрешская, д 3Б\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 3Б\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":null,\"house_kladr_id\":null,\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"3Б\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"fias_code\":\"77000000000000002230000\",\"fias_level\":\"7\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"77000000000022300\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7126163\",\"geo_lon\":\"37.684728\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '966e6baf-a2da-4e70-8ac3-ba2c1a2a699a', 7),
 (363, 'г Москва, ул Шипиловская, д 38, кв 39', '{\"value\":\"г Москва, ул Шипиловская, д 38, кв 39\",\"unrestricted_value\":\"115563, г Москва, Орехово-Борисово Северное р-н, ул Шипиловская, д 38, кв 39\",\"data\":{\"postal_code\":\"115563\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Орехово-Борисово Северное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Орехово-Борисово Северное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"60e1bccf-3f1e-44e4-b072-98c8f8670457\",\"street_kladr_id\":\"77000000000052900\",\"street_with_type\":\"ул Шипиловская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шипиловская\",\"house_fias_id\":\"f222beec-3f91-4a79-806e-7dfab8cde211\",\"house_kladr_id\":\"7700000000005290036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"38\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"39\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"fias_code\":\"77000000000000005290036\",\"fias_level\":\"9\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000005290036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296577000\",\"oktmo\":\"45921000\",\"tax_office\":\"7724\",\"tax_office_legal\":\"7724\",\"timezone\":null,\"geo_lat\":\"55.6205363\",\"geo_lon\":\"37.7238036\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '8fb0e48d-8b18-4ca7-88b2-53738665b120', 9),
-(50, 'г Москва, ул Шипиловская, д 38, кв 39', '{\"value\":\"г Москва, ул Шипиловская, д 38, кв 39\",\"unrestricted_value\":\"115563, г Москва, Орехово-Борисово Северное р-н, ул Шипиловская, д 38, кв 39\",\"data\":{\"postal_code\":\"115563\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Орехово-Борисово Северное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Орехово-Борисово Северное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"60e1bccf-3f1e-44e4-b072-98c8f8670457\",\"street_kladr_id\":\"77000000000052900\",\"street_with_type\":\"ул Шипиловская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шипиловская\",\"house_fias_id\":\"f222beec-3f91-4a79-806e-7dfab8cde211\",\"house_kladr_id\":\"7700000000005290036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"38\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"39\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"fias_code\":\"77000000000000005290036\",\"fias_level\":\"9\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000005290036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296577000\",\"oktmo\":\"45921000\",\"tax_office\":\"7724\",\"tax_office_legal\":\"7724\",\"timezone\":null,\"geo_lat\":\"55.6205363\",\"geo_lon\":\"37.7238036\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '8fb0e48d-8b18-4ca7-88b2-53738665b120', 9),
-(470, 'г Москва, 1-й Угрешский проезд, д 28 ', '{\"value\":\"г Москва, 1-й Угрешский проезд, д 28\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, 1-й Угрешский проезд, д 28\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"4cdd215b-55d8-414d-829c-064558cbafd3\",\"street_kladr_id\":\"77000000000347700\",\"street_with_type\":\"1-й Угрешский проезд\",\"street_type\":\"проезд\",\"street_type_full\":\"проезд\",\"street\":\"1-й Угрешский\",\"house_fias_id\":\"7a36fc6d-0833-4ee2-9318-fa65cbd3a557\",\"house_kladr_id\":\"7700000000034770020\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"28\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"7a36fc6d-0833-4ee2-9318-fa65cbd3a557\",\"fias_code\":\"77000000000000034770020\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000034770020\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7159014\",\"geo_lon\":\"37.6928724\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '7a36fc6d-0833-4ee2-9318-fa65cbd3a557', 8),
-(470, 'г Москва, ул Угрешская, д 2 ', '{\"value\":\"г Москва, ул Угрешская, д 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":null,\"house_kladr_id\":null,\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"fias_code\":\"77000000000000002230000\",\"fias_level\":\"7\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"77000000000022300\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7112789\",\"geo_lon\":\"37.6835843\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '966e6baf-a2da-4e70-8ac3-ba2c1a2a699a', 7),
-(470, 'г Москва, ул Угрешская, д 2 стр 1 ', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 1\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 1\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"853a074f-0e8d-48da-aec9-cdd55ef0e3d7\",\"house_kladr_id\":\"7700000000002230008\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"1\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"853a074f-0e8d-48da-aec9-cdd55ef0e3d7\",\"fias_code\":\"77000000000000002230008\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230008\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7112789\",\"geo_lon\":\"37.6834755\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '853a074f-0e8d-48da-aec9-cdd55ef0e3d7', 8),
-(493, 'г Москва, ул Угрешская, д 2 стр 2, кв 2', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 2, кв 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 2, кв 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"house_kladr_id\":\"7700000000002230009\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"2\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"2\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"fias_code\":\"77000000000000002230009\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230009\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7110452\",\"geo_lon\":\"37.6840653\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '02fd4c17-a8b7-4840-968b-9e417957f0d3', 8);
+(50, 'г Москва, ул Шипиловская, д 38, кв 39', '{\"value\":\"г Москва, ул Шипиловская, д 38, кв 39\",\"unrestricted_value\":\"115563, г Москва, Орехово-Борисово Северное р-н, ул Шипиловская, д 38, кв 39\",\"data\":{\"postal_code\":\"115563\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Орехово-Борисово Северное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Орехово-Борисово Северное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"60e1bccf-3f1e-44e4-b072-98c8f8670457\",\"street_kladr_id\":\"77000000000052900\",\"street_with_type\":\"ул Шипиловская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шипиловская\",\"house_fias_id\":\"f222beec-3f91-4a79-806e-7dfab8cde211\",\"house_kladr_id\":\"7700000000005290036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"38\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"39\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"fias_code\":\"77000000000000005290036\",\"fias_level\":\"9\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000005290036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296577000\",\"oktmo\":\"45921000\",\"tax_office\":\"7724\",\"tax_office_legal\":\"7724\",\"timezone\":null,\"geo_lat\":\"55.6205363\",\"geo_lon\":\"37.7238036\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '8fb0e48d-8b18-4ca7-88b2-53738665b120', 9);
 
 -- --------------------------------------------------------
 
@@ -2629,6 +2715,13 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `role`
+--
+
+-- ALTER TABLE `role`
+--  ADD PRIMARY KEY(`id`);
 
 --
 -- Indexes for table `basket`
@@ -2746,7 +2839,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=494;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=438;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
