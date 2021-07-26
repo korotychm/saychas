@@ -677,7 +677,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .delevery-item {
     display:block;
     padding-left:25px; 
-    background:url("/img/saychas-zero.svg") 0 3px no-repeat;
+    background:url("/img/saychas-zero.svg") 0 2px no-repeat;
 }
 .paybox .contentpadding
 .delevery-item {margin-bottom:.2rem;}
@@ -1056,15 +1056,18 @@ img.zero, .zeroblok {
 #usermodalwindow  .userformsendbutton {
     margin:0 16px;
     
-    padding-right:16px; 
+   
     background-image:none
 }
 .modalusertit {padding-top:8px }
 .modaluserrow {margin-bottom:16px;}
 .formcomment  {font-size:90%; display:block; padding-left:32px}
  
-.lableinfo.short, .userformsendbutton.short {max-width:200px;}
+.lableinfo.short {max-width:200px;}
+.userformsendbutton.short {width:auto; display:inline-block; min-width:200px;}
+.lableinfo.short {padding-right:16px}
 .lableinfo:focus {border-color:var(--red)}
+.lableinfo.error {border:2px solid var(--red)}
 .margin16 {margin:16px;}
 #basketuseradress.lableinfo,
 #basketusercomment.lableinfo {padding-right:16px; background:none; display:block; position:relative; top:-18px; margin-bottom:-18px; width:100%}

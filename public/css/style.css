@@ -35,6 +35,7 @@
     background-repeat:no-repeat;
 }
 .graybg {border-color:var(--gray-light); background-color:var(--gray-light);}
+.noborder {border:none}
 .user-modal-open {cursor:pointer}
 .waitcover {
     display:block; 

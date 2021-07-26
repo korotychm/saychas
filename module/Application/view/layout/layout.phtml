@@ -27,6 +27,7 @@
 
 <?=
         $this->inlineScript()
+        ->prependFile($this->basePath('/js/useractions.js'))
         ->prependFile($this->basePath('/js/custom_select.js'))
         ->prependFile($this->basePath('/js/services.js'))
         ->prependFile($this->basePath('/js/nouislider.min.js'))
@@ -41,6 +42,7 @@
 ?>
     </head>
     <body>
+        <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
         <div class="overcover"></div>
         <div id="overcoverblack" class='overcoverblack none' ></div>
         <div id="quicktop" class='none2' ></div>
@@ -131,21 +133,26 @@
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding blokc'>
                                 <div class="hasalt" id=" " >    <div class="emptyblock"></div>
-                                    <div class="blokc">профиль</a></div>
+                                    <div class="blokc">профиль</div>
                                     <div class='altcontentview'>
                                         <span class='strelka'></span>
-                                        <span class='blok '>
-                           <?php if (true or true) {?>
-                                           <h5>Алексей <?=$this->userphone?> <?=$this->username?></h5>
+                                        <div class='blok '>
+                           <?php if ($this->userLegal) {?>
+                                           <h5><?=$this->username?></h5>
                                            <div class='delevery-item menu-item ' ><a href="/user">Личный кабинет</a></div> 
                                            <div class='delevery-item menu-item' >Мои заказы</div> 
                                            <div class='delevery-item menu-item' >Мои оповещения</div> 
-                                          <?php } ?>
+                                            <div class='delevery-item menu-item ' ><a href="/clear-user-data">Выход</a></div> 
+                                           
+                                          <?php } else { ?>
                                            <div class='delevery-item menu-item user-modal-open' >Войти или зарегистрироваться</div> 
+                                          <?php } ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                            </div>
+                            
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding  blokc'>
 <?= (/*true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     

@@ -23,8 +23,14 @@ class StringResource
     const ERROR_INPUT_PASSWORD_MESSAGE = "Введите пароль для&nbsp;входа. ";
     const ERROR_INPUT_NAME_SMS_MESSAGE = "Введите ваше имя и&nbsp;код&nbsp;из&nbsp;СМС. ";
     const MESSAGE_ENTER_OR_REGISTER_TITLE = "Войти или зарегистрироваться";
+    const MESSAGE_REGISTER_TITLE = "Регистрация";
     const MESSAGE_ENTER_OR_REGISTER_TEXT = "Для продолжения необходимо зарегистрироваться";
-    
+    const BUTTON_LABLE_CONTINUE = "Продолжить";
+    const BUTTON_LABLE_ENTER = "Войти";
+    const BUTTON_LABLE_PASS_CHANGE = "Изменить и войти";
+    const BUTTON_LABLE_RETURN = "&larr;Вернуться";            
+    const BUTTON_LABLE_REGISTER = "Зарегистрироваться";            
+    const USER_LABLE_HELLO = "Привет, ";
     
     
     

@@ -2,7 +2,10 @@
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
 ?>
-<?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
+<?php if(!$this->legalUser) {?><script>$(function () {
+        $('#usermodalwindow').modal('show')
+    })</script>
+<?php } ?>
 <div class="container mainconteiner"  >
     <div  class="contentwrapper">
         <?= $this->bread ?> 

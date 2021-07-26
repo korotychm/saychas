@@ -140,6 +140,7 @@ class IndexController extends AbstractActionController
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
 
         $addressLegal = ($userInfo["userAddress"])?true:false;
+        $userLegal = ($userInfo["userid"] and $userInfo["phone"])?true:false;
         
         
         // Return the response
@@ -149,6 +150,7 @@ class IndexController extends AbstractActionController
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
             'addressLegal' =>  $addressLegal,
+            'userLegal' =>  $userLegal,
             'username' =>  $userInfo['name'],
             'userphone' =>  $userInfo['phone'],
         ]);
@@ -437,7 +439,18 @@ class IndexController extends AbstractActionController
         // $user = $this->userRepository->find(['id'=>$userId]);
         $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
-        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        $userPhone = $user->getPhone();
+        //$userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        if (!$userPhone) {
+              $this->getResponse()->setStatusCode(403);
+              $vw = new ViewModel();
+              $vw->setTemplate('error/403.phtml');
+              return  $vw;
+        }
+//        else exit ($userPhone);
+        $userPhone =  StringHelper::phoneFromNum($userPhone);
+        
+        //
         $title=($user->getName())?$user->getName():"Войти на сайт";
         /* НАДО!!!
          * 

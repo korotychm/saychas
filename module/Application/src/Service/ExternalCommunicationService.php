@@ -73,7 +73,7 @@ class ExternalCommunicationService
             $arr = Json::decode($response, Json::TYPE_ARRAY);
             return $arr;
         } catch (LaminasJsonRuntimeException $e) {
-            return ['result' => 10, 'message' => $e->getMessage()];
+            return ['result' => 10, 'message' => $e->getMessage().' '.$response];
         }
     }
 

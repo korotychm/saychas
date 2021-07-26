@@ -249,6 +249,17 @@ return [
             ],
             //basketPayInfo
             
+        'user-auth-modal' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/user-auth-modal',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'userAuthModal',
+                    ],
+                ],
+            ],//userAuthModal
+            
             'product' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -934,6 +945,7 @@ return [
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
+        'not-authorized'           => 'error/403',
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',

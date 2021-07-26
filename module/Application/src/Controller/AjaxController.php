@@ -433,7 +433,7 @@ class AjaxController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost();
        // exit ( print_r($post));
-        if(!$json = $post->value) return;
+        if(!$json = $post->value) return new JsonModel(NULL);
         
         try {
             $TMP = Json::decode($json);
