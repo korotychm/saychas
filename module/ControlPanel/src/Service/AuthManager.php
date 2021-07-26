@@ -47,40 +47,43 @@ class AuthManager
      * @var User\Service\RbacManager
      */
     private $rbacManager;
+    
+    private $userManager;
 
     /**
      * Constructs the service.
      */
-    public function __construct($authService, $sessionManager, $config, $rbacManager)
+    public function __construct($authService, $sessionManager, $config, $rbacManager, $userManager)
     {
         $this->authService = $authService;
         $this->sessionManager = $sessionManager;
         $this->config = $config;
         $this->rbacManager = $rbacManager;
+        $this->userManager = $userManager;
     }
 
     /**
      * Performs a login attempt. If $rememberMe argument is true, it forces the session
      * to last for one month (otherwise the session expires on one hour).
      */
-    public function login($email, $password, $rememberMe)
+    public function login(array $content)
     {
         // Check if user has already logged in. If so, do not allow to log in
         // twice.
-        if ($this->authService->getIdentity() != null) {
+        $identity = $this->authService->getIdentity();
+        if ($identity != null) {
             throw new \Exception('Already logged in');
         }
 
         // Authenticate with login/password.
         $authAdapter = $this->authService->getAdapter();
-        $authAdapter->setEmail($email);
-        $authAdapter->setPassword($password);
+        $authAdapter->setContent($content);
         $result = $this->authService->authenticate();
-
+        
         // If user wants to "remember him", we will make session to expire in
         // one month. By default session expires in 1 hour (as specified in our
         // config/global.php file).
-        if ($result->getCode() == Result::SUCCESS && $rememberMe) {
+        if ($result->getCode() == Result::SUCCESS /* && $rememberMe*/) {
             // Session cookie will expire in 1 month (30 days).
             $this->sessionManager->rememberMe(60 * 60 * 24 * 30);
         }
@@ -129,10 +132,10 @@ class AuthManager
                 $allow = $item['allow'];
                 if (is_array($actionList) && in_array($actionName, $actionList) ||
                         $actionList == '*') {
-                    if ($allow == '*')
-                    // Anyone is allowed to see the page.
+                    if ($allow == '*') {
+                        // Anyone is allowed to see the page.
                         return self::ACCESS_GRANTED;
-                    else if (!$this->authService->hasIdentity()) {
+                    }else if (!$this->authService->hasIdentity()) {
                         // Only authenticated user is allowed to see the page.
                         return self::AUTH_REQUIRED;
                     }
@@ -143,17 +146,19 @@ class AuthManager
                     } else if (substr($allow, 0, 1) == '@') {
                         // Only the user with specific identity is allowed to see the page.
                         $identity = substr($allow, 1);
-                        if ($this->authService->getIdentity() == $identity)
+                        if ($this->authService->getIdentity() == $identity) {
                             return self::ACCESS_GRANTED;
-                        else
+                        } else {
                             return self::ACCESS_DENIED;
+                        }
                     } else if (substr($allow, 0, 1) == '+') {
                         // Only the user with this permission is allowed to see the page.
                         $permission = substr($allow, 1);
-                        if ($this->rbacManager->isGranted(null, $permission))
+                        if ($this->rbacManager->isGranted(null, $permission)) {
                             return self::ACCESS_GRANTED;
-                        else
+                        } else {
                             return self::ACCESS_DENIED;
+                        }
                     } else {
                         throw new \Exception('Unexpected value for "allow" - expected ' .
                                         'either "?", "@", "@identity" or "+permission"');

@@ -9,7 +9,8 @@ use ControlPanel\Listener\LayoutListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Resolver\TemplateMapResolver;
 use Laminas\Mvc\Controller\AbstractActionController;
-use ControlPanel\Controller\LoginController;
+use ControlPanel\Controller\AuthController;
+use ControlPanel\Service\AuthManager;
 
 /**
  * Description of Module
@@ -54,7 +55,9 @@ class Module implements ConfigProviderInterface
         $actionName = $event->getRouteMatch()->getParam('action', null);
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
         
-        if ($controllerName != LoginController::class) {
+        $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
+        
+        if ($controllerName != AuthController::class) {
 //            $uri = $event->getApplication()->getRequest()->getUri();
 //            $uri->setScheme(null)
 //                ->setHost(null)

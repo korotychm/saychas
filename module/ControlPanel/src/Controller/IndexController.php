@@ -31,6 +31,8 @@ class IndexController extends AbstractActionController
     protected $entityManager;
     
     protected $userManager;
+    
+    protected $authService;
 
     /** @var array */
     protected $table = [
@@ -46,15 +48,16 @@ class IndexController extends AbstractActionController
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
-    public function __construct($container, $sessionContainer, $entityManager, $userManager)
+    public function __construct($container, $sessionContainer, $entityManager/*, $userManager*/)
     {
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
 //        $this->rbacAssertionManager = $this->container->get(\ControlPanel\Service\RbacAssertionManager::class);
         $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
+        $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
-        $this->userManager = $userManager;
+        $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -73,7 +76,11 @@ class IndexController extends AbstractActionController
             'sidebarMenuItems' => $sidebarMenuItems,
         ]);
 
-        if (!$this->sessionContainer->partnerLoggedIn) {
+//        $identity = $this->authService->getIdentity();
+        $hasIdentity = $this->authService->hasIdentity();
+//        $identity2 = $this->identity();
+        //if (!$this->sessionContainer->partnerLoggedIn) {
+        if(!$hasIdentity) {
             $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
         }
         return $response;
@@ -195,7 +202,11 @@ class IndexController extends AbstractActionController
      */
     private function assertLoggedIn()
     {
-        if(!isset($this->sessionContainer->partnerLoggedIn)){
+//        $identity = $this->authService->getIdentity();
+        $hasIdentity = $this->authService->hasIdentity();
+//        $identity2 = $this->identity();
+        //if(!isset($this->sessionContainer->partnerLoggedIn)){
+        if(!$hasIdentity) {
             echo 'null';
             exit;
         }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 26, 2021 at 10:52 AM
+-- Generation Time: Jul 15, 2021 at 07:47 AM
 -- Server version: 8.0.25
 -- PHP Version: 7.4.16
 
@@ -22,6 +22,162 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `role_hierarchy`;
+DROP TABLE IF EXISTS `role_permission`;
+DROP TABLE IF EXISTS `permission`;
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+	`id`	int(11) NOT NULL auto_increment,
+	-- `parent_role_id` int(11) DEFAULT 0,
+	-- `child_role_id` int(11) DEFAULT 0,
+	`name`	VARCHAR(255),
+	`description` TEXT,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE INDEX `name_idx` (`name`),
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `role` (name, description) values ('admin', 'Administrator'), ('editor', 'Editor'), ('author', 'Author'), ('audit', 'Audit'), ('supervisor', 'Supervisor'), ('guest', 'Guest'), ('visitor', 'Visitor');
+
+-- DROP TABLE IF EXISTS `role_hierarchy`;
+/*
+CREATE TABLE `role_hierarchy` (
+	`id`	int(11) auto_increment,
+	`parent_role_id` int(11) NOT NULL,
+	`child_role_id`  int(11) NOT NULL,
+	`terminal` int(1) NOT NULL DEFAULT 0,
+	INDEX `par_ind` (`parent_role_id`),
+	INDEX `chld_ind` (`child_role_id`),
+	FOREIGN KEY `role_role_parent_role_id_fk` (`parent_role_id`) REFERENCES `role` (`id`)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	FOREIGN KEY `role_role_child_role_id_fk` (`child_role_id`) REFERENCES `role` (`id`)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+*/
+
+CREATE TABLE `role_hierarchy` (
+        `id`    int(11) NOT NULL auto_increment,
+        `parent_role_id` int(11) NOT NULL,
+        `child_role_id`  int(11) NOT NULL,
+        `terminal` int(1) NOT NULL DEFAULT 0,
+        PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+
+
+-- ALTER TABLE `role` DROP COLUMN `parent_role_id`;
+-- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`) values(1,2),(2,3),(4,2),(1,5),(7,6),(1,7);
+INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,1,1),(1,2,0),(1,3,0),(2,4,0),(4,5,0),(5,6,0),(3,7,0);
+
+/*
+INSERT INTO `role` (name, description) values ('admin', 'Administrator');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,0,1,1);
+
+INSERT INTO `role` (name, description) values ('editor', 'Editor');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,2,0);
+
+INSERT INTO `role` (name, description) values ('author', 'Author');
+select LAST_INSERT_ID() INTO @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,1,3,0);
+
+INSERT INTO `role` (name, description) values ('audit', 'Audit');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,2,4,0);
+
+INSERT INTO `role` (name, description) values ('supervisor', 'Supervisor');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,4,5,0);
+
+INSERT INTO `role` (name, description) values ('guest', 'Guest');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,5,6,0);
+
+INSERT INTO `role` (name, description) values ('visitor', 'Visitor');
+select LAST_INSERT_ID() into @l;
+INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) values(@l,3,7,0);
+*/
+-- INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`) values(1,2,1),(1,3,0),(1,2,0),(2,5,0),(4,6,0),(5,7,0),(3,4,0);
+
+CREATE TABLE `permission` (
+	`id`	int(11) NOT NULL auto_increment,
+	`name` VARCHAR(255),
+	`description` TEXT,
+	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE INDEX `name_idx` (`name`),
+	PRIMARY KEY(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `permission` (`name`) VALUES ('edit.own.profile');
+INSERT INTO `permission` (`name`) VALUES ('edit.profile');
+INSERT INTO `permission` (`name`) VALUES ('general');
+INSERT INTO `permission` (`name`) VALUES ('view.profile');
+INSERT INTO `permission` (`name`) VALUES ('add.personal');
+INSERT INTO `permission` (`name`) VALUES ('delete.own.personal');
+INSERT INTO `permission` (`name`) VALUES ('delete.personal');
+
+CREATE TABLE `role_permission` (
+	`id`		int(11) NOT NULL auto_increment,
+	`role_id`	int(11) NOT NULL,
+	`permission_id`	int(11)	NOT NULL,
+        FOREIGN KEY `role_permission_role_id_fk` (`role_id`) REFERENCES `role` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+	FOREIGN KEY `role_permission_permission_id_fk` (`permission_id`) REFERENCES `permission` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+-- admin
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 1);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 2);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 3);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 5);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 6);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 7);
+
+-- editor
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 2);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 3);
+
+-- author
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 1);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 3);
+
+-- audit
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 4);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 3);
+
+-- supervisor
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 3);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 5);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 6);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 7);
+
+-- guest
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (6, 3);
+
+-- visitor
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (7, 3);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (7, 4);
+
+
+CREATE OR REPLACE VIEW `role_permissions` (`role_id`, `role_name`, `permission_name`)
+AS
+	SELECT r.id AS role_id, r.name AS role_name, p.name AS permission_name FROM role r
+	LEFT JOIN role_permission rp ON rp.role_id=r.id
+	RIGHT JOIN permission p ON rp.permission_id = p.id ORDER BY role_id;
+
 
 --
 -- Table structure for table `basket`
@@ -105,16 +261,7 @@ INSERT INTO `basket` (`user_id`, `product_id`, `total`, `order_id`, `price`, `di
 (363, '000000000005', 1, 0, 7800, 0, NULL),
 (369, '000000000036', 1, 0, 3199001, 0, NULL),
 (44, '000000000013', 1, 0, 1600000, 0, NULL),
-(44, '000000000024', 1, 0, 3599000, 0, NULL),
-(453, '000000000001', 1, 0, 580000, 0, NULL),
-(453, '000000000007', 1, 0, 5400000, 0, NULL),
-(453, '000000000009', 1, 0, 5100000, 0, NULL),
-(453, '000000000036', 1, 0, 3199001, 0, NULL),
-(470, '000000000001', 1, 0, 580000, 0, NULL),
-(341, '000000000007', 1, 0, 5400000, 0, NULL),
-(341, '000000000009', 1, 0, 5100000, 0, NULL),
-(470, '000000000029', 1, 0, 1583100, 0, NULL),
-(470, '000000000003', 1, 0, 5699000, 0, NULL);
+(44, '000000000024', 1, 0, 3599000, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1070,31 +1217,6 @@ CREATE TABLE `param_value` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `permission`
---
-
-DROP TABLE IF EXISTS `permission`;
-CREATE TABLE `permission` (
-  `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `permission`
---
-
-INSERT INTO `permission` (`id`, `name`, `description`, `date_created`) VALUES
-(1, 'administrator', NULL, '2021-07-26 07:19:12'),
-(2, 'developer', NULL, '2021-07-26 07:19:12'),
-(3, 'brand.manager', NULL, '2021-07-26 07:19:12'),
-(4, 'store.manager', NULL, '2021-07-26 07:19:12'),
-(5, 'guest', NULL, '2021-07-26 07:19:12');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `post`
 --
 
@@ -1939,93 +2061,6 @@ INSERT INTO `provider` (`id`, `title`, `description`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
---
-
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
-  `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `role`
---
-
-INSERT INTO `role` (`id`, `name`, `description`, `date_created`) VALUES
-(1, 'administrator', 'Администратор', '2021-07-26 07:19:12'),
-(2, 'developer', 'Разработчик', '2021-07-26 07:19:12'),
-(3, 'brand_manager', 'Бренд менеджер', '2021-07-26 07:19:12'),
-(4, 'store_manager', 'Менеджер магазина', '2021-07-26 07:19:12'),
-(5, 'guest', 'Гость', '2021-07-26 07:19:12');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `role_hierarchy`
---
-
-DROP TABLE IF EXISTS `role_hierarchy`;
-CREATE TABLE `role_hierarchy` (
-  `id` int NOT NULL,
-  `parent_role_id` int NOT NULL,
-  `child_role_id` int NOT NULL,
-  `terminal` int NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `role_hierarchy`
---
-
-INSERT INTO `role_hierarchy` (`id`, `parent_role_id`, `child_role_id`, `terminal`) VALUES
-(1, 0, 1, 1),
-(2, 0, 2, 1),
-(3, 0, 3, 1),
-(4, 0, 4, 1),
-(5, 0, 5, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `role_permission`
---
-
-DROP TABLE IF EXISTS `role_permission`;
-CREATE TABLE `role_permission` (
-  `id` int NOT NULL,
-  `role_id` int NOT NULL,
-  `permission_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `role_permission`
---
-
-INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(4, 4, 4),
-(5, 5, 5);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `role_permissions`
--- (See below for the actual view)
---
-DROP VIEW IF EXISTS `role_permissions`;
-CREATE TABLE `role_permissions` (
-`permission_name` varchar(255)
-,`role_id` int
-,`role_name` varchar(255)
-);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `setting`
 --
 
@@ -2159,8 +2194,7 @@ INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `ge
 ('000000005', '00004', 'На Волгоградке (м-видео)', 'вход со двора', 'РОССИЯ, 109316, Москва г, пр-кт Волгоградский, д. 32А', '55.721462', '37.697468', ''),
 ('000000001', '00001', 'Ситилинк(ул. 5-я кожуховская)', 'вход через арку', 'РОССИЯ, 115193, Москва г, ул Петра Романова, д. 20', '55.704362', '37.683324', ''),
 ('000000008', '00006', 'Спортмастер \"На Кожуховской\"', '', 'РОССИЯ, 115432, Москва г, ул 5-я Кожуховская, д. 8, стр. 2', '55.704571', '37.66451', ''),
-('000000009', '00002', '\"На Дубровке\"', '', 'РОССИЯ, 115088, Москва г, ул 1-я Машиностроения, д. 5', '55.715145', '37.673834', ''),
-('000000010', '00004', 'Люберецкий', '', 'РОССИЯ, 140007, Московская обл, г Люберцы, ул Ленина, д. 25', '55.693474', '37.875408', '');
+('000000009', '00002', '\"На Дубровке\"', '', 'РОССИЯ, 115088, Москва г, ул 1-я Машиностроения, д. 5', '55.715145', '37.673834', '');
 
 -- --------------------------------------------------------
 
@@ -2171,7 +2205,6 @@ INSERT INTO `store` (`id`, `provider_id`, `title`, `description`, `address`, `ge
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint NOT NULL,
-  `user_id` varchar(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `phone` bigint DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -2183,503 +2216,444 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `user_id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
-(1, NULL, '', NULL, NULL, 0),
-(2, NULL, '', NULL, NULL, 0),
-(3, NULL, '', NULL, NULL, 0),
-(4, NULL, '', NULL, NULL, 0),
-(5, NULL, '', NULL, NULL, 0),
-(6, NULL, '', NULL, NULL, 0),
-(7, NULL, '', NULL, NULL, 0),
-(8, NULL, '', NULL, NULL, 0),
-(9, NULL, '', NULL, NULL, 0),
-(10, NULL, '', NULL, NULL, 0),
-(11, NULL, '', NULL, NULL, 0),
-(12, NULL, '', NULL, NULL, 0),
-(13, NULL, '', NULL, NULL, 0),
-(14, NULL, '', NULL, NULL, 0),
-(15, NULL, '', NULL, NULL, 0),
-(16, NULL, '', NULL, NULL, 0),
-(17, NULL, '', NULL, NULL, 0),
-(18, NULL, '', NULL, NULL, 0),
-(19, NULL, '', NULL, NULL, 0),
-(20, NULL, '', NULL, NULL, 0),
-(21, NULL, '', NULL, NULL, 0),
-(22, NULL, '', NULL, NULL, 0),
-(23, NULL, '', NULL, NULL, 0),
-(24, NULL, '', NULL, NULL, 0),
-(25, NULL, '', NULL, NULL, 0),
-(26, NULL, '', NULL, NULL, 0),
-(27, NULL, '', NULL, NULL, 0),
-(28, NULL, '', NULL, NULL, 0),
-(29, NULL, '', NULL, NULL, 0),
-(30, NULL, '', NULL, NULL, 0),
-(31, NULL, '', NULL, NULL, 0),
-(32, NULL, '', NULL, NULL, 0),
-(33, NULL, '', NULL, NULL, 0),
-(34, NULL, '', NULL, NULL, 0),
-(35, NULL, '', NULL, NULL, 0),
-(36, NULL, '', NULL, NULL, 0),
-(37, NULL, '', NULL, NULL, 0),
-(38, NULL, '', NULL, NULL, 0),
-(39, NULL, '', NULL, NULL, 0),
-(40, NULL, '', NULL, NULL, 0),
-(41, NULL, '', NULL, NULL, 0),
-(42, NULL, '', NULL, NULL, 0),
-(43, NULL, '', NULL, NULL, 0),
-(44, NULL, 'aaa', 79185356024, NULL, 0),
-(45, NULL, '', NULL, NULL, 0),
-(46, NULL, '', NULL, NULL, 0),
-(47, NULL, '', NULL, NULL, 0),
-(48, NULL, '', NULL, NULL, 0),
-(49, NULL, '', NULL, NULL, 0),
-(50, NULL, 'Дмитрий', 79132146666, NULL, 0),
-(51, NULL, '', NULL, NULL, 0),
-(52, NULL, '', NULL, NULL, 0),
-(53, NULL, '', NULL, NULL, 0),
-(54, NULL, '', NULL, NULL, 0),
-(55, NULL, '', NULL, NULL, 0),
-(56, NULL, '', NULL, NULL, 0),
-(57, NULL, '', NULL, NULL, 0),
-(58, NULL, '', NULL, NULL, 0),
-(59, NULL, '', NULL, NULL, 0),
-(60, NULL, '', NULL, NULL, 0),
-(61, NULL, '', NULL, NULL, 0),
-(62, NULL, '', NULL, NULL, 0),
-(63, NULL, '', NULL, NULL, 0),
-(64, NULL, '', NULL, NULL, 0),
-(65, NULL, '', NULL, NULL, 0),
-(66, NULL, '', NULL, NULL, 0),
-(67, NULL, '', NULL, NULL, 0),
-(68, NULL, '', NULL, NULL, 0),
-(69, NULL, '', NULL, NULL, 0),
-(70, NULL, '', NULL, NULL, 0),
-(71, NULL, '', NULL, NULL, 0),
-(72, NULL, '', NULL, NULL, 0),
-(73, NULL, '', NULL, NULL, 0),
-(74, NULL, '', NULL, NULL, 0),
-(75, NULL, '', NULL, NULL, 0),
-(76, NULL, '', NULL, NULL, 0),
-(77, NULL, '', NULL, NULL, 0),
-(78, NULL, '', NULL, NULL, 0),
-(79, NULL, '', NULL, NULL, 0),
-(80, NULL, '', NULL, NULL, 0),
-(81, NULL, '', NULL, NULL, 0),
-(82, NULL, '', NULL, NULL, 0),
-(83, NULL, '', NULL, NULL, 0),
-(84, NULL, '', NULL, NULL, 0),
-(85, NULL, '', NULL, NULL, 0),
-(86, NULL, '', NULL, NULL, 0),
-(87, NULL, '', NULL, NULL, 0),
-(88, NULL, '', NULL, NULL, 0),
-(89, NULL, '', NULL, NULL, 0),
-(90, NULL, '', NULL, NULL, 0),
-(91, NULL, '', NULL, NULL, 0),
-(92, NULL, '', NULL, NULL, 0),
-(93, NULL, '', NULL, NULL, 0),
-(94, NULL, '', NULL, NULL, 0),
-(95, NULL, '', NULL, NULL, 0),
-(96, NULL, '', NULL, NULL, 0),
-(97, NULL, '', NULL, NULL, 0),
-(98, NULL, '', NULL, NULL, 0),
-(99, NULL, '', NULL, NULL, 0),
-(100, NULL, '', NULL, NULL, 0),
-(101, NULL, '', NULL, NULL, 0),
-(102, NULL, '', NULL, NULL, 0),
-(103, NULL, '', NULL, NULL, 0),
-(104, NULL, '', NULL, NULL, 0),
-(105, NULL, '', NULL, NULL, 0),
-(106, NULL, '', NULL, NULL, 0),
-(107, NULL, '', NULL, NULL, 0),
-(108, NULL, '', NULL, NULL, 0),
-(109, NULL, '', NULL, NULL, 0),
-(110, NULL, '', NULL, NULL, 0),
-(111, NULL, '', NULL, NULL, 0),
-(112, NULL, '', NULL, NULL, 0),
-(113, NULL, '', NULL, NULL, 0),
-(114, NULL, '', NULL, NULL, 0),
-(115, NULL, '', NULL, NULL, 0),
-(116, NULL, '', NULL, NULL, 0),
-(117, NULL, '', NULL, NULL, 0),
-(118, NULL, '', NULL, NULL, 0),
-(119, NULL, '', NULL, NULL, 0),
-(120, NULL, '', NULL, NULL, 0),
-(121, NULL, '', NULL, NULL, 0),
-(122, NULL, '', NULL, NULL, 0),
-(123, NULL, '', NULL, NULL, 0),
-(124, NULL, '', NULL, NULL, 0),
-(125, NULL, '', NULL, NULL, 0),
-(126, NULL, '', NULL, NULL, 0),
-(127, NULL, '', NULL, NULL, 0),
-(128, NULL, '', NULL, NULL, 0),
-(129, NULL, '', NULL, NULL, 0),
-(130, NULL, '', NULL, NULL, 0),
-(131, NULL, '', NULL, NULL, 0),
-(132, NULL, '', NULL, NULL, 0),
-(133, NULL, '', NULL, NULL, 0),
-(134, NULL, '', NULL, NULL, 0),
-(135, NULL, '', NULL, NULL, 0),
-(136, NULL, '', NULL, NULL, 0),
-(137, NULL, '', NULL, NULL, 0),
-(138, NULL, '', NULL, NULL, 0),
-(139, NULL, '', NULL, NULL, 0),
-(140, NULL, '', NULL, NULL, 0),
-(141, NULL, '', NULL, NULL, 0),
-(142, NULL, '', NULL, NULL, 0),
-(143, NULL, '', NULL, NULL, 0),
-(144, NULL, '', NULL, NULL, 0),
-(145, NULL, '', NULL, NULL, 0),
-(146, NULL, '', NULL, NULL, 0),
-(147, NULL, '', NULL, NULL, 0),
-(148, NULL, '', NULL, NULL, 0),
-(149, NULL, '', NULL, NULL, 0),
-(150, NULL, '', NULL, NULL, 0),
-(151, NULL, '', NULL, NULL, 0),
-(152, NULL, '', NULL, NULL, 0),
-(153, NULL, '', NULL, NULL, 0),
-(154, NULL, '', NULL, NULL, 0),
-(155, NULL, '', NULL, NULL, 0),
-(156, NULL, '', NULL, NULL, 0),
-(157, NULL, '', NULL, NULL, 0),
-(158, NULL, '', NULL, NULL, 0),
-(159, NULL, '', NULL, NULL, 0),
-(160, NULL, '', NULL, NULL, 0),
-(161, NULL, '', NULL, NULL, 0),
-(162, NULL, '', NULL, NULL, 0),
-(163, NULL, '', NULL, NULL, 0),
-(164, NULL, '', NULL, NULL, 0),
-(165, NULL, '', NULL, NULL, 0),
-(166, NULL, '', NULL, NULL, 0),
-(167, NULL, '', NULL, NULL, 0),
-(168, NULL, '', NULL, NULL, 0),
-(169, NULL, '', NULL, NULL, 0),
-(170, NULL, '', NULL, NULL, 0),
-(171, NULL, '', NULL, NULL, 0),
-(172, NULL, '', NULL, NULL, 0),
-(173, NULL, '', NULL, NULL, 0),
-(174, NULL, '', NULL, NULL, 0),
-(175, NULL, '', NULL, NULL, 0),
-(176, NULL, '', NULL, NULL, 0),
-(177, NULL, '', NULL, NULL, 0),
-(178, NULL, '', NULL, NULL, 0),
-(179, NULL, '', NULL, NULL, 0),
-(180, NULL, '', NULL, NULL, 0),
-(181, NULL, '', NULL, NULL, 0),
-(182, NULL, '', NULL, NULL, 0),
-(183, NULL, '', NULL, NULL, 0),
-(184, NULL, '', NULL, NULL, 0),
-(185, NULL, '', NULL, NULL, 0),
-(186, NULL, '', NULL, NULL, 0),
-(187, NULL, '', NULL, NULL, 0),
-(188, NULL, '', NULL, NULL, 0),
-(189, NULL, '', NULL, NULL, 0),
-(190, NULL, '', NULL, NULL, 0),
-(191, NULL, '', NULL, NULL, 0),
-(192, NULL, '', NULL, NULL, 0),
-(193, NULL, '', NULL, NULL, 0),
-(194, NULL, '', NULL, NULL, 0),
-(195, NULL, '', NULL, NULL, 0),
-(196, NULL, '', NULL, NULL, 0),
-(197, NULL, '', NULL, NULL, 0),
-(198, NULL, '', NULL, NULL, 0),
-(199, NULL, '', NULL, NULL, 0),
-(200, NULL, '', NULL, NULL, 0),
-(201, NULL, '', NULL, NULL, 0),
-(202, NULL, '', NULL, NULL, 0),
-(203, NULL, '', NULL, NULL, 0),
-(204, NULL, '', NULL, NULL, 0),
-(205, NULL, '', NULL, NULL, 0),
-(206, NULL, '', NULL, NULL, 0),
-(207, NULL, '', NULL, NULL, 0),
-(208, NULL, '', NULL, NULL, 0),
-(209, NULL, '', NULL, NULL, 0),
-(210, NULL, '', NULL, NULL, 0),
-(211, NULL, '', NULL, NULL, 0),
-(212, NULL, '', NULL, NULL, 0),
-(213, NULL, '', NULL, NULL, 0),
-(214, NULL, '', NULL, NULL, 0),
-(215, NULL, '', NULL, NULL, 0),
-(216, NULL, '', NULL, NULL, 0),
-(217, NULL, '', NULL, NULL, 0),
-(218, NULL, '', NULL, NULL, 0),
-(219, NULL, '', NULL, NULL, 0),
-(220, NULL, '', NULL, NULL, 0),
-(221, NULL, '', NULL, NULL, 0),
-(222, NULL, '', NULL, NULL, 0),
-(223, NULL, '', NULL, NULL, 0),
-(224, NULL, '', NULL, NULL, 0),
-(225, NULL, '', NULL, NULL, 0),
-(226, NULL, '', NULL, NULL, 0),
-(227, NULL, '', NULL, NULL, 0),
-(228, NULL, '', NULL, NULL, 0),
-(229, NULL, '', NULL, NULL, 0),
-(230, NULL, '', NULL, NULL, 0),
-(231, NULL, '', NULL, NULL, 0),
-(232, NULL, '', NULL, NULL, 0),
-(233, NULL, '', NULL, NULL, 0),
-(234, NULL, '', NULL, NULL, 0),
-(235, NULL, '', NULL, NULL, 0),
-(236, NULL, '', NULL, NULL, 0),
-(237, NULL, '', NULL, NULL, 0),
-(238, NULL, '', NULL, NULL, 0),
-(239, NULL, '', NULL, NULL, 0),
-(240, NULL, '', NULL, NULL, 0),
-(241, NULL, '', NULL, NULL, 0),
-(242, NULL, '', NULL, NULL, 0),
-(243, NULL, '', NULL, NULL, 0),
-(244, NULL, '', NULL, NULL, 0),
-(245, NULL, '', NULL, NULL, 0),
-(246, NULL, '', NULL, NULL, 0),
-(247, NULL, '', NULL, NULL, 0),
-(248, NULL, '', NULL, NULL, 0),
-(249, NULL, '', NULL, NULL, 0),
-(250, NULL, '', NULL, NULL, 0),
-(251, NULL, '', NULL, NULL, 0),
-(252, NULL, '', NULL, NULL, 0),
-(253, NULL, '', NULL, NULL, 0),
-(254, NULL, '', NULL, NULL, 0),
-(255, NULL, '', NULL, NULL, 0),
-(256, NULL, '', NULL, NULL, 0),
-(257, NULL, '', NULL, NULL, 0),
-(258, NULL, '', NULL, NULL, 0),
-(259, NULL, '', NULL, NULL, 0),
-(260, NULL, '', NULL, NULL, 0),
-(261, NULL, '', NULL, NULL, 0),
-(262, NULL, '', NULL, NULL, 0),
-(263, NULL, '', NULL, NULL, 0),
-(264, NULL, '', NULL, NULL, 0),
-(265, NULL, '', NULL, NULL, 0),
-(266, NULL, '', NULL, NULL, 0),
-(267, NULL, '', NULL, NULL, 0),
-(268, NULL, '', NULL, NULL, 0),
-(269, NULL, '', NULL, NULL, 0),
-(270, NULL, '', NULL, NULL, 0),
-(271, NULL, '', NULL, NULL, 0),
-(272, NULL, '', NULL, NULL, 0),
-(273, NULL, '', NULL, NULL, 0),
-(274, NULL, '', NULL, NULL, 0),
-(275, NULL, '', NULL, NULL, 0),
-(276, NULL, '', NULL, NULL, 0),
-(277, NULL, '', NULL, NULL, 0),
-(278, NULL, '', NULL, NULL, 0),
-(279, NULL, '', NULL, NULL, 0),
-(280, NULL, '', NULL, NULL, 0),
-(281, NULL, '', NULL, NULL, 0),
-(282, NULL, '', NULL, NULL, 0),
-(283, NULL, '', NULL, NULL, 0),
-(284, NULL, '', NULL, NULL, 0),
-(285, NULL, '', NULL, NULL, 0),
-(286, NULL, '', NULL, NULL, 0),
-(287, NULL, '', NULL, NULL, 0),
-(288, NULL, '', NULL, NULL, 0),
-(289, NULL, '', NULL, NULL, 0),
-(290, NULL, '', NULL, NULL, 0),
-(291, NULL, '', NULL, NULL, 0),
-(292, NULL, '', NULL, NULL, 0),
-(293, NULL, '', NULL, NULL, 0),
-(294, NULL, '', NULL, NULL, 0),
-(295, NULL, '', NULL, NULL, 0),
-(296, NULL, '', NULL, NULL, 0),
-(297, NULL, '', NULL, NULL, 0),
-(298, NULL, '', NULL, NULL, 0),
-(299, NULL, '', NULL, NULL, 0),
-(300, NULL, '', NULL, NULL, 0),
-(301, NULL, '', NULL, NULL, 0),
-(302, NULL, '', NULL, NULL, 0),
-(303, NULL, '', NULL, NULL, 0),
-(304, NULL, '', NULL, NULL, 0),
-(305, NULL, '', NULL, NULL, 0),
-(306, NULL, '', NULL, NULL, 0),
-(307, NULL, '', NULL, NULL, 0),
-(308, NULL, '', NULL, NULL, 0),
-(309, NULL, '', NULL, NULL, 0),
-(310, NULL, '', NULL, NULL, 0),
-(311, NULL, '', NULL, NULL, 0),
-(312, NULL, '', NULL, NULL, 0),
-(313, NULL, '', NULL, NULL, 0),
-(314, NULL, '', NULL, NULL, 0),
-(315, NULL, '', NULL, NULL, 0),
-(316, NULL, '', NULL, NULL, 0),
-(317, NULL, '', NULL, NULL, 0),
-(318, NULL, '', NULL, NULL, 0),
-(319, NULL, '', NULL, NULL, 0),
-(320, NULL, '', NULL, NULL, 0),
-(321, NULL, '', NULL, NULL, 0),
-(322, NULL, '', NULL, NULL, 0),
-(323, NULL, '', NULL, NULL, 0),
-(324, NULL, '', NULL, NULL, 0),
-(325, NULL, '', NULL, NULL, 0),
-(326, NULL, '', NULL, NULL, 0),
-(327, NULL, '', NULL, NULL, 0),
-(328, NULL, '', NULL, NULL, 0),
-(329, NULL, '', NULL, NULL, 0),
-(330, NULL, '', NULL, NULL, 0),
-(331, NULL, '', NULL, NULL, 0),
-(332, NULL, '', NULL, NULL, 0),
-(333, NULL, '', NULL, NULL, 0),
-(334, NULL, '', NULL, NULL, 0),
-(335, NULL, '', NULL, NULL, 0),
-(336, NULL, '', NULL, NULL, 0),
-(337, NULL, '', NULL, NULL, 0),
-(338, NULL, '', NULL, NULL, 0),
-(339, NULL, '', NULL, NULL, 0),
-(340, NULL, '', NULL, NULL, 0),
-(341, NULL, 'SVZ', 78909976877, NULL, 0),
-(342, NULL, '', NULL, NULL, 0),
-(343, NULL, '', NULL, NULL, 0),
-(344, NULL, '', NULL, NULL, 0),
-(345, NULL, '', NULL, NULL, 0),
-(346, NULL, '', NULL, NULL, 0),
-(347, NULL, '', NULL, NULL, 0),
-(348, NULL, '', NULL, NULL, 0),
-(349, NULL, '', NULL, NULL, 0),
-(350, NULL, '', NULL, NULL, 0),
-(351, NULL, '', NULL, NULL, 0),
-(352, NULL, '', NULL, NULL, 0),
-(353, NULL, '', NULL, NULL, 0),
-(354, NULL, '', NULL, NULL, 0),
-(355, NULL, '', NULL, NULL, 0),
-(356, NULL, '', NULL, NULL, 0),
-(357, NULL, '', NULL, NULL, 0),
-(358, NULL, '', NULL, NULL, 0),
-(359, NULL, '', NULL, NULL, 0),
-(360, NULL, '', NULL, NULL, 0),
-(361, NULL, '', NULL, NULL, 0),
-(362, NULL, '', NULL, NULL, 0),
-(363, NULL, '', NULL, NULL, 0),
-(364, NULL, '', NULL, NULL, 0),
-(365, NULL, '', NULL, NULL, 0),
-(366, NULL, '', NULL, NULL, 0),
-(367, NULL, '', NULL, NULL, 0),
-(368, NULL, '', NULL, NULL, 0),
-(369, NULL, '', NULL, NULL, 0),
-(370, NULL, '', NULL, NULL, 0),
-(371, NULL, '', NULL, NULL, 0),
-(372, NULL, '', NULL, NULL, 0),
-(373, NULL, '', NULL, NULL, 0),
-(374, NULL, '', NULL, NULL, 0),
-(375, NULL, '', NULL, NULL, 0),
-(376, NULL, '', NULL, NULL, 0),
-(377, NULL, '', NULL, NULL, 0),
-(378, NULL, '', NULL, NULL, 0),
-(379, NULL, '', NULL, NULL, 0),
-(380, NULL, '', NULL, NULL, 0),
-(381, NULL, '', NULL, NULL, 0),
-(382, NULL, '', NULL, NULL, 0),
-(383, NULL, '', NULL, NULL, 0),
-(384, NULL, '', NULL, NULL, 0),
-(385, NULL, '', NULL, NULL, 0),
-(386, NULL, '', NULL, NULL, 0),
-(387, NULL, '', NULL, NULL, 0),
-(388, NULL, '', NULL, NULL, 0),
-(389, NULL, '', NULL, NULL, 0),
-(390, NULL, '', NULL, NULL, 0),
-(391, NULL, '', NULL, NULL, 0),
-(392, NULL, '', NULL, NULL, 0),
-(393, NULL, '', NULL, NULL, 0),
-(394, NULL, '', NULL, NULL, 0),
-(395, NULL, '', NULL, NULL, 0),
-(396, NULL, '', NULL, NULL, 0),
-(397, NULL, '', NULL, NULL, 0),
-(398, NULL, '', NULL, NULL, 0),
-(399, NULL, '', NULL, NULL, 0),
-(400, NULL, '', NULL, NULL, 0),
-(401, NULL, '', NULL, NULL, 0),
-(402, NULL, '', NULL, NULL, 0),
-(403, NULL, '', NULL, NULL, 0),
-(404, NULL, '', NULL, NULL, 0),
-(405, NULL, '', NULL, NULL, 0),
-(406, NULL, '', NULL, NULL, 0),
-(407, NULL, '', NULL, NULL, 0),
-(408, NULL, '', NULL, NULL, 0),
-(409, NULL, '', NULL, NULL, 0),
-(410, NULL, '', NULL, NULL, 0),
-(411, NULL, '', NULL, NULL, 0),
-(412, NULL, '', NULL, NULL, 0),
-(413, NULL, '', NULL, NULL, 0),
-(414, NULL, '', NULL, NULL, 0),
-(415, NULL, '', NULL, NULL, 0),
-(416, NULL, '', NULL, NULL, 0),
-(417, NULL, '', NULL, NULL, 0),
-(418, NULL, '', NULL, NULL, 0),
-(419, NULL, '', NULL, NULL, 0),
-(420, NULL, '', NULL, NULL, 0),
-(421, NULL, '', NULL, NULL, 0),
-(422, NULL, '', NULL, NULL, 0),
-(423, NULL, '', NULL, NULL, 0),
-(424, NULL, '', NULL, NULL, 0),
-(425, NULL, '', NULL, NULL, 0),
-(426, NULL, '', NULL, NULL, 0),
-(427, NULL, '', NULL, NULL, 0),
-(428, NULL, '', NULL, NULL, 0),
-(429, NULL, '', NULL, NULL, 0),
-(430, NULL, '', NULL, NULL, 0),
-(431, NULL, '', NULL, NULL, 0),
-(432, NULL, '', NULL, NULL, 0),
-(433, NULL, '', NULL, NULL, 0),
-(434, NULL, '', NULL, NULL, 0),
-(435, NULL, '', NULL, NULL, 0),
-(436, NULL, '', NULL, NULL, 0),
-(437, NULL, '', NULL, NULL, 0),
-(438, NULL, '', NULL, NULL, 0),
-(439, NULL, '', NULL, NULL, 0),
-(440, NULL, '', NULL, NULL, 0),
-(441, NULL, '', NULL, NULL, 0),
-(442, NULL, '', NULL, NULL, 0),
-(443, NULL, '', NULL, NULL, 0),
-(444, NULL, '', NULL, NULL, 0),
-(445, NULL, '', NULL, NULL, 0),
-(446, NULL, '', NULL, NULL, 0),
-(447, NULL, '', NULL, NULL, 0),
-(448, NULL, '', NULL, NULL, 0),
-(449, NULL, '', NULL, NULL, 0),
-(450, NULL, '', NULL, NULL, 0),
-(451, NULL, '', NULL, NULL, 0),
-(452, NULL, '', NULL, NULL, 0),
-(453, NULL, '', NULL, NULL, 0),
-(454, NULL, '', NULL, NULL, 0),
-(455, NULL, '', NULL, NULL, 0),
-(456, NULL, '', NULL, NULL, 0),
-(457, NULL, '', NULL, NULL, 0),
-(458, NULL, 'Сергей', 79099768770, NULL, 0),
-(459, NULL, '', NULL, NULL, 0),
-(460, NULL, '', NULL, NULL, 0),
-(461, NULL, '', NULL, NULL, 0),
-(462, NULL, '', NULL, NULL, 0),
-(463, NULL, '', NULL, NULL, 0),
-(464, NULL, '', NULL, NULL, 0),
-(465, NULL, '', NULL, NULL, 0),
-(466, NULL, '', NULL, NULL, 0),
-(467, NULL, '', NULL, NULL, 0),
-(468, NULL, '', NULL, NULL, 0),
-(469, NULL, '', NULL, NULL, 0),
-(470, NULL, 'Алексей', 79254647151, NULL, 0),
-(471, NULL, '', NULL, NULL, 0),
-(472, NULL, '', NULL, NULL, 0),
-(473, NULL, '', NULL, NULL, 0),
-(474, NULL, '', NULL, NULL, 0),
-(475, NULL, '', NULL, NULL, 0),
-(476, NULL, '', NULL, NULL, 0),
-(477, NULL, '', NULL, NULL, 0),
-(478, NULL, '', NULL, NULL, 0),
-(479, NULL, '', NULL, NULL, 0),
-(480, NULL, '', NULL, NULL, 0),
-(481, NULL, '', NULL, NULL, 0),
-(482, NULL, '', NULL, NULL, 0),
-(483, NULL, '', NULL, NULL, 0),
-(484, NULL, '', NULL, NULL, 0),
-(485, NULL, '', NULL, NULL, 0),
-(486, NULL, '', NULL, NULL, 0),
-(487, NULL, '', NULL, NULL, 0),
-(488, NULL, '', NULL, NULL, 0),
-(489, NULL, '', NULL, NULL, 0),
-(490, NULL, '', NULL, NULL, 0),
-(491, NULL, '', NULL, NULL, 0),
-(492, NULL, '', NULL, NULL, 0),
-(493, NULL, '', NULL, NULL, 0),
-(494, NULL, '', NULL, NULL, 0),
-(495, NULL, '', NULL, NULL, 0),
-(496, NULL, '', NULL, NULL, 0);
+INSERT INTO `user` (`id`, `name`, `phone`, `email`, `email_confirmed`) VALUES
+(1, '', NULL, NULL, 0),
+(2, '', NULL, NULL, 0),
+(3, '', NULL, NULL, 0),
+(4, '', NULL, NULL, 0),
+(5, '', NULL, NULL, 0),
+(6, '', NULL, NULL, 0),
+(7, '', NULL, NULL, 0),
+(8, '', NULL, NULL, 0),
+(9, '', NULL, NULL, 0),
+(10, '', NULL, NULL, 0),
+(11, '', NULL, NULL, 0),
+(12, '', NULL, NULL, 0),
+(13, '', NULL, NULL, 0),
+(14, '', NULL, NULL, 0),
+(15, '', NULL, NULL, 0),
+(16, '', NULL, NULL, 0),
+(17, '', NULL, NULL, 0),
+(18, '', NULL, NULL, 0),
+(19, '', NULL, NULL, 0),
+(20, '', NULL, NULL, 0),
+(21, '', NULL, NULL, 0),
+(22, '', NULL, NULL, 0),
+(23, '', NULL, NULL, 0),
+(24, '', NULL, NULL, 0),
+(25, '', NULL, NULL, 0),
+(26, '', NULL, NULL, 0),
+(27, '', NULL, NULL, 0),
+(28, '', NULL, NULL, 0),
+(29, '', NULL, NULL, 0),
+(30, '', NULL, NULL, 0),
+(31, '', NULL, NULL, 0),
+(32, '', NULL, NULL, 0),
+(33, '', NULL, NULL, 0),
+(34, '', NULL, NULL, 0),
+(35, '', NULL, NULL, 0),
+(36, '', NULL, NULL, 0),
+(37, '', NULL, NULL, 0),
+(38, '', NULL, NULL, 0),
+(39, '', NULL, NULL, 0),
+(40, '', NULL, NULL, 0),
+(41, '', NULL, NULL, 0),
+(42, '', NULL, NULL, 0),
+(43, '', NULL, NULL, 0),
+(44, 'aaa', 79185356024, NULL, 0),
+(45, '', NULL, NULL, 0),
+(46, '', NULL, NULL, 0),
+(47, '', NULL, NULL, 0),
+(48, '', NULL, NULL, 0),
+(49, '', NULL, NULL, 0),
+(50, 'Дмитрий', 79132146666, NULL, 0),
+(51, '', NULL, NULL, 0),
+(52, '', NULL, NULL, 0),
+(53, '', NULL, NULL, 0),
+(54, '', NULL, NULL, 0),
+(55, '', NULL, NULL, 0),
+(56, '', NULL, NULL, 0),
+(57, '', NULL, NULL, 0),
+(58, '', NULL, NULL, 0),
+(59, '', NULL, NULL, 0),
+(60, '', NULL, NULL, 0),
+(61, '', NULL, NULL, 0),
+(62, '', NULL, NULL, 0),
+(63, '', NULL, NULL, 0),
+(64, '', NULL, NULL, 0),
+(65, '', NULL, NULL, 0),
+(66, '', NULL, NULL, 0),
+(67, '', NULL, NULL, 0),
+(68, '', NULL, NULL, 0),
+(69, '', NULL, NULL, 0),
+(70, '', NULL, NULL, 0),
+(71, '', NULL, NULL, 0),
+(72, '', NULL, NULL, 0),
+(73, '', NULL, NULL, 0),
+(74, '', NULL, NULL, 0),
+(75, '', NULL, NULL, 0),
+(76, '', NULL, NULL, 0),
+(77, '', NULL, NULL, 0),
+(78, '', NULL, NULL, 0),
+(79, '', NULL, NULL, 0),
+(80, '', NULL, NULL, 0),
+(81, '', NULL, NULL, 0),
+(82, '', NULL, NULL, 0),
+(83, '', NULL, NULL, 0),
+(84, '', NULL, NULL, 0),
+(85, '', NULL, NULL, 0),
+(86, '', NULL, NULL, 0),
+(87, '', NULL, NULL, 0),
+(88, '', NULL, NULL, 0),
+(89, '', NULL, NULL, 0),
+(90, '', NULL, NULL, 0),
+(91, '', NULL, NULL, 0),
+(92, '', NULL, NULL, 0),
+(93, '', NULL, NULL, 0),
+(94, '', NULL, NULL, 0),
+(95, '', NULL, NULL, 0),
+(96, '', NULL, NULL, 0),
+(97, '', NULL, NULL, 0),
+(98, '', NULL, NULL, 0),
+(99, '', NULL, NULL, 0),
+(100, '', NULL, NULL, 0),
+(101, '', NULL, NULL, 0),
+(102, '', NULL, NULL, 0),
+(103, '', NULL, NULL, 0),
+(104, '', NULL, NULL, 0),
+(105, '', NULL, NULL, 0),
+(106, '', NULL, NULL, 0),
+(107, '', NULL, NULL, 0),
+(108, '', NULL, NULL, 0),
+(109, '', NULL, NULL, 0),
+(110, '', NULL, NULL, 0),
+(111, '', NULL, NULL, 0),
+(112, '', NULL, NULL, 0),
+(113, '', NULL, NULL, 0),
+(114, '', NULL, NULL, 0),
+(115, '', NULL, NULL, 0),
+(116, '', NULL, NULL, 0),
+(117, '', NULL, NULL, 0),
+(118, '', NULL, NULL, 0),
+(119, '', NULL, NULL, 0),
+(120, '', NULL, NULL, 0),
+(121, '', NULL, NULL, 0),
+(122, '', NULL, NULL, 0),
+(123, '', NULL, NULL, 0),
+(124, '', NULL, NULL, 0),
+(125, '', NULL, NULL, 0),
+(126, '', NULL, NULL, 0),
+(127, '', NULL, NULL, 0),
+(128, '', NULL, NULL, 0),
+(129, '', NULL, NULL, 0),
+(130, '', NULL, NULL, 0),
+(131, '', NULL, NULL, 0),
+(132, '', NULL, NULL, 0),
+(133, '', NULL, NULL, 0),
+(134, '', NULL, NULL, 0),
+(135, '', NULL, NULL, 0),
+(136, '', NULL, NULL, 0),
+(137, '', NULL, NULL, 0),
+(138, '', NULL, NULL, 0),
+(139, '', NULL, NULL, 0),
+(140, '', NULL, NULL, 0),
+(141, '', NULL, NULL, 0),
+(142, '', NULL, NULL, 0),
+(143, '', NULL, NULL, 0),
+(144, '', NULL, NULL, 0),
+(145, '', NULL, NULL, 0),
+(146, '', NULL, NULL, 0),
+(147, '', NULL, NULL, 0),
+(148, '', NULL, NULL, 0),
+(149, '', NULL, NULL, 0),
+(150, '', NULL, NULL, 0),
+(151, '', NULL, NULL, 0),
+(152, '', NULL, NULL, 0),
+(153, '', NULL, NULL, 0),
+(154, '', NULL, NULL, 0),
+(155, '', NULL, NULL, 0),
+(156, '', NULL, NULL, 0),
+(157, '', NULL, NULL, 0),
+(158, '', NULL, NULL, 0),
+(159, '', NULL, NULL, 0),
+(160, '', NULL, NULL, 0),
+(161, '', NULL, NULL, 0),
+(162, '', NULL, NULL, 0),
+(163, '', NULL, NULL, 0),
+(164, '', NULL, NULL, 0),
+(165, '', NULL, NULL, 0),
+(166, '', NULL, NULL, 0),
+(167, '', NULL, NULL, 0),
+(168, '', NULL, NULL, 0),
+(169, '', NULL, NULL, 0),
+(170, '', NULL, NULL, 0),
+(171, '', NULL, NULL, 0),
+(172, '', NULL, NULL, 0),
+(173, '', NULL, NULL, 0),
+(174, '', NULL, NULL, 0),
+(175, '', NULL, NULL, 0),
+(176, '', NULL, NULL, 0),
+(177, '', NULL, NULL, 0),
+(178, '', NULL, NULL, 0),
+(179, '', NULL, NULL, 0),
+(180, '', NULL, NULL, 0),
+(181, '', NULL, NULL, 0),
+(182, '', NULL, NULL, 0),
+(183, '', NULL, NULL, 0),
+(184, '', NULL, NULL, 0),
+(185, '', NULL, NULL, 0),
+(186, '', NULL, NULL, 0),
+(187, '', NULL, NULL, 0),
+(188, '', NULL, NULL, 0),
+(189, '', NULL, NULL, 0),
+(190, '', NULL, NULL, 0),
+(191, '', NULL, NULL, 0),
+(192, '', NULL, NULL, 0),
+(193, '', NULL, NULL, 0),
+(194, '', NULL, NULL, 0),
+(195, '', NULL, NULL, 0),
+(196, '', NULL, NULL, 0),
+(197, '', NULL, NULL, 0),
+(198, '', NULL, NULL, 0),
+(199, '', NULL, NULL, 0),
+(200, '', NULL, NULL, 0),
+(201, '', NULL, NULL, 0),
+(202, '', NULL, NULL, 0),
+(203, '', NULL, NULL, 0),
+(204, '', NULL, NULL, 0),
+(205, '', NULL, NULL, 0),
+(206, '', NULL, NULL, 0),
+(207, '', NULL, NULL, 0),
+(208, '', NULL, NULL, 0),
+(209, '', NULL, NULL, 0),
+(210, '', NULL, NULL, 0),
+(211, '', NULL, NULL, 0),
+(212, '', NULL, NULL, 0),
+(213, '', NULL, NULL, 0),
+(214, '', NULL, NULL, 0),
+(215, '', NULL, NULL, 0),
+(216, '', NULL, NULL, 0),
+(217, '', NULL, NULL, 0),
+(218, '', NULL, NULL, 0),
+(219, '', NULL, NULL, 0),
+(220, '', NULL, NULL, 0),
+(221, '', NULL, NULL, 0),
+(222, '', NULL, NULL, 0),
+(223, '', NULL, NULL, 0),
+(224, '', NULL, NULL, 0),
+(225, '', NULL, NULL, 0),
+(226, '', NULL, NULL, 0),
+(227, '', NULL, NULL, 0),
+(228, '', NULL, NULL, 0),
+(229, '', NULL, NULL, 0),
+(230, '', NULL, NULL, 0),
+(231, '', NULL, NULL, 0),
+(232, '', NULL, NULL, 0),
+(233, '', NULL, NULL, 0),
+(234, '', NULL, NULL, 0),
+(235, '', NULL, NULL, 0),
+(236, '', NULL, NULL, 0),
+(237, '', NULL, NULL, 0),
+(238, '', NULL, NULL, 0),
+(239, '', NULL, NULL, 0),
+(240, '', NULL, NULL, 0),
+(241, '', NULL, NULL, 0),
+(242, '', NULL, NULL, 0),
+(243, '', NULL, NULL, 0),
+(244, '', NULL, NULL, 0),
+(245, '', NULL, NULL, 0),
+(246, '', NULL, NULL, 0),
+(247, '', NULL, NULL, 0),
+(248, '', NULL, NULL, 0),
+(249, '', NULL, NULL, 0),
+(250, '', NULL, NULL, 0),
+(251, '', NULL, NULL, 0),
+(252, '', NULL, NULL, 0),
+(253, '', NULL, NULL, 0),
+(254, '', NULL, NULL, 0),
+(255, '', NULL, NULL, 0),
+(256, '', NULL, NULL, 0),
+(257, '', NULL, NULL, 0),
+(258, '', NULL, NULL, 0),
+(259, '', NULL, NULL, 0),
+(260, '', NULL, NULL, 0),
+(261, '', NULL, NULL, 0),
+(262, '', NULL, NULL, 0),
+(263, '', NULL, NULL, 0),
+(264, '', NULL, NULL, 0),
+(265, '', NULL, NULL, 0),
+(266, '', NULL, NULL, 0),
+(267, '', NULL, NULL, 0),
+(268, '', NULL, NULL, 0),
+(269, '', NULL, NULL, 0),
+(270, '', NULL, NULL, 0),
+(271, '', NULL, NULL, 0),
+(272, '', NULL, NULL, 0),
+(273, '', NULL, NULL, 0),
+(274, '', NULL, NULL, 0),
+(275, '', NULL, NULL, 0),
+(276, '', NULL, NULL, 0),
+(277, '', NULL, NULL, 0),
+(278, '', NULL, NULL, 0),
+(279, '', NULL, NULL, 0),
+(280, '', NULL, NULL, 0),
+(281, '', NULL, NULL, 0),
+(282, '', NULL, NULL, 0),
+(283, '', NULL, NULL, 0),
+(284, '', NULL, NULL, 0),
+(285, '', NULL, NULL, 0),
+(286, '', NULL, NULL, 0),
+(287, '', NULL, NULL, 0),
+(288, '', NULL, NULL, 0),
+(289, '', NULL, NULL, 0),
+(290, '', NULL, NULL, 0),
+(291, '', NULL, NULL, 0),
+(292, '', NULL, NULL, 0),
+(293, '', NULL, NULL, 0),
+(294, '', NULL, NULL, 0),
+(295, '', NULL, NULL, 0),
+(296, '', NULL, NULL, 0),
+(297, '', NULL, NULL, 0),
+(298, '', NULL, NULL, 0),
+(299, '', NULL, NULL, 0),
+(300, '', NULL, NULL, 0),
+(301, '', NULL, NULL, 0),
+(302, '', NULL, NULL, 0),
+(303, '', NULL, NULL, 0),
+(304, '', NULL, NULL, 0),
+(305, '', NULL, NULL, 0),
+(306, '', NULL, NULL, 0),
+(307, '', NULL, NULL, 0),
+(308, '', NULL, NULL, 0),
+(309, '', NULL, NULL, 0),
+(310, '', NULL, NULL, 0),
+(311, '', NULL, NULL, 0),
+(312, '', NULL, NULL, 0),
+(313, '', NULL, NULL, 0),
+(314, '', NULL, NULL, 0),
+(315, '', NULL, NULL, 0),
+(316, '', NULL, NULL, 0),
+(317, '', NULL, NULL, 0),
+(318, '', NULL, NULL, 0),
+(319, '', NULL, NULL, 0),
+(320, '', NULL, NULL, 0),
+(321, '', NULL, NULL, 0),
+(322, '', NULL, NULL, 0),
+(323, '', NULL, NULL, 0),
+(324, '', NULL, NULL, 0),
+(325, '', NULL, NULL, 0),
+(326, '', NULL, NULL, 0),
+(327, '', NULL, NULL, 0),
+(328, '', NULL, NULL, 0),
+(329, '', NULL, NULL, 0),
+(330, '', NULL, NULL, 0),
+(331, '', NULL, NULL, 0),
+(332, '', NULL, NULL, 0),
+(333, '', NULL, NULL, 0),
+(334, '', NULL, NULL, 0),
+(335, '', NULL, NULL, 0),
+(336, '', NULL, NULL, 0),
+(337, '', NULL, NULL, 0),
+(338, '', NULL, NULL, 0),
+(339, '', NULL, NULL, 0),
+(340, '', NULL, NULL, 0),
+(341, 'SVZ', 78909976877, NULL, 0),
+(342, '', NULL, NULL, 0),
+(343, '', NULL, NULL, 0),
+(344, '', NULL, NULL, 0),
+(345, '', NULL, NULL, 0),
+(346, '', NULL, NULL, 0),
+(347, '', NULL, NULL, 0),
+(348, '', NULL, NULL, 0),
+(349, '', NULL, NULL, 0),
+(350, '', NULL, NULL, 0),
+(351, '', NULL, NULL, 0),
+(352, '', NULL, NULL, 0),
+(353, '', NULL, NULL, 0),
+(354, '', NULL, NULL, 0),
+(355, '', NULL, NULL, 0),
+(356, '', NULL, NULL, 0),
+(357, '', NULL, NULL, 0),
+(358, '', NULL, NULL, 0),
+(359, '', NULL, NULL, 0),
+(360, '', NULL, NULL, 0),
+(361, '', NULL, NULL, 0),
+(362, '', NULL, NULL, 0),
+(363, '', NULL, NULL, 0),
+(364, '', NULL, NULL, 0),
+(365, '', NULL, NULL, 0),
+(366, '', NULL, NULL, 0),
+(367, '', NULL, NULL, 0),
+(368, '', NULL, NULL, 0),
+(369, '', NULL, NULL, 0),
+(370, '', NULL, NULL, 0),
+(371, '', NULL, NULL, 0),
+(372, '', NULL, NULL, 0),
+(373, '', NULL, NULL, 0),
+(374, '', NULL, NULL, 0),
+(375, '', NULL, NULL, 0),
+(376, '', NULL, NULL, 0),
+(377, '', NULL, NULL, 0),
+(378, '', NULL, NULL, 0),
+(379, '', NULL, NULL, 0),
+(380, '', NULL, NULL, 0),
+(381, '', NULL, NULL, 0),
+(382, '', NULL, NULL, 0),
+(383, '', NULL, NULL, 0),
+(384, '', NULL, NULL, 0),
+(385, '', NULL, NULL, 0),
+(386, '', NULL, NULL, 0),
+(387, '', NULL, NULL, 0),
+(388, '', NULL, NULL, 0),
+(389, '', NULL, NULL, 0),
+(390, '', NULL, NULL, 0),
+(391, '', NULL, NULL, 0),
+(392, '', NULL, NULL, 0),
+(393, '', NULL, NULL, 0),
+(394, '', NULL, NULL, 0),
+(395, '', NULL, NULL, 0),
+(396, '', NULL, NULL, 0),
+(397, '', NULL, NULL, 0),
+(398, '', NULL, NULL, 0),
+(399, '', NULL, NULL, 0),
+(400, '', NULL, NULL, 0),
+(401, '', NULL, NULL, 0),
+(402, '', NULL, NULL, 0),
+(403, '', NULL, NULL, 0),
+(404, '', NULL, NULL, 0),
+(405, '', NULL, NULL, 0),
+(406, '', NULL, NULL, 0),
+(407, '', NULL, NULL, 0),
+(408, '', NULL, NULL, 0),
+(409, '', NULL, NULL, 0),
+(410, '', NULL, NULL, 0),
+(411, '', NULL, NULL, 0),
+(412, '', NULL, NULL, 0),
+(413, '', NULL, NULL, 0),
+(414, '', NULL, NULL, 0),
+(415, '', NULL, NULL, 0),
+(416, '', NULL, NULL, 0),
+(417, '', NULL, NULL, 0),
+(418, '', NULL, NULL, 0),
+(419, '', NULL, NULL, 0),
+(420, '', NULL, NULL, 0),
+(421, '', NULL, NULL, 0),
+(422, '', NULL, NULL, 0),
+(423, '', NULL, NULL, 0),
+(424, '', NULL, NULL, 0),
+(425, '', NULL, NULL, 0),
+(426, '', NULL, NULL, 0),
+(427, '', NULL, NULL, 0),
+(428, '', NULL, NULL, 0),
+(429, '', NULL, NULL, 0),
+(430, '', NULL, NULL, 0),
+(431, '', NULL, NULL, 0),
+(432, '', NULL, NULL, 0),
+(433, '', NULL, NULL, 0),
+(434, '', NULL, NULL, 0),
+(435, '', NULL, NULL, 0),
+(436, '', NULL, NULL, 0),
+(437, '', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -2710,11 +2684,7 @@ INSERT INTO `user_data` (`user_id`, `address`, `geodata`, `fias_id`, `fias_level
 (44, 'г Москва, ул Угрешская, д 2 стр 2, кв 2', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 2, кв 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 2, кв 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"house_kladr_id\":\"7700000000002230009\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"2\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"2\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"fias_code\":\"77000000000000002230009\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230009\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7110452\",\"geo_lon\":\"37.6840653\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '02fd4c17-a8b7-4840-968b-9e417957f0d3', 8),
 (341, 'г Москва, ул Угрешская, д 3Б ', '{\"value\":\"г Москва, ул Угрешская, д 3Б\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 3Б\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":null,\"house_kladr_id\":null,\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"3Б\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"fias_code\":\"77000000000000002230000\",\"fias_level\":\"7\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"77000000000022300\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7126163\",\"geo_lon\":\"37.684728\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '966e6baf-a2da-4e70-8ac3-ba2c1a2a699a', 7),
 (363, 'г Москва, ул Шипиловская, д 38, кв 39', '{\"value\":\"г Москва, ул Шипиловская, д 38, кв 39\",\"unrestricted_value\":\"115563, г Москва, Орехово-Борисово Северное р-н, ул Шипиловская, д 38, кв 39\",\"data\":{\"postal_code\":\"115563\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Орехово-Борисово Северное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Орехово-Борисово Северное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"60e1bccf-3f1e-44e4-b072-98c8f8670457\",\"street_kladr_id\":\"77000000000052900\",\"street_with_type\":\"ул Шипиловская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шипиловская\",\"house_fias_id\":\"f222beec-3f91-4a79-806e-7dfab8cde211\",\"house_kladr_id\":\"7700000000005290036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"38\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"39\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"fias_code\":\"77000000000000005290036\",\"fias_level\":\"9\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000005290036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296577000\",\"oktmo\":\"45921000\",\"tax_office\":\"7724\",\"tax_office_legal\":\"7724\",\"timezone\":null,\"geo_lat\":\"55.6205363\",\"geo_lon\":\"37.7238036\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '8fb0e48d-8b18-4ca7-88b2-53738665b120', 9),
-(50, 'г Москва, ул Шипиловская, д 38, кв 39', '{\"value\":\"г Москва, ул Шипиловская, д 38, кв 39\",\"unrestricted_value\":\"115563, г Москва, Орехово-Борисово Северное р-н, ул Шипиловская, д 38, кв 39\",\"data\":{\"postal_code\":\"115563\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Орехово-Борисово Северное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Орехово-Борисово Северное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"60e1bccf-3f1e-44e4-b072-98c8f8670457\",\"street_kladr_id\":\"77000000000052900\",\"street_with_type\":\"ул Шипиловская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шипиловская\",\"house_fias_id\":\"f222beec-3f91-4a79-806e-7dfab8cde211\",\"house_kladr_id\":\"7700000000005290036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"38\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"39\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"fias_code\":\"77000000000000005290036\",\"fias_level\":\"9\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000005290036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296577000\",\"oktmo\":\"45921000\",\"tax_office\":\"7724\",\"tax_office_legal\":\"7724\",\"timezone\":null,\"geo_lat\":\"55.6205363\",\"geo_lon\":\"37.7238036\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '8fb0e48d-8b18-4ca7-88b2-53738665b120', 9),
-(470, 'г Москва, 1-й Угрешский проезд, д 28 ', '{\"value\":\"г Москва, 1-й Угрешский проезд, д 28\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, 1-й Угрешский проезд, д 28\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"4cdd215b-55d8-414d-829c-064558cbafd3\",\"street_kladr_id\":\"77000000000347700\",\"street_with_type\":\"1-й Угрешский проезд\",\"street_type\":\"проезд\",\"street_type_full\":\"проезд\",\"street\":\"1-й Угрешский\",\"house_fias_id\":\"7a36fc6d-0833-4ee2-9318-fa65cbd3a557\",\"house_kladr_id\":\"7700000000034770020\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"28\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"7a36fc6d-0833-4ee2-9318-fa65cbd3a557\",\"fias_code\":\"77000000000000034770020\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000034770020\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7159014\",\"geo_lon\":\"37.6928724\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '7a36fc6d-0833-4ee2-9318-fa65cbd3a557', 8),
-(470, 'г Москва, ул Угрешская, д 2 ', '{\"value\":\"г Москва, ул Угрешская, д 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":null,\"house_kladr_id\":null,\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"fias_code\":\"77000000000000002230000\",\"fias_level\":\"7\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"77000000000022300\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7112789\",\"geo_lon\":\"37.6835843\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '966e6baf-a2da-4e70-8ac3-ba2c1a2a699a', 7),
-(470, 'г Москва, ул Угрешская, д 2 стр 1 ', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 1\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 1\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"853a074f-0e8d-48da-aec9-cdd55ef0e3d7\",\"house_kladr_id\":\"7700000000002230008\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"1\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"853a074f-0e8d-48da-aec9-cdd55ef0e3d7\",\"fias_code\":\"77000000000000002230008\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230008\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7112789\",\"geo_lon\":\"37.6834755\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '853a074f-0e8d-48da-aec9-cdd55ef0e3d7', 8),
-(493, 'г Москва, ул Угрешская, д 2 стр 2, кв 2', '{\"value\":\"г Москва, ул Угрешская, д 2 стр 2, кв 2\",\"unrestricted_value\":\"115088, г Москва, р-н Печатники, ул Угрешская, д 2 стр 2, кв 2\",\"data\":{\"postal_code\":\"115088\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Юго-восточный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"р-н Печатники\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Печатники\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"966e6baf-a2da-4e70-8ac3-ba2c1a2a699a\",\"street_kladr_id\":\"77000000000022300\",\"street_with_type\":\"ул Угрешская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Угрешская\",\"house_fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"house_kladr_id\":\"7700000000002230009\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"2\",\"block_type\":\"стр\",\"block_type_full\":\"строение\",\"block\":\"2\",\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"2\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"02fd4c17-a8b7-4840-968b-9e417957f0d3\",\"fias_code\":\"77000000000000002230009\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000002230009\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45290582000\",\"oktmo\":\"45393000\",\"tax_office\":\"7723\",\"tax_office_legal\":\"7723\",\"timezone\":null,\"geo_lat\":\"55.7110452\",\"geo_lon\":\"37.6840653\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '02fd4c17-a8b7-4840-968b-9e417957f0d3', 8);
+(50, 'г Москва, ул Шипиловская, д 38, кв 39', '{\"value\":\"г Москва, ул Шипиловская, д 38, кв 39\",\"unrestricted_value\":\"115563, г Москва, Орехово-Борисово Северное р-н, ул Шипиловская, д 38, кв 39\",\"data\":{\"postal_code\":\"115563\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Орехово-Борисово Северное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Орехово-Борисово Северное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"60e1bccf-3f1e-44e4-b072-98c8f8670457\",\"street_kladr_id\":\"77000000000052900\",\"street_with_type\":\"ул Шипиловская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Шипиловская\",\"house_fias_id\":\"f222beec-3f91-4a79-806e-7dfab8cde211\",\"house_kladr_id\":\"7700000000005290036\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"38\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"flat_cadnum\":null,\"flat_type\":\"кв\",\"flat_type_full\":\"квартира\",\"flat\":\"39\",\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"8fb0e48d-8b18-4ca7-88b2-53738665b120\",\"fias_code\":\"77000000000000005290036\",\"fias_level\":\"9\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000005290036\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296577000\",\"oktmo\":\"45921000\",\"tax_office\":\"7724\",\"tax_office_legal\":\"7724\",\"timezone\":null,\"geo_lat\":\"55.6205363\",\"geo_lon\":\"37.7238036\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}', '8fb0e48d-8b18-4ca7-88b2-53738665b120', 9);
 
 -- --------------------------------------------------------
 
@@ -2742,19 +2712,16 @@ DROP TABLE IF EXISTS `filtered_product`;
 DROP VIEW IF EXISTS `filtered_product`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER VIEW `filtered_product`  AS  select distinct `s`.`id` AS `id`,`s`.`provider_id` AS `provider_id`,`s`.`title` AS `title`,`pr`.`id` AS `product_id`,`pr`.`title` AS `product_title`,`sb`.`rest` AS `rest`,`pri`.`price` AS `price`,`pr`.`param_value_list` AS `param_value_list`,`pr`.`param_variable_list` AS `param_variable_list` from ((((`store` `s` join `provider` `p` on((`p`.`id` = `s`.`provider_id`))) join `product` `pr` on((`pr`.`provider_id` = `s`.`provider_id`))) left join `stock_balance` `sb` on(((`sb`.`product_id` = `pr`.`id`) and (`sb`.`store_id` = `s`.`id`)))) left join `price` `pri` on(((`pri`.`product_id` = `pr`.`id`) and (`pri`.`provider_id` = `p`.`id`)))) ;
 
--- --------------------------------------------------------
-
---
--- Structure for view `role_permissions`
---
-DROP TABLE IF EXISTS `role_permissions`;
-
-DROP VIEW IF EXISTS `role_permissions`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER VIEW `role_permissions` (`role_id`, `role_name`, `permission_name`) AS   select `r`.`id` AS `role_id`,`r`.`name` AS `role_name`,`p`.`name` AS `permission_name` from (`permission` `p` left join (`role` `r` left join `role_permission` `rp` on((`rp`.`role_id` = `r`.`id`))) on((`rp`.`permission_id` = `p`.`id`))) order by `r`.`id`  ;
-
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `role`
+--
+
+-- ALTER TABLE `role`
+--  ADD PRIMARY KEY(`id`);
 
 --
 -- Indexes for table `basket`
@@ -2805,13 +2772,6 @@ ALTER TABLE `marker`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `permission`
---
-ALTER TABLE `permission`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name_idx` (`name`);
-
---
 -- Indexes for table `price`
 --
 ALTER TABLE `price`
@@ -2842,27 +2802,6 @@ ALTER TABLE `provider`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name_idx` (`name`);
-
---
--- Indexes for table `role_hierarchy`
---
-ALTER TABLE `role_hierarchy`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `role_permission`
---
-ALTER TABLE `role_permission`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `role_permission_role_id_fk` (`role_id`),
-  ADD KEY `role_permission_permission_id_fk` (`permission_id`);
-
---
 -- Indexes for table `size`
 --
 ALTER TABLE `size`
@@ -2884,8 +2823,7 @@ ALTER TABLE `store`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `1c_id` (`user_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -2898,45 +2836,10 @@ ALTER TABLE `customer`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `permission`
---
-ALTER TABLE `permission`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `role`
---
-ALTER TABLE `role`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `role_hierarchy`
---
-ALTER TABLE `role_hierarchy`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `role_permission`
---
-ALTER TABLE `role_permission`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=497;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `role_permission`
---
-ALTER TABLE `role_permission`
-  ADD CONSTRAINT `role_permission_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `role_permission_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=438;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

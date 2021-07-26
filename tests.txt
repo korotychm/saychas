@@ -78,3 +78,10 @@ curl -i -L saychas-z.local/receive-marker --data '[{"product_id": "1", "product_
 
 // Telephone code request
 curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 9160010203, "code": 7777}] }'
+
+
+
+// Making request to get all users from srv02.saychas.office
+
+ curl -i -L curl http://srv02.saychas.office:8000/SC/hs/site/lk_get_all_users --data '{"provider_id": "00002"}'
+

@@ -14,7 +14,10 @@ use Application\Model\Entity\Entity;
 class RolePermission extends Entity
 {
 
-    public static $repository;
+    /**
+     * @var RolePermission
+     */
+    public static RolePermission $repository;
 
     /** @var int */
     protected $role_id;

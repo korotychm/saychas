@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel/src/Controller/IndexController.php
+// ControlPanel/src/Controller/AuthController.php
 
 declare(strict_types=1);
 
@@ -11,8 +11,9 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
+use Laminas\Authentication\Result;
 
-class LoginController extends AbstractActionController
+class AuthController extends AbstractActionController
 {
 
     /** @var ContainerInterface */
@@ -23,17 +24,22 @@ class LoginController extends AbstractActionController
 
     /** @var Container */
     protected $sessionContainer;
-    
+
+    /** @var EntityManager */
     protected $entityManager;
 
+    /** @var UserManager */
     protected $userManager;
 
+    /** @var AuthManager */
+    protected $authManager;
+    
     /**
      * Constructor
      *
      * @param ContainerInterface $container
      */
-    public function __construct($container, $sessionContainer, $entityManager, $userManager)
+    public function __construct($container, $sessionContainer, $entityManager, $userManager, $authManager)
     {
         /** @var ContainerInterface */
         $this->container = $container;
@@ -41,6 +47,7 @@ class LoginController extends AbstractActionController
         $this->htmlContentProvider = $this->container->get(HtmlContentProvider::class);
         $this->entityManager = $entityManager;
         $this->userManager = $userManager;
+        $this->authManager = $authManager;
     }
 
     /**
@@ -53,7 +60,7 @@ class LoginController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $this->layout()->setTemplate('layout/control-panel-login');
+        $this->layout()->setTemplate('layout/control-panel-auth');
         return $response;
     }
 
@@ -65,6 +72,14 @@ class LoginController extends AbstractActionController
      */
     public function loginAction()
     {
+//        $answer = $this->getAllUsers([
+//            'provider_id' => '00002',
+////            'login' => 'Banzaii',
+////            'password' => '1234', // 'ODx7hdsjK9',
+////            'roles' => ["000000002", "000000003", "000000003",],
+////            'access_is_allowed' => true,
+//        ]);
+        
         $returnUrl = $this->params()->fromQuery('returnUrl');
         return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl]);
     }
@@ -78,13 +93,19 @@ class LoginController extends AbstractActionController
     public function checkLoginAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        if ('banzaii' == $post['username'] && 'vonzaii' == $post['password']) {
+        $result = $this->authManager->login(['provider_id' => '00002', 'login' => 'Banzaii', 'password' => '1234',]);
+//        if ('banzaii' == $post['username'] && 'vonzaii' == $post['password']) {
+        if($result->getCode() == Result::SUCCESS) {
             // set session
-            $this->sessionContainer->partnerLoggedIn = true;
+            //$this->sessionContainer->partnerLoggedIn = $result->getIdentity();
+            
+            $post['username'] = 'Banzaii';
+            $post['password'] = '1234';
 
             return $this->redirect()->toUrl($post['returnUrl']);
         }
-        unset($this->sessionContainer->partnerLoggedIn);
+        //unset($this->sessionContainer->partnerLoggedIn);
+        $this->authManager->logout();
         return $this->redirect()->toUrl($post['returnUrl']);
     }
 
@@ -95,8 +116,22 @@ class LoginController extends AbstractActionController
      */
     public function logoutAction()
     {
-        unset($this->sessionContainer->partnerLoggedIn);
+        //unset($this->sessionContainer->partnerLoggedIn);
+//        return $this->redirect()->toUrl('/control-panel');
+        $this->authManager->logout();
         return $this->redirect()->toUrl('/control-panel');
+    }
+
+    /**
+     * Displays the "Not Authorized" page.
+     *
+     * @return ViewModel
+     */
+    public function notAuthorizedAction()
+    {
+        $this->getResponse()->setStatusCode(403);
+
+        return new ViewModel();
     }
 
 }

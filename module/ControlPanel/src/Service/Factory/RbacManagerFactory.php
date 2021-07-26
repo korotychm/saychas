@@ -6,7 +6,7 @@ namespace ControlPanel\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use ControlPanel\Service\RbacManager;
-use Laminas\Authentication\AuthenticationService;
+//use Laminas\Authentication\AuthenticationService;
 
 class RbacManagerFactory
 {
@@ -16,7 +16,8 @@ class RbacManagerFactory
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $authService = $container->get(AuthenticationService::class);
+        //$authService = $container->get(AuthenticationService::class);
+        $authService = $container->get('my_auth_service');
         $cache = $container->get('FilesystemCache');
 
         $assertionManagers = [];

@@ -118,13 +118,22 @@ class RbacManager
             $rbac->setCreateMissingRoles(true);
 
             $repo = $this->entityManager->getRepository(CPRole::class);
+            $repoHierarchy = $this->entityManager->getRepository(\ControlPanel\Model\Entity\RoleHierarchy::class);
+            $hierarchy = $repoHierarchy->findAll([])->toArray();
             $roles = $repo->findAll([], ['id' => 'ASC'])->toArray();
 
             $parents = [];
             foreach ($roles as $role) {
                 $roleName = $role['name'];
                 // get parents
-                $parents = \Application\Helper\ArrayHelper::getParents(['id' => $role['id'], 'parent_role_id' => $role['parent_role_id']], $roles, [], 'id', 'parent_role_id');
+                //$parents = \Application\Helper\ArrayHelper::getParents(['id' => $role['id'], 'parent_role_id' => $role['parent_role_id']], $roles, [], 'id', 'parent_role_id');
+                $parents = \Application\Helper\ArrayHelper::getParents(
+                                ['child_role_id' => $role['id'], 'parent_role_id' => $role['parent_role_id']],
+                                $hierarchy/* $roles */,
+                                [],
+                                'child_role_id',
+                                'parent_role_id'
+                );
                 $parentRoleNames = [];
                 foreach ($parents as $parentId) {
                     $parentRole = $repo->find(['id' => $parentId]);
@@ -157,16 +166,24 @@ class RbacManager
         if ($this->rbac == null) {
             $this->init();
         }
-        
+
+//        echo 'admin: administrator = '. $this->rbac->isGranted('administrator', 'administrator').'<br/>';
+//        echo 'developer: developer = '. $this->rbac->isGranted('developer', 'developer').'<br/>';
+//        echo 'brand_manager: brand.manager = '. $this->rbac->isGranted('brand_manager', 'brand_manager').'<br/>';
+//        echo 'store_manager: store.manager = '. $this->rbac->isGranted('store_manager', 'store.manager').'<br/>';
+//        echo 'guest: guest = '. $this->rbac->isGranted('guest', 'guest1').'<br/>';
+//
+//
+//        exit;
 //        echo 'admin: delete.personal = '. $this->rbac->isGranted('admin', 'delete.personal').'<br/>';
 //        echo 'editor: view.profile = '. $this->rbac->isGranted('editor', 'view.profile').'<br/>';
 //        echo 'supervisor: edit.profile = '. $this->rbac->isGranted('supervisor', 'edit.profile').'<br/>';
 //        echo 'guest: view.profile = '. $this->rbac->isGranted('guest', 'view.profile').'<br/>';
 //        echo 'guest: general = '. $this->rbac->isGranted('guest', 'general').'<br/>';
-//        
-//        
+//
+//
 //        exit;
-        
+
 
         if ($user == null) {
 
@@ -214,3 +231,49 @@ class RbacManager
     }
 
 }
+
+//    private function initRoles2()
+//    {
+//        $roleHierarchy = $this->entityManager->getRepository(RoleHierarchy::class)->findAll([], ['id' => 'ASC']);
+//        foreach($roleHierarchy as $element) {
+//            $terminal = $element->getTerminal();
+//            $elements[] = ['id' => $element->getId(), 'parent_id' => 1 == $terminal ? 0 : $element->getParentRoleId()];
+//        }
+//        echo '<pre>';
+//        print_r($elements);
+//        echo '</pre>';
+//
+//        $tree = \Application\Helper\ArrayHelper::buildTree($elements, 0);
+//        echo '<pre>';
+//        print_r($tree);
+//        echo '</pre>';
+//
+//        $parents = \Application\Helper\ArrayHelper::getParents(['id' => 6, 'parent_id' => 5], $elements);
+//        echo '<pre>';
+//        print_r($parents);
+//        echo '</pre>';
+//        exit;
+//        // Create role hierarchy
+//        $rbac = new Rbac();
+//        $this->rbac = $rbac;
+//        $editor = new Role('Editor');
+//        $editor->addPermission('post.edit');
+//        $rbac->addRole('Viewer', [$editor, new Role('Author')]);
+//        $rbac->addRole('Editor', [new Role('Administrator')]);
+//        $rbac->addRole('Author');
+//        $rbac->addRole('Administrator');
+//
+//        // Assign permissions to the Viewer role.
+//        $rbac->getRole('Viewer')->addPermission('post.view');
+//
+//        // Assign permissions to the Author role.
+//        $rbac->getRole('Author')->addPermission('post.own.edit');
+//        $rbac->getRole('Author')->addPermission('post.own.publish');
+//
+//        // Assign permissions to the Editor role.
+//        //$rbac->getRole('Editor')->addPermission('post.edit');
+//        $rbac->getRole('Editor')->addPermission('post.publish');
+//
+//        // Assign permissions to the Administrator role.
+//        $rbac->getRole('Administrator')->addPermission('post.delete');
+//    }
