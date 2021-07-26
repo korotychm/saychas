@@ -149,6 +149,8 @@ class IndexController extends AbstractActionController
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
             'addressLegal' =>  $addressLegal,
+            'username' =>  $userInfo['name'],
+            'userphone' =>  $userInfo['phone'],
         ]);
         $this->layout()->setVariable('banzaii', 'vonzaii');
         //$this->layout()->setTemplate('layout/mainpage');

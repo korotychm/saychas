@@ -8,14 +8,15 @@
     
     <div id='userAuthError'  class=" formcomment">Error block</div>
 
-    <form method='POST' id='userAuthForm'>
+    
 
         <div class="blok modaluserrow">
             <div class='pw-contentblock cblock-3 valign-top iblokr modalusertit' >
                 <b >Телефон:</b>
             </div>
             <div class='pw-contentblock cblock-5 valign-top modaluserinf' >
-                <input type='phone' name='userPhone' id='userPhone'  required class="phoneInput lableinfo short nobg"/>
+         <?php  if(!$sengingPhone)  {?>     <input type='phone' name='userPhone' id='userPhone'  required class="phoneInput lableinfo short nobg"/> <?php }
+         else {?><?=$sengingPhone?><?php } ?>
             </div>
         </div>
 
@@ -72,7 +73,7 @@
               <?php if(!$stepOne) {?>  <span class="red pointer" >&larr; Вернуться</span> <?php } ?>
             </div>
             <div class='pw-contentblock cblock-5 valign-middle' >
-                <input type="submit" value='<?= $buttonLable ?>' id='userAuthBotton' class=" userformsendbutton short">
+                <input type="submit" value='<?= $buttonLable ?>' id='userAuthButton' class=" userformsendbutton short">
             </div>
         </div>
 

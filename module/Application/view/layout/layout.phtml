@@ -135,10 +135,12 @@
                                     <div class='altcontentview'>
                                         <span class='strelka'></span>
                                         <span class='blok '>
-                                            <h5>Алексей</h5>
-                                           <div class='delevery-item menu-item ' >Личный кабинет</div> 
+                           <?php if (true or true) {?>
+                                           <h5>Алексей <?=$this->userphone?> <?=$this->username?></h5>
+                                           <div class='delevery-item menu-item ' ><a href="/user">Личный кабинет</a></div> 
                                            <div class='delevery-item menu-item' >Мои заказы</div> 
                                            <div class='delevery-item menu-item' >Мои оповещения</div> 
+                                          <?php } ?>
                                            <div class='delevery-item menu-item user-modal-open' >Войти или зарегистрироваться</div> 
                                     </div>
                                 </div>
@@ -146,12 +148,12 @@
                         </div>
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding  blokc'>
-<?= (true or $this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
+<?= (/*true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
                                 <div class="emptyblock">
                                     <div id="zakazcount">0</div>
                                 </div>
                                 <div class="blokc">корзина</div>
-<?= (true or $this->addressLegal) ? '</a>' : '</div>' ?>                     
+<?= (/*true or */$this->addressLegal) ? '</a>' : '</div>' ?>                     
                             </div>
                         </div>
 

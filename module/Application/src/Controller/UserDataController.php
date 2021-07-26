@@ -247,5 +247,57 @@ class UserDataController extends AbstractActionController {
         $answer = $this->externalCommunicationService->clientLogin($post);
         return new JsonModel($answer);
     }
+    
+    public function userAuthModalAction()
+    {
+        //userNameInput userSmsCode userPass
+        $password = $smsCode = "7777"; //костыль
 
+        $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
+        $post = $this->getRequest()->getPost();
+        $return['phone'] = StringHelper::phoneToNum($post->userPhone);// $this->phoneToNum($post->userPhone);
+        $return['name'] = $post->userNameInput;
+        $code = $post->userSmsCode;
+        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+
+        if (!$return['phone']) {
+
+            $return["message"] .= StringResource::ERROR_INPUT_PHONE_MESSAGE;
+        } else {
+            $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
+            if ($user and $userId = $user->getId()) {
+                $return['userId'] = $userId;
+                $return["isUser"] = true;
+                if ($post->userPass == $password) {
+
+                    $container->userIdentity = $return['userId'];
+                    $return["error"] = false;
+                }
+                $return["message"] = StringResource::ERROR_INPUT_PASSWORD_MESSAGE
+                        . "($password)"
+                ;
+                $return["username"] = $user->getName();
+            } else {
+                if ($return['name'] and $code == $smsCode) {
+
+                    $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity]);
+                    $user->setName($return['name']);
+                    $user->setPhone($return['phone']);
+                    $this->userRepository->persist($user, ['id' => $user->getId()]);
+                    $return["error"] = false;
+                }
+                $return["message"] = StringResource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
+            }
+        }
+
+        $return['post'] = $post;
+
+        return new JsonModel($return);
+    }
+
+    
+    
+    
+    
 }
