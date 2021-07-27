@@ -34,6 +34,18 @@ $(document).ready(function () {
     $("#userAuthModalForm").on("click","#goStepOne", function(){
         sendauthformmodal ({"goStepOne":"1"});
     })
+    
+    $("#userAuthModalForm").on("click","#forgetPass", function(){
+        $("#forgetPassHidden").val(1);
+        sendauthformmodal ();        
+        
+    })
+    $("#userAuthModalForm").on("click","#goStepPass", function(){
+        $("#forgetPassHidden").val(0);
+        sendauthformmodal ();        
+        
+    })
+    
     $("#userAuthModalForm").on("focus",".lableinfo", function(){
         $("#userAuthModalForm * ").removeClass("error");
         //$("#userAuthModalForm .errormessage ").remove();

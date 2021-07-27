@@ -35,10 +35,8 @@ class StringResource
     const BUTTON_LABLE_PASS_CHANGE = "Изменить и войти";
     const BUTTON_LABLE_RETURN = "&larr;Вернуться";            
     const BUTTON_LABLE_REGISTER = "Зарегистрироваться";            
+    const MESSAGE_PASSFORGOT_TITLE = "Изменение пароля";            
     const USER_LABLE_HELLO = "Привет, ";
-    
-    
-    
-    
+
     
 }

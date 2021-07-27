@@ -295,7 +295,7 @@ class UserDataController extends AbstractActionController
             unset($container->userPhoneIdentity);
         } else {
             $print_r = $post;
-            $return['phone'] = $post->userPhone; 
+            $return['phone'] = $post->userPhone;
             $return['name'] = $post->userNameInput;
             $code = $post->userSmsCode;
             $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -310,25 +310,54 @@ class UserDataController extends AbstractActionController
                 $stepOne = true;
                 $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
                 if ($user and $userId = $user->getUserId() and $userId = $user->getId()) {
-                    $passBlock = true;
-                    $title = StringResource::USER_LABLE_HELLO . $user->getName();
-                    if ($post->userPass) {
-                        $print_r = $response = $this->externalCommunicationService->clientLogin([
-                            "phone" => StringHelper::phoneToNum($return['phone']),
-                            "password" => $post->userPass,
-                        ]);
-                        if (!$response["result"]) {
-                            $error["password"] = $response["errorDescription"];
+                    if ($post->forgetPassHidden) {
+                        
+                        $userAutSession["passforget"]=1;
+                        $title = StringResource::MESSAGE_PASSFORGOT_TITLE;
+                        $CodeBlock = true;
+                        $passForgetBlock = true;
+
+                        $buttonLable = StringResource::BUTTON_LABLE_PASS_CHANGE;
+                        $userPhoneIdentity = $container->userPhoneIdentity;
+                        $codeExist = $userPhoneIdentity['code'];
+
+                        if (!$codeExist) {
+                            $print_r = $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
+                            if (!$codeSendAnswer['result']) {
+                                $error['sms'] = StringResource::ERROR_SEND_SMS_MESSAGE;
+                            } else {
+                                $print_r = $codeExist;
+                            }
                         } else {
-                            $container->userIdentity = $userId;
-                            //$reloadPage = true;
-                            unset($container->userAutSession);
-                            unset($container->userPhoneIdentity);
-                            return new JsonModel(["reload" => true]);
+                            if (!$userSmsCode or $userSmsCode != $codeExist) {
+                                $registerPossible = false;
+                                unset($userAutSession['smscode']);
+                                $error['smscode'] = StringResource::ERROR_SEND_SMS_CODE_MESSAGE;
+                            } else {
+                                $userAutSession['smscode'] = $userSmsCode;
+                            }
+                        }
+                    } else {
+                        $passBlock = true;
+                        $title = StringResource::USER_LABLE_HELLO . $user->getName();
+                        if ($post->userPass) {
+                            $print_r = $response = $this->externalCommunicationService->clientLogin([
+                                "phone" => StringHelper::phoneToNum($return['phone']),
+                                "password" => $post->userPass,
+                            ]);
+                            if (!$response["result"]) {
+                                $error["password"] = $response["errorDescription"];
+                            } else {
+                                $container->userIdentity = $userId;
+                                //$reloadPage = true;
+                                unset($container->userAutSession);
+                                unset($container->userPhoneIdentity);
+                                return new JsonModel(["reload" => true]);
+                            }
                         }
                     } /**/
                 } else {
-
+                    //exit (print_r($user));
                     $title = StringResource::MESSAGE_REGISTER_TITLE;
                     $CodeBlock = true;
                     $UserBlock = true;
@@ -375,40 +404,37 @@ class UserDataController extends AbstractActionController
                         }/* */
                         if ($registerPossible) {
 
-                              //$error["1c"] = "!!!";  
-                              //$print_r = 
-                               $paramsFor1c = [
+                            //$error["1c"] = "!!!";  
+                            //$print_r = 
+                            $paramsFor1c = [
                                 'name' => $userName,
                                 'phone' => StringHelper::phoneToNum($return['phone']),
-                                'email' =>  $userMail,                                
+                                'email' => $userMail,
                             ];
-                            
-                              $print_r =  $user_Id = $container->userIdentity;  
-                           $answer = $this->externalCommunicationService->setClientInfo($paramsFor1c);
-                            
+
+                            //$print_r =  $user_Id = $container->userIdentity;  
+                            $answer = $this->externalCommunicationService->setClientInfo($paramsFor1c);
+
                             if (!$answer["result"]) {
-                                $error["1c"] = $answer['errorDescription']."!!!"; 
-                            }
-                            else {
-                             
-                              $error["1c"] = $answer['id']."!!!";
-                              $userId = $container->userIdentity;  
-                              $print_r = $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId ]);
-                              $newUser->setId($container->userIdentity);
-                              $newUser->setName($userName);
-                              $newUser->setUserId($answer['id']);
-                              $print_r =  $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
-                              $this->userRepository->persist($newUser, ['id' => $userId ]);
-                            
-                              unset($container->userAutSession);
-                              unset($container->userPhoneIdentity);  
-                            
-                              return new JsonModel(["reload" => true]);
-                              
+                                $error["1c"] = $answer['errorDescription'] . "!!!";
+                            } else {
+
+                                $error["1c"] = $answer['id'] . "!!!";
+                                $userId = $container->userIdentity;
+                                $print_r = $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
+                                $newUser->setId($container->userIdentity);
+                                $newUser->setName($userName);
+                                $newUser->setUserId($answer['id']);
+                                $print_r = $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
+                                $this->userRepository->persist($newUser, ['id' => $userId]);
+
+                                unset($container->userAutSession);
+                                unset($container->userPhoneIdentity);
+
+                                return new JsonModel(["reload" => true]);
                             }
                         }
                     }
-                   
                 }
             }
             //$container->userAutTmpSession = $userAutSession;
@@ -429,6 +455,7 @@ class UserDataController extends AbstractActionController
             'CodeBlock' => $CodeBlock,
             'stepOne' => $stepOne,
             'user' => $userAutSession,
+            'passForgetBlock' => $passForgetBlock,
                 /* 'userName'   => $userAutSession['username'],
                   'userMail'   => $userAutSession[''], */
         ]);

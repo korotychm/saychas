@@ -613,7 +613,9 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     position:absolute;
     top:-12px; left:50%; margin-left:4px;
 }    
-.delevery-item.menu-item {margin:8px 0; min-height:16px}
+.menu-item {display:block}
+.delevery-item.menu-item, .menu-item {margin:8px 0; min-height:16px}
+
 .providerbasketdisablehelpcontent  span.strelka  {
     position:absolute;
     top:-12px; left:50%; margin-left:4px;
@@ -1055,13 +1057,14 @@ img.zero, .zeroblok {
 #usermodalwindow .lableinfo,
 #usermodalwindow  .userformsendbutton {
     margin:0 16px;
+    margin-bottom:6px;
     
    
     background-image:none
 }
 .modalusertit {padding-top:8px }
 .modaluserrow {margin-bottom:16px;}
-.formcomment  {font-size:90%; display:block; padding-left:32px}
+.formcomment  {font-size:90%; display:block; padding-left:32px; line-height:1.2em}
  
 .lableinfo.short {max-width:200px;}
 .userformsendbutton.short {width:auto; display:inline-block; min-width:200px;}
