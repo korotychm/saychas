@@ -369,70 +369,46 @@ class IndexController extends AbstractActionController
       }
     
     
-    
-    public function catalogAction($category_id=false)
+    public function catalogAction($category_id = false)
     {
-        if(!$category_id) $category_id=$this->params()->fromRoute('id', '');
+        if(!$category_id) {
+            $category_id=$this->params()->fromRoute('id', '');
+        }
         
         try {
             $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
         }
         catch (\Exception $e) {
             header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
-            //$categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter="";
         }
         if (!$categoryTitle) { 
             header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
-            //$categoryTitle = "&larr;Выбери категорию товаров  ";   $returnProductFilter=""; 
-            
         }
         
-        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory=$container->filtrForCategory;
-        if(!$filtred=$filtrForCategory[$category_id]['fltr']) {
-            $filtred=[];
-        }
+//        $container = new Container(StringResource::SESSION_NAMESPACE);
+        
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
-        //$matherCategories[]=[0=>$category_id];
         $bread = $this->htmlProvider->breadCrumbs($matherCategories);
         $breadmenu = $this->htmlProvider->breadCrumbsMenu($matherCategories);
+
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $orders=["","pr.title ABS", 'price ABS','price DESC',"pr.title DESC"];
-        $params['order']=$orders[$filtrForCategory[$category_id]['sortOrder']];
-        $params['filter'] = $filtred;
-        $products = $this->productRepository->filterProductsByStores($params);
-        $filteredProducts = $this->productRepository->filterProductsByCategories($products, $categoryTree);
-        $returnProduct .= $this->htmlProvider->productCard($filteredProducts,$category_id)['card'];
-       
+        
         $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
-        //$minMax = ['minprice' => 500000, 'maxprice' => 9000000];
-        //exit(print_r($minMax));
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-
         
-
-
-        
-        $myKey=(is_array($filtrForCategory))?$filtrForCategory[$category_id]['sortOrder']:0;
-        $hasRest = (is_array($filtrForCategory))?$filtrForCategory[$category_id]['hasRestOnly']:0;
         $vwm=[
             "catalog" => $categories,
-            "title" => $categoryTitle,//."/$category_id",
+            "title" => $categoryTitle,
             "id" => $category_id,
             "bread"=> $bread,
-            'priducts'=> $returnProduct,
-            'sortselect' =>[$myKey=> " selected "],
-            'hasRestOnly' =>[ $hasRest => " checked "],
             'filterform'=> $filterForm,
             'breadmenu' => $breadmenu,
         ];
         return new ViewModel($vwm);
-
     }
-    
+          
     public function userAction($category_id=false)
     {
         $userId = $this->identity();//authService->getIdentity();//

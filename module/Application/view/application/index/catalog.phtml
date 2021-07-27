@@ -5,49 +5,22 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">
-            
-
             <form method="post" id="filtrform">
-                
                 <input type='hidden' name='category_id' value='<?= $this->id ?>'>
                 <div id="filtrblock" class="container">
-<?= $this->breadmenu?>
-                    <?= $this->filterform //filter ?><br class="both"/>
-                    <!-- div class="iblokl"  >
-                        <select id="sort"  name="sortOrder" class="formsend" >
-                            <option disabled selected >Сортировка</option>
-                            <option value="0"  >по-умолчанию</option>
-                            <option value="1" <?= $this->sortselect[1] ?> >по-алфавиту А-Я</option>
-                            <option value="4" <?= $this->sortselect[4] ?> >по-алфавиту Я-A</option>
-                            <option value="2" <?= $this->sortselect[2] ?> >сначала дешевле</option>
-                            <option value="3" <?= $this->sortselect[3] ?> >сначала дороже</option>                                    
-                        </select>
-                    </div>
-                    <div class="iblokl"  >
-                        <div class='nopub checkgroup formsendbutton <?= ($this->hasRestOnly[1]) ? "zach" : "" ?>' for=restonly >только в наличии
-                            <input  id='fltrcheckrestonly' type='checkbox' name='hasRestOnly' value='1' class="formsend none" <?= $this->hasRestOnly[1] ?> /> 
-                        </div>
-                    </div -->    
-
-                </div>  
+                    <?= $this->breadmenu ?>
+                    <?= $this->filterform ?><br class="both"/>
+                </div>
             </form>
-
-
-            
-        </div>               
+        </div>
     </div>
     <div id="main-col">
-        <!-- div class="bread-crumbs"><?= $this->bread ?></div--> 
-
-
-
-        <div class="content-col" style="" id="tovary"> 
-
-
+        <?= $this->bread ?>
+        <div class="content-col" style="" id="tovary">
             <div id='ajaxfiltranswer'></div>
             <br class="both">
-            <h1><?= $this->title ?>  <?=($this->id)?"<span>id: ". $this->id ."</span>":""?></h1>
-            <div id="tovar-list"><?= $this->priducts ?></div>
-        </div>               
+            <h1><?= $this->title ?>  <?= ($this->id) ? "<span>id: " . $this->id . "</span>" : "" ?></h1>
+            <div id="tovar-list"></div>
+        </div>
     </div>
 </div>
