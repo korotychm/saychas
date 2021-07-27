@@ -585,6 +585,10 @@ class AjaxController extends AbstractActionController
      */
     private function getProducts($params)
     {
+        $this->prepareCharacteristics($params['characteristics']);
+        if(empty($params['priceRange'])) {
+            $params['priceRange'] = '0;'.PHP_INT_MAX;
+        }
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
@@ -600,6 +604,17 @@ class AjaxController extends AbstractActionController
             }
         }
         return $filteredProducts;
+    }
+    
+    private function prepareCharacteristics(&$characteristics)
+    {
+        foreach($characteristics as $key => &$value) {
+            foreach($value as &$v) {
+                if(empty($v)) {
+                    $v = '0;'.PHP_INT_MAX;
+                }
+            }
+        }
     }
 
 //    private function getProducts1($params)
@@ -624,7 +639,7 @@ class AjaxController extends AbstractActionController
     {
 
         $post = $this->getRequest()->getPost()->toArray();
-
+        
         $products = $this->getProducts($post);
 
         return (new ViewModel(['products' => $products]))->setTerminal(true);
