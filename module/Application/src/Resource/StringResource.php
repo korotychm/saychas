@@ -22,8 +22,13 @@ class StringResource
     const ERROR_INPUT_PHONE_MESSAGE = "Укажите корректный номер телефона. ";
     const ERROR_INPUT_PASSWORD_MESSAGE = "Введите пароль для&nbsp;входа. ";
     const ERROR_INPUT_NAME_SMS_MESSAGE = "Введите ваше имя и&nbsp;код&nbsp;из&nbsp;СМС. ";
+    const ERROR_SEND_SMS_MESSAGE = "Ошибка отправки СМС";
+    const ERROR_SEND_SMS_CODE_MESSAGE = "Некорректно указан код";
+    const ERROR_SEND_USERNAME_MESSAGE = "Некорректно представились ";
+    const ERROR_SEND_EMAIL_MESSAGE = "Некорректнный адрес email  ";
     const MESSAGE_ENTER_OR_REGISTER_TITLE = "Войти или зарегистрироваться";
     const MESSAGE_REGISTER_TITLE = "Регистрация";
+    
     const MESSAGE_ENTER_OR_REGISTER_TEXT = "Для продолжения необходимо зарегистрироваться";
     const BUTTON_LABLE_CONTINUE = "Продолжить";
     const BUTTON_LABLE_ENTER = "Войти";

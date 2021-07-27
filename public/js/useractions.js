@@ -9,9 +9,12 @@ function sendauthformmodal (data = false){
             cache: false,
             data: data,
             success: function (data) {
-                if(data.reload) {location = location.href; return false };
+                if(data.reload) {
+                    console.log(data);
+                    location = location.href; return false 
+                };
                 $("#user-modal-cover").stop().hide();
-                console.log(data);
+                //console.log(data);
                 
                 $("#userAuthModalForm").html(data);
                 return false;
