@@ -255,7 +255,6 @@ class IndexController extends AbstractActionController
             $basketUser['id'] = $userId = $this->identity();
             $user = $this->userRepository->find(['id'=>$userId]);
             $basketUser['phone'] = $user->getPhone();
-            //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
             $basketUser['name'] = $user->getName();
             $userData = $user->getUserData();
             $count = $userData->count();
@@ -266,8 +265,8 @@ class IndexController extends AbstractActionController
             }
             else
             {
-                 $basketUser['address'] = $userData->current()->getAddress();
-            $basketUser['geodata'] = $userData->current()->getGeoData();
+                $basketUser['address'] = $userData->current()->getAddress();
+                $basketUser['geodata'] = $userData->current()->getGeoData();
             
             }    
             $legalUser=true; 
@@ -277,11 +276,6 @@ class IndexController extends AbstractActionController
                 $legalUser=false; 
             }
             $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
-           
-            
-            
-            //exit ($userPhone." / ".$userAddress);*/
-            
             
             $where = new Where();
             $where->equalTo('user_id', $userId);
@@ -289,21 +283,7 @@ class IndexController extends AbstractActionController
             /** more conditions come here */
             $columns = ['product_id', 'order_id', 'total', 'price'];
             $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
-          /* foreach ($basket as $b) {
-                if($pId=$b->productId){
-                    $product = $this->productRepository->find(['id'=>$pId]);
-                    $return['products'][]=[
-                        "id" => $pId, 
-                        "name" => $product->getTitle(), 
-                        "count" => $b->total, 
-                        'image'=> $this->productImageRepository->findFirstOrDefault(["product_id"=>$pId])->getHttpUrl(),
-                       ]; 
-                    $return['total']+=$b->total;
-                    $return['count'] ++;
-                }    
-            }
-            exit (print_r($return));*/
-            
+          
         
      $content = $this->htmlProvider->basketData($basket);   
      //exit (print_r($content));

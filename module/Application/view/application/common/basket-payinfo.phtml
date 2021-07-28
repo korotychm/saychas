@@ -1,5 +1,5 @@
 <div class="contentpadding"><?php
-    print_r($this->post)
+    //print_r($this->post)
 ;?>
 </div>
 
@@ -11,16 +11,16 @@
             </div>
 </div>
   <?php endif;?>
-  <?php if($storeAdress){?>            
+  <?php if($countSelfdelevery){?>            
     <div class='contentpadding nopad'>
         <div class='delevery-item delevery-self' > 
                 <b class='blok'>Самовывоз</b>
-                <div class='blok'><?=$storeTime?></div>
-                <ol>
-    <?php foreach ($storeAdress as $adress) {?>
+                <div class='blok'>из <?=$countSelfdelevery?> <?=($countSelfdelevery == 1)?"магазина":"магазинов" ?> </div>
+                <!-- ol>
+    <?php /*foreach ($storeAdress as $adress) {?>
         <li ><?=$adress?></li>
-    <?php }?>
-        </ol>
+    <?php }*/?>
+        </ol -->
             </div>
        </div> 
   <?php } ?>

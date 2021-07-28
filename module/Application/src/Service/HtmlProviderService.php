@@ -889,6 +889,11 @@ class HtmlProviderService
                     "value" => 0,
                     "rel" => StringResource::BASKET_SAYCHAS_do ,
                     ];
+            /**/$timeDelevery3Hour[]=[
+                    "lable" => StringResource::BASKET_SAYCHAS3_title,
+                    "value" => 0,
+                    "rel" => StringResource::BASKET_SAYCHAS3_do ,
+                    ];/**/
                     
             for ($i = 1; $i <= 12; $i++) {
                 $timeStart = time() + 3600 * $i; 
@@ -934,17 +939,29 @@ class HtmlProviderService
     {
         $countproducts = 0;
         $countprovider=[];
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        
         foreach ($basket as $b) {
             if ($pId = $b->productId) {
                 /** @var HandbookRelatedProduct */
                 $product = $this->productRepository->find(['id' => $pId]);
+                
+                $oldprice = $b->price;
                 $price = (int) $product->receivePriceObject()->getPrice();
+                if ($oldprice != $price ){
+                   $whatHappened[$pId]['oldprice']=$oldprice; 
+                   $whatHappened[$pId]['price'] = $price; 
+                }
+                
                 if ($product->receiveRest())
                     $availblechek[$product->getProviderId()] = true;
                 $rest = $product->receiveRest();
                 
                 $count = $b->total;
                 if ($count > $rest)
+                   $whatHappened[$pId]['oldrest']=$count; 
+                   $whatHappened[$pId]['rest'] = $rest; 
+                    
                     $count = $rest;
                 //if ($rest) $countproducts +=$count ;
                 if ($rest) {
@@ -958,18 +975,19 @@ class HtmlProviderService
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
                     'title' => $product->getTitle(),
                     'price' => $price,
-                    'oldprice' => $product->receivePriceObject()->getOldPrice(),
+                    'oldprice' => $b->price,
                     // 'availble' => '1',
                     'availble' => $rest,
                     'count' => $count,
                     
                 ];
             }
+            if ($whatHappened)  $container->whatHappened = $whatHappened;
         }
         if (!$item or!count($item))
             return ;
 
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
@@ -982,7 +1000,7 @@ class HtmlProviderService
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
             //exit( print_r($store));
-            unset($idStore );
+            unset($idStore, $timStoreOpen );
             $infostore1c="";
             if (null != $store){
                 $idStore = $store->getId();
@@ -992,6 +1010,9 @@ class HtmlProviderService
                 $infostore1c .=($legalStoresArray[$idStore]['time_until_closing'])
                         ?"<span class='blok mini'>заказать возможно до  ".date("Y.m.d H:i",$legalStoresArray[$idStore]['time_until_closing'])."</span>"
                         :"";
+                
+                $timStoreOpen=$legalStoresArray[$idStore]['time_until_open']+time();
+                //$timStoreOpen = time()+60*60*1;
             }
             if (null != $store){
                  if($legalStoresArray[$idStore]['status'] ) {
@@ -1004,17 +1025,25 @@ class HtmlProviderService
                     $countprovider ++;
                  }
                  else {
-                    $provider_disable = "Сейчас доставка недоступна";
                     $returnprefix = $j;
-                    if(!$infostore1c) $infostore1c="Магазин закрыт";
+                    if( $timStoreOpen > time() and $legalStoresArray[$idStore]['time_until_open']  < 60*60*24 ){
+                        $provider_disable = StringResource::STORE_CLOSE_FOR_NIGHT;
+                        $infostore1c=StringResource::STORE_CLOSE_FOR_NIGHT_ALT;
+                        $infostore1c.=(date("d") == date("d", $timStoreOpen))?" сегодня ":" завтра ";
+                        $infostore1c.="в ".date("H:i", $timStoreOpen);
+                    }
+                    else {
+                        $provider_disable = StringResource::STORE_UNAVALBLE;
+                        $infostore1c=StringResource::STORE_UNAVALBLE_ALT;
+                    }
                      
                  }
             } 
             else {
-                $provider_disable = "Сейчас доставка недоступна";
+                $provider_disable = StringResource::STORE_OUT_OF_RANGE;
                 $returnprefix = $j+100;
                 $provider_address = $provider_worktime = $provider_timeclose = "";
-                $infostore1c = "Эти товары сейчас нельзя доставить по вашему адресу";
+                $infostore1c = StringResource::STORE_OUT_OF_RANGE_ALT;
                 //$provider_store_off = "Комментарий из 1с ".$ifostore1c;
             }
 
@@ -1036,7 +1065,7 @@ class HtmlProviderService
         }
         if ($countproducts){
             $countproviders = (int)count($countprovider);
-            $return["title"]  = ($countproducts == 1)?"$countproducts наименование ":($countproducts >1 and $countproducts < 5)?"$countproducts наименования ":"$countproducts наименований ";
+            $return["title"]  = ($countproducts == 1)?"$countproducts позиция ":($countproducts >1 and $countproducts < 5)?"$countproducts позиции ":"$countproducts позиций ";
             $return["title"] .= "из ";
             $return["title"] .=($countproviders == 1)?"$countproducts магазина ": "$countproducts магазинов ";
         }

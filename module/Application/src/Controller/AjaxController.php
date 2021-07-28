@@ -608,6 +608,9 @@ class AjaxController extends AbstractActionController
     
     private function prepareCharacteristics(&$characteristics)
     {
+        if(!$characteristics) {
+            return;
+        }
         foreach($characteristics as $key => &$value) {
             foreach($value as &$v) {
                 if(empty($v)) {

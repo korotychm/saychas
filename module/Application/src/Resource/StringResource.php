@@ -13,12 +13,15 @@ class StringResource
     const SESSION_NAMESPACE = "session_namespace";
     const CODE_CONFIRMATION_SESSION_NAMESPACE = "code_confirmation_session_namespace";
     const BASKET_SAYCHAS_title = "сейчас за час";
+    const BASKET_SAYCHAS3_title = "сейчас за три часа";
     const BASKET_SAYCHAS_do = "в течение часа";
+    const BASKET_SAYCHAS3_do = "в течение трех часов";
+    const ERROR_MESSAGE = "Ошибка! ";
     
     /*
      * авторизация
      */
-    const ERROR_MESSAGE = "Ошибка. ";
+    
     const ERROR_INPUT_PHONE_MESSAGE = "Укажите корректный номер телефона. ";
     const ERROR_INPUT_PASSWORD_MESSAGE = "Введите пароль для&nbsp;входа. ";
     const ERROR_INPUT_NAME_SMS_MESSAGE = "Введите ваше имя и&nbsp;код&nbsp;из&nbsp;СМС. ";
@@ -40,5 +43,15 @@ class StringResource
     const MESSAGE_PASSFORGOT_TITLE = "Изменение пароля";            
     const USER_LABLE_HELLO = "Привет, ";
 
+    /*
+     * статусы магазинов
+     */
+    const STORE_CLOSE_FOR_NIGHT = "Магазин закрыт на ночь";
+    const STORE_CLOSE_FOR_NIGHT_ALT = "К сожалению, ближайший к вам магазин закрыт на ночь. Откроется ";
     
-}
+    const STORE_UNAVALBLE = "Магазин временно недоступен";
+    const STORE_UNAVALBLE_ALT = "К сожалению, ближайший к вам магазин закрыт. Возможно, у него выходные, праздники, или ремонт";
+    
+    const STORE_OUT_OF_RANGE = "Магазин вне зоны доставки";
+    const STORE_OUT_OF_RANGE_ALT = "К сожалению, ближайший к вам магазин находится слишком далеко - мы не сможем привезти товары вовремя";
+} 

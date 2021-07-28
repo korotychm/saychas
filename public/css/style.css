@@ -29,6 +29,7 @@
 .nobold {font-weight:400 }
 .nobg {background:none}
 .pointer {cursor:pointer}
+
 .waiting {
     min-height:50px; min-width:50px; background-image:url(/img/loader.gif);   
     background-position:center; 
@@ -55,7 +56,8 @@
     background: rgba(255,255,255,.75) url(/img/loader.gif) center no-repeat;   
     
 }
-#head {display:inline-block; width:100%; max-width:1600px; min-width:1101px; text-align:left; position:relative}
+#head {display:inline-block; width:100%; max-width:1600px; min-width:1101px; text-align:left; position:relative;
+box-sizing: border-box; padding: 0 16px;}
 #logo {display:inline-block; width:220px;height:170px; max-width:33.3%;  background:url(/img/logotop.png) left center no-repeat   ;
 /* background-size: contain; */}
 

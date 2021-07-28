@@ -53,9 +53,9 @@ function calculateBasketHeader (productId)
     var h1 = "";
     if (totalproduct < 1) h1 ="Товары не выбраны";
     else {
-        if (totalproduct == 1 ) h1 = totalproduct + " наименование ";
-        else if (totalproduct > 1 &&  totalproduct < 5 ) h1 = totalproduct + " наименования ";
-        else h1 = totalproduct + " наименований ";
+        if (totalproduct == 1 ) h1 = totalproduct + " позиция ";
+        else if (totalproduct > 1 &&  totalproduct < 5 ) h1 = totalproduct + " позиции ";
+        else h1 = totalproduct + " позиций ";
         if (totalshops == 1) h1 += " из " + totalshops + " магазина ";
         else h1 += " из " + totalshops + " магазинов ";
     }
