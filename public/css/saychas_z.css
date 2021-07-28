@@ -409,7 +409,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     margin-bottom:12px;
 }   
 
-#basketordermerge .text, #paycardblok .text {margin-left:35px; margin-top:1em;}
+#basketordermerge .text, #baskepaycardinfo .text {margin-left:35px; margin-top:1em;}
 #basketordermerge .zach, #paycardblok .zach{color:var(--black)}
 #basketordermerge .radio, #paycardblok .radio{line-height:1.3em; margin-bottom:.7rem; padding-top:5px;}
 

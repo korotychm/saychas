@@ -138,10 +138,28 @@ class UserDataController extends AbstractActionController
      */
     private function testEmail($email)
     {
+        /* if (filter_var($email, FILTER_VALIDATE_EMAIL))return true;*/
+          return false; 
+       
+    }
+    
+    private function testPassw($email)
+    {
         /* if (filter_var($email, FILTER_VALIDATE_EMAIL))return true;
           return false; */
         return true;
     }
+    
+
+/*(/^
+(?=.*\d)                //should contain at least one digit
+(?=.*[a-z])             //should contain at least one lower case
+(?=.*[A-Z])             //should contain at least one upper case
+[a-zA-Z0-9]{8,}         //should contain at least 8 from the mentioned characters
+$/)*/
+
+
+    
 
     private function generateRegistrationCode($phone, $length = 4)
     {
@@ -316,6 +334,9 @@ class UserDataController extends AbstractActionController
                         $title = StringResource::MESSAGE_PASSFORGOT_TITLE;
                         $CodeBlock = true;
                         $passForgetBlock = true;
+                        $registerPossible = true;
+                        $userSmsCode = $post->userSmsCode;
+                        
 
                         $buttonLable = StringResource::BUTTON_LABLE_PASS_CHANGE;
                         $userPhoneIdentity = $container->userPhoneIdentity;
@@ -329,6 +350,7 @@ class UserDataController extends AbstractActionController
                                 $print_r = $codeExist;
                             }
                         } else {
+                            $print_r = $codeExist;
                             if (!$userSmsCode or $userSmsCode != $codeExist) {
                                 $registerPossible = false;
                                 unset($userAutSession['smscode']);
@@ -440,7 +462,7 @@ class UserDataController extends AbstractActionController
             //$container->userAutTmpSession = $userAutSession;
         }
         //$return['post'] = $post;
-        $container->userAutTmpSession = $userAutSession;
+       $print_r  = $container->userAutTmpSession = $userAutSession;
 
         $view = new ViewModel([
             //'reloadPage' => $reloadPage,
