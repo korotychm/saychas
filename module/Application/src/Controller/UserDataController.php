@@ -138,25 +138,29 @@ class UserDataController extends AbstractActionController
      */
     private function testEmail($email)
     {
-        /* if (filter_var($email, FILTER_VALIDATE_EMAIL))return true;*/
-          return false; 
+        $validator = new \Laminas\Validator\EmailAddress();
+        /* return (filter_var($email, FILTER_VALIDATE_EMAIL));*/
+        return ($validator->isValid($email)); 
        
     }
     
-    private function testPassw($email)
+    private function testPassw($pass)
     {
-        /* if (filter_var($email, FILTER_VALIDATE_EMAIL))return true;
-          return false; */
-        return true;
+            if(!$pass or !trim($pass)) return false;
+            if (strlen($pass)<6) return false;
+        
+            //$validator = new \Laminas\Validator\Regex(['pattern' => '/^(?=.*\d)(?=.*[a-Z])[0-9a-Z]{6,}$/']);
+             $validator = new \Laminas\Validator\Regex(['pattern' => '/^[a-z0-9]*$/']);
+                /*(/^
+                (?=.*\d)                //should contain at least one digit
+                (?=.*[a-z])             //should contain at least one lower case
+                (?=.*[A-Z])             //should contain at least one upper case
+                [a-zA-Z0-9]{6,}         //should contain at least 6 from the mentioned characters
+                $/)*/
+        return $validator->isValid($pass);
     }
     
-
-/*(/^
-(?=.*\d)                //should contain at least one digit
-(?=.*[a-z])             //should contain at least one lower case
-(?=.*[A-Z])             //should contain at least one upper case
-[a-zA-Z0-9]{8,}         //should contain at least 8 from the mentioned characters
-$/)*/
+        
 
 
     
@@ -327,7 +331,7 @@ $/)*/
 
                 $stepOne = true;
                 $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
-                if ($user and $userId = $user->getUserId() and $userId = $user->getId()) {
+                if ($user and $userSuperId = $user->getUserId() and $userId = $user->getId()) {
                     if ($post->forgetPassHidden) {
                         
                         $userAutSession["passforget"]=1;
@@ -336,8 +340,9 @@ $/)*/
                         $passForgetBlock = true;
                         $registerPossible = true;
                         $userSmsCode = $post->userSmsCode;
+                        $forgetPassInput = ($post->forgetPassInput == null)?"":$post->forgetPassInput;
+                        $forgetPassInput2 = $post->forgetPassInput2;
                         
-
                         $buttonLable = StringResource::BUTTON_LABLE_PASS_CHANGE;
                         $userPhoneIdentity = $container->userPhoneIdentity;
                         $codeExist = $userPhoneIdentity['code'];
@@ -347,17 +352,53 @@ $/)*/
                             if (!$codeSendAnswer['result']) {
                                 $error['sms'] = StringResource::ERROR_SEND_SMS_MESSAGE;
                             } else {
-                                $print_r = $codeExist;
+                                //$print_r = $codeExist;
                             }
                         } else {
-                            $print_r = $codeExist;
-                            if (!$userSmsCode or $userSmsCode != $codeExist) {
+                            //$print_r = $codeExist;
+                            if ($userSmsCode and ($userSmsCode != $codeExist)) {
                                 $registerPossible = false;
                                 unset($userAutSession['smscode']);
                                 $error['smscode'] = StringResource::ERROR_SEND_SMS_CODE_MESSAGE;
                             } else {
                                 $userAutSession['smscode'] = $userSmsCode;
                             }
+                           
+                            if (isset($post->forgetPassInput)){
+                                if (!$forgetPassInput  or !$this->testPassw($forgetPassInput)) 
+                                {
+                                $registerPossible = false;
+                                unset($userAutSession['newpassword']);
+                                $error['newpassword'] = StringResource::ERROR_PASS_VALIDATION_MESSAGE;
+                                } else {
+                                    $userAutSession['newpassword'] = $forgetPassInput;
+                                
+                                }
+                            }
+                            // $error["1111"]="!!!!>>>>+++";
+                            if ($forgetPassInput and ($forgetPassInput !=  $forgetPassInput2)) {
+                                $registerPossible = false;
+                                //unset($userAutSession['newpassword2']);
+                                $error['newpassword2'] = StringResource::ERROR_PASS_SECOND_MESSAGE;
+                            }
+                            else {
+                                $userAutSession['newpassword2'] = $forgetPassInput2;
+                            }
+                            if ($registerPossible){
+                                $req=["id" => $userSuperId, "password" => $forgetPassInput ];
+                                $response  = $this->externalCommunicationService->sendCredentials($req);
+                                if ($response['result']){
+                                    $container->userIdentity = $userId;
+                                    //$reloadPage = true;
+                                    unset($container->userAutSession);
+                                    unset($container->userPhoneIdentity);
+                                    return new JsonModel(["reload" => true]);    
+                                }
+                                else {
+                                       $error["1c"] = $answer['errorDescription'] . "!";
+                                }
+                            }
+                            
                         }
                     } else {
                         $passBlock = true;
@@ -462,7 +503,8 @@ $/)*/
             //$container->userAutTmpSession = $userAutSession;
         }
         //$return['post'] = $post;
-       $print_r  = $container->userAutTmpSession = $userAutSession;
+       //$print_r  = $error;
+         $container->userAutTmpSession = $userAutSession;
 
         $view = new ViewModel([
             //'reloadPage' => $reloadPage,

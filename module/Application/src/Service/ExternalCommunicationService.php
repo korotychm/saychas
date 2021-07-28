@@ -160,6 +160,22 @@ class ExternalCommunicationService
 
         return $this->sendCurlRequest($url, $content);
     }
+    
+    /**
+     * Send new credentials(Это пара ID и Password)
+     * 
+     * $content = [
+     *      'id' => 'userId',
+     *      'password' => 'password',
+     * ]
+     * 
+     * @param array $content
+     */
+    public function sendCredentials(array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['update_client_info'];
+        return $this->sendCurlRequest($url, $content);
+    }
 
     /**
      * Login client

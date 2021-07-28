@@ -28,6 +28,8 @@ class StringResource
     const ERROR_SEND_EMAIL_MESSAGE = "Некорректнный адрес email  ";
     const MESSAGE_ENTER_OR_REGISTER_TITLE = "Войти или зарегистрироваться";
     const MESSAGE_REGISTER_TITLE = "Регистрация";
+    const ERROR_PASS_VALIDATION_MESSAGE ="Некорректно указан пароль";
+    const ERROR_PASS_SECOND_MESSAGE ="Пароли не совпадают";
     
     const MESSAGE_ENTER_OR_REGISTER_TEXT = "Для продолжения необходимо зарегистрироваться";
     const BUTTON_LABLE_CONTINUE = "Продолжить";

@@ -77,7 +77,7 @@ $testMode = false;
                 <b >Новый пароль:</b>
             </div>
             <div class='pw-contentblock cblock-5 valign-middle modaluserinf' >
-                <input  name='forgetPassInput'  class="lableinfo short nobg <?= ($error["newpassword"]) ? "error" : "" ?>"  id='userPass' required />
+                <input  name='forgetPassInput'  class="lableinfo short nobg <?= ($error["newpassword"]) ? "error" : "" ?>" value="<?=$user["newpassword"]?>" id='userPass' required />
                 <span class="formcomment blok red errormessage"><?= $error["newpassword"] ?></span>
                 <span class="formcomment blok gray pointer" id="forgetPass">Минимум 6 символов,</span>
                 <span class="formcomment blok gray pointer" id="forgetPass">Сочетание букв и цифр</span>
@@ -89,7 +89,8 @@ $testMode = false;
                 <b >Еще раз:</b>
             </div>
             <div class='pw-contentblock cblock-5 valign-middle modaluserinf' >
-                <input  name='forgetPassInput2'  class="lableinfo short nobg <?= ($error["newpassword"]) ? "error" : "" ?>"  id='userPass' required />
+                <input type="text" placeholder="***" name='forgetPassInput2'  value="<?=$user["newpassword2"]?>" class="lableinfo short nobg <?= ($error["newpassword2"]) ? "error" : "" ?>"  id='userPass' required />
+                <span class="formcomment blok red errormessage"><?= $error["newpassword2"] ?></span>
                    <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="1" >
                 
             </div>
