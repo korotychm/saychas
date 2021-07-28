@@ -79,7 +79,7 @@ class AuthAdapter implements AdapterInterface
             // saved in session for later use.
             return new Result(
                     Result::SUCCESS, 
-                    $this->content['login'], 
+                    $this->content,//['login'], 
                     ['Authenticated successfully.']);        
 //        }             
         

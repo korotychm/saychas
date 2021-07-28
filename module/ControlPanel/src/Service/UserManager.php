@@ -158,5 +158,24 @@ class UserManager
 
         return $answer;
     }
+    
+    /**
+     * $content = [
+     *      'provider_id' => '00002',
+     *      'login' => 'Banzaii',
+     * ],
+     * 
+     * @param array $content
+     */
+    public function findOne($content)
+    {
+        $users = $this->getAllUsers($content)['info'];
+        foreach($users as $user) {
+            if($content['login'] === $user['login']) {
+                return $user;
+            }
+        }
+        return null;
+    }
 
 }
