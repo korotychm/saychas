@@ -217,6 +217,28 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $validator = new \Laminas\Validator\EmailAddress();
+//        
+//        $email = 'alex.kraskov@gmail.com';
+//
+//        if ($validator->isValid($email)) {
+//            // email appears to be valid
+//            print_r('ok');
+//            exit;
+//        } else {
+//            // email is invalid; print the reasons
+//            foreach ($validator->getMessages() as $message) {
+//                echo "$message\n";
+//            }
+//            exit;
+//        }
+
+//        $validator = new \Laminas\Validator\Regex(['pattern' => '/^Test/']);
+//
+//        $validator->isValid("Test"); // returns true
+//        $validator->isValid("Testing"); // returns true
+//        $validator->isValid("Pest"); // returns false
+        
         //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         $container = new Container(StringResource::SESSION_NAMESPACE);
         
