@@ -31,12 +31,19 @@ class Role extends Entity
 
     /** @var string */
     protected $name;
+    
+    /** @var string */
+    protected $role;
 
     /** @var string */
     protected $description;
 
     /** @var string */
     protected $date_created;
+    
+    protected $parentRoles = [];
+    
+    protected $childRoles = [];
 
     /**
      * Set id
@@ -105,6 +112,28 @@ class Role extends Entity
     }
 
     /**
+     * Set role
+     *
+     * @param string $role
+     * @return $this
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -147,5 +176,30 @@ class Role extends Entity
     {
         return $this->date_created;
     }
+    
+    public function getParentRoles()
+    {
+        
+        $hierarchy = self::$roleHierarchyRepository->findAll([])->toArray();
+        $parents = \Application\Helper\ArrayHelper::getParents(
+                        ['child_role_id' => $this->getId(), 'parent_role_id' => $this->getParentRoleId()],
+                        $hierarchy/* $roles */,
+                        [],
+                        'child_role_id',
+                        'parent_role_id'
+        );
+        foreach ($parents as $parentId) {
+            $parentRole = self::$repository->find(['id' => $parentId]);
+            $this->parentRoles[] = $parentRole;
+        }
+        
+        return $this->parentRoles;
+    }
+    
+    public function getChildRoles()
+    {
+        return $this->childRoles;
+    }
+    
 
 }

@@ -95,7 +95,8 @@ class IndexController extends AbstractActionController
     {
         //$roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
         $this->rbacManager->init(true);
-        return new ViewModel();
+        $access = $this->access('brand.manager');
+        return new ViewModel(['access' => $access, 'permissionName' => 'brand.manager']);
     }
 
     /**

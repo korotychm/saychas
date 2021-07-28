@@ -29,8 +29,9 @@ class RbacManagerFactory
         }
         
         $entityManager = $container->get('laminas.entity.manager');
+        $userManager = $container->get(\ControlPanel\Service\UserManager::class);
 
-        return new RbacManager($entityManager, $authService, $cache, $assertionManagers);
+        return new RbacManager($entityManager, $authService, $cache, $assertionManagers, $userManager);
     }
 
 }

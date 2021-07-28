@@ -7,6 +7,7 @@ namespace ControlPanel\Service;
 use Laminas\Permissions\Rbac\Rbac;
 use Laminas\Permissions\Rbac\Role;
 use ControlPanel\Model\Entity\Role as CPRole;
+use ControlPanel\Model\Entity\User;
 
 /**
  * Description of RbacManager
@@ -39,6 +40,10 @@ class RbacManager
      * @var array
      */
     private $assertionManagers = [];
+    
+    private $entityManager;
+    
+    private $userManager;
 
     /**
      * Temp variable to be replaced later on after roles are loaded from a repository
@@ -67,12 +72,13 @@ class RbacManager
      * @param type $cache
      * @param array $assertionManagers
      */
-    public function __construct($entityManager, $authService, $cache, $assertionManagers)
+    public function __construct($entityManager, $authService, $cache, $assertionManagers, $userManager)
     {
         $this->entityManager = $entityManager;
         $this->authService = $authService;
         $this->cache = $cache;
         $this->assertionManagers = $assertionManagers;
+        $this->userManager = $userManager;
     }
 
 //    private function initRoles()
@@ -124,7 +130,11 @@ class RbacManager
 
             $parents = [];
             foreach ($roles as $role) {
-                $roleName = $role['name'];
+                // We try to comment this out
+                // $roleName = $role['name'];
+                // And use $role['role'];
+                $roleName = $role['role'];
+                
                 // get parents
                 //$parents = \Application\Helper\ArrayHelper::getParents(['id' => $role['id'], 'parent_role_id' => $role['parent_role_id']], $roles, [], 'id', 'parent_role_id');
                 $parents = \Application\Helper\ArrayHelper::getParents(
@@ -167,24 +177,6 @@ class RbacManager
             $this->init();
         }
 
-//        echo 'admin: administrator = '. $this->rbac->isGranted('administrator', 'administrator').'<br/>';
-//        echo 'developer: developer = '. $this->rbac->isGranted('developer', 'developer').'<br/>';
-//        echo 'brand_manager: brand.manager = '. $this->rbac->isGranted('brand_manager', 'brand_manager').'<br/>';
-//        echo 'store_manager: store.manager = '. $this->rbac->isGranted('store_manager', 'store.manager').'<br/>';
-//        echo 'guest: guest = '. $this->rbac->isGranted('guest', 'guest1').'<br/>';
-//
-//
-//        exit;
-//        echo 'admin: delete.personal = '. $this->rbac->isGranted('admin', 'delete.personal').'<br/>';
-//        echo 'editor: view.profile = '. $this->rbac->isGranted('editor', 'view.profile').'<br/>';
-//        echo 'supervisor: edit.profile = '. $this->rbac->isGranted('supervisor', 'edit.profile').'<br/>';
-//        echo 'guest: view.profile = '. $this->rbac->isGranted('guest', 'view.profile').'<br/>';
-//        echo 'guest: general = '. $this->rbac->isGranted('guest', 'general').'<br/>';
-//
-//
-//        exit;
-
-
         if ($user == null) {
 
             $identity = $this->authService->getIdentity();
@@ -192,8 +184,14 @@ class RbacManager
                 return false;
             }
 
-            $user = $this->entityManager->getRepository(User::class)
-                    ->findOneByEmail($identity);
+            // $users = $this->userManager->getAllUsers($content)['info'];
+            $user = $this->userManager->findOne(['provider_id' => $identity['provider_id']/* '00002'*/, 'login' => $identity['login'] /*'Banzaii'*/,]);
+//            $u['roles'] = implode(',', $u['roles']);
+//            
+//            $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
+//            
+//            $user = $hydrator->hydrate($u, new \ControlPanel\Model\Entity\User());
+            
             if ($user == null) {
                 // Oops.. the identity presents in session, but there is no such user in database.
                 // We throw an exception, because this is a possible security problem.
@@ -201,10 +199,15 @@ class RbacManager
             }
         }
 
-        $roles = $user->getRoles();
+//        $roles = $user->getRoles();
+        
+        $roles = $user['roles'];
+        
+        $this->entityManager->initRepository(CPRole::class);
 
         foreach ($roles as $role) {
-            if ($this->rbac->isGranted($role->getName(), $permission)) {
+            // if ($this->rbac->isGranted($role->getName(), $permission)) {
+            if ($this->rbac->isGranted($role, $permission)) {
 
                 if ($params == null) {
                     return true;
@@ -217,9 +220,12 @@ class RbacManager
                 }
             }
 
+            $roleObject = CPRole::findAll(['columns' => ['*'], 'where' => ['role' => $role]])->current();
+            $parentRoles = $roleObject->getParentRoles();
+            
             // Since we are pulling the user from the database again the init() function above is overridden?
             // we don't seem to be taking into account the parent roles without the following code
-            $parentRoles = $role->getParentRoles();
+            //$parentRoles = $role->getParentRoles();
             foreach ($parentRoles as $parentRole) {
                 if ($this->rbac->isGranted($parentRole->getName(), $permission)) {
                     return true;
@@ -277,3 +283,21 @@ class RbacManager
 //        // Assign permissions to the Administrator role.
 //        $rbac->getRole('Administrator')->addPermission('post.delete');
 //    }
+//        echo 'admin: administrator = '. $this->rbac->isGranted('administrator', 'administrator').'<br/>';
+//        echo 'developer: developer = '. $this->rbac->isGranted('developer', 'developer').'<br/>';
+//        echo 'brand_manager: brand.manager = '. $this->rbac->isGranted('brand_manager', 'brand_manager').'<br/>';
+//        echo 'store_manager: store.manager = '. $this->rbac->isGranted('store_manager', 'store.manager').'<br/>';
+//        echo 'guest: guest = '. $this->rbac->isGranted('guest', 'guest1').'<br/>';
+//
+//
+//        exit;
+//        echo 'admin: delete.personal = '. $this->rbac->isGranted('admin', 'delete.personal').'<br/>';
+//        echo 'editor: view.profile = '. $this->rbac->isGranted('editor', 'view.profile').'<br/>';
+//        echo 'supervisor: edit.profile = '. $this->rbac->isGranted('supervisor', 'edit.profile').'<br/>';
+//        echo 'guest: view.profile = '. $this->rbac->isGranted('guest', 'view.profile').'<br/>';
+//        echo 'guest: general = '. $this->rbac->isGranted('guest', 'general').'<br/>';
+//
+//
+//        exit;
+
+

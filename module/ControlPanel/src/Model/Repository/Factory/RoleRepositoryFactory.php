@@ -29,6 +29,20 @@ class RoleRepositoryFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
         
         $hydrator = new ClassMethodsHydrator();
+        
+        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+        $composite->addFilter(
+                'excludeparentroles',
+                new \Laminas\Hydrator\Filter\MethodMatchFilter('getParentRoles'),
+                \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+        );
+        $composite->addFilter(
+                'excludechildroles',
+                new \Laminas\Hydrator\Filter\MethodMatchFilter('getChildRoles'),
+                \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+        );
+        $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+            
         $prototype = new Role;
         $prototype::$roleHierarchyRepository = $container->get(RoleHierarchy::class);
 

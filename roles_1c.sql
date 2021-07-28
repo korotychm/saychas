@@ -4,19 +4,21 @@ DROP TABLE IF EXISTS `permission`;
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
 	`id`	int(11) NOT NULL auto_increment,
-	`name`	VARCHAR(255),
+	`name`	VARCHAR(255) NOT NULL,
+	`role`  VARCHAR(9) NOT NULL,
 	`description` TEXT,
 	`date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	UNIQUE INDEX `name_idx` (`name`),
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `role` (`name`, `description`) values 
-    ('administrator', 'Администратор'),
-    ('developer', 'Разработчик'),
-    ('brand_manager', 'Бренд менеджер'),
-    ('store_manager', 'Менеджер магазина'),
-    ('guest', 'Гость');
+INSERT INTO `role` (`role`, `name`, `description`) values 
+    ('000000001', 'administrator', 'Администратор'),
+    ('000000002', 'developer', 'Разработчик'),
+    ('000000003', 'analyst', 'Аналитик'),
+    ('000000004', 'brand_manager', 'Бренд менеджер'),
+    ('000000005', 'store_manager', 'Менеджер магазина'),
+    ('000000006', 'guest', 'Гость');
 
 -- DROP TABLE IF EXISTS `role_hierarchy`;
 
@@ -44,7 +46,7 @@ CREATE TABLE `role_hierarchy` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`)
-VALUES(0,1,1),(0,2,1),(0,3,1),(0,4,1),(0,5,1);
+VALUES(0,1,1),(0,2,1),(2,3,1),(3,4,1),(0,5,1),(0,6,1);
 
 CREATE TABLE `permission` (
 	`id`	int(11) NOT NULL auto_increment,
@@ -57,6 +59,7 @@ CREATE TABLE `permission` (
 
 INSERT INTO `permission` (`name`) VALUES ('administrator');
 INSERT INTO `permission` (`name`) VALUES ('developer');
+INSERT INTO `permission` (`name`) VALUES ('analyst');
 INSERT INTO `permission` (`name`) VALUES ('brand.manager');
 INSERT INTO `permission` (`name`) VALUES ('store.manager');
 INSERT INTO `permission` (`name`) VALUES ('guest');
@@ -81,19 +84,21 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, 1);
 
 -- Разработчик
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (2, 2);
-
--- Бренд менеджер
+-- Аналитик
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, 3);
 
--- Менеджер магазина
+-- Бренд менеджер
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 4);
 
--- Гость
+-- Менеджер магазина
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 5);
 
-CREATE OR REPLACE VIEW `role_permissions` (`role_id`, `role_name`, `permission_name`)
+-- Гость
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (6, 6);
+
+CREATE OR REPLACE VIEW `role_permissions` (`role_id`, `role`, `role_name`, `permission_name`)
 AS
-	SELECT r.id AS role_id, r.name AS role_name, p.name AS permission_name FROM role r
+	SELECT r.id AS role_id, r.role, r.name AS role_name, p.name AS permission_name FROM role r
 	LEFT JOIN role_permission rp ON rp.role_id=r.id
 	RIGHT JOIN permission p ON rp.permission_id = p.id ORDER BY role_id;
 

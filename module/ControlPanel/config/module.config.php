@@ -306,5 +306,22 @@ return [
         ],
         'strategies' => ['ViewJsonStrategy',],
     ],
+    'controller_plugins' => [
+        'factories' => [
+            Controller\Plugin\AccessPlugin::class => Controller\Plugin\Factory\AccessPluginFactory::class,
+        ],
+        'aliases' => [
+            'access' => Controller\Plugin\AccessPlugin::class,
+        ],
+    ],    
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
+        ],
+        'aliases' => [
+            'access' => View\Helper\Access::class,
+        ],
+    ],
+    
     
 ];
