@@ -480,7 +480,6 @@ class AjaxController extends AbstractActionController
             $userData->setGeodata($post->dadata);
             $ts = ( new \DateTime("now") )->format('Y-m-d h:i:s');
             $userData->setTimestamp( $ts );
-            //$userData->setTimestamp( ( new \DateTime("now") )->date );
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {

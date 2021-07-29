@@ -53,6 +53,7 @@ return [
             \ControlPanel\Controller\IndexController::class => [
                 ['actions' => ['index', 'showStores', 'showOneStore', 'showProducts', 'profile',
                     /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
+                ['actions' => ['actionAndDiscount',], 'allow' => '+analyst']
             ],
         ]
     ],    
@@ -309,9 +310,11 @@ return [
     'controller_plugins' => [
         'factories' => [
             Controller\Plugin\AccessPlugin::class => Controller\Plugin\Factory\AccessPluginFactory::class,
+            Controller\Plugin\CurrentUserPlugin::class => Controller\Plugin\Factory\CurrentUserPluginFactory::class,
         ],
         'aliases' => [
             'access' => Controller\Plugin\AccessPlugin::class,
+            'currentUser' => Controller\Plugin\CurrentUserPlugin::class,
         ],
     ],    
     'view_helpers' => [

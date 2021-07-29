@@ -58,6 +58,7 @@ class IndexController extends AbstractActionController
         $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
+        $this->rbacManager->init(true);        
     }
 
     public function onDispatch(MvcEvent $e)
@@ -74,12 +75,10 @@ class IndexController extends AbstractActionController
         $this->layout()->setVariables([
             'menuItems' => $menuItems,
             'sidebarMenuItems' => $sidebarMenuItems,
+            'currentUser' => $this->currentUser(),
         ]);
 
-//        $identity = $this->authService->getIdentity();
         $hasIdentity = $this->authService->hasIdentity();
-//        $identity2 = $this->identity();
-        //if (!$this->sessionContainer->partnerLoggedIn) {
         if(!$hasIdentity) {
             $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
         }
@@ -94,9 +93,10 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         //$roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
-        $this->rbacManager->init(true);
-        $access = $this->access('brand.manager');
-        return new ViewModel(['access' => $access, 'permissionName' => 'brand.manager']);
+//        $this->rbacManager->init(true);
+        $currentUser = $this->currentUser();
+        $access = $this->access('analyst');
+        return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
     }
 
     /**

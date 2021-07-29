@@ -13,7 +13,7 @@ class User
 {
 
     /** @var string */
-    protected $user_id;
+//    protected $user_id;
     
     /** @var string */
     protected string $provider_id;
@@ -30,16 +30,16 @@ class User
     /** @var ?string */
     protected ?string $roles;
     
-    public function setUserId($userId)
-    {
-        $this->user_id = $userId;
-        return $this;
-    }
-    
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
+//    public function setUserId($userId)
+//    {
+//        $this->user_id = $userId;
+//        return $this;
+//    }
+//    
+//    public function getUserId()
+//    {
+//        return $this->user_id;
+//    }
 
     /**
      * Get password
@@ -139,6 +139,11 @@ class User
     {
         $this->roles = $roles;
         return $this;
+    }
+    
+    public function rolesToArray()
+    {
+        return explode(',', $this->roles);
     }
 
 }
