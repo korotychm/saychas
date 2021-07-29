@@ -478,7 +478,9 @@ class AjaxController extends AbstractActionController
             $userData->setUserId($userId);
             $userData->setAddress($post->address);
             $userData->setGeodata($post->dadata);
-            $userData->setTimestamp( ( new \DateTime("now") )->date );
+            $ts = ( new \DateTime("now") )->format('Y-m-d h:i:s');
+            $userData->setTimestamp( $ts );
+            //$userData->setTimestamp( ( new \DateTime("now") )->date );
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {
