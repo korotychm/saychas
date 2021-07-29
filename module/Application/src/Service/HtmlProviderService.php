@@ -908,7 +908,7 @@ class HtmlProviderService
                 
                 
                 $timeDelevery1Hour[]=[
-                    "lable" => $value,
+                    "lable" => $value, //.date("r",$return['timeClose']),
                     "value" => date("H", $timeStart),
                     "rel" => $rel.$value,
                     ];
@@ -1010,12 +1010,15 @@ class HtmlProviderService
                 $infostore1c .=($legalStoresArray[$idStore]['time_until_closing'])
                         ?"<span class='blok mini'>заказать возможно до  ".date("Y.m.d H:i",$legalStoresArray[$idStore]['time_until_closing'])."</span>"
                         :"";
-                
-                $timStoreOpen=$legalStoresArray[$idStore]['time_until_open']+time();
+                $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
+                $timStoreOpen = $IntervalOpen + time();
                 //$timStoreOpen = time()+60*60*1;
             }
             if (null != $store){
-                 if($legalStoresArray[$idStore]['status'] ) {
+                
+                
+                 if(!$legalStoresArray[$idStore]['status']) {
+                     //все работает 
                     $provider_disable = false;
                     $returnprefix = $j * -1;
                     $provider_address = $store->getAddress().$ifostore1c;
@@ -1025,14 +1028,18 @@ class HtmlProviderService
                     $countprovider ++;
                  }
                  else {
-                    $returnprefix = $j;
-                    if( $timStoreOpen > time() and $legalStoresArray[$idStore]['time_until_open']  < 60*60*24 ){
+                   
+                    if ($IntervalOpen > 0 ){
+                         $returnprefix = $j;
+                        //закрыт на ночь 
                         $provider_disable = StringResource::STORE_CLOSE_FOR_NIGHT;
                         $infostore1c=StringResource::STORE_CLOSE_FOR_NIGHT_ALT;
                         $infostore1c.=(date("d") == date("d", $timStoreOpen))?" сегодня ":" завтра ";
                         $infostore1c.="в ".date("H:i", $timStoreOpen);
                     }
                     else {
+                         $returnprefix = $j+100;
+                        //закрыт на неопределеноне время 
                         $provider_disable = StringResource::STORE_UNAVALBLE;
                         $infostore1c=StringResource::STORE_UNAVALBLE_ALT;
                     }
@@ -1041,7 +1048,7 @@ class HtmlProviderService
             } 
             else {
                 $provider_disable = StringResource::STORE_OUT_OF_RANGE;
-                $returnprefix = $j+100;
+                $returnprefix = $j+1000;
                 $provider_address = $provider_worktime = $provider_timeclose = "";
                 $infostore1c = StringResource::STORE_OUT_OF_RANGE_ALT;
                 //$provider_store_off = "Комментарий из 1с ".$ifostore1c;

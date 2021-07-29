@@ -177,6 +177,36 @@ $(function(){
     
     //$("#user-basket-form").serialize()
     loadPayInfo();
+    
+    $("body").on("click", "#sendbasketbutton", function(){
+         var dataString = $("#user-basket-form").serialize();        
+         $.ajax({
+            beforeSend : function (){ 
+                
+                },
+            url: "/send-basket-data",
+            type: 'POST',
+            cache: false,
+            data: $("#user-basket-form").serialize(),
+            success: function (data) {
+               console.log(data)
+               $("#ServiceModalWindow .modal-title").html("Формируем заказ");
+                //$("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
+               },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+            }
+        });
+        
+        
+        
+        //$("#ServiceModalWindow #ServiceModalWraper").html("+ + + +");
+        
+        $("#ServiceModalWindow").modal("show");
+    })
+    
+    
     $("body").on("click dblclick", ".radiomergebut, .loadpayinfo", function(){loadPayInfo()});
     $("body").on("click dblclick", ".countproductminus", function(){
         if($(this).hasClass("disabled")) return false;
@@ -197,6 +227,7 @@ $(function(){
         loadPayInfo();
         return false
     })
+    
     $("body").on("click dblclick", ".countproductplus", function(){
         if($(this).hasClass("disabled")) return false;
         var id=$(this).attr("rel");

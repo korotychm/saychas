@@ -43,6 +43,7 @@
     </head>
     <body>
         <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
+        <?=$this->partial("/application/common/service-modal-window", ["param" => []])?>  
         <div class="overcover"></div>
         <div id="overcoverblack" class='overcoverblack none' ></div>
         <div id="quicktop" class='none2' ></div>
@@ -69,7 +70,7 @@
             <div id="headermenu" >
                 <div class="headermenucontent">
                     <a  href="<?= $this->url('home') ?>">Home</a>
-                    <a  href="/catalog/000000006" >Каталог</a>
+                    <a  href="/catalog/000000006"  >Каталог</a>
                     <a  href="/product/000000000014" >Товар</a>
                     <a  href="/user" >User</a>
                     <!-- a  href="<?= $this->url('test-repos') ?>" >Banzaii</a-->

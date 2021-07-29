@@ -259,7 +259,16 @@ return [
                     ],
                 ],
             ],//userAuthModal
-            
+            'send-basket-data' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/send-basket-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'sendBasketData',
+                    ],
+                ],
+            ],//userAuth
             'product' => [
                 'type'    => Segment::class,
                 'options' => [

@@ -150,7 +150,7 @@ class UserDataController extends AbstractActionController
             if (strlen($pass)<6) return false;
         
             //$validator = new \Laminas\Validator\Regex(['pattern' => '/^(?=.*\d)(?=.*[a-Z])[0-9a-Z]{6,}$/']);
-             $validator = new \Laminas\Validator\Regex(['pattern' => '/^[a-z0-9]*$/']);
+             $validator = new \Laminas\Validator\Regex(['pattern' => '/^[a-zA-Z0-9]*$/']);
                 /*(/^
                 (?=.*\d)                //should contain at least one digit
                 (?=.*[a-z])             //should contain at least one lower case
@@ -212,6 +212,15 @@ class UserDataController extends AbstractActionController
         }
 
         return new JsonModel($answer);
+    }
+    
+    public function sendBasketDataAction()
+    {
+        $content = $this->getRequest()->getPost()->toArray();
+        $answer = $this->externalCommunicationService->sendBasketData($content);
+       // exit( "<pre>".print_r($answer, true)."</pre>" );
+       return new JsonModel($answer);
+        
     }
 
     /**

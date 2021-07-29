@@ -254,6 +254,7 @@ class IndexController extends AbstractActionController
     {
             $basketUser['id'] = $userId = $this->identity();
             $user = $this->userRepository->find(['id'=>$userId]);
+             $basketUser['userId']= $user->getUserId();
             $basketUser['phone'] = $user->getPhone();
             $basketUser['name'] = $user->getName();
             $userData = $user->getUserData();

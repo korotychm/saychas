@@ -508,6 +508,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol img {max-width:100%; max-height:100%}
 .contentpaddingbox .basketcol.titleprovider {
     width: calc(100% - 50px);
+    margin-bottom:16px;
 
 }
 
@@ -1094,13 +1095,12 @@ img.zero, .zeroblok {
 .hr-saychas {border:none; border-top:3px dotted var(--gray-light)}
 .goself {background:#fff url("/img/goself.png") right bottom no-repeat }
 .flex-row { display: flex;   flex-direction: row; justify-content: flex-start; align-items: top;}
-.borderredhalf {border:2px solid  var(--gray-light)}; /*opacity:.5*/ 
+.borderredhalf {border:2px solid  transparent }; /*opacity:.5 var(--gray-light)*/ 
 
 .lborder, .lborder.borderredhalf {border-top-right-radius: 24px;
     border-bottom-right-radius: 24px;}
 .rborder, .rborder.borderredhalf {border-top-right-radius: 24px;
     border-bottom-right-radius: 24px;}
-
 
 /*display: flex;   flex-direction: row; justify-content: flex-start; align-items: top;/*display: flex;
 var(--gray-light*/  

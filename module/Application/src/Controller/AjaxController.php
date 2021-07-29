@@ -215,16 +215,19 @@ class AjaxController extends AbstractActionController
     public function calculateBasketItemAction()
     {
         $post = $this->getRequest()->getPost();
-        if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true]);
+         
+        if (!$userId = $this->identity()) JsonModel(["error" => true, "errorMessage" => "user not found"]);
+        if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
+        //$rest = //
         if (null == $product  
                 or !$productPrice = (int)$product->getPrice()
                 or !$productCount = (int)$post->count
                 or $productCount < 1
                 
             ) {
-                return new JsonModel(["error" => true]);
+                return new JsonModel(["error" => true,  "errorMessage" => "product price error"]);
              }
         
              

@@ -44,6 +44,56 @@ class ExternalCommunicationService
         ];
         return $this->sendCurlRequest($url, $content);
     }
+    
+    public function sendBasketData($content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['send_registration_code'];
+
+        if (!$content["products"])
+            return false;
+        if (empty($content["products"]))
+            return false;
+
+        while (list($id, $value) = each($content["products"])) {
+            $store[$value["store"]][] = [
+                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
+            ];
+            //$coontent["delevery"][] = $store[$value['store']];
+        }
+        $limit = ($content["ordermerge"]) ? 1 : 4;
+        $i = 1;
+        $j = 0;
+        $q = -1;
+        
+        while (list($key, $val) = each($store)) {
+            $i++;
+            $selfdelevery = false;
+               if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
+                   $selfdelevery = true; 
+                $delevery[$q]["selfdelevery"]=$selfdelevery;
+                $delevery[$q][] = ["store" => $key,  "products" => $val];
+                $q--;
+               }
+               else {
+                if ($i < $limit) {
+                    $i = 1;
+                    $j++;
+                }
+                $delevery[$j]["selfdelevery"]=$selfdelevery;
+                $delevery[$j][] = ["store" => $key,  "products" => $val];
+            
+                }
+        }     
+        
+        if ($content["delevery"] = $delevery)  ksort($content["delevery"]);
+        //$content["delevery"]=$store;
+        $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
+        unset($content['timepointtext1'], $content['timepointtext3'], $content['cardinfo'], $content["products"]);
+        unset($content['userGeoLocation']);
+        $content['userGeoLocation'] = [];
+        return $content;
+        // return $this->sendCurlRequest($url, $content);
+    }
 
     /**
      * Send curl request.
