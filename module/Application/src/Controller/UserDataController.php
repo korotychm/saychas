@@ -161,13 +161,18 @@ class UserDataController extends AbstractActionController {
         // Generate new code and store it in session
         //$container = $this->sessionContainer;// new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
         //$container = new Container(StringResource::CODE_CONFIRMATION_SESSION_NAMESPACE);
-        /* $suffle=[0,1,3,4,5,6,7,8,9];
-          shuffle($suffle);
-          for ($i=0; $i < $length; $i++ ){
-          $code.=$suffle[$i]; //real generation
-          }/* */
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        
         $code = 7777; // simulate generation
+        
+        /* //real generation
+        $lenght=($lenght<1 and $lenght>9)?$lenght:4;
+        $suffle=[0,1,3,4,5,6,7,8,9];   
+        shuffle($suffle);
+        for ($i=0; $i < $length; $i++ ){
+            $code.=$suffle[$i]; 
+        }
+        /* */
+        $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code, 'live' => (time() + 60)];
         return $code;
     }
@@ -341,7 +346,7 @@ class UserDataController extends AbstractActionController {
                                 //$print_r = $codeExist;
                             }
                         } else {
-                            //$print_r = $codeExist;
+                            
                             if ($userSmsCode and ($userSmsCode != $codeExist)) {
                                 $registerPossible = false;
                                 unset($userAutSession['smscode']);
@@ -359,7 +364,6 @@ class UserDataController extends AbstractActionController {
                                     $userAutSession['newpassword'] = $forgetPassInput;
                                 }
                             }
-                            // $error["1111"]="!!!!>>>>+++";
                             if ($forgetPassInput and ($forgetPassInput != $forgetPassInput2)) {
                                 $registerPossible = false;
                                 //unset($userAutSession['newpassword2']);
@@ -497,8 +501,7 @@ class UserDataController extends AbstractActionController {
             'stepOne' => $stepOne,
             'user' => $userAutSession,
             'passForgetBlock' => $passForgetBlock,
-                /* 'userName'   => $userAutSession['username'],
-                  'userMail'   => $userAutSession[''], */
+          
         ]);
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
