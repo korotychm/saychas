@@ -156,6 +156,12 @@ class IndexController extends AbstractActionController
         $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
+    
+    public function userManagementAction()
+    {
+        $this->assertLoggedIn();
+        return (new ViewModel())->setTerminal(true);
+    }
 
     /**
      * Show action and discount page

@@ -57,8 +57,6 @@ class Module implements ConfigProviderInterface
         
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
 
-//        if ($controllerName != AuthController::class && $controllerName != \Application\Controller\InexController::class && 
-//                $controllerName != \Application\Controller\AjaxController::class && $controllerName != \Application\Controller\UserDataController::class) {
         if ($controllerName != AuthController::class &&
             $controllerName != \Application\Controller\IndexController::class &&
             $controllerName != \Application\Controller\UserDataController::class &&
@@ -74,9 +72,16 @@ class Module implements ConfigProviderInterface
                 $uri->setScheme(null)
                     ->setHost(null)
                     ->setPort(null)
-                    ->setUserInfo(null);
+                    ->setUserInfo(null)
+                    ->setPath('/control-panel/login');
+//                $redirectUrl = $uri->toString();
                 $redirectUrl = $uri->toString();
-                return $controller->redirect()->toUrl('control-panel/login');
+//                $query = $uri->getQuery();
+                /** temporarily comment the following line out */
+                //$redirectUrl = '/control-panel/login?'.$query;
+//                $r = $controller->redirect()->toRoute('control-panel/login', [], ['query'=>$query]);
+//                $redirectUrl = $r->toString();
+                return $controller->redirect()->toUrl($redirectUrl);
             }else if ($result==AuthManager::ACCESS_DENIED) {
                 // Redirect the user to the "Not Authorized" page.
                 return $controller->redirect()->toRoute('control-panel/not-authorized');
