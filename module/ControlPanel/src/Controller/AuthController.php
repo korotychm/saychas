@@ -104,7 +104,7 @@ class AuthController extends AbstractActionController
     }
 
     /**
-     * Unset session partnerLoggedIn data
+     * Logout
      *
      * @return Redirect
      */
