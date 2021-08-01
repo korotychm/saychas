@@ -192,5 +192,10 @@ class AuthManager
         // Permit access to this page.
         return self::ACCESS_GRANTED;
     }
+    
+    public function hasIdentity()
+    {
+        return $this->authService->hasIdentity();
+    }
 
 }

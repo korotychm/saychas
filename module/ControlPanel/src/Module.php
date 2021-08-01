@@ -9,6 +9,7 @@ use ControlPanel\Listener\LayoutListener;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Resolver\TemplateMapResolver;
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Json\Json;
 use ControlPanel\Controller\AuthController;
 use ControlPanel\Service\AuthManager;
 
@@ -56,7 +57,7 @@ class Module implements ConfigProviderInterface
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
         
         $authManager = $event->getApplication()->getServiceManager()->get(AuthManager::class);
-
+        
         if ($controllerName != AuthController::class &&
             $controllerName != \Application\Controller\IndexController::class &&
             $controllerName != \Application\Controller\UserDataController::class &&
@@ -65,6 +66,17 @@ class Module implements ConfigProviderInterface
             $controllerName != \Application\Controller\FtpController::class &&
             $controllerName != \Application\Controller\MyTestController::class) {
             
+            $hasIdentity = $authManager->hasIdentity();
+            if(!$hasIdentity) {
+                $request = $event->getApplication()->getRequest();
+                if($request->isXmlHttpRequest()) {
+                    $data = Json::encode(['data' => false]);//  json_encode(['data' => false]); // 
+                    return $controller->redirect()->toUrl('/control-panel/login?data='.$data);
+                }
+//                $controller->layout()->setTemplate('layout/control-panel-auth');
+//                return $controller->redirect()->toUrl('/control-panel/login');
+            }
+
             $result = $authManager->filterAccess($controllerName, $actionName);
             
             if($result == AuthManager::AUTH_REQUIRED) {

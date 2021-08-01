@@ -66,6 +66,11 @@ $(function () {
 
         if ('profileId' === ths.currentTarget.id) {
             $.post('/control-panel/profile', {post: {}}, function (data) {
+                console.log('data = ', data.data);
+                if(data && false !== data.data) {
+                    alert('ok');
+                    window.location.replace("/control-panel");
+                }
                 $('#controlPanelContentId').fadeOut("fast", function () {
                     redirectIfNotLoggedIn(data);
                     $('#controlPanelContentId').html("");

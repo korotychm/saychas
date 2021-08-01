@@ -81,6 +81,10 @@ class AuthController extends AbstractActionController
 //        ]);
         
         //$returnUrl = $this->params()->fromQuery('returnUrl');
+        $data = $this->params()->fromQuery('data');
+        if(null != $data) {
+            return new \Laminas\View\Model\JsonModel(['data' => true]);
+        }
         $returnUrl = $this->params()->fromQuery('p');
         return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl]);
     }
@@ -97,10 +101,10 @@ class AuthController extends AbstractActionController
         $result = $this->authManager->login(['provider_id' => '00002', 'login' => $post['username'], 'password' => $post['password'],]);
         if($result->getCode() == Result::SUCCESS) {
             // set session
-            return $this->redirect()->toUrl('/control-panel?'/*$post['returnUrl']*/);
+            return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel?'/*$post['returnUrl']*/);
         }
         
-        return $this->redirect()->toUrl('/control-panel'/*$post['returnUrl']*/);
+        return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel'/*$post['returnUrl']*/);
     }
 
     /**
