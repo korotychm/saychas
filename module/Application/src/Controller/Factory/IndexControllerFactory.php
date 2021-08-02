@@ -56,7 +56,8 @@ class IndexControllerFactory implements FactoryInterface
         $price = $container->get(PriceRepositoryInterface::class);
         $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
         $handBookProduct = $container->get(HandbookRelatedProductRepositoryInterface::class);
-        $entityManager = $container->get('doctrine.entitymanager.orm_default');
+        //$entityManager = $container->get('doctrine.entitymanager.orm_default');
+        $entityManager = $container->get('laminas.entity.manager');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
