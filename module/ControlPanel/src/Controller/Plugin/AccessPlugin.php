@@ -1,4 +1,7 @@
 <?php
+
+// ControlPanel/src/Controller/Plugin/AccessPlugin.php
+
 namespace ControlPanel\Controller\Plugin;
 
 use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
@@ -8,13 +11,14 @@ use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
  */
 class AccessPlugin extends AbstractPlugin
 {
+
     private $rbacManager;
-    
+
     public function __construct($rbacManager)
     {
         $this->rbacManager = $rbacManager;
     }
-    
+
     /**
      * Checks whether the currently logged in user has the given permission.
      * @param string $permission Permission name.
@@ -24,6 +28,5 @@ class AccessPlugin extends AbstractPlugin
     {
         return $this->rbacManager->isGranted(null, $permission, $params);
     }
+
 }
-
-

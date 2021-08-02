@@ -53,7 +53,8 @@ class AjaxControllerFactory implements FactoryInterface
         $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
         $handBookProduct = $container->get(HandbookRelatedProductRepositoryInterface::class);
         $productCharacteristicRepository = $container->get(ProductCharacteristicRepositoryInterface::class);
-        $entityManager = $container->get('doctrine.entitymanager.orm_default');
+        //$entityManager = $container->get('doctrine.entitymanager.orm_default');
+        $entityManager = $container->get('laminas.entity.manager');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $userRepository = $container->get(UserRepository::class);

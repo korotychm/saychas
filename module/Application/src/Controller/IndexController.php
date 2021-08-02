@@ -28,6 +28,7 @@ use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Entity\Provider;
+use Application\Model\Entity\ClientOrder;
 use Laminas\Json\Json;
 
 use Application\Service\HtmlProviderService;
@@ -107,7 +108,8 @@ class IndexController extends AbstractActionController
         $this->basketRepository = $basketRepository;
 //        $this->sessionContainer = $sessionContainer;
         $this->sessionManager = $sessionManager;
-
+        
+        $this->entityManager->initRepository(ClientOrder::class);
         
     }
 
@@ -217,6 +219,17 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+        // $clientOrder = new ClientOrder();
+//        $clientOrder = ClientOrder::findFirstOrDefault(['id' => null]);
+//        $clientOrder->setId(null);
+//        $clientOrder->setOrderId('00000000003');
+//        $clientOrder->setDateCreated(time());
+////        $date = (new \DateTime("now"))->format('Y-m-d h:i:s');
+////        $clientOrder->setTimestamp($date);
+//        
+//        $clientOrder->persist(['id' => $clientOrder->getId()]);
+        
+        
 //        $validator = new \Laminas\Validator\EmailAddress();
 //        
 //        $email = 'alex.kraskov@gmail.com';

@@ -51,8 +51,11 @@ return [
             
             
             \ControlPanel\Controller\IndexController::class => [
-                ['actions' => ['index', 'showStores', 'showOneStore', 'showProducts', 'profile',
+                ['actions' => ['index'/*, 'showStores'*/, 'showOneStore', 'showProducts', 'profile', //  'userManagement',
                     /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
+                ['actions' => ['actionAndDiscount',], 'allow' => '+analyst'],
+                ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
+                ['actions' => ['showStores',], 'allow' => '+analyst'],
             ],
         ]
     ],    
@@ -108,6 +111,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\IndexController::class,
                                 'action' => 'profile',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'user-management' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/user-management',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'user-management',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -211,6 +225,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'not-authorized-view' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/not-authorized-view',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'not-authorized-view',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                 ],
             ],
 //            'control-panel' => [
@@ -309,9 +334,11 @@ return [
     'controller_plugins' => [
         'factories' => [
             Controller\Plugin\AccessPlugin::class => Controller\Plugin\Factory\AccessPluginFactory::class,
+            Controller\Plugin\CurrentUserPlugin::class => Controller\Plugin\Factory\CurrentUserPluginFactory::class,
         ],
         'aliases' => [
             'access' => Controller\Plugin\AccessPlugin::class,
+            'currentUser' => Controller\Plugin\CurrentUserPlugin::class,
         ],
     ],    
     'view_helpers' => [
