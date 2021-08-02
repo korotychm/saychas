@@ -322,7 +322,8 @@ class UserDataController extends AbstractActionController {
 
                 $stepOne = true;
                 $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
-                if ($user and $userSuperId = $user->getUserId() and $userId = $user->getId()) {
+                $print_r = $userSuperId = $user->getUserId();
+                if ($user and $userSuperId and $userId = $user->getId()) {
                     if ($post->forgetPassHidden) {
 
                         $userAutSession["passforget"] = 1;
@@ -489,7 +490,7 @@ class UserDataController extends AbstractActionController {
         $container->userAutTmpSession = $userAutSession;
         $view = new ViewModel([
             //'reloadPage' => $reloadPage,
-            //  'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
+            //'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
             'title' => $title,
             'buttonLable' => $buttonLable,
             'error' => $error,
