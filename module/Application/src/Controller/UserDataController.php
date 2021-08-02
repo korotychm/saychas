@@ -295,6 +295,11 @@ class UserDataController extends AbstractActionController {
         return new JsonModel($answer);
     }
 
+    /**
+     * @author Sizov D.N. <plusweb.pro>
+     * 
+     * @return JsonModel
+     */
     public function userAuthModalAction() {
 
         $container = new Container(StringResource::SESSION_NAMESPACE);
