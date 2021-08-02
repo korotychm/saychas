@@ -215,12 +215,10 @@ class AjaxController extends AbstractActionController
     public function calculateBasketItemAction()
     {
         $post = $this->getRequest()->getPost();
-         
-        if (!$userId = $this->identity()) JsonModel(["error" => true, "errorMessage" => "user not found"]);
+        if (!$userId = $this->identity()) return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
         if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-        
         
         if (null == $product  
                 or !$productPrice = (int)$product->getPrice()
@@ -231,9 +229,10 @@ class AjaxController extends AbstractActionController
                 return new JsonModel(["error" => true,  "errorMessage" => "product price error"]);
              }
         
-        /*$basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-        $basketItem->setCount($productCount);
-        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);*/
+        $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+        $basketItem->setTotal($productCount);
+        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);
+                
         
         $return['totalNum'] = (int) $productPrice * $productCount; 
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');

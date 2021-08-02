@@ -321,11 +321,18 @@ class UserDataController extends AbstractActionController {
                 $userAutSession["phone"] = $return['phone'];
 
                 $stepOne = true;
+                
                 $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
-                $print_r = $userSuperId = $user->getUserId();
+                
+                
+                //$print_r = 
+                $userSuperId = $user->getUserId();
+                
+                
                 if ($user and $userSuperId and $userId = $user->getId()) {
                     if ($post->forgetPassHidden) {
 
+                        exit (print_r($user));
                         $userAutSession["passforget"] = 1;
                         $title = StringResource::MESSAGE_PASSFORGOT_TITLE;
                         $CodeBlock = true;

@@ -67,30 +67,37 @@ class ExternalCommunicationService
         
         while (list($key, $val) = each($store)) {
             $i++;
-            $selfdelevery = false;
-               if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
-                   $selfdelevery = true; 
-                $delevery[$q]["selfdelevery"]=$selfdelevery;
-                $delevery[$q][] = ["store" => $key,  "products" => $val];
-                $q--;
+            //$selfdelevery = false;
+            
+            if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
+               
+                $selfdeliv[]=["store" => $key,  "products" => $val];
+                
                }
                else {
                 if ($i < $limit) {
                     $i = 1;
                     $j++;
+                    
                 }
-                $delevery[$j]["selfdelevery"]=$selfdelevery;
                 $delevery[$j][] = ["store" => $key,  "products" => $val];
+                
             
                 }
         }     
         
-        if ($content["delevery"] = $delevery)  ksort($content["delevery"]);
+        if (!empty($delevery)) {            
+         while (list($key, $val) =each($delevery)) $deliv[]= $val; 
+        }
+                
+        $content["deleveryes"] = ["selfdelivery"=>$selfdeliv, 'delivery'=> $deliv];
+        
+        
         //$content["delevery"]=$store;
         $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
-        unset($content['timepointtext1'], $content['timepointtext3'], $content['cardinfo'], $content["products"]);
-        unset($content['userGeoLocation']);
-        $content['userGeoLocation'] = [];
+        unset($content['timepointtext1'], $content['timepointtext3'], $content['timepointtext3'],  $content['selfdelevery'], $content["products"]);
+        /*unset($content['userGeoLocation']);
+        $content['userGeoLocation'] = [];*/
         //return $content;
         return $this->sendCurlRequest($url, $content);
     }
@@ -106,6 +113,17 @@ class ExternalCommunicationService
     {
 //        $login = $this->config['1C_order']['login'];
 //        $pass = $this->config['1C_order']['password'];
+        /*$response = file_get_contents(
+                $url,
+                false,
+                stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => http_build_query($content)]
+                ])
+        );*/
+        
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);
         //curl_setopt($curl, CURLOPT_HTTPHEADER, ['BOM_required: false', 'charset_response: UTF-8']);
@@ -124,7 +142,7 @@ class ExternalCommunicationService
             return $arr;
         } catch (LaminasJsonRuntimeException $e) {
             //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
-            return ['result' => false, 'message' => $e->getMessage().' '.$response.' '.$url];
+            return ['result' => false, 'message' => $e->getMessage().' '.$response];
         }
     }
 

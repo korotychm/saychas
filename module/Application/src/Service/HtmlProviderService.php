@@ -958,11 +958,12 @@ class HtmlProviderService
                 $rest = $product->receiveRest();
                 
                 $count = $b->total;
-                if ($count > $rest)
+                if ($count > $rest) {
                    $whatHappened[$pId]['oldrest']=$count; 
                    $whatHappened[$pId]['rest'] = $rest; 
                     
                     $count = $rest;
+                }
                 //if ($rest) $countproducts +=$count ;
                 if ($rest) {
                     $countproducts ++; 

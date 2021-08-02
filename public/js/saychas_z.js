@@ -299,7 +299,8 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
             success: function (data) {
                 //console.log(data);
                 if (data.error == false) {
-                    location = location.href;
+                    //location = location.href;
+                    getLegalStores($("#geodatadadata").text(), ".testlegalstor", true );
                     return false;
                 } 
                 if (data.phone){
@@ -452,10 +453,10 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
-                
-               
-                
-                
+               if (wrelaoad) { 
+                   location = location.href;
+                   return false;
+               }
             }
 
             $(obj).html(data);

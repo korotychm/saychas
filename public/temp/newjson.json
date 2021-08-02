@@ -1,21 +1,20 @@
 {
+    "basketuseradress": "г Москва, Волгоградский пр-кт, д 1 ",
+    "paycard": "1",
     "userId": "000000004",
-    "products": {
-        "000000000036": {
-            "count": "100",
-            "price": "3199001",
-            "store": "00006"
-        },
-        "000000000020": {
-            "count": "4",
-            "price": "9899100",
-            "store": "00002"
+    "delevery": {
+        "1": {
+            "0": {
+                "store": "00002",
+                "products": [{
+                        "id": "000000000018",
+                        "count": "9",
+                        "price": "5399100",
+                        "discont": 0
+                    }]
+            },
+            "selfdelevery": false
         }
     },
-    "selfdelevery": ["00006"],
-    "basketuseradress": "г Москва, ул Угрешская, д 2",
-    "timepoint": ["16"],
-    "ordermerge": "0",
-    "paycard": "0",
     "userGeoLocation": []
 }
