@@ -10,5 +10,5 @@ namespace ControlPanel\Resource;
  */
 class StringResource
 {
-    public const CONTROL_PANEL_SESSION = "CONTROL_PANEL_SESSION";
+    public const CONTROL_PANEL_SESSION = "CONTROL_PANEL_SESSION";// "PHPSESSID";// "CONTROL_PANEL_SESSION";
 }

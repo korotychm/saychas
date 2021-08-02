@@ -80,17 +80,14 @@
         </style>
     </head>
     <body>
-<!--        <div id="header" class="blokc" >
-            <div id="headermenu" >
-                <div class="headermenucontent">
-                    <?php //= $this->partial('partials/menu-items', ['menuItems' => $this->menuItems]); ?>
-                </div>
-            </div>
-        </div>-->
-        <div class="fluid-container" style="overflow: hidden"> <?php //  container-dashboard ?>
+        <div class="fluid-container bg-dark" style="min-height: 40px; color: white;">
+            <span style="position: absolute; right: 100px; top: 7px;"><?= null == $currentUser ? '' : $currentUser->getLogin() ?></span>
+        </div>
+
+        <div class="fluid-container" style="height: calc(100vh - 40px); overflow: hidden"> <?php //  container-dashboard ?>
             <div class="row main-row">
                 <div class="col-sm-2 mt-0 pr-0">
-                    <div class="card card-body bg-dark">
+                    <div class="card card-body bg-dark" style="border-radius: 0">
                         <ul id="controlPanelMenu" class="nav nav-pills flex-column">
                             <?= $this->partial('partials/sidebar-menu-items', ['menuItems' => $this->sidebarMenuItems]); ?>
                         </ul>

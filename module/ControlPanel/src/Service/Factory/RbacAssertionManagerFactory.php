@@ -22,8 +22,9 @@ class RbacAssertionManagerFactory
     {
         //$authService = $container->get(AuthenticationService::class);
         $authService = $container->get('my_auth_service');
+        $userManager = $container->get(\ControlPanel\Service\UserManager::class);
 
-        return new RbacAssertionManager($authService);
+        return new RbacAssertionManager($authService, $userManager);
     }
 
 }
