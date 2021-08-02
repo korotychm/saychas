@@ -355,15 +355,15 @@ class UserDataController extends AbstractActionController {
                                 $userAutSession['smscode'] = $userSmsCode;
                             }
 
-                            if (isset($post->forgetPassInput)) {
+                            //if (isset($post->forgetPassInput)) {
                                 if (!$forgetPassInput or!$this->testPassw($forgetPassInput)) {
                                     $registerPossible = false;
                                     unset($userAutSession['newpassword']);
-                                    $error['newpassword'] = StringResource::ERROR_PASS_VALIDATION_MESSAGE;
+                                    if (isset($post->forgetPassInput)) {$error['newpassword'] = StringResource::ERROR_PASS_VALIDATION_MESSAGE;}
                                 } else {
                                     $userAutSession['newpassword'] = $forgetPassInput;
                                 }
-                            }
+                            //}
                             if ($forgetPassInput and ($forgetPassInput != $forgetPassInput2)) {
                                 $registerPossible = false;
                                 //unset($userAutSession['newpassword2']);

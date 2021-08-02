@@ -91,7 +91,7 @@ class ExternalCommunicationService
         unset($content['timepointtext1'], $content['timepointtext3'], $content['cardinfo'], $content["products"]);
         unset($content['userGeoLocation']);
         $content['userGeoLocation'] = [];
-        return $content;
+        //return $content;
         return $this->sendCurlRequest($url, $content);
     }
 
@@ -124,7 +124,7 @@ class ExternalCommunicationService
             return $arr;
         } catch (LaminasJsonRuntimeException $e) {
             //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
-            return ['result' => false, 'message' => $e->getMessage().' '.$response];
+            return ['result' => false, 'message' => $e->getMessage().' '.$response.' '.$url];
         }
     }
 
