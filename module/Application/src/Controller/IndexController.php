@@ -29,6 +29,7 @@ use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\Delivery;
 use Laminas\Json\Json;
 
 use Application\Service\HtmlProviderService;
@@ -110,6 +111,7 @@ class IndexController extends AbstractActionController
         $this->sessionManager = $sessionManager;
         
         $this->entityManager->initRepository(ClientOrder::class);
+        $this->entityManager->initRepository(Delivery::class);
         
     }
 
@@ -219,6 +221,13 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $delivery = new Delivery();
+//        $delivery->setId(null);
+//        $delivery->setDeliveryId('0000002');
+//        $delivery->setOrderId('0000111');
+//        $delivery->setDateCreated(time());
+//        $delivery->persist(['id' => $delivery->getId()]);
+        
         // $clientOrder = new ClientOrder();
 //        $clientOrder = ClientOrder::findFirstOrDefault(['id' => null]);
 //        $clientOrder->setId(null);

@@ -21,6 +21,8 @@ use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\Entity\Basket;
+use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -97,6 +99,9 @@ class AjaxController extends AbstractActionController
         $this->basketRepository = $basketRepository;
         $this->productImageRepository = $productImageRepository;
 //        $this->sessionContainer = $sessionContainer;
+        
+        $this->entityManager->initRepository(ClientOrder::class);
+        $this->entityManager->initRepository(Delivery::class);
     }
 
     public function delFromBasketAction()
@@ -478,8 +483,9 @@ class AjaxController extends AbstractActionController
             $userData->setUserId($userId);
             $userData->setAddress($post->address);
             $userData->setGeodata($post->dadata);
-            $ts = ( new \DateTime("now") )->format('Y-m-d h:i:s');
-            $userData->setTimestamp( $ts );
+//            $ts = ( new \DateTime("now") )->format('Y-m-d h:i:s');
+//            $userData->setTimestamp( $ts );
+            $userData->setTime(time());
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {
