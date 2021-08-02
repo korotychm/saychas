@@ -191,7 +191,7 @@ $(function(){
             success: function (data) {
                console.log(data)
                $("#ServiceModalWindow .modal-title").html("Формируем заказ");
-                //$("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
+               $("#ServiceModalWindow #ServiceModalWraper").append(JSON.stringify(data));
                },
             error: function (xhr, ajaxOptions, thrownError) {
                 $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );

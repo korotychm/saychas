@@ -21,29 +21,28 @@
                 ->prependStylesheet($this->basePath('css/nouislider.css'))
                 ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
         ?>
-
         <!-- Scripts -->
         <?= $this->headScript() ?>
 
-<?=
-        $this->inlineScript()
-        ->prependFile($this->basePath('/js/useractions.js'))
-        ->prependFile($this->basePath('/js/custom_select.js'))
-        ->prependFile($this->basePath('/js/services.js'))
-        ->prependFile($this->basePath('/js/nouislider.min.js'))
-        ->prependFile($this->basePath('/js/nivo.slider.js'))
-        ->prependFile($this->basePath('js/jquery.treeview.js'))
-        ->prependFile($this->basePath('js/saychas_z.js?' . time()))
-        ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
-        ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
-        ->prependFile($this->basePath('js/jquery.treeview.async.js'))
-        ->prependFile($this->basePath('js/bootstrap.min.js'))
+        <?=
+                $this->inlineScript()
+                ->prependFile($this->basePath('/js/useractions.js'))
+                ->prependFile($this->basePath('/js/custom_select.js'))
+                ->prependFile($this->basePath('/js/services.js'))
+                ->prependFile($this->basePath('/js/nouislider.min.js'))
+                ->prependFile($this->basePath('/js/nivo.slider.js'))
+                ->prependFile($this->basePath('js/jquery.treeview.js'))
+                ->prependFile($this->basePath('js/saychas_z.js?' . time()))
+                ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
+                ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
+                ->prependFile($this->basePath('js/jquery.treeview.async.js'))
+                ->prependFile($this->basePath('js/bootstrap.min.js'))
 // ->prependFile($this->basePath('js/jquery.js'))
-?>
+        ?>
     </head>
     <body>
         <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
-        <?=$this->partial("/application/common/service-modal-window", ["param" => []])?>  
+        <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>  
         <div class="overcover"></div>
         <div id="overcoverblack" class='overcoverblack none' ></div>
         <div id="quicktop" class='none2' ></div>
@@ -57,7 +56,7 @@
                 <div class='iblokok' id=supermenuinside>
 
                     <ul id="tree" class="tree treeview" style=""><h3>Каталог</h3>
-<?= $this->catalogCategoties ?>
+                        <?= $this->catalogCategoties ?>
                     </ul>
 
                 </div >
@@ -116,18 +115,11 @@
                             <div class="blok" id="quickaddress">
                                 <div class='geo16 uadress' >Привезем сейчас:</div>
                                 <div class='open-user-address-form user_address_set uadress' id="uadress" >
-<?= $userAddressHtml ?>
+                                    <?= $userAddressHtml ?>
                                 </div>
                             </div>
                         </div> 
-
-
-
                     </div>
-
-
-
-
                 </div>
                 <div class='iblok' id="profileblock">
                     <div class='contentpadding'>
@@ -138,30 +130,29 @@
                                     <div class='altcontentview'>
                                         <span class='strelka'></span>
                                         <div class='blok '>
-                           <?php if ($this->userLegal) {?>
-                                           <h5><?=$this->username?></h5>
-                                           <div class=' menu-item ' ><a href="/user">Личный кабинет</a></div> 
-                                           <div class=' menu-item' >Мои заказы</div> 
-                                           <div class=' menu-item' >Мои оповещения</div> 
-                                            <div class='delevery-item menu-item ' ><a href="/clear-user-data">Выход</a></div> 
-                                           
-                                          <?php } else { ?>
-                                           <div class='delevery-item menu-item user-modal-open' >Войти или зарегистрироваться</div> 
-                                          <?php } ?>
+                                            <?php if ($this->userLegal) { ?>
+                                                <h5><?= $this->username ?></h5>
+                                                <div class=' menu-item ' ><a href="/user">Личный кабинет</a></div> 
+                                                <div class=' menu-item' >Мои заказы</div> 
+                                                <div class=' menu-item' >Мои оповещения</div> 
+                                                <div class='delevery-item menu-item ' ><a href="/clear-user-data">Выход</a></div> 
+
+                                            <?php } else { ?>
+                                                <div class='delevery-item menu-item user-modal-open' >Войти или зарегистрироваться</div> 
+                                            <?php } ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                            </div>
-                            
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding  blokc'>
-<?= (/*true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
+                                <?= (/* true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
                                 <div class="emptyblock">
                                     <div id="zakazcount">0</div>
                                 </div>
                                 <div class="blokc">корзина</div>
-<?= (/*true or */$this->addressLegal) ? '</a>' : '</div>' ?>                     
+                                <?= (/* true or */$this->addressLegal) ? '</a>' : '</div>' ?>                     
                             </div>
                         </div>
 
@@ -185,11 +176,7 @@
             </div>
             <div class="full-wrap">
                 <div id="content">  
-
-
-<?= $this->content ?>                    
-
-
+                    <?= $this->content ?>                    
                 </div></div>
         </div>
         <div id="bascetbottomblok" class='none'>
@@ -202,7 +189,7 @@
                 <div class="fitem fcopy">
                     <div class="emptyblock"></div> <div class="emptyblock"></div>
                     <p style="padding-top:30px;">2021&copy; ООО &laquo;Сейчас&raquo; <br>все права защищены</p>
-<?= date("Y-m-d H:i:s") ?>
+                    <?= date("Y-m-d H:i:s") ?>
                 </div>
                 <div class="fitem flogo"><span class="flogospan"></span></div>
                 <div class="fitem fcontent" >
@@ -243,6 +230,5 @@
                 </div>
             </div>
         </footer>
-
     </body>
 </html>

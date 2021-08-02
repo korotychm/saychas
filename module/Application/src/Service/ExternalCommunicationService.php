@@ -47,7 +47,7 @@ class ExternalCommunicationService
     
     public function sendBasketData($content)
     {
-        $url = $this->config['parameters']['1c_request_links']['send_registration_code'];
+        $url = $this->config['parameters']['1c_request_links']['create_order'];
 
         if (!$content["products"])
             return false;
@@ -91,8 +91,8 @@ class ExternalCommunicationService
         unset($content['timepointtext1'], $content['timepointtext3'], $content['cardinfo'], $content["products"]);
         unset($content['userGeoLocation']);
         $content['userGeoLocation'] = [];
-        return $content;
-        // return $this->sendCurlRequest($url, $content);
+        //return $content;
+        return $this->sendCurlRequest($url, $content);
     }
 
     /**
@@ -123,7 +123,8 @@ class ExternalCommunicationService
             $arr = Json::decode($response, Json::TYPE_ARRAY);
             return $arr;
         } catch (LaminasJsonRuntimeException $e) {
-            return ['result' => 10, 'message' => $e->getMessage().' '.$response];
+            //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
+            return ['result' => false, 'message' => $e->getMessage().' '.$response];
         }
     }
 
