@@ -17,8 +17,9 @@ function sendfilterform() {
                 //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-                alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
+               $("#ServiceModalWindow .modal-title").html("Ошибка " +  xhr.status );
+               $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+               $("#ServiceModalWindow").modal("show");
             }
         });
     }

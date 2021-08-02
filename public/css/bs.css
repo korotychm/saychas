@@ -4741,8 +4741,9 @@ input[type="button"].btn-block {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  /*border: 1px solid rgba(0, 0, 0, 0.125);*/
-  /*border-radius: 0.25rem;*/
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  
 }
 
 .card > hr {
@@ -5933,6 +5934,11 @@ a.close.disabled {
   margin: 0.5rem;
   pointer-events: none;
 }
+.modal-dialog-middle {
+    width:100%;
+    max-width: 800px;
+    
+}
 
 .modal.fade .modal-dialog {
   transition: -webkit-transform 0.3s ease-out;
@@ -6103,8 +6109,12 @@ a.close.disabled {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .modal-dialog { 
     max-width: 500px;
+    margin: 1.75rem auto;
+  }
+  .modal-dialog-middle {
+       max-width: 800px;
     margin: 1.75rem auto;
   }
   .modal-dialog-scrollable {

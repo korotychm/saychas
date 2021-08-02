@@ -220,7 +220,8 @@ class AjaxController extends AbstractActionController
         if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-        //$rest = //
+        
+        
         if (null == $product  
                 or !$productPrice = (int)$product->getPrice()
                 or !$productCount = (int)$post->count
@@ -230,14 +231,11 @@ class AjaxController extends AbstractActionController
                 return new JsonModel(["error" => true,  "errorMessage" => "product price error"]);
              }
         
-             
+        /*$basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+        $basketItem->setCount($productCount);
+        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);*/
+        
         $return['totalNum'] = (int) $productPrice * $productCount; 
-        
-        /*$basket = Basket::findFirstOrDefault(['id' => 1234]);
-        $basket->setTotal(1234);
-        $basket->persist([]);*/
-        
-        
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
 
         return new JsonModel($return);

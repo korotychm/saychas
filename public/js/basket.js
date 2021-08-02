@@ -191,18 +191,14 @@ $(function(){
             success: function (data) {
                console.log(data)
                $("#ServiceModalWindow .modal-title").html("Формируем заказ");
-               $("#ServiceModalWindow #ServiceModalWraper").append(JSON.stringify(data));
+               $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
                },
             error: function (xhr, ajaxOptions, thrownError) {
                 $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
                 $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
             }
         });
-        
-        
-        
-        //$("#ServiceModalWindow #ServiceModalWraper").html("+ + + +");
-        
+          //$("#ServiceModalWindow #ServiceModalWraper").html("+ + + +");
         $("#ServiceModalWindow").modal("show");
     })
     
@@ -331,9 +327,9 @@ $(function(){
                 //console.log($("#providerblok-" + provider + " .basketrowproduct").lenght);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "");
-                $("#basket-payinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
-                
+                $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                 $("#ServiceModalWindow").modal("show");
                 
             }
         });/**/
