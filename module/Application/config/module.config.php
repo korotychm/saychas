@@ -945,6 +945,7 @@ return [
 
             /** Entities */
             \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
+            \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
 
             
         ],
