@@ -425,7 +425,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
         data: {"value": dataString},
         success: function (data) {
             if (data.result) {
-                //console.log(data);
+                console.log(data.message);
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();

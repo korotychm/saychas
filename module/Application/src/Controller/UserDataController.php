@@ -390,6 +390,7 @@ class UserDataController extends AbstractActionController {
                                 if ($response['result']) {
                                     $container->userIdentity = $userId;
                                     //$reloadPage = true;
+                                    //надо вставить получение магазинов
                                     unset($container->userAutSession);
                                     unset($container->userPhoneIdentity);
                                     return new JsonModel(["reload" => true]);
@@ -411,6 +412,7 @@ class UserDataController extends AbstractActionController {
                             } else {
                                 $container->userIdentity = $userId;
                                 //$reloadPage = true;
+                                //надо вставить получение магазинов
                                 unset($container->userAutSession);
                                 unset($container->userPhoneIdentity);
                                 return new JsonModel(["reload" => true]);
