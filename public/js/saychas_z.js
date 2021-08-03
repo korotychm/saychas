@@ -184,30 +184,6 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
     });
     
     
-    $("#basketuseradress").suggestions({
-        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-        type: "ADDRESS",
-        onSelect: function (suggestion) {
-            $("#adesserror").hide();
-            console.log(suggestion.data);
-            if (!suggestion.data.house)
-            {
-                $("#basketuseradresserror").html("Необходимо указать адрес до номера дома!").show();
-                return false;
-            }
-
-
-            //return ;
-            var dataString = JSON.stringify(suggestion);
-            $("#geodatadadata").val(dataString);
-            
-            getLegalStores(dataString, '#basketuseradresserror');
-            addUserAddrees(dataString, $("#basketuseradress").val());
-            //addUserAddrees(dataString,$("#useraddress").val());
-            //location = location.href;
-            //
-        }
-    });
     
     
     
@@ -448,7 +424,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
         cache: false,
         data: {"value": dataString},
         success: function (data) {
-            if (data == "200") {
+            if (data.result) {
                 //console.log(data);
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
@@ -458,9 +434,10 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
                    return false;
                }
             }
-
-            $(obj).html(data);
+            else {
+            $(obj).html(data.error);
             return true;
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $(obj).html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);

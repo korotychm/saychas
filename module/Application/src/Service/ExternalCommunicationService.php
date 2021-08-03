@@ -95,9 +95,14 @@ class ExternalCommunicationService
         
         //$content["delevery"]=$store;
         $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
-        unset($content['timepointtext1'], $content['timepointtext3'], $content['timepointtext3'],  $content['selfdelevery'], $content["products"]);
-        /*unset($content['userGeoLocation']);
-        $content['userGeoLocation'] = [];*/
+        unset(
+                $content['timepointtext1'], 
+                $content['timepointtext3'], 
+                $content['timepointtext3'],  
+                $content['selfdelevery'], 
+                $content["products"]);
+                /*unset($content['userGeoLocation']);
+                $content['userGeoLocation'] = [];*/
         //return $content;
         return $this->sendCurlRequest($url, $content);
     }

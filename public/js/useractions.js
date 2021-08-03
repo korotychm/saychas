@@ -20,7 +20,8 @@ function sendauthformmodal (data = false){
                 return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "");
+                $("#userAuthModalForm modal-title").html("Ошибка " + xhr.status)
+                $("#userAuthModalForm modal-body").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "");
                 $("#user-modal-cover").stop().hide();
                 return false;
             }

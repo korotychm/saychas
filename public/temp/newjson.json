@@ -1,20 +1,58 @@
 {
-    "basketuseradress": "г Москва, Волгоградский пр-кт, д 1 ",
+    "basketuseradress": "г Москва, ул Люблинская, д 1А ",
+    "cardinfo": "4276 5555 **** 1234↓",
     "paycard": "1",
     "userId": "000000004",
-    "delevery": {
-        "1": {
-            "0": {
+    "deleveryes": {
+        "selfdelivery": [{
                 "store": "00002",
                 "products": [{
                         "id": "000000000018",
-                        "count": "9",
+                        "count": "1",
                         "price": "5399100",
                         "discont": 0
                     }]
-            },
-            "selfdelevery": false
-        }
+            }, {
+                "store": "00001",
+                "products": [{
+                        "id": "000000000016",
+                        "count": "1",
+                        "price": "100000",
+                        "discont": 0
+                    }]
+            }],
+        "delivery": [[{
+                    "store": "00004",
+                    "products": [{
+                            "id": "000000000003",
+                            "count": "6",
+                            "price": "5699000",
+                            "discont": 0
+                        }]
+                }, {
+                    "store": "00003",
+                    "products": [{
+                            "id": "000000000002",
+                            "count": "1",
+                            "price": "800000",
+                            "discont": 0
+                        }, {
+                            "id": "000000000004",
+                            "count": "1",
+                            "price": "7400",
+                            "discont": 0
+                        }, {
+                            "id": "000000000005",
+                            "count": "1",
+                            "price": "7800",
+                            "discont": 0
+                        }, {
+                            "id": "000000000006",
+                            "count": "1",
+                            "price": "8300",
+                            "discont": 0
+                        }]
+                }]]
     },
     "userGeoLocation": []
 }

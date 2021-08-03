@@ -442,9 +442,9 @@ class AjaxController extends AbstractActionController
         }
         $ob = $TMP->data;
         if (!$ob->house)
-            return (StringResource::USER_ADDREES_ERROR_MESSAGE);
+        return (StringResource::USER_ADDREES_ERROR_MESSAGE);
         //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        /*$container = new Container(StringResource::SESSION_NAMESPACE);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
@@ -452,7 +452,7 @@ class AjaxController extends AbstractActionController
                 stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
         );
 
-        if (!$result) exit("1c не отвечает");
+        if (!$result) return new JsonModel(["result"=>false, "error"=>"1C не отвечает "]);
         $legalStore = Json::decode($result, true);
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
@@ -461,9 +461,39 @@ class AjaxController extends AbstractActionController
         }
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
-        //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true);
-        exit("200");
+        //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true);*/
+        $return = $this->getLegalStore($json);
+        return new JsonModel($return);
     }
+    
+    private function getLegalStore ($json)
+    {
+        
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $url = $this->config['parameters']['1c_request_links']['get_store'];
+        $result = file_get_contents(
+                $url,
+                false,
+                stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
+        );
+        if (!$result) {
+            return ["result"=>false, "error"=>"1C не отвечает "];
+        }
+    
+        $legalStore = Json::decode($result, true);
+    
+        foreach ($legalStore as $store) {
+            $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
+            if($store['time_until_closing']) $store['time_until_closing']+=time();
+            $sessionLegalStoreArray[$store['store_id']] = $store ;
+        }
+        $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
+        $container->legalStoreArray = $sessionLegalStoreArray;
+        
+        return ["result"=>true, "message"=>"Магазины получены"];
+    }
+    
+    
 
     public function ajaxAddUserAddressAction()
     {

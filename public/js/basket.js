@@ -169,6 +169,32 @@ function loadPayInfo(){
 
 
 $(function(){
+    
+    $("#basketuseradress").suggestions({
+        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+        type: "ADDRESS",
+        onSelect: function (suggestion) {
+            $("#basketuseradresserror").hide();
+            //console.log(suggestion.data);
+            if (!suggestion.data.house)
+            {
+                $("#basketuseradresserror").html("Необходимо указать адрес до номера дома!").show();
+                return false;
+            }
+           //return ;
+            var dataString = JSON.stringify(suggestion);
+            $("#geodatadadata").val(dataString);
+            
+            getLegalStores(dataString, '#basketuseradresserror');
+            addUserAddrees(dataString, $("#basketuseradress").val());
+            //addUserAddrees(dataString,$("#useraddress").val());
+            //location = location.href;
+            //
+        }
+    });
+    
+    
+    
     /**/
     $("body").on("change",".timepoint", function(){
      calculateBasketMerge ($("#user-basket-form").serialize(), true);   

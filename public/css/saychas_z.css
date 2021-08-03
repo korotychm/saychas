@@ -32,7 +32,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 #quicksearch .blok  {font-size:90%;}
 .overcoverblack {width:100%; height:100%;position:fixed; display:block; background:rgba(0,0,0,.5);z-index:600; top:0 }
-.overcoverlocal {width:100%; height:100%;position:absolute; display:block; background:rgba(255,255,255,.7);z-index:10; top:0 }
+.overcoverlocal {width:100%; height:100%;position:absolute; display:block; background:rgba(255,255,255,.7) url(/img/loader.gif) center no-repeat ; z-index:10; top:0 }
 #lefmobiletpanel  {
     position:fixed; 
     display:block; 
