@@ -443,11 +443,13 @@ class AjaxController extends AbstractActionController
         try {
             $TMP = Json::decode($json);
         } catch (LaminasJsonRuntimeException $e) {
-            exit($e->getMessage() . $TMP . "!!!");
+            return  new JsonModel(["result"=>false, "error"=> $e->getMessage()]);
         }
         $ob = $TMP->data;
-        if (!$ob->house)
-        return (StringResource::USER_ADDREES_ERROR_MESSAGE);
+        if (!$ob->house){
+            
+            return  new JsonModel(["result"=>false, "error"=> StringResource::USER_ADDREES_ERROR_MESSAGE ]);
+        }
         //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         /*$container = new Container(StringResource::SESSION_NAMESPACE);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
@@ -474,7 +476,7 @@ class AjaxController extends AbstractActionController
     private function getLegalStore ($json)
     {
         
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+       
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
@@ -492,6 +494,7 @@ class AjaxController extends AbstractActionController
             if($store['time_until_closing']) $store['time_until_closing']+=time();
             $sessionLegalStoreArray[$store['store_id']] = $store ;
         }
+        $container = new Container(StringResource::SESSION_NAMESPACE);
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
         
