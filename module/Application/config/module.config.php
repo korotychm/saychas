@@ -940,6 +940,8 @@ return [
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
             
+            \Application\Service\CommonHelperFunctionsService::class => \Application\Service\Factory\CommonHelperFunctionsServiceFactory::class,
+            
             //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
             //\Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
 

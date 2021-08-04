@@ -30,6 +30,7 @@ use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 
 use Application\Service\HtmlProviderService;
 use Application\Controller\AjaxController;
+use Application\Service\CommonHelperFunctionsService;
 
 /**
  * This is the factory for AjaxController. Its purpose is to instantiate the
@@ -62,6 +63,8 @@ class AjaxControllerFactory implements FactoryInterface
         $basketRepository = $container->get(BasketRepositoryInterface::class);
         $productImageRepository = $container->get(ProductImageRepositoryInterface::class);
         
+        $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
+        
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
         
@@ -69,7 +72,7 @@ class AjaxControllerFactory implements FactoryInterface
         
         return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, 
                 $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $userRepository, $authService,
-                $productCharacteristicRepository, $basketRepository, $productImageRepository/*, $sessionContainer*/);
+                $productCharacteristicRepository, $basketRepository, $productImageRepository/*, $sessionContainer*/, $commonHelperFuncions);
     }
 
 }

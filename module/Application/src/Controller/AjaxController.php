@@ -32,6 +32,7 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Service\HtmlProviderService;
+use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
 use Application\Adapter\Auth\UserAuthAdapter;
@@ -68,6 +69,7 @@ class AjaxController extends AbstractActionController
     private $authService;
     private $basketRepository;
     private $productImageRepository;
+    private $commonHelperFuncions;
     //private $sessionContainer;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
@@ -77,7 +79,7 @@ class AjaxController extends AbstractActionController
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository/*,
-            SessionContainer $sessionContainer*/)
+            SessionContainer $sessionContainer*/, CommonHelperFunctionsService $commonHelperFuncions)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -98,8 +100,8 @@ class AjaxController extends AbstractActionController
         $this->authService = $authService;
         $this->basketRepository = $basketRepository;
         $this->productImageRepository = $productImageRepository;
+        $this->commonHelperFuncions = $commonHelperFuncions;
 //        $this->sessionContainer = $sessionContainer;
-        
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Delivery::class);
     }
