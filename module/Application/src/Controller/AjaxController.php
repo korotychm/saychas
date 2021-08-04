@@ -35,7 +35,7 @@ use Application\Service\HtmlProviderService;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
-use Application\Adapter\Auth\UserAuthAdapter;
+//use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Authentication\AuthenticationService;
 use Application\Resource\StringResource;
 use Laminas\Json\Json;
@@ -44,7 +44,7 @@ use Laminas\Http\Response;
 use Laminas\Session\Container;// as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
-use Application\Helper\ArrayHelper;
+//use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController
