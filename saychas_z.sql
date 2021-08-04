@@ -2823,7 +2823,7 @@ CREATE TABLE `user_data` (
   `user_id` int DEFAULT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `geodata` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `fias_id` varchar(36) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `fias_level` int DEFAULT NULL,
   `time` int NOT NULL
