@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\View\Helper\Factory;
 
 use Interop\Container\ContainerInterface;
@@ -11,13 +12,13 @@ use Application\View\Helper\ImagePath;
  */
 class ImagePathFactory implements FactoryInterface
 {
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {   
+    {
         $config = $container->get('Config');
         $imagePath = $config['parameters']['image_path'];
-        
+
         return new ImagePath($imagePath);
     }
+
 }
-
-
