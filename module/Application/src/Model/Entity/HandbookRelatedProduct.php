@@ -151,7 +151,7 @@ class HandbookRelatedProduct extends Entity
      * @return int
      * @throws \Exception
      */
-    public function receiveRest()
+    public function receiveRest(array $storeIds = [])
     {
         if (!( self::$stockBalanceRepository instanceof StockBalanceRepositoryInterface )) {
             throw new \Exception('StockBalanceRepositoryInterface expected; other type given');
@@ -163,10 +163,14 @@ class HandbookRelatedProduct extends Entity
         $expression = new \Laminas\Db\Sql\Expression();
         $expression->setExpression('sum(rest)');
 
-        $result = self::$stockBalanceRepository->findAll(['where' => ['product_id' => $this->getId()], 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
+        $where = ['product_id' => $this->getId()];
+        if(count($storeIds) > 0) {
+            $where = array_merge($where, ['store_id' => $storeIds]);
+        }
+        $result = self::$stockBalanceRepository->findAll(['where' => $where, 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
 
         $current = $result->current();
-        if(null != $current) {
+        if (null != $current) {
             return $current->getRest();
         }
         return '';
