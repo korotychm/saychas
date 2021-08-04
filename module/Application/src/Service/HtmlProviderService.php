@@ -26,6 +26,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Entity\Store;
+use Application\Model\Entity\Basket;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
@@ -934,6 +935,29 @@ class HtmlProviderService
         return $return;
     }
     
+    public function basketWhatHappenedUpdate($userId, $products)
+    {
+        while (list($productId, $changes)=each($products))
+        {
+            $product_id[]=$productId;
+            $persist = false;
+            $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+            if (!empty($changes['rest'])) {
+                $basketItem->setTotal($changes['rest']); $persist = true;
+            }
+            if ($changes['price']>0) {
+                $basketItem->setPrice($changes['price']); $persist = true;
+            }
+            if($persist)
+            {
+                 $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                 $j++;
+            } /**/
+            
+        }   
+        return "обновлено товаров - $j";
+        //return $product_id;
+    }
     
     public function basketData($basket)
     {
@@ -959,6 +983,7 @@ class HtmlProviderService
                 
                 $count = $b->total;
                 if ($count > $rest) {
+                  
                    $whatHappened[$pId]['oldrest']=$count; 
                    $whatHappened[$pId]['rest'] = $rest; 
                     

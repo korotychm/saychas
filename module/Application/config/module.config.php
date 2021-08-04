@@ -792,7 +792,18 @@ return [
                     ],
                 ],
             ],
-            //basketOrderMergeAction
+            
+            'ajax-basket-changed' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-basket-changed',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxBasketChanged',
+                    ],
+                ],
+            ],
+            
             'ajax-basket-order-merge'=> [
                 'type'    => Literal::class,
                 'options' => [

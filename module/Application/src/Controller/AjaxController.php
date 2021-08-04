@@ -117,6 +117,24 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
      }
     
+    public function ajaxBasketChangedAction()
+    {
+        //exit("banzaiii!!!");
+        //$userId = $this->id
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $userId = $container->userIdentity;
+        $whatHappened = $container->whatHappened;
+        if (!empty($whatHappened)) {
+            $return = ["result"=>true, "products"=>$whatHappened];
+            $return ['updated'] = $this->htmlProvider->basketWhatHappenedUpdate($userId, $whatHappened); 
+        }
+        else {
+            $return = ["result"=>false];
+        }
+        return new JsonModel($return);        
+        
+    }
+     
     public function addToBasketAction()
     {
         $return = ["error" => true, "count" => 0];
@@ -142,7 +160,7 @@ class AjaxController extends AbstractActionController
                 $basketItem->setPrice($productaddPrice);
                 //$basketItemTotal = 0;
                 $basketItem->setTotal($basketItemTotal+1);
-                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);
+                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId,  'order_id' => "0"]);
                 //$this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
             }
 
@@ -238,7 +256,7 @@ class AjaxController extends AbstractActionController
         
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
         $basketItem->setTotal($productCount);
-        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);
+        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
                 
         
         $return['totalNum'] = (int) $productPrice * $productCount; 
