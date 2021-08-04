@@ -141,6 +141,34 @@ function calculateBasketPayCard ()
     
 }
 
+ function whatHappened (){
+        $.ajax({
+            beforeSend : function (){ 
+                },
+            url: "/ajax-basket-changed",
+            type: 'POST',
+            cache: false,
+            
+            success: function (data) {
+                if (data.result) {
+                    $("#ServiceModalWindow .modal-title").html("Кое-что изменилось!" );
+                    $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data.products));
+                    $("#ServiceModalWindow").modal("show");
+                    
+                }
+                return false
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                $("#ServiceModalWindow").modal("show");
+                
+            }
+        });
+    }
+
+
+
 function loadPayInfo(){
     var dataString = $("#user-basket-form").serialize();
     $.ajax({
@@ -169,6 +197,7 @@ function loadPayInfo(){
 
 
 $(function(){
+    whatHappened();
     
     $("#basketuseradress").suggestions({
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",

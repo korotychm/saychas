@@ -131,6 +131,7 @@ class AjaxController extends AbstractActionController
         else {
             $return = ["result"=>false];
         }
+        unset($container->whatHappened);
         return new JsonModel($return);        
         
     }

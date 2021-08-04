@@ -173,7 +173,7 @@ class HandbookRelatedProduct extends Entity
         if (null != $current) {
             return $current->getRest();
         }
-        return '';
+        return 0;
     }
 
     /**
