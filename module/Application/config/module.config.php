@@ -978,10 +978,25 @@ return [
         'strategies' => ['ViewJsonStrategy',],
     ],
     'view_helpers' => [
-      'invokables' => [
-         'catalog' => \Application\View\Helper\CatalogHelper::class,
-      ],
-    ],
+        'invokables' => [
+           'catalog' => \Application\View\Helper\CatalogHelper::class,
+        ],
+        'factories' => [
+            View\Helper\ImagePath::class => View\Helper\Factory\ImagePathFactory::class,
+        ],
+        'aliases' => [
+            'imagePath' => View\Helper\ImagePath::class,
+        ],
+  ],
+//    'view_helpers' => [
+//        'factories' => [
+//            View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
+//        ],
+//        'aliases' => [
+//            'access' => View\Helper\Access::class,
+//        ],
+//    ],
+    
     'parameters' => [
         '1c_auth' => [
             'username' => 'administrator',
@@ -999,6 +1014,14 @@ return [
             //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
             
+        ],
+        'image_path' => [
+            'base_url' => '/image',
+            'subpath' => [
+                'brand' => 'brand',
+                'product' => 'product',
+                'provider' => 'provider',
+            ],
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [
