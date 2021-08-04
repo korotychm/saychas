@@ -208,7 +208,7 @@ $(function(){
          var dataString = $("#user-basket-form").serialize();        
          $.ajax({
             beforeSend : function (){ 
-                 $("#ServiceModalWindow .modal-title").html("Отправка данных");
+                 $("#ServiceModalWindow .modal-title").html("Отправка данных о заказе");
                  $("#ServiceModalWindow #ServiceModalWraper").html("....");
                 },
             url: "/send-basket-data",
