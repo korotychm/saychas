@@ -68,6 +68,8 @@ class UserDataController extends AbstractActionController {
      * @var Laminas\Log\Logger
      */
     private $logger;
+    
+    private $commonHelperFuncions;
 
 //    private SessionManager $sessionManager;
 //    private ServiceManager $serviceManager;
@@ -81,7 +83,7 @@ class UserDataController extends AbstractActionController {
      */
     public function __construct(
             UserRepository $userRepository,
-            /* $config, */ $authService, /* $db, */ /* $userAdapter, */ $externalCommunicationService/* , $sessionContainer */) {
+            /* $config, */ $authService, /* $db, */ /* $userAdapter, */ $externalCommunicationService/* , $sessionContainer */, $commonHelperFunctions) {
         $this->userRepository = $userRepository;
 //        $this->config = $config;
         $this->authService = $authService;
@@ -90,6 +92,8 @@ class UserDataController extends AbstractActionController {
 //        $this->db = $db;
 //        $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
+        
+        $this->commonHelperFuncions = $commonHelperFunctions;
 
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
@@ -312,7 +316,7 @@ class UserDataController extends AbstractActionController {
             unset($container->userAutTmpSession);
             unset($container->userPhoneIdentity);
         } else {
-            $print_r = $post;
+            //$print_r = $post;
             $return['phone'] = $post->userPhone;
             $return['name'] = $post->userNameInput;
             $code = $post->userSmsCode;
@@ -334,7 +338,12 @@ class UserDataController extends AbstractActionController {
                 
                 if ($user and $userSuperId and $userId = $user->getId()) {
                     
-                    
+                $userData = $user->getUserData();
+                $usdat = $userData->current();
+                if (null != $usdat) {
+                  $print_r =  $userGeodata = $usdat->getGeoData();
+            //exit ($userGeodata);
+                 }
                     if ($post->forgetPassHidden) {
 
                        // exit (print_r($user));
@@ -406,7 +415,8 @@ class UserDataController extends AbstractActionController {
                         $passBlock = true;
                         $title = StringResource::USER_LABLE_HELLO . $user->getName();
                         if ($post->userPass) {
-                            $print_r = $response = $this->externalCommunicationService->clientLogin([
+                            //$print_r = 
+                            $response = $this->externalCommunicationService->clientLogin([
                                 "phone" => StringHelper::phoneToNum($return['phone']),
                                 "password" => $post->userPass,
                             ]);
@@ -432,11 +442,12 @@ class UserDataController extends AbstractActionController {
                     $codeExist = $userPhoneIdentity['code'];
                     if (!$codeExist) {
 
-                        $print_r = $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
+                        //$print_r = 
+                      $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                         if (!$codeSendAnswer['result']) {
                             $error['sms'] = StringResource::ERROR_SEND_SMS_MESSAGE;
                         } else {
-                            $print_r = $codeExist;
+                          //  $print_r = $codeExist;
                         }
                     } else {
 
@@ -487,11 +498,13 @@ class UserDataController extends AbstractActionController {
 
                                 $error["1c"] = $answer['id'] . "!!!";
                                 $userId = $container->userIdentity;
-                                $print_r = $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
+                                //$print_r = 
+                                $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
                                 $newUser->setId($container->userIdentity);
                                 $newUser->setName($userName);
                                 $newUser->setUserId($answer['id']);
-                                $print_r = $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
+                                //$print_r = 
+                                $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
                                 $this->userRepository->persist($newUser, ['id' => $userId]);
 
                                 unset($container->userAutSession);
@@ -507,7 +520,7 @@ class UserDataController extends AbstractActionController {
         $container->userAutTmpSession = $userAutSession;
         $view = new ViewModel([
             //'reloadPage' => $reloadPage,
-            //'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
+            'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
             'title' => $title,
             'buttonLable' => $buttonLable,
             'error' => $error,

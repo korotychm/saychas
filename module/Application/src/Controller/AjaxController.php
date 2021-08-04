@@ -471,11 +471,13 @@ class AjaxController extends AbstractActionController
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
         //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true);*/
-        $return = $this->getLegalStore($json);
+        // $return = $this->getLegalStore($json);
+        
+        $return = $this->commonHelperFuncions->updateLegalStores($json);
         return new JsonModel($return);
     }
     
-    private function getLegalStore ($json)
+    /*private function getLegalStore ($json)
     {
         
        
@@ -501,7 +503,7 @@ class AjaxController extends AbstractActionController
         $container->legalStoreArray = $sessionLegalStoreArray;
         
         return ["result"=>true, "message"=>"Магазины получены"];
-    }
+    }*/
     
     
 
