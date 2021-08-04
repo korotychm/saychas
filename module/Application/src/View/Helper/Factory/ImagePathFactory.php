@@ -7,7 +7,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\View\Helper\ImagePath;
 
 /**
- * This is the factory for Access view helper. Its purpose is to instantiate the helper
+ * This is the factory for ImagePath view helper. Its purpose is to instantiate the helper
  * and inject dependencies into its constructor.
  */
 class ImagePathFactory implements FactoryInterface
