@@ -328,78 +328,81 @@ class UserDataController extends AbstractActionController {
                 $stepOne = true;
                 
                 $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
-                
-                
                 //$print_r = 
                 $userSuperId = $user->getUserId();
                 
                 
                 if ($user and $userSuperId and $userId = $user->getId()) {
+                    
+                    
                     if ($post->forgetPassHidden) {
 
-                        exit (print_r($user));
-                        $userAutSession["passforget"] = 1;
-                        $title = StringResource::MESSAGE_PASSFORGOT_TITLE;
-                        $CodeBlock = true;
-                        $passForgetBlock = true;
-                        $registerPossible = true;
-                        $userSmsCode = $post->userSmsCode;
-                        $forgetPassInput = ($post->forgetPassInput == null) ? "" : $post->forgetPassInput;
-                        $forgetPassInput2 = $post->forgetPassInput2;
+                       // exit (print_r($user));
+                                $userAutSession["passforget"] = 1;
+                                $title = StringResource::MESSAGE_PASSFORGOT_TITLE;
+                                $CodeBlock = true;
+                                $passForgetBlock = true;
+                                $registerPossible = true;
+                                $userSmsCode = $post->userSmsCode;
+                                $forgetPassInput = ($post->forgetPassInput == null) ? "" : $post->forgetPassInput;
+                                $forgetPassInput2 = $post->forgetPassInput2;
 
-                        $buttonLable = StringResource::BUTTON_LABLE_PASS_CHANGE;
-                        $userPhoneIdentity = $container->userPhoneIdentity;
-                        $codeExist = $userPhoneIdentity['code'];
+                                $buttonLable = StringResource::BUTTON_LABLE_PASS_CHANGE;
+                                $userPhoneIdentity = $container->userPhoneIdentity;
+                                $codeExist = $userPhoneIdentity['code'];
 
-                        if (!$codeExist) {
-                            $print_r = $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
-                            if (!$codeSendAnswer['result']) {
-                                $error['sms'] = StringResource::ERROR_SEND_SMS_MESSAGE;
-                            } else {
-                                //$print_r = $codeExist;
-                            }
-                        } else {
-                            
-                            if ($userSmsCode and ($userSmsCode != $codeExist)) {
-                                $registerPossible = false;
-                                unset($userAutSession['smscode']);
-                                $error['smscode'] = StringResource::ERROR_SEND_SMS_CODE_MESSAGE;
-                            } else {
-                                $userAutSession['smscode'] = $userSmsCode;
-                            }
+                                if (!$codeExist) {
+                                        $print_r = $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
+                                        if (!$codeSendAnswer['result']) {
+                                            $error['sms'] = StringResource::ERROR_SEND_SMS_MESSAGE;
+                                        } else {
+                                            //$print_r = $codeExist;
+                                        }
+                                } 
+                                else 
+                                {
 
-                            //if (isset($post->forgetPassInput)) {
-                                if (!$forgetPassInput or!$this->testPassw($forgetPassInput)) {
-                                    $registerPossible = false;
-                                    unset($userAutSession['newpassword']);
-                                    if (isset($post->forgetPassInput)) {$error['newpassword'] = StringResource::ERROR_PASS_VALIDATION_MESSAGE;}
-                                } else {
-                                    $userAutSession['newpassword'] = $forgetPassInput;
-                                }
-                            //}
-                            if ($forgetPassInput and ($forgetPassInput != $forgetPassInput2)) {
-                                $registerPossible = false;
-                                //unset($userAutSession['newpassword2']);
-                                $error['newpassword2'] = StringResource::ERROR_PASS_SECOND_MESSAGE;
-                            } else {
-                                $userAutSession['newpassword2'] = $forgetPassInput2;
-                            }
-                            if ($registerPossible) {
-                                $req = ["id" => $userSuperId, "password" => $forgetPassInput];
-                                $response = $this->externalCommunicationService->sendCredentials($req);
-                                if ($response['result']) {
-                                    $container->userIdentity = $userId;
-                                    //$reloadPage = true;
-                                    //надо вставить получение магазинов
-                                    unset($container->userAutSession);
-                                    unset($container->userPhoneIdentity);
-                                    return new JsonModel(["reload" => true]);
-                                } else {
-                                    $error["1c"] = $answer['errorDescription'] . "!";
-                                }
-                            }
+                                        if ($userSmsCode and ($userSmsCode != $codeExist)) {
+                                            $registerPossible = false;
+                                            unset($userAutSession['smscode']);
+                                            $error['smscode'] = StringResource::ERROR_SEND_SMS_CODE_MESSAGE;
+                                        } else {
+                                            $userAutSession['smscode'] = $userSmsCode;
+                                        }
+
+                                        //if (isset($post->forgetPassInput)) {
+                                            if (!$forgetPassInput or!$this->testPassw($forgetPassInput)) {
+                                                $registerPossible = false;
+                                                unset($userAutSession['newpassword']);
+                                                if (isset($post->forgetPassInput)) {$error['newpassword'] = StringResource::ERROR_PASS_VALIDATION_MESSAGE;}
+                                            } else {
+                                                $userAutSession['newpassword'] = $forgetPassInput;
+                                            }
+                                        //}
+                                        if ($forgetPassInput and ($forgetPassInput != $forgetPassInput2)) {
+                                            $registerPossible = false;
+                                            //unset($userAutSession['newpassword2']);
+                                            $error['newpassword2'] = StringResource::ERROR_PASS_SECOND_MESSAGE;
+                                        } else {
+                                            $userAutSession['newpassword2'] = $forgetPassInput2;
+                                        }
+                                        if ($registerPossible) {
+                                            $req = ["id" => $userSuperId, "password" => $forgetPassInput];
+                                            $response = $this->externalCommunicationService->sendCredentials($req);
+                                            if ($response['result']) {
+                                                $container->userIdentity = $userId;
+                                                //$reloadPage = true;
+                                                //надо вставить получение магазинов
+                                                unset($container->userAutSession);
+                                                unset($container->userPhoneIdentity);
+                                                return new JsonModel(["reload" => true]);
+                                            } else {
+                                                $error["1c"] = $answer['errorDescription'] . "!";
+                                            }
+                                    }
                         }
-                    } else {
+                    } 
+                    else {
                         $passBlock = true;
                         $title = StringResource::USER_LABLE_HELLO . $user->getName();
                         if ($post->userPass) {
