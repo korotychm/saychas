@@ -10,6 +10,7 @@ use ControlPanel\Service\HtmlContentProvider;
 use ControlPanel\Service\RbacManager;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 
@@ -154,6 +155,9 @@ class IndexController extends AbstractActionController
     public function profileAction()
     {
         $this->assertLoggedIn();
+//        if(!$this->authService->hasIdentity()) {
+//            return new JsonModel(['data' => false]);
+//        }
         return (new ViewModel())->setTerminal(true);
     }
     
@@ -209,14 +213,17 @@ class IndexController extends AbstractActionController
      */
     private function assertLoggedIn()
     {
+        if(!$this->authService->hasIdentity()) {
+            return new JsonModel(['data' => false]);
+        }
 //        $identity = $this->authService->getIdentity();
-        $hasIdentity = $this->authService->hasIdentity();
+//        $hasIdentity = $this->authService->hasIdentity();
 //        $identity2 = $this->identity();
         //if(!isset($this->sessionContainer->partnerLoggedIn)){
-        if(!$hasIdentity) {
-            echo 'null';
-            exit;
-        }
+//        if(!$hasIdentity) {
+//            echo 'null';
+//            exit;
+//        }
     }
 
 }

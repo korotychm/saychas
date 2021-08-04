@@ -70,7 +70,7 @@ class Module implements ConfigProviderInterface
             if(!$hasIdentity) {
                 $request = $event->getApplication()->getRequest();
                 if($request->isXmlHttpRequest()) {
-                    $data = Json::encode(['data' => false]);//  json_encode(['data' => false]); // 
+                    $data = Json::encode(['data' => true]);//  json_encode(['data' => false]); // 
                     return $controller->redirect()->toUrl('/control-panel/login?data='.$data);
                 }
 //                $controller->layout()->setTemplate('layout/control-panel-auth');
