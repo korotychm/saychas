@@ -1153,3 +1153,5 @@ var(--gray-light*/
 } 
 .propdel {background-position:0 -16px; color:#999}
 .proptotop {background-position:0 -32px; color:#999}
+#useradresslist  li:first-child strong {color:var(--red);}
+#useradresslist  li {margin-bottom:16px;}

@@ -69,7 +69,7 @@ foreach ($param as $provider):
         </div>
         <div  class='basketcol selfdelevery'>
             <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' id='selfdeleveryonoff-<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
-            <input type='checkbox' class="none selfdeleverycheckbox" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_id']?>' name='selfdelevery[]' >
+            <input type='checkbox' class="none selfdeleverycheckbox" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_store_id']?>' name='selfdelevery[]' >
             <span class='blok gray none' id="provider_addressappend<?=$provider['provider_id']?>">
         <?=($provider['provider_store'])?"<b class='blok'>".$provider['provider_store']."</b>":""?>
         <?php echo $provider['provider_addressappend']?>

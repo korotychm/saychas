@@ -810,7 +810,7 @@ class HtmlProviderService
         if ($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery)) {
             foreach ($selfdelevery as $providerinfo) {
                 //$provider = $this->storeReposi
-                $stores = Store::findAll(['where' => ['provider_id' => $providerinfo]]);
+                $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
                 $store = $stores->current();
                 //$address = explode(",", $store->getAddress());/**/
 
@@ -1079,6 +1079,7 @@ class HtmlProviderService
                     $provider_address = $store->getAddress() . $ifostore1c;
                     $provider_address .= ($store->getDescription()) ? ", " . $store->getDescription() : "";
                     $provider_store = $store->getTitle();
+                    $provider_store_id = $store->getId();
                     $provider_addressappend = StringHelper::cutAddress($provider_address);
                     $countprovider++;
                 } else {
@@ -1116,6 +1117,7 @@ class HtmlProviderService
                 "provider_worktime" => $provider_worktime,
                 "provider_timeclose" => "",
                 "provider_store" => $provider_store,
+                "provider_store_id" => $provider_store_id,
                 "provider_store_off" => $provider_store_off,
                 "products" => $prod,
                 "infostore1c" => $infostore1c,

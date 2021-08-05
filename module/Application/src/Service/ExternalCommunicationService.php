@@ -99,7 +99,7 @@ class ExternalCommunicationService
                 $content['timepointtext1'], 
                 $content['timepointtext3'], 
                 $content['timepointtext3'],  
-                $content['selfdelevery'], 
+               // $content['selfdelevery'], 
                 $content["products"]);
                 /*unset($content['userGeoLocation']);
                 $content['userGeoLocation'] = [];*/

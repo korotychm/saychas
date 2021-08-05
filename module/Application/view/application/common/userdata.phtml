@@ -3,9 +3,11 @@
 <?php
    ///$content.="<li>пароль: {$user->getPassword()}</li>";
         if(count($userData)){//$uesrId = $user->getId();
-            $content.="<ol>Адреса:"; 
+            $content.="<ol id=useradresslist >Адреса:"; 
             foreach($userData as $ud) {
-                $content.="<li id='useradress-{$ud->getId()}'><strong>{$ud->getAddress()}</strong>";
+                $content.="<li id='useradress-{$ud->getId()}'>"
+                . "<strong>{$ud->getAddress()}</strong>"
+                . "";
                 
                 if($j) {
                     $content.="<span class='blok'>";
@@ -17,7 +19,8 @@
                     $content.="<span class='blok gray mini'>Используется по-умолчанию</span>";
                 }
                 
-                $content.="<span class='blok mini gray'>{$ud->receiveTimestamp()}</span>"
+                $content.=""
+                        //. "<span class='blok mini gray'>{$ud->receiveTimestamp()}</span>"
                         . "</li>";
             }
             $content.="</ol>"; 
