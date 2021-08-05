@@ -2,6 +2,7 @@
 <html lang="ru">
     <head>
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <meta charset="utf-8">
         <?= $this->headTitle('Saychas.ru')->setSeparator(' - ')->setAutoEscape(false) ?>
         <?=
@@ -41,6 +42,30 @@
         ?>
     </head>
     <body>
+        <div id="app" class="apps">
+          {{ message }}
+        </div>
+        <div id="app-2">
+          <span v-bind:title="message">
+            Наведи на меня курсор на пару секунд,
+            чтобы увидеть динамически связанное значение title!
+          </span>
+        </div>
+        
+        <script>
+            var app = new Vue({
+              el: '.apps',
+              data: {
+                message: 'Привет, Vue!'
+              }
+            });
+            var app2 = new Vue({
+              el: '#app-2',
+              data: {
+                message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
+              }
+            });
+        </script>
         <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
         <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>  
         <div class="overcover"></div>
