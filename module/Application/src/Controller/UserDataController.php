@@ -356,7 +356,7 @@ class UserDataController extends AbstractActionController
                     $userData = $user->getUserData();
                     $usdat = $userData->current();
                     if (null != $usdat) {
-                        $print_r = $userGeodata = $usdat->getGeoData();
+                        $print_r = $userGeodata = $usdat->getGeodata();
                         //exit ($userGeodata);
                     }
                     if ($post->forgetPassHidden) {

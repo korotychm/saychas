@@ -111,13 +111,68 @@ class AjaxController extends AbstractActionController
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
         $return['productId'] = $productId = $post->productId;
+        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $basketItem = Basket::remove(['where' => ['user_id' => $userId, 'product_id' => $productId] ]);
         return new JsonModel($return);
      }
-    
-    public function ajaxBasketChangedAction()
+     public function ajaxUserDeleteAddressAction()
+     {
+         //$return["error"] = true;
+         $post = $this->getRequest()->getPost();
+         $container = new Container(StringResource::SESSION_NAMESPACE);
+         $return['userId'] = $userId = $container->userIdentity;
+         if (empty( $userId )) {
+             header('HTTP/1.1 403 Forbidden');
+             exit;
+         } 
+         $return['reload'] =  $post->reload;
+         $return['dataId'] = $post->dataId;
+         $remove = UserData::remove(['where' => ['user_id' => $userId, 'id' => $return['dataId'] ] ]);
+         $return['removeresult']  = $remove->count();
+         
+         
+         return new JsonModel($return);
+     }
+//
+     public function ajaxUserSetDefaultAddressAction()
+     {
+         //$return["error"] = true;
+         $post = $this->getRequest()->getPost();
+         $container = new Container(StringResource::SESSION_NAMESPACE);
+         $return['userId'] = $userId = $container->userIdentity;
+         if (empty( $userId )) {
+             header('HTTP/1.1 403 Forbidden');
+             exit;
+         } 
+         $return['reload'] = true; // $post->reload;
+         $return['dataId'] = $post->dataId;
+         //return new JsonModel($return);
+         
+        // $return['dataId'] = 16; 
+        // $userId = 50;
+         
+         $userData = UserData::findAll(['where' => ['user_id' => $userId, 'id' => $return['dataId'] ] ])->current();
+         if (null == $userData )  
+         {
+             $return['error'] = "adress not found";
+             return new JsonModel($return);
+         }   
+         //$userData = UserData::findAll(['where' => ['user_id' => 50, 'id' => 15 ] ])->current();
+         
+         $userGeoData =  $userData->getGeodata();
+         
+         $userData->setId($return['dataId']);
+         $userData->setTime(time());
+         $userData->persist(['user_id' => $userId, 'id' => $return['dataId'] ]);
+         
+         $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userGeoData);
+         //$return['removeresult']  = $remove->count();
+         return new JsonModel($return);
+     }
+
+     public function ajaxBasketChangedAction()
     {
         //exit("banzaiii!!!");
         //$userId = $this->id

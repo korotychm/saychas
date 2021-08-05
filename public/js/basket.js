@@ -10,6 +10,17 @@ function setTimepointText(loadinfo=false){
     if (loadinfo) loadPayInfo();
 }
 //ajax/calculate-basket-item
+
+function calculateProductTotal() {
+    
+    var total = 0;        
+    $(".poroductcounme.zach").each(function(index){
+                total += ($("#countprhidden-" + $(this).attr("rel")).val())*1
+            });
+//console.log ("всего товаров:" + total )    ;
+    return total;
+}
+
 function calculateBasketHeader (productId)
 {
     var totalshops = 0,  totalproduct = 0; 
@@ -43,23 +54,25 @@ function calculateBasketHeader (productId)
             $("#providerblok-" + rel).removeClass("goself");
             $("#provider_addressappend" + rel).hide();
             $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
-          
+      
           
       }
+     
       //console.log(id + ":" +products );
-      
     })
-    
+    var totalproductcount = calculateProductTotal()    ;
     var h1 = "";
     if (totalproduct < 1) h1 ="Товары не выбраны";
     else {
+        
         if (totalproduct == 1 ) h1 = totalproduct + " позиция ";
         else if (totalproduct > 1 &&  totalproduct < 5 ) h1 = totalproduct + " позиции ";
         else h1 = totalproduct + " позиций ";
         if (totalshops == 1) h1 += " из " + totalshops + " магазина ";
         else h1 += " из " + totalshops + " магазинов ";
+        h1 += "<span calss='blok gray mini' >(всего товаров выбрано: "+ totalproductcount +")</span>";
     }
-    $("#h1title").text(h1);//console.log("Магазинов" + totalshops + "; продуктов " + totalproduct );
+    $("#h1title").html(h1);//console.log("Магазинов" + totalshops + "; продуктов " + totalproduct );
 }
 
 function calculateBasketItem (productId)
@@ -159,7 +172,7 @@ function calculateBasketPayCard ()
                 return false
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
+                $("#ServiceModalWindow .modal-title").html("Ошибка whatHappened" +  xhr.status );
                 $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
                 $("#ServiceModalWindow").modal("show");
                 
@@ -250,7 +263,7 @@ $(function(){
                $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
                },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
+                $("#ServiceModalWindow .modal-title").html("Ошибка sendbasketbutton " +  xhr.status );
                 $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
             }
         });
@@ -383,7 +396,7 @@ $(function(){
                 //console.log($("#providerblok-" + provider + " .basketrowproduct").lenght);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("#ServiceModalWindow .modal-title").html("Ошибка" +  xhr.status );
+                $("#ServiceModalWindow .modal-title").html("Ошибка deleteproduct" +  xhr.status );
                 $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
                  $("#ServiceModalWindow").modal("show");
                 

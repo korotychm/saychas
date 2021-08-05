@@ -732,19 +732,42 @@ class HtmlProviderService
           ->getAddress()
           ->getGeodata(); */
         $container = new Container(StringResource::SESSION_NAMESPACE);
-
         $username = $user->getName();
         $userData = $user->getUserData();
-
         $usdat = $userData->current();
+
         if (null != $usdat) {
             $userAddress = $usdat->getAddress(); //$container->userAddress;
             $userGeodata = $usdat->getGeoData();
             //exit ($userGeodata);
+            
+            $i=0;  //индекс для лимита вывода адресов!
+            foreach ($userData as $adress) {
+                $adressId = $adress->getId();
+                $adressText = $adress->getAddress();
+                $altmenu[] = "<span class='menuitem pointer setuseraddress' rel='$adressId' >$adressText</span>";
+                $i++; if($i == 5) break;
+            }
+            //unset($altmenu[0]);
+            if (!empty($altmenu))  {
+                $hasalt = " hasalt ";
+                $altmenu[] = "<span class='menuitem pointer open-user-address-form red'  >Ввести адрес</span>";
+                //<span class="strelka"></span>
+                $altcontent = 
+                '<div class="altcontentview">
+                          
+                          <div class="blok ">'
+                        .join("",$altmenu)
+                          .'</div>
+                 </div>         ';
+            }
         }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        return "<span>$userAddress</span>"
-                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea>"
+        
+        return "<span class='blok relative $hasalt useraddressalt' >"
+                . "$altcontent"
+                . "<span>$userAddress</span>"
+                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea></span>"
         //. "<h1></h1>"
         //
         //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
@@ -978,6 +1001,7 @@ class HtmlProviderService
                 $count = $b->total;
                 $productStore = $productProvider->recieveStoresInList($legalStore);
                 $productAvailable = (null != $productStore);
+                unset($productStoreId);
 
                 if ($rest) {
                     $availblechek[$productProviderId] = true;
@@ -985,20 +1009,22 @@ class HtmlProviderService
 
 
                 if ($productAvailable) {
-                        if ($oldprice != $price) {
-                            $whatHappened[$pId]['oldprice'] = $oldprice;
-                            $whatHappened[$pId]['price'] = $price;
-                        }
-                        if ($count > $rest) {
 
-                            $whatHappened[$pId]['oldrest'] = $count;
-                            $whatHappened[$pId]['rest'] = $rest;
+                    $productStoreId = $productStore->getId();
+                    if ($oldprice != $price) {
+                        $whatHappened[$pId]['oldprice'] = $oldprice;
+                        $whatHappened[$pId]['price'] = $price;
+                    }
+                    if ($count > $rest) {
 
-                            $count = $rest;
-                        }
-                        if ($count == 0 and 0 < $rest) {
-                            $whatHappened[$pId]['instock'] = $rest;
-                        }
+                        $whatHappened[$pId]['oldrest'] = $count;
+                        $whatHappened[$pId]['rest'] = $rest;
+
+                        $count = $rest;
+                    }
+                    if ($count == 0 and 0 < $rest) {
+                        $whatHappened[$pId]['instock'] = $rest;
+                    }
                 }//if ($rest) $countproducts +=$count ;
                 if ($rest) {
                     $countproducts++;
@@ -1015,6 +1041,7 @@ class HtmlProviderService
                     // 'availble' => '1',
                     'availble' => $rest,
                     'count' => $count,
+                    'store' => $productStoreId,
                 ];
             }
             if ($whatHappened)

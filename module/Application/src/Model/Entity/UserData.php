@@ -29,7 +29,7 @@ class UserData extends Entity
     /**
      * @var int
      */
-//    protected $id;
+    protected $id;
 
     /**
      * @var int
@@ -79,21 +79,20 @@ class UserData extends Entity
      * @param int $id
      * @return $this
      */
-//    public function setId($id)
-//    {
-//        $this->id = $id;
-//        return $this;
-//    }
-
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
     /**
      * Get id.
      *
      * @return type
      */
-//    public function getId()
-//    {
-//        return $this->id;
-//    }
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set user_id.

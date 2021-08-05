@@ -17,9 +17,10 @@ function sendfilterform() {
                 //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-               $("#ServiceModalWindow .modal-title").html("Ошибка " +  xhr.status );
+               if(xhr.status != 0 ){ $("#ServiceModalWindow .modal-title").html("Ошибка " +  xhr.status );
                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
                $("#ServiceModalWindow").modal("show");
+                }
             }
         });
     }
@@ -137,6 +138,34 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
         $("#searchpanel").stop().css({top: "-200px"});
         $("#uadress").show();
     })
+    
+        $(".setuseraddress").click(function () {
+        var rel = $(this).attr("rel");
+        $.ajax({
+            beforeSend: function () {},
+            url: "/user-set-default-address",
+            type: 'POST',
+            cache: false,
+            data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
+            success: function (data) {
+                //console.log(data);
+                //if(data.result == 1) 
+                //    $("#useradress-" + rel ).fadeOut();                  
+                location = location.href;
+                return false;
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            if(xhr.status != 0 ){    
+                $("#ServiceModalWindow .modal-title").html("Ошибка setuseraddress " + xhr.status);
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                $("#ServiceModalWindow").modal("show");
+            }
+                return false;
+            }
+        });
+    return false;
+    });
+    
     $(".open-user-address-form").click(function () {
         $("#searchpanel").stop().animate({top: "0px"});
         $("#uadress").hide();

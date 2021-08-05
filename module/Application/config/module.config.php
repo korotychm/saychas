@@ -792,6 +792,26 @@ return [
                     ],
                 ],
             ],
+            'user-delete-address' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/user-delete-address',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxUserDeleteAddress',
+                    ],
+                ],
+            ],
+            'user-set-default-address' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/user-set-default-address',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxUserSetDefaultAddress',
+                    ],
+                ],
+            ],
             
             'ajax-basket-changed' => [
                 'type'    => Literal::class,
@@ -803,6 +823,7 @@ return [
                     ],
                 ],
             ],
+            
             
             'ajax-basket-order-merge'=> [
                 'type'    => Literal::class,

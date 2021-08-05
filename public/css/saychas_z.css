@@ -632,6 +632,21 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     position:absolute;
     top:-12px; left:50%; margin-left:4px;
 }    
+.useraddressalt {border-bottom: none !important; }
+.useraddressalt .altcontentview {
+    text-decoration:none; 
+    border-bottom: none !important; 
+    width:auto;
+    left:-16px;;  
+    margin-top:-32px
+}
+.useraddressalt .altcontentview  .menuitem {
+    display:block; 
+    border: none !important; 
+    margin:8px 0 ;
+    
+}
+
 .menu-item {display:block}
 .delevery-item.menu-item, .menu-item {margin:8px 0; min-height:16px}
 
@@ -1125,3 +1140,16 @@ var(--gray-light*/
     transition: 1; opacity:1
 }
 .borderredhalf.right .lableinfo:before, .borderredhalf.left .lableinfo:before {transition: 3; opacity:1} 
+
+.properties {
+    display:inline-block; 
+    background:url('/img/propert.png') no-repeat; 
+    height:16px; 
+    margin-right:10px; 
+    padding-left:19px; color:#666; 
+    text-shadow:1px 1px rgba(255,255,255,0.3); 
+    cursor:pointer;
+    font-size:.8rem;   
+} 
+.propdel {background-position:0 -16px; color:#999}
+.proptotop {background-position:0 -32px; color:#999}
