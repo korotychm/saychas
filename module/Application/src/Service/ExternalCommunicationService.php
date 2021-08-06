@@ -44,7 +44,7 @@ class ExternalCommunicationService
         ];
         return $this->sendCurlRequest($url, $content);
     }
-    
+
     public function sendBasketData($content)
     {
         $url = $this->config['parameters']['1c_request_links']['create_order'];
@@ -60,53 +60,45 @@ class ExternalCommunicationService
             ];
             //$coontent["delevery"][] = $store[$value['store']];
         }
-        $limit = ($content["ordermerge"]) ? 1 : 4;
-        $i = 1;
-        $j = 0;
-        $q = -1;
+        //(надо вынести в resource)
+        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
         
+        $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
+        $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
+        //$q = -1;
         while (list($key, $val) = each($store)) {
             $i++;
             //$selfdelevery = false;
-            
             if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
-               
-                $selfdeliv[]=["store" => $key,  "products" => $val];
-                
-               }
-               else {
+
+                $selfdeliv[] = ["store" => $key, "products" => $val];
+            } else {
                 if ($i < $limit) {
                     $i = 1;
                     $j++;
-                    
                 }
-                $delevery[$j][] = ["store" => $key,  "products" => $val];
-                
-            
-                }
-        }     
-        
-        if (!empty($delevery)) {            
-         while (list($key, $val) =each($delevery)) $deliv[]= $val; 
+                $delevery[$j][] = ["store" => $key, "products" => $val];
+            }
         }
-                
-        $content["deleveryes"] = ["selfdelivery"=>$selfdeliv, 'delivery'=> $deliv];
-        
-        
+
+        if (!empty($delevery)) {
+            while (list($key, $val) = each($delevery))
+                $deliv[] = $val;
+        }
+        $content["deleveryes"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
         //$content["delevery"]=$store;
         $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
         unset(
-                $content['timepointtext1'], 
-                $content['timepointtext3'], 
-                $content['timepointtext3'],  
-               // $content['selfdelevery'], 
+                $content['timepointtext1'],
+                $content['timepointtext3'],
+                $content['timepointtext3'],
+                // $content['selfdelevery'], 
                 $content["products"]);
-                /*unset($content['userGeoLocation']);
-                $content['userGeoLocation'] = [];*/
+        /* unset($content['userGeoLocation']);
+          $content['userGeoLocation'] = []; */
         //return $content;
         return $this->sendCurlRequest($url, $content);
     }
-
     /**
      * Send curl request.
      *
@@ -118,17 +110,17 @@ class ExternalCommunicationService
     {
 //        $login = $this->config['1C_order']['login'];
 //        $pass = $this->config['1C_order']['password'];
-        /*$response = file_get_contents(
-                $url,
-                false,
-                stream_context_create([
-            'http' => [
-                'method' => 'POST',
-                'header' => 'Content-type: application/x-www-form-urlencoded',
-                'content' => http_build_query($content)]
-                ])
-        );*/
-        
+        /* $response = file_get_contents(
+          $url,
+          false,
+          stream_context_create([
+          'http' => [
+          'method' => 'POST',
+          'header' => 'Content-type: application/x-www-form-urlencoded',
+          'content' => http_build_query($content)]
+          ])
+          ); */
+
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);
         //curl_setopt($curl, CURLOPT_HTTPHEADER, ['BOM_required: false', 'charset_response: UTF-8']);
@@ -147,7 +139,7 @@ class ExternalCommunicationService
             return $arr;
         } catch (LaminasJsonRuntimeException $e) {
             //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
-            return ['result' => false, 'message' => $e->getMessage().' '.$response];
+            return ['result' => false, 'message' => $e->getMessage() . ' ' . $response];
         }
     }
 
@@ -234,7 +226,7 @@ class ExternalCommunicationService
 
         return $this->sendCurlRequest($url, $content);
     }
-    
+
     /**
      * Send new credentials(Это пара ID и Password)
      * 

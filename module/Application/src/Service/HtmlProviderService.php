@@ -365,36 +365,7 @@ class HtmlProviderService
                    </div>
             </div>
         </div>
-        " . $return . "
-            <!-- div class=blok >
-            <div class='fltrblock'>
-                   <div class='filtritemtitle blokl' >Тест булевое значение</div>
-                    <div class=blok >
-                        <div class=' fltronoff  onoff ' for=123  rel=1 >Нет
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[" . $row['id'] . "][]' value='0' >
-                        </div>
-                        <div class='fltronoff onoff zach ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[" . $row['id'] . "][]' value='1' checked >
-                        </div>
-                    </div>
-                </div>
-             </div>
-             <div class=blok >
-            <div class='fltrblock'>
-                   <div class='filtritemtitle blokl' >Тест радиокнопки</div>
-                    <div class=blok >
-                        <div class='   radio ' for=1232  rel=1 >Нет
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck1232' name='characteristics[test][]' value='0' >
-                        </div>
-                        <div class=' radio zach ' for=1222  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck1222' name='characteristics[test][]' value='1' checked >
-                        </div>
-                        <div class=' radio ' for=12222  rel=1 >По-барабану
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck12222' name='characteristics[test][]' value='3'  >
-                        </div>
-                    </div>
-                </div>
-             </div-->" : "";
+        " . $return  : "";
         //
         return $return;
     }
