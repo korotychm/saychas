@@ -7,10 +7,8 @@ namespace Application\Model\Repository;
 // Replace the import of the Reflection hydrator with this:
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
-//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\UserData;
 use Application\Model\RepositoryInterface\RepositoryInterface;
-//use Laminas\Db\Sql\Sql;
 
 class UserDataRepository extends Repository implements RepositoryInterface
 {
@@ -39,6 +37,6 @@ class UserDataRepository extends Repository implements RepositoryInterface
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
-    }    
+    }
 
 }
