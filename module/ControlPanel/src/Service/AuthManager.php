@@ -115,6 +115,11 @@ class AuthManager
      */
     public function filterAccess($controllerName, $actionName)
     {
+        if (!$this->authService->hasIdentity()) {
+            // Only authenticated user is allowed go further.
+            return self::AUTH_REQUIRED;
+        }
+        
         // Determine mode - 'restrictive' (default) or 'permissive'. In restrictive
         // mode all controller actions must be explicitly listed under the 'access_filter'
         // config key, and access is denied to any not listed action for unauthorized users.
@@ -122,8 +127,9 @@ class AuthManager
         // access to it is permitted to anyone (even for not logged in users.
         // Restrictive mode is more secure and recommended to use.
         $mode = isset($this->config['options']['mode']) ? $this->config['options']['mode'] : 'restrictive';
-        if ($mode != 'restrictive' && $mode != 'permissive')
+        if ($mode != 'restrictive' && $mode != 'permissive') {
             throw new \Exception('Invalid access filter mode (expected either restrictive or permissive mode');
+        }
 
         if (isset($this->config['controllers'][$controllerName])) {
             $items = $this->config['controllers'][$controllerName];
@@ -146,7 +152,12 @@ class AuthManager
                     } else if (substr($allow, 0, 1) == '@') {
                         // Only the user with specific identity is allowed to see the page.
                         $identity = substr($allow, 1);
-                        if ($this->authService->getIdentity() == $identity) {
+                        $storedIdentity = $this->authService->getIdentity();
+                        $storedIdentity = is_array($storedIdentity) ? $storedIdentity['login'] : $storedIdentity;
+                        if(!is_string($storedIdentity)) {
+                            throw new Exception('Wrong identity');
+                        }
+                        if ($storedIdentity == $identity) {
                             return self::ACCESS_GRANTED;
                         } else {
                             return self::ACCESS_DENIED;
@@ -180,6 +191,11 @@ class AuthManager
 
         // Permit access to this page.
         return self::ACCESS_GRANTED;
+    }
+    
+    public function hasIdentity()
+    {
+        return $this->authService->hasIdentity();
     }
 
 }

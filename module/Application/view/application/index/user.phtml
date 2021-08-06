@@ -1,6 +1,7 @@
 <?php
 $this->headTitle('User', 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/userpage.js'));
 ?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">
@@ -23,7 +24,7 @@ $this->headTitle($this->title, 'PREPEND');
             <div id='ajaxfiltranswer'></div>
             <br class="both">
             <h1><?= $this->title ?>  <?=($this->id)?"<span>id: ". $this->id ."</span>":""?></h1>
-            <div id="userdata"><?=(!$this->auth)?$this->partial('application/index/partials/auth-form'):$this->partial('application/index/partials/user-form') ?></div>
+            <div id="userdata"><?=(!$this->auth)?$this->partial('application/common/auth-form'):$this->partial('application/common/userdata') ?></div>
         </div>               
     </div>
 </div>

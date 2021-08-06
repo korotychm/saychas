@@ -68,10 +68,10 @@ return [
             ],
         ],
     ],
-//    'session_containers' => [
-//        //Laminas\Session\Container::class,
-//        Container::class,
-//    ],
+    'session_containers' => [
+        //Laminas\Session\Container::class,
+        Container::class,
+    ],
     'session_storage' => [
         'type' => SessionArrayStorage::class,
     ],
@@ -85,7 +85,9 @@ return [
         'cache_expire' => 60*60*24*30,// 60*24,
 //        'options' => [
 //            //'remember_me_seconds' => 1,
-//            'name' => 'laminas-shlaminas',
+////            'name' => 'laminas-shlaminas',
+//            'name' => \ControlPanel\Resource\StringResource::CONTROL_PANEL_SESSION,
+////            'name' => 'PHPSESSID',
 //        ],
     ],
 /** We will use the session_manager later on */
@@ -111,7 +113,7 @@ return [
                     // Store cached data in this directory.
                     'cache_dir' => './data/cache',
                     // Store cached data for 1 hour.
-                    'ttl' => 60*60*1 
+                    'ttl' => 60*60*24*30, // 60*60*1
                 ],
             ],
             'plugins' => [

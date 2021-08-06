@@ -23,20 +23,39 @@ return [
     // access to certain controller actions for unauthorized visitors.
     'access_filter' => [
         'controllers' => [
-            Controller\UserController::class => [
-                // Give access to "resetPassword", "message" and "setPassword" actions
-                // to anyone.
-                ['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
-                // Give access to "index", "add", "edit", "view", "changePassword" actions to users having the "user.manage" permission.
-                ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '+user.manage']
-            ],
-            Controller\RoleController::class => [
-                // Allow access to authenticated users having the "role.manage" permission.
-                ['actions' => '*', 'allow' => '+role.manage']
-            ],
-            Controller\PermissionController::class => [
-                // Allow access to authenticated users having "permission.manage" permission.
-                ['actions' => '*', 'allow' => '+permission.manage']
+//            Controller\UserController::class => [
+//                // Give access to "resetPassword", "message" and "setPassword" actions
+//                // to anyone.
+//                ['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
+//                // Give access to "index", "add", "edit", "view", "changePassword" actions to users having the "user.manage" permission.
+//                ['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '+user.manage']
+//            ],
+//            Controller\RoleController::class => [
+//                // Allow access to authenticated users having the "role.manage" permission.
+//                ['actions' => '*', 'allow' => '+role.manage']
+//            ],
+//            Controller\PermissionController::class => [
+//                // Allow access to authenticated users having "permission.manage" permission.
+//                ['actions' => '*', 'allow' => '+permission.manage']
+//            ],
+            
+    //indexAction
+    //showStoresAction
+    //showOneStoreAction
+    //showProductsAction
+    //profileAction
+    //actionAndDiscountAction
+    //accountManagementAction
+    //respondingToReviewsAction
+    //calendarDetailsAction
+            
+            
+            \ControlPanel\Controller\IndexController::class => [
+                ['actions' => ['index'/*, 'showStores'*/, 'showOneStore', 'showProducts', 'profile', //  'userManagement',
+                    /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
+                ['actions' => ['actionAndDiscount',], 'allow' => '+analyst'],
+                ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
+                ['actions' => ['showStores',], 'allow' => '+analyst'],
             ],
         ]
     ],    
@@ -92,6 +111,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\IndexController::class,
                                 'action' => 'profile',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'user-management' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/user-management',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'user-management',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -195,6 +225,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'not-authorized-view' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/not-authorized-view',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'not-authorized-view',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                 ],
             ],
 //            'control-panel' => [
@@ -290,5 +331,24 @@ return [
         ],
         'strategies' => ['ViewJsonStrategy',],
     ],
+    'controller_plugins' => [
+        'factories' => [
+            Controller\Plugin\AccessPlugin::class => Controller\Plugin\Factory\AccessPluginFactory::class,
+            Controller\Plugin\CurrentUserPlugin::class => Controller\Plugin\Factory\CurrentUserPluginFactory::class,
+        ],
+        'aliases' => [
+            'access' => Controller\Plugin\AccessPlugin::class,
+            'currentUser' => Controller\Plugin\CurrentUserPlugin::class,
+        ],
+    ],    
+    'view_helpers' => [
+        'factories' => [
+            View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
+        ],
+        'aliases' => [
+            'access' => View\Helper\Access::class,
+        ],
+    ],
+    
     
 ];

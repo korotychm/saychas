@@ -2,6 +2,7 @@
 <html lang="ru">
     <head>
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <meta charset="utf-8">
         <?= $this->headTitle('Saychas.ru')->setSeparator(' - ')->setAutoEscape(false) ?>
         <?=
@@ -12,66 +13,92 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-                ->prependStylesheet($this->basePath('css/custom_select.css'))        
+                ->prependStylesheet($this->basePath('css/custom_select.css'))
                 ->prependStylesheet($this->basePath('css/style.css'))
                 //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
                 ->prependStylesheet($this->basePath('css/bs.css'))
                 ->prependStylesheet($this->basePath('css/treeview.css'))
                 ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
-		->prependStylesheet($this->basePath('css/nouislider.css'))
+                ->prependStylesheet($this->basePath('css/nouislider.css'))
                 ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
-        
-        
-        
-        
         ?>
-        
         <!-- Scripts -->
         <?= $this->headScript() ?>
-        
+
         <?=
-                    $this->inlineScript()
-                    ->prependFile($this->basePath('/js/custom_select.js'))            
-                    ->prependFile($this->basePath('/js/services.js'))
-                    ->prependFile($this->basePath('/js/nouislider.min.js'))
-                    ->prependFile($this->basePath('/js/nivo.slider.js'))            
-                    ->prependFile($this->basePath('js/jquery.treeview.js'))
-                    ->prependFile($this->basePath('js/saychas_z.js?' . time()))
-                    ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
-                    ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
-                    ->prependFile($this->basePath('js/jquery.treeview.async.js'))
-->prependFile($this->basePath('js/bootstrap.min.js'))
-                  // ->prependFile($this->basePath('js/jquery.js'))
-            ?>
+                $this->inlineScript()
+                ->prependFile($this->basePath('/js/useractions.js'))
+                ->prependFile($this->basePath('/js/custom_select.js'))
+                ->prependFile($this->basePath('/js/services.js'))
+                ->prependFile($this->basePath('/js/nouislider.min.js'))
+                ->prependFile($this->basePath('/js/nivo.slider.js'))
+                ->prependFile($this->basePath('js/jquery.treeview.js'))
+                ->prependFile($this->basePath('js/saychas_z.js?' . time()))
+                ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
+                ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
+                ->prependFile($this->basePath('js/jquery.treeview.async.js'))
+                ->prependFile($this->basePath('js/bootstrap.min.js'))
+// ->prependFile($this->basePath('js/jquery.js'))
+        ?>
     </head>
     <body>
+        <?php /**
+        <div id="app" class="apps">
+          {{ message }}
+        </div>
+        <div id="app-2">
+          <span v-bind:title="message">
+            Наведи на меня курсор на пару секунд,
+            чтобы увидеть динамически связанное значение title!
+          </span>
+        </div>
+        
+        <script>
+            var app = new Vue({
+              el: '.apps',
+              data: {
+                message: 'Привет, Vue!'
+              }
+            });
+            var app2 = new Vue({
+              el: '#app-2',
+              data: {
+                message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
+              }
+            });
+        </script>
+         * 
+         */
+        ?>
+        <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
+        <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>  
         <div class="overcover"></div>
-		<div id="overcoverblack" class='overcoverblack none' ></div>
-                <div id="quicktop" class='none2' ></div>
-                
-		
-		
-			<div id="lefmobiletpanel">
-				<div id="lefmobiletpanelclose" ></div>
-				<div id="lefmobiletpanelcontent"  class="blokc" ><div class=logo ></div>
-				
-				<div class='iblokok' id=supermenuinside>
-					
-                                    <ul id="tree" class="tree treeview" style=""><h3>Каталог</h3>
-                                        <?=$this->catalogCategoties ?>
-                                    </ul>
-					
-				</div >
-				</div >
-				<!---->
-			</div>
-		
+        <div id="overcoverblack" class='overcoverblack none' ></div>
+        <div id="quicktop" class='none2' ></div>
+
+
+
+        <div id="lefmobiletpanel">
+            <div id="lefmobiletpanelclose" ></div>
+            <div id="lefmobiletpanelcontent"  class="blokc" ><div class=logo ></div>
+
+                <div class='iblokok' id=supermenuinside>
+
+                    <ul id="tree" class="tree treeview" style=""><h3>Каталог</h3>
+                        <?= $this->catalogCategoties ?>
+                    </ul>
+
+                </div >
+            </div >
+            <!---->
+        </div>
+
 
         <div id="header" class="blokc" >  
             <div id="headermenu" >
                 <div class="headermenucontent">
                     <a  href="<?= $this->url('home') ?>">Home</a>
-                       <a  href="/catalog/000000006" >Каталог</a>
+                    <a  href="/catalog/000000006"  >Каталог</a>
                     <a  href="/product/000000000014" >Товар</a>
                     <a  href="/user" >User</a>
                     <!-- a  href="<?= $this->url('test-repos') ?>" >Banzaii</a-->
@@ -96,7 +123,7 @@
                             <div class="blok" id="quicksearch">
                                 <input type="text" id="serchtopinput" placeholder="Быстрый поиск"  >
                                 <!-- div class="searchicon"></div -->
-								<div class=blok ><span class=gray >Например: </span>Смратфон с диагональю до 5&nbsp;дюймов</div>
+                                <div class=blok ><span class=gray >Например: </span>Смратфон с диагональю до 5&nbsp;дюймов</div>
                             </div> 
                         </div>
                     </div>
@@ -117,75 +144,82 @@
                             <div class="blok" id="quickaddress">
                                 <div class='geo16 uadress' >Привезем сейчас:</div>
                                 <div class='open-user-address-form user_address_set uadress' id="uadress" >
-                                        <?= $userAddressHtml ?>
+                                    <?= $userAddressHtml ?>
                                 </div>
                             </div>
                         </div> 
-
-
-
                     </div>
-
-
-
-
                 </div>
                 <div class='iblok' id="profileblock">
                     <div class='contentpadding'>
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding blokc'>
-                            <a href="/user" >    <div class="emptyblock"></div>
-                                <div class="blokc">профиль</a></div></a>
+                                <div class="hasalt" id=" " >    <div class="emptyblock"></div>
+                                    <div class="blokc">профиль</div>
+                                    <div class='altcontentview'>
+                                        <span class='strelka'></span>
+                                        <div class='blok '>
+                                            <?php if ($this->userLegal) { ?>
+                                                <h5><?= $this->username ?></h5>
+                                                <div class=' menu-item ' ><a href="/user">Личный кабинет</a></div> 
+                                                <div class=' menu-item' >Мои заказы</div> 
+                                                <div class=' menu-item' >Мои оповещения</div> 
+                                                <div class='delevery-item menu-item ' ><a href="/clear-user-data">Выход</a></div> 
+
+                                            <?php } else { ?>
+                                                <div class='delevery-item menu-item user-modal-open' >Войти или зарегистрироваться</div> 
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class='pw-contentblock cblock-2'>
                             <div class='contentpadding  blokc'>
-                            <a href="/basket" >    <div class="emptyblock">
-                                    <div id="zakazcount">2</div>
+                                <?= (/* true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
+                                <div class="emptyblock">
+                                    <div id="zakazcount">0</div>
                                 </div>
-                                <div class="blokc">корзина</div></a>
+                                <div class="blokc">корзина</div>
+                                <?= (/* true or */$this->addressLegal) ? '</a>' : '</div>' ?>                     
                             </div>
                         </div>
 
                     </div>
                 </div>
-               <div class="iblok"><?= $this->addressform ?></div>
+                <div class="iblok"><?= $this->addressform ?></div>
             </div> 
             <div class="iblok contentwrapper">
-                    <div id="topmenu" >
-                            <ul>
-                                    <li><a href="/catalog/000000002" >Электроника</a></li> 
-                                    <li><a href=# >Аксессуары</a></li> 
-                                    <li><a href=# >Одежда</a></li> 
-                                    <li><a href=# >Детям</a></li> 
-                                    <li><a href=# >Продукты</a></li> 						
-                                    <li><a href=# >Афиша</a></li> 						
-                                    <li><a href=# >Билеты</a></li> 						
-                                    <li><a href=# >Услуги</a></li> 						
-                            </ul>
-                    </div>
+                <div id="topmenu" >
+                    <ul>
+                        <li><a href="/catalog/000000002" >Электроника</a></li> 
+                        <li><a href=# >Аксессуары</a></li> 
+                        <li><a href=# >Одежда</a></li> 
+                        <li><a href=# >Детям</a></li> 
+                        <li><a href=# >Продукты</a></li> 						
+                        <li><a href=# >Афиша</a></li> 						
+                        <li><a href=# >Билеты</a></li> 						
+                        <li><a href=# >Услуги</a></li> 						
+                    </ul>
+                </div>
             </div>
             <div class="full-wrap">
                 <div id="content">  
-
-                    
                     <?= $this->content ?>                    
-              
-                
                 </div></div>
-            </div>
-            <div id="bascetbottomblok" class='none'>
-                <div class='close'></div>
-                <div class="content"></div>
-            </div>
-            <footer id="footer" class="blokc">
-                
-                <div class="iblokl contentwrapper">
-                    <div class="fitem fcopy">
-                        <div class="emptyblock"></div> <div class="emptyblock"></div>
-                            <p style="padding-top:30px;">2021&copy; ООО &laquo;Сейчас&raquo; <br>все права защищены</p>
-                            <?=date("Y-m-d H:i:s")?>
-                    </div>
+        </div>
+        <div id="bascetbottomblok" class='none'>
+            <div class='close'></div>
+            <div class="content"></div>
+        </div>
+        <footer id="footer" class="blokc">
+
+            <div class="iblokl contentwrapper">
+                <div class="fitem fcopy">
+                    <div class="emptyblock"></div> <div class="emptyblock"></div>
+                    <p style="padding-top:30px;">2021&copy; ООО &laquo;Сейчас&raquo; <br>все права защищены</p>
+                    <?= date("Y-m-d H:i:s") ?>
+                </div>
                 <div class="fitem flogo"><span class="flogospan"></span></div>
                 <div class="fitem fcontent" >
                     <div class="pw-contentblock cblock-4">
@@ -223,8 +257,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
-            </footer>
-
+            </div>
+        </footer>
     </body>
 </html>

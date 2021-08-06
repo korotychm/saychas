@@ -21,6 +21,8 @@ use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\Entity\Basket;
+use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
@@ -30,9 +32,10 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Service\HtmlProviderService;
+use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
-use Application\Adapter\Auth\UserAuthAdapter;
+//use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Authentication\AuthenticationService;
 use Application\Resource\StringResource;
 use Laminas\Json\Json;
@@ -41,7 +44,7 @@ use Laminas\Http\Response;
 use Laminas\Session\Container;// as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
-use Application\Helper\ArrayHelper;
+//use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController
@@ -66,6 +69,7 @@ class AjaxController extends AbstractActionController
     private $authService;
     private $basketRepository;
     private $productImageRepository;
+    private $commonHelperFuncions;
     //private $sessionContainer;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
@@ -75,7 +79,7 @@ class AjaxController extends AbstractActionController
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository/*,
-            SessionContainer $sessionContainer*/)
+            SessionContainer $sessionContainer*/, CommonHelperFunctionsService $commonHelperFuncions)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -96,7 +100,10 @@ class AjaxController extends AbstractActionController
         $this->authService = $authService;
         $this->basketRepository = $basketRepository;
         $this->productImageRepository = $productImageRepository;
+        $this->commonHelperFuncions = $commonHelperFuncions;
 //        $this->sessionContainer = $sessionContainer;
+        $this->entityManager->initRepository(ClientOrder::class);
+        $this->entityManager->initRepository(Delivery::class);
     }
 
     public function delFromBasketAction()
@@ -104,12 +111,86 @@ class AjaxController extends AbstractActionController
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
         $return['productId'] = $productId = $post->productId;
+        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $basketItem = Basket::remove(['where' => ['user_id' => $userId, 'product_id' => $productId] ]);
         return new JsonModel($return);
      }
-    
+     public function ajaxUserDeleteAddressAction()
+     {
+         //$return["error"] = true;
+         $post = $this->getRequest()->getPost();
+         $container = new Container(StringResource::SESSION_NAMESPACE);
+         $return['userId'] = $userId = $container->userIdentity;
+         if (empty( $userId )) {
+             header('HTTP/1.1 403 Forbidden');
+             exit;
+         } 
+         $return['reload'] =  $post->reload;
+         $return['dataId'] = $post->dataId;
+         $remove = UserData::remove(['where' => ['user_id' => $userId, 'id' => $return['dataId'] ] ]);
+         $return['removeresult']  = $remove->count();
+         
+         
+         return new JsonModel($return);
+     }
+//
+     public function ajaxUserSetDefaultAddressAction()
+     {
+         //$return["error"] = true;
+         $post = $this->getRequest()->getPost();
+         $container = new Container(StringResource::SESSION_NAMESPACE);
+         $return['userId'] = $userId = $container->userIdentity;
+         if (empty( $userId )) {
+             header('HTTP/1.1 403 Forbidden');
+             exit;
+         } 
+         $return['reload'] = true; // $post->reload;
+         $return['dataId'] = $post->dataId;
+         //return new JsonModel($return);
+         
+        // $return['dataId'] = 16; 
+        // $userId = 50;
+         
+         $userData = UserData::findAll(['where' => ['user_id' => $userId, 'id' => $return['dataId'] ] ])->current();
+         if (null == $userData )  
+         {
+             $return['error'] = "adress not found";
+             return new JsonModel($return);
+         }   
+         //$userData = UserData::findAll(['where' => ['user_id' => 50, 'id' => 15 ] ])->current();
+         
+         $userGeoData =  $userData->getGeodata();
+         
+         $userData->setId($return['dataId']);
+         $userData->setTime(time());
+         $userData->persist(['user_id' => $userId, 'id' => $return['dataId'] ]);
+         
+         $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userGeoData);
+         //$return['removeresult']  = $remove->count();
+         return new JsonModel($return);
+     }
+
+     public function ajaxBasketChangedAction()
+    {
+        //exit("banzaiii!!!");
+        //$userId = $this->id
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $userId = $container->userIdentity;
+        $whatHappened = $container->whatHappened;
+        if (!empty($whatHappened)) {
+            $return = ["result"=>true, "products"=>$whatHappened];
+            $return ['updated'] = $this->htmlProvider->basketWhatHappenedUpdate($userId, $whatHappened); 
+        }
+        else {
+            $return = ["result"=>false];
+        }
+        unset($container->whatHappened);
+        return new JsonModel($return);        
+        
+    }
+     
     public function addToBasketAction()
     {
         $return = ["error" => true, "count" => 0];
@@ -135,7 +216,7 @@ class AjaxController extends AbstractActionController
                 $basketItem->setPrice($productaddPrice);
                 //$basketItemTotal = 0;
                 $basketItem->setTotal($basketItemTotal+1);
-                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId]);
+                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId,  'order_id' => "0"]);
                 //$this->basketRepository->persist($basketItem, ['user_id' => $userId, 'product_id' => $productId, 'order_id' => 0]);
             }
 
@@ -215,26 +296,26 @@ class AjaxController extends AbstractActionController
     public function calculateBasketItemAction()
     {
         $post = $this->getRequest()->getPost();
-        if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true]);
+        if (!$userId = $this->identity()) return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
+        if(!$return['productId'] = $productId = $post->product) return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
+        
         if (null == $product  
                 or !$productPrice = (int)$product->getPrice()
                 or !$productCount = (int)$post->count
                 or $productCount < 1
                 
             ) {
-                return new JsonModel(["error" => true]);
+                return new JsonModel(["error" => true,  "errorMessage" => "product price error"]);
              }
         
-             
+        $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+        $basketItem->setTotal($productCount);
+        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                
+        
         $return['totalNum'] = (int) $productPrice * $productCount; 
-        
-        /*$basket = Basket::findFirstOrDefault(['id' => 1234]);
-        $basket->setTotal(1234);
-        $basket->persist([]);*/
-        
-        
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
 
         return new JsonModel($return);
@@ -432,18 +513,21 @@ class AjaxController extends AbstractActionController
     public function ajaxGetLegalStoreAction()
     {
         $post = $this->getRequest()->getPost();
-        if(!$json = $post->value) return;
+       // exit ( print_r($post));
+        if(!$json = $post->value) return new JsonModel(NULL);
         
         try {
             $TMP = Json::decode($json);
         } catch (LaminasJsonRuntimeException $e) {
-            exit($e->getMessage() . $TMP . "!!!");
+            return  new JsonModel(["result"=>false, "error"=> $e->getMessage()]);
         }
         $ob = $TMP->data;
-        if (!$ob->house)
-            return (StringResource::USER_ADDREES_ERROR_MESSAGE);
+        if (!$ob->house){
+            
+            return  new JsonModel(["result"=>false, "error"=> StringResource::USER_ADDREES_ERROR_MESSAGE ]);
+        }
         //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        /*$container = new Container(StringResource::SESSION_NAMESPACE);
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents(
                 $url,
@@ -451,7 +535,7 @@ class AjaxController extends AbstractActionController
                 stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
         );
 
-        if (!$result) exit("1c не отвечает");
+        if (!$result) return new JsonModel(["result"=>false, "error"=>"1C не отвечает "]);
         $legalStore = Json::decode($result, true);
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
@@ -460,9 +544,42 @@ class AjaxController extends AbstractActionController
         }
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
-        //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true);
-        exit("200");
+        //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true);*/
+        // $return = $this->getLegalStore($json);
+        
+        $return = $this->commonHelperFuncions->updateLegalStores($json);
+        return new JsonModel($return);
     }
+    
+    /*private function getLegalStore ($json)
+    {
+        
+       
+        $url = $this->config['parameters']['1c_request_links']['get_store'];
+        $result = file_get_contents(
+                $url,
+                false,
+                stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
+        );
+        if (!$result) {
+            return ["result"=>false, "error"=>"1C не отвечает "];
+        }
+    
+        $legalStore = Json::decode($result, true);
+    
+        foreach ($legalStore as $store) {
+            $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
+            if($store['time_until_closing']) $store['time_until_closing']+=time();
+            $sessionLegalStoreArray[$store['store_id']] = $store ;
+        }
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
+        $container->legalStoreArray = $sessionLegalStoreArray;
+        
+        return ["result"=>true, "message"=>"Магазины получены"];
+    }*/
+    
+    
 
     public function ajaxAddUserAddressAction()
     {
@@ -477,7 +594,9 @@ class AjaxController extends AbstractActionController
             $userData->setUserId($userId);
             $userData->setAddress($post->address);
             $userData->setGeodata($post->dadata);
-            // $userData->setTimestamp( ( new \DateTime("now") )->date );
+//            $ts = ( new \DateTime("now") )->format('Y-m-d h:i:s');
+//            $userData->setTimestamp( $ts );
+            $userData->setTime(time());
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {
@@ -584,6 +703,10 @@ class AjaxController extends AbstractActionController
      */
     private function getProducts($params)
     {
+        $this->prepareCharacteristics($params['characteristics']);
+        if(empty($params['priceRange'])) {
+            $params['priceRange'] = '0;'.PHP_INT_MAX;
+        }
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $this->getWhere($params);
@@ -599,6 +722,20 @@ class AjaxController extends AbstractActionController
             }
         }
         return $filteredProducts;
+    }
+    
+    private function prepareCharacteristics(&$characteristics)
+    {
+        if(!$characteristics) {
+            return;
+        }
+        foreach($characteristics as $key => &$value) {
+            foreach($value as &$v) {
+                if(empty($v)) {
+                    $v = '0;'.PHP_INT_MAX;
+                }
+            }
+        }
     }
 
 //    private function getProducts1($params)
@@ -623,7 +760,7 @@ class AjaxController extends AbstractActionController
     {
 
         $post = $this->getRequest()->getPost()->toArray();
-
+        
         $products = $this->getProducts($post);
 
         return (new ViewModel(['products' => $products]))->setTerminal(true);

@@ -42,6 +42,33 @@ $(function () {
             window.location.replace("/control-panel");
         }
     };
+    var redirectToLogin = function (data) {
+        if(true === data.data) {
+            window.location.replace("/control-panel");
+        }else{
+            $('#controlPanelContentId').fadeOut("fast", function () {
+                $('#controlPanelContentId').html("");
+                $('#controlPanelContentId').html(data);
+            });
+            $('#controlPanelContentId').fadeIn("fast", function () {
+            });
+        }
+    };
+    var error403 = function (status) {
+        $.post('/control-panel/not-authorized-view', {post: {}}, function (d) {
+            if(403 === status) {
+                $('#controlPanelContentId').fadeOut("fast", function () {
+                    $('#controlPanelContentId').html("");
+                    $('#controlPanelContentId').html(d);
+                });
+                $('#controlPanelContentId').fadeIn("fast", function () {
+                });
+            }
+        })
+        .fail(function(d){
+            console.log('d.status = ', d.status);
+        });
+    };
     var panel = $('#controlPanelMenu li a');
     panel.unbind();
 
@@ -51,39 +78,34 @@ $(function () {
 
         if ('profileId' === ths.currentTarget.id) {
             $.post('/control-panel/profile', {post: {}}, function (data) {
-                $('#controlPanelContentId').fadeOut("fast", function () {
-                    redirectIfNotLoggedIn(data);
-                    $('#controlPanelContentId').html("");
-                    $('#controlPanelContentId').html(data);
-                });
-                $('#controlPanelContentId').fadeIn("fast", function () {
-                });
+                redirectToLogin(data);
             })
             .fail(function (data) {
-                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+//                console.log('Show Profile failed :( data = ', data, ' ', data.statusText, ' status = ', data.status);
+                error403(data.status);
+            });
+        } else if('userManagementId' === ths.currentTarget.id) {
+            $.post('/control-panel/user-management', {post: {}}, function (data) {
+                redirectToLogin(data);
+            })
+            .fail(function (data) {
+//                console.log('Show Profile failed :( data = ', data, ' ', data.statusText, ' status = ', data.status);
+                error403(data.status);
             });
         } else if('accountManagementId' === ths.currentTarget.id) {
             $.post('/control-panel/account-management', {post: {}}, function (data) {
-                $('#controlPanelContentId').fadeOut("fast", function () {
-                    redirectIfNotLoggedIn(data);
-                    $('#controlPanelContentId').html("");
-                    $('#controlPanelContentId').html(data);
-                });
-                $('#controlPanelContentId').fadeIn("fast", function () {
-                });
+                redirectToLogin(data);                
             })
             .fail(function (data) {
-                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+//                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+                error403(data.status);
             });
         } else if ('storesId' === ths.currentTarget.id) {
             $.post('/control-panel/show-stores', {post: {}}, function (data) {
-                $('#controlPanelContentId').fadeOut("fast", function () {
-                    redirectIfNotLoggedIn(data);
-                    $('#controlPanelContentId').html("");
-                    $('#controlPanelContentId').html(data);
-                    /** calendar: trigger calendarLoaded event */
-                    $(document).trigger('calendarLoaded');
-                });
+                redirectToLogin(data);
+                /** calendar: trigger calendarLoaded event */
+                $(document).trigger('calendarLoaded');
+
                 $('#controlPanelContentId').fadeIn("fast", function () {
                     $('table tr.line').unbind();
                     $('table tr.line').click(function (ths) {
@@ -111,47 +133,32 @@ $(function () {
                 });
             })
             .fail(function (data) {
-                console.log('ShowMenus failed :( data = ', data, ' ', data.statusText);
+//                console.log('ShowMenus failed :( data = ', data, ' ', data.statusText);
+                error403(data.status);
             });
         }else if('actionAndDiscountId' === ths.currentTarget.id) {
             $.post('/control-panel/action-and-discount', {post: {}}, function (data) {
-                $('#controlPanelContentId').fadeOut("fast", function () {
-                    redirectIfNotLoggedIn(data);
-                    $('#controlPanelContentId').html("");
-                    $('#controlPanelContentId').html(data);
-                });
-                $('#controlPanelContentId').fadeIn("fast", function () {
-                });
+                redirectToLogin(data);                
             })
             .fail(function (data) {
-                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+//                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+                error403(data.status);
             });
         }else if('respondingToReviewsId' === ths.currentTarget.id) {
             $.post('/control-panel/responding-to-reviews', {post: {}}, function (data) {
-                $('#controlPanelContentId').fadeOut("fast", function () {
-                    redirectIfNotLoggedIn(data);
-                    $('#controlPanelContentId').html("");
-                    $('#controlPanelContentId').html(data);
-                });
-                $('#controlPanelContentId').fadeIn("fast", function () {
-                });
+                redirectToLogin(data);
             })
             .fail(function (data) {
-                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+//                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
+                error403(data.status);
             });
         } else if ('productsId' === ths.currentTarget.id) {
             $.post('/control-panel/show-products', {post: {}}, function (data) {
-                $('#controlPanelContentId').fadeOut('fast', function () {
-                    redirectIfNotLoggedIn(data);
-                    $('#controlPanelContentId').html("");
-                    $('#controlPanelContentId').html(data);
-                });
-                $('#controlPanelContentId').fadeIn("fast", function () {
-
-                });
+                redirectToLogin(data);
             })
             .fail(function (data) {
-                console.log('ShowProducts failed :( data = ', data, ' ', data.statusText);
+//                console.log('ShowProducts failed :( data = ', data, ' ', data.statusText);
+                error403(data.status);
             });
         }
     });

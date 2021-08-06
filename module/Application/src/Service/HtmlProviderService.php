@@ -26,6 +26,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Entity\Store;
+use Application\Model\Entity\Basket;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
@@ -142,7 +143,7 @@ class HtmlProviderService
     }
 
     /**
-     * Return Html 
+     * Return Html
      * @return string
      */
     public function getCategoryFilterHtml($filters, $category_id, $price = ["minprice" => 12000, "maxprice" => 54000])
@@ -198,20 +199,20 @@ class HtmlProviderService
                         $options[] = $val;
                     } elseif ($row['type'] == 7) {
                         $options .= $valuetext
-                                . "<input 
-                                    type='checkbox' 
-                                    class='none fltrcheck$j' 
-                                    name='characteristics[" . $row['id'] . "][]' 
+                                . "<input
+                                    type='checkbox'
+                                    class='none fltrcheck$j'
+                                    name='characteristics[" . $row['id'] . "][]'
 
                                     value='" . $val . "'  "
                                 . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
                                 ";
                     } else
                         $options .= "<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >" . $valuetext
-                                . "<input 
-                                     type='checkbox' 
-                                     class='none fltrcheck$j' 
-                                     name='characteristics[" . $row['id'] . "][]' 
+                                . "<input
+                                     type='checkbox'
+                                     class='none fltrcheck$j'
+                                     name='characteristics[" . $row['id'] . "][]'
 
                                      value='" . $val . "'  "
                                 . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
@@ -254,7 +255,7 @@ class HtmlProviderService
                     postfix: "' . $getUnit . '",
                     grid: false,
                     onChange: function (obj) {
-                        
+
                         $("#minCost2' . $rangeId . '").val(obj.from);
                         $("#maxCost2-' . $rangeId . '").val(obj.to);
                         $("#minCost' . $rangeId . '").html(obj.from);
@@ -263,21 +264,21 @@ class HtmlProviderService
             });
         })
      </script> '
-                            . "   
-        
+                            . "
+
                 <div style='padding:0px 6px; display:block; position:relative'>
                     <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='characteristics[" . $row['id'] . "][]'  style=''/>
                         <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id='minCost$rangeId'>" . $minsel . "</span>
-                       </div><div  
+                       </div><div
                        style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id='maxCost$rangeId'>" . $maxsel . "</span></div>
-                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['min']\" id='minCost2$rangeId' value='" . $minsel . "'  
+                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['min']\" id='minCost2$rangeId' value='" . $minsel . "'
                     ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['max']\" id='maxCost2$rangeId' value='" . $maxsel . "' -->
                 </div>
         ";
                 } elseif ($row['type'] == 3) {
                     $options = "
                     <div class=blok >
-                        <div class='fltronoff   onoff ' for=123  rel=1 >Нет 
+                        <div class='fltronoff   onoff ' for=123  rel=1 >Нет
                             <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[" . $row['id'] . "]' value='0' >
                         </div>
                         <div class='fltronoff onoff  ' for=122  rel=1 >Да
@@ -296,7 +297,7 @@ class HtmlProviderService
                                 <span class="blok mini gray nobold" >' . $typeText[$row['type']] . '</span>
                                      <span class="blok mini gray nobold" >id: ' . $row['id'] . '</span>
                              </div>
-                            
+
                             <!-- div class="filtritem" id="fi' . $row['id'] . '" -->
                                 <div class="filtritemcontent" id="fc' . $row['id'] . '">
                                     <!-- div class="blok" ><div class="closefilteritem" rel="' . $row['id'] . '">' . $row['tit'] . '</div></div -->
@@ -315,7 +316,7 @@ class HtmlProviderService
             $step = 10;
         elseif ($rzn > 10)
             $step = 1;
-        //elseif ($rzn < 10) $step=0.1;  
+        //elseif ($rzn < 10) $step=0.1;
 
 
         (true or $return) ? $return = '
@@ -327,10 +328,10 @@ class HtmlProviderService
                 $("#rangeslider").ionRangeSlider({
                     hide_min_max: true,
                     keyboard: true,
-                    min: ' . $price['minprice'] . ',
-                    max: ' . $price['maxprice'] . ',
-             //        from:' . $pricesel['minprice'] . ',
-             //       to:  ' . $pricesel['maxprice'] . ',
+                    min: ' . (int) $price['minprice'] . ',
+                    max: ' . (int) $price['maxprice'] . ',
+             //        from:' . (int) $pricesel['minprice'] . ',
+             //       to:  ' . (int) $pricesel['maxprice'] . ',
                     hideMinMax:true,
                     type: "double",
                     step: ' . ($step * 100) . ',
@@ -340,7 +341,7 @@ class HtmlProviderService
                         console.log(' . $step . ');
                         var fmin = new Intl.NumberFormat("ru-RU").format(obj.from/100)
                         var fmax = new Intl.NumberFormat("ru-RU").format(obj.to/100)
-                    
+
                         $("#minCost2").val(obj.from);
                         $("#maxCost2").val(obj.to);
                         $("#minCost").html(fmin);
@@ -352,48 +353,19 @@ class HtmlProviderService
             });
         })
         </script> '
-                        . "   
+                        . "
         <div class=blok >
             <div class='fltrblock'>
                    <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
                 <div style='padding:0px 6px; display:block; position:relative'>
                     <input type='text' id='rangeslider' class='rangeslider'  value='' name='priceRange'  style=''/>
                         <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>" . number_format($pricesel['minprice'] / 100, 0, ',', ' ') . "</span>
-                       </div><div  
+                       </div><div
                        style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>" . number_format($pricesel['maxprice'] / 100, 0, ',', ' ') . "</span></div>
                    </div>
             </div>
         </div>
-        " . $return . "
-            <!-- div class=blok >
-            <div class='fltrblock'>
-                   <div class='filtritemtitle blokl' >Тест булевое значение</div>
-                    <div class=blok >
-                        <div class=' fltronoff  onoff ' for=123  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[" . $row['id'] . "][]' value='0' >
-                        </div>
-                        <div class='fltronoff onoff zach ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[" . $row['id'] . "][]' value='1' checked >
-                        </div>
-                    </div>
-                </div>
-             </div>
-             <div class=blok >
-            <div class='fltrblock'>
-                   <div class='filtritemtitle blokl' >Тест радиокнопки</div>
-                    <div class=blok >
-                        <div class='   radio ' for=1232  rel=1 >Нет 
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck1232' name='characteristics[test][]' value='0' >
-                        </div>
-                        <div class=' radio zach ' for=1222  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck1222' name='characteristics[test][]' value='1' checked >
-                        </div>
-                        <div class=' radio ' for=12222  rel=1 >По-барабану
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck12222' name='characteristics[test][]' value='3'  >
-                        </div>
-                    </div>
-                </div>
-             </div-->" : "";
+        " . $return  : "";
         //
         return $return;
     }
@@ -641,7 +613,7 @@ class HtmlProviderService
                             $speedlable2
                             $imagesready
                     <div class='iblok iconimg' style='width:98px;' >$imgicons</div>
-                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>   
+                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>
                      </div>
                  </div>"
                 . "
@@ -674,16 +646,16 @@ class HtmlProviderService
                                             <div class='contentpadding'>
                                                  <div class=paybutton rel='$id' >в корзину</div>
                                             </div>
-                                         </div>   
+                                         </div>
                                          <div class='pw-contentblock cblock-2'>
                                             <div class='contentpadding'>
                                                  <div class=paybuttonwhite rel='$id' >купить сразу</div>
                                             </div>
-                                         </div>   
+                                         </div>
 									"
                 . "         <div class='contentpadding'>
                                 <div class='favstar favtext'>Добавить в избранное</div>
-                            </div>        
+                            </div>
                       </div>
                        <div class=brandblok >
                                " . (($brandimage) ? "<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>" : " <div class='brandlogo' >$brandtitle</div>") . "
@@ -700,7 +672,7 @@ class HtmlProviderService
                 //. $charsNew."!!!"
                 . $description
                 . (($charsmore) ? "<h3>Характеристики</h3>
-                    
+
                                 <div class='char-blok-bottom'>
                                     $charsmore
                                 </div>" : "") . "
@@ -731,45 +703,89 @@ class HtmlProviderService
           ->getAddress()
           ->getGeodata(); */
         $container = new Container(StringResource::SESSION_NAMESPACE);
-
         $username = $user->getName();
         $userData = $user->getUserData();
-
         $usdat = $userData->current();
+
         if (null != $usdat) {
             $userAddress = $usdat->getAddress(); //$container->userAddress;
             $userGeodata = $usdat->getGeoData();
             //exit ($userGeodata);
+            
+            $i=0;  //индекс для лимита вывода адресов!
+            foreach ($userData as $adress) {
+                $adressId = $adress->getId();
+                $adressText = $adress->getAddress();
+                $altmenu[] = "<span class='menuitem pointer setuseraddress' rel='$adressId' >$adressText</span>";
+                $i++; if($i == 5) break;
+            }
+            //unset($altmenu[0]);
+            if (!empty($altmenu))  {
+                $hasalt = " hasalt ";
+                $altmenu[] = "<span class='menuitem pointer open-user-address-form red'  >Ввести адрес</span>";
+                //<span class="strelka"></span>
+                $altcontent = 
+                '<div class="altcontentview">
+                          
+                          <div class="blok ">'
+                        .join("",$altmenu)
+                          .'</div>
+                 </div>         ';
+            }
         }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        return "<span>$userAddress</span>"
-                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea>"
+        
+        return "<span class='blok relative $hasalt useraddressalt' >"
+                . "$altcontent"
+                . "<span>$userAddress</span>"
+                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea></span>"
         //. "<h1></h1>"
         //
         //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
         ;
     }
 
+    public function getUserInfo($user)
+    {
+        //$container = new Container(StringResource::SESSION_NAMESPACE);
+
+
+        $return['id'] = $user->getId();
+        $return['userid'] = $user->getUserId();
+        $return['name'] = $user->getName();
+        $return['phone'] = $user->getPhone();
+        $userData = $user->getUserData();
+
+        $usdat = $userData->current();
+        if (null != $usdat) {
+            $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
+            $return['userGeodata'] = $usdat->getGeoData();
+            //exit ($userGeodata);
+        }
+        //exit (print_r($return));
+        return $return;
+    }
+
     public function basketPayInfoData($post, $param)
     {
         /*   $param = [
-           "hourPrice"=> 333,
-           "mergePrice"=> 50,
-         
-           "mergePriceFirst"=> 150,
-        ];*/
-        
+          "hourPrice"=> 333,
+          "mergePrice"=> 50,
+
+          "mergePriceFirst"=> 150,
+          ]; */
+
         $return["post"] = "<pre>" . print_r($post, true) . "</pre>";
         $products = $post->products;
-        $storeAdress=[];
+        $storeAdress = [];
         if ($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery)) {
             foreach ($selfdelevery as $providerinfo) {
                 //$provider = $this->storeReposi
-                $stores = Store::findAll(['where' =>['provider_id' => $providerinfo]]);
+                $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
                 $store = $stores->current();
                 //$address = explode(",", $store->getAddress());/**/
-                
-                $storeAdress[] = StringHelper::cutAddress( $store->getAddress());/**/
+
+                $storeAdress[] = StringHelper::cutAddress($store->getAddress()); /**/
                 //$storeAdress[]= print_r($stores, true);
                 //$storeAdress[] = $providerinfo;
             }
@@ -793,30 +809,28 @@ class HtmlProviderService
         if ($provider)
             $countDelevery = count($provider);
         $countDelevery = (int) $countDelevery - $countSelfdelevery;
-        if (!$post->ordermerge){
-            $priceDelevery =  $countDelevery * $param['hourPrice'];                   
-        }
-        else {
-            
-            $timeDelevery=(!$post->ordermerge)?$post->timepointtext1:$post->timepointtext3;
-            
-            $priceDelevery = $countDelevery*$param['mergePrice'] +  ceil($countDelevery/$param['mergecount'])* $param['mergePriceFirst'];
-            $countDelevery = ceil($countDelevery/$param['mergecount']);        
-            
+        if (!$post->ordermerge) {
+            $priceDelevery = $countDelevery * $param['hourPrice'];
+        } else {
+
+            $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
+
+            $priceDelevery = $countDelevery * $param['mergePrice'] + ceil($countDelevery / $param['mergecount']) * $param['mergePriceFirst'];
+            $countDelevery = ceil($countDelevery / $param['mergecount']);
         }
 
-        
-        //$return['payEnable'] =($total>0 and  ($countSelfdelevery or ($countDelevery and $timeDelevery)))?true:false; 
+
+        //$return['payEnable'] =($total>0 and  ($countSelfdelevery or ($countDelevery and $timeDelevery)))?true:false;
         $return["textDelevery"] = "за час";
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;
         $return["timeDelevery"] = $timeDelevery;
         $return["countSelfdelevery"] = $countSelfdelevery;
         $return["priceDelevery"] = $priceDelevery;
-        $return["countDelevery"] = $countDelevery ;
-        $return["countDeleveryText"] = $countDelevery ;
-        $return["countDeleveryText"] .= ($countDelevery < 2 )?" доставка ":(($countDelevery > 1 and $countDelevery < 5)?" доставки":" доставок ");
-        $return["storeAdress"] = $storeAdress ;
+        $return["countDelevery"] = $countDelevery;
+        $return["countDeleveryText"] = $countDelevery;
+        $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
+        $return["storeAdress"] = $storeAdress;
         //$return["paycardinfo"] = "4276 5555 **** <span class='red'>1234&darr;</span>";
 
         return $return;
@@ -824,169 +838,242 @@ class HtmlProviderService
 
     public function basketMergeData($post, $param)
     {
-        /*$param = [
-           "hourPrice" => 29900,  //цена доставки за час
-           "mergePrice" => 5000, //цена доставки за три часа
-           "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
-           "mergecount" => 4, //количество объеденямых магазинов
-        ];*/
+        /* $param = [
+          "hourPrice" => 29900,  //цена доставки за час
+          "mergePrice" => 5000, //цена доставки за три часа
+          "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
+          "mergecount" => 4, //количество объеденямых магазинов
+          ]; */
         $return = [];
         $products = $post->products;
-        if(!$selfdelevery = $post->selfdelevery) $countSelfdelevery = 0;  else $countSelfdelevery = count($selfdelevery);
-        //return ['count' => print_r($products , true)];  
+        if (!$selfdelevery = $post->selfdelevery)
+            $countSelfdelevery = 0;
+        else
+            $countSelfdelevery = count($selfdelevery);
+        //return ['count' => print_r($products , true)];
         $container = new Container(StringResource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
         $legalStore = array_keys($container->legalStore);
-        $legalStoresArray = (!empty($container->legalStoreArray))?$container->legalStoreArray:[]; 
-        
-        if( $products and !empty($products)){
+        $legalStoresArray = (!empty($container->legalStoreArray)) ? $container->legalStoreArray : [];
+
+        if ($products and!empty($products)) {
             $products = array_keys($products);
-            foreach($products as $pId){
+            foreach ($products as $pId) {
                 //$return["count"] = print_r($pId, true);         break;
                 $product = $this->productRepository->find(['id' => $pId]);
                 //$return["count"] = print_r($product, true);
-                
+
                 $providerId = $product->getProviderId();
                 $provider = $this->providerRepository->find(['id' => $providerId]);
-                
+
                 $store = $provider->recieveStoresInList($legalStore);
                 $idStore = $store->getId();
                 //
                 //
                 //$return["count"] = print_r($idStore, true);         break;
-                $timeClose[$idStore] =$legalStoresArray[$idStore]['time_until_closing']; 
+                $timeClose[$idStore] = $legalStoresArray[$idStore]['time_until_closing'];
                 //$legalStoresArray[$idStore]['time_until_closing'];
-                
             }
             $return['timeClose'] = min($timeClose);
             //<option value="0" rel=" в течение часа ">сейчас за час</option>
-            $timeDelevery1Hour[]=[
-                    "lable" => "сейчас за час",
-                    "value" => 0,
-                    "rel" => "в течение часа",
-                    ];
-                    
+            $timeDelevery1Hour[] = [
+                "lable" => StringResource::BASKET_SAYCHAS_title,
+                "value" => 0,
+                "rel" => StringResource::BASKET_SAYCHAS_do,
+            ];
+            /**/$timeDelevery3Hour[] = [
+                "lable" => StringResource::BASKET_SAYCHAS3_title,
+                "value" => 0,
+                "rel" => StringResource::BASKET_SAYCHAS3_do,
+            ]; /**/
+
             for ($i = 1; $i <= 12; $i++) {
-                $timeStart = time() + 3600 * $i; 
-                $timeEnd = time() + 3600 * $i + 3600; 
-                $time3End = time() + 3600 * $i + 3600 * 3; 
-                if($timeEnd > $return['timeClose']) break;
-                $rel = (date("d", $timeStart) == date("d"))?" сегодня ":" завтра ";
-                
-                $timeDelevery1Hour[]=[
-                    "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $timeEnd).":00",
+                $timeStart = time() + 3600 * $i;
+                $timeEnd = time() + 3600 * $i + 3600;
+                $time3End = time() + 3600 * $i + 3600 * 3;
+                if ($timeEnd > $return['timeClose'])
+                    break;
+
+                $value = "c " . date("H", $timeStart) . ":00" . " до " . date("H", $timeEnd) . ":00";
+                $value3 = "c " . date("H", $timeStart) . ":00" . " до " . date("H", $time3End) . ":00";
+
+                $rel = (date("d", $timeStart) == date("d")) ? " сегодня " : " завтра ";
+
+                $timeDelevery1Hour[] = [
+                    "lable" => $value, //.date("r",$return['timeClose']),
                     "value" => date("H", $timeStart),
-                    "rel" => $rel,
-                    ];
-                
-                if($time3End < $return['timeClose']) {
-                    $timeDelevery3Hour[]=[
-                    "lable" => "c ".date("H", $timeStart).":00"." до ".date("H", $time3End).":00",
-                    "value" => date("H", $timeStart),
-                    "rel" => $rel,
+                    "rel" => $rel . $value,
+                ];
+
+                if ($time3End < $return['timeClose']) {
+                    $timeDelevery3Hour[] = [
+                        "lable" => $value3,
+                        "value" => date("H", $timeStart),
+                        "rel" => $rel . $value3,
                     ];
                 }
             }
-             //$return["count"] = min($timeClose);
-            $return["count"] = count($timeClose)-$countSelfdelevery;
+            //$return["count"] = min($timeClose);
+            $return["count"] = count($timeClose) - $countSelfdelevery;
             $return["select1hour"] = $timeDelevery1Hour;
             $return["select3hour"] = $timeDelevery3Hour;
-            $return["hourPrice"] = $return["count"]*$param["hourPrice"];
-            $return["hour3Price"] = $return["count"]*$param['mergePrice'] +  ceil($return["count"]/$param['mergecount'])* $param['mergePriceFirst'];
-            
-            
-            
+            $return["hourPrice"] = $return["count"] * $param["hourPrice"];
+            $return["hour3Price"] = $return["count"] * $param['mergePrice'] + ceil($return["count"] / $param['mergecount']) * $param['mergePriceFirst'];
         }
         return $return;
     }
-    
-    
+
+    public function basketWhatHappenedUpdate($userId, $products)
+    {
+        while (list($productId, $changes) = each($products)) {
+            $product_id[] = $productId;
+            $persist = false;
+            $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+
+            if (null != $changes['rest'] and $changes['rest'] >= 0) {
+                $basketItem->setTotal($changes['rest']);
+                $persist = true;
+            }
+            if ($changes['price'] > 0) {
+                $basketItem->setPrice($changes['price']);
+                $persist = true;
+            }
+            if ($persist) {
+                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+                $j++;
+            } /**/
+        }
+        return "обновлено товаров - $j";
+        //return $product_id;
+    }
+
     public function basketData($basket)
     {
         $countproducts = 0;
-        $countprovider=[];
-        foreach ($basket as $b) {
-            if ($pId = $b->productId) {
-                /** @var HandbookRelatedProduct */
-                $product = $this->productRepository->find(['id' => $pId]);
-                $price = (int) $product->receivePriceObject()->getPrice();
-                if ($product->receiveRest())
-                    $availblechek[$product->getProviderId()] = true;
-                $rest = $product->receiveRest();
-                
-                $count = $b->total;
-                if ($count > $rest)
-                    $count = $rest;
-                //if ($rest) $countproducts +=$count ;
-                if ($rest) {
-                    $countproducts ++; 
-                    //$countproducts +=$count ;
-                    $countprovider[$product->getProviderId()]=1;
-                  }
-                
-                $item[$product->getProviderId()][] = [
-                    'id' => $pId,
-                    'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
-                    'title' => $product->getTitle(),
-                    'price' => $price,
-                    'oldprice' => $product->receivePriceObject()->getOldPrice(),
-                    // 'availble' => '1',
-                    'availble' => $rest,
-                    'count' => $count,
-                    
-                ];
-            }
-        }
-        if (!$item or!count($item))
-            return ;
-
+        $countprovider = [];
         $container = new Container(StringResource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
         $legalStore = array_keys($container->legalStore);
-        $legalStoresArray =  $container->legalStoreArray; 
+        $legalStoresArray = $container->legalStoreArray;
+
+        foreach ($basket as $b) {
+            if ($pId = $b->productId) {
+                /** @var HandbookRelatedProduct */
+                $product = $this->productRepository->find(['id' => $pId]);
+                $oldprice = $b->price;
+                $price = (int) $product->receivePriceObject()->getPrice();
+                $rest = $product->receiveRest($legalStore);
+                $productProviderId = $product->getProviderId();
+                $productProvider = $this->providerRepository->find(['id' => $productProviderId]);
+                $count = $b->total;
+                $productStore = $productProvider->recieveStoresInList($legalStore);
+                $productAvailable = (null != $productStore);
+                unset($productStoreId);
+
+                if ($rest) {
+                    $availblechek[$productProviderId] = true;
+                }
+
+
+                if ($productAvailable) {
+
+                    $productStoreId = $productStore->getId();
+                    if ($oldprice != $price) {
+                        $whatHappened[$pId]['oldprice'] = $oldprice;
+                        $whatHappened[$pId]['price'] = $price;
+                    }
+                    if ($count > $rest) {
+
+                        $whatHappened[$pId]['oldrest'] = $count;
+                        $whatHappened[$pId]['rest'] = $rest;
+
+                        $count = $rest;
+                    }
+                    if ($count == 0 and 0 < $rest) {
+                        $whatHappened[$pId]['instock'] = $rest;
+                    }
+                }//if ($rest) $countproducts +=$count ;
+                if ($rest) {
+                    $countproducts++;
+                    //$countproducts +=$count ;
+                    $countprovider[$product->getProviderId()] = 1;
+                }
+
+                $item[$product->getProviderId()][] = [
+                    'id' => $pId,
+                    'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
+                    'title' => $product->getTitle(),
+                    'price' => $price,
+                    'oldprice' => $b->price,
+                    // 'availble' => '1',
+                    'availble' => $rest,
+                    'count' => $count,
+                    'store' => $productStoreId,
+                ];
+            }
+            if ($whatHappened)
+                $container->whatHappened = $whatHappened;
+        }
+        if (!$item or!count($item))
+            return;
+
+
+
         //$return = [];
         $g = 0;
         while (list($prov, $prod) = each($item)) {
-            $j++;
+            $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
             //exit( print_r($store));
-            unset($idStore );
-            $infostore1c="";
-            if (null != $store){
+            unset($idStore, $timStoreOpen);
+            $infostore1c = "";
+            if (null != $store) {
                 $idStore = $store->getId();
-                $infostore1c .=($legalStoresArray[$idStore]['working_hours_from'])?
-                        "сегодня с ".substr($legalStoresArray[$idStore]['working_hours_from'],0,-3)." до ".substr($legalStoresArray[$idStore]['working_hours_to'],0,-3)
-                        :"";
-                $infostore1c .=($legalStoresArray[$idStore]['time_until_closing'])
-                        ?"<span class='blok mini'>заказать возможно до  ".date("Y.m.d H:i",$legalStoresArray[$idStore]['time_until_closing'])."</span>"
-                        :"";
+                $infostore1c .= ($legalStoresArray[$idStore]['working_hours_from']) ?
+                        "сегодня с " . substr($legalStoresArray[$idStore]['working_hours_from'], 0, -3) . " до " . substr($legalStoresArray[$idStore]['working_hours_to'], 0, -3) : "";
+                $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
+                $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
+                $timStoreOpen = $IntervalOpen + time();
+                //$timStoreOpen = time()+60*60*1;
             }
-            if (null != $store){
-                 if($legalStoresArray[$idStore]['status'] ) {
+            if (null != $store) {
+
+                if (!$legalStoresArray[$idStore]['status']) {
+                    //все работает
                     $provider_disable = false;
                     $returnprefix = $j * -1;
-                    $provider_address = $store->getAddress().$ifostore1c;
-                    $provider_address .= ($store->getDescription())?", ".$store->getDescription():"";
+                    $provider_address = $store->getAddress() . $ifostore1c;
+                    $provider_address .= ($store->getDescription()) ? ", " . $store->getDescription() : "";
                     $provider_store = $store->getTitle();
+                    $provider_store_id = $store->getId();
                     $provider_addressappend = StringHelper::cutAddress($provider_address);
-                 }
-                 else {
-                    $provider_disable = "Сейчас доставка недоступна";
-                    $returnprefix = $j;
-                    if(!$infostore1c) $infostore1c="Магазин закрыт";
-                     
-                 }
-            } 
-            else {
-                $provider_disable = "Сейчас доставка недоступна";
-                $returnprefix = $j+100;
+                    $countprovider++;
+                } else {
+
+                    if ($IntervalOpen > 0) {
+                        $returnprefix = $j;
+                        //закрыт на ночь
+                        $provider_disable = StringResource::STORE_CLOSE_FOR_NIGHT;
+                        $infostore1c = StringResource::STORE_CLOSE_FOR_NIGHT_ALT;
+                        $infostore1c .= (date("d") == date("d", $timStoreOpen)) ? " сегодня " : " завтра ";
+                        $infostore1c .= "в " . date("H:i", $timStoreOpen);
+                    } else {
+                        $returnprefix = $j + 100;
+                        //закрыт на неопределеноне время
+                        $provider_disable = StringResource::STORE_UNAVALBLE;
+                        $infostore1c = StringResource::STORE_UNAVALBLE_ALT;
+                    }
+                }
+            } else {
+                $provider_disable = StringResource::STORE_OUT_OF_RANGE;
+                $returnprefix = $j + 1000;
                 $provider_address = $provider_worktime = $provider_timeclose = "";
-                $infostore1c = "Эти товары сейчас нельзя доставить по вашему адресу";
+                $infostore1c = StringResource::STORE_OUT_OF_RANGE_ALT;
                 //$provider_store_off = "Комментарий из 1с ".$ifostore1c;
             }
 
@@ -1001,18 +1088,22 @@ class HtmlProviderService
                 "provider_worktime" => $provider_worktime,
                 "provider_timeclose" => "",
                 "provider_store" => $provider_store,
+                "provider_store_id" => $provider_store_id,
                 "provider_store_off" => $provider_store_off,
                 "products" => $prod,
                 "infostore1c" => $infostore1c,
             ];
         }
-        if ($countproducts){
-            $countproviders = (int)count($countprovider);
-            $return["title"]  = ($countproducts == 1)?"$countproducts наименование ":($countproducts >1 and $countproducts < 5)?"$countproducts наименования ":"$countproducts наименований ";
+        if ($countproducts) {
+            $countproviders = (int) count($countprovider);
+            $return["title"] = ($countproducts == 1) ? "$countproducts позиция " : ($countproducts > 1 and $countproducts < 5) ? "$countproducts позиции " : "$countproducts позиций ";
             $return["title"] .= "из ";
-            $return["title"] .=($countproviders == 1)?"$countproducts магазина ": "$countproducts магазинов ";
+            $return["title"] .= ($countproviders == 1) ? "$countproducts магазина " : "$countproducts магазинов ";
         }
-        if(is_array($return["product"]))     ksort($return["product"]);
+        $return ["countproviders"] = $countproviders;
+        $return ["countprducts"] = $countproducts;
+        if (is_array($return["product"]))
+            ksort($return["product"]);
         return $return;
     }
 

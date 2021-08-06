@@ -249,6 +249,26 @@ return [
             ],
             //basketPayInfo
             
+        'user-auth-modal' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/user-auth-modal',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'userAuthModal',
+                    ],
+                ],
+            ],//userAuthModal
+            'send-basket-data' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/send-basket-data',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'sendBasketData',
+                    ],
+                ],
+            ],//userAuth
             'product' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -772,7 +792,39 @@ return [
                     ],
                 ],
             ],
-            //basketOrderMergeAction
+            'user-delete-address' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/user-delete-address',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxUserDeleteAddress',
+                    ],
+                ],
+            ],
+            'user-set-default-address' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/user-set-default-address',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxUserSetDefaultAddress',
+                    ],
+                ],
+            ],
+            
+            'ajax-basket-changed' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-basket-changed',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxBasketChanged',
+                    ],
+                ],
+            ],
+            
+            
             'ajax-basket-order-merge'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -920,8 +972,15 @@ return [
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
             
+            \Application\Service\CommonHelperFunctionsService::class => \Application\Service\Factory\CommonHelperFunctionsServiceFactory::class,
+            
             //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
             //\Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
+
+            /** Entities */
+            \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
+            \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
+
             
         ],
         'invokables' => [
@@ -934,6 +993,7 @@ return [
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
+        'not-authorized'           => 'error/403',
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
@@ -950,10 +1010,25 @@ return [
         'strategies' => ['ViewJsonStrategy',],
     ],
     'view_helpers' => [
-      'invokables' => [
-         'catalog' => \Application\View\Helper\CatalogHelper::class,
-      ],
-    ],
+        'invokables' => [
+           'catalog' => \Application\View\Helper\CatalogHelper::class,
+        ],
+        'factories' => [
+            View\Helper\ImagePath::class => View\Helper\Factory\ImagePathFactory::class,
+        ],
+        'aliases' => [
+            'imagePath' => View\Helper\ImagePath::class,
+        ],
+  ],
+//    'view_helpers' => [
+//        'factories' => [
+//            View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
+//        ],
+//        'aliases' => [
+//            'access' => View\Helper\Access::class,
+//        ],
+//    ],
+    
     'parameters' => [
         '1c_auth' => [
             'username' => 'administrator',
@@ -968,7 +1043,17 @@ return [
             'update_client_info' => 'http://SRV02:8000/SC/hs/site/update_client_info',
             'change_client_password' => 'http://SRV02:8000/SC/hs/site/change_client_password',
             'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
-            'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
+            //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
+            'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
+            
+        ],
+        'image_path' => [
+            'base_url' => '/image',
+            'subpath' => [
+                'brand' => 'brand',
+                'product' => 'product',
+                'provider' => 'provider',
+            ],
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
         'local_catalog' => [

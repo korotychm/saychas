@@ -29,7 +29,7 @@ class UserData extends Entity
     /**
      * @var int
      */
-//    protected $id;
+    protected $id;
 
     /**
      * @var int
@@ -61,6 +61,8 @@ class UserData extends Entity
      * @var int
      */
     protected $fias_level;
+    
+    protected $time = 0;
 
     private function parseJson($json)
     {
@@ -77,21 +79,20 @@ class UserData extends Entity
      * @param int $id
      * @return $this
      */
-//    public function setId($id)
-//    {
-//        $this->id = $id;
-//        return $this;
-//    }
-
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
     /**
      * Get id.
      *
      * @return type
      */
-//    public function getId()
-//    {
-//        return $this->id;
-//    }
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set user_id.
@@ -231,6 +232,17 @@ class UserData extends Entity
     public function getFiasLevel()
     {
         return $this->fias_level;
+    }
+    
+    public function setTime($time)
+    {
+        $this->time = $time;
+        return $this;
+    }
+    
+    public function getTime()
+    {
+        return $this->time;
     }
 
 }

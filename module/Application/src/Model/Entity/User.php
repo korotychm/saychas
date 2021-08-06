@@ -42,6 +42,11 @@ class User extends Entity
     /**
      * @var string
      */
+    protected $user_id;
+
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -151,6 +156,28 @@ class User extends Entity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set user_id.
+     *
+     * @param int $user_id
+     * @return $this
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+        return $this;
+    }
+
+    /**
+     * Get user_id.
+     *
+     * @return string
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
     }
 
     /**

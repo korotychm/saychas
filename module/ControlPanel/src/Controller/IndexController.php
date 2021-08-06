@@ -10,6 +10,7 @@ use ControlPanel\Service\HtmlContentProvider;
 use ControlPanel\Service\RbacManager;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 
@@ -58,6 +59,7 @@ class IndexController extends AbstractActionController
         $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
+        $this->rbacManager->init(true);        
     }
 
     public function onDispatch(MvcEvent $e)
@@ -74,12 +76,10 @@ class IndexController extends AbstractActionController
         $this->layout()->setVariables([
             'menuItems' => $menuItems,
             'sidebarMenuItems' => $sidebarMenuItems,
+            'currentUser' => $this->currentUser(),
         ]);
 
-//        $identity = $this->authService->getIdentity();
         $hasIdentity = $this->authService->hasIdentity();
-//        $identity2 = $this->identity();
-        //if (!$this->sessionContainer->partnerLoggedIn) {
         if(!$hasIdentity) {
             $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
         }
@@ -94,8 +94,10 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         //$roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
-        $this->rbacManager->init(true);
-        return new ViewModel();
+//        $this->rbacManager->init(true);
+        $currentUser = $this->currentUser();
+        $access = $this->access('analyst');
+        return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
     }
 
     /**
@@ -153,6 +155,15 @@ class IndexController extends AbstractActionController
     public function profileAction()
     {
         $this->assertLoggedIn();
+//        if(!$this->authService->hasIdentity()) {
+//            return new JsonModel(['data' => false]);
+//        }
+        return (new ViewModel())->setTerminal(true);
+    }
+    
+    public function userManagementAction()
+    {
+        $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -202,14 +213,17 @@ class IndexController extends AbstractActionController
      */
     private function assertLoggedIn()
     {
+        if(!$this->authService->hasIdentity()) {
+            return new JsonModel(['data' => false]);
+        }
 //        $identity = $this->authService->getIdentity();
-        $hasIdentity = $this->authService->hasIdentity();
+//        $hasIdentity = $this->authService->hasIdentity();
 //        $identity2 = $this->identity();
         //if(!isset($this->sessionContainer->partnerLoggedIn)){
-        if(!$hasIdentity) {
-            echo 'null';
-            exit;
-        }
+//        if(!$hasIdentity) {
+//            echo 'null';
+//            exit;
+//        }
     }
 
 }

@@ -2,59 +2,46 @@
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
 ?>
+<?php if(!$this->legalUser) {?><script>$(function () {
+        $('#usermodalwindow').modal('show')
+    })</script>
+<?php } ?>
 <div class="container mainconteiner"  >
     <div  class="contentwrapper">
         <?= $this->bread ?> 
-
-        <!-- Button trigger modal -->
-        <!-- button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> 
-          Запустить модальное окно
-        </button>
-        
-        
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                ...
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-          </div>
-        </div -->
-        <h2 id='h1title'><?= $this->titleH ?></h2> 
+        <h1 id='h1title' сlass="h1" ><?= $this->titleH ?></h1> 
         <div id="user-basket">
             <form method='POST' id='user-basket-form'>   
-                <input type="hidden" name="userId" value="<?=$this->basketUser['id']?>">
-                <textarea class="none" name="userGeoLocation" ><?=$this->basketUser['geodata']?></textarea>
                 <div class="pw-contentblock cblock-5">
                     <?php //exit(print_r($this->content)); ?>
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
 
-                    <?= $this->partial("/application/index/partials/basket/basket-user", ["basketUser" => $this->basketUser]) ?>                     
-                    <div class='pw-contentblock ' id='basketordermerge'>
-                    <?php  $this->partial("/application/common/basket-order-merge")  ?>          
+                    <?=
+                    $this->partial("/application/index/partials/basket/basket-user",
+                            [
+                                "legalUser" => $this->legalUser,
+                                "basketUser" => $this->basketUser,
+                                'register_title' => $this->register_title,
+                                'register_text' => $this->register_text,
+                    ])
+                    ?>                     
+                    <div class='pw-contentblock' id='basketordermerge'>
+                    <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>          
                     </div>            
-                    
-                    <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>      
+
+                        <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>      
                     <div  id='baskepaycardinfo'>
-                        <?=$this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1]) 
-                            ?>    
+<?= $this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1])
+?>    
                     </div>    
                 </div>
                 <div class="pw-contentblock cblock-3">
-                    <div class="contentpadding">
+                    <div class="contentpadding-dis">
                         <!-- div class='blok pwbox'> сервисный блок</div -->
-                        <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>      
+<?= $this->partial("/application/index/partials/basket/basket-paysection") ?>      
+                <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
+                <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
+                
                     </div>
                 </div>  
             </form>

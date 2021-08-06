@@ -17,8 +17,10 @@ function sendfilterform() {
                 //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("#ajaxfiltranswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-                alert(("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError));
+               if(xhr.status != 0 ){ $("#ServiceModalWindow .modal-title").html("Ошибка " +  xhr.status );
+               $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+               $("#ServiceModalWindow").modal("show");
+                }
             }
         });
     }
@@ -99,7 +101,7 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
         }
     });
     
-    
+    $("body").on("click",".user-modal-open",function(){$('#usermodalwindow').modal('show')})
     
     $("body").on("click", ".radio", function () {
         var rel=$(this).attr('rel');
@@ -136,6 +138,34 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
         $("#searchpanel").stop().css({top: "-200px"});
         $("#uadress").show();
     })
+    
+        $(".setuseraddress").click(function () {
+        var rel = $(this).attr("rel");
+        $.ajax({
+            beforeSend: function () {},
+            url: "/user-set-default-address",
+            type: 'POST',
+            cache: false,
+            data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
+            success: function (data) {
+                //console.log(data);
+                //if(data.result == 1) 
+                //    $("#useradress-" + rel ).fadeOut();                  
+                location = location.href;
+                return false;
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            if(xhr.status != 0 ){    
+                $("#ServiceModalWindow .modal-title").html("Ошибка setuseraddress " + xhr.status);
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                $("#ServiceModalWindow").modal("show");
+            }
+                return false;
+            }
+        });
+    return false;
+    });
+    
     $(".open-user-address-form").click(function () {
         $("#searchpanel").stop().animate({top: "0px"});
         $("#uadress").hide();
@@ -183,30 +213,6 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
     });
     
     
-    $("#basketuseradress").suggestions({
-        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-        type: "ADDRESS",
-        onSelect: function (suggestion) {
-            $("#adesserror").hide();
-            console.log(suggestion.data);
-            if (!suggestion.data.house)
-            {
-                $("#basketuseradresserror").html("Необходимо указать адрес до номера дома!").show();
-                return false;
-            }
-
-
-            //return ;
-            var dataString = JSON.stringify(suggestion);
-            $("#geodatadadata").val(dataString);
-            
-            getLegalStores(dataString, '#basketuseradresserror');
-            addUserAddrees(dataString, $("#basketuseradress").val());
-            //addUserAddrees(dataString,$("#useraddress").val());
-            //location = location.href;
-            //
-        }
-    });
     
     
     
@@ -298,7 +304,8 @@ $("body").on("keyUp, blur, focus, change", ".numonly", function(){$(this).val($(
             success: function (data) {
                 //console.log(data);
                 if (data.error == false) {
-                    location = location.href;
+                    //location = location.href;
+                    getLegalStores($("#geodatadadata").text(), ".testlegalstor", true );
                     return false;
                 } 
                 if (data.phone){
@@ -446,19 +453,20 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad=true) {
         cache: false,
         data: {"value": dataString},
         success: function (data) {
-            if (data == "200") {
-                //console.log(data);
+            if (data.result) {
+                console.log(data.message);
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
-                
-               
-                
-                
+               if (wrelaoad) { 
+                   location = location.href;
+                   return false;
+               }
             }
-
-            $(obj).html(data);
+            else {
+            $(obj).html(data.error);
             return true;
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $(obj).html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);

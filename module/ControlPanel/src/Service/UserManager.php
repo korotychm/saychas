@@ -4,7 +4,9 @@
 
 namespace ControlPanel\Service;
 
+use Laminas\Hydrator\ClassMethodsHydrator;
 use ControlPanel\Service\CurlRequestManager;
+use ControlPanel\Model\Entity\User;
 
 /**
  * Description of UserManager
@@ -23,14 +25,6 @@ class UserManager
     {
         $this->config = $config;
         $this->curlRequestManager = $curlRequestManager;
-
-//        $answer = $this->getAllUsers([
-//            'provider_id' => '00002',
-////            'login' => 'Banzaii',
-////            'password' => '1234', // 'ODx7hdsjK9',
-////            'roles' => ["000000002", "000000003", "000000003",],
-////            'access_is_allowed' => true,
-//        ]);
     }
 
     /**
@@ -157,6 +151,36 @@ class UserManager
         $answer = $this->curlRequestManager->sendCurlRequest($url, $content);
 
         return $answer;
+    }
+
+    /**
+     * $content = [
+     *      'provider_id' => '00002',
+     *      'login' => 'Banzaii',
+     * ],
+     *
+     * @param array $content
+     */
+    public function findOne($content)
+    {
+        $users = $this->getAllUsers($content)['info'];
+        foreach ($users as $user) {
+            if ($content['login'] === $user['login']) {
+                return $user;
+            }
+        }
+        return null;
+    }
+
+    public function findOneUserObject($content)
+    {
+        $user = $this->findOne($content);
+        if (null == $user) {
+            return null;
+        }
+        $user['roles'] = implode(',', $user['roles']);
+        $hydrator = new ClassMethodsHydrator();
+        return $hydrator->hydrate($user, new User());
     }
 
 }

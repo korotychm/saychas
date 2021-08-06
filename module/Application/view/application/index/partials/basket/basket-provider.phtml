@@ -32,8 +32,8 @@ foreach ($param as $provider):
                 <div class='providerbasketdisablehelpcontent '>
                     <span class='strelka'></span><span class='blok'><?=$provider['infostore1c']?></span>
                     
-                    <span class='gray blok mini'><?=$provider['provider_worktime']?></span>
-                    <span class='blok gray mini'><?=$provider['provider_address']?></span>
+                    <!-- span class='gray blok mini'><?=$provider['provider_worktime']?></span>
+                    <span class='blok gray mini'><?=$provider['provider_address']?></span -->
                 </div>
               </div>
               
@@ -69,10 +69,10 @@ foreach ($param as $provider):
         </div>
         <div  class='basketcol selfdelevery'>
             <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' id='selfdeleveryonoff-<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
-            <input type='checkbox' class="none" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_id']?>' name='selfdelevery[]' >
+            <input type='checkbox' class="none selfdeleverycheckbox" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_store_id']?>' name='selfdelevery[]' >
             <span class='blok gray none' id="provider_addressappend<?=$provider['provider_id']?>">
         <?=($provider['provider_store'])?"<b class='blok'>".$provider['provider_store']."</b>":""?>
-        <?=$provider['provider_addressappend']?>
+        <?php echo $provider['provider_addressappend']?>
             </span>
                 <span class='blok gray'><?=$provider['provider_worktime']?></span>
                  

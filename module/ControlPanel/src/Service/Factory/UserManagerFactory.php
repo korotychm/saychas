@@ -7,7 +7,7 @@ namespace ControlPanel\Service\Factory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use ControlPanel\Service\CurlRequestManager;
-use Application\Service\ExternalCommunicationService;
+//use Application\Service\ExternalCommunicationService;
 use ControlPanel\Service\UserManager;
 
 /**

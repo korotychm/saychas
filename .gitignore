@@ -3,8 +3,11 @@ vendor/
 config/development.config.php
 data/cache/*
 data/cache
+public/images/*
 public/images/product/*
 public/images/product
+public/images/brand
+public/images/provider
 !data/cache/.gitkeep
 composer.lock
 phpunit.xml
@@ -12,3 +15,4 @@ phpunit.xml
 nbproject/*
 nbproject/**
 nbproject/private/private.xml
+nbproject/private/private.properties

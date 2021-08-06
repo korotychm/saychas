@@ -80,7 +80,12 @@ class AuthController extends AbstractActionController
 ////            'access_is_allowed' => true,
 //        ]);
         
-        $returnUrl = $this->params()->fromQuery('returnUrl');
+        //$returnUrl = $this->params()->fromQuery('returnUrl');
+        $data = $this->params()->fromQuery('data');
+        if(null != $data) {
+            return new \Laminas\View\Model\JsonModel(['data' => true]);
+        }
+        $returnUrl = $this->params()->fromQuery('p');
         return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl]);
     }
 
@@ -93,45 +98,47 @@ class AuthController extends AbstractActionController
     public function checkLoginAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $result = $this->authManager->login(['provider_id' => '00002', 'login' => 'Banzaii', 'password' => '1234',]);
-//        if ('banzaii' == $post['username'] && 'vonzaii' == $post['password']) {
+        $result = $this->authManager->login(['provider_id' => '00002', 'login' => $post['username'], 'password' => $post['password'],]);
         if($result->getCode() == Result::SUCCESS) {
             // set session
-            //$this->sessionContainer->partnerLoggedIn = $result->getIdentity();
-            
-            $post['username'] = 'Banzaii';
-            $post['password'] = '1234';
-
-            return $this->redirect()->toUrl($post['returnUrl']);
+            return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel?'/*$post['returnUrl']*/);
         }
-        //unset($this->sessionContainer->partnerLoggedIn);
-        $this->authManager->logout();
-        return $this->redirect()->toUrl($post['returnUrl']);
+        
+        return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel'/*$post['returnUrl']*/);
     }
 
     /**
-     * Unset session partnerLoggedIn data
+     * Logout
      *
      * @return Redirect
      */
     public function logoutAction()
     {
-        //unset($this->sessionContainer->partnerLoggedIn);
-//        return $this->redirect()->toUrl('/control-panel');
         $this->authManager->logout();
         return $this->redirect()->toUrl('/control-panel');
     }
 
     /**
-     * Displays the "Not Authorized" page.
+     * Set 403: "Forbidden" status 
      *
      * @return ViewModel
      */
     public function notAuthorizedAction()
     {
-        $this->getResponse()->setStatusCode(403);
+        $response = $this->getResponse();
+        $response->setStatusCode(403);
+        
+        return $response;
+    }
 
-        return new ViewModel();
+    /**
+     *  Displays the "Not Authorized" page.
+     * 
+     * @return ViewModel
+     */
+    public function notAuthorizedViewAction()
+    {
+        return (new ViewModel())->setTerminal(true);
     }
 
 }

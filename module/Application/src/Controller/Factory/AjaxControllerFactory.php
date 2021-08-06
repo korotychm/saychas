@@ -30,6 +30,7 @@ use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 
 use Application\Service\HtmlProviderService;
 use Application\Controller\AjaxController;
+use Application\Service\CommonHelperFunctionsService;
 
 /**
  * This is the factory for AjaxController. Its purpose is to instantiate the
@@ -53,13 +54,16 @@ class AjaxControllerFactory implements FactoryInterface
         $stockBalance = $container->get(StockBalanceRepositoryInterface::class);
         $handBookProduct = $container->get(HandbookRelatedProductRepositoryInterface::class);
         $productCharacteristicRepository = $container->get(ProductCharacteristicRepositoryInterface::class);
-        $entityManager = $container->get('doctrine.entitymanager.orm_default');
+        //$entityManager = $container->get('doctrine.entitymanager.orm_default');
+        $entityManager = $container->get('laminas.entity.manager');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
         $basketRepository = $container->get(BasketRepositoryInterface::class);
         $productImageRepository = $container->get(ProductImageRepositoryInterface::class);
+        
+        $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
         
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
@@ -68,7 +72,7 @@ class AjaxControllerFactory implements FactoryInterface
         
         return new AjaxController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $characteristic, $price, 
                 $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $userRepository, $authService,
-                $productCharacteristicRepository, $basketRepository, $productImageRepository/*, $sessionContainer*/);
+                $productCharacteristicRepository, $basketRepository, $productImageRepository/*, $sessionContainer*/, $commonHelperFuncions);
     }
 
 }

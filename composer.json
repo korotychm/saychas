@@ -33,7 +33,9 @@
         "mongodb/mongodb": "^1.8",
         "laminas/laminas-servicemanager": "^3.6",
         "laminas/laminas-permissions-rbac": "^3.1",
-        "laminas/laminas-serializer": "^2.10"
+        "laminas/laminas-serializer": "^2.10",
+        "laminas/laminas-validator": "^2.14",
+        "laminas/laminas-cache-storage-adapter-apc": "^1.0"
     },
     "autoload": {
         "psr-4": {

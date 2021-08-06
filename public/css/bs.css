@@ -19,7 +19,7 @@
   --white: #fff;
   /*--gray: var(--gray);*/
   --gray: #a7a7a7;
-  --gray-light: #e0e0e0;
+  --gray-light: #f2f2f2;
   --gray-dark: #343a40;
   --primary: #007bff;
   --secondary: #6c757d;
@@ -368,7 +368,8 @@ h1, h2, h3, h4, h5, h6,
 }
 
 h1, .h1 {
-  font-size: 2.3rem;
+  font-size: 2.2rem;
+  margin:16px 0;
 }
 
 h2, .h2 {
@@ -4742,6 +4743,7 @@ input[type="button"].btn-block {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
+  
 }
 
 .card > hr {
@@ -4869,9 +4871,10 @@ input[type="button"].btn-block {
   .card-deck .card {
     -ms-flex: 1 0 0%;
     flex: 1 0 0%;
-    margin-right: 8px;
+   /* margin-left: 8px;
+    margin-right: 8px;*/
     margin-bottom: 16;
-    margin-left: 8px;
+   
   }
 }
 
@@ -5830,13 +5833,13 @@ a.badge-dark:focus, a.badge-dark.focus {
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1;
-  color: #000;
+  color: var(--red);
   text-shadow: 0 1px 0 #fff;
-  opacity: .5;
+  opacity: 1;
 }
 
 .close:hover {
-  color: #000;
+  /*color: #000;*/
   text-decoration: none;
 }
 
@@ -5931,6 +5934,11 @@ a.close.disabled {
   margin: 0.5rem;
   pointer-events: none;
 }
+.modal-dialog-middle {
+    width:100%;
+    max-width: 800px;
+    
+}
 
 .modal.fade .modal-dialog {
   transition: -webkit-transform 0.3s ease-out;
@@ -6018,8 +6026,11 @@ a.close.disabled {
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
+  /*border-radius: 0.3rem;*/
+  border-radius: 24px;
+  padding:8px 16px;
   outline: 0;
+  box-shadow:15px 0px 30px rgba(0,0,0,.3); 
 }
 
 .modal-backdrop {
@@ -6048,7 +6059,7 @@ a.close.disabled {
   -ms-flex-pack: justify;
   justify-content: space-between;
   padding: 1rem 1rem;
-  border-bottom: 1px solid #dee2e6;
+  /*border-bottom: 1px solid #dee2e6;*/
   border-top-left-radius: calc(0.3rem - 1px);
   border-top-right-radius: calc(0.3rem - 1px);
 }
@@ -6080,7 +6091,7 @@ a.close.disabled {
   -ms-flex-pack: end;
   justify-content: flex-end;
   padding: 0.75rem;
-  border-top: 1px solid #dee2e6;
+ /*border-top: 1px solid #dee2e6;*/
   border-bottom-right-radius: calc(0.3rem - 1px);
   border-bottom-left-radius: calc(0.3rem - 1px);
 }
@@ -6098,8 +6109,12 @@ a.close.disabled {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
+  .modal-dialog { 
     max-width: 500px;
+    margin: 1.75rem auto;
+  }
+  .modal-dialog-middle {
+       max-width: 800px;
     margin: 1.75rem auto;
   }
   .modal-dialog-scrollable {

@@ -51,6 +51,7 @@ class HtmlContentProvider
     {
         return [
             ['id' => 'profileId', 'url' => '#', 'name' => 'Данные профиля', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
+            ['id' => 'userManagementId', 'url' => '#', 'name' => 'Управление сотрудниками', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
             ['id' => 'accountManagementId', 'url' => '#', 'name' => 'Управление аккаунтом', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
             ['id' => 'storesId', 'url' => '#', 'name' => 'Адреса магазинов', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
             ['id' => 'actionAndDiscountId', 'url' => '#', 'name' => 'Акции и скидки', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],

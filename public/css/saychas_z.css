@@ -5,7 +5,17 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 
 #headermenu {display:block; background:#252525; margin:0; outline:0; padding:0; height:56px; text-align:center; position: relative; z-index:500;}
-#headermenu .headermenucontent {display:inline-block; width:100%; max-width:1600px; min-width:1101px;  max-height:60px; height:auto; overflow:hidden; text-align:left}
+#headermenu .headermenucontent {
+    display:inline-block; 
+    width:100%; 
+    max-width:1600px; 
+    min-width:1101px;  
+    max-height:60px; 
+    height:auto; 
+    overflow:hidden; 
+    text-align:left;
+    padding:0 16px;
+}
 #headermenu .headermenucontent a {
     display:inline-block; 
     text-decoration:none; 
@@ -22,7 +32,8 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 #quicksearch .blok  {font-size:90%;}
 .overcoverblack {width:100%; height:100%;position:fixed; display:block; background:rgba(0,0,0,.5);z-index:600; top:0 }
-.overcoverlocal {width:100%; height:100%;position:absolute; display:block; background:rgba(255,255,255,.7);z-index:10; top:0 }
+.overcoverlocal {width:100%; height:100%;position:absolute; display:block;  z-index:10; top:0; background:rgba(255,255,255,.7) }
+.overcoverlocal.loader {background:rgba(255,255,255,.7) url(/img/loader.gif) center no-repeat ;}
 #lefmobiletpanel  {
     position:fixed; 
     display:block; 
@@ -51,9 +62,16 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 #supermenuinside  li{list-style:none}
 #supermenuinside  li a{text-decoration:none !important}
 #supermenuinside li ul li { font-size:90%; font-weight:normal; margin-left:1vw}
-#topmenu {display:table;  margin:0; outline:0; padding:0; min-height:56px; max-height:56px; text-align:center; width:100%; max-width:1600px; overflow:hidden;
+#topmenu {display:table;  margin:0; outline:0; padding:0; min-height:56px; max-height:56px; text-align:center; 
+          width: calc(100% - 32px); max-width:1600px; overflow:hidden;
           background:#f2f2f2;
-          border-radius:25px; position:relative; top:-12px; margin-bottom:-12px
+          border-radius:25px; 
+          position:relative; 
+          margin:0 16px;
+          top:-12px; 
+          margin-bottom:-12px;
+          box-sizing: border-box;
+
 }
 #topmenu ul {
     display:table-row;
@@ -243,7 +261,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     text-align:center;
 }
 .productcard  .content:hover .payblockcard {display:block}
-.paybutton, .paybuttonwhite, .formsendbutton, .paybuttonwhite:hover  {
+.paybutton, .paybuttonwhite, .formsendbutton, .userformsendbutton, .paybuttonwhite:hover  {
     display:inline-block; 
     text-align:center;
     width:100%; 
@@ -409,7 +427,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     margin-bottom:12px;
 }   
 
-#basketordermerge .text, #paycardblok .text {margin-left:35px; margin-top:1em;}
+#basketordermerge .text, #baskepaycardinfo .text {margin-left:35px; margin-top:1em;}
 #basketordermerge .zach, #paycardblok .zach{color:var(--black)}
 #basketordermerge .radio, #paycardblok .radio{line-height:1.3em; margin-bottom:.7rem; padding-top:5px;}
 
@@ -457,11 +475,28 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     padding:16px; 
     border-radius:16px;
     display:block; 
-    border:1px solid var(--gray-light); 
+    border:1px solid var(--gray); 
     box-sizing: border-box;
     min-width:500px;
-    margin-bottom:24px
+    margin:16px 0;
+
 }
+.contentpaddinguserbox  {
+    padding:16px; 
+    border-radius:16px;
+    display:block; 
+    border:1px solid var(--gray); 
+    box-sizing: border-box;
+    min-width:300px;
+    margin:16px 0;
+    max-width:99%;
+    position:relative;
+    top:-24px; 
+    margin-bottom:-8px;
+    margin-top:24px;
+}
+.contentpaddinguserbox .basketcol {box-sizing: border-box}
+
 #checkallavailble {margin-left:25px;}
 .contentpaddingbox .basketrow.disabled {opacity:.5} 
 .contentpaddingbox .basketcol {
@@ -474,6 +509,29 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol img {max-width:100%; max-height:100%}
 .contentpaddingbox .basketcol.titleprovider {
     width: calc(100% - 50px);
+    margin-bottom:16px;
+
+}
+
+.contentpaddingbox .basketcol.titleuser {
+    width: calc(100% - 220px);
+
+}
+.avatar, .avatar2ch {
+    width:60px; 
+    height:60px; 
+    line-height:60px; 
+    text-align:center; 
+    font-size:28px;
+    font-weight:600; 
+    color:#fff;
+    background: var(--gray);
+    overflow:hidden; 
+    display:block;
+}
+
+.contentpaddingbox .basketcol.exituser {
+    width: 120px;
 
 }
 .contentpaddingbox .basketcol.titleprovider .brandlogo {
@@ -492,9 +550,13 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol.check {
     width:40px;
 }
+
 .contentpaddingbox .basketcol.imageproduct{
     width:80px; height:80px; text-align:center;
 }
+.basketcol.imageproduct img, 
+.basketcol.imageproduct .avatar {border-radius:80px; width:60px; height:60px;  }
+.basketcol.imageproduct img {border:1px solid var(--gray-light)}
 .appendproviderbutton {
     font-size:1.2rem; line-height:1rem;  
 
@@ -527,7 +589,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     color:var(--red);
     text-align:center;
 }
-.providerbasketdisablehelpcontent   {
+.providerbasketdisablehelpcontent  {
     display:none;
     position:absolute;
     padding:12px 24px; 
@@ -544,16 +606,55 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 
 }
+.altcontentview   {
+    display:none;
+    position:absolute;
+    padding:12px 24px; 
+    border-radius:16px;
+    color:#000;
+    background:#fff;
+    box-shadow:5px 5px 20px rgba(0,0,0,.1);
+    line-height:1.3em;
+    text-align:left;
+    z-index:20;
+    box-sizing: border-box;
+    margin-top:6px;
+    width:250px;  min-height:40px;
+    min-width:250px;
+    right:-76px;
+    top:55px;
+}
 
 .providerbasketdisablehelp:hover .providerbasketdisablehelpcontent {display:block}
+.hasalt {position:relative; cursor:pointer; } 
+.hasalt:hover  .altcontentview {display: block; transition: .3s }
+.altcontentview span.strelka  {
+    position:absolute;
+    top:-12px; left:50%; margin-left:4px;
+}    
+.useraddressalt {border-bottom: none !important; }
+.useraddressalt .altcontentview {
+    text-decoration:none; 
+    border-bottom: none !important; 
+    width:auto;
+    left:-16px;;  
+    margin-top:-32px
+}
+.useraddressalt .altcontentview  .menuitem {
+    display:block; 
+    border: none !important; 
+    margin:8px 0 ;
+    
+}
+
+.menu-item {display:block}
+.delevery-item.menu-item, .menu-item {margin:8px 0; min-height:16px}
 
 .providerbasketdisablehelpcontent  span.strelka  {
     position:absolute;
     top:-12px; left:50%; margin-left:4px;
     /*box-shadow:5px 5px 20px rgba(0,0,0,.3);*/
 }
-
-
 .contentpaddingbox .basketcol.countproduct {
     width:160px; white-space: nowrap;
 }
@@ -572,7 +673,6 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
     filter: grayscale(100%);
 }
 
-
 .contentpaddingbox .basketcol.priceproduct .price {
     font-weight:bold; padding:0; font-size:1.1rem;
 }
@@ -585,7 +685,7 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 .contentpaddingbox .basketcol.titleproduct {
     width: calc(100% - 498px);
 }
-
+.contentpaddingbox .basketcol.titleproduct.product {font-size:1.05rem}
 .contentpaddingbox .basketcol.titleproduct.disabled
 {
     opacity: .5
@@ -605,12 +705,13 @@ h2 span, h1 span {font-size:14px; font-weight:400; display:block; color:var(--gr
 
 .pw-contentblock .contentpadding {padding: 8px;}
 .paybox .contentpadding {padding:8px 24px ;}
+.paybox { right:-32px; }
 .paybox .contentpadding ol {padding-left:18px;;}
 
 .delevery-item {
     display:block;
     padding-left:25px; 
-    background:url("/img/saychas-zero.svg") 0 3px no-repeat;
+    background:url("/img/saychas-zero.svg") 0 2px no-repeat;
 }
 .paybox .contentpadding
 .delevery-item {margin-bottom:.2rem;}
@@ -985,19 +1086,46 @@ img.zero, .zeroblok {
     margin:16px 0;
     box-sizing:border-box;
 }
+#usermodalwindow .lableinfo,
+#usermodalwindow  .userformsendbutton {
+    margin:0 16px;
+    margin-bottom:6px;
+
+
+    background-image:none
+}
+.modalusertit {padding-top:8px }
+.modaluserrow {margin-bottom:16px;}
+.formcomment  {font-size:90%; display:block; padding-left:32px; line-height:1.2em}
+
+.lableinfo.short {max-width:200px;}
+.userformsendbutton.short {width:auto; display:inline-block; min-width:200px;}
+.lableinfo.short {padding-right:16px}
 .lableinfo:focus {border-color:var(--red)}
+.lableinfo.error {border:2px solid var(--red)}
 .margin16 {margin:16px;}
+
 #basketuseradress.lableinfo,
 #basketusercomment.lableinfo {padding-right:16px; background:none; display:block; position:relative; top:-18px; margin-bottom:-18px; width:100%}
 
 .hr-saychas {border:none; border-top:3px dotted var(--gray-light)}
 .goself {background:#fff url("/img/goself.png") right bottom no-repeat }
-.borderredhalf {border:2px solid transparent; /*opacity:.5*/}
+.flex-row { display: flex;   flex-direction: row; justify-content: flex-start; align-items: top;}
+.borderredhalf {border:2px solid  transparent }; /*opacity:.5 var(--gray-light)*/ 
 
-.borderredhalf .lableinfo {opacity:.4}
-.borderredhalf.left .lableinfo ,
-.borderredhalf.right .lableinfo {
-    opacity:1
+.lborder, .lborder.borderredhalf {border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;}
+.rborder, .rborder.borderredhalf {border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;}
+
+/*display: flex;   flex-direction: row; justify-content: flex-start; align-items: top;/*display: flex;
+var(--gray-light*/  
+
+
+.borderredhalf .overcoverlocal {display:block}
+.borderredhalf.left .overcoverlocal ,
+.borderredhalf.right .overcoverlocal {
+    display:none; 
 }
 .borderredhalf.left {
     border-top-left-radius: 24px;
@@ -1012,3 +1140,18 @@ img.zero, .zeroblok {
     transition: 1; opacity:1
 }
 .borderredhalf.right .lableinfo:before, .borderredhalf.left .lableinfo:before {transition: 3; opacity:1} 
+
+.properties {
+    display:inline-block; 
+    background:url('/img/propert.png') no-repeat; 
+    height:16px; 
+    margin-right:10px; 
+    padding-left:19px; color:#666; 
+    text-shadow:1px 1px rgba(255,255,255,0.3); 
+    cursor:pointer;
+    font-size:.8rem;   
+} 
+.propdel {background-position:0 -16px; color:#999}
+.proptotop {background-position:0 -32px; color:#999}
+#useradresslist  li:first-child strong {color:var(--red);}
+#useradresslist  li {margin-bottom:16px;}
