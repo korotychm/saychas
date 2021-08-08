@@ -8,6 +8,7 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Application\Model\Entity;
 
 /**
  * Description of ExternalCommunicationService
@@ -96,8 +97,23 @@ class ExternalCommunicationService
                 $content["products"]);
         /* unset($content['userGeoLocation']);
           $content['userGeoLocation'] = []; */
-        //return $content;
-        return $this->sendCurlRequest($url, $content);
+        return $content;
+        
+        $answer = $this->sendCurlRequest($url, $content);
+        /*$response = file_get_contents(
+          $url,
+          false,
+          stream_context_create([
+          'http' => [
+          'method' => 'POST',
+          'header' => 'Content-type: application/x-www-form-urlencoded',
+          'content' => http_build_query($content)]
+          ])*/
+        
+        //$return = json_decode($answer, true);
+        //$order = ClientOrder::findFirstOrDefault([]);
+        
+        
     }
     /**
      * Send curl request.
