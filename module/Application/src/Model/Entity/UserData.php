@@ -62,8 +62,18 @@ class UserData extends Entity
      */
     protected $fias_level;
     
+    /**
+     * @var int
+     */
     protected $time = 0;
 
+    /**
+     * Parse json and return array or throw exception if not parsed
+     * 
+     * @param string $json
+     * @return array
+     * @throws Exception
+     */
     private function parseJson($json)
     {
         try {
@@ -72,7 +82,7 @@ class UserData extends Entity
             throw new Exception($e->getMessage());
         }
     }
-
+    
     /**
      * Set id.
      *

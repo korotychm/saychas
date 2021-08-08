@@ -221,6 +221,18 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $user = User::findFirstOrDefault(['id' => 497]);
+//        $userData = new UserData();
+//        $userData->setUserId($user->getId());
+//        $userData->setAddress('address5555');
+////        $userData->setFiasLevel(8);
+////        $userData->setFiasId('asdfasdf');
+//        $userData->setGeodata('{"data":{"fias_id": "22222222", "fias_level": "8"}}');
+//        $userData->setTime(time());
+//        $user->setUserData([$userData]);
+//        $user->persist(['id' => $user->getId()]);
+        
+        
 //        $delivery = new Delivery();
 //        $delivery->setId(null);
 //        $delivery->setDeliveryId('0000002');
@@ -251,7 +263,7 @@ class IndexController extends AbstractActionController
 //            // email is invalid; print the reasons
 //            foreach ($validator->getMessages() as $message) {
 //                echo "$message\n";
-//            }
+//            } 
 //            exit;
 //        }
 
@@ -263,9 +275,14 @@ class IndexController extends AbstractActionController
         
         //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        
+//        if(isset($container->item)) {
+//            print_r($container->item);
+//        }else{
+//            print_r('null');
+//        }
+//        exit;
         return new ViewModel([
-            'fooItem' => $container->item
+            'fooItem' => 'banzaii', //  $container->item
         ]);
     }
     
