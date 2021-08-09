@@ -54,4 +54,11 @@ class StringResource
     
     const STORE_OUT_OF_RANGE = "Магазин вне зоны доставки";
     const STORE_OUT_OF_RANGE_ALT = "К сожалению, ближайший к вам магазин находится слишком далеко - мы не сможем привезти товары вовремя";
+    
+    /*
+     * Заказы
+     */
+    const ORDER_TITLE = "Мои заказы";
+    const ORDER_EMPTY = "Заказов не найдено";
+    
 } 

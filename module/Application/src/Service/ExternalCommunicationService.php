@@ -134,7 +134,7 @@ class ExternalCommunicationService
         
     }
     
-    public function createClientOrder ($content, $order)
+    public function createClientOrder ($content, $order, $userId)
     {
         
         //$content['basketinfo'];
@@ -144,6 +144,7 @@ class ExternalCommunicationService
 //        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         
         $order->setOrderId($orderId); 
+        $order->setUserId($userId); 
         $order->setDeliveryInfo($deliveryes); 
         $order->setBasketInfo($basketinfo); 
         $order->setDateCreated(time());
