@@ -23,7 +23,9 @@
                             <div class="avatar"><?=mb_substr(trim($basketUser['name']),0,1)?></div>
                         </div>
              <div class="basketcol titleuser">
-                <b><?= $basketUser['name'] ?></b> <div class='blok'><?= $basketUser['phoneformated'] ?></div>
+                <b><?= $basketUser['name'] ?>
+                <input type="hidden2" name="username" value="<?=$basketUser['name']?>" >
+                </b> <div class='blok'><?= $basketUser['phoneformated'] ?></div>
             </div>
                     <div class="basketcol exituser">
                         

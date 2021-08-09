@@ -17,7 +17,7 @@ function sendfilterform() {
                 //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-               if(xhr.status != 0 ){ $("#ServiceModalWindow .modal-title").html("Ошибка " +  xhr.status );
+               if(xhr.status != 0 ){ $("#ServiceModalWindow .modal-title").html("Ошибка sendfilterform" +  xhr.status );
                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
                $("#ServiceModalWindow").modal("show");
                 }
