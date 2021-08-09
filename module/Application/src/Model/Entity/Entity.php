@@ -19,7 +19,7 @@ class Entity
      */
     public function primaryKeyName()
     {
-        return 'id';
+        return '';
     }
 
     /**
