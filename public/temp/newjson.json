@@ -99,7 +99,7 @@
         "result": true,
         "order": "000000046",
         "order_status": "0",
-        "deliveryes": {
+        "deliveries": {
             "selfdelivery": [{
                     "delivery": "000000000000000137",
                     "delivery_status": "0",

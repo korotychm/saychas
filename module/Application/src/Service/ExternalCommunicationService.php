@@ -88,7 +88,7 @@ class ExternalCommunicationService
             while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
-        $content["deliveryes"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
+        $content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
         unset(
@@ -139,13 +139,13 @@ class ExternalCommunicationService
         
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
-        $deliveryes = Json::encode($content['response']['deliveryes']);
+        $deliveries = Json::encode($content['response']['deliveries']);
         $orderId = $content['response']['order'];
 //        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         
         $order->setOrderId($orderId); 
         $order->setUserId($userId); 
-        $order->setDeliveryInfo($deliveryes); 
+        $order->setDeliveryInfo($deliveries); 
         $order->setBasketInfo($basketinfo); 
         $order->setDateCreated(time());
         $order->persist(['order_id'=>$orderId]);
