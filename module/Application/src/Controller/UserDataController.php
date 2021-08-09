@@ -220,8 +220,11 @@ class UserDataController extends AbstractActionController
     public function sendBasketDataAction()
     {
         $content = $this->getRequest()->getPost()->toArray();
-        $answer = $this->externalCommunicationService->sendBasketData($content);
-        // exit( "<pre>".print_r($answer, true)."</pre>" );
+        //$answer = 
+        $orderset = $this->externalCommunicationService->sendBasketData($content);
+        $answer = $this->externalCommunicationService->createClientOrder($orderset);
+        exit( "<pre>".print_r($answer, true)."</pre>" );
+        
         return new JsonModel($answer);
     }
 

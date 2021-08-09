@@ -8,6 +8,7 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Application\Model\Entity;
 
 /**
  * Description of ExternalCommunicationService
@@ -58,6 +59,7 @@ class ExternalCommunicationService
             $store[$value["store"]][] = [
                 "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
             ];
+            $productupdate[]=$id;
             //$coontent["delevery"][] = $store[$value['store']];
         }
         //(надо вынести в resource)
@@ -77,17 +79,17 @@ class ExternalCommunicationService
                     $i = 1;
                     $j++;
                 }
-                $delevery[$j][] = ["store" => $key, "products" => $val];
+                $delivery[$j][] = ["store" => $key, "products" => $val];
             }
         }
 
-        if (!empty($delevery)) {
-            while (list($key, $val) = each($delevery))
+        if (!empty($delivery)) {
+            while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
-        $content["deleveryes"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
+        $content["deliveryes"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
         //$content["delevery"]=$store;
-        $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
+        $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
         unset(
                 $content['timepointtext1'],
                 $content['timepointtext3'],
@@ -97,8 +99,58 @@ class ExternalCommunicationService
         /* unset($content['userGeoLocation']);
           $content['userGeoLocation'] = []; */
         //return $content;
-        return $this->sendCurlRequest($url, $content);
+        
+        $return['basketinfo']['username'] = $content['username'];
+        $return['products'] = $productupdate;
+        $return['response'] = $this->sendCurlRequest($url, $content);
+   
+        
+        return $return;
+        /*try {
+            $arr = Json::decode($answer, Json::TYPE_ARRAY);
+            return $arr;
+        } catch (LaminasJsonRuntimeException $e) {
+            //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
+            return ['result' => false, 'message' => $e->getMessage() . ' >>> ' . $answer];
+        }*/
+        
+        
+        /*$response = file_get_contents(
+          $url,
+          false,
+          stream_context_create([
+          'http' => [
+          'method' => 'POST',
+          'header' => 'Content-type: application/x-www-form-urlencoded',
+          'content' => http_build_query($content)]
+          ])*/
+        
+        //$return = json_decode($answer, true);
+        //$order = ClientOrder::findFirstOrDefault([]);
+       //return "<pre>" .print_r($return, true) ."</pre>";
+        //return $return;
+        
+        
     }
+    
+    public function createClientOrder ($content)
+    {
+        
+        //$content['basketinfo'];
+          $basketinfo = Json::encode($content['basketinfo']);
+        $deliveryes = Json::encode($content['response']['deliveryes']);
+       $orderId = $content['response']['order'];
+        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        $order->setOrderId($orderId); 
+        $order->setDeliveryInfo($deliveryes); 
+        $order->setBasketInfo($basketinfo); 
+        $order->setDateCreated(time());
+        $order->persist();      
+        
+        
+    }
+    
+    
     /**
      * Send curl request.
      *
