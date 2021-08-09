@@ -163,7 +163,7 @@ class AjaxController extends AbstractActionController
          
          $userGeoData =  $userData->getGeodata();
          
-         $userData->setId($return['dataId']);
+         //$userData->setId($return['dataId']);
          $userData->setTime(time());
          $userData->persist(['user_id' => $userId, 'id' => $return['dataId'] ]);
          

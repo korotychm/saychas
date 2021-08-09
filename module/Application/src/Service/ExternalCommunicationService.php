@@ -8,7 +8,8 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-use Application\Model\Entity;
+//use Application\Model\Entity;
+use Application\Model\Entity\ClientOrder;
 
 /**
  * Description of ExternalCommunicationService
@@ -133,20 +134,20 @@ class ExternalCommunicationService
         
     }
     
-    public function createClientOrder ($content)
+    public function createClientOrder ($content, $order)
     {
         
         //$content['basketinfo'];
-          $basketinfo = Json::encode($content['basketinfo']);
+        $basketinfo = Json::encode($content['basketinfo']);
         $deliveryes = Json::encode($content['response']['deliveryes']);
-       $orderId = $content['response']['order'];
-        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        $orderId = $content['response']['order'];
+//        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        return $order;
         $order->setOrderId($orderId); 
         $order->setDeliveryInfo($deliveryes); 
         $order->setBasketInfo($basketinfo); 
         $order->setDateCreated(time());
-        $order->persist();      
-        
+        $order->persist();
         
     }
     

@@ -17,6 +17,8 @@ use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
 use Laminas\Session\Container; // as SessionContainer;
 use Application\Service\ExternalCommunicationService;
+use Application\Model\Entity\ClientOrder;
+use ControlPanel\Service\EntityManager;
 use Laminas\View\Model\JsonModel;
 use Laminas\Http\Response;
 use Application\Helper\ArrayHelper;
@@ -62,6 +64,11 @@ class UserDataController extends AbstractActionController
      * @var Application\Service\ExternalCommunicationService
      */
     private $externalCommunicationService;
+    
+    /**
+     * @var EntityManager
+     */
+    private EntityManager $entityManager;
 
 //    private $sessionContainer;
 
@@ -69,6 +76,10 @@ class UserDataController extends AbstractActionController
      * @var Laminas\Log\Logger
      */
     private $logger;
+    
+    /**
+     * @var CommonHelperFunctions
+     */
     private $commonHelperFuncions;
 
 //    private SessionManager $sessionManager;
@@ -83,7 +94,7 @@ class UserDataController extends AbstractActionController
      */
     public function __construct(
             UserRepository $userRepository,
-            /* $config, */ $authService, /* $db, */ /* $userAdapter, */ $externalCommunicationService/* , $sessionContainer */, $commonHelperFunctions)
+            /* $config, */ $authService, /* $db, */ /* $userAdapter, */ $externalCommunicationService/* , $sessionContainer */, $commonHelperFunctions, EntityManager $entityManager)
     {
         $this->userRepository = $userRepository;
 //        $this->config = $config;
@@ -93,12 +104,16 @@ class UserDataController extends AbstractActionController
 //        $this->db = $db;
 //        $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
+        
+        $this->entityManager = $entityManager;
 
         $this->commonHelperFuncions = $commonHelperFunctions;
 
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
         $this->logger->addWriter($writer);
+        
+        $this->entityManager->initRepository(ClientOrder::class);
     }
 
     /**
@@ -187,6 +202,12 @@ class UserDataController extends AbstractActionController
         return $code;
     }
 
+    /**
+     * Send sms
+     * 
+     * @param int $phone
+     * @return array
+     */
     private function sendSms($phone)
     {
         $code = $this->generateRegistrationCode($phone);
@@ -222,8 +243,9 @@ class UserDataController extends AbstractActionController
         $content = $this->getRequest()->getPost()->toArray();
         //$answer = 
         $orderset = $this->externalCommunicationService->sendBasketData($content);
-        $answer = $this->externalCommunicationService->createClientOrder($orderset);
-        exit( "<pre>".print_r($answer, true)."</pre>" );
+        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderset['response']['order']]);
+        //$answer = $this->externalCommunicationService->createClientOrder($orderset, $order);
+        exit( "<pre>".print_r($order, true)."</pre>" );
         
         return new JsonModel($answer);
     }

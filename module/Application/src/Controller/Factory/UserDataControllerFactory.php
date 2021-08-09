@@ -32,7 +32,8 @@ class UserDataControllerFactory implements FactoryInterface
         //$userAdapter = $container->get(UserAuthAdapter::class);
         $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
         $externalCommunicationService = $container->get(ExternalCommunicationService::class);
-        return new UserDataController($userRepository/*, $config*/, $authService/*, $adapter*//*, $userAdapter*/, $externalCommunicationService/*, $sessionContainer*/, $commonHelperFuncions);
+        $entityManager = $container->get('laminas.entity.manager');
+        return new UserDataController($userRepository/*, $config*/, $authService/*, $adapter*//*, $userAdapter*/, $externalCommunicationService/*, $sessionContainer*/, $commonHelperFuncions, $entityManager);
     }
 
 }
