@@ -27,6 +27,16 @@ class Basket extends Entity
     public static BasketRepository $repository;
 
     /**
+     * Get primary key name
+     *
+     * @return string|array
+     */
+    public function primaryKeyName()
+    {
+        return ['user_id', 'product_id'];
+    }
+    
+    /**
      * @var int
      */
     protected $user_id = 0;

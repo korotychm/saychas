@@ -29,7 +29,7 @@ class UserData extends Entity
     /**
      * Get primary key name
      *
-     * @return string
+     * @return string|array
      */
     public function primaryKeyName()
     {

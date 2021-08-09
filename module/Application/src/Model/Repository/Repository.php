@@ -206,18 +206,24 @@ abstract class Repository implements RepositoryInterface
 
         // $params['id'] = $entity->getId();
         $u = $this->find($params);
+//        $us = $this->findAll(['where' => $params])->toArray();
         
         $id = null;
         $assoc = $hydrator->extract($entity);
-        if(null != $u && !empty($u->primaryKeyName())) {
-            $pkname = $u->primaryKeyName();
-            
-//            $words = array_map('ucfirst', explode('_', $pkname));
-//
-//            $pkprop = implode('', $words);
-     
-            $id = $u->$pkname;
-            $assoc[$u->primaryKeyName()] = $id;
+        if(null != $u) {
+            $pk = $u->primaryKeyName();
+            if(is_string($pk) && !empty($pk)) {
+                $pkname = $u->primaryKeyName();
+                $id = $u->$pkname;
+                $assoc[$u->primaryKeyName()] = $id;
+            }else if(is_array($pk) && count($pk)) {
+                $keys = array_keys($assoc);
+                foreach($pk as $k) {
+                    if(in_array($k, $keys)) {
+                        $assoc[$k] = $id[$k] = $u->$k;
+                    }
+                }
+            }
         }
 
         $values = array_values($assoc);
