@@ -176,6 +176,17 @@ return [
                     ],
                 ],
             ],
+            'client-orders' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/client-orders',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'clientOrders',
+                    ],
+                ],
+            ],
+            
 //            'show-provider' => [
 //                'type'    => Segment::class,
 //                'options' => [

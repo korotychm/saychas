@@ -219,6 +219,44 @@ class IndexController extends AbstractActionController
         return $filteredProducts;
     }
     
+    public function clientOrdersAction()
+    {
+        $userId = $this->identity();
+        $user = User::find(['id' => $userId]);
+        $userData = $user->getUserData();
+        $userPhone = $user->getPhone();
+        if (!$userPhone) {
+              $this->getResponse()->setStatusCode(403);
+              $vw = new ViewModel();
+              $vw->setTemplate('error/403.phtml');
+              return  $vw;
+        }
+        $orders = ClientOrder::findAll(['user_id'=>$userId]);
+        if (!empty($orders)){
+            
+            $orderList = $this->htmlProvider->orderList($orders);
+            
+           /* foreach ($orders as $order){
+                $return['orderId'] = $order->getOrderId();
+                $return['basketInfo'] = $order->getBasketInfo();
+                $return['deliveryInfo'] = $order->getDeliveryInfo();
+                $return['date'] = $order->getDateCreated();
+                $orderList[]=$return;
+          }/**/
+        } 
+        else {
+            $orderList = StringResource::ORDER_EMPTY;
+                    
+        }    
+        $orderList = "<pre>".print_r($orderList,true)."</pre>";    
+        
+        return new ViewModel([
+            'title' => StringResource::ORDER_TITLE, //  $container->item
+            'orders'=> $orderList,
+        ]);
+    }
+    
+    
     public function indexAction()
     {
 //        $user = User::findFirstOrDefault(['id' => 497]);

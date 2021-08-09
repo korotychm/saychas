@@ -249,8 +249,10 @@ class UserDataController extends AbstractActionController
 
         $orderset = $this->externalCommunicationService->sendBasketData($content);
         $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderset['response']['order']]);
-        $orderSet = $this->externalCommunicationService->createClientOrder($orderset, $order);
         $userId = $this->identity();
+        $orderSet = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
+        
+//        $userId = $this->identity();
         $basketSet = \Application\Model\Entity\Basket::findAll(['where' => ['product_id'=>$orderSet['products'], 'user_id' => $userId, 'order_id' => 0] ]);
                 
         foreach($basketSet as $basket) {
@@ -258,6 +260,23 @@ class UserDataController extends AbstractActionController
             $result = $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId() ]);
         }
         
+//        $orderset = $this->externalCommunicationService->sendBasketData($content);
+//        $orderId = $orderset['response']['order'];
+//        
+//        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        
+//        $orderSet = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
+        
+        
+        /*$basketSet = \Application\Model\Entity\Basket::findAll(['product_id'=>$orderSet['products'], 'user_id' => $userId, 'order_id' => 0]);
+        
+        // $sql="update `basket` set `order_id` = '$orderId' where `user_id` = '$user_id' and  `order_id`=0 and `product_id` in (".join(",",$$orderSet['products']).")";
+        foreach($basketSet as $basket) {
+            $basket->setOrderId($orderId);
+            $basket->persist(['product_id' => $orderSet['products'] ]);
+        }
+        //exit(print_r($order[''], true));
+        */
         return new JsonModel($answer);
     }
 
