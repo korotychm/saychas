@@ -244,8 +244,15 @@ class UserDataController extends AbstractActionController
         //$answer = 
         $orderset = $this->externalCommunicationService->sendBasketData($content);
         $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderset['response']['order']]);
-        //$answer = $this->externalCommunicationService->createClientOrder($orderset, $order);
-        exit( "<pre>".print_r($order, true)."</pre>" );
+        $orderSet = $this->externalCommunicationService->createClientOrder($orderset, $order);
+        //$basketSet = \Application\Model\Entity\Basket::findAll(['product_id'=>$orderSet['products']]);
+        
+        $sql="update `basket` set `order_id` = '$orderId' where `user_id` = '$user_id' and  `order_id`=0 and `product_id` in (".join(",",$$orderSet['products']).")";
+        
+        
+        
+
+//exit(print_r($order[''], true));
         
         return new JsonModel($answer);
     }

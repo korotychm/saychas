@@ -142,12 +142,13 @@ class ExternalCommunicationService
         $deliveryes = Json::encode($content['response']['deliveryes']);
         $orderId = $content['response']['order'];
 //        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
-        return $order;
+        
         $order->setOrderId($orderId); 
         $order->setDeliveryInfo($deliveryes); 
         $order->setBasketInfo($basketinfo); 
         $order->setDateCreated(time());
-        $order->persist();
+        $order->persist(['order_id'=>$orderId]);
+        return ['result'=> true, 'orderId'=>$orderId, 'products' => $content['products']];
         
     }
     
