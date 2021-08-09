@@ -219,7 +219,7 @@ abstract class Repository implements RepositoryInterface
             $id = $u->$pkname;
             $assoc[$u->primaryKeyName()] = $id;
         }
-                
+
         $values = array_values($assoc);
         $names = array_keys($assoc);
 
