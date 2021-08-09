@@ -206,9 +206,20 @@ abstract class Repository implements RepositoryInterface
 
         // $params['id'] = $entity->getId();
         $u = $this->find($params);
-
+        
+        $id = null;
         $assoc = $hydrator->extract($entity);
-
+        if(null != $u && !empty($u->primaryKeyName())) {
+            $pkname = $u->primaryKeyName();
+            
+//            $words = array_map('ucfirst', explode('_', $pkname));
+//
+//            $pkprop = implode('', $words);
+     
+            $id = $u->$pkname;
+            $assoc[$u->primaryKeyName()] = $id;
+        }
+                
         $values = array_values($assoc);
         $names = array_keys($assoc);
 
@@ -218,8 +229,14 @@ abstract class Repository implements RepositoryInterface
             $sqlObj->into($this->tableName);
             $sqlObj->columns($names);
             $sqlObj->values($values);
+//            $id = $this->db->getDriver()->getLastGeneratedValue();
         } else {
             $sqlObj = $sql->update($this->tableName);
+//            $keys = array_keys($assoc);
+//            if(in_array($entity->primaryKeyName(), $keys)) {
+////                $id = $assoc[$entity->primaryKeyName()];
+//                unset($assoc[$entity->primaryKeyName()]);
+//            }
             $sqlObj->set($assoc);
             $sqlObj->where($params);
         }
@@ -227,7 +244,9 @@ abstract class Repository implements RepositoryInterface
         try {
             $stmt = $sql->prepareStatementForSqlObject($sqlObj);
             $stmt->execute();
-            $id = $this->db->getDriver()->getLastGeneratedValue();
+            if(null == $u) {
+                $id = $this->db->getDriver()->getLastGeneratedValue();
+            }
         } catch (InvalidQueryException $ex) {
             echo $ex->getMessage();
             return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];

@@ -13,15 +13,24 @@ class Entity
 {
 
     /**
+     * Get primary key name
+     *
+     * @return string
+     */
+    public function primaryKeyName()
+    {
+        return 'id';
+    }
+
+    /**
      * Camelizes strings; converts strings like my_string to MyString
-     * 
+     *
      * @param string $string
      * @return string
      */
     private function camelize($string)
     {
         //$words = explode('_', $string);
-
         // make a strings first character uppercase
         $words = array_map('ucfirst', explode('_', $string));
 
@@ -31,7 +40,7 @@ class Entity
 
     /**
      * Magic __get method that calls a getter for specified property
-     * 
+     *
      * @param string $name
      * @return type
      */
