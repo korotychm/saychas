@@ -154,7 +154,7 @@ function calculateBasketPayCard ()
 
 }
 
- function whatHappened (){
+ function whatHappened (noclose){
         $.ajax({
             beforeSend : function (){
                 },
@@ -202,14 +202,14 @@ function calculateBasketPayCard ()
                       //ставим количество 0 в корзине
                     } else {
                       productHtml += '<div class="changed-products__status">';
-                      if (product.price != product.oldprice){
+                      if (product.price && product.price != product.oldprice){
                         //вывод измененной цены
                         productHtml += '<div>';
                           productHtml += ('<div class="changed-products__from">' + toLocaleString(product.oldprice) + ' ₽</div>');
                           productHtml += ('<div class="changed-products__to">' + toLocaleString(product.price) +'</div>');
                         productHtml += '</div>';
                       }
-                      if (product.rest < product.oldrest){
+                      if (product.rest && product.rest < product.oldrest){
                         //вывод измененных остатков
                         productHtml += '<div>';
                           productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
