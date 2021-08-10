@@ -169,9 +169,9 @@ function calculateBasketPayCard ()
                     $("#ServiceModalWindow").modal("show");
                     //console.log(data.products);
                     var i = 0;
-                    for (product of data.products) {
+                    for (var product in data.products) {
                         console.log(product);
-                        console.log(i, Object.keys(data.products)[i], product.rest, product.oldrest, product.price, product.oldprice);
+                        //console.log(i, Object.keys(data.products)[i], product.rest, product.oldrest, product.price, product.oldprice);
                         i++;
                     }
                 }
