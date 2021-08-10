@@ -169,7 +169,7 @@ function calculateBasketPayCard ()
                       rest: 0,
                       oldrest: 1
                     },
-                    '000000000014': {
+                    '000000000002': {
                       rest: 2,
                       oldrest: 5,
                       price: 6000,
