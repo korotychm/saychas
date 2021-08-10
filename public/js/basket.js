@@ -188,6 +188,8 @@ function calculateBasketPayCard ()
 
                     var product = products[productId];
 
+                    console.log(product.rest,product.oldrest,product.price,product.oldprice);
+
                     var productHtml = '<li class="changed-products__item">';
 
                     var imgSrc = $('#basketrow-'+productId).find('.imageproduct img').attr('src');
