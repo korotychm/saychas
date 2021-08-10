@@ -164,12 +164,27 @@ function calculateBasketPayCard ()
 
             success: function (data) {
                 if (data.result) {
+                  var products = {
+                    '000000000001': {
+                      rest: 0,
+                      oldrest: 1
+                    },
+                    '000000000002': {
+                      rest: 2,
+                      oldrest: 5,
+                      price: 6000,
+                      oldrest: 7000
+                    },
+                    '000000000003': {
+                      price: 2000,
+                      oldrest: 5000
+                    }
+                  }
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
-                  //$("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data.products));
 
                   $("#ServiceModalWindow #ServiceModalWraper").html('<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
 
-                  for (var productId in data.products) {
+                  for (var productId in products) {
 
                     var product = data.products[productId];
 
