@@ -180,6 +180,34 @@ function calculateBasketPayCard ()
         });
     }
 
+function checkBasketDataBeforeSend (){
+    //var dataString = $("#user-basket-form").serialize();    
+    $.ajax({
+            beforeSend : function (){ 
+                },
+            url: "/ajax-basket-check-before-send",
+            type: 'POST',
+            cache: false,
+            data: $("#user-basket-form").serialize(),
+            success: function (data) {
+                //if (data.result) {
+                    $("#ServiceModalWindow .modal-title").html("Результаты проверки" );
+                    $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
+                    $("#ServiceModalWindow").modal("show");
+                  console.log(data)  ;
+                //}
+                return false;
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#ServiceModalWindow .modal-title").html("Ошибка checkBasketDataBeforeSend" +  xhr.status );
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+                $("#ServiceModalWindow").modal("show");
+                return false;
+            }
+        });
+    return false;
+    }
+
 
 
 function loadPayInfo(){
@@ -230,12 +258,14 @@ $(function(){
             getLegalStores(dataString, '#basketuseradresserror');
             addUserAddrees(dataString, $("#basketuseradress").val());
             //addUserAddrees(dataString,$("#useraddress").val());
-            //location = location.href;
+           //location = location.href;
             //
         }
     });
     
-    
+    $("#testbeforesend").click(function(){
+         checkBasketDataBeforeSend ();
+    })
     
     /**/
     $("body").on("change",".timepoint", function(){

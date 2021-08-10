@@ -17,7 +17,7 @@ foreach ($param as $provider):
 <?php }?>
         </div>    
         <div  class='basketcol  titleprovider'>
-            <div class='brandlogo'  ><img src='/images/provider/<?=$provider['provider_logo']?>' title='<?=$provider['provider_name']?>'></div>
+            <div class='brandlogo'  ><img src='<?=$this->imagePath('provider')?>/<?=$provider['provider_logo']?>' title='<?=$provider['provider_name']?>'></div>
 <?php if(!$provider['provider_disable']) {?>
             <div class='text-provider gray'  >
                 <span class='blok mini'><?=$provider['provider_worktime'].$provider["provider_timeclose"]?></span>

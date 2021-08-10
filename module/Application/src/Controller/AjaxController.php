@@ -200,16 +200,27 @@ class AjaxController extends AbstractActionController
         }
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $post = $this->getRequest()->getPost();
-        $columns = ['product_id', 'order_id', 'total'];
+        $return['posted']=$post->products;
+        $columns = ['product_id', 'total', 'price'];
         $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
 //            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
         
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
-        
-        
-    }
+      
+        if (!empty($basket)){
+            foreach ($basket as $basketItem){
+                $return['basket'][]=[
+                    'productId' => $basketItem->getProductId(),
+                    'price' => $basketItem->getPrice(),
+                    'total' => $basketItem->getTotal(),
+                ];
+            }
+        return new JsonModel($return);            
+        }
+        return new JsonModel(['result'=>false]);            
+       }
     
     
     
