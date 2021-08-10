@@ -167,9 +167,7 @@ function calculateBasketPayCard ()
                   var products = {
                     '000000000001': {
                       rest: 0,
-                      oldrest: 1,
-                      price: 6000,
-                      oldprice: 7000
+                      oldrest: 1
                     },
                     '000000000014': {
                       rest: 2,
@@ -180,6 +178,10 @@ function calculateBasketPayCard ()
                     '000000000013': {
                       price: 2000,
                       oldprice: 5000
+                    },
+                    '000000000014': {
+                      rest: 2,
+                      oldrest: 5
                     }
                   }
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
@@ -206,18 +208,18 @@ function calculateBasketPayCard ()
                       //ставим количество 0 в корзине
                     } else {
                       productHtml += '<div class="changed-products__status">';
-                      if (!!product.price && product.price != product.oldprice){
+                      if (product.price != product.oldprice){
                         //вывод измененной цены
                         productHtml += '<div>';
                           productHtml += ('<div class="changed-products__from">' + product.oldprice.toLocaleString() + ' ₽</div>');
                           productHtml += ('<div class="changed-products__to">' + product.price.toLocaleString() +'</div>');
                         productHtml += '</div>';
                       }
-                      if (!!product.rest && product.rest < product.oldrest){
+                      if (product.rest < product.oldrest){
                         //вывод измененных остатков
                         productHtml += '<div>';
                           productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
-                          productHtml += ('<div class="changed-products__to">' + product.reste + ' шт.</div>');
+                          productHtml += ('<div class="changed-products__to">' + product.rest + ' шт.</div>');
                         productHtml += '</div>';
                         //изменение количества в корзине
                       }
