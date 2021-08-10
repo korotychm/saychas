@@ -164,14 +164,58 @@ function calculateBasketPayCard ()
 
             success: function (data) {
                 if (data.result) {
+                  $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
+                  //$("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data.products));
+
+                  $("#ServiceModalWindow #ServiceModalWraper").html('<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
+
+                  for (var productId in data.products) {
+
+                    var product = data.products[productId];
+
+                    var productHtml = '<li class="changed-products__item">';
+
+                    var imgSrc = $('#basketrow-'+productId).find('.imageproduct img').attr('src');
+                    var title = $('#basketrow-'+productId).find('.titleproduct').text();
+
+                    productHtml += '<div class="changed-products__img"><img src="' + imgSrc + '" alt=""></div>';
+                    productHtml += '<div class="changed-products__title">' + title + '</div>';
+
+                    if (product.rest == 0){
+                      //вывод "товар закончился"
+                      productHtml += '<div class="changed-products__status"><div class="changed-products__na">Товар закончился</div></div>';
+                      //ставим количество 0 в корзине
+                    } else {
+                      productHtml += '<div class="changed-products__status">';
+                      if (product.price != product.oldprice){
+                        //вывод измененной цены
+                        productHtml += '<div>';
+                          productHtml += ('<div class="changed-products__from">' + toLocaleString(product.oldprice) + ' ₽</div>');
+                          productHtml += ('<div class="changed-products__to">' + toLocaleString(product.price) +'</div>');
+                        productHtml += '</div>';
+                      }
+                      if (product.rest < product.oldrest){
+                        //вывод измененных остатков
+                        productHtml += '<div>';
+                          productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
+                          productHtml += ('<div class="changed-products__to">' + product.reste + ' шт.</div>');
+                        productHtml += '</div>';
+                        //изменение количества в корзине
+                      }
+                      productHtml += '</li>';
+                    }
+
+                    $('#ServiceModalWindow .modal-footer').append(productHtml);
+                  }
+
+                  $("#ServiceModalWindow #ServiceModalWraper").append('<button class="changed-products__btn formsendbutton"></div>');
+
+                  $("#ServiceModalWindow").modal("show");
+
                     $("#ServiceModalWindow .modal-title").html("Кое-что изменилось!" );
                     $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data.products));
                     $("#ServiceModalWindow").modal("show");
-                    console.log(data.products);
-                    for (var productId in data.products) {
-                      var product = data.products[productId];
-                      console.log(productId,product.rest,product.oldrest)
-                    }
+
                 }
                 return false
             },
