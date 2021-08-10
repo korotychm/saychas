@@ -167,7 +167,9 @@ function calculateBasketPayCard ()
                   var products = {
                     '000000000001': {
                       rest: 0,
-                      oldrest: 1
+                      oldrest: 1,
+                      price: 6000,
+                      oldprice: 7000
                     },
                     '000000000014': {
                       rest: 2,
