@@ -211,11 +211,11 @@ abstract class Repository implements RepositoryInterface
         $id = null;
         $assoc = $hydrator->extract($entity);
         if(null != $u) {
-            $pk = $u->primaryKeyName();
+            $pk = $u->primaryKey();
             if(is_string($pk) && !empty($pk)) {
-                $pkname = $u->primaryKeyName();
+                $pkname = $u->primaryKey();
                 $id = $u->$pkname;
-                $assoc[$u->primaryKeyName()] = $id;
+                $assoc[$u->primaryKey()] = $id;
             }else if(is_array($pk) && count($pk)) {
                 $keys = array_keys($assoc);
                 foreach($pk as $k) {
@@ -223,6 +223,8 @@ abstract class Repository implements RepositoryInterface
                         $assoc[$k] = $id[$k] = $u->$k;
                     }
                 }
+            }else{
+                throw new \Exception('Primary key ($pk) must be either a string or an array');
             }
         }
 
@@ -239,9 +241,9 @@ abstract class Repository implements RepositoryInterface
         } else {
             $sqlObj = $sql->update($this->tableName);
 //            $keys = array_keys($assoc);
-//            if(in_array($entity->primaryKeyName(), $keys)) {
-////                $id = $assoc[$entity->primaryKeyName()];
-//                unset($assoc[$entity->primaryKeyName()]);
+//            if(in_array($entity->primaryKey(), $keys)) {
+////                $id = $assoc[$entity->primaryKey()];
+//                unset($assoc[$entity->primaryKey()]);
 //            }
             $sqlObj->set($assoc);
             $sqlObj->where($params);

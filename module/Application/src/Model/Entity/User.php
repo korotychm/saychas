@@ -35,11 +35,11 @@ class User extends Entity
     public static BasketRepository $basketRepository;
 
     /**
-     * Get primary key name
+     * Get primary key
      *
      * @return string|array
      */
-    public function primaryKeyName()
+    public function primaryKey()
     {
         return 'id';
     }
