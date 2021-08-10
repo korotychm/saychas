@@ -183,7 +183,6 @@ function calculateBasketPayCard ()
                     if (product.rest == 0){
                       //вывод "товар закончился"
                       productHtml += '<div class="changed-products__status"><div class="changed-products__na">Товар закончился</div></div>';
-                      //ставим количество 0 в корзине
                     } else {
                       productHtml += '<div class="changed-products__status">';
                       if (product.price != product.oldprice){
@@ -199,7 +198,6 @@ function calculateBasketPayCard ()
                           productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
                           productHtml += ('<div class="changed-products__to">' + product.rest + ' шт.</div>');
                         productHtml += '</div>';
-                        //изменение количества в корзине
                       }
                       productHtml += '</li>';
                     }
