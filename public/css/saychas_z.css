@@ -1208,5 +1208,5 @@ var(--gray-light*/
 }
 .changed-products__btn {
   width: 305px;
-  margin: auto;
+  margin: auto !important;
 }
