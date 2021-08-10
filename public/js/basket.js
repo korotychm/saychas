@@ -169,13 +169,13 @@ function calculateBasketPayCard ()
                       rest: 0,
                       oldrest: 1
                     },
-                    '000000000002': {
+                    '000000000014': {
                       rest: 2,
                       oldrest: 5,
                       price: 6000,
                       oldrest: 7000
                     },
-                    '000000000003': {
+                    '000000000013': {
                       price: 2000,
                       oldrest: 5000
                     }
