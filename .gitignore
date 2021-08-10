@@ -3,10 +3,6 @@ vendor/
 config/development.config.php
 data/cache/*
 data/cache
-public
-public/
-public/*
-public/**
 public/images/*
 public/images/product/*
 public/images/product
