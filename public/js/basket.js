@@ -409,7 +409,6 @@ $(function(){
     })
     //timepoint-dostmergeon
     
-    
      $(".checkallprovider").click(function(){
         
          var rel=$(this).attr('rel');

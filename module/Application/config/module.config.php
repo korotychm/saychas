@@ -260,6 +260,19 @@ return [
             ],
             //basketPayInfo
             
+            'basket-check-before-send' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/ajax-basket-check-before-send',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'basketCheckBeforeSend',
+                    ],
+                ],
+            ],
+            //basketPayInfo
+            
+            
         'user-auth-modal' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -1059,7 +1072,7 @@ return [
             
         ],
         'image_path' => [
-            'base_url' => '/image',
+            'base_url' => '/images',
             'subpath' => [
                 'brand' => 'brand',
                 'product' => 'product',

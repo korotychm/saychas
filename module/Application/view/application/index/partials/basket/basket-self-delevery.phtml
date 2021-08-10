@@ -15,7 +15,7 @@ if ($param and count($param)) {
                         <div class="contentpadding seldeleverybloklogo">
                             <div class="blok">
                                 <div class="brandlogo">
-                                    <img src="/images/provider/<?= $provider['provider_logo'] ?>" alt="<?= $provider['provider_name'] ?>" title="<?= $provider['provider_name'] ?>"/>
+                                    <img src="<?=$this->imagePath('product')?>/<?= $provider['provider_logo'] ?>" alt="<?= $provider['provider_name'] ?>" title="<?= $provider['provider_name'] ?>"/>
                                 </div>
                             </div>    
                             <div class="blok">
@@ -34,7 +34,7 @@ if ($param and count($param)) {
                                             <img src='/img/zero.png' 
                                                  title="<?= $product["title"] ?>"  
                                                  class='productimage zero ' 
-                                                 style='background-image:url("/images/product/<?= (($product["image"] ) ? $product["image"] : "nophoto_1.jpeg") ?>")'
+                                                 style='background-image:url("<?=$this->imagePath('product')?>/<?= (($product["image"] ) ? $product["image"] : "nophoto_1.jpeg") ?>")'
                                                  />
                                         </div>
 
