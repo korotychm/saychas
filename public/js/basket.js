@@ -205,16 +205,12 @@ function calculateBasketPayCard ()
                       productHtml += '</li>';
                     }
 
-                    $('#ServiceModalWindow .modal-footer').append(productHtml);
+                    $('#ServiceModalWindow .changed-products').append(productHtml);
                   }
 
-                  $("#ServiceModalWindow #ServiceModalWraper").append('<button class="changed-products__btn formsendbutton"></div>');
+                  $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton"></div>');
 
                   $("#ServiceModalWindow").modal("show");
-
-                    $("#ServiceModalWindow .modal-title").html("Кое-что изменилось!" );
-                    $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data.products));
-                    $("#ServiceModalWindow").modal("show");
 
                 }
                 return false
