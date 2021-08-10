@@ -164,35 +164,13 @@ function calculateBasketPayCard ()
 
             success: function (data) {
                 if (data.result) {
-                  var products = {
-                    '000000000001': {
-                      rest: 0,
-                      oldrest: 1
-                    },
-                    '000000000002': {
-                      rest: 2,
-                      oldrest: 5,
-                      price: 6000,
-                      oldprice: 7000
-                    },
-                    '000000000013': {
-                      price: 2000,
-                      oldprice: 5000
-                    },
-                    '000000000014': {
-                      rest: 2,
-                      oldrest: 5
-                    }
-                  }
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
 
                   $("#ServiceModalWindow #ServiceModalWraper").html('<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
 
-                  for (var productId in products) {
+                  for (var productId in data.products) {
 
-                    var product = products[productId];
-
-                    console.log(product.rest,product.oldrest,product.price,product.oldprice);
+                    var product = data.products[productId];
 
                     var productHtml = '<li class="changed-products__item">';
 
@@ -229,7 +207,12 @@ function calculateBasketPayCard ()
                     $('#ServiceModalWindow .changed-products').append(productHtml);
                   }
 
-                  $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton">Буду иметь в виду</div>');
+                  if (noclose){
+                      $("#ServiceModalWindow .close").remove();
+                      $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
+                  } else {
+                      $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
+                  }
 
                   $("#ServiceModalWindow").modal("show");
 
