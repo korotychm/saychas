@@ -170,6 +170,7 @@ function calculateBasketPayCard ()
                     //console.log(data.products);
                     var i = 0;
                     for (var product in data.products) {
+                        console.log(product);
                         console.log(i, Object.keys(data.products)[i], product.rest, product.oldrest, product.price, product.oldprice);
                         i++;
                     }
