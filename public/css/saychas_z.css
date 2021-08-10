@@ -1206,3 +1206,7 @@ var(--gray-light*/
   font-size: 24px;
   font-weight: bold;
 }
+.changed-products__btn {
+  width: 305px;
+  margin: auto;
+}
