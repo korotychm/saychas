@@ -173,11 +173,11 @@ function calculateBasketPayCard ()
                       rest: 2,
                       oldrest: 5,
                       price: 6000,
-                      oldrest: 7000
+                      oldprice: 7000
                     },
                     '000000000013': {
                       price: 2000,
-                      oldrest: 5000
+                      oldprice: 5000
                     }
                   }
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
@@ -186,7 +186,7 @@ function calculateBasketPayCard ()
 
                   for (var productId in products) {
 
-                    var product = data.products[productId];
+                    var product = products[productId];
 
                     var productHtml = '<li class="changed-products__item">';
 
