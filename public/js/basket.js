@@ -208,7 +208,7 @@ function calculateBasketPayCard ()
                     $('#ServiceModalWindow .changed-products').append(productHtml);
                   }
 
-                  $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton"></div>');
+                  $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton">Буду иметь в виду</div>');
 
                   $("#ServiceModalWindow").modal("show");
 
