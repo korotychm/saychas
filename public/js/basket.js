@@ -168,7 +168,7 @@ function calculateBasketPayCard ()
                     $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data.products));
                     $("#ServiceModalWindow").modal("show");
                     console.log(data.products);
-
+                    console.log(Object.keys(data.products));
                 }
                 return false
             },
