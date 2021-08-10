@@ -6,6 +6,7 @@ namespace Application\Service;
 
 use Application\Model\Entity;
 use Laminas\Session\Container;
+use Laminas\Json\Json;
 use Application\Resource\StringResource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
@@ -29,6 +30,7 @@ use Application\Model\Entity\Store;
 use Application\Model\Entity\Basket;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
+
 
 class HtmlProviderService
 {
@@ -101,6 +103,23 @@ class HtmlProviderService
             return join('<b class="brandcolor"> : </b>', $return);
         endif;
     }
+    
+    public function orderList($orders)
+    {
+        foreach ($orders as $order){
+            
+            $return['orderId'] = $order->getOrderId();
+            $return['orderStatus'] = $order->getStatus();
+            $return['basketInfo'] = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY);
+            unset($return['basketInfo']['userGeoLocation']['data']);
+            
+            $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
+            $return['date'] = $order->getDateCreated();
+            $returns[]=$return;
+          }
+          return $returns;
+    }
+
 
     public function breadCrumbsMenu($a = [])
     {

@@ -163,7 +163,7 @@ class AjaxController extends AbstractActionController
          
          $userGeoData =  $userData->getGeodata();
          
-         $userData->setId($return['dataId']);
+         //$userData->setId($return['dataId']);
          $userData->setTime(time());
          $userData->persist(['user_id' => $userId, 'id' => $return['dataId'] ]);
          
@@ -190,6 +190,29 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);        
         
     }
+    
+    public function basketCheckBeforeSendAction()
+    {
+        
+        $userId = $this->identity();
+        if (!$userId){
+            return new JsonModel(["result" => false, "reload"=>true]);        
+        }
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $post = $this->getRequest()->getPost();
+        $columns = ['product_id', 'order_id', 'total'];
+        $where = new Where();
+            $where->equalTo('user_id', $userId);
+            $where->equalTo('order_id', 0);
+//            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+        
+        $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
+        
+        
+    }
+    
+    
+    
      
     public function addToBasketAction()
     {

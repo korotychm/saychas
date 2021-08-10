@@ -8,7 +8,8 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-use Application\Model\Entity;
+//use Application\Model\Entity;
+use Application\Model\Entity\ClientOrder;
 
 /**
  * Description of ExternalCommunicationService
@@ -87,7 +88,7 @@ class ExternalCommunicationService
             while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
-        $content["deliveryes"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
+        $content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
         unset(
@@ -133,20 +134,22 @@ class ExternalCommunicationService
         
     }
     
-    public function createClientOrder ($content)
+    public function createClientOrder ($content, $order, $userId)
     {
         
         //$content['basketinfo'];
-          $basketinfo = Json::encode($content['basketinfo']);
-        $deliveryes = Json::encode($content['response']['deliveryes']);
-       $orderId = $content['response']['order'];
-        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        $basketinfo = Json::encode($content['basketinfo']);
+        $deliveries = Json::encode($content['response']['deliveries']);
+        $orderId = $content['response']['order'];
+//        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        
         $order->setOrderId($orderId); 
-        $order->setDeliveryInfo($deliveryes); 
+        $order->setUserId($userId); 
+        $order->setDeliveryInfo($deliveries); 
         $order->setBasketInfo($basketinfo); 
         $order->setDateCreated(time());
-        $order->persist();      
-        
+        $order->persist(['order_id'=>$orderId]);
+        return ['result'=> true, 'orderId'=>$orderId, 'products' => $content['products']];
         
     }
     

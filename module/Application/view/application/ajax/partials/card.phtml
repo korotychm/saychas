@@ -12,7 +12,7 @@
     <div class="contentabsolute  content opacity".<?=$rest?> >
     <a  href="/product/<?= $card->getId()?>" >
         <div class="zeroblok">
-            <img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image: url(/images/product/<?= empty($image)?"nophoto_1.jpeg" : $image ?>)"/>
+            <img src="/img/zero.png" alt="alt" class="productimage zero"  style="background-image:url('<?=$this->imagePath('product');?>/<?= empty($image)?"nophoto_1.jpeg" : $image?>')"/>
         </div>
     </a>
     <strong class='blok producttitle'><a  href='/product/<?=$card->getId()?>' ><?=$card->getTitle() ?></a></strong>
@@ -26,7 +26,7 @@
     <div class="content opacity">
         <a  href="/product/<?= $card->getId() ?>" >
             <div class='zeroblok'>
-                <img src='/img/zero.png' alt='alt' class="productimage zero" style="background-image:url(/images/product/<?= empty($image)?"nophoto_1.jpeg" : $image?>")/>
+                <img src='/img/zero.png' alt='alt' class="productimage zero" style="background-image:url('<?=$this->imagePath('product');?>/<?= empty($image)?"nophoto_1.jpeg" : $image?>')"/>
             </div>
         </a>
         <strong class='blok producttitle'><a  href="/product/<?= $card->getId()?>"><?= $card->getTitle() ?> </a></strong>

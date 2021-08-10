@@ -176,6 +176,17 @@ return [
                     ],
                 ],
             ],
+            'client-orders' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/client-orders',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'clientOrders',
+                    ],
+                ],
+            ],
+            
 //            'show-provider' => [
 //                'type'    => Segment::class,
 //                'options' => [
@@ -248,6 +259,19 @@ return [
                 ],
             ],
             //basketPayInfo
+            
+            'basket-check-before-send' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/ajax-basket-check-before-send',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'basketCheckBeforeSend',
+                    ],
+                ],
+            ],
+            //basketPayInfo
+            
             
         'user-auth-modal' => [
                 'type'    => Segment::class,
@@ -1048,7 +1072,7 @@ return [
             
         ],
         'image_path' => [
-            'base_url' => '/image',
+            'base_url' => '/images',
             'subpath' => [
                 'brand' => 'brand',
                 'product' => 'product',

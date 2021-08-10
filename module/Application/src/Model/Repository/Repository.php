@@ -206,20 +206,28 @@ abstract class Repository implements RepositoryInterface
 
         // $params['id'] = $entity->getId();
         $u = $this->find($params);
+//        $us = $this->findAll(['where' => $params])->toArray();
         
         $id = null;
         $assoc = $hydrator->extract($entity);
-        if(null != $u && !empty($u->primaryKeyName())) {
-            $pkname = $u->primaryKeyName();
-            
-//            $words = array_map('ucfirst', explode('_', $pkname));
-//
-//            $pkprop = implode('', $words);
-     
-            $id = $u->$pkname;
-            $assoc[$u->primaryKeyName()] = $id;
+        if(null != $u) {
+            $pk = $u->primaryKey();
+            if(is_string($pk) && !empty($pk)) {
+                $pkname = $u->primaryKey();
+                $id = $u->$pkname;
+                $assoc[$u->primaryKey()] = $id;
+            }else if(is_array($pk) && count($pk)) {
+                $keys = array_keys($assoc);
+                foreach($pk as $k) {
+                    if(in_array($k, $keys)) {
+                        $assoc[$k] = $id[$k] = $u->$k;
+                    }
+                }
+            }else{
+                throw new \Exception('Primary key ($pk) must be either a string or an array');
+            }
         }
-                
+
         $values = array_values($assoc);
         $names = array_keys($assoc);
 
@@ -233,9 +241,9 @@ abstract class Repository implements RepositoryInterface
         } else {
             $sqlObj = $sql->update($this->tableName);
 //            $keys = array_keys($assoc);
-//            if(in_array($entity->primaryKeyName(), $keys)) {
-////                $id = $assoc[$entity->primaryKeyName()];
-//                unset($assoc[$entity->primaryKeyName()]);
+//            if(in_array($entity->primaryKey(), $keys)) {
+////                $id = $assoc[$entity->primaryKey()];
+//                unset($assoc[$entity->primaryKey()]);
 //            }
             $sqlObj->set($assoc);
             $sqlObj->where($params);

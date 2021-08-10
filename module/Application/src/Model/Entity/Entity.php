@@ -13,11 +13,11 @@ class Entity
 {
 
     /**
-     * Get primary key name
+     * Get primary key
      *
      * @return string
      */
-    public function primaryKeyName()
+    public function primaryKey()
     {
         return '';
     }

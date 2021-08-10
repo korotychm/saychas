@@ -25,6 +25,9 @@ class ClientOrder extends Entity
     /** @var string */
     protected $order_id = '';
     
+    /** @var int */
+    protected $user_id;
+    
     /** @var string */
     protected $basket_info = '';
 
@@ -36,6 +39,7 @@ class ClientOrder extends Entity
     
     /** @var int */
     protected $date_created;
+    
     
     /** @var int */
     protected $status = 0;
@@ -65,6 +69,29 @@ class ClientOrder extends Entity
         return $this->id;
     }
 
+     /**
+     * Set user_id
+     *
+     * @param int $id
+     * @return $this
+     */
+    public function setUserId($userId)
+    {
+        $this->user_id = $userId;
+        return $this;
+    }
+
+    /**
+     * Get user_id
+     *
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    
     /**
      * Set order_id
      *

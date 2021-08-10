@@ -27,11 +27,11 @@ class UserData extends Entity
     public static UserDataRepository $repository;
 
     /**
-     * Get primary key name
+     * Get primary key
      *
-     * @return string
+     * @return string|array
      */
-    public function primaryKeyName()
+    public function primaryKey()
     {
         return 'id';
     }

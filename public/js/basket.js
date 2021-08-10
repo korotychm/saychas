@@ -304,9 +304,13 @@ $(function(){
             cache: false,
             data: $("#user-basket-form").serialize(),
             success: function (data) {
-               console.log(data)
+               //console.log(data)
                $("#ServiceModalWindow .modal-title").html("Формируем заказ");
                $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
+               if (data.result) {
+                   location = "/client-orders"; return false;
+               }
+               
                },
             error: function (xhr, ajaxOptions, thrownError) {
                 $("#ServiceModalWindow .modal-title").html("Ошибка sendbasketbutton " +  xhr.status );
@@ -448,10 +452,9 @@ $(function(){
 
             }
         });/**/
-    })
+    });
+
     //timepoint-dostmergeon
-
-
      $(".checkallprovider").click(function(){
 
          var rel=$(this).attr('rel');
@@ -471,6 +474,6 @@ $(function(){
         }
         calculateBasketHeader();
         loadPayInfo();
-    })
+    });
 
-})
+});
