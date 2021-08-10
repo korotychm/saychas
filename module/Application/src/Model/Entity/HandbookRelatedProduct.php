@@ -403,7 +403,7 @@ class HandbookRelatedProduct extends Entity
      */
     public function setVendorCode($vendorCode)
     {
-        $this->vendor_code = $vendor_code;
+        $this->vendor_code = $vendorCode;
 
         return $this;
     }
