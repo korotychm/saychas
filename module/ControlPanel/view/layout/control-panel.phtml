@@ -56,7 +56,7 @@
               position: absolute;
               right: 0;
               border-color: #ff5533;
-              outline: none;
+              outline: none !important;
               transition: .5s;
             }
             .cp-stores-search button:hover {
@@ -71,6 +71,15 @@
             }
             .active, .table-striped tbody tr.active:nth-child(odd) td {
               background: #ff5533;
+            }
+            .table-sm td, .table-sm th {
+              padding: .3rem 1rem;
+            }
+            .main-body .card {
+              height: 24em !important;
+            }
+            .page-link {
+              color: #ff5533;
             }
             #controlPanelMenu a {
                 color: whitesmoke;
