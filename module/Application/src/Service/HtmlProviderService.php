@@ -823,6 +823,7 @@ class HtmlProviderService
 
     public function getUserInfo($user)
     {
+        if (null == $user) return [];
         //$container = new Container(StringResource::SESSION_NAMESPACE);
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();

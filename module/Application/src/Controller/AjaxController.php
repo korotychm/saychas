@@ -422,7 +422,7 @@ class AjaxController extends AbstractActionController
         $param = [
            "hourPrice" => 29900,  //цена доставки за час
            "mergePrice" => 5000, //цена доставки за три часа
-           "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
+           "mergePriceFirst" => 24900,  //цена доставки за первый магазин  при объеденении заказа
            "mergecount" => 4, //количество объеденямых магазинов
         ];
         $post = $this->getRequest()->getPost();
