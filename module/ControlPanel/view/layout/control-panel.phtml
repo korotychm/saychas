@@ -11,7 +11,7 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-                ->prependStylesheet($this->basePath('control-panel/assets/index.css'))
+                //->prependStylesheet($this->basePath('control-panel/assets/index.css'))
                 ->prependStylesheet($this->basePath('css/cpanel.css'))
                 ->prependStylesheet($this->basePath('css/style.css'))
                 ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
@@ -28,7 +28,7 @@
         <?=
                 $this->inlineScript()
                 //->prependFile($this->basePath('/js/services.js'))
-                ->prependFile($this->basePath('control-panel/assets/index.js'))
+                //->prependFile($this->basePath('control-panel/assets/index.js'))
                 ->prependFile($this->basePath('/js/calendar.js'))
                 ->prependFile($this->basePath('/js/cpanel.js'))
                 ->prependFile($this->basePath('/js/nouislider.min.js'))
