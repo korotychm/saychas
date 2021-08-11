@@ -198,16 +198,15 @@ class AjaxController extends AbstractActionController
         if (!$userId){
             return new JsonModel(["result" => false, "reload"=>true]);        
         }
-        $userData = UserData::findAll(['where' => ['user_id' => $userId] ])->current();
+        $userData = UserData::findAll(['where' => ['user_id' => $userId], 'order' => 'timestamp DESC' ])->current();
         if (empty($userData)){
             return new JsonModel(["result" => false, "reload"=>true]);        
         }
         $userGeoData =  $userData->getGeodata();
-        $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userGeoData);
+        //return new JsonModel([$userId, $userGeoData]);
         
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userGeoData);
         $post = $this->getRequest()->getPost();
-        $param["legalStore"] = $container->legalStore;
         $param['basketUserId'] = $post->userIdentity;
         $param['userId'] = $userId;
         $param['postedProducts'] = $post->products;
@@ -220,7 +219,7 @@ class AjaxController extends AbstractActionController
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
       
         if (!empty($basket)){
-            $return = $this->htmlProvider->basketCheckBeforeSendAService($param, $basket);
+            $return = $this->htmlProvider->basketCheckBeforeSendService($param, $basket);
             return new JsonModel($return);            
         }
         return new JsonModel(['result'=>false, "reload" => true ]);            

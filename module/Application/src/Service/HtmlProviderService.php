@@ -90,10 +90,11 @@ class HtmlProviderService
      * Returns Array
      * @return Array
      */
-    public function  basketCheckBeforeSendAService($param, $basket)
+    public function  basketCheckBeforeSendService($param, $basket)
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $param["legalStore"] = $container->legalStore;
+        $legalStoreKey = (!empty($param["legalStore"]))?array_keys($param["legalStore"]):[];
         $return["result"] = true;
         $error = [ "result"=>false, "reload"=>true, "reloadUrl"=>"/basket" ];
         
@@ -109,7 +110,7 @@ class HtmlProviderService
                 ];
             }
            // $productsKey=array_keys($param['postedProducts']);
-            while (list($key,$product) = each($param['postedProducts'])) // 
+           while (list($key,$product) = each($param['postedProducts'])) // 
            //foreach($param['postedProducts'] as $postedProduct)    
            {
                 if (empty( $basketProducts[$key])) {
@@ -121,11 +122,26 @@ class HtmlProviderService
                    $return["result"] = false;
                 }
                 
+                $productRow = $this->productRepository->find(['id' => $key]);
+                $price = (int) $productRow->receivePriceObject()->getPrice();
+                $rest = $productRow->receiveRest($legalStoreKey);
+                if($basketProducts[$key]["price"] != $price) {
+                    $whatHappened['products'][$key]['oldprice'] = $basketProducts[$key]["price"];
+                    $whatHappened['products'][$key]['price'] = $price;
+                    $return["result"] = false;
+                } 
+                 if($basketProducts[$key]["total"] > $rest) {
+                    $whatHappened['products'][$key]['oldprest'] = $basketProducts[$key]["total"];
+                    $whatHappened['products'][$key]['rest'] = $rest;
+                    $return["result"] = false;
+                } 
+                
+                
             }
             if (!empty($whatHappened)){
                 $container->whatHappened = $whatHappened;
             }
-            $return['test'] = [ $whatHappened, $param, $basketProducts];
+            $return['test'] = [ $whatHappened ];
             
         return $return; 
     }
@@ -1100,6 +1116,7 @@ class HtmlProviderService
             $infostore1c = "";
             if (null != $store) {
                 $idStore = $store->getId();
+                //$infostore1c .= "id:".$idStore."<BR/>".print_r($legalStore, true);
                 $infostore1c .= ($legalStoresArray[$idStore]['working_hours_from']) ?
                         "сегодня с " . substr($legalStoresArray[$idStore]['working_hours_from'], 0, -3) . " до " . substr($legalStoresArray[$idStore]['working_hours_to'], 0, -3) : "";
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
