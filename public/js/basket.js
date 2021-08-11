@@ -154,7 +154,7 @@ function calculateBasketPayCard ()
 
 }
 
- function whatHappened (noclose){
+ function whatHappened ( noclose = false ){
         $.ajax({
             beforeSend : function (){
                 },
@@ -163,6 +163,14 @@ function calculateBasketPayCard ()
             cache: false,
 
             success: function (data) {
+                
+                /* 
+                 /// Это для теста - начало
+                $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
+                $("#ServiceModalWindow").modal("show");
+                return;
+                /// Это для теста - конец /**/
+                
                 if (data.result) {
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
 
@@ -236,12 +244,16 @@ function checkBasketDataBeforeSend (){
             cache: false,
             data: $("#user-basket-form").serialize(),
             success: function (data) {
-                //if (data.result) {
-                    $("#ServiceModalWindow .modal-title").html("Результаты проверки" );
-                    $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
-                    $("#ServiceModalWindow").modal("show");
-                  console.log(data)  ;
-                //}
+                if (data.result) {
+                    sendBasketData();
+                }
+                else {
+                    if (data.reload != null ) {
+                        location.href =  data.reload;
+                        return false
+                    }
+                    whatHappened(true);
+                }
                 return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -254,7 +266,32 @@ function checkBasketDataBeforeSend (){
     return false;
     }
 
-
+function sendBasketData(){
+    $.ajax({
+            beforeSend : function (){
+                 $("#ServiceModalWindow .modal-title").html("Отправка данных о заказе");
+                 $("#ServiceModalWindow #ServiceModalWraper").html("....");
+                },
+            url: "/send-basket-data",
+            type: 'POST',
+            cache: false,
+            data: $("#user-basket-form").serialize(),
+            success: function (data) {
+               //console.log(data)
+               $("#ServiceModalWindow .modal-title").html("Формируем заказ");
+               $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
+               if (data.result) {
+                   location = "/client-orders"; return false;
+               }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#ServiceModalWindow .modal-title").html("Ошибка sendbasketbutton " +  xhr.status );
+                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
+            }
+        });
+          //$("#ServiceModalWindow #ServiceModalWraper").html("+ + + +");
+        $("#ServiceModalWindow").modal("show");
+}
 
 function loadPayInfo(){
     var dataString = $("#user-basket-form").serialize();
@@ -285,27 +322,24 @@ function loadPayInfo(){
 
 $(function(){
     whatHappened();
+    loadPayInfo();
 
     $("#basketuseradress").suggestions({
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
         type: "ADDRESS",
         onSelect: function (suggestion) {
             $("#basketuseradresserror").hide();
-            //console.log(suggestion.data);
             if (!suggestion.data.house)
             {
                 $("#basketuseradresserror").html("Необходимо указать адрес до номера дома!").show();
                 return false;
             }
-           //return ;
             var dataString = JSON.stringify(suggestion);
             $("#geodatadadata").val(dataString);
 
             getLegalStores(dataString, '#basketuseradresserror');
             addUserAddrees(dataString, $("#basketuseradress").val());
-            //addUserAddrees(dataString,$("#useraddress").val());
-           //location = location.href;
-            //
+           
         }
     });
     
@@ -319,37 +353,10 @@ $(function(){
     });/**/
     calculateBasketMerge ($("#user-basket-form").serialize(), true);
 
-    //$("#user-basket-form").serialize()
-    loadPayInfo();
-
     $("body").on("click", "#sendbasketbutton", function(){
-         var dataString = $("#user-basket-form").serialize();
-         $.ajax({
-            beforeSend : function (){
-                 $("#ServiceModalWindow .modal-title").html("Отправка данных о заказе");
-                 $("#ServiceModalWindow #ServiceModalWraper").html("....");
-                },
-            url: "/send-basket-data",
-            type: 'POST',
-            cache: false,
-            data: $("#user-basket-form").serialize(),
-            success: function (data) {
-               //console.log(data)
-               $("#ServiceModalWindow .modal-title").html("Формируем заказ");
-               $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
-               if (data.result) {
-                   location = "/client-orders"; return false;
-               }
-               
-               },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $("#ServiceModalWindow .modal-title").html("Ошибка sendbasketbutton " +  xhr.status );
-                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
-            }
-        });
-          //$("#ServiceModalWindow #ServiceModalWraper").html("+ + + +");
-        $("#ServiceModalWindow").modal("show");
-    })
+        // var dataString = $("#user-basket-form").serialize();
+        checkBasketDataBeforeSend ();
+    });
 
 
     $("body").on("click dblclick", ".radiomergebut, .loadpayinfo", function(){loadPayInfo()});
@@ -371,7 +378,7 @@ $(function(){
         calculateBasketItem (id);
         loadPayInfo();
         return false
-    })
+    });
 
     $("body").on("click dblclick", ".countproductplus", function(){
         if($(this).hasClass("disabled")) return false;
@@ -388,11 +395,7 @@ $(function(){
         calculateBasketItem (id);
         loadPayInfo();
         return false
-    })
-
-
-
-
+    });
 
     $(".selfdeleveryonoff").click(function () {
         var rel=$(this).attr('rel');
@@ -433,7 +436,7 @@ $(function(){
             $(".selfdeleveryallall").addClass("selfdeleverycountme").show();
         }
         loadPayInfo();
-    })
+    });
     $(".checkallallprovider").click(function(){
         $("#checkallavailble").removeClass("zach");
          var rel=$(this).attr('rel');

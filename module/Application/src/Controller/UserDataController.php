@@ -250,26 +250,14 @@ class UserDataController extends AbstractActionController
         
         $orderset = $this->externalCommunicationService->sendBasketData($content);
         $orderId = $orderset['response']['order'];
-
-        
-        
         $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
-        
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
-        //return new JsonModel(["result"=>false, [ $order, $userId]]);        
-        
-//      $basketSet = \Application\Model\Entity\Basket::findAll(['product_id'=>$orderSet['products'], 'user_id' => $userId, 'order_id' => 0]);
         $basketSet = \Application\Model\Entity\Basket::findAll(['where' => ['product_id'=>$orderCreate['products'], 'user_id' => $userId, 'order_id' => 0] ]);
-        
         // $sql="update `basket` set `order_id` = '$orderId' where `user_id` = '$user_id' and  `order_id`=0 and `product_id` in (".join(",",$$orderSet['products']).")";
         foreach($basketSet as $basket) {
             $basket->setOrderId($orderId);
-//            $basket->persist(['product_id' => $orderSet['products'] ]);
-            //$answer[] = 
-             $result = $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId() ]);
+            $result = $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId() ]);
         }
-        //exit(print_r($order[''], true));
-        
         return new JsonModel(["result"=>true]);
     }
 
@@ -363,7 +351,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * @author Sizov D.N. <plusweb.pro>
+     * @author Sizov D. 
      * 
      * @return JsonModel
      */
@@ -404,7 +392,7 @@ class UserDataController extends AbstractActionController
                     $userData = $user->getUserData();
                     $usdat = $userData->current();
                     if (null != $usdat) {
-                        $print_r = $userGeodata = $usdat->getGeodata();
+                        //$print_r = $userGeodata = $usdat->getGeodata();
                         //exit ($userGeodata);
                     }
                     if ($post->forgetPassHidden) {
@@ -418,18 +406,15 @@ class UserDataController extends AbstractActionController
                         $userSmsCode = $post->userSmsCode;
                         $forgetPassInput = ($post->forgetPassInput == null) ? "" : $post->forgetPassInput;
                         $forgetPassInput2 = $post->forgetPassInput2;
-
                         $buttonLable = StringResource::BUTTON_LABLE_PASS_CHANGE;
                         $userPhoneIdentity = $container->userPhoneIdentity;
                         $codeExist = $userPhoneIdentity['code'];
 
                         if (!$codeExist) {
-                            $print_r = $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
-                            if (!$codeSendAnswer['result']) {
-                                $error['sms'] = StringResource::ERROR_SEND_SMS_MESSAGE;
-                            } else {
-                                //$print_r = $codeExist;
-                            }
+                            $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
+                           // if (!$codeSendAnswer['result']) {
+                                $error['sms'] =  (!$codeSendAnswer['result'])?(StringResource::ERROR_SEND_SMS_MESSAGE):"";
+                            //} else {}
                         } else {
 
                             if ($userSmsCode and ($userSmsCode != $codeExist)) {
@@ -463,10 +448,10 @@ class UserDataController extends AbstractActionController
                                 $response = $this->externalCommunicationService->sendCredentials($req);
                                 if ($response['result']) {
                                     $container->userIdentity = $userId;
-                                    //$reloadPage = true;
-                                    //надо вставить получение магазинов
+                                   
+                                    // получение магазинов
                                     if (!empty($userGeodata)) {
-                                        $print_r = $this->commonHelperFuncions->updateLegalStores($userGeodata);
+                                         $this->commonHelperFuncions->updateLegalStores($userGeodata);
                                     }
 
                                     unset($container->userAutSession);
@@ -480,7 +465,8 @@ class UserDataController extends AbstractActionController
                     } else {
                         $passBlock = true;
                         $title = StringResource::USER_LABLE_HELLO . $user->getName();
-                        if ($post->userPass) {
+                        
+                        if (!empty($post->userPass)) {
                             //$print_r = 
                             $response = $this->externalCommunicationService->clientLogin([
                                 "phone" => StringHelper::phoneToNum($return['phone']),
@@ -490,8 +476,8 @@ class UserDataController extends AbstractActionController
                                 $error["password"] = $response["errorDescription"];
                             } else {
                                 $container->userIdentity = $userId;
-                                //$reloadPage = true;
-                                //надо вставить получение магазинов
+                                
+                                // получение магазинов
                                 if (!empty($userGeodata)) {
                                     $print_r = $this->commonHelperFuncions->updateLegalStores($userGeodata);
                                 }
@@ -509,8 +495,8 @@ class UserDataController extends AbstractActionController
                     $buttonLable = StringResource::BUTTON_LABLE_REGISTER;
                     $userPhoneIdentity = $container->userPhoneIdentity;
                     $codeExist = $userPhoneIdentity['code'];
+                    
                     if (!$codeExist) {
-
                         //$print_r = 
                         $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                         if (!$codeSendAnswer['result']) {
@@ -562,10 +548,10 @@ class UserDataController extends AbstractActionController
                             $answer = $this->externalCommunicationService->setClientInfo($paramsFor1c);
 
                             if (!$answer["result"]) {
-                                $error["1c"] = $answer['errorDescription'] . "!!!";
+                                $error["1c"] = $answer['errorDescription'];
                             } else {
 
-                                $error["1c"] = $answer['id'] . "!!!";
+                                $error["1c"] = $answer['id'] ;
                                 $userId = $container->userIdentity;
                                 //$print_r = 
                                 $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
@@ -575,7 +561,9 @@ class UserDataController extends AbstractActionController
                                 //$print_r = 
                                 $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
                                 $this->userRepository->persist($newUser, ['id' => $userId]);
-
+                                 if (!empty($userGeodata)) {
+                                         $this->commonHelperFuncions->updateLegalStores($userGeodata);
+                                }
                                 unset($container->userAutSession);
                                 unset($container->userPhoneIdentity);
 
@@ -588,8 +576,8 @@ class UserDataController extends AbstractActionController
         }
         $container->userAutTmpSession = $userAutSession;
         $view = new ViewModel([
-            //'reloadPage' => $reloadPage,
-            'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
+           //'reloadPage' => $reloadPage,
+           // 'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
             'title' => $title,
             'buttonLable' => $buttonLable,
             'error' => $error,
