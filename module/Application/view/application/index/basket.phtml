@@ -40,6 +40,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                         <!-- div class='blok pwbox'> сервисный блок</div -->
 <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
                 <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
+                <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
                 <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
                 <div  class='pointer blokc' id="testbeforesend" >Тест проверки перед отправкой</div>
                     </div>

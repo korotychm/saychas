@@ -179,9 +179,9 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $whatHappened = $container->whatHappened;
-        if (!empty($whatHappened)) {
-            $return = ["result"=>true, "products"=>$whatHappened];
-            $return ['updated'] = $this->htmlProvider->basketWhatHappenedUpdate($userId, $whatHappened); 
+        if (!empty($whatHappened['products'])) {
+            $return = ["result"=>true, "products"=>$whatHappened['products'], "stores" => $whatHappened['stores'] ];
+            $return ['updated'] = $this->htmlProvider->basketWhatHappenedUpdate($userId, $whatHappened['products']); 
         }
         else {
             $return = ["result"=>false];
@@ -198,31 +198,33 @@ class AjaxController extends AbstractActionController
         if (!$userId){
             return new JsonModel(["result" => false, "reload"=>true]);        
         }
+        $userData = UserData::findAll(['where' => ['user_id' => $userId] ])->current();
+        if (empty($userData)){
+            return new JsonModel(["result" => false, "reload"=>true]);        
+        }
+        $userGeoData =  $userData->getGeodata();
+        $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userGeoData);
+        
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $post = $this->getRequest()->getPost();
-        $return['posted']=$post->products;
-        $columns = ['product_id', 'total', 'price'];
+        $param["legalStore"] = $container->legalStore;
+        $param['basketUserId'] = $post->userIdentity;
+        $param['userId'] = $userId;
+        $param['postedProducts'] = $post->products;
+        
+        
         $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
-//            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
-        
+        $columns = ['product_id', 'total', 'price'];    
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
       
         if (!empty($basket)){
-            foreach ($basket as $basketItem){
-                $return['basket'][]=[
-                    'productId' => $basketItem->getProductId(),
-                    'price' => $basketItem->getPrice(),
-                    'total' => $basketItem->getTotal(),
-                ];
-            }
-        return new JsonModel($return);            
+            $return = $this->htmlProvider->basketCheckBeforeSendAService($param, $basket);
+            return new JsonModel($return);            
         }
-        return new JsonModel(['result'=>false]);            
-       }
-    
-    
+        return new JsonModel(['result'=>false, "reload" => true ]);            
+     }
     
      
     public function addToBasketAction()

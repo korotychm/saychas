@@ -85,6 +85,51 @@ class HtmlProviderService
     {
         return '<h1>Hello world!!!</h1>';
     }
+    
+       /**
+     * Returns Array
+     * @return Array
+     */
+    public function  basketCheckBeforeSendAService($param, $basket)
+    {
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $param["legalStore"] = $container->legalStore;
+        $return["result"] = true;
+        $error = [ "result"=>false, "reload"=>true, "reloadUrl"=>"/basket" ];
+        
+        
+       /**/ if ($param['basketUserId'] != $param['userId']) {
+            return $error;
+        }/**/
+        
+            foreach ($basket as $basketItem){
+              $basketProducts[$basketItem->getProductId()]=[
+                    'price' => $basketItem->getPrice(),
+                    'total' => $basketItem->getTotal(),
+                ];
+            }
+           // $productsKey=array_keys($param['postedProducts']);
+            while (list($key,$product) = each($param['postedProducts'])) // 
+           //foreach($param['postedProducts'] as $postedProduct)    
+           {
+                if (empty( $basketProducts[$key])) {
+                    $error["reloadUrl"] = "/client-orders";
+                    return $error;
+                }
+                if (empty($param["legalStore"][$product['store']])){
+                   $whatHappened['storeswww'][$product['store']][] = $key;
+                   $return["result"] = false;
+                }
+                
+            }
+            if (!empty($whatHappened)){
+                $container->whatHappened = $whatHappened;
+            }
+            $return['test'] = [ $whatHappened, $param, $basketProducts];
+            
+        return $return; 
+    }
+    
 
     /**
      * Returns Html string
@@ -120,6 +165,7 @@ class HtmlProviderService
           return $returns;
     }
 
+    
 
     public function breadCrumbsMenu($a = [])
     {
@@ -1002,18 +1048,18 @@ class HtmlProviderService
 
                     $productStoreId = $productStore->getId();
                     if ($oldprice != $price) {
-                        $whatHappened[$pId]['oldprice'] = $oldprice;
-                        $whatHappened[$pId]['price'] = $price;
+                        $whatHappened['products'][$pId]['oldprice'] = $oldprice;
+                        $whatHappened['products'][$pId]['price'] = $price;
                     }
                     if ($count > $rest) {
 
-                        $whatHappened[$pId]['oldrest'] = $count;
-                        $whatHappened[$pId]['rest'] = $rest;
+                        $whatHappened['products'][$pId]['oldrest'] = $count;
+                        $whatHappened['products'][$pId]['rest'] = $rest;
 
                         $count = $rest;
                     }
                     if ($count == 0 and 0 < $rest) {
-                        $whatHappened[$pId]['instock'] = $rest;
+                        $whatHappened['products'][$pId]['instock'] = $rest;
                     }
                 }//if ($rest) $countproducts +=$count ;
                 if ($rest) {
@@ -1034,8 +1080,9 @@ class HtmlProviderService
                     'store' => $productStoreId,
                 ];
             }
-            if ($whatHappened)
+            if ($whatHappened){
                 $container->whatHappened = $whatHappened;
+            }
         }
         if (!$item or!count($item))
             return;
