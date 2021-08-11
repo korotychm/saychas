@@ -35,6 +35,16 @@ class User extends Entity
     public static BasketRepository $basketRepository;
 
     /**
+     * Auto increment key
+     * 
+     * @return string
+     */
+    public function autoIncrementKey()
+    {
+        return 'id';
+    }
+    
+    /**
      * Get primary key
      *
      * @return string|array

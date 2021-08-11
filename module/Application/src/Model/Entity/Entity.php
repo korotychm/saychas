@@ -21,6 +21,7 @@ class Entity
     {
         return '';
     }
+    
     /**
      * Get primary key
      *
