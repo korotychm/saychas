@@ -129,7 +129,7 @@ ul {list-style-type: none;}
                 <ul class="days">  
                     <?php for($d = 1; $d <= $maxDaysInMonth; ++$d): ?>
                         <?php $dayText = str_pad($d, 2, '0', STR_PAD_LEFT) ?>
-                        <?php // = $this->partial('partials/stores/time-table/days', ['day' => $dayText, 'month' => $month, 'year' => $year, 'today' => ( (int) $day ) === $d ? 'active' : '' ]); ?>
+                        <?= $this->partial('partials/stores/time-table/days', ['day' => $dayText, 'month' => $month, 'year' => $year, 'today' => ( (int) $day ) === $d ? 'active' : '' ]); ?>
                     <?php endfor; ?>
                 </ul>
             </div>
