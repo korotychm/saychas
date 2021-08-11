@@ -72,6 +72,28 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
+                    'empty' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'index' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/index',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'show-stores' => [
                         'type' => Literal::class,
                         'options' => [
