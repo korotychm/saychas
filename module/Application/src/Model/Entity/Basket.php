@@ -33,7 +33,7 @@ class Basket extends Entity
      */
     public function primaryKey()
     {
-        return ['user_id', 'product_id'];
+        return ['user_id', 'product_id', 'order_id'];
     }
     
     /**
