@@ -13,6 +13,15 @@ class Entity
 {
 
     /**
+     * Auto increment key
+     * 
+     * @return string
+     */
+    public function autoIncrementKey()
+    {
+        return '';
+    }
+    /**
      * Get primary key
      *
      * @return string

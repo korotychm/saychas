@@ -20,6 +20,7 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
 use Application\Model\RepositoryInterface\RepositoryInterface;
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 
 /**
  * Description of Repository
@@ -207,32 +208,60 @@ abstract class Repository implements RepositoryInterface
         // $params['id'] = $entity->getId();
         $u = $this->find($params);
 //        $us = $this->findAll(['where' => $params])->toArray();
+        $found = true;
+        if(null == $u) {
+            $found = false;
+        }
         
         $id = null;
         $assoc = $hydrator->extract($entity);
-        if(null != $u) {
-            $pk = $u->primaryKey();
+        //if(null != $u) {
+//        if($found) {
+//            $pk = $u->primaryKey();
+//            if(is_string($pk) && !empty($pk)) {
+//                $pkname = $u->primaryKey();
+//                $id = $u->$pkname;
+//                $assoc[$u->primaryKey()] = $id;
+//            }else if(is_array($pk) && count($pk)) {
+//                $keys = array_keys($assoc);
+//                foreach($pk as $k) {
+//                    if(in_array($k, $keys)) {
+//                        $assoc[$k] = $id[$k] = $u->$k;
+//                    }
+//                }
+//            }else{
+//                throw new \Exception('Primary key ($pk) must be either a string or an array');
+//            }
+//        }
+        if($found) {
+            $pk = $entity->primaryKey();
             if(is_string($pk) && !empty($pk)) {
-                $pkname = $u->primaryKey();
-                $id = $u->$pkname;
-                $assoc[$u->primaryKey()] = $id;
+                $pkname = $entity->primaryKey();
+                $id = $entity->$pkname;
+                $assoc[$entity->primaryKey()] = $id;
             }else if(is_array($pk) && count($pk)) {
                 $keys = array_keys($assoc);
                 foreach($pk as $k) {
                     if(in_array($k, $keys)) {
-                        $assoc[$k] = $id[$k] = $u->$k;
+                        $assoc[$k] = $id[$k] = $entity->$k;
                     }
                 }
             }else{
                 throw new \Exception('Primary key ($pk) must be either a string or an array');
             }
         }
-
+//        else{
+//            $autoIncrement = $entity->autoIncrementKey();
+//            if(key_exists($autoIncrement, $assoc)) {
+//                unset($assoc[$autoIncrement]);
+//            }
+//        }
         $values = array_values($assoc);
         $names = array_keys($assoc);
 
         $sql = new Sql($this->db);
-        if (empty($u)) {
+        //if (empty($u)) {
+        if(!$found) {
             $sqlObj = $sql->insert();
             $sqlObj->into($this->tableName);
             $sqlObj->columns($names);
@@ -252,11 +281,13 @@ abstract class Repository implements RepositoryInterface
         try {
             $stmt = $sql->prepareStatementForSqlObject($sqlObj);
             $stmt->execute();
-            if(null == $u) {
+            //if(null == $u) {
+            //if(!$found && !empty($u->autoIncrementKey())) {
+            if(!$found && !empty($entity->autoIncrementKey())) {
                 $id = $this->db->getDriver()->getLastGeneratedValue();
             }
         } catch (InvalidQueryException $ex) {
-            echo $ex->getMessage();
+            //echo $ex->getMessage();
             return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
         }
         return $id;
