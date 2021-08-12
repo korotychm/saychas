@@ -107,7 +107,7 @@ class HtmlProviderService
             ];
         }
         $test = false;
-        $test = true;
+        //$test = true;
 
         while (list($key, $product) = each($param['postedProducts'])) { //
             if (empty($basketProducts[$key] or $test)) {
