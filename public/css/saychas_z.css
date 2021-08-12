@@ -1245,6 +1245,12 @@ var(--gray-light*/
   width: 305px;
   margin: auto !important;
 }
+<<<<<<< HEAD
+
+
+#productpageimg .iconimg {width:100px}
+#productpageimg .mainimg {width:calc(100% - 110px) }
+=======
 .changed-products__store {
   grid-column: span 2;
   display: flex;
@@ -1289,3 +1295,4 @@ var(--gray-light*/
   height: 65px;
   object-fit: contain;
 }
+>>>>>>> korotich

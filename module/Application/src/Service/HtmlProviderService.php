@@ -549,7 +549,7 @@ class HtmlProviderService
                 $value = $v;
         }
         if ($value)
-            return print_r(join(", ", $value), true);
+            return  print_r(join(", ", $value), true);
     }
 
     public function productPage($filteredProducts, $category_id = 0)
@@ -766,6 +766,208 @@ class HtmlProviderService
 
         return $return;
     }
+    
+    
+    public function productPageService($filteredProducts, $category_id = 0)
+    {
+        $productImages = $return = $filters = [];
+        if (!$filteredProducts->count()) {
+            header("HTTP/1.1 301 Moved Permanently");
+            header("Location:/");
+            exit();
+        }
+        foreach ($filteredProducts as $product) {
+            
+            $return['price'] = (int)$product->getPrice();
+            $return['price_formated' ]= number_format(($return['price']/100), 0, "", "&nbsp;");
+            //$return['discont'] = $product->getDiscont();
+            $container = new Container(StringResource::SESSION_NAMESPACE);
+            $legalStore = $container->legalStore;
+
+            //$filtrForCategory = $container->filtrForCategory;
+            $timeDelevery = (int) $legalStore[$product->getStoreId()];
+            $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
+            $return['rest'] = $r = (int) $rest->getRest();
+            if (!$speed or $speed < $timeDelevery) {
+                $speed = (int) $timeDelevery;
+            }
+            $return['product_id'] = $id = $product->getId();
+            $return['title'] = $product->getTitle();
+            $return['category_id'] =  $categoryId = $product->getCategoryId();
+            
+            $charNew = $product->getParamVariableList();
+            $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
+            
+
+            //$category = $product->getCategoryTitle();
+
+            $productImages[] = $product->getHttpUrl();
+            //$filtersTmp = explode(",", $product->getParamValueList2());
+            //$filters = array_merge($filters, $filtersTmp);
+            $vendor = $product->getVendorCode();
+            $brandtitle = $product->getBrandTitle();
+
+            $brandid = $product->getBrandId();
+            //exit($brandid."!");
+            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid]);
+            $brandimage = $brandobject->getImage();
+            //exit($brandimage."!");
+            $return['description'] = $description = $product->getDescription();
+
+            /*$description = (strlen($description) < 501) ? "<p>" . str_replace("\n", "</p><p>", $description) . "</p>" : ""
+                    . "<div  id='spoiler-hide-$id' >"
+                    . "     <p><div class='blok relative'>"
+                    . "         " . substr(strip_tags($description), 0, 500)
+                    . "         <div class='gradientbottom'></div>"
+                    . "     </div>"
+                    . "     <a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
+                    . "     </p>"
+                    . "</div>"
+                    . "<div  id='spoiler-show-$id'   class='blok' style='display:none' ><p>" . str_replace("\n", "</p><p>", $description) . "</p></div>";
+              */      
+            $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
+            $rst[$product->getStoreId()] = $r;
+        }
+        $totalRest = (count($rst)) ? array_sum($rst) : 0;
+        ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
+
+        $characteristicsArray  = array_diff($characteristicsArray , array(''));
+        if (!empty($characteristicsArray)) {
+            foreach ($characteristicsArray as $char) {
+                
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
+                 
+                $chArray = $ch->getIsList();
+                 ($chArray) ? $v = $value : $v[] = $value;
+                    $value = $this->valueParce($v, $chType);
+                    
+                
+                
+            $return["characteristics"][$ch->getIsMain()][] = [
+                    "id" => $char['id'],
+                    "title" => $ch->getTitle(),
+                    "array" => $chArray ,
+                    "value" => $value,
+                    "unit" => $ch->getUnit(),
+                ];
+            }
+        } else $return["characteristics"]=$characteristicsArray;
+        
+        $j = 0;
+        $productImages = array_unique($productImages);
+        $return['images']=$productImages;
+        
+        /* /foreach ($img as $im) {
+            if ($im) {
+                $borderred = "";
+                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
+                if (!$j) {
+                    $mainimage = "<div class='square'><div class='squarecontent'>$image</div></div>";
+                    $borderred = " borderred ";
+                }
+                $j++;
+                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
+                $imgicons .= "<div class='product-image-container-mini iblok $borderred' >$image</div>";
+            }
+        }/**/
+        $return['title'] = $title;
+        $return['categoryId'] = $categoryId;
+        $return['card'] .= ""
+                . "<div class='pw-contentblock cblock-2'>"
+                . "         <div class='inactiveblok'></div>"
+                . "</div>"
+                . "<div class='pw-contentblock gray iblokr cblock-2'>Код товара: $vendor</div>"
+                . "<div class='pw-contentblock cblock-3'>
+                    <div class='contentpadding' id=productpageimg>
+                            $speedlable2
+                            $imagesready
+                    <div class='iblok iconimg' style='width:98px;' >$imgicons</div>
+                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>
+                     </div>
+                 </div>"
+                . "
+                 <div class='pw-contentblock cblock-3'>
+                    <div class='contentpadding'>
+                      <div class='productpagecard ' >"
+                . "   <div class='content opacity-" . $r . "'>"
+        ;
+
+        $return['card'] .= ($join) ? "<div class='char-blok'>$join</div>" : "";
+        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
+        //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
+        $return['card'] .= "   </div>"
+                . "</div>"
+                . "</div>"
+                . "</div>    "
+                . "<div class='pw-contentblock cblock-3'>
+                         <div class='contentpadding'>
+				<div class='paybox' >"
+                . "     		<div class='contentpadding'>
+						<h2 class='blok price'>   " . $cena . " &#8381; "
+                . (($oldprice) ? "<span class='oldprice'>" . ($oldprice) . "&nbsp;&#8381;</span>" : "")
+                . "</h2>
+					</div>
+        				<div class='volna' ></div>
+            				<div class='contentpadding'>
+						доставка
+                                        </div>
+                                        <div class='pw-contentblock cblock-2'>
+                                            <div class='contentpadding'>
+                                                 <div class=paybutton rel='$id' >в корзину</div>
+                                            </div>
+                                         </div>
+                                         <div class='pw-contentblock cblock-2'>
+                                            <div class='contentpadding'>
+                                                 <div class=paybuttonwhite rel='$id' >купить сразу</div>
+                                            </div>
+                                         </div>
+									"
+                . "         <div class='contentpadding'>
+                                <div class='favstar favtext'>Добавить в избранное</div>
+                            </div>
+                      </div>
+                       <div class=brandblok >
+                               " . (($brandimage) ? "<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>" : " <div class='brandlogo' >$brandtitle</div>") . "
+                               <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
+                         </div>
+                    </div>
+                 </div>
+                 "
+        ;
+        $return['card'] .= ""
+                . "<div class=blok  >"
+                . "    <div class='pw-contentblock cblock-5' >
+                            <div class='contentpadding ' >"
+                //. $charsNew."!!!"
+                . $description
+                . (($charsmore) ? "<h3>Характеристики</h3>
+
+                                <div class='char-blok-bottom'>
+                                    $charsmore
+                                </div>" : "") . "
+                            </div>
+                        </div>"
+                . "<div class='pw-contentblock cblock-3' >"
+                . "<div class='contentpadding ' >"
+                . "<div class='mini opacity0'>
+                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
+                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
+                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
+                . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
+                            </ul>
+                      </div>
+                      </div>
+                      </div>
+                      </div>"
+                . "</div>";
+
+        return $return;
+    }
+    
+    
+    
+    
+    
 
     public function writeUserAddress($user = null)
     {
