@@ -220,6 +220,17 @@ function calculateBasketPayCard ()
                       $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
                   }
 
+                  // Временный костыль для ширины модального окна если цены длинные, после новой верстки модального окна - костыль удалить
+
+                    $('.changed-products__status table').each(function(){
+                      if ($(this).width() > 225){
+                        var newModalWidth = 575 + $(this).width();
+                        $('#ServiceModalWindow .modal-dialog').css('max-width', newModalWidth + 'px');
+                      }
+                    });
+
+                  // Конец костыля
+
                   $("#ServiceModalWindow").modal("show");
 
                 }
