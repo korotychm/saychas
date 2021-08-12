@@ -18,7 +18,7 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Log\Logger;
-use Laminas\Log\Writer\Stream as StreamWriter;
+//use Laminas\Log\Writer\Stream as StreamWriter;
 use Application\Model\RepositoryInterface\RepositoryInterface;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 
@@ -250,12 +250,6 @@ abstract class Repository implements RepositoryInterface
                 throw new \Exception('Primary key ($pk) must be either a string or an array');
             }
         }
-//        else{
-//            $autoIncrement = $entity->autoIncrementKey();
-//            if(key_exists($autoIncrement, $assoc)) {
-//                unset($assoc[$autoIncrement]);
-//            }
-//        }
         $values = array_values($assoc);
         $names = array_keys($assoc);
 
@@ -269,11 +263,6 @@ abstract class Repository implements RepositoryInterface
 //            $id = $this->db->getDriver()->getLastGeneratedValue();
         } else {
             $sqlObj = $sql->update($this->tableName);
-//            $keys = array_keys($assoc);
-//            if(in_array($entity->primaryKey(), $keys)) {
-////                $id = $assoc[$entity->primaryKey()];
-//                unset($assoc[$entity->primaryKey()]);
-//            }
             $sqlObj->set($assoc);
             $sqlObj->where($params);
         }
@@ -408,3 +397,25 @@ abstract class Repository implements RepositoryInterface
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+//        else{
+//            $autoIncrement = $entity->autoIncrementKey();
+//            if(key_exists($autoIncrement, $assoc)) {
+//                unset($assoc[$autoIncrement]);
+//            }
+//        }
+//            $keys = array_keys($assoc);
+//            if(in_array($entity->primaryKey(), $keys)) {
+////                $id = $assoc[$entity->primaryKey()];
+//                unset($assoc[$entity->primaryKey()]);
+//            }
