@@ -1224,9 +1224,15 @@ var(--gray-light*/
   width: 305px;
   margin: auto !important;
 }
+.changed-products__item--store {
+  margin-top: 50px;
+}
 .changed-products__store {
   grid-column: span 2;
   display: flex;
+}
+.changed-products__store-logo {
+  margin-right: 30px;
 }
 .changed-products__store-logo img {
   height: 65px;
