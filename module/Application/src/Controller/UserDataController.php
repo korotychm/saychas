@@ -24,6 +24,7 @@ use Laminas\Http\Response;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 use Laminas\View\Model\ViewModel;
+use Laminas\Db\Sql\Sql;
 
 //use Laminas\Session\SessionManager;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -53,7 +54,7 @@ class UserDataController extends AbstractActionController
     /**
      * @var Laminas\Db\Adapter\AdapterInterface
      */
-//    private $db;
+    private $db;
 
     /**
      * @var Application\Adapter\Auth\UserAuthAdapter
@@ -94,14 +95,14 @@ class UserDataController extends AbstractActionController
      */
     public function __construct(
             UserRepository $userRepository,
-            /* $config, */ $authService, /* $db, */ /* $userAdapter, */ $externalCommunicationService/* , $sessionContainer */, $commonHelperFunctions, EntityManager $entityManager)
+            /* $config, */ $authService, $db, /* $userAdapter, */ $externalCommunicationService/* , $sessionContainer */, $commonHelperFunctions, EntityManager $entityManager)
     {
         $this->userRepository = $userRepository;
 //        $this->config = $config;
         $this->authService = $authService;
 
 //        $this->sessionContainer = $sessionContainer;
-//        $this->db = $db;
+        $this->db = $db;
 //        $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
         
@@ -249,7 +250,7 @@ class UserDataController extends AbstractActionController
         $userId = $this->identity();
         
         $orderset = $this->externalCommunicationService->sendBasketData($content);
-        $orderId = $orderset['response']['order'];
+        $orderId = $orderset['response']['order_id'];
         $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
         $basketSet = \Application\Model\Entity\Basket::findAll(['where' => ['product_id'=>$orderCreate['products'], 'user_id' => $userId, 'order_id' => 0] ]);
@@ -257,6 +258,12 @@ class UserDataController extends AbstractActionController
         foreach($basketSet as $basket) {
             $basket->setOrderId($orderId);
             $result = $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId() ]);
+//            $sql = new Sql($this->db);
+//            $sqlObj = $sql->update('basket');
+//            $sqlObj->set(['order_id' => $orderId]);
+//            $sqlObj->where([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0 ]);
+//            $stmt = $sql->prepareStatementForSqlObject($sqlObj);
+//            $stmt->execute();
         }
         return new JsonModel(["result"=>true]);
     }

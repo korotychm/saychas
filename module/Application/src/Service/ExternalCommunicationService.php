@@ -140,7 +140,7 @@ class ExternalCommunicationService
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
         $deliveries = Json::encode($content['response']['deliveries']);
-        $orderId = $content['response']['order'];
+        $orderId = $content['response']['order_id'];
 //        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         
         $order->setOrderId($orderId); 
