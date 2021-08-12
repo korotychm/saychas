@@ -193,14 +193,14 @@ function calculateBasketPayCard ()
                       productHtml += '<div class="changed-products__status"><div class="changed-products__na">Товар закончился</div></div>';
                     } else {
                       productHtml += '<div class="changed-products__status">';
-                      if (product.price != product.oldprice){
+                      if (product.oldprice){
                         //вывод измененной цены
                         productHtml += '<div>';
                           productHtml += ('<div class="changed-products__from">' + product.oldprice.toLocaleString() + ' ₽</div>');
                           productHtml += ('<div class="changed-products__to">' + product.price.toLocaleString() +'</div>');
                         productHtml += '</div>';
                       }
-                      if (product.rest < product.oldrest){
+                      if (product.oldrest){
                         //вывод измененных остатков
                         productHtml += '<div>';
                           productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
