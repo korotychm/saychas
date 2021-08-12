@@ -213,32 +213,33 @@ function calculateBasketPayCard ()
                     $('#ServiceModalWindow .changed-products').append(productHtml);
                   }
 
+                  //Магазины
+
+                  for (var storeId in data.stores) {
+
+                    var logoSrc = $('providerblok-'+storeId).find('.brandlogo img').attr('src');
+
+                    var storeHtml = '<li class="changed-products__item changed-products__item--store">';
+                      storeHtml += '<div class="changed-products__store">';
+                        storeHtml += '<div class="changed-products__store-logo"><img src="' + logoSrc + '" alt=""></div>';
+                        storeHtml += '<div class="changed-products__store-items">';
+                          for (var productId of data.stores[storeId]) {
+                              var imgSrc = $('#basketrow-'+productId).find('.imageproduct img').attr('src');
+                              storeHtml += '<div class="changed-products__store-item"><img src="' + imgSrc + '" alt=""></div>';
+                          }
+                        storeHtml+='</div>';
+                      storeHtml+='</div>';
+                      productHtml += '<div class="changed-products__status"><div class="changed-products__na">Магазин закрыт</div></div>';
+                    storeHtml+='</li>';
+                    $('#ServiceModalWindow .changed-products').append(storeHtml);
+                  }
+
                   if (noclose){
                       $("#ServiceModalWindow .close").remove();
                       $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
                   } else {
                       $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
                   }
-
-                  // Временный костыль для ширины модального окна если цены длинные, после новой верстки модального окна - костыль удалить
-
-                    var newModalWidth = 0;
-
-                    $('.changed-products__status table').each(function(){
-
-                      console.log($(this).width());
-
-                      if ($(this).width() > 225){
-
-                        if (newModalWidth < 575 + $(this).width()){
-                          newModalWidth = 575 + $(this).width();
-                        }
-                        $('#ServiceModalWindow .modal-dialog').css('max-width', newModalWidth + 'px');
-
-                      }
-                    });
-
-                  // Конец костыля
 
                   $("#ServiceModalWindow").modal("show");
 
