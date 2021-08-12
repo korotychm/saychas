@@ -222,10 +222,19 @@ function calculateBasketPayCard ()
 
                   // Временный костыль для ширины модального окна если цены длинные, после новой верстки модального окна - костыль удалить
 
+                    var newModalWidth = 0;
+
                     $('.changed-products__status table').each(function(){
+
+                      console.log($(this).width());
+
                       if ($(this).width() > 225){
-                        var newModalWidth = 575 + $(this).width();
+
+                        if (newModalWidth < 575 + $(this).width()){
+                          newModalWidth = 575 + $(this).width();
+                        }
                         $('#ServiceModalWindow .modal-dialog').css('max-width', newModalWidth + 'px');
+
                       }
                     });
 
