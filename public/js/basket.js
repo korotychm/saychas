@@ -217,7 +217,7 @@ function calculateBasketPayCard ()
 
                   for (var storeId in data.stores) {
 
-                    var logoSrc = $('providerblok-'+storeId).find('.brandlogo img').attr('src');
+                    var logoSrc = $('#providerblok-'+storeId).find('.brandlogo img').attr('src');
 
                     var storeHtml = '<li class="changed-products__item changed-products__item--store">';
                       storeHtml += '<div class="changed-products__store">';
@@ -229,7 +229,7 @@ function calculateBasketPayCard ()
                           }
                         storeHtml+='</div>';
                       storeHtml+='</div>';
-                      productHtml += '<div class="changed-products__status"><div class="changed-products__na">Магазин закрыт</div></div>';
+                      storeHtml += '<div class="changed-products__status"><div class="changed-products__na">Магазин закрыт</div></div>';
                     storeHtml+='</li>';
                     $('#ServiceModalWindow .changed-products').append(storeHtml);
                   }
