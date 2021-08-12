@@ -1224,3 +1224,18 @@ var(--gray-light*/
   width: 305px;
   margin: auto !important;
 }
+.changed-products__store {
+  grid-column: span 2;
+  display: flex;
+}
+.changed-products__store-items {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.changed-products__store-item {
+  flex-shrink: 0;
+}
+.changed-products__store-item img {
+  width: 65px;
+  height: 65px;
+}
