@@ -163,14 +163,14 @@ function calculateBasketPayCard ()
             cache: false,
 
             success: function (data) {
-                
-                /* 
+
+                /*
                  /// Это для теста - начало
                 $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
                 $("#ServiceModalWindow").modal("show");
                 return;
                 /// Это для теста - конец /**/
-                
+
                 if (data.result) {
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
 
@@ -192,32 +192,53 @@ function calculateBasketPayCard ()
                       //вывод "товар закончился"
                       productHtml += '<div class="changed-products__status"><div class="changed-products__na">Товар закончился</div></div>';
                     } else {
-                      productHtml += '<div class="changed-products__status">';
-                      if (product.price != product.oldprice){
+                      productHtml += '<div class="changed-products__status"><table>';
+                      if (product.oldprice){
                         //вывод измененной цены
-                        productHtml += '<div>';
-                          productHtml += ('<div class="changed-products__from">' + product.oldprice.toLocaleString() + ' ₽</div>');
-                          productHtml += ('<div class="changed-products__to">' + product.price.toLocaleString() +'</div>');
-                        productHtml += '</div>';
+                        productHtml += '<tr>';
+                          productHtml += ('<td class="changed-products__from">' + (parseInt(product.oldprice)/100).toLocaleString() + ' ₽</td>');
+                          productHtml += ('<td class="changed-products__to">' + (product.price/100).toLocaleString() +' ₽</td>');
+                        productHtml += '</tr>';
                       }
-                      if (product.rest < product.oldrest){
+                      if (product.oldrest){
                         //вывод измененных остатков
-                        productHtml += '<div>';
-                          productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
-                          productHtml += ('<div class="changed-products__to">' + product.rest + ' шт.</div>');
-                        productHtml += '</div>';
+                        productHtml += '<tr>';
+                          productHtml += ('<td class="changed-products__from">' + product.oldrest + ' шт.</td>');
+                          productHtml += ('<td class="changed-products__to">' + product.rest + ' шт.</td>');
+                        productHtml += '</tr>';
                       }
-                      productHtml += '</li>';
+                      productHtml += '</table></div>';
                     }
-
+                    productHtml += '</li>';
                     $('#ServiceModalWindow .changed-products').append(productHtml);
+                  }
+
+                  //Магазины
+
+                  for (var storeId in data.stores) {
+
+                    var logoSrc = $('#providerblok-'+storeId).find('.brandlogo img').attr('src');
+
+                    var storeHtml = '<li class="changed-products__item changed-products__item--store">';
+                      storeHtml += '<div class="changed-products__store">';
+                        storeHtml += '<div class="changed-products__store-logo"><img src="' + logoSrc + '" alt=""></div>';
+                        storeHtml += '<div class="changed-products__store-items">';
+                          for (var productId of data.stores[storeId]) {
+                              var imgSrc = $('#basketrow-'+productId).find('.imageproduct img').attr('src');
+                              storeHtml += '<div class="changed-products__store-item"><img src="' + imgSrc + '" alt=""></div>';
+                          }
+                        storeHtml+='</div>';
+                      storeHtml+='</div>';
+                      storeHtml += '<div class="changed-products__status"><div class="changed-products__na">Магазин закрыт</div></div>';
+                    storeHtml+='</li>';
+                    $('#ServiceModalWindow .changed-products').append(storeHtml);
                   }
 
                   if (noclose){
                       $("#ServiceModalWindow .close").remove();
-                      $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
+                      $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
                   } else {
-                      $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
+                      $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
                   }
 
                   $("#ServiceModalWindow").modal("show");
@@ -235,9 +256,9 @@ function calculateBasketPayCard ()
     }
 
 function checkBasketDataBeforeSend (){
-    //var dataString = $("#user-basket-form").serialize();    
+    //var dataString = $("#user-basket-form").serialize();
     $.ajax({
-            beforeSend : function (){ 
+            beforeSend : function (){
                 },
             url: "/ajax-basket-check-before-send",
             type: 'POST',
@@ -339,14 +360,14 @@ $(function(){
 
             getLegalStores(dataString, '#basketuseradresserror');
             addUserAddrees(dataString, $("#basketuseradress").val());
-           
+
         }
     });
-    
+
     $("#testbeforesend").click(function(){
          checkBasketDataBeforeSend ();
     });
-    
+
     /**/
     $("body").on("change",".timepoint", function(){
      calculateBasketMerge ($("#user-basket-form").serialize(), true);

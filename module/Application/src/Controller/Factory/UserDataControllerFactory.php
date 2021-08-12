@@ -10,7 +10,7 @@ use Application\Model\Repository\UserRepository;
 use Application\Controller\UserDataController;
 use Laminas\Authentication\AuthenticationService;
 //use Laminas\Session\Container as SessionContainer;
-//use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Adapter\AdapterInterface;
 //use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Service\ExternalCommunicationService;
 use Application\Service\CommonHelperFunctionsService;
@@ -26,14 +26,14 @@ class UserDataControllerFactory implements FactoryInterface
         // Instantiate the controller and inject dependencies
         $userRepository = $container->get(UserRepository::class);
         //$config = $container->get('Config');
-        //$adapter = $container->get(AdapterInterface::class);
+        $adapter = $container->get(AdapterInterface::class);
         $authService = $container->get(AuthenticationService::class);
 //        $sessionContainer = $container->get(SessionContainer::class);
         //$userAdapter = $container->get(UserAuthAdapter::class);
         $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
         $externalCommunicationService = $container->get(ExternalCommunicationService::class);
         $entityManager = $container->get('laminas.entity.manager');
-        return new UserDataController($userRepository/*, $config*/, $authService/*, $adapter*//*, $userAdapter*/, $externalCommunicationService/*, $sessionContainer*/, $commonHelperFuncions, $entityManager);
+        return new UserDataController($userRepository/*, $config*/, $authService, $adapter/*, $userAdapter*/, $externalCommunicationService/*, $sessionContainer*/, $commonHelperFuncions, $entityManager);
     }
 
 }
