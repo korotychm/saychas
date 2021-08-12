@@ -302,9 +302,17 @@ return [
                         'action'     => 'product',
                     ],
                 ],
-            ],/**/
-            
-            
+            ],
+             'product-page' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/product-page[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'productPage',
+                    ],
+                ],
+            ],
             /*'catalog' => [
                 // First we define the basic options for the parent route: \Laminas\Router\Http\
                 'type' => Segment::class,
