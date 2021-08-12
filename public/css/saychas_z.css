@@ -1234,8 +1234,13 @@ var(--gray-light*/
 }
 .changed-products__store-item {
   flex-shrink: 0;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .changed-products__store-item img {
   width: 65px;
   height: 65px;
+  object-fit: contain;
 }
