@@ -1162,6 +1162,25 @@ var(--gray-light*/
   margin: 0;
   list-style: none;
   padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.changed-products::-webkit-scrollbar {
+  width: 3px;
+}
+
+.changed-products::-webkit-scrollbar-track {
+  background-color: #f2f2f2;
+}
+
+.changed-products::-webkit-scrollbar-thumb {
+  background-color: #ff4b2d;
+}
+.changed-products::-moz-scrollbar-button,
+.changed-products::-webkit-scrollbar-button,
+.changed-products::-webkit-scrollbar-button:decrement,
+.changed-products::-webkit-scrollbar-button:increment {
+  width: 0px;
 }
 .changed-products__item {
   display: grid;
