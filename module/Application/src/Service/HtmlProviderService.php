@@ -127,7 +127,7 @@ class HtmlProviderService
                 $return["result"] = false;
             }
             if ($basketProducts[$key]["total"] > $rest or $test) {
-                $whatHappened['products'][$key]['oldprest'] = $basketProducts[$key]["total"];
+                $whatHappened['products'][$key]['oldrest'] = $basketProducts[$key]["total"];
                 $whatHappened['products'][$key]['rest'] = $rest;
                 $return["result"] = false;
             }
@@ -212,7 +212,7 @@ class HtmlProviderService
 
     public function getCategoryFilter($category_id = 0)
     {
-        
+
     }
 
     /**
@@ -1169,7 +1169,7 @@ class HtmlProviderService
                 $timeStart = time() + 3600 * $i;
                 $timeEnd = time() + 3600 * $i + 3600;
                 $time3End = time() + 3600 * $i + 3600 * 3;
-                
+
                 if ($timeEnd > $return['timeClose']){
                     break;
                 }
@@ -1295,7 +1295,7 @@ class HtmlProviderService
         }
         if (!$item or!count($item)){
             return;
-        }   
+        }
         //$return = [];
         $g = 0;
         while (list($prov, $prod) = each($item)) {
@@ -1352,7 +1352,7 @@ class HtmlProviderService
             }
 
             $return["product"][$returnprefix] = [
-                "provider_id" => $prov,
+                "provider_id" => $provider_store_id, //$prov,
                 "availblechek" => $availblechek[$prov],
                 "provider_disable" => $provider_disable,
                 "provider_name" => $provider->getTitle(),
