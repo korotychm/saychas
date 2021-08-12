@@ -1247,7 +1247,6 @@ var(--gray-light*/
 }
 
 
-
 #productpageimg .iconimg {width:100px}
 #productpageimg .mainimg {width:calc(100% - 110px) }
 
@@ -1295,4 +1294,3 @@ var(--gray-light*/
   height: 65px;
   object-fit: contain;
 }
-
