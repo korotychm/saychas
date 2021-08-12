@@ -196,7 +196,7 @@ function calculateBasketPayCard ()
                       if (product.oldprice){
                         //вывод измененной цены
                         productHtml += '<div>';
-                          productHtml += ('<div class="changed-products__from">' + product.oldprice.toLocaleString() + ' ₽</div>');
+                          productHtml += ('<div class="changed-products__from">' + parseInt(product.oldprice).toLocaleString() + ' ₽</div>');
                           productHtml += ('<div class="changed-products__to">' + product.price.toLocaleString() +' ₽</div>');
                         productHtml += '</div>';
                       }
