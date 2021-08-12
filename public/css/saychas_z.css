@@ -1196,11 +1196,10 @@ var(--gray-light*/
   align-items: center;
 }
 .changed-products__from {
-  width: 95px;
   font-size: 18px;
   color: rgb(167, 167, 167);
   text-decoration: line-through;
-  margin-right: 50px;
+  padding-right: 50px;
   white-space: nowrap;
 }
 .changed-products__to {
@@ -1215,11 +1214,11 @@ var(--gray-light*/
   height: 8px;
   display: block;
   position: absolute;
-  left: -20px;
-  top: 3px;
+  left: -30px;
+  top: 15px;
   border-right: 2px solid #ff4b2d;
   border-bottom: 2px solid #ff4b2d;
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
 }
 .changed-products__btn {
   width: 305px;

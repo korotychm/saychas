@@ -192,24 +192,24 @@ function calculateBasketPayCard ()
                       //вывод "товар закончился"
                       productHtml += '<div class="changed-products__status"><div class="changed-products__na">Товар закончился</div></div>';
                     } else {
-                      productHtml += '<div class="changed-products__status">';
+                      productHtml += '<div class="changed-products__status"><table>';
                       if (product.oldprice){
                         //вывод измененной цены
-                        productHtml += '<div>';
-                          productHtml += ('<div class="changed-products__from">' + parseInt(product.oldprice).toLocaleString() + ' ₽</div>');
-                          productHtml += ('<div class="changed-products__to">' + product.price.toLocaleString() +' ₽</div>');
-                        productHtml += '</div>';
+                        productHtml += '<tr>';
+                          productHtml += ('<td class="changed-products__from">' + parseInt(product.oldprice).toLocaleString() + ' ₽</td>');
+                          productHtml += ('<td class="changed-products__to">' + product.price.toLocaleString() +' ₽</td>');
+                        productHtml += '</tr>';
                       }
                       if (product.oldrest){
                         //вывод измененных остатков
-                        productHtml += '<div>';
-                          productHtml += ('<div class="changed-products__from">' + product.oldrest + ' шт.</div>');
-                          productHtml += ('<div class="changed-products__to">' + product.rest + ' шт.</div>');
-                        productHtml += '</div>';
+                        productHtml += '<tr>';
+                          productHtml += ('<td class="changed-products__from">' + product.oldrest + ' шт.</td>');
+                          productHtml += ('<td class="changed-products__to">' + product.rest + ' шт.</td>');
+                        productHtml += '</tr>';
                       }
-                      productHtml += '</li>';
+                      productHtml += '</table></div>';
                     }
-
+                    productHtml += '</li>';
                     $('#ServiceModalWindow .changed-products').append(productHtml);
                   }
 
