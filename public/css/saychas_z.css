@@ -1228,6 +1228,11 @@ var(--gray-light*/
   grid-column: span 2;
   display: flex;
 }
+.changed-products__store-logo {
+  height: 65px;
+  width: auto;
+  max-width: 135px;
+}
 .changed-products__store-items {
   display: flex;
   flex-wrap: nowrap;
