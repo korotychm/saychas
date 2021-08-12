@@ -39,10 +39,10 @@ class User extends Entity
      * 
      * @return string
      */
-    public function autoIncrementKey()
-    {
-        return 'id';
-    }
+//    public function autoIncrementKey()
+//    {
+//        return 'id';
+//    }
     
     /**
      * Get primary key

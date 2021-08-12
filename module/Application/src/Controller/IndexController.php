@@ -415,9 +415,11 @@ class IndexController extends AbstractActionController
     public function productAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
+        if (empty($product_id)) {header("location:/"); exit();}
         $params['equal']=$product_id;
         
         $products = $this->productRepository->filterProductsByStores($params);
+        if (empty($products)) {header("location:/"); exit();}
         
         $productPage = $this->htmlProvider->productPage($products);
         $categoryId= $productPage['categoryId'];
@@ -440,7 +442,45 @@ class IndexController extends AbstractActionController
         ];
         return new ViewModel($vwm);
       }
+      
+      
+      
+      public function productPageAction()
+    {
+        $product_id=$this->params()->fromRoute('id', '');
+        if (empty($product_id)) {header("location:/"); exit();}
+        
+        $params['equal']=$product_id;        
+        $products = $this->productRepository->filterProductsByStores($params);
+        if (empty($products)) {header("location:/"); exit();}
+        
+        $productPage = $this->htmlProvider->productPageService($products);
+        $categoryId= $productPage['categoryId'];
+        
+        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $filtrForCategory=$container->filtrForCategory;
+        $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
+        $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
+        $bread = $this->htmlProvider->breadCrumbs($bread);
+        $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
+        $vwm=[
+            'id' => $product_id,
+            'catalog' => $categories,
+            'title' => $productPage['title'],
+            'images' => $productPage['images'],
+            'category' => $categoryTitle,
+            'bread'=> $bread,
+            'characteristics' => $productPage["characteristics"],
+            'product'=> $productPage['card'],
+            'filter' =>  $returnProductFilter,
+        ];
+        return new ViewModel($vwm);
+      }
     
+      
+      
+      
     
     public function catalogAction($category_id = false)
     {
