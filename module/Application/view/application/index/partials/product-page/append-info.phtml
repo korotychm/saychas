@@ -1,0 +1,9 @@
+<div class="contentpadding ">
+    <div class="mini opacity0">
+        <ul>
+<?php if(!empty($params)) while (list($key,$value)=each($params)){?>
+            <li><?=$key?>: <?=$value?>!</li>
+<?php }?>
+        </ul>
+    </div>
+</div>

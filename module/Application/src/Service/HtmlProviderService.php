@@ -814,19 +814,11 @@ class HtmlProviderService
             $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid]);
             $brandimage = $brandobject->getImage();
             //exit($brandimage."!");
-            $return['description'] = $description = $product->getDescription();
-
-            /*$description = (strlen($description) < 501) ? "<p>" . str_replace("\n", "</p><p>", $description) . "</p>" : ""
-                    . "<div  id='spoiler-hide-$id' >"
-                    . "     <p><div class='blok relative'>"
-                    . "         " . substr(strip_tags($description), 0, 500)
-                    . "         <div class='gradientbottom'></div>"
-                    . "     </div>"
-                    . "     <a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
-                    . "     </p>"
-                    . "</div>"
-                    . "<div  id='spoiler-show-$id'   class='blok' style='display:none' ><p>" . str_replace("\n", "</p><p>", $description) . "</p></div>";
-              */      
+            if ($description = $product->getDescription()){
+                $return['description']["text"] = StringHelper::eolFormating($description);
+                $return['description']['if_spoiler']=((strlen($description) < 501));
+                $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description,0,500));
+            }
             $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
             $rst[$product->getStoreId()] = $r;
         }
@@ -840,14 +832,18 @@ class HtmlProviderService
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                  
                 $chArray = $ch->getIsList();
-                 ($chArray) ? $v = $value : $v[] = $value;
+                $chType = $ch->getType();
+                $getmain=($ch->getIsMain())?1:0;
+                
+                if ($value = $char['value']) {
+                    ($chArray) ? $v = $value : $v[] = $value;
                     $value = $this->valueParce($v, $chType);
-                    
-                
-                
-            $return["characteristics"][$ch->getIsMain()][] = [
+                    unset ($v);
+                }
+            $return["characteristics"][$getmain][] = [
                     "id" => $char['id'],
                     "title" => $ch->getTitle(),
+                    "type"=> $chType,
                     "array" => $chArray ,
                     "value" => $value,
                     "unit" => $ch->getUnit(),
@@ -936,33 +932,13 @@ class HtmlProviderService
                  </div>
                  "
         ;
-        $return['card'] .= ""
-                . "<div class=blok  >"
-                . "    <div class='pw-contentblock cblock-5' >
-                            <div class='contentpadding ' >"
-                //. $charsNew."!!!"
-                . $description
-                . (($charsmore) ? "<h3>Характеристики</h3>
+        
 
-                                <div class='char-blok-bottom'>
-                                    $charsmore
-                                </div>" : "") . "
-                            </div>
-                        </div>"
-                . "<div class='pw-contentblock cblock-3' >"
-                . "<div class='contentpadding ' >"
-                . "<div class='mini opacity0'>
-                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
-                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
-                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
-                . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
-                            </ul>
-                      </div>
-                      </div>
-                      </div>
-                      </div>"
-                . "</div>";
-
+        $return ['appendParams'] = [
+            'vendorCode' => $vendor,
+            'rest' => $totalRest,
+        ];
+        
         return $return;
     }
     
