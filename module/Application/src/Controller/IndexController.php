@@ -476,6 +476,9 @@ class IndexController extends AbstractActionController
             'filter' =>  $returnProductFilter,
             'description' => $productPage['description'],
             'append' =>  $productPage['appendParams'],
+            'price' =>  $productPage['price'],
+            'brand' =>  $productPage['brand'],
+            'price_formated' =>  $productPage['price_formated'],
         ];
         return new ViewModel($vwm);
       }

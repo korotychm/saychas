@@ -1,4 +1,7 @@
 <?php
+
+use Application\Resource\StringResource;
+
 $this->headTitle('Каталог товаров/' . $this->category, 'PREPEND');
 //$this->headTitle(, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
@@ -21,10 +24,10 @@ $this->headTitle($this->title, 'PREPEND');
 
             <div id="tovar-list">
                 <div class="pw-contentblock cblock-2">         <div class="inactiveblok"></div></div>
-                <div class="pw-contentblock gray iblokr cblock-2">Код товара: 16787448</div>
+                <div class="pw-contentblock gray iblokr cblock-2">Код товара: <?=$this->append['vendorCode']?></div>
 
                 <div class="pw-contentblock cblock-3">
-                    <?= $this->partial("/application/index/partials/product-page/product-images", ["images" => $this->images]) ?>     
+                    <?= $this->partial("/application/index/partials/product-page/product-images", ["images" => $this->images, "image_path" => $this->imagePath('product')]) ?>     
                 </div>    
                 <!-- div class="contentpadding" id="productpageimg">
                             
@@ -38,46 +41,25 @@ $this->headTitle($this->title, 'PREPEND');
                 </div>
 
                 <div class="pw-contentblock cblock-3">
-                    <div class="contentpadding">
-                        <div class="paybox">     		<div class="contentpadding">
-                                <h2 class="blok price">   16&nbsp;210 ₽ </h2>
-                            </div>
-                            <div class="volna"></div>
-                            <div class="contentpadding">
-                                доставка
-                            </div>
-                            <div class="pw-contentblock cblock-2">
-                                <div class="contentpadding">
-                                    <div class="paybutton" rel="000000000013">в корзину</div>
-                                </div>
-                            </div>
-                            <div class="pw-contentblock cblock-2">
-                                <div class="contentpadding">
-                                    <div class="paybuttonwhite" rel="000000000013">купить сразу</div>
-                                </div>
-                            </div>
-                            <div class="contentpadding">
-                                <div class="favstar favtext">Добавить в избранное</div>
-                            </div>
-                        </div>
-                        <div class="brandblok">
-                            <div class="brandlogo" style="background-image:url(&quot;/images/brand/000003_HUAWEI.png&quot;)"></div>
-                            <a class="brandlink" href="#">Все товары марки&nbsp;→</a>
-                        </div>
-                    </div>
+                   <?= $this->partial("/application/index/partials/product-page/pay-section",  
+                           [
+                               "price" => $this->price, 
+                               "price_formated" => $this->price_formated, 
+                               "id"=>$this->id, 
+                               "brand"=>$this->brand , 
+                               "image_path" => $this->imagePath('brand'),
+                           ]) ?>           
                 </div>
-                <div class="blok">    <div class="pw-contentblock cblock-5">
-                        <div class="contentpadding ">
-
+                <div class="blok">    
+                    <div class="pw-contentblock cblock-5">
                             <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>           
                             <?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>           
-                        </div>
                     </div>
-                </div>  
                 <div class="pw-contentblock cblock-3">
-                    <?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->appendParams]) ?>           
+                    <?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->append]) ?>           
                 </div>
-            </div></div>
+            </div>
+            
 
 
 

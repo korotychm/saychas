@@ -784,52 +784,37 @@ class HtmlProviderService
             //$return['discont'] = $product->getDiscont();
             $container = new Container(StringResource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
-
-            //$filtrForCategory = $container->filtrForCategory;
-            $timeDelevery = (int) $legalStore[$product->getStoreId()];
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $return['rest'] = $r = (int) $rest->getRest();
-            if (!$speed or $speed < $timeDelevery) {
-                $speed = (int) $timeDelevery;
-            }
+            $return['rest'] =  (int) $rest->getRest();
             $return['product_id'] = $id = $product->getId();
             $return['title'] = $product->getTitle();
             $return['category_id'] =  $categoryId = $product->getCategoryId();
-            
             $charNew = $product->getParamVariableList();
-            $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
-            
-
-            //$category = $product->getCategoryTitle();
-
+            $characteristicsArray=[];
+            if(!empty($charNew)) {
+                $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
+            }   
             $productImages[] = $product->getHttpUrl();
-            //$filtersTmp = explode(",", $product->getParamValueList2());
-            //$filters = array_merge($filters, $filtersTmp);
             $vendor = $product->getVendorCode();
-            $brandtitle = $product->getBrandTitle();
-
-            $brandid = $product->getBrandId();
-            //exit($brandid."!");
-            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid]);
-            $brandimage = $brandobject->getImage();
-            //exit($brandimage."!");
+            $return["brand"]["title"] = $product->getBrandTitle();
+            $return["brand"]["id"] = $product->getBrandId();
+            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]]);
+            $return["brand"]["image"] = $brandobject->getImage();
+            
+           // exit (print_r($return["brand"]));
+            
             if ($description = $product->getDescription()){
                 $return['description']["text"] = StringHelper::eolFormating($description);
                 $return['description']['if_spoiler']=((strlen($description) < 501));
                 $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description,0,500));
             }
-            $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
-            $rst[$product->getStoreId()] = $r;
+        
         }
-        $totalRest = (count($rst)) ? array_sum($rst) : 0;
-        ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
-
         $characteristicsArray  = array_diff($characteristicsArray , array(''));
         if (!empty($characteristicsArray)) {
             foreach ($characteristicsArray as $char) {
                 
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
-                 
                 $chArray = $ch->getIsList();
                 $chType = $ch->getType();
                 $getmain=($ch->getIsMain())?1:0;
@@ -839,7 +824,7 @@ class HtmlProviderService
                     $value = $this->valueParce($v, $chType);
                     unset ($v);
                 }
-            $return["characteristics"][$getmain][] = [
+                $return["characteristics"][$getmain][] = [
                     "id" => $char['id'],
                     "title" => $ch->getTitle(),
                     "type"=> $chType,
@@ -848,94 +833,17 @@ class HtmlProviderService
                     "unit" => $ch->getUnit(),
                 ];
             }
-        } else $return["characteristics"]=$characteristicsArray;
+        } else $return["characteristics"]=[];
         
-        $j = 0;
         $productImages = array_unique($productImages);
+     
         $return['images']=$productImages;
-        
-        /* /foreach ($img as $im) {
-            if ($im) {
-                $borderred = "";
-                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
-                if (!$j) {
-                    $mainimage = "<div class='square'><div class='squarecontent'>$image</div></div>";
-                    $borderred = " borderred ";
-                }
-                $j++;
-                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
-                $imgicons .= "<div class='product-image-container-mini iblok $borderred' >$image</div>";
-            }
-        }/**/
         $return['title'] = $title;
         $return['categoryId'] = $categoryId;
-        $return['card'] .= ""
-                . "<div class='pw-contentblock cblock-2'>"
-                . "         <div class='inactiveblok'></div>"
-                . "</div>"
-                . "<div class='pw-contentblock gray iblokr cblock-2'>Код товара: $vendor</div>"
-                . "<div class='pw-contentblock cblock-3'>
-                    <div class='contentpadding' id=productpageimg>
-                            $speedlable2
-                            $imagesready
-                    <div class='iblok iconimg' style='width:98px;' >$imgicons</div>
-                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>
-                     </div>
-                 </div>"
-                . "
-                 <div class='pw-contentblock cblock-3'>
-                    <div class='contentpadding'>
-                      <div class='productpagecard ' >"
-                . "   <div class='content opacity-" . $r . "'>"
-        ;
-
-        $return['card'] .= ($join) ? "<div class='char-blok'>$join</div>" : "";
-        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
-        //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
-        $return['card'] .= "   </div>"
-                . "</div>"
-                . "</div>"
-                . "</div>    "
-                . "<div class='pw-contentblock cblock-3'>
-                         <div class='contentpadding'>
-				<div class='paybox' >"
-                . "     		<div class='contentpadding'>
-						<h2 class='blok price'>   " . $cena . " &#8381; "
-                . (($oldprice) ? "<span class='oldprice'>" . ($oldprice) . "&nbsp;&#8381;</span>" : "")
-                . "</h2>
-					</div>
-        				<div class='volna' ></div>
-            				<div class='contentpadding'>
-						доставка
-                                        </div>
-                                        <div class='pw-contentblock cblock-2'>
-                                            <div class='contentpadding'>
-                                                 <div class=paybutton rel='$id' >в корзину</div>
-                                            </div>
-                                         </div>
-                                         <div class='pw-contentblock cblock-2'>
-                                            <div class='contentpadding'>
-                                                 <div class=paybuttonwhite rel='$id' >купить сразу</div>
-                                            </div>
-                                         </div>
-									"
-                . "         <div class='contentpadding'>
-                                <div class='favstar favtext'>Добавить в избранное</div>
-                            </div>
-                      </div>
-                       <div class=brandblok >
-                               " . (($brandimage) ? "<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>" : " <div class='brandlogo' >$brandtitle</div>") . "
-                               <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
-                         </div>
-                    </div>
-                 </div>
-                 "
-        ;
-        
-
-        $return ['appendParams'] = [
+        $return['appendParams'] = [
             'vendorCode' => $vendor,
             'rest' => $totalRest,
+            'test' => "test",
         ];
         
         return $return;

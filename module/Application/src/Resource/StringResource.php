@@ -5,6 +5,16 @@ namespace Application\Resource;
 
 class StringResource
 {
+    /*
+     * Товар
+     */
+    const BUTTON_LABLE_ADD_TO_BASKET = "В корзину";
+    const BUTTON_LABLE_PAY_NOW = "Купить сейчас";
+    const ADD_TO_FAVORITES = "Добавить в избранное";
+    const CURRENCY_RUBL = "&nbsp;&#8381; ";
+    
+    
+    
     const YES   = 'да';
     const NO    = 'нет';
     const USER_ADDREES_ERROR_MESSAGE = "Необходимо указать адрес до номера дома!";

@@ -1,0 +1,28 @@
+<?php use Application\Resource\StringResource; ?>
+<div class="contentpadding">
+    <div class="paybox">     		<div class="contentpadding">
+            <h2 class="blok price"> <?=$price_formated?><?=StringResource::CURRENCY_RUBL?></h2>
+        </div>
+        <div class="volna"></div>
+        <div class="contentpadding">
+            доставка
+        </div>
+        <div class="pw-contentblock cblock-2">
+            <div class="contentpadding">
+                <div class="paybutton" rel="<?=$id?>"><?=StringResource::BUTTON_LABLE_ADD_TO_BASKET ?></div>
+            </div>
+        </div>
+        <div class="pw-contentblock cblock-2">
+            <div class="contentpadding">
+                <div class="paybuttonwhite" rel="<?=$id?>"><?=StringResource::BUTTON_LABLE_PAY_NOW ?></div>
+            </div>
+        </div>
+        <div class="contentpadding">
+            <div class="favstar favtext" rel='<?=$id?>'><?=StringResource::ADD_TO_FAVORITES?></div>
+        </div>
+    </div>
+    <div class="brandblok">
+        <div class="brandlogo" style="background-image:url('<?=$image_path."/".$brand['image']?>')"></div>
+        <a class="brandlink" href="#">Все товары марки&nbsp;→</a>
+    </div>
+</div>

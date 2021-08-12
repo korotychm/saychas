@@ -1,10 +1,14 @@
-<h3>Характеристики</h3>
-<div class="char-blok-bottom">
-               <?php 
-               foreach($characteristics[0] as $characteristic) {
-               if ($characteristic['type'] == 0) { ?>
-                    <h3><?=$characteristic['title']?></h3>
-               <?php } else {?>    <div class="char-row"><span class="char-title"><span><?=$characteristic['title']?></span></span><span class="char-value"><span><?=$characteristic['value']?></span></span></div>
-               <?php }
-               }?>
+<div class="contentpadding ">
+    <h3>Характеристики</h3>
+    <div class="char-blok-bottom">
+        <?php
+        foreach ($characteristics[0] as $characteristic) {
+            if ($characteristic['type'] == 0) {
+                ?>
+                <h3><?= $characteristic['title'] ?></h3>
+                        <?php } else { ?>    <div class="char-row"><span class="char-title"><span><?= $characteristic['title'] ?></span></span><span class="char-value"><span><?= $characteristic['value'] ?></span></span></div>
+                        <?php }
+                    }
+                    ?>
+    </div>
 </div>
