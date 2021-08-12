@@ -163,14 +163,14 @@ function calculateBasketPayCard ()
             cache: false,
 
             success: function (data) {
-                
-                /* 
+
+                /*
                  /// Это для теста - начало
                 $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
                 $("#ServiceModalWindow").modal("show");
                 return;
                 /// Это для теста - конец /**/
-                
+
                 if (data.result) {
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
 
@@ -215,9 +215,9 @@ function calculateBasketPayCard ()
 
                   if (noclose){
                       $("#ServiceModalWindow .close").remove();
-                      $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
+                      $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
                   } else {
-                      $("#ServiceModalWindow .modal-footer").append('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
+                      $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
                   }
 
                   $("#ServiceModalWindow").modal("show");
@@ -235,9 +235,9 @@ function calculateBasketPayCard ()
     }
 
 function checkBasketDataBeforeSend (){
-    //var dataString = $("#user-basket-form").serialize();    
+    //var dataString = $("#user-basket-form").serialize();
     $.ajax({
-            beforeSend : function (){ 
+            beforeSend : function (){
                 },
             url: "/ajax-basket-check-before-send",
             type: 'POST',
@@ -339,14 +339,14 @@ $(function(){
 
             getLegalStores(dataString, '#basketuseradresserror');
             addUserAddrees(dataString, $("#basketuseradress").val());
-           
+
         }
     });
-    
+
     $("#testbeforesend").click(function(){
          checkBasketDataBeforeSend ();
     });
-    
+
     /**/
     $("body").on("change",".timepoint", function(){
      calculateBasketMerge ($("#user-basket-form").serialize(), true);
