@@ -174,7 +174,7 @@ function calculateBasketPayCard ()
                 if (data.result) {
                   $("#ServiceModalWindow .modal-title").html("Изменения в товарах" );
 
-                  $("#ServiceModalWindow #ServiceModalWraper").html('<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
+                  $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data) + '<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
 
                   for (var productId in data.products) {
 
