@@ -31,7 +31,6 @@ use Application\Model\Entity\Basket;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
-
 class HtmlProviderService
 {
 
@@ -85,51 +84,63 @@ class HtmlProviderService
     {
         return '<h1>Hello world!!!</h1>';
     }
-    
-       /**
+    /**
      * Returns Array
      * @return Array
      */
-    public function  basketCheckBeforeSendAService($param, $basket)
+    public function basketCheckBeforeSendService($param, $basket)
     {
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $param["legalStore"] = $container->legalStore;
+        $legalStoreKey = (!empty($param["legalStore"])) ? array_keys($param["legalStore"]) : [];
         $return["result"] = true;
-        $error = [ "result"=>false, "reload"=>true, "reloadUrl"=>"/basket" ];
-        
-        
-       /**/ if ($param['basketUserId'] != $param['userId']) {
+        $error = ["result" => false, "reload" => true, "reloadUrl" => "/basket"];
+
+        /**/ if ($param['basketUserId'] != $param['userId']) {
             return $error;
         }/**/
+
+        foreach ($basket as $basketItem) {
+            $basketProducts[$basketItem->getProductId()] = [
+                'price' => $basketItem->getPrice(),
+                'total' => $basketItem->getTotal(),
+            ];
+        }
+        $test = false;
+        $test = true;
         
-            foreach ($basket as $basketItem){
-              $basketProducts[$basketItem->getProductId()]=[
-                    'price' => $basketItem->getPrice(),
-                    'total' => $basketItem->getTotal(),
-                ];
+        while (list($key, $product) = each($param['postedProducts'])) { //
+            if (empty($basketProducts[$key] or $test)) {
+                $error["reloadUrl"] = "/client-orders";
+                return $error;
             }
-           // $productsKey=array_keys($param['postedProducts']);
-            while (list($key,$product) = each($param['postedProducts'])) // 
-           //foreach($param['postedProducts'] as $postedProduct)    
-           {
-                if (empty( $basketProducts[$key])) {
-                    $error["reloadUrl"] = "/client-orders";
-                    return $error;
-                }
-                if (empty($param["legalStore"][$product['store']])){
-                   $whatHappened['storeswww'][$product['store']][] = $key;
-                   $return["result"] = false;
-                }
-                
+            if (empty($param["legalStore"][$product['store']]) or $test) {
+                $whatHappened['stores'][$product['store']][] = $key;
+                $return["result"] = false;
             }
-            if (!empty($whatHappened)){
-                $container->whatHappened = $whatHappened;
+
+            $productRow = $this->productRepository->find(['id' => $key]);
+            $price = (int) $productRow->receivePriceObject()->getPrice();
+            $rest = $productRow->receiveRest($legalStoreKey);
+            if ($basketProducts[$key]["price"] != $price or $test) {
+                $whatHappened['products'][$key]['oldprice'] = $basketProducts[$key]["price"];
+                $whatHappened['products'][$key]['price'] = $price;
+                $return["result"] = false;
             }
-            $return['test'] = [ $whatHappened, $param, $basketProducts];
-            
-        return $return; 
+            if ($basketProducts[$key]["total"] > $rest or $test) {
+                $whatHappened['products'][$key]['oldprest'] = $basketProducts[$key]["total"];
+                $whatHappened['products'][$key]['rest'] = $rest;
+                $return["result"] = false;
+            }
+            //$test  = false;
+        }
+        if (!empty($whatHappened)) {
+            $container->whatHappened = $whatHappened;
+        }
+        $return['test'] = [$whatHappened];
+
+        return $return;
     }
-    
 
     /**
      * Returns Html string
@@ -148,24 +159,22 @@ class HtmlProviderService
             return join('<b class="brandcolor"> : </b>', $return);
         endif;
     }
-    
+
     public function orderList($orders)
     {
-        foreach ($orders as $order){
-            
+        foreach ($orders as $order) {
+
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['basketInfo'] = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY);
             unset($return['basketInfo']['userGeoLocation']['data']);
-            
+
             $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
             $return['date'] = $order->getDateCreated();
-            $returns[]=$return;
-          }
-          return $returns;
+            $returns[] = $return;
+        }
+        return $returns;
     }
-
-    
 
     public function breadCrumbsMenu($a = [])
     {
@@ -430,7 +439,7 @@ class HtmlProviderService
                    </div>
             </div>
         </div>
-        " . $return  : "";
+        " . $return : "";
         //
         return $return;
     }
@@ -768,38 +777,40 @@ class HtmlProviderService
           ->getAddress()
           ->getGeodata(); */
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $username = $user->getName();
-        $userData = $user->getUserData();
-        $usdat = $userData->current();
-
-        if (null != $usdat) {
+        if (null != $user){
+            $username = $user->getName();
+            $userData = $user->getUserData();
+            $usdat = $userData->current();
+        }
+        if (!empty($usdat)) {
             $userAddress = $usdat->getAddress(); //$container->userAddress;
             $userGeodata = $usdat->getGeoData();
             //exit ($userGeodata);
-            
-            $i=0;  //индекс для лимита вывода адресов!
+
+            $i = 0;  //индекс для лимита вывода адресов!
             foreach ($userData as $adress) {
                 $adressId = $adress->getId();
                 $adressText = $adress->getAddress();
                 $altmenu[] = "<span class='menuitem pointer setuseraddress' rel='$adressId' >$adressText</span>";
-                $i++; if($i == 5) break;
+                $i++;
+                if ($i == 5)
+                    break;
             }
             //unset($altmenu[0]);
-            if (!empty($altmenu))  {
+            if (!empty($altmenu)) {
                 $hasalt = " hasalt ";
                 $altmenu[] = "<span class='menuitem pointer open-user-address-form red'  >Ввести адрес</span>";
                 //<span class="strelka"></span>
-                $altcontent = 
-                '<div class="altcontentview">
-                          
+                $altcontent = '<div class="altcontentview">
+
                           <div class="blok ">'
-                        .join("",$altmenu)
-                          .'</div>
+                        . join("", $altmenu)
+                        . '</div>
                  </div>         ';
             }
         }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        
+
         return "<span class='blok relative $hasalt useraddressalt' >"
                 . "$altcontent"
                 . "<span>$userAddress</span>"
@@ -812,9 +823,8 @@ class HtmlProviderService
 
     public function getUserInfo($user)
     {
+        if (null == $user) return [];
         //$container = new Container(StringResource::SESSION_NAMESPACE);
-
-
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
@@ -958,9 +968,10 @@ class HtmlProviderService
                 $timeStart = time() + 3600 * $i;
                 $timeEnd = time() + 3600 * $i + 3600;
                 $time3End = time() + 3600 * $i + 3600 * 3;
-                if ($timeEnd > $return['timeClose'])
+                
+                if ($timeEnd > $return['timeClose']){
                     break;
-
+                }
                 $value = "c " . date("H", $timeStart) . ":00" . " до " . date("H", $timeEnd) . ":00";
                 $value3 = "c " . date("H", $timeStart) . ":00" . " до " . date("H", $time3End) . ":00";
 
@@ -1052,10 +1063,8 @@ class HtmlProviderService
                         $whatHappened['products'][$pId]['price'] = $price;
                     }
                     if ($count > $rest) {
-
                         $whatHappened['products'][$pId]['oldrest'] = $count;
                         $whatHappened['products'][$pId]['rest'] = $rest;
-
                         $count = $rest;
                     }
                     if ($count == 0 and 0 < $rest) {
@@ -1067,7 +1076,6 @@ class HtmlProviderService
                     //$countproducts +=$count ;
                     $countprovider[$product->getProviderId()] = 1;
                 }
-
                 $item[$product->getProviderId()][] = [
                     'id' => $pId,
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
@@ -1080,15 +1088,13 @@ class HtmlProviderService
                     'store' => $productStoreId,
                 ];
             }
-            if ($whatHappened){
+            if ($whatHappened) {
                 $container->whatHappened = $whatHappened;
             }
         }
-        if (!$item or!count($item))
+        if (!$item or!count($item)){
             return;
-
-
-
+        }   
         //$return = [];
         $g = 0;
         while (list($prov, $prod) = each($item)) {
@@ -1100,6 +1106,7 @@ class HtmlProviderService
             $infostore1c = "";
             if (null != $store) {
                 $idStore = $store->getId();
+                //$infostore1c .= "id:".$idStore."<BR/>".print_r($legalStore, true);
                 $infostore1c .= ($legalStoresArray[$idStore]['working_hours_from']) ?
                         "сегодня с " . substr($legalStoresArray[$idStore]['working_hours_from'], 0, -3) . " до " . substr($legalStoresArray[$idStore]['working_hours_to'], 0, -3) : "";
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";

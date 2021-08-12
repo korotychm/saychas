@@ -17,6 +17,16 @@ class ClientOrder extends Entity
 {
     use Searchable;
     
+    /**
+     * Get primary key
+     *
+     * @return string|array
+     */
+    public function primaryKey()
+    {
+        return ['user_id', 'order_id'];
+    }
+    
     public static ClientOrderRepository $repository;
 
     /** @var int */

@@ -235,14 +235,7 @@ class IndexController extends AbstractActionController
         if (!empty($orders)){
             
             $orderList = $this->htmlProvider->orderList($orders);
-            
-           /* foreach ($orders as $order){
-                $return['orderId'] = $order->getOrderId();
-                $return['basketInfo'] = $order->getBasketInfo();
-                $return['deliveryInfo'] = $order->getDeliveryInfo();
-                $return['date'] = $order->getDateCreated();
-                $orderList[]=$return;
-          }/**/
+   
         } 
         else {
             $orderList = StringResource::ORDER_EMPTY;

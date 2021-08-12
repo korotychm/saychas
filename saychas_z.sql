@@ -3027,7 +3027,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`saychas_z`@`localhost` SQL SECURITY DEFINER 
 -- Indexes for table `basket`
 --
 ALTER TABLE `basket`
-  ADD PRIMARY KEY (`user_id`,`product_id`);
+  ADD PRIMARY KEY (`user_id`,`product_id`,`order_id`);
 
 --
 -- Indexes for table `brand`

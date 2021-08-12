@@ -1,146 +1,48 @@
 {
-    "basketinfo": {
-        "userGeoLocation": {
-            "value": "г Москва, ул Угрешская, д 2",
-            "unrestricted_value": "115088, г Москва, р-н Печатники, ул Угрешская, д 2",
-            "data": {
-                "postal_code": "115088",
-                "country": "Россия",
-                "country_iso_code": "RU",
-                "federal_district": "Центральный",
-                "region_fias_id": "0c5b2444-70a0-4932-980c-b4dc0d3f02b5",
-                "region_kladr_id": "7700000000000",
-                "region_iso_code": "RU-MOW",
-                "region_with_type": "г Москва",
-                "region_type": "г",
-                "region_type_full": "город",
-                "region": "Москва",
-                "area_fias_id": null,
-                "area_kladr_id": null,
-                "area_with_type": null,
-                "area_type": null,
-                "area_type_full": null,
-                "area": null,
-                "city_fias_id": "0c5b2444-70a0-4932-980c-b4dc0d3f02b5",
-                "city_kladr_id": "7700000000000",
-                "city_with_type": "г Москва",
-                "city_type": "г",
-                "city_type_full": "город",
-                "city": "Москва",
-                "city_area": "Юго-восточный",
-                "city_district_fias_id": null,
-                "city_district_kladr_id": null,
-                "city_district_with_type": "р-н Печатники",
-                "city_district_type": "р-н",
-                "city_district_type_full": "район",
-                "city_district": "Печатники",
-                "settlement_fias_id": null,
-                "settlement_kladr_id": null,
-                "settlement_with_type": null,
-                "settlement_type": null,
-                "settlement_type_full": null,
-                "settlement": null,
-                "street_fias_id": "966e6baf-a2da-4e70-8ac3-ba2c1a2a699a",
-                "street_kladr_id": "77000000000022300",
-                "street_with_type": "ул Угрешская",
-                "street_type": "ул",
-                "street_type_full": "улица",
-                "street": "Угрешская",
-                "house_fias_id": null,
-                "house_kladr_id": null,
-                "house_cadnum": null,
-                "house_type": "д",
-                "house_type_full": "дом",
-                "house": "2",
-                "block_type": null,
-                "block_type_full": null,
-                "block": null,
-                "entrance": null,
-                "floor": null,
-                "flat_fias_id": null,
-                "flat_cadnum": null,
-                "flat_type": null,
-                "flat_type_full": null,
-                "flat": null,
-                "flat_area": null,
-                "square_meter_price": null,
-                "flat_price": null,
-                "postal_box": null,
-                "fias_id": "966e6baf-a2da-4e70-8ac3-ba2c1a2a699a",
-                "fias_code": "77000000000000002230000",
-                "fias_level": "7",
-                "fias_actuality_state": "0",
-                "kladr_id": "77000000000022300",
-                "geoname_id": "524901",
-                "capital_marker": "0",
-                "okato": "45290582000",
-                "oktmo": "45393000",
-                "tax_office": "7723",
-                "tax_office_legal": "7723",
-                "timezone": null,
-                "geo_lat": "55.7112789",
-                "geo_lon": "37.6835843",
-                "beltway_hit": null,
-                "beltway_distance": null,
-                "metro": null,
-                "qc_geo": "0",
-                "qc_complete": null,
-                "qc_house": null,
-                "history_values": null,
-                "unparsed_parts": null,
-                "source": null,
-                "qc": null
-            }
-        },
-        "username": "Дмитрий Длиинофамильный-Северный"
-    },
-    "products": ["000000000019", "000000000020", "000000000003", "000000000002", "000000000004", "000000000005"],
-    "response": {
-        "result": true,
-        "order": "000000046",
-        "order_status": "0",
-        "deliveries": {
-            "selfdelivery": [{
-                    "delivery": "000000000000000137",
-                    "delivery_status": "0",
-                    "applications": [{
-                            "store": "000000009",
-                            "products": [{
-                                    "id": "000000000019",
-                                    "count": "2"
-                                }, {
-                                    "id": "000000000020",
-                                    "count": "1"
-                                }]
-                        }]
-                }],
-            "delivery": [{
-                    "delivery": "000000000000000138",
-                    "delivery_status": "0",
-                    "applications": [{
-                            "store": "000000005",
-                            "products": [{
-                                    "id": "000000000003",
-                                    "count": "7"
-                                }]
-                        }]
-                }, {
-                    "delivery": "000000000000000139",
-                    "delivery_status": "0",
-                    "applications": [{
-                            "store": "000000002",
-                            "products": [{
-                                    "id": "000000000002",
-                                    "count": "1"
-                                }, {
-                                    "id": "000000000004",
-                                    "count": "1"
-                                }, {
-                                    "id": "000000000005",
-                                    "count": "5"
-                                }]
+    "selfdelivery": [],
+    
+       "delivery": [{
+            "id": "000000000000000291",
+            "delivery_status": "0",
+            "applications": [{
+                    "store": "000000005",
+                    "products": [{
+                            "id": "000000000025",
+                            "count": "4"
                         }]
                 }]
-        }
-    }
+        }, {
+            "id": "000000000000000292",
+            "delivery_status": "0",
+            "applications": [{
+                    "id":"123",
+                    "store": "000000009",
+                    "status":"0",
+                    "products": [{
+                            "id": "000000000018",
+                            "count": "7"
+                        }, {
+                            "id": "000000000019",
+                            "count": "2"
+                        }, {
+                            "id": "000000000020",
+                            "count": "1"
+                        }]
+                }],
+             "applications": [{
+                    "id":"1232",
+                    "store": "0000000092",
+                    "status":"0",
+                    "products": [{
+                            "id": "000000000018",
+                            "count": "7"
+                        }, {
+                            "id": "000000000019",
+                            "count": "2"
+                        }, {
+                            "id": "000000000020",
+                            "count": "1"
+                        }]
+                }]
+        }]
 }
