@@ -1201,10 +1201,25 @@ var(--gray-light*/
   color: rgb(167, 167, 167);
   text-decoration: line-through;
   margin-right: 50px;
+  white-space: nowrap;
 }
 .changed-products__to {
   font-size: 24px;
   font-weight: bold;
+  white-space: nowrap;
+  position: relative;
+}
+.changed-products__to::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  display: block;
+  position: absolute;
+  left: -20px;
+  top: 3px;
+  border-right: 2px solid #ff4b2d;
+  border-bottom: 2px solid #ff4b2d;
+  transform: rotate(45deg);
 }
 .changed-products__btn {
   width: 305px;
