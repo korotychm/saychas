@@ -107,7 +107,7 @@ class HtmlProviderService
             ];
         }
         $test = false;
-        
+
         while (list($key, $product) = each($param['postedProducts'])) { //
             if (empty($basketProducts[$key] or $test)) {
                 $error["reloadUrl"] = "/client-orders";
@@ -456,24 +456,26 @@ class HtmlProviderService
         $typeText[8] = "Ссылка.Страна"; */
         /*$pricesel['maxprice'] = $price['maxprice'];
         $pricesel['minprice'] = $price['minprice'];*/
-
+        
         if (empty($filters)){
             return["error" => "errorId"];
-        }    
+        }
         $return = [];
+        
         $j = 0;
         foreach ($filters as $row) {
+           // return $row;
             $row['val'] = explode(",", $row['val']);
             $row['val'] = array_unique($row['val']);
+            
             $getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
-            
+
             //$row['val']=array_diff ([""], $row['val']);
-            unset($options);
+            $chars = [];
             foreach ($row['val'] as $val) {
                 $j++;
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
-                if ($val) {
                     $valuetext = $val;
                     if ($row['type'] == 4)
                         $valuetext = $char->getTitle();
@@ -487,18 +489,20 @@ class HtmlProviderService
                     } elseif ($row['type'] == 8)
                         $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
 
-                  $return[$row['id']][] = [
+                  $chars[] = [
                       "valueCode" => $val,
                       "value" => $valuetext,
-                      "type"  => $row['type'],
-                      ];  
-                }
+                     
+                      ];
+                
+                 
             }
+            $return[]=["id" => $row['id'], "title" => $row['tit'],  "type"  => $row['type'], "unit" => $getUnit, "options" => $chars ];
         }
         return $return;
     }
-    
-   
+
+
 
     private function valueParce($v = [], $chType)
     {
@@ -537,7 +541,7 @@ class HtmlProviderService
     {
         $productImages = $return = $filters = [];
         foreach ($filteredProducts as $product) {
-            
+
             $return['price'] = (int)$product->getPrice();
             $return['price_formated' ]= number_format(($return['price']/100), 0, "", "&nbsp;");
             $container = new Container(StringResource::SESSION_NAMESPACE);
@@ -551,7 +555,7 @@ class HtmlProviderService
             $characteristicsArray=[];
             if(!empty($charNew)) {
                 $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
-            }   
+            }
             $productImages[] = $product->getHttpUrl();
             $vendor = $product->getVendorCode();
             $return["brand"]["title"] = $product->getBrandTitle();
@@ -593,7 +597,7 @@ class HtmlProviderService
         $return['appendParams'] = ['vendorCode' => $vendor,'rest' => $totalRest,'test' => "test",];
         return $return;
     }
-    
+
     public function writeUserAddress($user = null)
     {
         //$userId = $this->identity();
@@ -674,7 +678,7 @@ class HtmlProviderService
             foreach ($selfdelevery as $providerinfo) {
                 $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
                 $store = $stores->current();
-                $storeAdress[] = StringHelper::cutAddress($store->getAddress()); 
+                $storeAdress[] = StringHelper::cutAddress($store->getAddress());
             }
         }
         $j = 0;
@@ -691,10 +695,10 @@ class HtmlProviderService
                 if ($providerId = $product->getProviderId())
                     $provider[$providerId] = 1;
             }
-        }   
+        }
         if (!empty($provider)){
             $countDelevery = count($provider);
-        }    
+        }
         $countDelevery = (int) $countDelevery - $countSelfdelevery;
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
@@ -713,7 +717,7 @@ class HtmlProviderService
         $return["countDeleveryText"] = $countDelevery;
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress;
-      
+
         return $return;
     }
 
