@@ -8,8 +8,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
             <form method="post" id="filtrform">
                 <input type='hidden' name='category_id' value='<?= $this->id ?>'>
                 <div id="filtrblock" class="container">
-                    <?= $this->breadmenu ?>
-                    <?= $this->filterform ?><br class="both"/>
+                    <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>           
+                    <?= $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>           
+                    <br class="both"/>
                 </div>
             </form>
         </div>

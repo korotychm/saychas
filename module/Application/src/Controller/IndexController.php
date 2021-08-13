@@ -8,6 +8,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Authentication\AuthenticationService;
+use Laminas\Http\Response;
 use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
@@ -412,7 +413,7 @@ class IndexController extends AbstractActionController
         return $res;
     }
 
-    public function productAction()
+    /*public function productAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
         if (empty($product_id)) {header("location:/"); exit();}
@@ -441,45 +442,26 @@ class IndexController extends AbstractActionController
             'filter' =>  $returnProductFilter,
         ];
         return new ViewModel($vwm);
-      }
+      }*/
       
       
       
-      public function productPageAction()
+    public function productPageAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
-        if (empty($product_id)) {header("location:/"); exit();}
-        
         $params['equal']=$product_id;        
-        $products = $this->productRepository->filterProductsByStores($params);
-        if (empty($products)) {header("location:/"); exit();}
-        
+        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
         $productPage = $this->htmlProvider->productPageService($products);
         $categoryId= $productPage['categoryId'];
-        
-        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory=$container->filtrForCategory;
-        $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
-        $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
-        $bread = $this->htmlProvider->breadCrumbs($bread);
+        $breadSource = $this->categoryRepository->findAllMatherCategories($categoryId);
+        $bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm=[
-            'id' => $product_id,
-            'catalog' => $categories,
-            'title' => $productPage['title'],
-            'images' => $productPage['images'],
-            'category' => $categoryTitle,
-            'bread'=> $bread,
-            'characteristics' => $productPage["characteristics"],
-            'product'=> $productPage['card'],
-            'filter' =>  $returnProductFilter,
-            'description' => $productPage['description'],
-            'append' =>  $productPage['appendParams'],
-            'price' =>  $productPage['price'],
-            'brand' =>  $productPage['brand'],
-            'price_formated' =>  $productPage['price_formated'],
-        ];
+        $vwm=['id' => $product_id, 'title' => $productPage['title'],'images' => $productPage['images'],'category' => $categoryTitle,'bread'=> $bread,'characteristics' => $productPage["characteristics"],'product'=> $productPage['card'],'description' => $productPage['description'],'append' =>  $productPage['appendParams'],'price' =>  $productPage['price'],'brand' =>  $productPage['brand'],'price_formated' =>  $productPage['price_formated'],];
         return new ViewModel($vwm);
       }
     
@@ -489,29 +471,18 @@ class IndexController extends AbstractActionController
     
     public function catalogAction($category_id = false)
     {
-        if(!$category_id) {
+        if(empty($category_id)) {
             $category_id=$this->params()->fromRoute('id', '');
         }
-        
-        try {
-            $categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle();
-        }
-        catch (\Exception $e) {
+        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
             header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
         }
-        if (!$categoryTitle) { 
-            header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
-        }
-        
-//        $container = new Container(StringResource::SESSION_NAMESPACE);
-        
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
-        $bread = $this->htmlProvider->breadCrumbs($matherCategories);
-        $breadmenu = $this->htmlProvider->breadCrumbsMenu($matherCategories);
-
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))){
+            $breadCrumbs = array_reverse($matherCategories);
+        }
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        
         $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
@@ -520,9 +491,9 @@ class IndexController extends AbstractActionController
             "catalog" => $categories,
             "title" => $categoryTitle,
             "id" => $category_id,
-            "bread"=> $bread,
+            "breadCrumbs"=> $breadCrumbs ,
             'filterform'=> $filterForm,
-            'breadmenu' => $breadmenu,
+            //'breadmenu' => $breadmenu,
         ];
         return new ViewModel($vwm);
     }
