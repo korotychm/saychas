@@ -3,7 +3,7 @@ namespace Application\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Application\Entity\Comment;
+//use Application\Entity\Comment;
 
 use Doctrine\ORM\Mapping as ORM;
 

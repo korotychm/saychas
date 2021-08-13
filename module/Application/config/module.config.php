@@ -197,16 +197,16 @@ return [
 //                    ],
 //                ],
 //            ],
-            'testing' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/testing[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testing',
-                    ],
-                ],
-            ],
+//            'testing' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/testing[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'testing',
+//                    ],
+//                ],
+//            ],
             'provider' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -543,46 +543,16 @@ return [
                     ],
                 ],
             ],
-            'hello-world' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/hello-world',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'helloWorld',
-                    ],
-                ],
-            ],
-            'test-repos' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-repos',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testRepos',
-                    ],
-                ],
-            ],
-            'test-identity' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-identity',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testIdentity',
-                    ],
-                ],
-            ],
-            'test-client' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-client',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testClient',
-                    ],
-                ],
-            ],
+//            'test-repos' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/test-repos',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'testRepos',
+//                    ],
+//                ],
+//            ],
             'get-image' => [
                 'type'    => Literal::class,
                 'options' => [
