@@ -1,3 +1,14 @@
+function showServicePopupWindow (title, body, footer="", noclose = false )
+{
+    $("#ServiceModalWindow .modal-title").html(title);
+    $("#ServiceModalWindow #ServiceModalWraper").html(body);
+    $("#ServiceModalWindow .modal-footer").html(footer);
+    if (noclose) {
+        $("#ServiceModalWindow .close").remove();
+    }
+    $("#ServiceModalWindow").modal("show");
+}
+
 function sendfilterform() {
         //alert("!!!!");
         var dataString = $("#filtrform").serialize();
@@ -17,9 +28,11 @@ function sendfilterform() {
                 //alert("!!!!234");
             },
             error: function (xhr, ajaxOptions, thrownError) {
-               if(xhr.status != 0 ){ $("#ServiceModalWindow .modal-title").html("Ошибка sendfilterform" +  xhr.status );
-               $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
-               $("#ServiceModalWindow").modal("show");
+               if(xhr.status != 0 ){ 
+                   showServicePopupWindow (
+                           "Ошибка sendfilterform" +  xhr.status,
+                            "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
+                   );
                 }
             }
         });
