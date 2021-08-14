@@ -170,7 +170,7 @@ function whatHappened(noclose = false) {
                     productHtml += '<div class="changed-products__img"><img src="' + imgSrc + '" alt=""></div>';
                     productHtml += '<div class="changed-products__title">' + title + '</div>';
 
-                    if (product.rest === 0) {
+                    if (product.rest == 0) {
                         //вывод "товар закончился"
                         productHtml += '<div class="changed-products__status"><div class="changed-products__na">Товар закончился</div></div>';
                     } else {
@@ -363,10 +363,10 @@ $(function () {
     $("body").on("change", ".timepoint", function () {
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });/**/
+
     calculateBasketMerge($("#user-basket-form").serialize(), true);
 
     $("body").on("click", "#sendbasketbutton", function () {
-        // var dataString = $("#user-basket-form").serialize();
         checkBasketDataBeforeSend();
     });
 
