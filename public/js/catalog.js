@@ -7,20 +7,20 @@ function getCategoryFilters(categoryId){
             cache: false,
             data: {"categoryId": categoryId},
             success: function (data) {
-               $("#ServiceModalWindow .modal-title").html("Фильтры дла каталога");
-               $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
-               $("#ServiceModalWindow").modal("show");
-                return false;
+              showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
+              return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("#ServiceModalWindow .modal-title").html("Ошибка checkBasketDataBeforeSend" +  xhr.status );
-                $("#ServiceModalWindow #ServiceModalWraper").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
-                $("#ServiceModalWindow").modal("show");
+             if (xhr.status !== 0) {
+                    showServicePopupWindow(
+                        "Ошибка " + xhr.status,
+                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
+                    );
+                }    
                 return false;
             }
         });
-    return false;
-    
+    return false;    
 }
 
 $(document).ready(function () {
@@ -28,4 +28,4 @@ $(document).ready(function () {
     $("#testFiltersButton").click(function(){
         getCategoryFilters($("#testFiltersCategotyId").val());
     });
-})
+});
