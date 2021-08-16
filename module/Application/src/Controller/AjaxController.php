@@ -229,13 +229,12 @@ class AjaxController extends AbstractActionController
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userPhone = (empty($user))?false:$user->getPhone();
-        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
-        if ($userPhone) {
-            return new JsonModel(["result" => false, "reload" => true]);
+        if (empty($userPhone)) {
+            return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/",]);
         }
         $userData = UserData::findAll(['where' => ['user_id' => $userId], 'order' => 'timestamp DESC'])->current();
         if (empty($userData)) {
-            return new JsonModel(["result" => false, "reload" => true]);
+            return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/"]);
         }
         $userGeoData = $userData->getGeodata();
         //return new JsonModel([$userId, $userGeoData]);
@@ -256,7 +255,7 @@ class AjaxController extends AbstractActionController
             $return = $this->htmlProvider->basketCheckBeforeSendService($param, $basket);
             return new JsonModel($return);
         }
-        return new JsonModel(['result' => false, "reload" => true]);
+        return new JsonModel(['result' => false, "reload" => true, "reloadUrl" => "/"]);
     }
 
     public function addToBasketAction()
