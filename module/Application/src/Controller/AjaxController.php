@@ -157,8 +157,8 @@ class AjaxController extends AbstractActionController
         $userPhone = (empty($user))?false:$user->getPhone();
         $userPhone =  StringHelper::phoneFromNum($user->getPhone());
         if ($userPhone) {
-              $this->getResponse()->setStatusCode(403);
-              return;
+                $this->getResponse()->setStatusCode(403);
+                return;
         }
         $return['reload'] = $post->reload;
         $return['dataId'] = $post->dataId;
@@ -176,12 +176,12 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
          $user = User::find(['id' => $userId]);
-        $userPhone = (empty($user))?false:$user->getPhone();
-        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
-        if ($userPhone) {
+        //$userPhone = (empty($user))?false:$user->getPhone();
+        if (!$return['userId']) {
               $this->getResponse()->setStatusCode(403);
               return;
         }
+        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
         $return['reload'] = true; // $post->reload;
         $return['dataId'] = $post->dataId;
         //return new JsonModel($return);

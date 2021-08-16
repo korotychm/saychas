@@ -140,6 +140,7 @@ class ExternalCommunicationService
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
         $deliveries = Json::encode($content['response']['deliveries']);
+        $payment = Json::encode([]);
         $orderId = $content['response']['order_id'];
 //      $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         
@@ -147,6 +148,7 @@ class ExternalCommunicationService
         $order->setUserId($userId); 
         $order->setDeliveryInfo($deliveries); 
         $order->setBasketInfo($basketinfo); 
+        $order->setPaymentInfo($payment); 
         $order->setDateCreated(time());
         $order->persist(['order_id'=>$orderId]);
         return ['result'=> true, 'orderId'=>$orderId, 'products' => $content['products']];
