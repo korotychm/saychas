@@ -18,10 +18,9 @@ use Laminas\Session\Storage\SessionArrayStorage;
 //use Laminas\Session\Config\SessionConfig;
 //use Laminas\Session\Validator\RemoteAddr;
 //use Laminas\Session\Validator\HttpUserAgent;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+//use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 //use Laminas\Session;
-//echo __DIR__ . '/../src/Entity';
-//exit;
+
 return [
     'service_manager' => [
         'abstract_factories' => [
@@ -38,13 +37,12 @@ return [
         'adapters' => [
             'Application\Db\WriteAdapter' => [
                 'driver' => 'Pdo_Mysql',
-//                'dsn'    => 'mysql:dbname=test_z;host=localhost;charset=utf8',
                 'dsn'    => 'mysql:dbname=saychas_z;host=localhost;charset=utf8',
                 'driver_options' => [
                     PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES \'UTF8\'',
                 ],
-                'username' => 'saychas_z',// 'test_z',
-                'password' => 'saychas_z',// 'test_z',
+                'username' => 'saychas_z',
+                'password' => 'saychas_z',
             ],
             'Application\Db\ReadOnlyAdapter' => [
                 'driver' => 'Pdo_Mysql',
@@ -57,36 +55,7 @@ return [
             PDO::MYSQL_ATTR_INIT_COMMAND =>'SET NAMES \'UTF8\'',
         ],
     ],
-    
-    
-    
-//    'doctrine' => [
-//        // migrations configuration
-//        'migrations_configuration' => [
-//            'orm_default' => [
-//                'directory' => 'data/doctrine/migrations',// 'data/Migrations',
-//                'name'      => 'Doctrine Database Migrations',
-//                'namespace' => 'Migrations',
-//                'table'     => 'migrations',
-//            ],
-//    	],
-//	//'directory' => 'data/doctrine/migrations',
-//    ],
-//    'doctrine' => [        
-//        // migrations configuration
-//        'migrations_configuration' => [
-//            'orm_default' => [
-//                'directory' => 'data/Migrations',
-//                'name'      => 'Doctrine Database Migrations',
-//                'namespace' => 'Migrations',
-//                'table'     => 'migrations',
-//            ],
-//        ],
-//    ],
-    
-    
-    
-    
+
     'session_containers' => [
         //Laminas\Session\Container::class,
         Container::class,
@@ -161,81 +130,5 @@ return [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
 //        ],
 //    ],
-    
-    'doctrine' => [        
-        // migrations configuration
-//        'migrations_configuration' => [
-//            'orm_default' => [
-//                'directory' => 'data/Migrations',
-//                'name'      => 'Doctrine Database Migrations',
-//                'namespace' => 'Migrations',
-//                'table'     => 'migrations',
-//            ],
-//            //'directory' => 'data/Migrations',
-//        ],
-        
-        'driver' => [
-            __NAMESPACE__ . '_driver' => [
-                'class' => AnnotationDriver::class,
-                'cache' => 'array',
-                'paths' => [__DIR__ . '/../../module/Application/src/Entity']
-            ],
-            'orm_default' => [
-                'drivers' => [
-                    __NAMESPACE__ . '\Application\Entity' => __NAMESPACE__ . '_driver'
-                ],
-            ],
-        ],
-//        'driver' => [
-//            // defines an annotation driver with two paths, and names it `my_annotation_driver`
-//            'my_annotation_driver' => [
-//                'class' => \Doctrine\ORM\Mapping\Driver\AnnotationDriver::class,
-//                'cache' => 'array',
-//                'paths' => [
-//                    'module/Entity',
-//                ],
-//            ],
-//
-//            // default metadata driver, aggregates all other drivers into a single one.
-//            // Override `orm_default` only if you know what you're doing
-//            'orm_default' => [
-//                'drivers' => [
-//                    // register `my_annotation_driver` for any entity under namespace `My\Namespace`
-//                    'My\Namespace' => 'my_annotation_driver',
-//                ],
-//            ],
-//        ],
-        'connection' => [
-            // default connection name
-            'orm_default' => [
-                'driverClass' => \Doctrine\DBAL\Driver\PDOMySql\Driver::class,
-                'params' => [
-                    'host'     => 'localhost',
-                    'port'     => '3306',
-                    'user'     => 'saychas_z',
-                    'password' => 'saychas_z',
-                    'dbname'   => 'saychas_z',
-                ],
-            ],
-        ],
-//        'directory' => 'data/DoctrineORMModule/Proxy',
-    ],
-        
-];
 
-//return [
-//    ['adapters' => [
-//        'Application\Db\ReadOnly' => [
-//            'driver'   => 'Pdo_Sqlite',
-//            'database' => 'data/db/users.db',
-//        ],
-//        'Application\Db\WriteAdapter' => [
-////        'default_db' => [
-//            'driver'   => 'Pdo_Mysql',
-//            'database' => 'saychas_z',
-//            'username' => 'saychas_z',
-//            'password' => 'saychas_z',
-//        ],
-//    ]],
-//    
-//];
+];

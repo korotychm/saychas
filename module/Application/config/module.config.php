@@ -197,16 +197,16 @@ return [
 //                    ],
 //                ],
 //            ],
-            'testing' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/testing[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testing',
-                    ],
-                ],
-            ],
+//            'testing' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/testing[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'testing',
+//                    ],
+//                ],
+//            ],
             'provider' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -551,46 +551,16 @@ return [
                     ],
                 ],
             ],
-            'hello-world' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/hello-world',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'helloWorld',
-                    ],
-                ],
-            ],
-            'test-repos' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-repos',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testRepos',
-                    ],
-                ],
-            ],
-            'test-identity' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-identity',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testIdentity',
-                    ],
-                ],
-            ],
-            'test-client' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-client',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testClient',
-                    ],
-                ],
-            ],
+//            'test-repos' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/test-repos',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'testRepos',
+//                    ],
+//                ],
+//            ],
             'get-image' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -1016,7 +986,6 @@ return [
             
         ],
         'invokables' => [
-//            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
         ]
     ],
@@ -1051,15 +1020,7 @@ return [
         'aliases' => [
             'imagePath' => View\Helper\ImagePath::class,
         ],
-  ],
-//    'view_helpers' => [
-//        'factories' => [
-//            View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
-//        ],
-//        'aliases' => [
-//            'access' => View\Helper\Access::class,
-//        ],
-//    ],
+    ],
     
     'parameters' => [
         '1c_auth' => [
@@ -1117,20 +1078,60 @@ return [
         ],
 
     ],
+
+    /** Correct configuration for doctrine migrations; */
     'doctrine' => [
+
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Entity']
+                'paths' => [__DIR__ . '/../../module/Application/src/Entity']
             ],
             'orm_default' => [
                 'drivers' => [
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                ]
-            ]
-        ]
+                    __NAMESPACE__ . '\Application\Entity' => __NAMESPACE__ . '_driver'
+                ],
+            ],
+        ],
+
+        'connection' => [
+            // default connection name
+            'orm_default' => [
+                'driverClass' => \Doctrine\DBAL\Driver\PDOMySql\Driver::class,
+                'params' => [
+                    'host'     => 'localhost',
+                    'port'     => '3306',
+                    'user'     => 'saychas_z',
+                    'password' => 'saychas_z',
+                    'dbname'   => 'saychas_z',
+                ],
+            ],
+        ],
+        
+        'migrations_configuration' => [
+            'orm_default' => [
+                'table_storage' => [
+                    'table_name' => 'DoctrineMigrationVersions',
+                    'version_column_name' => 'version',
+                    'version_column_length' => 1024,
+                    'executed_at_column_name' => 'executedAt',
+                    'execution_time_column_name' => 'executionTime',
+                ],
+                //'migrations_paths' => ['SaychasProjectZ\Migrations' => 'data/doctrine/migrations'], // an array of namespace => path
+                'migrations_paths' => ['Saychas\Migrations' => 'data/doctrine/migrations'], // an array of namespace => path
+                'migrations' => [], // an array of fully qualified migrations
+                'all_or_nothing' => false,
+                'check_database_platform' => true,
+                'organize_migrations' => 'year', // year or year_and_month
+                'custom_template' => null,
+            ],
+            'orm_other' => [
+            ],
+        ],
     ],
+    /** Doctrine migrations configuration ends here */
+
 //    'session_manager' => [
 //        'config' => [
 //            'class' => \Session\Config\SessionConfig::class,
