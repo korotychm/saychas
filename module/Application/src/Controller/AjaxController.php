@@ -33,6 +33,7 @@ use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterfa
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Service\HtmlProviderService;
 use Application\Service\CommonHelperFunctionsService;
+use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -46,6 +47,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 //use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
+
 
 class AjaxController extends AbstractActionController
 {
@@ -146,12 +148,17 @@ class AjaxController extends AbstractActionController
     public function ajaxUserDeleteAddressAction()
     {
         //$return["error"] = true;
+           /*$this->getResponse()->setStatusCode(403);
+              return;*/
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        if (empty($userId)) {
+        $user = User::find(['id' => $userId]);
+        $userPhone = (empty($user))?false:$user->getPhone();
+        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        if ($userPhone) {
               $this->getResponse()->setStatusCode(403);
-              $vw = new ViewModel();
+              return;
         }
         $return['reload'] = $post->reload;
         $return['dataId'] = $post->dataId;
@@ -168,9 +175,12 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        if (empty($userId)) {
-            header('HTTP/1.1 403 Forbidden');
-            exit;
+         $user = User::find(['id' => $userId]);
+        $userPhone = (empty($user))?false:$user->getPhone();
+        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        if ($userPhone) {
+              $this->getResponse()->setStatusCode(403);
+              return;
         }
         $return['reload'] = true; // $post->reload;
         $return['dataId'] = $post->dataId;
@@ -217,7 +227,10 @@ class AjaxController extends AbstractActionController
     {
 
         $userId = $this->identity();
-        if (!$userId) {
+        $user = User::find(['id' => $userId]);
+        $userPhone = (empty($user))?false:$user->getPhone();
+        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        if ($userPhone) {
             return new JsonModel(["result" => false, "reload" => true]);
         }
         $userData = UserData::findAll(['where' => ['user_id' => $userId], 'order' => 'timestamp DESC'])->current();
@@ -249,6 +262,7 @@ class AjaxController extends AbstractActionController
     public function addToBasketAction()
     {
         $return = ["error" => true, "count" => 0];
+        $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
         $return['productId'] = $productId = $post->product;
         $addNum = 1;
@@ -278,6 +292,7 @@ class AjaxController extends AbstractActionController
             $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
+            
             /** more conditions come here */
             $columns = ['product_id', 'order_id', 'total'];
 //            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
