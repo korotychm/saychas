@@ -1,11 +1,21 @@
 <?php
 $this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
 ?><div class="container mainconteiner"  >
     <div  class="contentwrapper">
-        <?= $this->bread ?> 
+        
+        <div id="left-col">
+            <div class="content-col">
+                <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
+            </div>               
+        </div>
+        <div id="main-col">
+            <?= $this->bread ?> 
         <h2><?= $this->title ?></h2> 
-        <div id="order-list" class="mini">
-            <?= $this->orders ?>
+        <div class="content-col">
+            <pre id="order-list" >
+            </pre>
         </div>
     </div>               
 </div>
+</div>    

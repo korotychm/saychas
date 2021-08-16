@@ -232,21 +232,22 @@ class IndexController extends AbstractActionController
               $vw->setTemplate('error/403.phtml');
               return  $vw;
         }
-        $orders = ClientOrder::findAll(['user_id'=>$userId]);
+        /*$orders = ClientOrder::findAll(['user_id'=>$userId]);
         if (!empty($orders)){
             
-            $orderList = $this->htmlProvider->orderList($orders);
+            //$orderList = $this->htmlProvider->orderList($orders);
    
         } 
         else {
-            $orderList = StringResource::ORDER_EMPTY;
+            //$orderList = StringResource::ORDER_EMPTY;
                     
         }    
-        $orderList = "<pre>".print_r($orderList,true)."</pre>";    
+        //$orderList = Json:: $orderList,true)."</pre>";   /**/ 
         
         return new ViewModel([
             'title' => StringResource::ORDER_TITLE, //  $container->item
-            'orders'=> $orderList,
+            //'orders'=> $orderList,
+             "auth"=> $userPhone,
         ]);
     }
     

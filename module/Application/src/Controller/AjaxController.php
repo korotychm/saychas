@@ -37,6 +37,7 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
+use RuntimeException;
 use Laminas\Authentication\AuthenticationService;
 use Application\Resource\StringResource;
 use Laminas\Json\Json;
@@ -45,6 +46,8 @@ use Laminas\Http\Response;
 use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
+
+//use Throwable;
 //use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
@@ -137,7 +140,41 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
     
-    public function checkOrderStatus()
+    
+    public function getUserOrderListAction()
+    {
+        $return["result"] = true;
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $return['userId'] = $userId = $container->userIdentity;
+         $orders = ClientOrder::findAll(['user_id'=>$userId]);
+        if (!empty($orders)){
+            $return["order_list"] = $this->htmlProvider->orderList($orders);
+         } 
+        $where = new Where();
+        $where->equalTo('user_id', $userId);
+        $where->notEqualTo('order_id', 0);
+        $columns = ['product_id'];
+        $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
+        if (empty($userBasketHistory)) {
+            return new JsonModel(["result" => false]);
+        }
+        foreach ($userBasketHistory as $basketItem ){
+            $product_id = $basketItem->getProductId();
+            try {
+                $product = $this->handBookRelatedProductRepository->find(['id'=>$product_id]);
+               // $product = null;
+                $return["productsMap"][$product_id]["image"]= $product->receiveProductImages()->current()->getHttpUrl();
+                $return["productsMap"][$product_id]["title"]= $product->getTitle();
+            }catch(\Throwable $ex){
+                return new JsonModel(["result" => false, 'error' => $ex->getMessage()]);
+            }
+        }
+
+       return new JsonModel($return);
+        
+    }
+    
+    public function checkOrderStatusAction()
     {
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);

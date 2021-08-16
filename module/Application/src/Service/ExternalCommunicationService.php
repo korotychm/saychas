@@ -136,14 +136,12 @@ class ExternalCommunicationService
     
     public function createClientOrder ($content, $order, $userId)
     {
-        
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
         $deliveries = Json::encode($content['response']['deliveries']);
         $payment = Json::encode([]);
         $orderId = $content['response']['order_id'];
 //      $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
-        
         $order->setOrderId($orderId); 
         $order->setUserId($userId); 
         $order->setDeliveryInfo($deliveries); 
@@ -160,8 +158,7 @@ class ExternalCommunicationService
         }
         
     }
-    
-    
+
     /**
      * Send curl request.
      *

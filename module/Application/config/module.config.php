@@ -859,6 +859,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-get-order-list'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-order-list',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getUserOrderList',
+                    ],
+                ],
+            ],
             'add-to-basket'=> [
                 'type'    => Literal::class,
                 'options' => [

@@ -95,7 +95,7 @@ class HtmlProviderService
         $legalStoreKey = (!empty($param["legalStore"])) ? array_keys($param["legalStore"]) : [];
         $return["result"] = true;
         $error = ["result" => false, "reload" => true, "reloadUrl" => "/basket"];
-
+        $whatHappened=[];
         /**/ if ($param['basketUserId'] != $param['userId']) {
             return $error;
         }/**/
@@ -137,7 +137,6 @@ class HtmlProviderService
             $container->whatHappened = $whatHappened;
         }
         $return['test'] = [$whatHappened];
-
         return $return;
     }
 
@@ -145,22 +144,21 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function breadCrumbs($a = [])
+ /*   public function breadCrumbs($a = [])
     {
-        if ($a and count($a)):
-            //<span class='bread-crumbs-item'></span>"
+        if ($a and count($a)){
             $return[] = "<a href=# class='catalogshow'>Каталог</a>";
             $a = array_reverse($a);
             foreach ($a as $b) {
                 $return[] = "<a href=/catalog/" . $b[0] . ">" . $b[1] . "</a>";
             }
-            //return "<div  class='bread-crumbs'><span class='bread-crumbs-item'>" . join("</span> / <span class='bread-crumbs-item'>", $return) . "</span></div>";
             return join('<b class="brandcolor"> : </b>', $return);
-        endif;
-    }
+        }
+    }*/
 
     public function orderList($orders)
     {
+        $returns=[];
         foreach ($orders as $order) {
 
             $return['orderId'] = $order->getOrderId();
@@ -171,11 +169,13 @@ class HtmlProviderService
             $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
             $return['date'] = $order->getDateCreated();
             $returns[] = $return;
+            
         }
+        //json_encode($return)
         return $returns;
     }
 
-    public function breadCrumbsMenu($a = [])
+/*    public function breadCrumbsMenu($a = [])
     {
         if ($a and count($a)) {
             //<span class='bread-crumbs-item'></span>"
@@ -183,15 +183,14 @@ class HtmlProviderService
             $a = array_reverse($a);
             $j = 0;
             foreach ($a as $b) {
-
                 $return[] = "<span class='bread-crumbs-item breadtab$j'><a href=/catalog/" . $b[0] . ">" . $b[1] . "</a></span>";
-                if ($j < 4)
+                if ($j < 4){
                     $j++;
+                }    
             }
             return "<div  class='bread-crumbs'>" . join("", $return) . "</div>";
-            // return join('<b class="brandcolor"> : </b>', $return);
         }
-    }
+ }*/
 
     /**
      * Returns Html string
@@ -861,8 +860,6 @@ class HtmlProviderService
                 if ($rest) {
                     $availblechek[$productProviderId] = true;
                 }
-
-
                 if ($productAvailable) {
 
                     $productStoreId = $productStore->getId();

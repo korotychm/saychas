@@ -5,15 +5,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/userpage.js'));
 ?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">
-            <ul class='menu usermenu'>
-                <?php //=$this->partial('application/index/partials/user-menu') 
-                ?>
-                <li><a href='#'>Профиль</a></li>
-                <li><a href='#'>История заказов</a></li>
-                <li><a href='#'>Мои адреса</a></li>
-                <?=($this->auth)?"<li><a href='/clear-user-data' >Выход</a></li>":"";?>
-                
-            </ul>    
+             <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth ]) ?>
       </div>               
     </div>
     <div id="main-col">

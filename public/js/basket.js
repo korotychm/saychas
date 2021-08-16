@@ -491,6 +491,7 @@ $(function () {
                 }
                 calculateBasketHeader();
                 loadPayInfo();
+                showBasket(0);
 
             },
             error: function (xhr, ajaxOptions, thrownError) {
