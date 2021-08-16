@@ -134,6 +134,14 @@ class AjaxController extends AbstractActionController
         $return["filters"] = $this->htmlProvider->getCategoryFilterJson($filters, $category_id);
         return new JsonModel($return);
     }
+    
+    public function checkOrderStatus()
+    {
+        $post = $this->getRequest()->getPost();
+        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $return['userId'] = $userId = $container->userIdentity;
+        
+    }
 
     public function ajaxUserDeleteAddressAction()
     {
@@ -142,8 +150,8 @@ class AjaxController extends AbstractActionController
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         if (empty($userId)) {
-            header('HTTP/1.1 403 Forbidden');
-            exit;
+              $this->getResponse()->setStatusCode(403);
+              $vw = new ViewModel();
         }
         $return['reload'] = $post->reload;
         $return['dataId'] = $post->dataId;

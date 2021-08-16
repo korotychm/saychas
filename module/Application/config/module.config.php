@@ -303,7 +303,7 @@ return [
                     ],
                 ],
             ],
-             'product-page' => [
+            /* *'product-page' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/product-page[/:id]',
@@ -312,7 +312,7 @@ return [
                         'action'     => 'productPage',
                     ],
                 ],
-            ],
+            ], /**/
             /*'catalog' => [
                 // First we define the basic options for the parent route: \Laminas\Router\Http\
                 'type' => Segment::class,
@@ -834,6 +834,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'basketOrderMerge',
+                    ],
+                ],
+            ],
+            'ajax-chek-order-status'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-chek-order-status',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'checkOrderStatus',
                     ],
                 ],
             ],
