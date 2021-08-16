@@ -252,8 +252,8 @@ function checkBasketDataBeforeSend() {
             if (data.result) {
                 sendBasketData();
             } else {
-                if (data.reload !== null) {
-                    location.href = data.reload;
+                if (data.reload !== null && data.reloadUrl !==null) {
+                    location.href = data.reloadUrl;
                     return false;
                 }
                 whatHappened(true);

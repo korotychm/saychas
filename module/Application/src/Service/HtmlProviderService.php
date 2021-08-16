@@ -636,6 +636,8 @@ class HtmlProviderService
                         . join("", $altmenu)
                         . '</div>
                  </div>         ';
+            } else { 
+                $hasalt=""; $altcontent="";
             }
         }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";

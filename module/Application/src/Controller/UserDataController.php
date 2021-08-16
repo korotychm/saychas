@@ -366,7 +366,13 @@ class UserDataController extends AbstractActionController
     {
 
         $container = new Container(StringResource::SESSION_NAMESPACE);
-        $userAutSession = $container->userAutSession;
+        $userAutSession = ($container->userAutSession)?$container->userAutSession:[];
+        $CodeBlock = false;
+        $passForgetBlock = false;
+        $registerPossible = false;
+        $error=[];
+
+
         $title = StringResource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $buttonLable = StringResource::BUTTON_LABLE_CONTINUE;
 
@@ -582,6 +588,7 @@ class UserDataController extends AbstractActionController
             }
         }
         $container->userAutTmpSession = $userAutSession;
+        $sendingPhone = ($return['phone'])?StringHelper::phoneToNum($return['phone']):"";
         $view = new ViewModel([
            //'reloadPage' => $reloadPage,
            // 'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
@@ -589,7 +596,7 @@ class UserDataController extends AbstractActionController
             'buttonLable' => $buttonLable,
             'error' => $error,
             'sengingPhoneFormated' => $return['phone'],
-            'sengingPhone' => StringHelper::phoneToNum($return['phone']),
+            'sendingPhone' => $sendingPhone,
             'passBlock' => $passBlock,
             'UserBlock' => $UserBlock,
             'CodeBlock' => $CodeBlock,
