@@ -280,8 +280,9 @@ abstract class Repository implements RepositoryInterface
                 $id = $this->db->getDriver()->getLastGeneratedValue();
             }
         } catch (InvalidQueryException $ex) {
-            $error = $ex->getMessage();
-            return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
+//            $error = $ex->getMessage();
+//            return ['result' => false, 'description' => "error executing statement. " . ' ' . $ex->getMessage(), 'statusCode' => 418];
+            throw new RuntimeException($ex->getMessage());
         }
         return $id;
     }
