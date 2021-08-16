@@ -250,6 +250,10 @@ abstract class Repository implements RepositoryInterface
                 throw new \Exception('Primary key ($pk) must be either a string or an array');
             }
         }
+        $auto = $entity->autoIncrementKey();
+        if(!empty($auto) && array_key_exists($auto, $assoc) ) {
+            unset($assoc[$auto]);
+        }
         $values = array_values($assoc);
         $names = array_keys($assoc);
 
