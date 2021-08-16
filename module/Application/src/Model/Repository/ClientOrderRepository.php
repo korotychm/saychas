@@ -86,6 +86,7 @@ class ClientOrderRepository extends Repository
     public function replace($content)
     {
     /**
+     * receive-client-order-statuses
         {
             "orderId": "123",
             "order_status": "0",
@@ -119,10 +120,13 @@ class ClientOrderRepository extends Repository
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
+        $orderId = $result['data']['order_id'];
+        $orderStatus = $result['data']['order_status'];
         if($result['data']['order_only']) {
-            $orderId = $result['data']['order_id'];
-            $orderStatus = $result['data']['order_status'];
-            echo "\n$orderId : $orderStatus \n";
+            $clientOrder = $this->find(['order_id' => $orderId]);
+            $clientOrder->setStatus($orderStatus);
+            $this->persist($clientOrder, ['order_id' => $orderId]);
+            return ['result' => true, 'description' => '', 'statusCode' => 200];
         }
         
         return ['result' => false, 'description' => 'not implemented', 'statusCode' => 405];
