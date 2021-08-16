@@ -18,6 +18,16 @@ class ClientOrder extends Entity
     use Searchable;
     
     /**
+     * Auto increment key
+     * 
+     * @return string
+     */
+    public function autoIncrementKey()
+    {
+        return 'id';
+    }
+    
+    /**
      * Get primary key
      *
      * @return string|array

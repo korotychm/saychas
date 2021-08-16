@@ -501,6 +501,18 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class,
                 ],
             ],
+            'receive-client-order-statuses' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-client-order-statuses[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
+                    'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
             'set-client-info' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -919,6 +931,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
+            \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class => \Application\Model\Repository\ClientOrderRepository::class,
             \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class => \Application\Model\Repository\MarkerRepository::class,
             \Application\Model\RepositoryInterface\BasketRepositoryInterface::class => \Application\Model\Repository\BasketRepository::class,
             \Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface::class => \Application\Model\Repository\ProductFavoritesRepository::class,
