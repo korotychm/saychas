@@ -299,7 +299,7 @@ return [
                     'route'    => '/product[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'product',
+                        'action'     => 'productPage',
                     ],
                 ],
             ],
@@ -867,8 +867,17 @@ return [
                     ],
                 ],
             ],
-            
-            
+            'ajax-get-category-filters'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-category-filters',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getJsonCategoryFilters',
+                    ],
+                ],
+            ],
+            //getJsonCategoryFiltersAction
         ],
     ],
     'controllers' => [

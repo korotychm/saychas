@@ -54,6 +54,11 @@ class StringHelper
         return $numbers[0];
     }
 
+    public static function eolFormating ($text)
+    {
+        return "<p>".str_replace("\r\n","<p></p>",$text)."</p>";
+    }
+    
     public static function phoneFromNum($from)
     {
         return "+"

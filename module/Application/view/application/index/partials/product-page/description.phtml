@@ -1,0 +1,19 @@
+
+<?php if (!empty($description)) { ?>
+    <div class="contentpadding ">
+        <?php if (!$description['if_spoiler']) { ?>
+            <div  id='spoiler-hide-<?= $id ?>'>
+                <div class='blok relative'>
+                    <?= $description['tinytext'] ?>
+                    <div class='gradientbottom'></div>
+                </div>
+                <a href=# class='redlink spoileropenlink ' rel='<?= $id ?>'  >развернуть описание&darr;</a>
+            </div>
+            <div  id='spoiler-show-<?= $id ?>'   class='blok' style='display:none' >
+                <?= $description['text'] ?>
+            </div>
+        <?php } else { ?>
+            <?= $description['text'] ?>
+        <?php } ?>
+    </div>
+<?php } ?>

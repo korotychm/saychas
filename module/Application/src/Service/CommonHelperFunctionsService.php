@@ -75,5 +75,14 @@ class CommonHelperFunctionsService
 
         return ["result" => true, "message" => "Магазины получены"];
     }
+    
+    public function setErrorRedirect($errorCode)
+    {
+        $response = new Response();
+        $response->setStatusCode($errorCode);
+        return $response;
+    }
+    
+    
 
 }
