@@ -150,8 +150,14 @@ class ExternalCommunicationService
         $order->setBasketInfo($basketinfo); 
         $order->setPaymentInfo($payment); 
         $order->setDateCreated(time());
-        $order->persist(['order_id'=>$orderId]);
-        return ['result'=> true, 'orderId'=>$orderId, 'products' => $content['products']];
+        try {
+            $order->persist(['order_id'=>$orderId]);
+            return ['result'=> true,  'orderId'=>$orderId, 'products' => $content['products']];
+        }
+        catch(\Exception $ex){
+            
+                return ['result'=> false, 'description' => $ex->getMessage()];
+        }
         
     }
     

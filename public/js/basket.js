@@ -276,8 +276,7 @@ function checkBasketDataBeforeSend() {
 function sendBasketData() {
     $.ajax({
         beforeSend: function () {
-            $("#ServiceModalWindow .modal-title").html("Отправка данных о заказе");
-            $("#ServiceModalWindow #ServiceModalWraper").html("....");
+             showServicePopupWindow("Отправка данных о заказе","....");
         },
         url: "/send-basket-data",
         type: 'POST',
@@ -285,11 +284,13 @@ function sendBasketData() {
         data: $("#user-basket-form").serialize(),
         success: function (data) {
             //console.log(data)
-            $("#ServiceModalWindow .modal-title").html("Формируем заказ");
-            $("#ServiceModalWindow #ServiceModalWraper").html(JSON.stringify(data));
-            if (data.result) {
+            showServicePopupWindow("Формируем заказ",JSON.stringify(data));
+            if (data.result == true) {
                 location = "/client-orders";
                 return false;
+            }
+           if (data.result == false) { 
+                showServicePopupWindow("Ошибка", JSON.stringify(data.description));
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
