@@ -11,6 +11,9 @@ use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Db\Sql\Sql;
 //use Laminas\Db\Adapter\Driver\ResultInterface;
 //use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Json\Json;
+//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Repository\Repository;
 
@@ -82,6 +85,40 @@ class ClientOrderRepository extends Repository
      */
     public function replace($content)
     {
+    /**
+        {
+            "orderId": "123",
+            "order_status": "0",
+            "deliveries": 
+                    [
+                        {
+                            "delivery_id": "123123",
+                            "delivery_status": 0
+                        }, {
+                            "delivery_id": "123124",
+                            "delivery_status": 1
+                        }
+                    ],
+            "applications": 
+                    [
+                        {
+                            "application_id": "123123",
+                            "application_status": 0
+                        }, {
+                            "application_id": "123124",
+                            "application_status": 1
+                        }
+                    ]
+        }
+        { "orderId": "123", "order_status": "0", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "applications":[ { "application_id": "123123","application_status": 0 }, { "application_id": "123124","application_status": 1 }] }
+     * 
+     */
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        
         return ['result' => false, 'description' => 'not implemented', 'statusCode' => 405];
     }
 
