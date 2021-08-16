@@ -76,6 +76,9 @@ curl -i -L saychas-z.local/receive-marker?XDEBUG_SESSION_START=netbeans-xdebug -
 curl -i -L saychas-z.local/receive-marker --data '[{"product_id": "1", "product_id": "1" }]' -X DELETE
 
 
+curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": { "order_only": true, "order_id": "000000409", "order_status": "2", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "applications":[ { "application_id": "123123","application_status": 0 }, { "application_id": "123124","application_status": 1 }] } }'
+
+
 // Telephone code request
 curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 9160010203, "code": 7777}] }'
 
@@ -84,4 +87,6 @@ curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 
 // Making request to get all users from srv02.saychas.office
 
  curl -i -L curl http://srv02.saychas.office:8000/SC/hs/site/lk_get_all_users --data '{"provider_id": "00002"}'
+
+
 

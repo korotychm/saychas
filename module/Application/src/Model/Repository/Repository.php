@@ -251,7 +251,7 @@ abstract class Repository implements RepositoryInterface
             }
         }
         $auto = $entity->autoIncrementKey();
-        if(!empty($auto) && array_key_exists($auto, $assoc) ) {
+        if(!$found && !empty($auto) && array_key_exists($auto, $assoc) ) {
             unset($assoc[$auto]);
         }
         $values = array_values($assoc);

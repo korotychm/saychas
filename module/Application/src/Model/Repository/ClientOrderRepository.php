@@ -119,6 +119,12 @@ class ClientOrderRepository extends Repository
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
+        if($result['data']['order_only']) {
+            $orderId = $result['data']['order_id'];
+            $orderStatus = $result['data']['order_status'];
+            echo "\n$orderId : $orderStatus \n";
+        }
+        
         return ['result' => false, 'description' => 'not implemented', 'statusCode' => 405];
     }
 
