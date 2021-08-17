@@ -1,0 +1,37 @@
+{
+    "deliveries": [{
+            "delivery_id": "000000000000000813",
+            "requisitions": [{
+                    "store": "000000009",
+                    "products": [{
+                            "id": "000000000030",
+                            "count": "1",
+                            "price": "8549100",
+                            "discount": "0"
+                        }],
+                    "requisition_id": "000000000000000815",
+                    "requisition_status": "0"
+                }],
+            "delivery_status": "0"
+        }, {
+            "delivery_id": "000000000000000814",
+            "requisitions": [{
+                    "store": "000000005",
+                    "products": [{
+                            "id": "000000000026",
+                            "count": "1",
+                            "price": "7299000",
+                            "discount": "0"
+                        }, {
+                            "id": "000000000027",
+                            "count": "1",
+                            "price": "7299000",
+                            "discount": "0"
+                        }],
+                    "requisition_id": "000000000000000816",
+                    "requisition_status": "0"
+                }],
+            "delivery_status": "0"
+        }],
+    "pickup": []
+}
