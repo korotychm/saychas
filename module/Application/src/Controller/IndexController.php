@@ -460,7 +460,7 @@ class IndexController extends AbstractActionController
         $productPage = $this->htmlProvider->productPageService($products);
         $categoryId= $productPage['categoryId'];
         $breadSource = $this->categoryRepository->findAllMatherCategories($categoryId);
-        $bread = $this->htmlProvider->breadCrumbs($breadSource);
+        //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
         $vwm=['id' => $product_id, 'title' => $productPage['title'],'images' => $productPage['images'],'category' => $categoryTitle,'bread'=> $bread,'characteristics' => $productPage["characteristics"],'product'=> $productPage['card'],'description' => $productPage['description'],'append' =>  $productPage['appendParams'],'price' =>  $productPage['price'],'brand' =>  $productPage['brand'],'price_formated' =>  $productPage['price_formated'],];
         return new ViewModel($vwm);
@@ -522,7 +522,7 @@ class IndexController extends AbstractActionController
             "userPhone" => $userPhone,
             "title" => $title ,//."/$category_id",
             "id" => "userid: ".$userId,
-            "bread" => "bread $bread",
+            "bread" => "bread ",
             "auth"=> ($user->getPhone()),
             "userdata" => "<ul>$content</ul>",
             

@@ -823,6 +823,36 @@ class AjaxController extends AbstractActionController
         }
         return $filteredProducts;
     }
+    
+    private function getProductCards($params)
+    {
+        $this->prepareCharacteristics($params['characteristics']);
+        if (empty($params['priceRange'])) {
+            $params['priceRange'] = '0;' . PHP_INT_MAX;
+        }
+        unset($params['offset']);
+        unset($params['limit']);
+        $params['where'] = $this->getWhere($params);
+        //$params['order'] = ['price ASC'];
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+
+        $filteredProducts = [];
+        foreach ($products as $product) {
+            $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+            $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
+            if ($matchResult && !isset($filteredProducts[$product->getId()])) {
+                $filteredProducts[$product->getId()] = [
+                    "rest" => $product->receiveRest(),
+                    "price" => $product->getPrice(),
+                    "oldprice" => $product->getOldPrice(),
+                    "image" =>  $product->receiveFirstImageObject()->getHttpUrl(),
+                ];
+            }
+        }
+        return $filteredProducts;
+    }
+    
+    
 
     private function prepareCharacteristics(&$characteristics)
     {
@@ -865,7 +895,7 @@ class AjaxController extends AbstractActionController
 
         return (new ViewModel(['products' => $products]))->setTerminal(true);
 
-        exit ("<pre>".print_r($post, true)."</pre>");
+       // exit ("<pre>".print_r($post, true)."</pre>");
 
 
         /* foreach ($post as $key=>$value)
@@ -887,7 +917,7 @@ class AjaxController extends AbstractActionController
     {
 
         $post = $this->getRequest()->getPost()->toArray();
-        $products = $this->getProducts($post);
+        $products = $this->getProductCards($post);
         return new JsonModel($products);
     }
     
