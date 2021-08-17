@@ -251,6 +251,11 @@ class IndexController extends AbstractActionController
     
     public function indexAction()
     {
+//        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+//        echo '<pre>';
+//        print_r($tree);
+//        echo '</pre>';
+//        exit;
 //        $user = User::findFirstOrDefault(['id' => 497]);
 //        $userData = new UserData();
 //        $userData->setUserId($user->getId());
