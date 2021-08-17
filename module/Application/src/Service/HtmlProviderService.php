@@ -507,7 +507,7 @@ class HtmlProviderService
     private function valueParce($v = [], $chType)
     {
         $bool = ["нет", "да"];
-        if (!$v or!is_array($v))
+        if (!$v or !is_array($v))
             return $v;
         foreach ($v as $val) {
             if (!$val)
@@ -605,12 +605,15 @@ class HtmlProviderService
           $userData->getUserId($userId)
           ->getAddress()
           ->getGeodata(); */
+        
+        $userData = $userAddress = $username = $hasalt = $altcontent="";
         $container = new Container(StringResource::SESSION_NAMESPACE);
         if (null != $user){
             $username = $user->getName();
             $userData = $user->getUserData();
             $usdat = $userData->current();
         }
+        
         if (!empty($usdat)) {
             $userAddress = $usdat->getAddress(); //$container->userAddress;
             $userGeodata = $usdat->getGeoData();
@@ -637,7 +640,7 @@ class HtmlProviderService
                         . '</div>
                  </div>         ';
             } else { 
-                $hasalt=""; $altcontent="";
+             
             }
         }
         ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";

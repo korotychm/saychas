@@ -269,7 +269,7 @@ class UserDataController extends AbstractActionController
 //            $stmt = $sql->prepareStatementForSqlObject($sqlObj);
 //            $stmt->execute();
         }
-        return new JsonModel(["result"=>true]);
+        return new JsonModel(["result"=>true, "orderId"=> $orderId ]);
     }
 
     /**

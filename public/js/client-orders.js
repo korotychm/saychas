@@ -11,7 +11,7 @@ function getClientOrders(){
             error: function (xhr, ajaxOptions, thrownError) {
               showServicePopupWindow(
                             "Ошибка " + xhr.status,
-                            "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
+                            "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
                             );
                 return false;
             }

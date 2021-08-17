@@ -3,12 +3,14 @@
         <div class="content opacity-20">
             <div class="char-blok">
                <?php 
-               foreach($characteristics[1] as $characteristic) {
-               if ($characteristic['type'] == 0) { ?>
+               if (!empty($characteristics[1])):
+               foreach($characteristics[1] as $characteristic):
+               if ($characteristic['type'] == 0) : ?>
                     <h3><?=$characteristic['title']?></h3>
-               <?php } else {?>    <div class="char-row"><span class="char-title"><span><?=$characteristic['title']?></span></span><span class="char-value"><span><?=$characteristic['value']?></span></span></div>
-               <?php }
-               }?>
+               <?php  else: ?>    <div class="char-row"><span class="char-title"><span><?=$characteristic['title']?></span></span><span class="char-value"><span><?=$characteristic['value']?></span></span></div>
+               <?php  endif;
+                endforeach;
+                endif;?>
             </div>
             </div>
         </div>

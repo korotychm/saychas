@@ -12,15 +12,36 @@ function getCategoryFilters(categoryId){
             },
             error: function (xhr, ajaxOptions, thrownError) {
              if (xhr.status !== 0) {
-                    showServicePopupWindow(
-                        "Ошибка " + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                    );
+                    showAjaxErrorPopupWindow (xhr.status, thrownError);
                 }    
                 return false;
             }
         });
     return false;    
+}
+
+function sendfilterform() {
+    //alert("!!!!");
+    var dataString = $("#filtrform").serialize();
+    $.ajax({
+        beforeSend: function () {
+            $("#overload").stop().show();
+
+        },
+        url: "/ajax-fltr",
+        type: 'POST',
+        cache: false,
+        data: dataString,
+        success: function (data) {
+            $("#tovar-list").html(data);
+            sendfilterformAndGetJson();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status != 0) {
+                showAjaxErrorPopupWindow (xhr.status, thrownError);
+            }
+        }
+    });
 }
 
 function sendfilterformAndGetJson() {
@@ -41,18 +62,13 @@ function sendfilterformAndGetJson() {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status != 0) {
-                showServicePopupWindow(
-                        "Ошибка" + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
+                showAjaxErrorPopupWindow (xhr.status, thrownError);
             }
         }
     
     });
     return false;
 }
-
-
 
 $(document).ready(function () {
     sendfilterform() ;
@@ -62,4 +78,13 @@ $(document).ready(function () {
     $("#testFiltersButton").click(function(){
         getCategoryFilters($("#testFiltersCategotyId").val());
     });
+    
+    $("#filtrform").on("change", " input", function () {
+        sendfilterform();
+    });
+
+    $("body").on("click", ".formsendbutton", function () {
+        sendfilterform();
+    });
+
 });

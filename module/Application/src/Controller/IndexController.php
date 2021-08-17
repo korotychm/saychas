@@ -133,9 +133,6 @@ class IndexController extends AbstractActionController
         
         $userId = $this->identity();
         $user = $this->userRepository->find(['id'=>$userId]);
-        
-        
-        
         $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
         $userInfo = $this->htmlProvider->getUserInfo($user);
        
@@ -446,7 +443,6 @@ class IndexController extends AbstractActionController
       }*/
       
       
-      
     public function productPageAction()
     {
         $product_id=$this->params()->fromRoute('id', '');
@@ -459,16 +455,26 @@ class IndexController extends AbstractActionController
         }
         $productPage = $this->htmlProvider->productPageService($products);
         $categoryId= $productPage['categoryId'];
-        $breadSource = $this->categoryRepository->findAllMatherCategories($categoryId);
+       // $breadSource = $this->categoryRepository->findAllMatherCategories($categoryId);
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm=['id' => $product_id, 'title' => $productPage['title'],'images' => $productPage['images'],'category' => $categoryTitle,'bread'=> $bread,'characteristics' => $productPage["characteristics"],'product'=> $productPage['card'],'description' => $productPage['description'],'append' =>  $productPage['appendParams'],'price' =>  $productPage['price'],'brand' =>  $productPage['brand'],'price_formated' =>  $productPage['price_formated'],];
+        $vwm=[
+            'id' => $product_id, 
+            'title' => $productPage['title'],
+            'images' => $productPage['images'],
+            'category' => $categoryTitle,
+            'bread'=> $bread,
+            'characteristics' => $productPage["characteristics"],
+            'product'=> $productPage['card'],
+            'description' => $productPage['description'],
+            'append' =>  $productPage['appendParams'],
+            'price' =>  $productPage['price'],
+            'brand' =>  $productPage['brand'],
+            'price_formated' =>  $productPage['price_formated'],
+            ];
         return new ViewModel($vwm);
       }
     
-      
-      
-      
     
     public function catalogAction($category_id = false)
     {
@@ -487,36 +493,31 @@ class IndexController extends AbstractActionController
         $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-        
         $vwm=[
             "catalog" => $categories,
             "title" => $categoryTitle,
             "id" => $category_id,
             "breadCrumbs"=> $breadCrumbs ,
             'filterform'=> $filterForm,
-            //'breadmenu' => $breadmenu,
-        ];
+          ];
         return new ViewModel($vwm);
     }
           
     public function userAction($category_id=false)
     {
         $userId = $this->identity();//authService->getIdentity();//
-        // $user = $this->userRepository->find(['id'=>$userId]);
         $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
-        $userPhone = $user->getPhone();
-        //$userPhone =  StringHelper::phoneFromNum($user->getPhone());
-        if (!$userPhone) {
+        $phone = $user->getPhone();
+        if (!$phone) {
               $this->getResponse()->setStatusCode(403);
               $vw = new ViewModel();
               $vw->setTemplate('error/403.phtml');
               return  $vw;
         }
-        $userPhone =  StringHelper::phoneFromNum($userPhone);
+        $userPhone =  StringHelper::phoneFromNum($phone);
         $title=($user->getName())?$user->getName():"Войти на сайт";
-        $vwm=[
-            //"catalog" => $categories,
+        $vwm=[ 
             "user" => $user,
             "userData" => $userData,
             "userPhone" => $userPhone,
@@ -524,75 +525,7 @@ class IndexController extends AbstractActionController
             "id" => "userid: ".$userId,
             "bread" => "bread ",
             "auth"=> ($user->getPhone()),
-            "userdata" => "<ul>$content</ul>",
-            
-        ];
+            ];
         return new ViewModel($vwm);
-
     }
 }
-
-
-
-//        $params = [
-//            'category_id' => '000000006',
-//            'offset' => 0,
-//            'limit' => 1111,
-//            'priceRange' => '580000;8000000',//5399100',//3399100',//1210000','5399100;5399100',
-//            'characteristics' => [
-//                '000000001-000000006' => [
-//                    '156',
-//                    '704',
-//                ],
-////
-////                '000000003-000000006' => [
-////                    '000003',
-////                    '000011',
-////                ],
-////
-//                '000000004-000000006' => [
-//                    '000000002',
-//                    '000000004',
-//                    '000000011',
-//                    '000000012',
-//                ],
-////
-//                '000000014-000000006' => [
-//                    '000000011',
-//                    '000000044',
-//                ],
-////
-////                '000000029-000000006' => [
-////                    '6.2;6.6',
-////                ],
-////
-////                '000000036-000000006' => [
-////                    '000000040',
-////                    '000000041',
-////                ],
-////
-////                '000000037-000000006' => [
-////                    '000000017',
-////                    '000000042',
-////                ],
-////
-////                '000000040-000000006' => [
-////                    '000000021',
-////                    '000000022',
-////                ],
-////
-////                '000000041-000000006' => [
-////                    '000000024',
-////                    '000000025',
-////                ],
-//
-////                '000000051-000000006' => [
-////                        '000000034',
-////                        '000000035',
-////                ],
-////
-////                '000000058-000000006' => [
-////                    '21;93'
-////                ],
-//            ],
-//        ];
