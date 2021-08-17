@@ -95,27 +95,27 @@ class ClientOrderRepository extends Repository
             "order_status": "0",
             "order_only": true,
             "deliveries": 
+            [
+                {
+                    "delivery_id": "123123",
+                    "delivery_status": 0
+                    "requisitions": 
                     [
                         {
-                            "delivery_id": "123123",
-                            "delivery_status": 0
+                            "requisition_id": "123123",
+                            "requisition_status": 0
                         }, {
-                            "delivery_id": "123124",
-                            "delivery_status": 1
-                        }
-                    ],
-            "applications": 
-                    [
-                        {
-                            "application_id": "123123",
-                            "application_status": 0
-                        }, {
-                            "application_id": "123124",
-                            "application_status": 1
+                            "requisition_id": "123124",
+                            "requisition_status": 1
                         }
                     ]
+                }, {
+                    "delivery_id": "123124",
+                    "delivery_status": 1
+                }
+            ],
         }
-        { "orderId": "123", "order_status": "0", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "applications":[ { "application_id": "123123","application_status": 0 }, { "application_id": "123124","application_status": 1 }] }
+        { "orderId": "123", "order_status": "0", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "requisitions":[ { "requisition_id": "123123","requisition_status": 0 }, { "requisition_id": "123124","requisition_status": 1 }] }
      * 
      */
         try {
