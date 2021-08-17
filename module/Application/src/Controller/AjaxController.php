@@ -843,7 +843,7 @@ class AjaxController extends AbstractActionController
                     $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
                 }*/
                 $filteredProducts[$product->getId()] = [
-                    "rest" => $product->receiveRest(),
+                    "reserve" => $product->receiveRest(),
                     "price" => $product->getPrice(),
                     "oldprice" => $product->getOldPrice(),
                     "discount" => $product->getDiscount(),

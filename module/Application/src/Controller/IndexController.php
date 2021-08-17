@@ -133,9 +133,6 @@ class IndexController extends AbstractActionController
         
         $userId = $this->identity();
         $user = $this->userRepository->find(['id'=>$userId]);
-        
-        
-        
         $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
         $userInfo = $this->htmlProvider->getUserInfo($user);
        
