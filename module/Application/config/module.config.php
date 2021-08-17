@@ -725,6 +725,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-fltr-json' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-fltr-json',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getFiltredProductForCategoryJson',
+                    ],
+                ],
+            ],
            'ajax-get-store' => [
                 'type'    => Literal::class,
                 'options' => [

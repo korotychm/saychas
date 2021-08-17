@@ -23,8 +23,42 @@ function getCategoryFilters(categoryId){
     return false;    
 }
 
+function sendfilterformAndGetJson() {
+    //alert("!!!!");
+    var dataString = $("#filtrform").serialize();
+    $.ajax({
+        beforeSend: function () {
+            $("#overload").stop().show();
+
+        },
+        url: "/ajax-fltr-json",
+        type: 'POST',
+        cache: false,
+        data: dataString,
+        success: function (data) {
+            $("#tovar-list-json").html(JSON.stringify(data,true,2));
+            return false;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status != 0) {
+                showServicePopupWindow(
+                        "Ошибка" + xhr.status,
+                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
+                        );
+            }
+        }
+    
+    });
+    return false;
+}
+
+
+
 $(document).ready(function () {
     sendfilterform() ;
+    $("#testProductButton").click(function(){
+        sendfilterformAndGetJson();
+    });
     $("#testFiltersButton").click(function(){
         getCategoryFilters($("#testFiltersCategotyId").val());
     });

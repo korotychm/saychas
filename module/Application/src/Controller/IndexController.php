@@ -476,7 +476,7 @@ class IndexController extends AbstractActionController
             $category_id=$this->params()->fromRoute('id', '');
         }
         if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
-            header("HTTP/1.1 301 Moved Permanently"); header("Location:/"); exit();
+             $this->getResponse()->setStatusCode(301); header("Location:/"); exit();
         }
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
@@ -513,19 +513,8 @@ class IndexController extends AbstractActionController
               $vw->setTemplate('error/403.phtml');
               return  $vw;
         }
-//        else exit ($userPhone);
         $userPhone =  StringHelper::phoneFromNum($userPhone);
-        
-        //
         $title=($user->getName())?$user->getName():"Войти на сайт";
-        /* НАДО!!!
-         * 
-         * $user->getPassword();
-         $userData = getTimestamp()
-         * 
-         * 
-         */
-        
         $vwm=[
             //"catalog" => $categories,
             "user" => $user,

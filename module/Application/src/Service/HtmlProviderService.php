@@ -395,6 +395,7 @@ class HtmlProviderService
         <div  class="formsendbutton" > post filter view</div>
         <input type=hidden name="offset" value="72" id="sqlOutline"  >
         <input type=hidden name="limit" value="72" id="sqlOutline"  >
+        <input type=hidden name="category_id" value="'.$category_id.'"   >
         <script>
             $(function(){
                 $("#rangeslider").ionRangeSlider({

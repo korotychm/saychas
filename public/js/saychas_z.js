@@ -34,6 +34,36 @@ function sendfilterform() {
         }
     });
 }
+
+function sendfilterformAndGetJson() {
+    //alert("!!!!");
+    var dataString = $("#filtrform").serialize();
+    $.ajax({
+        beforeSend: function () {
+            $("#overload").stop().show();
+
+        },
+        url: "/ajax-fltr-json",
+        type: 'POST',
+        cache: false,
+        data: dataString,
+        success: function (data) {
+            $("#tovar-list-json").html(data);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status != 0) {
+                showServicePopupWindow(
+                        "Ошибка" + xhr.status,
+                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
+                        );
+            }
+        }
+    });
+}
+
+
+
+
 $(document).ready(function () {
 
     showBasket(0);
