@@ -84,7 +84,7 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
     public function findAll($params)
     {
         $join = new Join();
-        $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", ['price', 'old_price'], Select::JOIN_LEFT);
+        $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", ['price', 'old_price', 'discount'], Select::JOIN_LEFT);
         $params['joins'] = $join;
         return parent::findAll($params);
     }
