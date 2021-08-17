@@ -12,6 +12,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 //use Laminas\Db\Adapter\Driver\ResultInterface;
 //use Laminas\Db\ResultSet\HydratingResultSet;
 use Laminas\Json\Json;
+use RuntimeException;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\ClientOrder;
@@ -85,11 +86,14 @@ class ClientOrderRepository extends Repository
      */
     public function replace($content)
     {
+        /** @var JSON $content */
+
     /**
      * receive-client-order-statuses
         {
-            "orderId": "123",
+            "order_id": "123",
             "order_status": "0",
+            "order_only": true,
             "deliveries": 
                     [
                         {
@@ -122,14 +126,20 @@ class ClientOrderRepository extends Repository
         
         $orderId = $result['data']['order_id'];
         $orderStatus = $result['data']['order_status'];
-        if($result['data']['order_only']) {
+        if(true === $result['data']['order_only']) {
             $clientOrder = $this->find(['order_id' => $orderId]);
+            if(null == $clientOrder) {
+                throw new RuntimeException('Order cannot be null');
+            }
             $clientOrder->setStatus($orderStatus);
             $this->persist($clientOrder, ['order_id' => $orderId]);
             return ['result' => true, 'description' => '', 'statusCode' => 200];
+        }elseif(false === $result['data']['order_only']){
+            
         }
         
-        return ['result' => false, 'description' => 'not implemented', 'statusCode' => 405];
+        throw new RuntimeException("order_only must be either true or false");
+        
     }
 
 }
