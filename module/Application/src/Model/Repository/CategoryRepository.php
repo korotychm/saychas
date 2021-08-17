@@ -59,6 +59,10 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @var string
      */
     private string $password;
+    
+    private $cache;
+    
+    private $categories;
 
     /**
      * @param Adapter $db
@@ -73,7 +77,8 @@ class CategoryRepository implements CategoryRepositoryInterface
             HydratorInterface $hydrator,
             Category $prototype,
             string $username,
-            string $password
+            string $password,
+            $cache
     )
     {
         $this->db = $db;
@@ -81,18 +86,52 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->prototype = $prototype;
         $this->username = $username;
         $this->password = $password;
+        $this->cache = $cache;
         
         $this->mclient = new \MongoDB\Client(
             'mongodb://saychas:saychas@localhost/saychas'
         );        
     }
 
+    public function findAllCategories($echo = '', $i = 0, $idActive, $forceCreate = false): string
+    {
+        if ($forceCreate) {
+            $this->cache->removeItem('category_container');
+        }
+
+        $result = false;
+        $this->categories = $this->cache->getItem('category_container', $result);
+        if(!$result) {
+            $this->categories = $this->findAllCategories1($echo = '', $i = 0, $idActive);      
+            $this->cache->setItem('category_container', $this->categories);
+        }
+        return $this->categories;
+    }
+    public function findAllCategories2($echo = '', $i = 0, $idActive): string
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select();
+        $select->from($this->tableName);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSet = new HydratingResultSet(
+                $this->hydrator,
+                new Category('', 0, 0)
+        );
+        $resultSet->initialize($result);
+        
+        $results = $resultSet->toArray();
+        
+        $tree = ArrayHelper::buildTree($results, $i);
+        return $tree;
+    }
     /**
      * Return a string that contains html ul list
      *
      * @return string
      */
-    public function findAllCategories($echo = '', $i = '0', $idActive = false)
+    public function findAllCategories1($echo = '', $i = '0', $idActive = false)
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
@@ -113,7 +152,7 @@ class CategoryRepository implements CategoryRepositoryInterface
                 $groupName = stripslashes($result['title']);
                 //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
                 $echo .= "<li $class><a href=/catalog/" . $result['id'] . "  >$groupName</a>";
-                $echo = $this->findAllCategories($echo, $result['id'], $idActive);
+                $echo = $this->findAllCategories1($echo, $result['id'], $idActive);
                 $echo .= "</li>";
             }
         }
