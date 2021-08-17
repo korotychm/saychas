@@ -21,10 +21,7 @@ function sendauthformmodal(data = false) {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showServicePopupWindow(
-                        "Ошибка " + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
+                showAjaxErrorPopupWindow (xhr.status, thrownError);
             }
             $("#user-modal-cover").stop().hide();
             return false;

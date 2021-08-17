@@ -1,3 +1,12 @@
+
+function showAjaxErrorPopupWindow (status, error){
+     showServicePopupWindow(
+                            "Ошибка " + status,
+                            "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + status + " " + error
+                            );
+    
+}
+
 function showServicePopupWindow(title, body, footer = "", noclose = false)
 {
     $("#ServiceModalWindow .modal-title").html(title);
@@ -8,61 +17,6 @@ function showServicePopupWindow(title, body, footer = "", noclose = false)
     }
     $("#ServiceModalWindow").modal("show");
 }
-
-function sendfilterform() {
-    //alert("!!!!");
-    var dataString = $("#filtrform").serialize();
-    $.ajax({
-        beforeSend: function () {
-            $("#overload").stop().show();
-
-        },
-        url: "/ajax-fltr",
-        type: 'POST',
-        cache: false,
-        data: dataString,
-        success: function (data) {
-            $("#tovar-list").html(data);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status != 0) {
-                showServicePopupWindow(
-                        "Ошибка" + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
-            }
-        }
-    });
-}
-
-function sendfilterformAndGetJson() {
-    //alert("!!!!");
-    var dataString = $("#filtrform").serialize();
-    $.ajax({
-        beforeSend: function () {
-            $("#overload").stop().show();
-
-        },
-        url: "/ajax-fltr-json",
-        type: 'POST',
-        cache: false,
-        data: dataString,
-        success: function (data) {
-            $("#tovar-list-json").html(data);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status != 0) {
-                showServicePopupWindow(
-                        "Ошибка" + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
-            }
-        }
-    });
-}
-
-
-
 
 $(document).ready(function () {
 
@@ -185,7 +139,7 @@ $(document).ready(function () {
                 if (xhr.status !== 0) {
                     showServicePopupWindow(
                             "Ошибка " + xhr.status,
-                            "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
+                            "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
                             );
                 }
                 return false;
@@ -287,14 +241,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#filtrform").on("change", " input", function () {
-        sendfilterform();
-    });
-
-    $("body").on("click", ".formsendbutton", function () {
-        sendfilterform();
-    });
-
+    
     $("#sendajax2").click(function () {
         var dataString = $("#textarea").val();
         getLocalStores(dataString);

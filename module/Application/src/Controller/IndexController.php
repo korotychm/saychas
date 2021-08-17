@@ -459,7 +459,20 @@ class IndexController extends AbstractActionController
         $breadSource = $this->categoryRepository->findAllMatherCategories($categoryId);
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm=['id' => $product_id, 'title' => $productPage['title'],'images' => $productPage['images'],'category' => $categoryTitle,'bread'=> $bread,'characteristics' => $productPage["characteristics"],'product'=> $productPage['card'],'description' => $productPage['description'],'append' =>  $productPage['appendParams'],'price' =>  $productPage['price'],'brand' =>  $productPage['brand'],'price_formated' =>  $productPage['price_formated'],];
+        $vwm=[
+            'id' => $product_id, 
+            'title' => $productPage['title'],
+            'images' => $productPage['images'],
+            'category' => $categoryTitle,
+            'bread'=> $bread,
+            'characteristics' => $productPage["characteristics"],
+            'product'=> $productPage['card'],
+            'description' => $productPage['description'],
+            'append' =>  $productPage['appendParams'],
+            'price' =>  $productPage['price'],
+            'brand' =>  $productPage['brand'],
+            'price_formated' =>  $productPage['price_formated'],
+            ];
         return new ViewModel($vwm);
       }
     

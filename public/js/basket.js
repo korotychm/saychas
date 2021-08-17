@@ -230,13 +230,33 @@ function whatHappened(noclose = false) {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showServicePopupWindow(
-                        "Ошибка " + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
+                showAjaxErrorPopupWindow (xhr.status, thrownError);
             }
         }
     });
+}
+
+function waitingOrderStatusVerification (orderId) {
+    $.ajax({
+        beforeSend: function () {
+        },
+        url: "/ajax-chek-order-status",
+        type: 'POST',
+        cache: false,
+        data: {"orderId":orderId},
+        success: function (data) {
+             showServicePopupWindow("Ожидаем изменения статуса","<pre>" + JSON.stringify(data,true,2)+ "</pre>");
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status !== 0) {
+                showAjaxErrorPopupWindow (xhr.status, thrownError);
+            }
+            return false;
+        }
+    });
+    return false;
+    
+    
 }
 
 function checkBasketDataBeforeSend() {
@@ -262,10 +282,7 @@ function checkBasketDataBeforeSend() {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showServicePopupWindow(
-                        "Ошибка " + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
+                showAjaxErrorPopupWindow (xhr.status, thrownError);
             }
             return false;
         }
@@ -286,8 +303,10 @@ function sendBasketData() {
             //console.log(data)
             showServicePopupWindow("Формируем заказ",JSON.stringify(data));
             if (data.result == true) {
-                location = "/client-orders";
-                return false;
+            //    location = "/client-orders";
+            console.log(data);
+            waitingOrderStatusVerification (data.orderId);    
+             //   return false;
             }
            if (data.result == false) { 
                 showServicePopupWindow("Ошибка", JSON.stringify(data.description));
@@ -295,10 +314,7 @@ function sendBasketData() {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showServicePopupWindow(
-                        "Ошибка " + xhr.status,
-                        "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                        );
+                 showAjaxErrorPopupWindow (xhr.status, thrownError);
             }
         }
     });
@@ -496,11 +512,8 @@ $(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 if (xhr.status !== 0) {
-                    showServicePopupWindow(
-                            "Ошибка " + xhr.status,
-                            "<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>"
-                            );
-                }
+                   showAjaxErrorPopupWindow (xhr.status, thrownError);
+                 }
             }
         });/**/
     });

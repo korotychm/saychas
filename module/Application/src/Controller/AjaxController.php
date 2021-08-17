@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
  * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
@@ -124,7 +123,6 @@ class AjaxController extends AbstractActionController
 
     public function getJsonCategoryFiltersAction()
     {
-
         $post = $this->getRequest()->getPost();
         $return['category_id'] = $category_id = $post->categoryId;
         if (!$category_id or empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
@@ -173,8 +171,16 @@ class AjaxController extends AbstractActionController
     public function checkOrderStatusAction()
     {
         $post = $this->getRequest()->getPost();
+        $return['order_id'] = $orderId = $post->orderId;
+        $return['order_status'] = false;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
+        if(!empty($order = ClientOrder::find(["order_id" => $orderId ]))){
+            $return ['order_status'] = $order->getStatus();
+            $deliveryinfo  = $order->getDeliveryInfo();
+            $return['delivery_info'] = (!empty($deliveryinfo))?Json::decode($deliveryinfo, Json::TYPE_ARRAY):[];
+        }   
+        return new JsonModel($return);        
     }
 
     public function ajaxUserDeleteAddressAction()
