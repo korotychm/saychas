@@ -455,7 +455,10 @@ class IndexController extends AbstractActionController
         }
         $productPage = $this->htmlProvider->productPageService($products);
         $categoryId= $productPage['categoryId'];
-       // $breadSource = $this->categoryRepository->findAllMatherCategories($categoryId);
+        $breadCrumbs =[];
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($categoryId))){
+            $breadCrumbs = array_reverse($matherCategories);
+        }
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
         $vwm=[
@@ -471,6 +474,7 @@ class IndexController extends AbstractActionController
             'price' =>  $productPage['price'],
             'brand' =>  $productPage['brand'],
             'price_formated' =>  $productPage['price_formated'],
+            'breadCrumbs' => $breadCrumbs,
             ];
         return new ViewModel($vwm);
       }

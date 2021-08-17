@@ -17,10 +17,10 @@ $this->headTitle($this->title, 'PREPEND');
         </div>               id="main-col"
     </div -->
     <div  class="contentwrapper">
-        <?= $this->bread ?> 
+        <?= $this->partial("/application/index/partials/product-page/bead-crumbs", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>    
 
         <h2><?= $this->title ?> <?php if (false and $this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
-        <div id="tovar-list">
+        
 
             <div id="tovar-list">
                 <div class="pw-contentblock cblock-2">         <div class="inactiveblok"></div></div>
@@ -67,6 +67,6 @@ $this->headTitle($this->title, 'PREPEND');
 
 
     </div>
-</div>               
+          
 </div>
 </div>

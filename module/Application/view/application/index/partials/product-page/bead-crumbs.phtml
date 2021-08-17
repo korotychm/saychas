@@ -1,0 +1,6 @@
+<div class="blok">
+    
+     <?php foreach ($breadCrumbs as $breadCrumb) : ?>
+            &rarr; <span class="iblok"><a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a></span>
+        <?php endforeach;?>
+</div>

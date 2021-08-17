@@ -592,9 +592,10 @@ class HtmlProviderService
         } else $return["characteristics"]=[];
         $productImages = array_unique($productImages);
         $return['images']=$productImages;
-        $return['title'] = $title;
+        
         $return['categoryId'] = $categoryId;
         $return['appendParams'] = ['vendorCode' => $vendor,'rest' => $totalRest,'test' => "test",];
+        //exit(print_r($return));
         return $return;
     }
 
