@@ -865,7 +865,7 @@ class AjaxController extends AbstractActionController
 
         return (new ViewModel(['products' => $products]))->setTerminal(true);
 
-//        exit ("<pre>".print_r($post, true)."</pre>");
+        exit ("<pre>".print_r($post, true)."</pre>");
 
 
         /* foreach ($post as $key=>$value)
@@ -880,6 +880,18 @@ class AjaxController extends AbstractActionController
           //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");
           //exit (print_r($container->filtrForCategory));/* */
     }
+    
+    
+    
+    public function getFiltredProductForCategoryJsonAction()
+    {
+
+        $post = $this->getRequest()->getPost()->toArray();
+        $products = $this->getProducts($post);
+        return new JsonModel($products);
+    }
+    
+    
 
     public function ajaxAction($params = array('name' => 'value'))
     {
