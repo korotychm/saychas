@@ -234,6 +234,12 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $old_price;
+    
+    /**
+     * Product discount from joined price table
+     * @var int
+     */
+    protected $discount;
 
     /**
      * Get price from one-to-one joined price table
@@ -276,6 +282,28 @@ class HandbookRelatedProduct extends Entity
     public function setOldPrice($oldPrice)
     {
         $this->old_price = $oldPrice;
+        return $this;
+    }
+
+    /**
+     * Get discount from one-to-one joined discount table
+     *
+     * @return int
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * Set discount. Needed when hydrating;
+     *
+     * @param int $discount
+     * @return $this
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
         return $this;
     }
 
@@ -463,7 +491,7 @@ class HandbookRelatedProduct extends Entity
      */
     public function getParamVariableList()
     {
-        return $this->paramVariableList;
+        return $this->param_variable_list;
     }
 
     /**

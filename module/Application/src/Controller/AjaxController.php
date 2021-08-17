@@ -46,11 +46,9 @@ use Laminas\Http\Response;
 use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
-
 //use Throwable;
 //use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
-
 
 class AjaxController extends AbstractActionController
 {
@@ -134,22 +132,21 @@ class AjaxController extends AbstractActionController
         }
         //$return['print_r'] = $matherCategories;
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $return["rangeprice"] =  $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
+        $return["rangeprice"] = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $return["filters"] = $this->htmlProvider->getCategoryFilterJson($filters, $category_id);
         return new JsonModel($return);
     }
-    
-    
+
     public function getUserOrderListAction()
     {
         $return["result"] = true;
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-         $orders = ClientOrder::findAll(['user_id'=>$userId]);
-        if (!empty($orders)){
+        $orders = ClientOrder::findAll(['user_id' => $userId]);
+        if (!empty($orders)) {
             $return["order_list"] = $this->htmlProvider->orderList($orders);
-         } 
+        }
         $where = new Where();
         $where->equalTo('user_id', $userId);
         $where->notEqualTo('order_id', 0);
@@ -158,44 +155,42 @@ class AjaxController extends AbstractActionController
         if (empty($userBasketHistory)) {
             return new JsonModel(["result" => false]);
         }
-        foreach ($userBasketHistory as $basketItem ){
+        foreach ($userBasketHistory as $basketItem) {
             $product_id = $basketItem->getProductId();
             try {
-                $product = $this->handBookRelatedProductRepository->find(['id'=>$product_id]);
-               // $product = null;
-                $return["productsMap"][$product_id]["image"]= $product->receiveProductImages()->current()->getHttpUrl();
-                $return["productsMap"][$product_id]["title"]= $product->getTitle();
-            }catch(\Throwable $ex){
+                $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
+                // $product = null;
+                $return["productsMap"][$product_id]["image"] = $product->receiveProductImages()->current()->getHttpUrl();
+                $return["productsMap"][$product_id]["title"] = $product->getTitle();
+            } catch (\Throwable $ex) {
                 return new JsonModel(["result" => false, 'error' => $ex->getMessage()]);
             }
         }
 
-       return new JsonModel($return);
-        
+        return new JsonModel($return);
     }
-    
+
     public function checkOrderStatusAction()
     {
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        
     }
 
     public function ajaxUserDeleteAddressAction()
     {
         //$return["error"] = true;
-           /*$this->getResponse()->setStatusCode(403);
-              return;*/
+        /* $this->getResponse()->setStatusCode(403);
+          return; */
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
-        $userPhone = (empty($user))?false:$user->getPhone();
-        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        $userPhone = (empty($user)) ? false : $user->getPhone();
+        $userPhone = StringHelper::phoneFromNum($user->getPhone());
         if ($userPhone) {
-                $this->getResponse()->setStatusCode(403);
-                return;
+            $this->getResponse()->setStatusCode(403);
+            return;
         }
         $return['reload'] = $post->reload;
         $return['dataId'] = $post->dataId;
@@ -212,13 +207,13 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-         $user = User::find(['id' => $userId]);
+        $user = User::find(['id' => $userId]);
         //$userPhone = (empty($user))?false:$user->getPhone();
         if (!$return['userId']) {
-              $this->getResponse()->setStatusCode(403);
-              return;
+            $this->getResponse()->setStatusCode(403);
+            return;
         }
-        $userPhone =  StringHelper::phoneFromNum($user->getPhone());
+        $userPhone = StringHelper::phoneFromNum($user->getPhone());
         $return['reload'] = true; // $post->reload;
         $return['dataId'] = $post->dataId;
         //return new JsonModel($return);
@@ -265,7 +260,7 @@ class AjaxController extends AbstractActionController
 
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        $userPhone = (empty($user))?false:$user->getPhone();
+        $userPhone = (empty($user)) ? false : $user->getPhone();
         if (empty($userPhone)) {
             return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/",]);
         }
@@ -328,7 +323,7 @@ class AjaxController extends AbstractActionController
             $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
-            
+
             /** more conditions come here */
             $columns = ['product_id', 'order_id', 'total'];
 //            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
@@ -823,7 +818,7 @@ class AjaxController extends AbstractActionController
         }
         return $filteredProducts;
     }
-    
+
     private function getProductCards($params)
     {
         $this->prepareCharacteristics($params['characteristics']);
@@ -841,18 +836,24 @@ class AjaxController extends AbstractActionController
             $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
             $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
             if ($matchResult && !isset($filteredProducts[$product->getId()])) {
+
+                /*$charNew = $product->getParamVariableList();
+                $characteristicsArray = [];
+                if (!empty($charNew)) {
+                    $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
+                }*/
                 $filteredProducts[$product->getId()] = [
                     "rest" => $product->receiveRest(),
                     "price" => $product->getPrice(),
                     "oldprice" => $product->getOldPrice(),
-                    "image" =>  $product->receiveFirstImageObject()->getHttpUrl(),
+                    "discount" => $product->getDiscount(),
+                    "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+                    //"chars" => $characteristicsArray,
                 ];
             }
         }
         return $filteredProducts;
     }
-    
-    
 
     private function prepareCharacteristics(&$characteristics)
     {
@@ -895,7 +896,7 @@ class AjaxController extends AbstractActionController
 
         return (new ViewModel(['products' => $products]))->setTerminal(true);
 
-       // exit ("<pre>".print_r($post, true)."</pre>");
+        // exit ("<pre>".print_r($post, true)."</pre>");
 
 
         /* foreach ($post as $key=>$value)
@@ -910,18 +911,14 @@ class AjaxController extends AbstractActionController
           //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");
           //exit (print_r($container->filtrForCategory));/* */
     }
-    
-    
-    
+
     public function getFiltredProductForCategoryJsonAction()
     {
 
         $post = $this->getRequest()->getPost()->toArray();
         $products = $this->getProductCards($post);
-        return new JsonModel($products);
+        return new JsonModel(["products" => $products]);
     }
-    
-    
 
     public function ajaxAction($params = array('name' => 'value'))
     {
