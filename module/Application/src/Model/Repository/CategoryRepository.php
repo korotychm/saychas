@@ -107,7 +107,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
         return $this->categories;
     }
-    public function findAllCategories2($echo = '', $i = 0, $idActive): string
+    public function categoryTree($echo = '', $i = 0, $idActive): string
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
