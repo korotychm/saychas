@@ -4,11 +4,18 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Traits\Searchable;
+use Application\Model\RepositoryInterface\SettingRepositoryInterface;
+
 /**
  * Setting
  */
 class Setting extends Entity
 {
+
+    use Searchable;
+    
+    public static SettingRepositoryInterface $repository;
 
     /**
      * @var string

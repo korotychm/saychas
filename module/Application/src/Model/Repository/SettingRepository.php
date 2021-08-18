@@ -66,7 +66,7 @@ class SettingRepository extends Repository implements SettingRepositoryInterface
         
         $setting = new Setting();
         
-        $setting->setId('headers');
+        $setting->setId('main_menu');
         $setting->setValue($encodedData);
         
         $this->persist($setting, ['id' => $setting->getId()]);
