@@ -130,7 +130,6 @@ class AjaxController extends AbstractActionController
         if (!$category_id or empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             return new JsonModel($return);
         }
-        //$return['print_r'] = $matherCategories;
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $return["rangeprice"] = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
@@ -159,7 +158,6 @@ class AjaxController extends AbstractActionController
             $product_id = $basketItem->getProductId();
             try {
                 $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
-                // $product = null;
                 $return["productsMap"][$product_id]["image"] = $product->receiveProductImages()->current()->getHttpUrl();
                 $return["productsMap"][$product_id]["title"] = $product->getTitle();
             } catch (\Throwable $ex) {
@@ -188,9 +186,7 @@ class AjaxController extends AbstractActionController
 
     public function ajaxUserDeleteAddressAction()
     {
-        //$return["error"] = true;
-        /* $this->getResponse()->setStatusCode(403);
-          return; */
+        
         $post = $this->getRequest()->getPost();
         $container = new Container(StringResource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
@@ -793,10 +789,8 @@ class AjaxController extends AbstractActionController
 //        }
 //        exit;
         $where->in('category_id', $categoryTree);
-
         return $where;
     }
-
 
     /**
      * Return where clause for qwery
@@ -810,8 +804,6 @@ class AjaxController extends AbstractActionController
         $where->in('category_id', $params);
         return $where;
     }
-    
-    
     
 /**
      * Return filtered HandbookRelatedProduct filtered products
@@ -840,6 +832,7 @@ class AjaxController extends AbstractActionController
         }
         return $filteredProducts;
     }
+
     /**
      * Return filtered HandbookRelatedProduct filtered products
      *
@@ -875,30 +868,20 @@ class AjaxController extends AbstractActionController
         if (empty($params['priceRange'])) {
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
-        unset($params['offset']);
-        unset($params['limit']);
+        unset($params['offset'], $params['limit']);
         $params['where'] = $this->getWhere($params);
-        //$params['order'] = ['price ASC'];
         $products = $this->handBookRelatedProductRepository->findAll($params);
-
         $filteredProducts = [];
         foreach ($products as $product) {
             $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
             $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
             if ($matchResult && !isset($filteredProducts[$product->getId()])) {
-
-                /*$charNew = $product->getParamVariableList();
-                $characteristicsArray = [];
-                if (!empty($charNew)) {
-                    $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
-                }*/
                 $filteredProducts[$product->getId()] = [
                     "reserve" => $product->receiveRest(),
                     "price" => $product->getPrice(),
                     "oldprice" => $product->getOldPrice(),
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
-                    //"chars" => $characteristicsArray,
                 ];
             }
         }
@@ -941,25 +924,8 @@ class AjaxController extends AbstractActionController
     {
 
         $post = $this->getRequest()->getPost()->toArray();
-
         $products = $this->getProducts($post);
-
         return (new ViewModel(['products' => $products]))->setTerminal(true);
-
-         //exit ("<pre>".print_r($post, true)."</pre>");
-
-
-        /* foreach ($post as $key=>$value)
-          //echo "$key=>$value <br>"; exit();
-          $fltrArray[$key]=$value;
-
-          $container = new Container(StringResource::SESSION_NAMESPACE);
-          $filtrForCategory=$container->filtrForCategory;
-          $filtrForCategory[$category_id]=$fltrArray;
-          $container->filtrForCategory = $filtrForCategory;
-          exit();
-          //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");
-          //exit (print_r($container->filtrForCategory));/* */
     }
     
     
@@ -968,7 +934,7 @@ class AjaxController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost();
         $categoryId = $post->categoryId;
-        $categoryId = "000000001";
+        //$categoryId = "000000001";
         if (empty($params = Setting::find(['id' => 'main_menu']))){
             return new JsonModel([]);
         }
@@ -978,12 +944,9 @@ class AjaxController extends AbstractActionController
         foreach ($category as $item){
             $param[] = $item["id"];
         }
-       //return new JsonModel([$param]);
         $products = $this->getProductsCategories($param);
-        
         return new JsonModel($products);
-        
-        return (new ViewModel(['products' => $products]))->setTerminal(true);
+        //return (new ViewModel(['products' => $products]))->setTerminal(true);
     }
 
 
