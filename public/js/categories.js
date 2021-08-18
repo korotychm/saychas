@@ -1,5 +1,6 @@
 function getProdeuctCategory(){
-    var categoryId = window.location.href.split("/").slice(-1)[0];  
+    var categoryId = window.location.href.split("/").slice(-1)[0]; 
+    $("#quick-menu-item-" + categoryId ).addClass("active");
     $.ajax({
             beforeSend : function (){
                 },
