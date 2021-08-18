@@ -112,7 +112,7 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                throw new \Exception($e->getMessage());
+                //throw new \Exception($e->getMessage());
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
