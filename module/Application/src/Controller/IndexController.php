@@ -137,9 +137,8 @@ class IndexController extends AbstractActionController
         $user = $this->userRepository->find(['id'=>$userId]);
         $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
         $userInfo = $this->htmlProvider->getUserInfo($user);
-        $mainMenu = $this->htmlProvider->getMainMenu();
-       
-
+        $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu'])))?$mainMenu = $this->htmlProvider->getMainMenu($mainMenu):[];
+            
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
 //        $category = $this->categoryRepository->findCategory(29);
 //        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
@@ -151,6 +150,7 @@ class IndexController extends AbstractActionController
         // We need check to see if $mainMenu is null afterwards
         // $mainMenu = Setting::find(['id' => 'main_menu']);
         // $mainMenu->getValue() returns json value
+
         
         // Return the response
         $this->layout()->setVariables([
@@ -526,6 +526,11 @@ class IndexController extends AbstractActionController
         if(empty($category_id)) {
             $category_id=$this->params()->fromRoute('id', '');
         }
+        
+        $categories = (!empty($params = Setting::find(['id' => 'main_menu'])))?Json::decode($params->getValue(), Json::TYPE_ARRAY):[];                
+        $category = $categories[$category_id];
+        $title = $category["title"];
+        
         /*if(empty($category_id)) {
             $category_id=$this->params()->fromRoute('id', '');
         }
@@ -542,8 +547,8 @@ class IndexController extends AbstractActionController
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax); */
         $vwm=[
-            "content" => "Контент", //$categories,
-            "title" => "Категории ".$category_id, //$categoryTitle,
+            "content" => "", //$categories,
+            "title" => $title, // ."Категории ".$category_id, //$categoryTitle,
             /*"id" => $category_id,
             "breadCrumbs"=> $breadCrumbs ,
             'filterform'=> $filterForm,*/

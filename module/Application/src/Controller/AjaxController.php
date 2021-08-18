@@ -21,6 +21,7 @@ use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\Setting;
 use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
@@ -106,6 +107,7 @@ class AjaxController extends AbstractActionController
         $this->commonHelperFuncions = $commonHelperFuncions;
 //        $this->sessionContainer = $sessionContainer;
         $this->entityManager->initRepository(ClientOrder::class);
+        $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
     }
 
@@ -430,12 +432,13 @@ class AjaxController extends AbstractActionController
 
     public function basketOrderMergeAction()
     {
-        $param = [
+        /*$param = [
             "hourPrice" => 29900, //цена доставки за час
             "mergePrice" => 5000, //цена доставки за три часа
             "mergePriceFirst" => 24900, //цена доставки за первый махгазин  при объеденении заказа
             "mergecount" => 4, //количество объеденямых магазинов
-        ];
+        ];*/
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
         $userId = $this->identity();
         if (!$userId) {
             header('HTTP/1.0 401 Unauthorized');
@@ -489,22 +492,19 @@ class AjaxController extends AbstractActionController
             $basketUser['address'] = $userData->current()->getAddress();
 
         /**/
-
-        $param = [
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
+        //$param = $params;
+        /*$param = [
             "hourPrice" => 29900, //цена доставки за час
             "mergePrice" => 5000, //цена доставки за три часа
             "mergePriceFirst" => 24900, //цена доставки за первый магазин  при объеденении заказа
             "mergecount" => 4, //количество объеденямых магазинов
-        ];
+        ];*/
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
 
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
         $row['payEnable'] = ($row['total'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
-
-        //basketPayInfoData($post);
-        //$row["payEnable"]=true;
-        //exit (print_r($row));
         $view = new ViewModel([
             //$row
             "payEnable" => $row["payEnable"],

@@ -81,9 +81,11 @@ class HtmlProviderService
      * Returns Array
      * @return Array
      */
-    public function getMainMenu()
+    public function getMainMenu($mainMenu)
     {
-        return [];
+        
+        $menu = Json::decode($mainMenu->getValue() , Json::TYPE_ARRAY);
+        return $menu;
     }
     
     

@@ -1,14 +1,15 @@
+<?php if (!empty($menu)): ?>
 <div class="iblok contentwrapper">
-                <div id="topmenu" >
-                    <ul>
-                        <li><a href="/catalog/000000002" >Электроника</a></li> 
-                        <li><a href=# >Аксессуары</a></li> 
-                        <li><a href=# >Одежда</a></li> 
-                        <li><a href=# >Детям</a></li> 
-                        <li><a href=# >Продукты</a></li> 						
-                        <li><a href=# >Афиша</a></li> 						
-                        <li><a href=# >Билеты</a></li> 						
-                        <li><a href=# >Услуги</a></li> 						
-                    </ul>
-                </div>
+    <div id="topmenu" >
+        <ul>
+            <?php while (list($key, $menuItem) = each($menu)): ?> 
+            <li><a href="/category/<?=$key?>" ><?=$menuItem['title']?></a></li>
+            <?php endwhile; ?>
+        </ul>
+    </div>
 </div>
+<?php endif; 
+/*$param["000001"]=["title"=>"title", "param"=>"params"];
+$param["000002"]=["title"=>"title2", "param"=>"params2"];*/
+//echo json_encode($menu);
+?>
