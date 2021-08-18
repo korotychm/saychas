@@ -76,7 +76,13 @@ curl -i -L saychas-z.local/receive-marker?XDEBUG_SESSION_START=netbeans-xdebug -
 curl -i -L saychas-z.local/receive-marker --data '[{"product_id": "1", "product_id": "1" }]' -X DELETE
 
 
+[{"orderId":"000000023","order_status":"0","deliveries":[{"delivery_id":"000000000000000090","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000133","requisition_status":"0"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"000000000000000088","delivery_status":"1","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"0"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}]
+
 curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": { "order_only": true, "order_id": "000000409", "order_status": "2", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "applications":[ { "application_id": "123123","application_status": 0 }, { "application_id": "123124","application_status": 1 }] } }'
+
+
+curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"orderId":"000000023","order_status":"0","deliveries":[{"delivery_id":"000000000000000090","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000133","requisition_status":"0"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"000000000000000088","delivery_status":"1","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"0"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}] }'
+
 
 
 // Telephone code request
