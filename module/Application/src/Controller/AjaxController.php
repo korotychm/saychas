@@ -179,6 +179,7 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         if(!empty($order = ClientOrder::find(["order_id" => $orderId ]))){
             $return ['order_status'] = $order->getStatus();
+            //$return ['order_status'] = 1;  //test mode switch
             $deliveryinfo  = $order->getDeliveryInfo();
             $return['delivery_info'] = (!empty($deliveryinfo))?Json::decode($deliveryinfo, Json::TYPE_ARRAY):[];
         }   
