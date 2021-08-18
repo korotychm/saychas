@@ -796,6 +796,49 @@ class AjaxController extends AbstractActionController
         return $where;
     }
 
+
+    /**
+     * Return where clause for qwery
+     *
+     * @param array $params
+     * @return Where
+     */
+    private function getWhereCategories($params): Where
+    {
+        $where = new Where();
+        $where->in('category_id', $params);
+        return $where;
+    }
+    
+    
+    
+/**
+     * Return filtered HandbookRelatedProduct filtered products
+     *
+     * @param array $params
+     * @return HandbookRelatedProduct[]
+     */
+    private function getProductsCategories ($params)
+    {
+
+        $params['where'] = $this->getWhereCategories($params);
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+
+        $filteredProducts = [];
+        foreach ($products as $product) {
+            if (!isset($filteredProducts[$product->getId()])) {
+                $filteredProducts[$product->getId()] = [
+                    "reserve" => $product->receiveRest(),
+                    "price" => $product->getPrice(),
+                    "oldprice" => $product->getOldPrice(),
+                    "discount" => $product->getDiscount(),
+                    "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+                    //"chars" => $characteristicsArray,
+                ];
+            }
+        }
+        return $filteredProducts;
+    }
     /**
      * Return filtered HandbookRelatedProduct filtered products
      *
@@ -917,6 +960,34 @@ class AjaxController extends AbstractActionController
           //exit ("<pre>".print_r($container->filtrForCategory, true)."</pre>");
           //exit (print_r($container->filtrForCategory));/* */
     }
+    
+    
+
+    public function getProductCategoriesAction()
+    {
+        $post = $this->getRequest()->getPost();
+        $categoryId = $post->categoryId;
+        $categoryId = "000000001";
+        if (empty($params = Setting::find(['id' => 'main_menu']))){
+            return new JsonModel([]);
+        }
+        $categories = Json::decode( $params->getValue(), Json::TYPE_ARRAY);                
+        $category = $categories[$categoryId]["categories"];
+        
+        foreach ($category as $item){
+            $param[] = $item["id"];
+        }
+       //return new JsonModel([$param]);
+        $products = $this->getProductsCategories($param);
+        
+        return new JsonModel($products);
+        
+        return (new ViewModel(['products' => $products]))->setTerminal(true);
+    }
+
+
+    
+    
 
     public function getFiltredProductForCategoryJsonAction()
     {
