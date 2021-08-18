@@ -29,6 +29,7 @@ use Application\Model\Repository\UserRepository;
 use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Entity\Provider;
+use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Laminas\Json\Json;
@@ -112,6 +113,7 @@ class IndexController extends AbstractActionController
         $this->sessionManager = $sessionManager;
         
         $this->entityManager->initRepository(ClientOrder::class);
+        $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
         
     }
@@ -145,6 +147,10 @@ class IndexController extends AbstractActionController
         $addressLegal = ($userInfo["userAddress"])?true:false;
         $userLegal = ($userInfo["userid"] and $userInfo["phone"])?true:false;
         
+        /** Example of how to get main_menu from setting */
+        // We need check to see if $mainMenu is null afterwards
+        // $mainMenu = Setting::find(['id' => 'main_menu']);
+        // $mainMenu->getValue() returns json value
         
         // Return the response
         $this->layout()->setVariables([
