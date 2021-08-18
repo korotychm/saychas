@@ -228,6 +228,16 @@ return [
                     ],
                 ],
             ],
+            'category' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/category[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'category',
+                    ],
+                ],
+            ],
             'basket' => [
                 'type'    => Segment::class,
                 'options' => [
