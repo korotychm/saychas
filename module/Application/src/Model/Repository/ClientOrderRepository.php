@@ -20,6 +20,11 @@ use Application\Model\Repository\Repository;
 
 class ClientOrderRepository extends Repository
 {
+    protected const ORDER = 0;
+    
+    protected const DELIVERY = 1;
+    
+    protected const REQUISITION = 2;
 
     /**
      * @var string
@@ -84,7 +89,7 @@ class ClientOrderRepository extends Repository
      *
      * @param json
      */
-    public function replace($content)
+    public function replace1($content)
     {
         /** @var JSON $content */
 
@@ -194,8 +199,9 @@ class ClientOrderRepository extends Repository
 //        foreach($result['data'] as $order) {
 //            print_r($order);
 //        }
-        
-        array_walk($result['data'], function($order){
+        $outOrder = null;
+        $o = null;
+        array_walk($result['data'], function($order) use (&$outOrder, &$o){
             // do order
             //print_r($order['order_id']);
             $orderId = $order['order_id'];
@@ -205,33 +211,118 @@ class ClientOrderRepository extends Repository
                 throw new RuntimeException('Order with specified order_id not found');
             }
             $clientOrder->setStatus($orderStatus);
-            $this->persist($clientOrder, ['order_id' => $orderId]);
+//            $this->persist($clientOrder, ['order_id' => $orderId]);
             
             if(count($order['deliveries']) <= 0) {
                 return;
             }
-            array_walk($order['deliveries'], function($delivery) use ($order, $clientOrder) {
+            array_walk($order['deliveries'], function($delivery) use ($clientOrder) {
                 // do delivery
+                $deliveryInfo = $clientOrder->getDeliveryInfo();
+                $di = json_decode($deliveryInfo, true);
+                foreach($di['deliveries'] as &$d) {
+                    if($d['delivery_id'] == $delivery['delivery_id']) {
+                        $d['delivery_status'] = $delivery['delivery_status'];
+                    }
+                }
+                $clientOrder->setDeliveryInfo(json_encode($di, true));
+                
                 
                 if(count($delivery['requisitions']) <= 0) {
                     return;
                 }
-                array_walk($delivery['requisitions'], function($requisition) use($delivery, $clientOrder) {
+                array_walk($delivery['requisitions'], function($requisition) use($delivery, $clientOrder, $di) {
                     // do requisition
-                    
-                    $hydrator = new \Laminas\Hydrator\ClassMethodsHydrator();
-                    $c = $hydrator->hydrate((array)$clientOrder, new ClientOrder());
-                    print_r($clientOrder->delivery_info);
-                
-//                    print_r('delivery_id = ' . $delivery['delivery_id'] . "\n");
-//                    print_r($requisition);
+                    $deliveryInfo = $clientOrder->getDeliveryInfo();
+                    $di = json_decode($deliveryInfo, true);
+                    foreach($di['deliveries'] as &$d) {
+                        foreach($d['requisitions'] as &$r) {
+                            if($r['requisition_id'] == $requisition['requisition_id']) {
+                                $r['requisition_status'] = $requisition['requisition_status'];
+                            }
+                        }
+                    }
+                    $clientOrder->setDeliveryInfo(json_encode($di, true));
                 });
             });
+            $outOrder = $clientOrder;
+            $o = $order;
+            $this->persist($clientOrder, ['order_id' => $orderId]);
         });
+
+        
+        var_dump($outOrder);
                 
         exit;
         
     }
+    
+    /**
+     * Example
+     * 
+     *  [{"type":"0","order_id":"000000023","status":"0"},{"type":"0","order_id":"000000024","status":"1"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000090","status":"0"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000088","status":"0"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000130","status":"1"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000134","status":"1"}]
+     * 
+     * 
+     * @param type $content
+     * @return type
+     */
+    public function replace($content)
+    {
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+        
+        foreach($result['data'] as $item) {
+            switch($item['type']) {
+                case self::ORDER:
+                default:
+                    $orderId = $item['order_id'];
+                    $orderStatus = $item['status'];
+                    $this->updateOrderStatus($orderId, $orderStatus);
+                    break;
+                case self::DELIVERY:
+                    $orderId = $item['order_id'];
+                    $deliveryId = $item['delivery_id'];
+                    $deliveryStatus = $item['status'];
+                    $this->updateDeliveryStatus($orderId, $deliveryId, $deliveryStatus);
+                    break;
+                case self::REQUISITION:
+                    break;
+            }
+        }
+        exit;
+    }
+    
+    private function updateOrderStatus($orderId, $orderStatus)
+    {
+        $clientOrder = $this->find(['order_id' => $orderId]);
+        if(null == $clientOrder) {
+            throw new RuntimeException('Cannot find the order with given number');
+        }
+        $clientOrder->setStatus($orderStatus);
+        $this->persist($clientOrder, ['order_id' => $orderId]);
+    }
+    
+    private function updateDeliveryStatus($orderId, $deliveryId, $deliveryStatus)
+    {
+        $clientOrder = $this->find(['order_id' => $orderId]);
+        if(null == $clientOrder) {
+            throw new RuntimeException('Cannot find the order with given number');
+        }
+        $deliveryInfo = $clientOrder->getDeliveryInfo();
+        $di = json_decode($deliveryInfo, true);
+        foreach($di['deliveries'] as &$d) {
+            if($d['delivery_id'] == $deliveryId) {
+                $d['delivery_status'] = $deliveryStatus;
+            }
+        }
+        $status = json_encode($di, true);
+        $clientOrder->setDeliveryInfo($status);
+        $this->persist($clientOrder, ['order_id' => $orderId]);
+    }
+    
 
 }
 
