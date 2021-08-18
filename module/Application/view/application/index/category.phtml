@@ -1,0 +1,18 @@
+<?php
+$this->headTitle('Категории', 'PREPEND');
+$this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
+?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
+    <div >
+        <?= $this->bread ?>
+        <div class="content-col" style="" id="tovary">
+            <div id='ajaxfiltranswer'></div>
+            <br class="both">
+            <h1><?= $this->title ?>  <?= ($this->id) ? "<span>id: " . $this->id . "</span>" : "" ?></h1>
+            
+            <?= $this->content ?> 
+        <!-- u class="pointer" onClick="$('#im-json').toggle();">Показать JSON</u --->    
+            <div id="tovar-list"></div>
+        </div>
+    </div>
+</div>

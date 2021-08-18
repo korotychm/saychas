@@ -902,7 +902,7 @@ class AjaxController extends AbstractActionController
 
         return (new ViewModel(['products' => $products]))->setTerminal(true);
 
-         exit ("<pre>".print_r($post, true)."</pre>");
+         //exit ("<pre>".print_r($post, true)."</pre>");
 
 
         /* foreach ($post as $key=>$value)

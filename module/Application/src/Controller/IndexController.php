@@ -135,6 +135,7 @@ class IndexController extends AbstractActionController
         $user = $this->userRepository->find(['id'=>$userId]);
         $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
         $userInfo = $this->htmlProvider->getUserInfo($user);
+        $mainMenu = $this->htmlProvider->getMainMenu();
        
 
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
@@ -155,6 +156,7 @@ class IndexController extends AbstractActionController
             'userLegal' =>  $userLegal,
             'username' =>  $userInfo['name'],
             'userphone' =>  $userInfo['phone'],
+            'mainMenu' => $mainMenu,
         ]);
         $this->layout()->setVariable('banzaii', 'vonzaii');
         //$this->layout()->setTemplate('layout/mainpage');
@@ -511,6 +513,41 @@ class IndexController extends AbstractActionController
           ];
         return new ViewModel($vwm);
     }
+    
+    
+    public function categoryAction($category_id = false)
+    {
+        if(empty($category_id)) {
+            $category_id=$this->params()->fromRoute('id', '');
+        }
+        /*if(empty($category_id)) {
+            $category_id=$this->params()->fromRoute('id', '');
+        }
+        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
+             $this->getResponse()->setStatusCode(301); header("Location:/"); exit();
+        }
+        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))){
+            $breadCrumbs = array_reverse($matherCategories);
+        }
+        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
+        $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
+        $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
+        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax); */
+        $vwm=[
+            "content" => "Контент", //$categories,
+            "title" => "Категории ".$category_id, //$categoryTitle,
+            /*"id" => $category_id,
+            "breadCrumbs"=> $breadCrumbs ,
+            'filterform'=> $filterForm,*/
+          ];
+        return new ViewModel($vwm);
+    }
+    
+    
+    
+    
           
     public function userAction($category_id=false)
     {

@@ -76,6 +76,17 @@ class HtmlProviderService
         $this->productImageRepository = $productImageRepository;
     }
 
+    
+    /**
+     * Returns Array
+     * @return Array
+     */
+    public function getMainMenu()
+    {
+        return [];
+    }
+    
+    
     /**
      * Returns Html string
      * @return string
