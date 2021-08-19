@@ -240,16 +240,17 @@ abstract class Repository implements RepositoryInterface
                 //$id = $entity->$pkname;
                 $id = $entity->$pk;
                 $assoc[$entity->primaryKey()] = $id;
-            }else if(is_array($pk) && count($pk)) {
+            }else if(is_array($pk) && count($pk) > 0) {
                 $keys = array_keys($assoc);
                 foreach($pk as $k) {
                     if(in_array($k, $keys)) {
                         $assoc[$k] = $id[$k] = $entity->$k;
                     }
                 }
-            }else{
-                throw new \Exception('Primary key ($pk) must be either a string or an array');
             }
+            /*else{
+                throw new \Exception('Primary key name ($pk) must be either a string or an array');
+            }*/
         }
         $auto = $entity->autoIncrementKey();
         if(/*!$found &&*/ !empty($auto) && array_key_exists($auto, $assoc) ) {
