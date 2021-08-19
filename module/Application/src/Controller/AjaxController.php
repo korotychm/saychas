@@ -389,8 +389,8 @@ class AjaxController extends AbstractActionController
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
         $userId = $this->identity();
         if (!$userId) {
-            header('HTTP/1.0 401 Unauthorized');
-            exit();
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
         }
         $post = $this->getRequest()->getPost();
         $timepoint = $post->timepoint;
@@ -416,12 +416,12 @@ class AjaxController extends AbstractActionController
 
     public function basketPayCardInfoAction()
     {
-        $cardinfo = "4276 5555 **** <span class='red'>1234&darr;</span>";
+        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($userId);
         $post = $this->getRequest()->getPost();
         $paycard = $post->paycard;
         $view = new ViewModel([
             'paycard' => $paycard,
-            'cardinfo' => $cardinfo,
+            'cardinfo' => $cardInfo,
         ]);
         $view->setTemplate('application/common/basket-pay-card');
         return $view->setTerminal(true);
@@ -443,6 +443,7 @@ class AjaxController extends AbstractActionController
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
         $row['payEnable'] = ($row['total'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
+        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($userId);
         $view = new ViewModel([
             "payEnable" => $row["payEnable"],
             "textDelevery" => $row["textDelevery"],
@@ -461,7 +462,7 @@ class AjaxController extends AbstractActionController
             'producttotal' => $row['total'],
             'countSelfdelevery' => $row['countSelfdelevery'],
             'storeAdress' => $row["storeAdress"],
-            "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
+            "cardinfo" => $cardInfo ,
             'paycard' => $post->paycard,
             'timeDelevery' => $timeDelevery,
         ]);
@@ -641,14 +642,6 @@ class AjaxController extends AbstractActionController
         $where = new Where();
         list($low, $high) = explode(';', $params['priceRange']);
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-//        $where->equalTo('category_id', $params['category_id']);
-//        $categories = $this->categoryRepository->findAll(['id' => '000000006']);
-//        foreach($categories as $c) {
-//            echo '<pre>';
-//            print_r($c);
-//            echo '</pre>';
-//        }
-//        exit;
         $where->in('category_id', $categoryTree);
         return $where;
     }
@@ -677,28 +670,7 @@ class AjaxController extends AbstractActionController
 
         $params['where'] = $this->getWhereCategories($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
-
         $filteredProducts = $this->commonHelperFuncions->getProductCardJson($products);
-        /*foreach ($products as $product) {
-            if (!isset($filteredProducts[$product->getId()])) {
-                $oldPrice = 0;
-                $price = $product->getPrice();
-                $discont = $product->getDiscount();
-                if ($discont > 0 ){
-                    $oldPrice =  $price;
-                    $price = $oldPrice - ($oldPrice * $discont /100);
-                }
-                
-                $filteredProducts[$product->getId()] = [
-                    "reserve" => $product->receiveRest(),
-                    "price" => $product->getPrice(),
-                    "oldprice" => $oldPrice,
-                    "discount" => $product->getDiscount(),
-                    "image" => $product->receiveFirstImageObject()->getHttpUrl(),
-                    //"chars" => $characteristicsArray,
-                ];
-            }
-        }*/
         return $filteredProducts;
     }
 
@@ -809,18 +781,12 @@ class AjaxController extends AbstractActionController
         }
         $categories = Json::decode( $params->getValue(), Json::TYPE_ARRAY);                
         $category = $categories[$categoryId]["categories"];
-        
         foreach ($category as $item){
             $param[] = $item["id"];
         }
         $products = $this->getProductsCategories($param);
         return new JsonModel($products);
-        //return (new ViewModel(['products' => $products]))->setTerminal(true);
-    }
-
-
-    
-    
+     }
 
     public function getFiltredProductForCategoryJsonAction()
     {

@@ -2,15 +2,14 @@
     <div class="productpagecard ">
         <div class="content opacity-20">
             <div class="char-blok">
-               <?php 
-               if (!empty($characteristics[1])):
-               foreach($characteristics[1] as $characteristic):
-               if ($characteristic['type'] == 0) : ?>
-                    <h3><?=$characteristic['title']?></h3>
-               <?php  else: ?>    <div class="char-row"><span class="char-title"><span><?=$characteristic['title']?></span></span><span class="char-value"><span><?=$characteristic['value']?></span></span></div>
-               <?php  endif;
-                endforeach;
-                endif;?>
+<?php if (!empty($characteristics[1])):?>
+<?php  foreach($characteristics[1] as $characteristic):?>
+<?php if ($characteristic['type'] == 0) : ?>
+                   <h3><?=$characteristic['title']?></h3>
+<?php  else: ?>    <div class="char-row"><span class="char-title"><span><?=$characteristic['title']?></span></span><span class="char-value"><span><?=$characteristic['value']?></span></span></div>
+<?php  endif; ?>
+<?php endforeach;?>
+<?php endif;?>
             </div>
             </div>
         </div>

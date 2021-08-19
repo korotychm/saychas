@@ -1,13 +1,9 @@
-<?php
-if ($param and count($param)) {
-    ?>    
+<?php if ($param and count($param)) :?>    
     <div class='pw-contentblock cblock-1' id="selfdeleverymainblok">
         <div class='contentpadding'>
             <h2>Самовывоз</h2>
             <p class="blok"><b><span id="selfdeleverycountproduct">#</span> товаров из <span id="selfdeleverycountstore">#</span> магазинов</b></p>
-            <?php
-            foreach ($param as $provider) {
-                ?>
+      <?php foreach ($param as $provider) :?>
 
                 <div class="none seldeleveryblokrow " id="seldeleveryblokrow-<?= $provider['provider_id'] ?>">
                    <hr class='hr-saychas' />
@@ -63,16 +59,10 @@ if ($param and count($param)) {
 
                         </div>
                     </div>    
-            <?php } //endforeach ?>
+            <?php endforeach; ?>
                   
 
                 </div>
             </div>
-            <pre>
-                <?php
-                // print_r($provider);
-                //break;
-            //endforeach
-
-    }
-    ?></pre>
+           
+<?php endif; ?>

@@ -1,4 +1,4 @@
-<?php if($cardinfo) {?> 
+<?php if($cardinfo) :?> 
 
     <h2>Способы оплаты</h2>
     
@@ -15,8 +15,9 @@
                 
                  
              </div>
-        </div><?php }  
-        ?><div class='pw-contentblock cblock-2  borderredhalf <?=(!$paycard)?"right":""?>  <?=(!$cardinfo)?" left":""?>  '>
+        </div>
+   <?php endif;?>
+        <div class='pw-contentblock cblock-2  borderredhalf <?=(!$paycard)?"right":""?>  <?=(!$cardinfo)?" left":""?>  '>
             <div class='contentpadding'>
                 <div class='radio black <?=(!$paycard or !$cardinfo)?"zach":""?> loadpayinfo' rel='paynew' for='paynewon'> 
                      <b>
