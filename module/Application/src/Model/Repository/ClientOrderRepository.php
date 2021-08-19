@@ -238,7 +238,7 @@ class ClientOrderRepository extends Repository
             $clientOrder = $this->find(['order_id' => $orderId]);
             if(null == $clientOrder) {
                 // throw new RuntimeException('Cannot find the order with given number');
-                return ['result' => false, 'description' => 'Cannot find the order with given number', 'statusCode' => 400];
+                return ['result' => true, 'description' => 'Cannot find the order with given number', 'statusCode' => 200];
             }
             switch($item['type']) {
                 case self::ORDER:
