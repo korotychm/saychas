@@ -311,7 +311,6 @@ class ClientOrderRepository extends Repository
         }
         $clientOrder->setStatus($orderStatus);
         $this->persist($clientOrder, ['order_id' => $orderId]);
-        mail('user@localhost', 'order status', print_r($clientOrder, true));
     }
     
     private function updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus)
@@ -330,7 +329,6 @@ class ClientOrderRepository extends Repository
         $status = json_encode($di, true);
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
-        mail('user@localhost', 'delivery status', print_r($clientOrder, true));
     }
     
     private function updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus)
@@ -353,7 +351,6 @@ class ClientOrderRepository extends Repository
         $status = json_encode($di, true);
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
-        mail('user@localhost', 'requisition status', print_r($clientOrder, true));
     }
     
 
