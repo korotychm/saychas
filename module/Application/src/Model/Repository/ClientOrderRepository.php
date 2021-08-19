@@ -276,7 +276,7 @@ class ClientOrderRepository extends Repository
         
         foreach($result['data'] as $item) {
             $orderId = $item['order_id'];
-            $clientOrder = $this->find(['order_id' => $orderId]);
+            $clientOrder = null;//$this->find(['order_id' => $orderId]);
             switch($item['type']) {
                 case self::ORDER:
                 default:
@@ -304,17 +304,18 @@ class ClientOrderRepository extends Repository
     
     private function updateOrderStatus($orderId, $clientOrder, $orderStatus)
     {
-        //$clientOrder = $this->find(['order_id' => $orderId]);
+        $clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
         $clientOrder->setStatus($orderStatus);
         $this->persist($clientOrder, ['order_id' => $orderId]);
+        mail('user@localhost', 'order status', print_r($clientOrder, true));
     }
     
     private function updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus)
     {
-        //$clientOrder = $this->find(['order_id' => $orderId]);
+        $clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
@@ -328,11 +329,12 @@ class ClientOrderRepository extends Repository
         $status = json_encode($di, true);
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
+        mail('user@localhost', 'delivery status', print_r($clientOrder, true));
     }
     
     private function updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus)
     {
-        //$clientOrder = $this->find(['order_id' => $orderId]);
+        $clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
@@ -350,6 +352,7 @@ class ClientOrderRepository extends Repository
         $status = json_encode($di, true);
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
+        mail('user@localhost', 'requisition status', print_r($clientOrder, true));
     }
     
 
