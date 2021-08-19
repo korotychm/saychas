@@ -27,6 +27,16 @@ class UserData extends Entity
     public static UserDataRepository $repository;
 
     /**
+     * Auto increment key
+     * 
+     * @return string
+     */
+    public function autoIncrementKey()
+    {
+        return 'id';
+    }
+
+    /**
      * Get primary key
      *
      * @return string|array

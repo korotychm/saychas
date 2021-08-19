@@ -236,8 +236,9 @@ abstract class Repository implements RepositoryInterface
         if($found) {
             $pk = $entity->primaryKey();
             if(is_string($pk) && !empty($pk)) {
-                $pkname = $entity->primaryKey();
-                $id = $entity->$pkname;
+                //$pkname = $entity->primaryKey();
+                //$id = $entity->$pkname;
+                $id = $entity->$pk;
                 $assoc[$entity->primaryKey()] = $id;
             }else if(is_array($pk) && count($pk)) {
                 $keys = array_keys($assoc);
@@ -251,7 +252,7 @@ abstract class Repository implements RepositoryInterface
             }
         }
         $auto = $entity->autoIncrementKey();
-        if(!$found && !empty($auto) && array_key_exists($auto, $assoc) ) {
+        if(/*!$found &&*/ !empty($auto) && array_key_exists($auto, $assoc) ) {
             unset($assoc[$auto]);
         }
         $values = array_values($assoc);
