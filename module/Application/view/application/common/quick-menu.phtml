@@ -3,7 +3,7 @@
     <div id="topmenu" >
         <ul>
             <?php while (list($key, $menuItem) = each($menu)): ?> 
-            <li><a href="/category/<?=$key?>" ><?=$menuItem['title']?></a></li>
+            <li><a href="/category/<?=$key?>" id="quick-menu-item-<?=$key?>" ><?=$menuItem['title']?></a></li>
             <?php endwhile; ?>
         </ul>
     </div>

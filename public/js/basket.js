@@ -230,33 +230,41 @@ function whatHappened(noclose = false) {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showAjaxErrorPopupWindow (xhr.status, thrownError);
+                showAjaxErrorPopupWindow(xhr.status, thrownError);
             }
         }
     });
 }
 
-function waitingOrderStatusVerification (orderId) {
+function waitingOrderStatusVerification(orderId, idInterval = false) {
+    var date = new Date();
+    status = 5;
     $.ajax({
         beforeSend: function () {
         },
         url: "/ajax-chek-order-status",
         type: 'POST',
         cache: false,
-        data: {"orderId":orderId},
+        data: {"orderId": orderId},
         success: function (data) {
-             showServicePopupWindow("Ожидаем изменения статуса","<pre>" + JSON.stringify(data,true,2)+ "</pre>");
+            if (data.order_status == 0) {
+                showServicePopupWindow("Ожидаем изменения статуса", "<b>Текущий статус: " + data.order_status + "</b><hr>" + date + "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
+
+            } else {
+                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="return false;">Оплатить заказ</div>');
+                if (idInterval != false) {
+                    clearInterval(idInterval);
+                }
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showAjaxErrorPopupWindow (xhr.status, thrownError);
+                showAjaxErrorPopupWindow(xhr.status, thrownError);
             }
-            return false;
+           // status = false;
         }
     });
-    return false;
-    
-    
+    return;//status;
 }
 
 function checkBasketDataBeforeSend() {
@@ -282,7 +290,7 @@ function checkBasketDataBeforeSend() {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                showAjaxErrorPopupWindow (xhr.status, thrownError);
+                showAjaxErrorPopupWindow(xhr.status, thrownError);
             }
             return false;
         }
@@ -293,7 +301,7 @@ function checkBasketDataBeforeSend() {
 function sendBasketData() {
     $.ajax({
         beforeSend: function () {
-             showServicePopupWindow("Отправка данных о заказе","....");
+            showServicePopupWindow("Отправка данных о заказе", "....");
         },
         url: "/send-basket-data",
         type: 'POST',
@@ -301,20 +309,30 @@ function sendBasketData() {
         data: $("#user-basket-form").serialize(),
         success: function (data) {
             //console.log(data)
-            showServicePopupWindow("Формируем заказ",JSON.stringify(data));
+            showServicePopupWindow("Формируем заказ", JSON.stringify(data));
             if (data.result == true) {
-            //    location = "/client-orders";
-            console.log(data);
-            waitingOrderStatusVerification (data.orderId);    
-             //   return false;
+                //    location = "/client-orders";
+                //console.log(data);
+                intervalWaitingOrderStatus = setInterval(
+                        function () {
+                            var result = waitingOrderStatusVerification(data.orderId, intervalWaitingOrderStatus);
+                            console.log(result);
+                            /* if (result.order_status != 0 ){
+                             showServicePopupWindow("Заказ готов к оплате", "переходим на страницу оплаты" + result.status);
+                             clearInterval(intervalWaitingOrderStatus);
+                             }*/
+                        },
+                        500);
+
+                //   return false;
             }
-           if (data.result == false) { 
+            if (data.result == false) {
                 showServicePopupWindow("Ошибка", JSON.stringify(data.description));
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             if (xhr.status !== 0) {
-                 showAjaxErrorPopupWindow (xhr.status, thrownError);
+                showAjaxErrorPopupWindow(xhr.status, thrownError);
             }
         }
     });
@@ -512,8 +530,8 @@ $(function () {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 if (xhr.status !== 0) {
-                   showAjaxErrorPopupWindow (xhr.status, thrownError);
-                 }
+                    showAjaxErrorPopupWindow(xhr.status, thrownError);
+                }
             }
         });/**/
     });

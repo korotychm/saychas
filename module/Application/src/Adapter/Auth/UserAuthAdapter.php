@@ -65,7 +65,7 @@ class UserAuthAdapter implements AdapterInterface
         foreach($userOldBasket as $basket) {
             $basketData = clone $basket;
             $basketData->setUserId($container->userIdentity);
-            $basketData->persist(['user_id'=>$container->userIdentity, 'product_id' => $basket->getProductId()]);
+            $basketData->persist(['user_id'=>$container->userIdentity, 'product_id' => $basket->getProductId(), 'order_id' => 0]);
             $basketData->remove([ 'where' => ['user_id'=>$container->userOldIdentity, 'product_id' => $basket->getProductId()] ]);
         }
     }
