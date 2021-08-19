@@ -277,7 +277,7 @@ class ClientOrderRepository extends Repository
         foreach($result['data'] as $item) {
             $orderId = $item['order_id'];
             
-            $clientOrder = null;//$this->find(['order_id' => $orderId]);
+            $clientOrder = $this->find(['order_id' => $orderId]);
             switch($item['type']) {
                 case self::ORDER:
                 default:
@@ -305,7 +305,7 @@ class ClientOrderRepository extends Repository
     
     private function updateOrderStatus($orderId, $clientOrder, $orderStatus)
     {
-        $clientOrder = $this->find(['order_id' => $orderId]);
+        //$clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
@@ -315,7 +315,7 @@ class ClientOrderRepository extends Repository
     
     private function updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus)
     {
-        $clientOrder = $this->find(['order_id' => $orderId]);
+        //$clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
@@ -333,7 +333,7 @@ class ClientOrderRepository extends Repository
     
     private function updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus)
     {
-        $clientOrder = $this->find(['order_id' => $orderId]);
+        //$clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
