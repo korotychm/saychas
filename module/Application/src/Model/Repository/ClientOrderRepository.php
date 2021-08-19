@@ -277,6 +277,9 @@ class ClientOrderRepository extends Repository
         
         foreach($result['data'] as $item) {
             $orderId = $item['order_id'];
+            
+            mail('user@localhost', 'orderId', $orderId);        
+            
             $clientOrder = null;//$this->find(['order_id' => $orderId]);
             switch($item['type']) {
                 case self::ORDER:
