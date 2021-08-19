@@ -92,10 +92,13 @@ class HtmlProviderService
      * Returns Html string
      * @return string
      */
-    public function testHtml()
+    /*public function testHtml()
     {
         return '<h1>Hello world!!!</h1>';
-    }
+    }*/
+    
+    
+    
     /**
      * Returns Array
      * @return Array

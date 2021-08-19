@@ -61,8 +61,7 @@ $(document).ready(function () {
     });
 
     $("body").on("click", ".checkgroup", function () {
-
-        console.log(".fltrcheck" + $(this).attr("for"));
+        //console.log(".fltrcheck" + $(this).attr("for"));
         if ($(this).hasClass("zach")) {
             $(this).removeClass("zach");
             $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
@@ -92,9 +91,7 @@ $(document).ready(function () {
 
     $("body").on("click", ".radio", function () {
         var rel = $(this).attr('rel');
-
-        //alert(rel);
-        console.log(".fltrcheck" + $(this).attr("for"));
+        //console.log(".fltrcheck" + $(this).attr("for"));
         $('.radio[rel^=' + rel + ']').removeClass("zach");
         $('.relradio[rel^=' + rel + ']').prop("checked", false);
         ;
@@ -175,7 +172,7 @@ $(document).ready(function () {
         type: "ADDRESS",
         onSelect: function (suggestion) {
             $("#adesserror").hide();
-            console.log(suggestion.data);
+            //console.log(suggestion.data);
             if (!suggestion.data.house)
             {
                 $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
@@ -183,10 +180,8 @@ $(document).ready(function () {
             }
             var dataString = JSON.stringify(suggestion);
             $("#geodatadadata").val(dataString);
-
             getLegalStores(dataString, '#useradesserror');
             addUserAddrees(dataString, $("#useraddress").val());
-
         }
     });
 
@@ -225,27 +220,9 @@ $(document).ready(function () {
         animated: "medium"
     });
 
-    $("#sendajax").click(function () {
-        var dataString = $("#formajax").serialize();
-        $.ajax({
-            url: "/ajax-to-web",
-            type: 'POST',
-            cache: false,
-            data: dataString,
-            success: function (data) {
-                $("#ajaxanswer").html(data);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $("#ajaxanswer").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-            }
-        });
-    });
 
     
-    $("#sendajax2").click(function () {
-        var dataString = $("#textarea").val();
-        getLocalStores(dataString);
-    });
+
     $("body").on("click", ".paybutton", function () {
         var product = $(this).attr("rel");
         showBasket(product);
@@ -416,7 +393,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
         data: {"value": dataString},
         success: function (data) {
             if (data.result) {
-                console.log(data.message);
+                //console.log(data.message);
                 $(".errorblock").hide();
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
@@ -448,8 +425,8 @@ function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadre
         data: {'dadata': dadata, "address": address},
         dataType: 'json',
         cache: false,
-        success: function (html) {
-            console.log(html);
+        success: function (data) {
+            //console.log(html);
             location = location.href;
             return true;
         },
@@ -514,7 +491,7 @@ function showBasket(productadd = 0) {
         //dataType: 'json',
         data: {"product": productadd},
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             $("#bascetbottomblok .content ").empty();
             if (data.products) {
                 $.each(data.products, function (key, value) {

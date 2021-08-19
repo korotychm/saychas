@@ -154,8 +154,8 @@ class IndexController extends AbstractActionController
         
         // Return the response
         $this->layout()->setVariables([
-            'headerText' => $this->htmlProvider->testHtml(),
-            'footerText' => 'banzaii',
+            //'headerText' => $this->htmlProvider->testHtml(),
+            //'footerText' => 'banzaii',
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
             'addressLegal' =>  $addressLegal,
@@ -164,7 +164,7 @@ class IndexController extends AbstractActionController
             'userphone' =>  $userInfo['phone'],
             'mainMenu' => $mainMenu,
         ]);
-        $this->layout()->setVariable('banzaii', 'vonzaii');
+        //$this->layout()->setVariable('banzaii', 'vonzaii');
         //$this->layout()->setTemplate('layout/mainpage');
         return $response;
 
@@ -352,24 +352,21 @@ class IndexController extends AbstractActionController
                 $basketUser['geodata'] = $userData->current()->getGeoData();
             
             }    
-            $legalUser=true; 
-            
-            
             if(!$basketUser['phone'] or !$basketUser['name']   ){
                 $legalUser=false; 
+            } 
+            else{
+                $legalUser=true; 
             }
             $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
             
             $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
-            /** more conditions come here */
             $columns = ['product_id', 'order_id', 'total', 'price'];
             $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
           
-        
      $content = $this->htmlProvider->basketData($basket);   
-     //exit (print_r($content));
      return new ViewModel([
            /* "providers" => $providers,*/
             "content" => $content["product"],
@@ -384,33 +381,30 @@ class IndexController extends AbstractActionController
             'textdefault' => \Application\Resource\StringResource::BASKET_SAYCHAS_do.", ",
             "register_title" => StringResource::MESSAGE_ENTER_OR_REGISTER_TITLE,
             "register_text" => StringResource::MESSAGE_ENTER_OR_REGISTER_TEXT,
-            
         ]);   
     }
     
     public function previewAction()
     {
         //$this->layout()->setTemplate('layout/mainpage');
-        $categories = $this->categoryRepository->findAllCategories();
+        //$categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
-            'menu' => $categories
+            'menu' => null,
         ]);
     }
 
-    public function providerAction()
+    /*public function providerAction()
     {
-        $id=$this->params()->fromRoute('id', '');
+        $id = $this->params()->fromRoute('id', '');
         //$this->layout()->setTemplate('layout/mainpagenew');
-        $categories = $this->categoryRepository->findAllCategories("", 0, $id);
-       /* $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);*/
+        $categories = (empty($id))?null:$this->categoryRepository->findAllCategories("", 0, $id);
+       /* $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);
         return new ViewModel([
-           /* "providers" => $providers,*/
+      
             "catalog" => $categories,
         ]);
 
-    }
-
-    
+    }*/
     private function packParams($params)
     {
         $a = [];
@@ -479,7 +473,6 @@ class IndexController extends AbstractActionController
             'title' => $productPage['title'],
             'images' => $productPage['images'],
             'category' => $categoryTitle,
-            'bread'=> $bread,
             'characteristics' => $productPage["characteristics"],
             'product'=> $productPage['card'],
             'description' => $productPage['description'],
@@ -495,16 +488,19 @@ class IndexController extends AbstractActionController
     
     public function catalogAction($category_id = false)
     {
-        if(empty($category_id)) {
-            $category_id=$this->params()->fromRoute('id', '');
-        }
-        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
+        if(
+         empty($category_id) 
+         or empty($category_id=$this->params()->fromRoute('id', ''))
+         or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())
+          ) { 
              $this->getResponse()->setStatusCode(301); header("Location:/"); exit();
         }
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))){
             $breadCrumbs = array_reverse($matherCategories);
+        } else {
+            $breadCrumbs = [];
         }
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
@@ -520,45 +516,20 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
     }
     
-    
     public function categoryAction($category_id = false)
     {
         if(empty($category_id)) {
             $category_id=$this->params()->fromRoute('id', '');
         }
-        
         $categories = (!empty($params = Setting::find(['id' => 'main_menu'])))?Json::decode($params->getValue(), Json::TYPE_ARRAY):[];                
         $category = $categories[$category_id];
         $title = $category["title"];
-        
-        /*if(empty($category_id)) {
-            $category_id=$this->params()->fromRoute('id', '');
-        }
-        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
-             $this->getResponse()->setStatusCode(301); header("Location:/"); exit();
-        }
-        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))){
-            $breadCrumbs = array_reverse($matherCategories);
-        }
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
-        $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
-        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax); */
-        $vwm=[
-            "content" => "", //$categories,
-            "title" => $title, // ."Категории ".$category_id, //$categoryTitle,
-            /*"id" => $category_id,
-            "breadCrumbs"=> $breadCrumbs ,
-            'filterform'=> $filterForm,*/
+           $vwm=[
+            "content" => "", 
+            "title" => $title, 
           ];
         return new ViewModel($vwm);
     }
-    
-    
-    
-    
           
     public function userAction($category_id=false)
     {

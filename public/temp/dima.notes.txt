@@ -1,0 +1,33 @@
+
+plusweb@plusweb:/usr/share/phpmyadmin$ sudo apt-get install php7.4-xml
+plusweb@plusweb:/usr/share/phpmyadmin$ composer update -W
+
+plusweb@plusweb:/usr/share/phpmyadmin$ l
+plusweb@plusweb:/usr/share/phpmyadmin$ ls -all
+plusweb@plusweb:/usr/share/phpmyadmin$ mc
+
+plusweb@plusweb:/usr/share$ who
+plusweb  :1           2021-08-19 08:05 (:1)
+plusweb@plusweb:/usr/share$ 
+
+plusweb@plusweb:/usr/share/phpmyadmin$ cd ..
+plusweb@plusweb:/usr/share$ sudo chown -R plusweb:plusweb phpmyadmin
+[sudo] password for plusweb: 
+plusweb@plusweb:/usr/share$ ls -all
+total 1320
+drwxr-xr-x  293 root    root    12288 авг 19 10:47 .
+.... 2020 zsh
+plusweb@plusweb:/usr/share$ cd phpmyadmin
+plusweb@plusweb:/usr/share/phpmyadmin$ ls -all
+...
+plusweb@plusweb:/usr/share/phpmyadmin$ composer update
+.....  phpstan/phpstan-phpunit: installed
+plusweb@plusweb:/usr/share/phpmyadmin$ cd /etc/nginx/sites-available/
+plusweb@plusweb:/etc/nginx/sites-available$ sudo nano saychas-z.local
+[sudo] password for plusweb: 
+
+plusweb@plusweb:/usr/share/phpmyadmin$ cd /etc/nginx/sites-available/
+plusweb@plusweb:/etc/nginx/sites-available$ sudo nano saychas-z.local
+[sudo] password for plusweb: 
+plusweb@plusweb:/etc/nginx/sites-available$ sudo systemctl reload nginx.service 
+plusweb@plusweb:/etc/nginx/sites-available$ 

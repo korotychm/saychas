@@ -207,7 +207,7 @@ return [
 //                    ],
 //                ],
 //            ],
-            'provider' => [
+            /*'provider' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/provider',
@@ -216,7 +216,7 @@ return [
                         'action'     => 'provider',
                     ],
                 ],
-            ],
+            ],*/
             /**/
             'catalog' => [
                 'type'    => Segment::class,
@@ -695,7 +695,7 @@ return [
                     ],
                 ],
             ],
-            'ajax' => [
+            /*'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/ajax[/:id]',
@@ -704,8 +704,8 @@ return [
                         'action'     => 'ajax',
                     ],
                 ],
-            ],
-            'banzaii' => [
+            ],*/
+            /*'banzaii' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/banzaii[/:id]',
@@ -715,7 +715,7 @@ return [
                     ],
                 ],
             ],
-            'ajax-to-web' => [
+            /*'ajax-to-web' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-to-web',
@@ -724,7 +724,7 @@ return [
                         'action'     => 'ajaxToWeb',
                     ],
                 ],
-            ],
+            ],*/
             'ajax-fltr' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -755,7 +755,7 @@ return [
                     ],
                 ],
             ],
-           'ajax-get-store' => [
+           /*'ajax-get-store' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-get-store',
@@ -764,7 +764,7 @@ return [
                         'action'     => 'ajaxGetStore',
                     ],
                 ],
-            ],
+            ],*/
             'ajax-set-user-address'=>[
                 'type'    => Literal::class,
                 'options' => [

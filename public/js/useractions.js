@@ -11,7 +11,7 @@ function sendauthformmodal(data = false) {
         data: data,
         success: function (data) {
             if (data.reload) {
-                console.log(data);
+                //console.log(data);
                 location = location.href;
                 return false;
             }
@@ -55,8 +55,6 @@ $(document).ready(function () {
         sendauthformmodal();
         return false;
     });
-
-
     /*$(".setuseraddress").click(function () {
      var rel = $(this).attr("rel");
      $.ajax({
@@ -82,5 +80,4 @@ $(document).ready(function () {
      });
      return false;
      });*/
-
 });
