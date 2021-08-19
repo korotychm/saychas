@@ -268,6 +268,7 @@ class ClientOrderRepository extends Repository
      */
     public function replace($content)
     {
+        mail('user@localhost', 'content', $content);
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
