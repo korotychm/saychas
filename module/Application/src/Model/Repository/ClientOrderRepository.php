@@ -305,6 +305,7 @@ class ClientOrderRepository extends Repository
     
     private function updateOrderStatus($orderId, $clientOrder, $orderStatus)
     {
+        mail('user@localhost', 'orderId', $orderId);        
         $clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
