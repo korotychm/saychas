@@ -275,29 +275,36 @@ class ClientOrderRepository extends Repository
         }
         
         foreach($result['data'] as $item) {
+            $orderId = $item['order_id'];
+            $clientOrder = $this->find(['order_id' => $orderId]);
             switch($item['type']) {
                 case self::ORDER:
                 default:
-                    $orderId = $item['order_id'];
+//                    $orderId = $item['order_id'];
                     $orderStatus = $item['status'];
-                    $this->updateOrderStatus($orderId, $orderStatus);
+                    $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
                 case self::DELIVERY:
-                    $orderId = $item['order_id'];
+//                    $orderId = $item['order_id'];
                     $deliveryId = $item['delivery_id'];
                     $deliveryStatus = $item['status'];
-                    $this->updateDeliveryStatus($orderId, $deliveryId, $deliveryStatus);
+                    $this->updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus);
                     break;
                 case self::REQUISITION:
+//                    $orderId = $item['order_id'];
+                    $deliveryId = $item['delivery_id'];
+                    $requisitionId = $item['requisition_id'];
+                    $requisitionStatus = $item['status'];
+                    $this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
                     break;
             }
         }
-        exit;
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
-    private function updateOrderStatus($orderId, $orderStatus)
+    private function updateOrderStatus($orderId, $clientOrder, $orderStatus)
     {
-        $clientOrder = $this->find(['order_id' => $orderId]);
+        //$clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
@@ -305,9 +312,9 @@ class ClientOrderRepository extends Repository
         $this->persist($clientOrder, ['order_id' => $orderId]);
     }
     
-    private function updateDeliveryStatus($orderId, $deliveryId, $deliveryStatus)
+    private function updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus)
     {
-        $clientOrder = $this->find(['order_id' => $orderId]);
+        //$clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
         }
@@ -316,6 +323,28 @@ class ClientOrderRepository extends Repository
         foreach($di['deliveries'] as &$d) {
             if($d['delivery_id'] == $deliveryId) {
                 $d['delivery_status'] = $deliveryStatus;
+            }
+        }
+        $status = json_encode($di, true);
+        $clientOrder->setDeliveryInfo($status);
+        $this->persist($clientOrder, ['order_id' => $orderId]);
+    }
+    
+    private function updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus)
+    {
+        //$clientOrder = $this->find(['order_id' => $orderId]);
+        if(null == $clientOrder) {
+            throw new RuntimeException('Cannot find the order with given number');
+        }
+        $deliveryInfo = $clientOrder->getDeliveryInfo();
+        $di = json_decode($deliveryInfo, true);
+        foreach($di['deliveries'] as &$d) {
+            foreach($d['requisitions'] as &$r) {
+                if($d['delivery_id'] == $deliveryId) {
+                    if($r['requisition_id'] == $requisitionId) {
+                        $r['requisition_status'] = $requisitionStatus;
+                    }
+                }
             }
         }
         $status = json_encode($di, true);
