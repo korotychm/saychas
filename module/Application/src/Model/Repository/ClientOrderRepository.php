@@ -268,7 +268,6 @@ class ClientOrderRepository extends Repository
      */
     public function replace($content)
     {
-        mail('user@localhost', 'content', $content);
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
@@ -277,8 +276,6 @@ class ClientOrderRepository extends Repository
         
         foreach($result['data'] as $item) {
             $orderId = $item['order_id'];
-            
-            mail('user@localhost', 'orderId', $orderId);        
             
             $clientOrder = null;//$this->find(['order_id' => $orderId]);
             switch($item['type']) {
@@ -308,7 +305,6 @@ class ClientOrderRepository extends Repository
     
     private function updateOrderStatus($orderId, $clientOrder, $orderStatus)
     {
-        mail('user@localhost', 'orderId', $orderId);        
         $clientOrder = $this->find(['order_id' => $orderId]);
         if(null == $clientOrder) {
             throw new RuntimeException('Cannot find the order with given number');
