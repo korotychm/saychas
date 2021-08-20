@@ -85,42 +85,7 @@ class ClientOrderRepository extends Repository
 //    }
 
     /**
-     * Adds given client_order into it's repository
-     *
-     * @param json
-     */
-    public function replace1($content)
-    {
-        /** @var JSON $content */
-
-    /**
      * receive-client-order-statuses
-        {
-            "order_id": "123",
-            "order_status": "0",
-            "order_only": true,
-            "deliveries": 
-            [
-                {
-                    "delivery_id": "123123",
-                    "delivery_status": 0
-                    "requisitions": 
-                    [
-                        {
-                            "requisition_id": "123123",
-                            "requisition_status": 0
-                        }, {
-                            "requisition_id": "123124",
-                            "requisition_status": 1
-                        }
-                    ]
-                }, {
-                    "delivery_id": "123124",
-                    "delivery_status": 1
-                }
-            ],
-        }
-        { "orderId": "123", "order_status": "0", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "requisitions":[ { "requisition_id": "123123","requisition_status": 0 }, { "requisition_id": "123124","requisition_status": 1 }] }
         [
             {
               "orderId": "000000023",
@@ -178,32 +143,31 @@ class ClientOrderRepository extends Repository
             }
         ]
 
-
         [{"orderId":"000000023","order_status":"0","deliveries":[{"delivery_id":"000000000000000090","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000133","requisition_status":"0"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"000000000000000088","delivery_status":"1","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"0"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}]
-        {"orders" :[] }
-
 
      * 
      * 
      */
+    
+    /**
+     * Adds given client_order into it's repository
+     *
+     * @param json
+     */
+    public function replace1($content)
+    {
+        /** @var JSON $content */
+
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
-//        $flags['has_orders'] = count($result['data']) > 0;
-//        $flags['has_deliveries'] = count($result['data']) > 0 && isset($result['data']['deliveries']);
-//        $flags['has_requisitions'] = count($result['data']) > 0 && isset($result['data']['deliveries']) && isset($result['data']['deliveries']['requisitions']);
-        
-//        foreach($result['data'] as $order) {
-//            print_r($order);
-//        }
         $outOrder = null;
         $o = null;
         array_walk($result['data'], function($order) use (&$outOrder, &$o){
             // do order
-            //print_r($order['order_id']);
             $orderId = $order['order_id'];
             $orderStatus = $order['order_status'];
             $clientOrder = $this->find(['order_id' => $orderId]);
@@ -211,7 +175,6 @@ class ClientOrderRepository extends Repository
                 throw new RuntimeException('Order with specified order_id not found');
             }
             $clientOrder->setStatus($orderStatus);
-//            $this->persist($clientOrder, ['order_id' => $orderId]);
             
             if(count($order['deliveries']) <= 0) {
                 return;
@@ -226,7 +189,6 @@ class ClientOrderRepository extends Repository
                     }
                 }
                 $clientOrder->setDeliveryInfo(json_encode($di, true));
-                
                 
                 if(count($delivery['requisitions']) <= 0) {
                     return;
@@ -250,18 +212,14 @@ class ClientOrderRepository extends Repository
             $this->persist($clientOrder, ['order_id' => $orderId]);
         });
 
-        
-        var_dump($outOrder);
-                
-        exit;
-        
     }
     
     /**
+     * Replace
+     * 
      * Example
      * 
      *  [{"type":"0","order_id":"000000023","status":"0"},{"type":"0","order_id":"000000024","status":"1"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000090","status":"0"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000088","status":"0"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000130","status":"1"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000134","status":"1"}]
-     * 
      * 
      * @param type $content
      * @return type
@@ -276,22 +234,24 @@ class ClientOrderRepository extends Repository
         
         foreach($result['data'] as $item) {
             $orderId = $item['order_id'];
+            
             $clientOrder = $this->find(['order_id' => $orderId]);
+            if(null == $clientOrder) {
+                // throw new RuntimeException('Cannot find the order with given number');
+                return ['result' => true, 'description' => 'Cannot find the order with given number', 'statusCode' => 200];
+            }
             switch($item['type']) {
                 case self::ORDER:
                 default:
-//                    $orderId = $item['order_id'];
                     $orderStatus = $item['status'];
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
                 case self::DELIVERY:
-//                    $orderId = $item['order_id'];
                     $deliveryId = $item['delivery_id'];
                     $deliveryStatus = $item['status'];
                     $this->updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus);
                     break;
                 case self::REQUISITION:
-//                    $orderId = $item['order_id'];
                     $deliveryId = $item['delivery_id'];
                     $requisitionId = $item['requisition_id'];
                     $requisitionStatus = $item['status'];
@@ -302,22 +262,29 @@ class ClientOrderRepository extends Repository
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
+    /**
+     * Update order status
+     * 
+     * @param type $orderId
+     * @param type $clientOrder
+     * @param type $orderStatus
+     */
     private function updateOrderStatus($orderId, $clientOrder, $orderStatus)
     {
-        //$clientOrder = $this->find(['order_id' => $orderId]);
-        if(null == $clientOrder) {
-            throw new RuntimeException('Cannot find the order with given number');
-        }
         $clientOrder->setStatus($orderStatus);
         $this->persist($clientOrder, ['order_id' => $orderId]);
     }
     
+    /**
+     * Update delivery status
+     * 
+     * @param type $orderId
+     * @param type $clientOrder
+     * @param type $deliveryId
+     * @param type $deliveryStatus
+     */
     private function updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus)
     {
-        //$clientOrder = $this->find(['order_id' => $orderId]);
-        if(null == $clientOrder) {
-            throw new RuntimeException('Cannot find the order with given number');
-        }
         $deliveryInfo = $clientOrder->getDeliveryInfo();
         $di = json_decode($deliveryInfo, true);
         foreach($di['deliveries'] as &$d) {
@@ -330,12 +297,17 @@ class ClientOrderRepository extends Repository
         $this->persist($clientOrder, ['order_id' => $orderId]);
     }
     
+    /**
+     * Update requisition status
+     * 
+     * @param type $orderId
+     * @param type $clientOrder
+     * @param type $deliveryId
+     * @param type $requisitionId
+     * @param type $requisitionStatus
+     */
     private function updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus)
     {
-        //$clientOrder = $this->find(['order_id' => $orderId]);
-        if(null == $clientOrder) {
-            throw new RuntimeException('Cannot find the order with given number');
-        }
         $deliveryInfo = $clientOrder->getDeliveryInfo();
         $di = json_decode($deliveryInfo, true);
         foreach($di['deliveries'] as &$d) {
@@ -351,47 +323,5 @@ class ClientOrderRepository extends Repository
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
     }
-    
 
 }
-
-
-
-
-
-
-//        $orderId = $result['data']['order_id'];
-//        $orderStatus = $result['data']['order_status'];
-//        if(true === $result['data']['order_only']) {
-//            $clientOrder = $this->find(['order_id' => $orderId]);
-//            if(null == $clientOrder) {
-//                throw new RuntimeException('Order cannot be null');
-//            }
-//            $clientOrder->setStatus($orderStatus);
-//            $this->persist($clientOrder, ['order_id' => $orderId]);
-//            return ['result' => true, 'description' => '', 'statusCode' => 200];
-//        }elseif(false === $result['data']['order_only']){
-//            
-//        }
-//        
-//        throw new RuntimeException("order_only must be either true or false");
-        
-
-
-
-
-
-
-
-
-//            if(count($order['deliveries'] > 0)) {
-//                array_walk($order['deliveries'], function($delivery) use ($order) {
-//                    print_r('order_id = ' . $order['order_id'] . "\n");
-//                    if(count($delivery['requisitions']) > 0) {
-//                        array_walk($delivery['requisitions'], function($requisition) use($delivery) {
-//                            print_r('delivery_id = ' . $delivery['delivery_id'] . "\n");
-//                            print_r($requisition);
-//                        });
-//                    }
-//                });
-//            }
