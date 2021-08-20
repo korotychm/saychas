@@ -39,7 +39,7 @@ use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
 //use RuntimeException;
 use Laminas\Authentication\AuthenticationService;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Http\Response;
@@ -116,7 +116,7 @@ class AjaxController extends AbstractActionController
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
         $return['productId'] = $productId = $post->productId;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $basketItem = Basket::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
         return new JsonModel($return);
@@ -139,7 +139,7 @@ class AjaxController extends AbstractActionController
     public function getUserOrderListAction()
     {
         $return["result"] = true;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $orders = ClientOrder::findAll(['user_id' => $userId]);
         if (!empty($orders)) {
@@ -172,7 +172,7 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $return['order_id'] = $orderId = $post->orderId;
         $return['order_status'] = false;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         if(!empty($order = ClientOrder::find(["order_id" => $orderId ]))){
             $return ['order_status'] = $order->getStatus();
@@ -187,7 +187,7 @@ class AjaxController extends AbstractActionController
     {
         
         $post = $this->getRequest()->getPost();
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
         $userPhone = (empty($user)) ? false : $user->getPhone();
@@ -209,7 +209,7 @@ class AjaxController extends AbstractActionController
     {
         //$return["error"] = true;
         $post = $this->getRequest()->getPost();
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
         if (!$return['userId']) {
@@ -233,7 +233,7 @@ class AjaxController extends AbstractActionController
 
     public function ajaxBasketChangedAction()
     {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $whatHappened = $container->whatHappened;
         if (!empty($whatHappened['products'])) {
@@ -283,7 +283,7 @@ class AjaxController extends AbstractActionController
         $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
         $return['productId'] = $productId = $post->product;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         if ($userId) {
             $return['error'] = false;
@@ -323,14 +323,14 @@ class AjaxController extends AbstractActionController
     public function userAuthAction()
     {
         $password = $smsCode = "7777"; //костыль
-        $return = ["error" => true, "message" => StringResource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
+        $return = ["error" => true, "message" => Resource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
         $post = $this->getRequest()->getPost();
         $return['phone'] = StringHelper::phoneToNum($post->userPhone); // $this->phoneToNum($post->userPhone);
         $return['name'] = $post->userNameInput;
         $code = $post->userSmsCode;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         if (!$return['phone']) {
-              $return["message"] .= StringResource::ERROR_INPUT_PHONE_MESSAGE;
+              $return["message"] .= Resource::ERROR_INPUT_PHONE_MESSAGE;
         } else {
             $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
             if ($user and $userId = $user->getId()) {
@@ -340,7 +340,7 @@ class AjaxController extends AbstractActionController
                     $container->userIdentity = $return['userId'];
                     $return["error"] = false;
                 }
-                $return["message"] = StringResource::ERROR_INPUT_PASSWORD_MESSAGE
+                $return["message"] = Resource::ERROR_INPUT_PASSWORD_MESSAGE
                         . "($password)"
                 ;
                 $return["username"] = $user->getName();
@@ -353,7 +353,7 @@ class AjaxController extends AbstractActionController
                     $this->userRepository->persist($user, ['id' => $user->getId()]);
                     $return["error"] = false;
                 }
-                $return["message"] = StringResource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
+                $return["message"] = Resource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
             }
         }
         $return['post'] = $post;
@@ -492,10 +492,10 @@ class AjaxController extends AbstractActionController
         }
         $ob = $TMP->data;
         if (!$ob->house) {
-            return new JsonModel(["result" => false, "error" => StringResource::USER_ADDREES_ERROR_MESSAGE]);
+            return new JsonModel(["result" => false, "error" => Resource::USER_ADDREES_ERROR_MESSAGE]);
         }
-        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        /* $container = new Container(StringResource::SESSION_NAMESPACE);
+        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
+        /* $container = new Container(Resource::SESSION_NAMESPACE);
           $url = $this->config['parameters']['1c_request_links']['get_store'];
           $result = file_get_contents(
           $url,
@@ -540,7 +540,7 @@ class AjaxController extends AbstractActionController
       if($store['time_until_closing']) $store['time_until_closing']+=time();
       $sessionLegalStoreArray[$store['store_id']] = $store ;
       }
-      $container = new Container(StringResource::SESSION_NAMESPACE);
+      $container = new Container(Resource::SESSION_NAMESPACE);
       $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
       $container->legalStoreArray = $sessionLegalStoreArray;
 
@@ -584,7 +584,7 @@ class AjaxController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost();
         $category_id = $post->category_id;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         unset($container->filtrForCategory[$category_id]);
     }
 
@@ -721,6 +721,7 @@ class AjaxController extends AbstractActionController
                     "reserve" => $product->receiveRest(),
                     "price" => $product->getPrice(),
                     "oldprice" => $product->getOldPrice(),
+                    //'store' => $product->getStoreId(),
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
                 ];

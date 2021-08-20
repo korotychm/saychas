@@ -5,7 +5,7 @@ namespace Application\Service;
 
 use Application\Model\Entity;
 use Laminas\Session\Container;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;

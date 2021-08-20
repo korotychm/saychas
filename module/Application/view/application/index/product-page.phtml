@@ -1,72 +1,45 @@
 <?php
 
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 
 $this->headTitle('Каталог товаров/' . $this->category, 'PREPEND');
-//$this->headTitle(, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 ?><div class="container mainconteiner"  >
-    <!-- div id="left-col">
-        <div class="content-col">
-    <?= $this->addressform ?>
-            
-            <ul id="tree" class="tree" style="display:none">
-    <?= $this->catalog ?>
-            </ul>
-            <div class=" testlegalstor" ></div>
-        </div>               id="main-col"
-    </div -->
     <div  class="contentwrapper">
-        <?= $this->partial("/application/index/partials/product-page/bead-crumbs", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>    
-
+<?= $this->partial("/application/index/partials/product-page/bead-crumbs", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
         <h2><?= $this->title ?> <?php if (false and $this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
-        
+        <div id="tovar-list">
+            <div class="pw-contentblock cblock-2">         <div class="inactiveblok"></div></div>
+            <div class="pw-contentblock gray iblokr cblock-2">Код товара: <?= $this->append['vendorCode'] ?></div>
 
-            <div id="tovar-list">
-                <div class="pw-contentblock cblock-2">         <div class="inactiveblok"></div></div>
-                <div class="pw-contentblock gray iblokr cblock-2">Код товара: <?=$this->append['vendorCode']?></div>
+            <div class="pw-contentblock cblock-3">
+                <?= $this->partial("/application/index/partials/product-page/product-images", ["images" => $this->images, "image_path" => $this->imagePath('product')]) ?>
+            </div>
+            <div class="pw-contentblock cblock-3">
+<?= $this->partial("/application/index/partials/product-page/main-characteristics", ["characteristics" => $this->characteristics]) ?>
+            </div>
 
-                <div class="pw-contentblock cblock-3">
-                    <?= $this->partial("/application/index/partials/product-page/product-images", ["images" => $this->images, "image_path" => $this->imagePath('product')]) ?>     
-                </div>    
-                <!-- div class="contentpadding" id="productpageimg">
-                            
-                            
-                    <div class="iblok iconimg" style="width:98px;"><div class="product-image-container-mini iblok  borderred "><img src="/images/product/e0debca5125461d750890b54db6706d7ba8bc2b2bf0e71f706c238a3045b2a5e.jpg" alt="alt" class="product-page-image productimage1" id="productimage1" title="img1"></div></div>
-                    <div class="iblok mainimg" style="width:calc(100% - 110px) "><div class="square"><div class="squarecontent"><img src="/images/product/e0debca5125461d750890b54db6706d7ba8bc2b2bf0e71f706c238a3045b2a5e.jpg" alt="alt" class="product-page-image productimage0" id="productimage0" title="img0"></div></div></div>
-                     </div -->
-
-                <div class="pw-contentblock cblock-3">
-                    <?= $this->partial("/application/index/partials/product-page/main-characteristics", ["characteristics" => $this->characteristics]) ?>     
+            <div class="pw-contentblock cblock-3">
+                <?=
+                $this->partial("/application/index/partials/product-page/pay-section",
+                        [
+                            "price" => $this->price,
+                            "price_formated" => $this->price_formated,
+                            "id" => $this->id,
+                            "brand" => $this->brand,
+                            "image_path" => $this->imagePath('brand'),
+                ])
+                ?>
+            </div>
+            <div class="blok">
+                <div class="pw-contentblock cblock-5">
+                    <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>
+<?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>
                 </div>
-
                 <div class="pw-contentblock cblock-3">
-                   <?= $this->partial("/application/index/partials/product-page/pay-section",  
-                           [
-                               "price" => $this->price, 
-                               "price_formated" => $this->price_formated, 
-                               "id"=>$this->id, 
-                               "brand"=>$this->brand , 
-                               "image_path" => $this->imagePath('brand'),
-                           ]) ?>           
-                </div>
-                <div class="blok">    
-                    <div class="pw-contentblock cblock-5">
-                            <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>           
-                            <?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>           
-                    </div>
-                <div class="pw-contentblock cblock-3">
-                    <?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->append]) ?>           
+<?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->append]) ?>
                 </div>
             </div>
-            
-
-
-
-
-
-
+        </div>
     </div>
-          
-</div>
 </div>

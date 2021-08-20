@@ -1,7 +1,7 @@
-<?php use Application\Resource\StringResource; ?>
+<?php use Application\Resource\Resource; ?>
 <div class="contentpadding">
     <div class="paybox">     		<div class="contentpadding">
-            <h2 class="blok price"> <?=$price_formated?><?=StringResource::CURRENCY_RUBL?></h2>
+            <h2 class="blok price"> <?=$price_formated?><?=Resource::CURRENCY_RUBL?></h2>
         </div>
         <div class="volna"></div>
         <div class="contentpadding">
@@ -9,16 +9,16 @@
         </div>
         <div class="pw-contentblock cblock-2">
             <div class="contentpadding">
-                <div class="paybutton" rel="<?=$id?>"><?=StringResource::BUTTON_LABLE_ADD_TO_BASKET ?></div>
+                <div class="paybutton" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_ADD_TO_BASKET ?></div>
             </div>
         </div>
         <div class="pw-contentblock cblock-2">
             <div class="contentpadding">
-                <div class="paybuttonwhite" rel="<?=$id?>"><?=StringResource::BUTTON_LABLE_PAY_NOW ?></div>
+                <div class="paybuttonwhite" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_PAY_NOW ?></div>
             </div>
         </div>
         <div class="contentpadding">
-            <div class="favstar favtext" rel='<?=$id?>'><?=StringResource::ADD_TO_FAVORITES?></div>
+            <div class="favstar favtext" rel='<?=$id?>'><?=Resource::ADD_TO_FAVORITES?></div>
         </div>
     </div>
     <div class="brandblok">

@@ -7,7 +7,7 @@ namespace Application\Service;
 use Application\Model\Entity;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
@@ -106,7 +106,7 @@ class HtmlProviderService
      */
     public function basketCheckBeforeSendService($param, $basket)
     {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $param["legalStore"] = $container->legalStore;
         $legalStoreKey = (!empty($param["legalStore"])) ? array_keys($param["legalStore"]) : [];
         $return["result"] = true;
@@ -248,7 +248,7 @@ class HtmlProviderService
 
         if (!$filters or!$category_id)
             return;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $filtrForCategory = $container->filtrForCategory;
         if (!$filtred = $filtrForCategory[$category_id]['fltr'])
             $filtred = [];
@@ -552,7 +552,7 @@ class HtmlProviderService
 
             $return['price'] = (int)$product->getPrice();
             $return['price_formated' ]= number_format(($return['price']/100), 0, "", "&nbsp;");
-            $container = new Container(StringResource::SESSION_NAMESPACE);
+            $container = new Container(Resource::SESSION_NAMESPACE);
             $legalStore = $container->legalStore;
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $return['rest'] =  (int) $rest->getRest();
@@ -606,15 +606,15 @@ class HtmlProviderService
         return $return;
     }
 
-    public function writeUserAddress($user = null)
+    /*public function writeUserAddress($user = null)
     {
         //$userId = $this->identity();
         /* $userData = new UserData();
           $userData->getUserId($userId)
           ->getAddress()
-          ->getGeodata(); */
+          ->getGeodata(); *//*
         $userData = $userAddress = $username = $hasalt = $altcontent="";
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         if (null != $user){
             $username = $user->getName();
             $userData = $user->getUserData();
@@ -658,11 +658,41 @@ class HtmlProviderService
         //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
         ;
     }
+    */
+    
+    public function getUserAddresses($user = null, $limit)
+    {
+        $return['address'] = [];
+        $return['addresses'] = [];
+        //$container = new Container(Resource::SESSION_NAMESPACE);
+        if (null === $user) {
+            return $return;
+        }    
+        $addressData = $user->getUserData();
+        if (!empty($addressData)) {
+            $i = 0;  //индекс для лимита вывода адресов!
+            foreach ($addressData as $address) {
+                if($i === 0 ){
+                    $return['address'] = ["id" =>  $address->getId(),  "text" => $address->getAddress(), "geodata" => $address->getGeoData()];
+                 }
+                 else {
+                     $return['addresses'][] = ["id" =>  $address->getId(),  "text" => $address->getAddress()];
+                 }
+                $i++;
+                if ($i > $limit){
+                    break;
+                }
+            }
+        }
+        return $return;
+    }
+    
+    
 
     public function getUserInfo($user)
     {
         if (null == $user) return [];
-        //$container = new Container(StringResource::SESSION_NAMESPACE);
+        //$container = new Container(Resource::SESSION_NAMESPACE);
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
@@ -743,7 +773,7 @@ class HtmlProviderService
         else
             $countSelfdelevery = count($selfdelevery);
         //return ['count' => print_r($products , true)];
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
@@ -762,14 +792,14 @@ class HtmlProviderService
              }
             $return['timeClose'] = min($timeClose);
             $timeDelevery1Hour[] = [
-                "lable" => StringResource::BASKET_SAYCHAS_title,
+                "lable" => Resource::BASKET_SAYCHAS_title,
                 "value" => 0,
-                "rel" => StringResource::BASKET_SAYCHAS_do,
+                "rel" => Resource::BASKET_SAYCHAS_do,
             ];
             /**/$timeDelevery3Hour[] = [
-                "lable" => StringResource::BASKET_SAYCHAS3_title,
+                "lable" => Resource::BASKET_SAYCHAS3_title,
                 "value" => 0,
-                "rel" => StringResource::BASKET_SAYCHAS3_do,
+                "rel" => Resource::BASKET_SAYCHAS3_do,
             ]; /**/
 
             for ($i = 1; $i <= 12; $i++) {
@@ -836,7 +866,7 @@ class HtmlProviderService
     {
         $countproducts = 0;
         $countprovider = [];
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
@@ -929,22 +959,22 @@ class HtmlProviderService
                     if ($IntervalOpen > 0) {
                         $returnprefix = $j;
                         //закрыт на ночь
-                        $provider_disable = StringResource::STORE_CLOSE_FOR_NIGHT;
-                        $infostore1c = StringResource::STORE_CLOSE_FOR_NIGHT_ALT;
+                        $provider_disable = Resource::STORE_CLOSE_FOR_NIGHT;
+                        $infostore1c = Resource::STORE_CLOSE_FOR_NIGHT_ALT;
                         $infostore1c .= (date("d") == date("d", $timStoreOpen)) ? " сегодня " : " завтра ";
                         $infostore1c .= "в " . date("H:i", $timStoreOpen);
                     } else {
                         $returnprefix = $j + 100;
                         //закрыт на неопределеноне время
-                        $provider_disable = StringResource::STORE_UNAVALBLE;
-                        $infostore1c = StringResource::STORE_UNAVALBLE_ALT;
+                        $provider_disable = Resource::STORE_UNAVALBLE;
+                        $infostore1c = Resource::STORE_UNAVALBLE_ALT;
                     }
                 }
             } else {
-                $provider_disable = StringResource::STORE_OUT_OF_RANGE;
+                $provider_disable = Resource::STORE_OUT_OF_RANGE;
                 $returnprefix = $j + 1000;
                 $provider_address = $provider_worktime = $provider_timeclose = "";
-                $infostore1c = StringResource::STORE_OUT_OF_RANGE_ALT;
+                $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
             }
 
             $return["product"][$returnprefix] = [

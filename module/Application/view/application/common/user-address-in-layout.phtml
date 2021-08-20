@@ -1,0 +1,34 @@
+<?php use Application\Resource\Resource; 
+//print_r($addresses);
+?>
+<div class="blok" id="quickaddress">
+    <div class="geo16 uadress"><?=Resource::BRING_NOW?></div>
+        <div class="open-user-address-form user_address_set uadress" id="uadress">
+ <?php if (!empty($addresses['address'])): ?>
+
+            <span class="blok relative  <?=(!empty($addresses['addresses']))?"hasalt":""?>  useraddressalt">
+                <?php if(!empty($addresses['addresses'])):?>
+                <div class="altcontentview">
+
+                      <div class="blok ">
+                        <?php foreach ($addresses['addresses'] as $address):?>  
+                        <span class="menuitem pointer setuseraddress" rel="<?=$address["id"]?>"><?=$address['text']?></span>
+                        <?php endforeach;?>
+                        <span class="menuitem pointer open-user-address-form red"><?=Resource::BRING_NOW_ACTION_DO?></span></div>
+                     </div>         
+                <?php endif;?>
+                <span><?=$addresses['address']['text']?></span>
+                <textarea id="geodatadadata" class="none"><?=$addresses['address']['geodata']?></textarea>
+            </span>
+<?php else: ?>
+            <span class="blok relative  useraddressalt" >
+                <span><?=Resource::BRING_NOW_ACTION?></span>
+                <textarea id="geodatadadata" class="none"></textarea>
+            </span>                                
+<?php endif; ?>
+     
+   </div>
+    <u class="pointer mini iblok" style="margin-left:24px;" onClick="$('#jsonaddress').toggle();">Показать JSON</u>
+</div>
+
+<div class="none mini" id="jsonaddress"><?=$addressesJson?></div>     

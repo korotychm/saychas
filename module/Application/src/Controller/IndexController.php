@@ -35,7 +35,7 @@ use Application\Model\Entity\Delivery;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Session\SessionManager;
 use Application\Adapter\Auth\UserAuthAdapter;
@@ -127,7 +127,8 @@ class IndexController extends AbstractActionController
         $response = parent::onDispatch($e);
         $userId = $this->identity();
         $user = $this->userRepository->find(['id' => $userId]);
-        $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
+        //$userAddressHtml = $this->htmlProvider->writeUserAddress($user);
+        $userAddressArray = $this->htmlProvider->getUserAddresses($user, Resource::LIMIT_USER_ADDRESS_LIST);
         $userInfo = $this->htmlProvider->getUserInfo($user);
         $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
         $addressLegal = ($userInfo["userAddress"]) ? true : false;
@@ -138,11 +139,14 @@ class IndexController extends AbstractActionController
             //'headerText' => $this->htmlProvider->testHtml(),
             //'footerText' => 'banzaii',
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
-            'userAddressHtml' => $userAddressHtml,
+          //  'userAddressHtml' => $userAddressHtml,
             'addressLegal' => $addressLegal,
+            'addresses' =>  $userAddressArray,
+            'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
             'userLegal' => $userLegal,
-            'username' => $userInfo['name'],
-            'userphone' => $userInfo['phone'],
+            'userinfo' => $userInfo,
+            //'username' => $userInfo['name'],
+            //'userphone' => $userInfo['phone'],
             'mainMenu' => $mainMenu,
         ]);
         return $response;
@@ -221,13 +225,13 @@ class IndexController extends AbstractActionController
 
           }
           else {
-          //$orderList = StringResource::ORDER_EMPTY;
+          //$orderList = Resource::ORDER_EMPTY;
 
           }
           //$orderList = Json:: $orderList,true)."</pre>";   /* */
 
         return new ViewModel([
-            'title' => StringResource::ORDER_TITLE, //  $container->item
+            'title' => Resource::ORDER_TITLE, //  $container->item
             //'orders'=> $orderList,
             "auth" => $userPhone,
         ]);
@@ -285,8 +289,8 @@ class IndexController extends AbstractActionController
 //        $validator->isValid("Test"); // returns true
 //        $validator->isValid("Testing"); // returns true
 //        $validator->isValid("Pest"); // returns false
-        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-//        $container = new Container(StringResource::SESSION_NAMESPACE);
+        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
+//        $container = new Container(Resource::SESSION_NAMESPACE);
 //        if(isset($container->item)) {
 //            print_r($container->item);
 //        }else{
@@ -337,9 +341,9 @@ class IndexController extends AbstractActionController
             "countprducts" => $content["countproducts"],
             "legalUser" => $legalUser,
             // "legalAddress" => $legalAddress,
-            'textdefault' => \Application\Resource\StringResource::BASKET_SAYCHAS_do . ", ",
-            "register_title" => StringResource::MESSAGE_ENTER_OR_REGISTER_TITLE,
-            "register_text" => StringResource::MESSAGE_ENTER_OR_REGISTER_TEXT,
+            'textdefault' => \Application\Resource\Resource::BASKET_SAYCHAS_do . ", ",
+            "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
+            "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
         ]);
     }
 
@@ -390,8 +394,8 @@ class IndexController extends AbstractActionController
       $productPage = $this->htmlProvider->productPage($products);
       $categoryId= $productPage['categoryId'];
 
-      //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-      $container = new Container(StringResource::SESSION_NAMESPACE);
+      //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
+      $container = new Container(Resource::SESSION_NAMESPACE);
       $filtrForCategory=$container->filtrForCategory;
       $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
       $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
