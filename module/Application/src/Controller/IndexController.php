@@ -151,6 +151,25 @@ class IndexController extends AbstractActionController
         ]);
         return $response;
     }
+    
+    public function myLoginAction()
+    {
+        $this->layout()->setTemplate('layout/my-layout');
+        return new ViewModel([]);
+    }
+    
+    public function signupAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $container = new Container();
+        $password = $post['password'];
+        if('123451' == $password) {
+            $container->signedUp = true;
+            return $this->redirect()->toUrl('/');
+        }
+        $container->signedUp = false;
+        return $this->redirect()->toUrl('/my-login');
+    }
 
     private function matchProduct(HandbookRelatedProduct $product, $characteristics)
     {
@@ -239,9 +258,21 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $product = $this->handBookRelatedProductRepository->find(['id' => '000000000001']);
-        $provider = $product->getProvider();
-        $stores = $provider->getStoreArray();
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+        
+//        $container = new Container();
+//        print_r($container->banzaii);
+//        exit;
+//        if(true) {
+//            $this->redirect()->toUrl('/login');
+//        }
+        
+//        $product = $this->handBookRelatedProductRepository->find(['id' => '000000000001']);
+//        $provider = $product->getProvider();
+//        $stores = $provider->getStoreArray();
         //$s = $provider->storesToArray();
         
 //        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
@@ -354,6 +385,11 @@ class IndexController extends AbstractActionController
 
     public function previewAction()
     {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+        
         //$this->layout()->setTemplate('layout/mainpage');
         //$categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
@@ -420,6 +456,11 @@ class IndexController extends AbstractActionController
 
     public function productPageAction()
     {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+        
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
         if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))) {
@@ -455,6 +496,11 @@ class IndexController extends AbstractActionController
 
     public function catalogAction($category_id = false)
     {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+        
         if (!$category_id) $category_id = $this->params()->fromRoute('id', '');
         if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
             $this->getResponse()->setStatusCode(301);
@@ -499,6 +545,11 @@ class IndexController extends AbstractActionController
 
     public function userAction($category_id = false)
     {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+        
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
