@@ -1,14 +1,11 @@
 <div class="pointer" id="testFiltersButton"><u>Получить json фильтров</u></div>
 <input type="hidden" value="<?=$id?>" id="testFiltersCategotyId"/>
-<?php if (!empty($breadCrumbs)) {
-    $j = 0;
-    ?><div  class='bread-crumbs'>
-            <?php foreach ($breadCrumbs as $breadCrumb) { ?>
+<?php if (!empty($breadCrumbs)) :    $j = 0; ?>
+<div  class='bread-crumbs'>
+<?php foreach ($breadCrumbs as $breadCrumb) : ?>
             <span class="bread-crumbs-item breadtab<?= $j ?>"><a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a></span>
         <?php 
-        if ($j < 4){ 
-            $j++;
-        }    
-            } ?>
+    if ($j < 4){ $j++;}    
+    endforeach; ?>
         </div>
-<?php } ?>
+<?php endif; ?>

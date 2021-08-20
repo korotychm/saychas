@@ -8,11 +8,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/userpage.js'));
              <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth ]) ?>
       </div>               
     </div>
-    <div id="main-col">
-        <!-- div class="bread-crumbs"><?= $this->bread ?></div--> 
+    <div id="main-col" class="" >
         <div class="content-col" style="" id="tovary"> 
-
-
             <div id='ajaxfiltranswer'></div>
             <br class="both">
             <h1><?= $this->title ?>  <?=($this->id)?"<span>id: ". $this->id ."</span>":""?></h1>

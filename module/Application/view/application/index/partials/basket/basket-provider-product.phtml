@@ -5,7 +5,7 @@
 
 <div class='blok basketrow  basketrowproduct  ' id="basketrow-<?=$product['id']?>">
         <div  class='basketcol<?=$disabled?>  check'>
-<?php if($enable) {?>
+<?php if($enable) :?>
             <div class='poroductcounme nopub checkallprovider provider-<?=$provider?>  allall zach ' rel='<?=$product['id']?>' provider='<?=$provider?>' ></div>
             <input type="checkbox" checked name="products[<?=$product['id']?>][count]" value="<?=$product['count']?>"  
                    class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck " id="countprhidden-<?=$product['id']?>">
@@ -15,7 +15,7 @@
             <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>" 
                    class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
                    />
-<?php }?>
+<?php endif;?>
         </div>    
 
         <div  class='basketcol<?=$disabled?>  imageproduct '>
@@ -26,11 +26,11 @@
         <div  class='basketcol<?=$disabled?>  titleproduct product'>
            <?=$product['title']?>
         </div>
-<?php if(!$provider_disable) {?>
+<?php if(!$provider_disable) :?>
         <div  class='basketcol<?=$disabled?>  deleteproduct' rel='<?=$product['id']?>' provider='<?=$provider?>' >
             <img src="/img/saychas-zero.svg" class="grayscale"   />
         </div>
-<?php if($enable) {?>
+<?php if($enable) :?>
         <div  class='basketcol  countproduct' id="countproduct-<?=$product['id']?>" >
             <span><div class="countproductminus <?=($product['count'] < 2)?"disabled":""?>" rel='<?=$product['id']?>' >
             </div></span><div class="countproductnum " id="countproductnum-<?=$product['id']?>" max="<?=$product['availble']?>"><?=$product['count']?>
@@ -45,12 +45,12 @@
                 :''
             ?>
         </div>
-<?php } else { ?>
+<?php  else : ?>
         <div  class='basketcol<?=$disabled?>  priceproduct disabled' id="priceproduct-<?=$product['id']?>">
             Товара нет в наличии
         </div>
-<?php }
-}?>
+<?php endif;?>
+<?php endif;?>
         <div  class='basketcol<?=$disabled?>  addtofavproduct'>
             <img src="/img/saychas-zero.svg" class="favtprop" rel='<?=$product['id']?>'  />
         </div>

@@ -81,7 +81,7 @@ function calculateBasketItem(productId)
             $("#priceproduct-" + productId).html(data.totalFomated);
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            console.log("Ошибка соединения " + xhr.status + "" + "<hr> " + xhr.status + " " + thrownError);
+            console.log("Ошибка соединения " + xhr.status + "" + "\r\n " + xhr.status + " " + thrownError);
         }
     });
 }
@@ -316,12 +316,8 @@ function sendBasketData() {
                 intervalWaitingOrderStatus = setInterval(
                         function () {
                             var result = waitingOrderStatusVerification(data.orderId, intervalWaitingOrderStatus);
-                            console.log(result);
-                            /* if (result.order_status != 0 ){
-                             showServicePopupWindow("Заказ готов к оплате", "переходим на страницу оплаты" + result.status);
-                             clearInterval(intervalWaitingOrderStatus);
-                             }*/
-                        },
+                           // console.log(result);
+                           },
                         500);
 
                 //   return false;
@@ -337,7 +333,7 @@ function sendBasketData() {
         }
     });
     //$("#ServiceModalWindow #ServiceModalWraper").html("+ + + +");
-    $("#ServiceModalWindow").modal("show");
+    //$("#ServiceModalWindow").modal("show");
 }
 
 function loadPayInfo() {

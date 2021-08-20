@@ -1036,9 +1036,9 @@ img.zero, .zeroblok {
     width:400px;
     position: fixed;
     bottom:-1px;
-    right:-1px;
-    border-top-left-radius: 16px;
-    box-shadow:-10px 0 20px rgba(0,0,0,.2);
+    left:-1px;
+    border-top-right-radius: 16px;
+    box-shadow:10px 0 20px rgba(0,0,0,.2);
     z-index:10000;
     background:#fff;
     max-height:70vh;

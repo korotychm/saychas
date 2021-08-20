@@ -10,48 +10,10 @@
 ?>
  <div class="container">
 
-    <div class="select">
-      <div class="select__backdrop" data-select="backdrop"></div>
-      <button type="button" class="select__trigger" data-select="trigger">
-        Выберите из списка
-      </button>
-      <div class="select__dropdown">
-        <ul class="select__items">
-          <li class="select__item" data-select="item-1"  selection = "1">1</li>
-          <li class="select__item select__item_selected"  selection = "2" data-select="item">2</li>
-          <li class="select__item" data-value="2"  value = "2" >3</li>
-          <li class="select__item" data-select="item-3" selection = "3">4</li>
-          <li class="select__item" data-select="item4">5</li>
-          <li class="select__item" data-select="item5">6</li>
-          <li class="select__item" data-select="item6">7</li>
-          <li class="select__item" data-select="item7">8</li>
-          <li class="select__item" data-select="item8">9</li>
-        </ul>
-      </div>
-    </div>
+
 
   </div>
 
-  <!-- Подключаем js-файл CustomSelect -->
-  
-
-  <!-- JS код в котором инициализируем экземпляр CustomSelect для .select -->
-  <script>
-    const select1 = new CustomSelect('.select', {
-      defaultValue: 'Volkswagen',
-      data: ['Volkswagen', 'Ford', 'Toyota', 'Nissan'],
-      onSelected(item) {
-        console.log(item.value);
-      },
-    });
-
-   /* document.querySelector('.select').addEventListener('select.change', (e) => {
-      console.log(
-        $('.select__item_selected')
-        )
-      
-    });*/
-  </script>
 <div class="container" >	
     <div class="card-deck"> 
         <div class="card">
@@ -128,40 +90,12 @@
     <p><hr/></p>
 <div class="card-deck">        
 
-    <div class="card">
-        <h2 class="card-header">Test POST 1C=>Site</h2>
-        <div class="card-body">
-            <div class="container" >
-                <div id="ajaxanswer2"></div>
-                <!-- form method="post" id="formajax2"  ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px" --><br/>
-                <textarea ID=textarea name=value val="" placeholder="значение" style="margin:5px 0;padding:4px; width:96%; display:block" >[{"id": "00003","name": "Xiaomi "},{"id": "00003","name": "Xiaomi "}]</textarea> 
-                </form>
-                <input type="button" id="sendajax2"   class="btn btn-primary" value='Иммитировать запрос из  1C' />
-            </div>  
-        </div>
-    </div>
+    
 
-    <div class="card">
-        <h2 class="card-header">Test POST Site=>1C </h2>
-        <div class="card-body">
-            <div class="container" >
-                <div id="ajaxanswer"></div>
-                <form method="post" id="formajax" ><input name=name val="" placeholder="имя переменной" style="margin:5px 0; padding:4px"><br/>
-                    <input name=value val="" placeholder="значение" style="margin:5px 0;padding:4px" ><br/> </form>
-                <input type="button" id="sendajax"   class="btn btn-primary" value='Отправить запрос в 1C' />
-            </div>  
-        </div>
-    </div>
+
 </div>
 <div class="card-deck"> 	
-    <div class="card">
-        <h2 class="card-header">Каталог</h2>
-        <div class="container">
-            <ul id="tree">
-                <?= $this->menu ?>     
-            </ul>	
-        </div>  
-    </div>  
+
     <div class="card">
         <h2 class="card-header">Телефон</h2>
         <div class="card-body">  

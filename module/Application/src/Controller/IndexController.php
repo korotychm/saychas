@@ -33,23 +33,22 @@ use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Laminas\Json\Json;
-
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\StringResource;
-use Laminas\Session\Container;// as SessionContainer;
+use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Session\SessionManager;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Helper\StringHelper;
-
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
 
 class IndexController extends AbstractActionController
 {
+
     /**
      * @var TestRepositoryInterface
      */
@@ -77,16 +76,15 @@ class IndexController extends AbstractActionController
     //private $sessionContainer;
     private $sessionManager;
 
-    
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
-                ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
-                ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
-                BrandRepositoryInterface $brandRepository, ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
-                CharacteristicRepositoryInterface $characteristicRepository,
-                PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
-                HandbookRelatedProductRepositoryInterface $handBookProduct,
-                $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
-                ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/*, $sessionContainer*/, $sessionManager)
+            ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
+            ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
+            BrandRepositoryInterface $brandRepository, ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
+            CharacteristicRepositoryInterface $characteristicRepository,
+            PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
+            HandbookRelatedProductRepositoryInterface $handBookProduct,
+            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -111,76 +109,56 @@ class IndexController extends AbstractActionController
         $this->basketRepository = $basketRepository;
 //        $this->sessionContainer = $sessionContainer;
         $this->sessionManager = $sessionManager;
-        
+
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
-        
     }
 
     public function onDispatch(MvcEvent $e)
     {
-        //SessionContainer::setDefaultManager($this->sessionManager);
-        //$expirationSeconds = $this->config['session_config']['cookie_lifetime'];
-        //$this->sessionContainer->setExpirationSeconds($expirationSeconds/*, 'userIdentity'*/);
-        $userAuthAdapter = new UserAuthAdapter(/*$this->userRepository*//*$this->sessionContainer*/);
+        $userAuthAdapter = new UserAuthAdapter(/* $this->userRepository *//* $this->sessionContainer */);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
-        if($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
+        if ($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
             throw new \Exception('Unknown error in IndexController');
         }
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-//        $servicemanager = $e->getApplication()->getServiceManager();
-        
         $userId = $this->identity();
-        $user = $this->userRepository->find(['id'=>$userId]);
+        $user = $this->userRepository->find(['id' => $userId]);
         $userAddressHtml = $this->htmlProvider->writeUserAddress($user);
         $userInfo = $this->htmlProvider->getUserInfo($user);
-        $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu'])))?$mainMenu = $this->htmlProvider->getMainMenu($mainMenu):[];
-            
-//        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
-//        $category = $this->categoryRepository->findCategory(29);
-//        $e->getApplication()->getMvcEvent()->getViewModel()->setVariable('category', $category );
+        $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
+        $addressLegal = ($userInfo["userAddress"]) ? true : false;
+        $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
 
-        $addressLegal = ($userInfo["userAddress"])?true:false;
-        $userLegal = ($userInfo["userid"] and $userInfo["phone"])?true:false;
-        
-        /** Example of how to get main_menu from setting */
-        // We need check to see if $mainMenu is null afterwards
-        // $mainMenu = Setting::find(['id' => 'main_menu']);
-        // $mainMenu->getValue() returns json value
-
-        
         // Return the response
         $this->layout()->setVariables([
-            'headerText' => $this->htmlProvider->testHtml(),
-            'footerText' => 'banzaii',
+            //'headerText' => $this->htmlProvider->testHtml(),
+            //'footerText' => 'banzaii',
             'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
             'userAddressHtml' => $userAddressHtml,
-            'addressLegal' =>  $addressLegal,
-            'userLegal' =>  $userLegal,
-            'username' =>  $userInfo['name'],
-            'userphone' =>  $userInfo['phone'],
+            'addressLegal' => $addressLegal,
+            'userLegal' => $userLegal,
+            'username' => $userInfo['name'],
+            'userphone' => $userInfo['phone'],
             'mainMenu' => $mainMenu,
         ]);
-        $this->layout()->setVariable('banzaii', 'vonzaii');
-        //$this->layout()->setTemplate('layout/mainpage');
         return $response;
-
     }
-    
+
     private function matchProduct(HandbookRelatedProduct $product, $characteristics)
     {
         $flags = [];
-        foreach($characteristics as $key => $value) {
-            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId() ]);
-            if(null == $found) {
+        foreach ($characteristics as $key => $value) {
+            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
+            if (null == $found) {
                 $flags[$key] = false;
                 continue;
             }
             $type = $found->getType();
-            switch($type) {
+            switch ($type) {
                 case CharacteristicRepository::INTEGER_TYPE:
                     list($left, $right) = explode(';', $value[0]);
                     $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
@@ -193,8 +171,8 @@ class IndexController extends AbstractActionController
                     break;
             }
         }
-        foreach($flags as $f) {
-            if(!$f) {
+        foreach ($flags as $f) {
+            if (!$f) {
                 return false;
             }
         }
@@ -212,51 +190,49 @@ class IndexController extends AbstractActionController
         unset($params['offset']);
         unset($params['limit']);
         $params['where'] = $where;
-        
+
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = [];
-        foreach($products as $product) {
-            
+        foreach ($products as $product) {
             $matchResult = $this->matchProduct($product, $params['characteristics']);
-            if($matchResult) {
+            if ($matchResult) {
                 $filteredProducts[] = $product;
             }
         }
         return $filteredProducts;
     }
-    
+
     public function clientOrdersAction()
     {
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        $userData = $user->getUserData();
+        //$userData = $user->getUserData();
         $userPhone = $user->getPhone();
         if (!$userPhone) {
-              $this->getResponse()->setStatusCode(403);
-              $vw = new ViewModel();
-              $vw->setTemplate('error/403.phtml');
-              return  $vw;
+            $this->getResponse()->setStatusCode(403);
+            $vw = new ViewModel();
+            $vw->setTemplate('error/403.phtml');
+            return $vw;
         }
-        /*$orders = ClientOrder::findAll(['user_id'=>$userId]);
-        if (!empty($orders)){
-            
-            //$orderList = $this->htmlProvider->orderList($orders);
-   
-        } 
-        else {
-            //$orderList = StringResource::ORDER_EMPTY;
-                    
-        }    
-        //$orderList = Json:: $orderList,true)."</pre>";   /**/ 
-        
+        /* $orders = ClientOrder::findAll(['user_id'=>$userId]);
+          if (!empty($orders)){
+
+          //$orderList = $this->htmlProvider->orderList($orders);
+
+          }
+          else {
+          //$orderList = StringResource::ORDER_EMPTY;
+
+          }
+          //$orderList = Json:: $orderList,true)."</pre>";   /* */
+
         return new ViewModel([
             'title' => StringResource::ORDER_TITLE, //  $container->item
             //'orders'=> $orderList,
-             "auth"=> $userPhone,
+            "auth" => $userPhone,
         ]);
     }
-    
-    
+
     public function indexAction()
     {
 //        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
@@ -274,15 +250,12 @@ class IndexController extends AbstractActionController
 //        $userData->setTime(time());
 //        $user->setUserData([$userData]);
 //        $user->persist(['id' => $user->getId()]);
-        
-        
 //        $delivery = new Delivery();
 //        $delivery->setId(null);
 //        $delivery->setDeliveryId('0000002');
 //        $delivery->setOrderId('0000111');
 //        $delivery->setDateCreated(time());
 //        $delivery->persist(['id' => $delivery->getId()]);
-        
         // $clientOrder = new ClientOrder();
 //        $clientOrder = ClientOrder::findFirstOrDefault(['id' => null]);
 //        $clientOrder->setId(null);
@@ -290,12 +263,10 @@ class IndexController extends AbstractActionController
 //        $clientOrder->setDateCreated(time());
 ////        $date = (new \DateTime("now"))->format('Y-m-d h:i:s');
 ////        $clientOrder->setTimestamp($date);
-//        
+//
 //        $clientOrder->persist(['id' => $clientOrder->getId()]);
-        
-        
 //        $validator = new \Laminas\Validator\EmailAddress();
-//        
+//
 //        $email = 'alex.kraskov@gmail.com';
 //
 //        if ($validator->isValid($email)) {
@@ -306,18 +277,16 @@ class IndexController extends AbstractActionController
 //            // email is invalid; print the reasons
 //            foreach ($validator->getMessages() as $message) {
 //                echo "$message\n";
-//            } 
+//            }
 //            exit;
 //        }
-
 //        $validator = new \Laminas\Validator\Regex(['pattern' => '/^Test/']);
 //
 //        $validator->isValid("Test"); // returns true
 //        $validator->isValid("Testing"); // returns true
 //        $validator->isValid("Pest"); // returns false
-        
         //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+//        $container = new Container(StringResource::SESSION_NAMESPACE);
 //        if(isset($container->item)) {
 //            print_r($container->item);
 //        }else{
@@ -325,264 +294,227 @@ class IndexController extends AbstractActionController
 //        }
 //        exit;
         return new ViewModel([
-            'fooItem' => 'banzaii', //  $container->item
+                //'fooItem' => 'banzaii', //  $container->item
         ]);
     }
-    
-    
-    
-    
+
     public function basketAction()
     {
-            $basketUser['id'] = $userId = $this->identity();
-            $user = $this->userRepository->find(['id'=>$userId]);
-             $basketUser['userId']= $user->getUserId();
-            $basketUser['phone'] = $user->getPhone();
-            $basketUser['name'] = $user->getName();
-            $userData = $user->getUserData();
-            $count = $userData->count();
-            if ($count <=0){
-                /*header("HTTP/1.1 301 Moved Permanently");
-                header("Location: /");
-                exit();   */
-            }
-            else
-            {
-                $basketUser['address'] = $userData->current()->getAddress();
-                $basketUser['geodata'] = $userData->current()->getGeoData();
-            
-            }    
-            $legalUser=true; 
-            
-            
-            if(!$basketUser['phone'] or !$basketUser['name']   ){
-                $legalUser=false; 
-            }
-            $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
-            
-            $where = new Where();
-            $where->equalTo('user_id', $userId);
-            $where->equalTo('order_id', 0);
-            /** more conditions come here */
-            $columns = ['product_id', 'order_id', 'total', 'price'];
-            $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
-          
-        
-     $content = $this->htmlProvider->basketData($basket);   
-     //exit (print_r($content));
-     return new ViewModel([
-           /* "providers" => $providers,*/
+        $basketUser['id'] = $userId = $this->identity();
+        $user = $this->userRepository->find(['id' => $userId]);
+        $basketUser['userId'] = $user->getUserId();
+        $basketUser['phone'] = $user->getPhone();
+        $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
+        $basketUser['name'] = $user->getName();
+
+        $userData = $user->getUserData();
+        //$count = $userData->count();
+        if (!empty($userData) and $userData->count()) {
+            $basketUser['address'] = $userData->current()->getAddress();
+            $basketUser['geodata'] = $userData->current()->getGeoData();
+        }
+        if (!$basketUser['phone'] or!$basketUser['name']) {
+            $legalUser = false;
+        } else {
+            $legalUser = true;
+        }
+        $where = new Where();
+        $where->equalTo('user_id', $userId);
+        $where->equalTo('order_id', 0);
+        $columns = ['product_id', 'order_id', 'total', 'price'];
+        $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+
+        $content = $this->htmlProvider->basketData($basket);
+        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($userId);
+        return new ViewModel([
+            /* "providers" => $providers, */
             "content" => $content["product"],
-            "title" => "Корзина",   
+            "title" => "Корзина",
             "titleH" => $content["title"],
-            "basketUser" => $basketUser, 
-            "cardinfo" => "4276 5555 **** <span class='red'>1234&darr;</span>",
+            "basketUser" => $basketUser,
+            "cardinfo" => $cardInfo,
             "countproviders" => $content["countproviders"],
             "countprducts" => $content["countproducts"],
             "legalUser" => $legalUser,
-            "legalAddress" => $legalAddress,  
-            'textdefault' => \Application\Resource\StringResource::BASKET_SAYCHAS_do.", ",
+            // "legalAddress" => $legalAddress,
+            'textdefault' => \Application\Resource\StringResource::BASKET_SAYCHAS_do . ", ",
             "register_title" => StringResource::MESSAGE_ENTER_OR_REGISTER_TITLE,
             "register_text" => StringResource::MESSAGE_ENTER_OR_REGISTER_TEXT,
-            
-        ]);   
+        ]);
     }
-    
+
     public function previewAction()
     {
         //$this->layout()->setTemplate('layout/mainpage');
-        $categories = $this->categoryRepository->findAllCategories();
+        //$categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
-            'menu' => $categories
+            'menu' => null,
         ]);
     }
 
-    public function providerAction()
-    {
-        $id=$this->params()->fromRoute('id', '');
-        //$this->layout()->setTemplate('layout/mainpagenew');
-        $categories = $this->categoryRepository->findAllCategories("", 0, $id);
-       /* $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);*/
-        return new ViewModel([
-           /* "providers" => $providers,*/
-            "catalog" => $categories,
-        ]);
+    /* public function providerAction()
+      {
+      $id = $this->params()->fromRoute('id', '');
+      //$this->layout()->setTemplate('layout/mainpagenew');
+      $categories = (empty($id))?null:$this->categoryRepository->findAllCategories("", 0, $id);
+      /* $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);
+      return new ViewModel([
 
-    }
+      "catalog" => $categories,
+      ]);
 
-    
+      } */
+
     private function packParams($params)
     {
         $a = [];
-        foreach($params['filter'] as $p) {
-           $a[] = "find_in_set('$p', param_value_list)";
+        foreach ($params['filter'] as $p) {
+            $a[] = "find_in_set('$p', param_value_list)";
         }
         $res = ' 1';
-        if(count($a) > 0) {
-            $res = '('.implode(' OR ', $a).')';
+        if (count($a) > 0) {
+            $res = '(' . implode(' OR ', $a) . ')';
         }
         return $res;
     }
 
-    /*public function productAction()
-    {
-        $product_id=$this->params()->fromRoute('id', '');
-        if (empty($product_id)) {header("location:/"); exit();}
-        $params['equal']=$product_id;
-        
-        $products = $this->productRepository->filterProductsByStores($params);
-        if (empty($products)) {header("location:/"); exit();}
-        
-        $productPage = $this->htmlProvider->productPage($products);
-        $categoryId= $productPage['categoryId'];
-        
-        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory=$container->filtrForCategory;
-        $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
-        $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
-        $bread = $this->htmlProvider->breadCrumbs($bread);
-        $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm=[
-            'id' => $product_id,
-            'catalog' => $categories,
-            'title' => $productPage['title'],
-            'category' => $categoryTitle,
-            'bread'=> $bread,
-            'product'=> $productPage['card'],
-            'filter' =>  $returnProductFilter,
-        ];
-        return new ViewModel($vwm);
-      }*/
-      
-      
+    /* public function productAction()
+      {
+      $product_id=$this->params()->fromRoute('id', '');
+      if (empty($product_id)) {header("location:/"); exit();}
+      $params['equal']=$product_id;
+
+      $products = $this->productRepository->filterProductsByStores($params);
+      if (empty($products)) {header("location:/"); exit();}
+
+      $productPage = $this->htmlProvider->productPage($products);
+      $categoryId= $productPage['categoryId'];
+
+      //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
+      $container = new Container(StringResource::SESSION_NAMESPACE);
+      $filtrForCategory=$container->filtrForCategory;
+      $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
+      $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
+      $bread = $this->htmlProvider->breadCrumbs($bread);
+      $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
+      $vwm=[
+      'id' => $product_id,
+      'catalog' => $categories,
+      'title' => $productPage['title'],
+      'category' => $categoryTitle,
+      'bread'=> $bread,
+      'product'=> $productPage['card'],
+      'filter' =>  $returnProductFilter,
+      ];
+      return new ViewModel($vwm);
+      } */
+
     public function productPageAction()
     {
-        $product_id=$this->params()->fromRoute('id', '');
-        $params['equal']=$product_id;        
-        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))){
+        $product_id = $this->params()->fromRoute('id', '');
+        $params['equal'] = $product_id;
+        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))) {
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_404);
             $view = new ViewModel();
             return $view->setTemplate('error/404.phtml');
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        $categoryId= $productPage['categoryId'];
-        $breadCrumbs =[];
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($categoryId))){
+        $categoryId = $productPage['categoryId'];
+        $breadCrumbs = [];
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($categoryId))) {
             $breadCrumbs = array_reverse($matherCategories);
         }
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm=[
-            'id' => $product_id, 
+        $vwm = [
+            'id' => $product_id,
             'title' => $productPage['title'],
             'images' => $productPage['images'],
             'category' => $categoryTitle,
-            'bread'=> $bread,
             'characteristics' => $productPage["characteristics"],
-            'product'=> $productPage['card'],
+            'product' => $productPage['card'],
             'description' => $productPage['description'],
-            'append' =>  $productPage['appendParams'],
-            'price' =>  $productPage['price'],
-            'brand' =>  $productPage['brand'],
-            'price_formated' =>  $productPage['price_formated'],
+            'append' => $productPage['appendParams'],
+            'price' => $productPage['price'],
+            'brand' => $productPage['brand'],
+            'price_formated' => $productPage['price_formated'],
             'breadCrumbs' => $breadCrumbs,
-            ];
+        ];
         return new ViewModel($vwm);
-      }
-    
-    
+    }
+
     public function catalogAction($category_id = false)
     {
-        if(empty($category_id)) {
-            $category_id=$this->params()->fromRoute('id', '');
-        }
-        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
-             $this->getResponse()->setStatusCode(301); header("Location:/"); exit();
+        if (!$category_id) $category_id = $this->params()->fromRoute('id', '');
+        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
+            $this->getResponse()->setStatusCode(301);
+            //exit ($category_id); 
+            return $this->redirect()->toRoute('home');
+            
         }
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))){
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             $breadCrumbs = array_reverse($matherCategories);
+        } else {
+            $breadCrumbs = [];
         }
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
+        $minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-        $vwm=[
+        return new ViewModel([
             "catalog" => $categories,
             "title" => $categoryTitle,
             "id" => $category_id,
-            "breadCrumbs"=> $breadCrumbs ,
-            'filterform'=> $filterForm,
-          ];
-        return new ViewModel($vwm);
+            "breadCrumbs" => $breadCrumbs,
+            'filterform' => $filterForm,
+        ]);
     }
-    
-    
+
     public function categoryAction($category_id = false)
     {
-        if(empty($category_id)) {
-            $category_id=$this->params()->fromRoute('id', '');
+        if (empty($category_id)) {
+            $category_id = $this->params()->fromRoute('id', '');
         }
-        
-        $categories = (!empty($params = Setting::find(['id' => 'main_menu'])))?Json::decode($params->getValue(), Json::TYPE_ARRAY):[];                
+        $categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
         $category = $categories[$category_id];
         $title = $category["title"];
-        
-        /*if(empty($category_id)) {
-            $category_id=$this->params()->fromRoute('id', '');
-        }
-        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) { 
-             $this->getResponse()->setStatusCode(301); header("Location:/"); exit();
-        }
-        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))){
-            $breadCrumbs = array_reverse($matherCategories);
-        }
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $minMax= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
-        $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
-        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax); */
-        $vwm=[
-            "content" => "", //$categories,
-            "title" => $title, // ."Категории ".$category_id, //$categoryTitle,
-            /*"id" => $category_id,
-            "breadCrumbs"=> $breadCrumbs ,
-            'filterform'=> $filterForm,*/
-          ];
+        $vwm = [
+            "content" => "",
+            "title" => $title,
+        ];
         return new ViewModel($vwm);
     }
-    
-    
-    
-    
-          
-    public function userAction($category_id=false)
+
+    public function userAction($category_id = false)
     {
-        $userId = $this->identity();//authService->getIdentity();//
+        $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
         $phone = $user->getPhone();
         if (!$phone) {
-              $this->getResponse()->setStatusCode(403);
-              $vw = new ViewModel();
-              $vw->setTemplate('error/403.phtml');
-              return  $vw;
+            /* $this->getResponse()->setStatusCode(403);
+              //return new ViewModel()->setTemplate('error/403.phtml')
+              // $this->redirect()->toRoute('not-authorized');
+              /** */
+            $this->getResponse()->setStatusCode(403);
+            $vw = new ViewModel();
+            //$vw;
+            return $vw->setTemplate('error/403.phtml');
         }
-        $userPhone =  StringHelper::phoneFromNum($phone);
-        $title=($user->getName())?$user->getName():"Войти на сайт";
-        $vwm=[ 
+        $userPhone = StringHelper::phoneFromNum($phone);
+        $title = ($user->getName()) ? $user->getName() : "Войти на сайт";
+        return new ViewModel([
             "user" => $user,
             "userData" => $userData,
             "userPhone" => $userPhone,
-            "title" => $title ,//."/$category_id",
-            "id" => "userid: ".$userId,
+            "title" => $title, //."/$category_id",
+            "id" => "userid: " . $userId,
             "bread" => "bread ",
-            "auth"=> ($user->getPhone()),
-            ];
-        return new ViewModel($vwm);
+            "auth" => ($user->getPhone()),
+        ]);
     }
+
 }

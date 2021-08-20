@@ -1,5 +1,5 @@
 <?php
-if ($param and count($param)){
+if ($param and count($param)):
     
 ?>    
 <div class="nopub allall" id="checkallavailble" >Выбрать все</div>
@@ -12,40 +12,37 @@ foreach ($param as $provider):
     <div class='blok basketrow'>
 
         <div  class='basketcol  check'>
-<?php if(!$provider['provider_disable'] and $provider['availblechek']){?>                       
+<?php if(!$provider['provider_disable'] and $provider['availblechek']):?>                       
             <div class='nopub checkallallprovider checkprovider  allall zach' rel='<?=$provider['provider_id']?>' id='checkallallprovider-<?=$provider['provider_id']?>'></div> 
-<?php }?>
+<?php endif; ?>
         </div>    
         <div  class='basketcol  titleprovider'>
             <div class='brandlogo'  ><img src='<?=$this->imagePath('provider')?>/<?=$provider['provider_logo']?>' title='<?=$provider['provider_name']?>'></div>
-<?php if(!$provider['provider_disable']) {?>
+<?php if(!$provider['provider_disable']): ?>
             <div class='text-provider gray'  >
                 <span class='blok mini'><?=$provider['provider_worktime'].$provider["provider_timeclose"]?></span>
                 <span class='blok mini'><?=$provider['provider_address']?></span>
                 <span class='blok mini gray'><?=$provider['infostore1c']?></span>
                 <?=$provider['provider_store_id']?>
             </div>
-<?php }else {?>
+<?php else: ?>
             
             <div class='text-provider gray'  >
               <div class='providerbasketdisable'><?=$provider['provider_disable']?>
               <div class='providerbasketdisablehelp'>?
                 <div class='providerbasketdisablehelpcontent '>
                     <span class='strelka'></span><span class='blok'><?=$provider['infostore1c']?></span>
-                    
-                    <!-- span class='gray blok mini'><?=$provider['provider_worktime']?></span>
-                    <span class='blok gray mini'><?=$provider['provider_address']?></span -->
                 </div>
               </div>
               
               </div>
             </div>
             
-<?php }?>            
+<?php endif; ?>            
         </div>    
     </div>
     <?=$this->partial("/application/index/partials/basket/basket-provider-product", ["param" => $provider['products'], "provider" => $provider['provider_id'], 'provider_disable'=>$provider['provider_disable']]) ?>  
-<?php if(!$provider['provider_disable']){?>    
+<?php if(!$provider['provider_disable']):?>    
     <div class='blok basketrow'>
         <div  class='basketcol  check'>
           
@@ -80,10 +77,10 @@ foreach ($param as $provider):
             
         </div>    
     </div>
-<?php }?>
+<?php endif;?>
 </div>
 
 <?php endforeach; ?>
 
 
-<?php } else {echo "<h1>Корзина пуста</h1>";}?>
+<?php endif; // } else {echo "<h1>Корзина пуста</h1>";}?>

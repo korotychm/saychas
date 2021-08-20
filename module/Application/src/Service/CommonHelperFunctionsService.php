@@ -83,6 +83,29 @@ class CommonHelperFunctionsService
         return $response;
     }
     
+    public function getProductCardJson($products)
+    {
+        if (empty($products)) return [];
+        foreach ($products as $product) {
+            if (!isset($filteredProducts[$product->getId()])) {
+                $oldPrice = 0;
+                $price = $product->getPrice();
+                $discont = $product->getDiscount();
+                if ($discont > 0 ){
+                    $oldPrice =  $price;
+                    $price = $oldPrice - ($oldPrice * $discont /100);
+                }
+                $return[$product->getId()] = [
+                    "reserve" => $product->receiveRest(),
+                    "price" => $product->getPrice(),
+                    "oldprice" => $oldPrice,
+                    "discount" => $product->getDiscount(),
+                    "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+                ];
+            }
+        }
+        return $return;
+    }
     
 
 }
