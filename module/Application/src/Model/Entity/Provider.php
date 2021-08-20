@@ -47,6 +47,22 @@ class Provider extends Entity
         return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()]]);
     }
     
+    public function storesToArray()
+    {
+        $stores = $this->getStores();
+        return $stores->toArray();
+    }
+    
+    public function getStoreArray()
+    {
+        $stores = $this->getStores();
+        $result = [];
+        foreach($stores as $store) {
+            $result[] = $store;
+        }
+        return $result;
+    }
+    
     /**
      * @param array $list
      * @return Store []

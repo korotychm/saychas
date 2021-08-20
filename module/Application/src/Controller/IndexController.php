@@ -239,6 +239,11 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
+        $product = $this->handBookRelatedProductRepository->find(['id' => '000000000001']);
+        $provider = $product->getProvider();
+        $stores = $provider->getStoreArray();
+        //$s = $provider->storesToArray();
+        
 //        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
 //        echo '<pre>';
 //        print_r($tree);
