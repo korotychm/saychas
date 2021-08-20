@@ -662,9 +662,7 @@ class HtmlProviderService
     
     public function getUserAddresses($user = null, $limit)
     {
-        $return['address'] = [];
-        $return['addresses'] = [];
-        //$container = new Container(Resource::SESSION_NAMESPACE);
+        $return = ['address' => [], 'addresses' => []];
         if (null === $user) {
             return $return;
         }    
@@ -686,19 +684,18 @@ class HtmlProviderService
         }
         return $return;
     }
-    
-    
 
     public function getUserInfo($user)
     {
-        if (null == $user) return [];
+        if (null == $user) {
+            return [];
+        }
         //$container = new Container(Resource::SESSION_NAMESPACE);
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
         $return['phone'] = $user->getPhone();
         $userData = $user->getUserData();
-
         $usdat = $userData->current();
         if (null != $usdat) {
             $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
@@ -866,6 +863,8 @@ class HtmlProviderService
     {
         $countproducts = 0;
         $countprovider = [];
+        $productStoreId = null;
+        $whatHappened = null;
         $container = new Container(Resource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
@@ -933,7 +932,6 @@ class HtmlProviderService
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
-            unset($idStore, $timStoreOpen);
             $infostore1c = "";
             if (null != $store) {
                 $idStore = $store->getId();
@@ -942,8 +940,7 @@ class HtmlProviderService
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
                 $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
                 $timStoreOpen = $IntervalOpen + time();
-            }
-            if (null != $store) {
+           
 
                 if (!$legalStoresArray[$idStore]['status']) {
                     //все работает
@@ -970,7 +967,10 @@ class HtmlProviderService
                         $infostore1c = Resource::STORE_UNAVALBLE_ALT;
                     }
                 }
-            } else {
+            
+              //  unset($idStore, $timStoreOpen);    
+            } 
+            else {
                 $provider_disable = Resource::STORE_OUT_OF_RANGE;
                 $returnprefix = $j + 1000;
                 $provider_address = $provider_worktime = $provider_timeclose = "";
