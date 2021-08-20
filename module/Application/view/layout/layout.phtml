@@ -141,12 +141,13 @@
                         </div>
 
                         <div class='contentpadding'>
-                            <div class="blok" id="quickaddress">
+                              <?= $this->partial("/application/common/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>    
+                            <!-- div class="blok" id="quickaddress">
                                 <div class='geo16 uadress' >Привезем сейчас:</div>
                                 <div class='open-user-address-form user_address_set uadress' id="uadress" >
-                                    <?= $userAddressHtml ?>
+                                    <?=""//$userAddressHtml ?>
                                 </div>
-                            </div>
+                            </div -->
                         </div> 
                     </div>
                 </div>

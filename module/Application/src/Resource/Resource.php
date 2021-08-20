@@ -1,9 +1,9 @@
 <?php
-// src/Resource/StringResource.php
+// src/Resource/Resource.php
 
 namespace Application\Resource;
 
-class StringResource
+class Resource
 {
     /*
      * Товар
@@ -66,9 +66,25 @@ class StringResource
     const STORE_OUT_OF_RANGE_ALT = "К сожалению, ближайший к вам магазин находится слишком далеко - мы не сможем привезти товары вовремя";
     
     /*
+     * Ввод адреса
+     */
+    const BRING_NOW = "Привезем сейчас";
+    const BRING_NOW_ACTION = "Укажи адрес и получи заказ за час!";
+    const BRING_NOW_ACTION_DO = "Ввести адрес";
+    
+    
+    /*
      * Заказы
      */
     const ORDER_TITLE = "Мои заказы";
     const ORDER_EMPTY = "Заказов не найдено";
+    
+    
+    /*
+     * Числовые данные
+     */
+    
+    const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
+    
     
 } 

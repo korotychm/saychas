@@ -9,7 +9,7 @@ use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
 //use Laminas\Authentication\Adapter\Exception\ExceptionInterface;
 //use Laminas\Authentication\Result;
 use Application\Adapter\Auth\UserAuthResult;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 //use Application\Model\Repository\UserRepository;
 //use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
@@ -79,8 +79,8 @@ class UserAuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {
-        //$container = $this->sessionContainer;// new Container(StringResource::SESSION_NAMESPACE);
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
 
         $code = UserAuthResult::FAILURE;
 

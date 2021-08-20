@@ -7,7 +7,7 @@ namespace Application\Service;
 use Laminas\Config\Config;
 use Laminas\Json\Json;
 use Laminas\Session\Container;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
@@ -69,7 +69,7 @@ class CommonHelperFunctionsService
             }
             $sessionLegalStoreArray[$store['store_id']] = $store;
         }
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
 
@@ -98,6 +98,7 @@ class CommonHelperFunctionsService
                 $return[$product->getId()] = [
                     "reserve" => $product->receiveRest(),
                     "price" => $product->getPrice(),
+                    //'store' => $product->getStoreId(),
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),

@@ -23,7 +23,7 @@ use Application\Controller\Factory\FtpControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
-//use Application\Resource\StringResource;
+//use Application\Resource\Resource;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\Session;
@@ -1219,7 +1219,7 @@ return [
 //        ],
 //    ],    
 //    'session_containers' => [
-//        StringResource::SESSION_NAMESPACE,
+//        Resource::SESSION_NAMESPACE,
 //    ],
 //    'session_storage' => [
 //        'type' => Laminas\Session\Storage\SessionArrayStorage::class,

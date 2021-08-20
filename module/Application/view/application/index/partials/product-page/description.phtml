@@ -1,7 +1,6 @@
-
-<?php if (!empty($description)) { ?>
+<?php if (!empty($description)) : ?>
     <div class="contentpadding ">
-        <?php if (!$description['if_spoiler']) { ?>
+<?php if (!$description['if_spoiler']) : ?>
             <div  id='spoiler-hide-<?= $id ?>'>
                 <div class='blok relative'>
                     <?= $description['tinytext'] ?>
@@ -12,8 +11,8 @@
             <div  id='spoiler-show-<?= $id ?>'   class='blok' style='display:none' >
                 <?= $description['text'] ?>
             </div>
-        <?php } else { ?>
+<?php  else : ?>
             <?= $description['text'] ?>
-        <?php } ?>
+<?php endif ?>
     </div>
-<?php } ?>
+<?php endif; ?>
