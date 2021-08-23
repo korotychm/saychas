@@ -101,6 +101,50 @@
       color inherit
       font-size 20px
       font-weight 500
+  &__profile
+    position relative
+    &-popup
+      position absolute
+      bottom 22px
+      left 50%
+      transform translate(-50%,100%)
+      background #fff
+      padding 30px 35px
+      border-radius 20px
+      box-shadow: 0px 5px 35px 0px rgba(66, 66, 66, 0.2)
+      z-index 10
+      opacity 0
+      pointer-events none
+      &::before
+        content ''
+        width 20px
+        height 20px
+        display block
+        background #fff
+        position absolute
+        left 50%
+        top -10px
+        transform translateX(-50%) rotate(45deg)
+      a
+        display flex
+        align-items center
+        white-space nowrap
+        margin 5px 0
+        cursor pointer
+        svg
+          color var(--red)
+          margin-right 5px
+      &--links
+        a:first-child
+          margin-bottom 10px
+        a:last-child
+          margin-top 10px
+    &:hover
+      @media(hover)
+        .header__profile-popup
+          opacity 1
+          pointer-events auto
+
   &__icon
     position relative
     text-align center

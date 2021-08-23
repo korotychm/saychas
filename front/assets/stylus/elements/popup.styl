@@ -6,6 +6,7 @@
   top 0
   background rgba(0,0,0,.5)
   z-index 999
+  display none
   &__inner
     position absolute
     background #fff
@@ -47,9 +48,15 @@
   .btn
     width 270px
     margin-left 170px
+  &__back
+    position absolute
+    left 0
+    bottom 16px
+    color var(--red)
+    text-decoration none
+    cursor pointer
   &__input-group
     display flex
-    align-items center
     margin-bottom 25px
     font-size 20px
     &__label
@@ -57,11 +64,34 @@
       padding-right 25px
       text-align right
       font-weight bold
-    input[type="text"]
-      height 55px
+      margin-top 13px
+    &--center
+      align-items center
+      .auth-reg__input-group__label
+        margin-top 0
+    &__input
       width 270px
-      border 2px solid var(--gray)
-      padding 0 25px
-      font-size inherit
-      border-radius 55px
-      outline none
+      position relative
+      &--large
+        width 440px
+      input
+        height 55px
+        width 100%
+        border 2px solid var(--gray)
+        padding 0 25px
+        font-size inherit
+        border-radius 55px
+        outline none
+      p
+        font-size 16px
+        margin 5px 0 0 25px
+        color var(--gray2)
+        white-space nowrap
+      a
+        display inline-block
+        text-decoration none
+        color var(--red)
+        margin-top 5px
+        margin-left 25px
+        font-size 16px
+        cursor pointer

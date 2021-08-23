@@ -38,10 +38,26 @@ header.header
             span Мой адрес:
           div.header__address-val Москва, Самая длинная угрешская улица, 2с34
       div.header__icons
-        a(href="#")
-          div.header__icon
-            include ../../img/icons/icon-big.svg
-          span Профиль
+        div.header__profile
+          a(href="#")
+            div.header__icon
+              include ../../img/icons/icon-big.svg
+            span Профиль
+            div.header__icon-popup
+          // auth popup
+          div.header__profile-popup.header__profile-popup--auth
+            a
+              include ../../img/icons/icon.svg
+              b Вход или регистрация
+          // profile links
+          div.header__profile-popup.header__profile-popup--links
+            a(href="#")
+              b Алексей С.
+            a(href="#") История заказов
+            a(href="#") Избранные товары
+            a
+              include ../../img/icons/icon.svg
+              span Выйти
         a(href="#")
           div.header__icon
             include ../../img/icons/icon-big.svg

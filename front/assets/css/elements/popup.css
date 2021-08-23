@@ -6,6 +6,7 @@
   top: 0;
   background: rgba(0,0,0,0.5);
   z-index: 999;
+  display: none;
 }
 .popup__inner {
   position: absolute;
@@ -53,9 +54,16 @@
   width: 270px;
   margin-left: 170px;
 }
+.auth-reg__back {
+  position: absolute;
+  left: 0;
+  bottom: 16px;
+  color: var(--red);
+  text-decoration: none;
+  cursor: pointer;
+}
 .auth-reg__input-group {
   display: flex;
-  align-items: center;
   margin-bottom: 25px;
   font-size: 20px;
 }
@@ -64,13 +72,42 @@
   padding-right: 25px;
   text-align: right;
   font-weight: bold;
+  margin-top: 13px;
 }
-.auth-reg__input-group input[type="text"] {
-  height: 55px;
+.auth-reg__input-group--center {
+  align-items: center;
+}
+.auth-reg__input-group--center .auth-reg__input-group__label {
+  margin-top: 0;
+}
+.auth-reg__input-group__input {
   width: 270px;
+  position: relative;
+}
+.auth-reg__input-group__input--large {
+  width: 440px;
+}
+.auth-reg__input-group__input input {
+  height: 55px;
+  width: 100%;
   border: 2px solid var(--gray);
   padding: 0 25px;
   font-size: inherit;
   border-radius: 55px;
   outline: none;
+}
+.auth-reg__input-group__input p {
+  font-size: 16px;
+  margin: 5px 0 0 25px;
+  color: var(--gray2);
+  white-space: nowrap;
+}
+.auth-reg__input-group__input a {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--red);
+  margin-top: 5px;
+  margin-left: 25px;
+  font-size: 16px;
+  cursor: pointer;
 }
