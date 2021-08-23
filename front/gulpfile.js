@@ -161,6 +161,7 @@ exports.images = images;
 
 // Экспортируем функции очистки как таски
 exports.cleanimg = cleanimg;
+exports.cleanimages = cleanimages;
 exports.cleanstyles = cleanstyles;
 exports.cleanscripts = cleanscripts;
 exports.cleanhtml = cleanhtml;
