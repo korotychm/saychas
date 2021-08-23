@@ -55,11 +55,19 @@ div.popup
   div.popup__inner
     div.popup__close
     div.popup__content
+      // auth 1 step
+      div.popup__heading Вход или регистрация
+        div.auth-reg
+          label.auth-reg__input-group
+            div.auth-reg__input-group__label Телефон:
+            input(type="text", placeholder="+7 (999) 999-99-99")
+          button.btn.btn--primary Продолжить
+      // auth 2 step
       div.popup__heading Вход или регистрация
       div.auth-reg
         label.auth-reg__input-group
           div.auth-reg__input-group__label Телефон:
-          input(type="text")
+          input(type="text", placeholder="+7 (999) 999-99-99")
         button.btn.btn--primary Продолжить
         
           

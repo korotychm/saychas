@@ -6,7 +6,6 @@
   top: 0;
   background: rgba(0,0,0,0.5);
   z-index: 999;
-  display: none;
 }
 .popup__inner {
   position: absolute;
@@ -45,4 +44,33 @@
 }
 .popup__close::after {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+.auth-reg {
+  width: 600px;
+  position: relative;
+}
+.auth-reg .btn {
+  width: 270px;
+  margin-left: 170px;
+}
+.auth-reg__input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 20px;
+}
+.auth-reg__input-group__label {
+  width: 170px;
+  padding-right: 25px;
+  text-align: right;
+  font-weight: bold;
+}
+.auth-reg__input-group input[type="text"] {
+  height: 55px;
+  width: 270px;
+  border: 2px solid var(--gray);
+  padding: 0 25px;
+  font-size: inherit;
+  border-radius: 55px;
+  outline: none;
 }
