@@ -12,6 +12,7 @@ class Resource
 
     const FOR_EXAMPLE_TEXT = "Например:";
     const THE_BASKET = "Корзина";
+    const THE_CATALOG = "Каталог";
 
     /*
      *  user
@@ -32,7 +33,7 @@ class Resource
     /*
      * Товары
      */
-    const BUTTON_CATALOG = "Каталог";
+   
     const BUTTON_LABLE_ADD_TO_BASKET = "В корзину";
     const BUTTON_LABLE_PAY_NOW = "Купить сейчас";
     const ADD_TO_FAVORITES = "Добавить в избранное";
