@@ -1,28 +1,53 @@
 <?php use Application\Resource\Resource; ?>
-<div class="contentpadding">
-    <div class="paybox">     		<div class="contentpadding">
-            <h2 class="blok price"> <?=$price_formated?><?=Resource::CURRENCY_RUBL?></h2>
+<div>
+    <div class="panel">
+        <div class="panel__label">Хит</div>
+        <div class="panel__price">
+           <div class="panel__price-current"><?=$price_formated?><?=Resource::CURRENCY_RUBL?></div>
+           <div class="panel__price-old">21 990 ₽</div>
         </div>
-        <div class="volna"></div>
-        <div class="contentpadding">
-            доставка
-        </div>
-        <div class="pw-contentblock cblock-2">
-            <div class="contentpadding">
-                <div class="paybutton" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_ADD_TO_BASKET ?></div>
+        <div class="panel__bonuses">
+            <span>+179</span> сейбонов
+            <div class="question">
+                <div class="question__icon">?</div>
             </div>
         </div>
-        <div class="pw-contentblock cblock-2">
-            <div class="contentpadding">
-                <div class="paybuttonwhite" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_PAY_NOW ?></div>
-            </div>
+        <div class="panel__zip"></div>
+        <div class="panel__delivery">
+           <div class="panel__delivery-item">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <div>
+                  <h2><b>Доставим за 1 час!</b> <span class="product-card__delivery-price">299 ₽</span></h2>
+                  <p>При заказе товаров из одного магазина</p>
+                </div>
+           </div>
+           <div class="panel__delivery-item">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                </svg>
+                <div>
+                   <h2>Самовывоз из магазина <span class="product-card__delivery-price">299 ₽</span></h2>
+                   <p>Можете забрать самостоятельно из ближайшего к вам магазина</p>
+                </div>
+           </div>
         </div>
-        <div class="contentpadding">
-            <div class="favstar favtext" rel='<?=$id?>'><?=Resource::ADD_TO_FAVORITES?></div>
+        <div class="panel__btn-group">
+            <button class="btn btn--primary paybutton" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_ADD_TO_BASKET ?></button>
+            <button class="btn btn--secondary" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_PAY_NOW ?></button>
+        </div>
+        <div class="panel__to-wishlist" rel='<?=$id?>'>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+            </svg>
+            <span><?=Resource::ADD_TO_FAVORITES?></span>
         </div>
     </div>
-    <div class="brandblok">
-        <div class="brandlogo" style="background-image:url('<?=$image_path."/".$brand['image']?>')"></div>
-        <a class="brandlink" href="#">Все товары марки&nbsp;→</a>
+    <div class="product-card__store">
+       <div class="product-card__store-logo">
+            <img src="<?=$image_path."/".$brand['image']?>" />
+       </div>
+       <a href="#">Все товары магазина →</a>
     </div>
 </div>
