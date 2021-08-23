@@ -1,10 +1,40 @@
 
-<div class="modal-header">
-    <h5 class="modal-title" id="usermodaltitle" ><?= $title ?></h5>
-    <button type="button" class="close none2" data-dismiss="modal" aria-label="Close" id="usermodalclose">
-        <span aria-hidden="true">&times;</span>
-    </button>
+<div class="popup__heading" id="usermodaltitle"><?= $title ?></div>
+<div class="auth-reg">
+  <div class="auth-reg__input-group">
+      <div class="auth-reg__input-group__label">Телефон:</div>
+      <?php if (!$user['phone'] or $error["phone"]) : ?>
+        <div class="auth-reg__input-group__input">
+          <input name='userPhone' id='userPhone' class="phoneinput <?= ($error['phone']) ? 'error' : '' ?>" type="text" placeholder="+7 (999) 999-99-99" required />
+        </div>
+        <?php if ($error["phone"]):?>
+          <p class="formcomment red errormessage"><?= $error["phone"] ?></p>
+        <?php endif; ?>
+      <?php else:?>
+        <div class="auth-reg__input-group__value"><?= $user['phone'] ?></div>
+        <input type='hidden' name='userPhone' value="<?= $user['phone'] ?>"/>
+      <?php endif;  ?>
+  </div>
+  <?php if ($passBlock) : ?>
+    <div class="auth-reg__input-group">
+        <div class="auth-reg__input-group__label">Пароль:</div>
+        <div class="auth-reg__input-group__input">
+          <input name='userPass' type="password" <?= ($error['password']) ? 'error' : '' ?> id='userPass' required />
+          <?php if ($error["password"]):?>
+            <p class="formcomment red errormessage"><?= $error["password"] ?></p>
+          <?php endif; ?>
+          <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="<?=($user['passforget'])?"1":"0"?>" >
+          <a id="forgetPass">Забыли пароль?</a>
+        </div>
+    </div>
+  <?php endif; ?>
+  <button class="btn btn--primary">Продолжить</button>
 </div>
+
+
+
+
+
 <div class="modal-body">
                     <div class="overcoverlocal none" id="user-modal-cover"></div>
 
