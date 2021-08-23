@@ -6,6 +6,18 @@ namespace Application\Resource;
 class Resource
 {
     /*
+     * common
+     */
+    const FOR_EXAMPLE_TEXT = "Например:";
+    
+   /*
+    * Поиск
+    */
+    const SEARCH_INPUT_PLACEHOLDER = "Быстрый поиск";
+    const SEARCH_PANEL_HELPER = "Смратфон с диагональю до 5 дюймов";
+    
+    
+    /*
      * Товар
      */
     const BUTTON_LABLE_ADD_TO_BASKET = "В корзину";
@@ -17,6 +29,7 @@ class Resource
     
     const YES   = 'да';
     const NO    = 'нет';
+     const USER_ADDREES_PLASEHOLDER = "Укажи адрес доставки";
     const USER_ADDREES_ERROR_MESSAGE = "Необходимо указать адрес до номера дома!";
     const PRODUCT_FAILURE_MESSAGE = "Объект product не&nbsp;получен";
     const PRODUCT_SUCCESS_MESSAGE = "Объект product &nbsp;получен";

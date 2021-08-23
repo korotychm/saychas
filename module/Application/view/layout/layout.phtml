@@ -118,30 +118,13 @@
                 </div>
                 <div class="iblok" id="logo" ></div>
                 <div id="topservice">
-                    <div class='pw-contentblock cblock-2'>
-                        <div class='contentpadding'>
-                            <div class="blok" id="quicksearch">
-                                <input type="text" id="serchtopinput" placeholder="Быстрый поиск"  >
-                                <!-- div class="searchicon"></div -->
-                                <div class=blok ><span class=gray >Например: </span>Смратфон с диагональю до 5&nbsp;дюймов</div>
-                            </div> 
-                        </div>
+                    <div class='pw-contentblock cblock-2' id="searchblock">
+                   <?= $this->partial("/application/index/partials/main-layout/search-block", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>    
                     </div>
                     <div class='pw-contentblock cblock-2 nopadding'>
                         <div  style="  " class="blokl nopadding" id="searchpanel">         
-                            <input type=text 
-                                   id='useraddress'  
-                                   placeholder='Укажи адрес доставки'   
-                                   pattern="[A-Za-zА-Яа-яЁё]{3,}"  required 
-                                   accept=""
-                                   class='pn-text iblok' 
-                                   />
-                            <div id="useradesserror" class="errorblock none"></div>
-                            <div class="searchpanelclose"></div>
-                        </div>
-
-                        <div class='contentpadding'>
-                              <?= $this->partial("/application/common/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>    
+                        
+                              <?= $this->partial("/application/index/partials/main-layout/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>    
                             <!-- div class="blok" id="quickaddress">
                                 <div class='geo16 uadress' >Привезем сейчас:</div>
                                 <div class='open-user-address-form user_address_set uadress' id="uadress" >
@@ -150,7 +133,7 @@
                             </div -->
                         </div> 
                     </div>
-                </div>
+                
                 <div class='iblok' id="profileblock">
                     <div class='contentpadding'>
                         <div class='pw-contentblock cblock-2'>
@@ -175,7 +158,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class='pw-contentblock cblock-2'>
+                        <div class='pw-contentblock cblock-2' id="basketblok">
                             <div class='contentpadding  blokc'>
                                 <?= (/* true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
                                 <div class="emptyblock">
@@ -188,7 +171,7 @@
 
                     </div>
                 </div>
-                <div class="iblok"><?= $this->addressform ?></div>
+                
             </div> 
             
          <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>  
