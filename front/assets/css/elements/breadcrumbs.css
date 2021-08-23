@@ -1,0 +1,22 @@
+.breadcrumbs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+.breadcrumbs li {
+  margin-right: 12px;
+  font-size: 18px;
+}
+.breadcrumbs li::after {
+  content: '>';
+  padding-left: 10px;
+  color: var(--red);
+}
+.breadcrumbs li:last-child::after {
+  display: none;
+}
+.breadcrumbs li a {
+  color: inherit;
+  text-decoration: none;
+}

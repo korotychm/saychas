@@ -1,0 +1,587 @@
+.panel--cart
+  position sticky !important
+  top 0
+  .btn
+    width 100%
+  .panel__delivery-item
+    margin 0 0 20px
+    &:last-child
+      margin 0
+    h2
+      font-weight bold
+    p
+      color var(--black)
+      .panel__cardnumber
+        color var(--red)
+  .panel__zip
+    margin 35px -29px
+  .panel__table
+    margin-bottom 30px
+  .panel__notice
+    margin-top 25px
+    font-size 16px
+    a
+      color var(--red)
+      text-decoration none
+  .panel__tr
+    display flex
+    align-items flex-start
+    font-size 20px
+    font-weight 500
+    margin-bottom 18px
+    overflow hidden
+    &-items-total
+      display flex
+      > div:last-child
+        color var(--gray2)
+        text-decoration line-through
+        margin-left 10px
+    > div
+      flex-shrink 0
+      order 1
+      &:last-child
+        order 3
+    &::before
+      content '.....................................................................................................................'
+      display block
+      font-size 30px
+      color var(--gray)
+      overflow hidden
+      order 2
+      width 100%
+      margin-top -14px
+
+.cart
+  display grid
+  grid-template-columns minmax(0,11fr) minmax(0,5fr)
+  grid-gap 30px
+  padding-bottom 100px
+  .h2
+    font-size 34px
+    margin 0 0 25px
+  .checkbox
+    margin 0
+  &__all
+    padding-left 40px
+  &__stores
+    margin-top 25px
+  &__checkbox
+    margin-right 30px
+    flex-shrink 0
+    width 38px
+    .check
+      margin 0
+  &__products
+    margin 45px 0 0
+    padding 0
+    list-style none
+  &__product
+    display flex
+    align-items center
+    margin-bottom 40px
+    &-img
+      width 65px
+      height 65px
+      display flex
+      align-items center
+      justify-content center
+      margin-right 30px
+      flex-shrink 0
+      img
+        object-fit contain
+        width 100%
+        height 100%
+    &-title
+      width 100%
+      margin-right 30px
+      font-size 20px
+      text-decoration none
+      color inherit
+    &-info
+      width 300px
+      flex-shrink 0
+      margin-right 30px
+      display flex
+      justify-content space-between
+      align-items center
+    &-quantity
+      display flex
+      align-items center
+      width 137px
+      border 2px solid var(--gray)
+      height 55px
+      border-radius 55px
+      padding 0 20px
+      input
+        width calc(100% - 30px)
+        border none
+        padding 0 10px
+        font-size 20px
+        text-align center
+        -moz-appearance textfield
+        -webkit-appearance none
+        outline none
+        &::-webkit-outer-spin-button
+        &::-webkit-inner-spin-button
+          -webkit-appearance none
+          margin 0
+      button
+        background none
+        border none
+        padding 0
+        cursor pointer
+        width 15px
+        height 15px
+        position relative
+        &::before
+        &::after
+          content ''
+          display block
+          width 100%
+          height 3px
+          background var(--red)
+          position absolute
+          top 7px
+        &::after
+          transform rotate(90deg)
+        &.cart__product-minus::after
+          display none
+        &.disabled
+          pointer-events none
+          &::after
+          &::before
+            background var(--gray)
+    &-price
+      text-align right
+      &-current
+        font-size 24px
+        font-weight bold
+      &-old
+        color var(--gray2)
+        text-decoration line-through
+        font-size 18px
+    &-na
+      font-size 20px
+      font-weight 500
+    &-del
+    &-wishlist
+      width 16px
+      margin-right 30px
+      color var(--gray)
+      flex-shrink 0
+      background none
+      border none
+      cursor pointer
+      padding 0
+      outline none
+      svg
+        color inherit
+        display block
+    &-wishlist
+      margin-right 0
+      &.active
+        color var(--red)
+    &--na
+      .cart__product-title
+      .cart__product-img
+        opacity .3
+        pointer-events none
+
+  &__radio
+    width 50%
+    flex-shrink 0
+    padding 35px 30px
+    border 2px solid var(--gray)
+    position relative
+    &:first-of-type
+      border-top-left-radius 20px
+      border-bottom-left-radius 20px
+    &:last-of-type
+      width calc(50% + 2px)
+      margin-left -2px
+      border-top-right-radius 20px
+      border-bottom-right-radius 20px
+    p
+      color var(--gray2)
+      font-size 16px
+      line-height 1.375
+      margin 0
+      ~ .select
+        margin-top 30px
+    label
+      font-size 20px
+      display flex
+      align-items center
+      cursor pointer
+      margin-bottom 20px
+      .accent
+        padding 5px 12px
+        background var(--red)
+        color #fff
+        border-radius 20px
+    &-content
+      padding-left 38px
+    &-check
+      width 28px
+      height 28px
+      border-radius 50%
+      border 2px solid var(--gray)
+      margin-right 10px
+      display flex
+      align-items center
+      justify-content center
+
+  &__radio-group
+    display flex
+    margin-top 40px
+    input[type="radio"]
+      display none
+      &:checked
+        + .cart__radio
+          border-color var(--red)
+          z-index 2
+        + .cart__radio .cart__radio-check::after
+            content ''
+            width 10px
+            height 10px
+            display block
+            border-radius 50%
+            background var(--red)
+
+
+  &__store
+    padding 50px 40px 60px
+    border 2px solid var(--gray)
+    border-radius 20px
+    margin-bottom 20px
+    &:last-child
+      margin-bottom 0
+    &-self-delivery
+      margin-top 20px
+      margin-left 163px
+      .boolean
+        margin-top 0
+      > div
+        display flex
+        align-items center
+        &:first-child
+          font-size 18px
+          font-weight 500
+        &:last-child
+          color var(--gray2)
+          font-size 16px
+          margin-top 5px
+    &-link
+      margin-left 68px
+      display flex
+      align-items center
+      a
+        color var(--red)
+        font-size 18px
+        text-decoration none
+        font-weight 500
+        span
+          display block
+          color var(--gray2)
+          font-size 16px
+          font-weight normal
+          margin-top 5px
+      &-plus
+        margin-right 30px
+        width 65px
+        height 65px
+        border-radius 50%
+        border 2px dashed var(--gray)
+        position relative
+        &::before
+        &::after
+          content ''
+          display block
+          width 15px
+          height 3px
+          background var(--red)
+          position absolute
+          top 50%
+          left 50%
+          transform translate(-50%,-50%)
+        &::after
+          transform translate(-50%,-50%) rotate(90deg)
+    &-top
+      display flex
+      align-items center
+      position relative
+      z-index 2
+    &-logo
+      width 160px
+      height 65px
+      display flex
+      align-items center
+      justify-content center
+      margin-right 30px
+      flex-shrink 0
+      img
+        object-fit contain
+        width 100%
+        height 100%
+    &-products
+      display flex
+      position relative
+      overflow hidden
+      &::after
+        content ''
+        display block
+        width 100%
+        height 100%
+        background linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))
+        position absolute
+        top 0
+        left 0
+      div
+        width 65px
+        height 65px
+        margin-right 10px
+        flex-shrink 0
+        display flex
+        align-items center
+        justify-content center
+        img
+          object-fit contain
+          width 100%
+          height 100%
+    &-info
+      font-size 16px
+      p
+        margin 0 0 5px
+        &:last-of-type
+          margin-bottom 0
+    &-notice
+      width 100%
+      display flex
+      justify-content space-between
+      align-items center
+    &-closed
+      height 55px
+      width 335px
+      font-size 20px
+      display flex
+      align-items center
+      justify-content space-between
+      border-radius 55px
+      background var(--gray)
+      font-weight 500
+      padding-left 30px
+      padding-right 10px
+      .question
+        background #fff
+        width 35px
+        height 35px
+        border-radius 50%
+        display flex
+        align-items center
+        justify-content center
+        font-size 18px
+        color var(--red)
+        cursor pointer
+        font-weight 600
+        position relative
+        &__popup
+          padding 30px 40px
+          background #fff
+          font-size 18px
+          line-height 1.33
+          position absolute
+          box-shadow 0px 5px 35px 0px rgba(66, 66, 66, 0.2)
+          color var(--black)
+          border-radius 20px
+          white-space nowrap
+          bottom -11px
+          transform translateY(100%)
+          opacity 0
+          pointer-events none
+          transition .3s
+          &::before
+            content ''
+            width 12px
+            height 12px
+            background #fff
+            display block
+            position absolute
+            top -6px
+            left 50%
+            transform translateX(-50%) rotate(45deg)
+        &:hover .question__popup
+          @media (hover)
+            opacity 1
+            pointer-events auto
+
+
+
+    &-del
+      background none
+      border none
+      display flex
+      align-items center
+      margin 0
+      padding 0
+      outline none
+      font-size 18px
+      color var(--red)
+      cursor pointer
+      font-weight 500
+      svg
+        color var(--gray)
+        margin-right 10px
+
+.cart-payment
+.cart-self-delivery
+  margin-top 30px
+  padding-top 30px
+.cart-self-delivery
+  .cart__store-logo
+    margin-bottom 10px
+  &__subtitle
+    font-weight normal
+    font-size 20px
+    margin 0 0 50px
+  &__store
+    padding 40px 0 50px
+    overflow hidden
+    position relative
+    display flex
+    &::before
+      content '.....................................................................................................................................................................'
+      display block
+      color var(--gray)
+      font-size 30px
+      position absolute
+      top -27px
+      left 0
+      pointer-events none
+    &-images
+      width 255px
+      margin-right 30px
+      flex-shrink 0
+    &-info
+      margin-top 25px
+      display flex
+      width 350px
+      margin-right 30px
+      flex-shrink 0
+      &:last-child
+        margin-right 0
+      svg
+        color var(--red)
+        flex-shrink 0
+        margin-right 7px
+      p
+        margin 0
+        font-size 16px
+        font-weight 500
+
+.cart-delivery
+  margin-top 30px
+  padding-top 30px
+  &__item
+    display flex
+    align-items center
+    margin-bottom 20px
+    &:first-of-type
+      margin-bottom 45px
+    &:last-child
+      margin-bottom 0
+    &::before
+      content '...........................................'
+      display block
+      font-size 30px
+      color var(--gray)
+      overflow hidden
+      order 2
+      width 100%
+      margin-top -14px
+  &__heading
+    flex-shrink 0
+    font-size 20px
+    margin-right 5px
+    font-weight bold
+    order 1
+  &__user
+    width 700px
+    order 3
+    flex-shrink 0
+    margin-left 5px
+    display flex
+    align-items flex-start
+    justify-content space-between
+    border 2px solid var(--gray)
+    border-radius 20px
+    padding 20px 30px
+    &-info
+      display flex
+      align-items center
+  &__name
+    font-size 20px
+    font-weight bold
+    margin-bottom: 7px
+  &__logout
+    display flex
+    align-items center
+    background none
+    border none
+    font-size 18px
+    font-weight 500
+    cursor pointer
+    svg
+      color var(--gray)
+      margin-right 7px
+  &__phone
+    font-size 20px
+  &__avatar
+    width 65px
+    height 65px
+    border-radius 50%
+    background var(--gray)
+    position relative
+    margin-right 20px
+    &-letter
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%,-50%)
+      font-size 34px
+      font-weight 700
+      color #fff
+      text-transform uppercase
+    &-img
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+      display flex
+      img
+        object-fit contain
+        width 100%
+        height 100%
+  &__input
+    width 700px
+    order 3
+    flex-shrink 0
+    margin-left 5px
+    position relative
+    input
+      display block
+      width 100%
+      height 55px
+      border 2px solid var(--gray)
+      border-radius 55px
+      font-size 18px
+      padding 0 30px
+      outline none
+    p
+      color var(--gray2)
+      font-size 16px
+      margin 0
+      padding-left 30px
+      position absolute
+      left 0
+      bottom -30px

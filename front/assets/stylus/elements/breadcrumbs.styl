@@ -1,0 +1,17 @@
+.breadcrumbs
+  margin 0
+  padding 0
+  list-style none
+  display flex
+  li
+    margin-right 12px
+    font-size 18px
+    &::after
+      content '>'
+      padding-left 10px
+      color var(--red)
+    &:last-child::after
+      display none
+    a
+      color inherit
+      text-decoration none

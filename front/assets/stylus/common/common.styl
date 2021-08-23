@@ -1,0 +1,82 @@
+// @font-face
+//     font-family 'Noto Sans'
+//     src url('fonts/notosans.eot')
+//     src url('fonts/notosans.eot?#iefix') format('embedded-opentype'),url('fonts/notosans.woff') format('woff'),url('fonts/notosans.ttf') format('truetype')
+//     font-weight normal
+//     font-style normal
+//     font-display swap
+// @font-face
+//     font-family 'Noto Sans'
+//     src url('fonts/notosansbold.eot')
+//     src url('fonts/notosansbold.eot?#iefix') format('embedded-opentype'),url('fonts/notosansbold.woff') format('woff'),url('fonts/notosansbold.ttf') format('truetype')
+//     font-weight bold
+//     font-style normal
+//     font-display swap
+
+
+:root
+  --red: #ff4b2d
+  --black: #252525
+  --gray: #f2f2f2
+  --gray2: #a7a7a7
+body
+  padding 0
+  margin 0
+  color var(--black)
+  overflow-x: hidden
+*
+  box-sizing border-box
+  font-family: 'Montserrat'
+.container
+  width 1490px
+  margin auto
+.h2
+  font-size 46px
+  font-weight bold
+  line-height 1.2
+.section
+  padding 30px 0
+  &__heading
+    margin 0 0 1em
+
+.page-heading
+  display flex
+  justify-content space-between
+  align-items center
+  font-size 46px
+  margin-bottom 1em
+  .h1
+    font-size inherit
+    font-weight bold
+    line-height 1.2
+    margin 0
+
+.btn
+  display inline-flex
+  height 55px
+  border-radius 55px
+  align-items center
+  justify-content center
+  font-size 20px
+  font-weight bold
+  border none
+  text-decoration none
+  outline none
+  cursor pointer
+  font-weight 600
+  transition .3s
+  padding 0 25px
+  &--primary
+    background var(--red)
+    color #fff
+    &:hover
+      @media (hover)
+        background var(--black)
+  &--secondary
+    background transparent
+    border 2px solid var(--red)
+    &:hover
+      @media (hover)
+        background var(--black)
+        border-color var(--black)
+        color #fff

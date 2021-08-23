@@ -1,0 +1,41 @@
+<svg id="Лого" xmlns="http://www.w3.org/2000/svg" width="204" height="350" viewBox="0 0 204 350">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        font-size: 80px;
+        font-weight: 700;
+      }
+
+      .cls-1, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        font-family: CeraPro;
+      }
+
+      .cls-2 {
+        fill: #ff4b2d;
+      }
+
+      .cls-3 {
+        font-size: 21px;
+      }
+    </style>
+  </defs>
+  <text id="say:час" class="cls-1" transform="translate(-1.311 109.906) scale(0.745 0.739)">say:час</text>
+  <g>
+    <text id=":" class="cls-2" transform="translate(89.687 149.907) scale(0.745 0.739)">:</text>
+    <text id=":-2" data-name=":" class="cls-2" transform="translate(89.687 189.908) scale(0.745 0.739)">:</text>
+    <text id=":_copy_2" data-name=": copy 2" class="cls-2" transform="translate(89.687 229.908) scale(0.745 0.739)">:</text>
+    <text id=":_copy_3" data-name=": copy 3" class="cls-2" transform="translate(89.687 269.904) scale(0.745 0.739)">:</text>
+    <text id=":_copy_4" data-name=": copy 4" class="cls-2" transform="translate(89.687 309.904) scale(0.745 0.739)">:</text>
+    <text id=":_copy_5" data-name=": copy 5" class="cls-2" transform="translate(89.687 349.905) scale(0.745 0.739)">:</text>
+    <text id=":_copy_6" data-name=": copy 6" class="cls-2" transform="translate(89.687 389.885) scale(0.745 0.739)">:</text>
+    <text id=":_copy_7" data-name=": copy 7" class="cls-2" transform="translate(89.687 429.921) scale(0.745 0.739)">:</text>
+    <text id=":_copy_8" data-name=": copy 8" class="cls-2" transform="translate(89.687 469.906) scale(0.745 0.739)">:</text>
+    <text id=":-3" data-name=":" class="cls-2" transform="translate(89.687 69.906) scale(0.745 0.739)">:</text>
+    <text id=":_copy" data-name=": copy" class="cls-2" transform="translate(89.687 29.905) scale(0.745 0.739)">:</text>
+  </g>
+  <text id="быстрый_маркетплейс" data-name="быстрый маркетплейс" class="cls-3" transform="translate(109.753 130.592) scale(0.745 0.739)">быстрый<tspan dy="25.2">маркетплейс</tspan></text>
+</svg>

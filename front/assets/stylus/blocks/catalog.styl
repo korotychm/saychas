@@ -1,0 +1,83 @@
+.catalog
+  .page-heading .h1
+    display flex
+    align-items flex-end
+    span
+      font-size 22px
+      color var(--gray2)
+      font-weight normal
+      padding-left 25px
+      padding-bottom: 6px
+      
+  &__wrap
+    display grid
+    grid-template-columns minmax(0,1fr) minmax(0,3fr)
+    grid-gap 30px
+
+  &__breadcrumbs
+    list-style none
+    margin 0
+    padding 0
+    margin-bottom 40px
+    a
+      text-decoration none
+      color inherit
+      font-size inherit
+      transition .5s
+      &:hover
+        color var(--red)
+    li
+      font-size 20px
+      margin-bottom 5px
+      display flex
+      align-items center
+      &::before
+        content: '→'
+        color var(--red)
+        padding-right 10px
+        padding-bottom 2px
+      &:nth-child(3)
+        padding-left 25px
+      &:nth-child(4)
+        padding-left 50px
+      &:first-child
+        padding 0
+        &::before
+          display none
+
+  &__nav
+    margin-bottom 40px
+    a
+      display block
+      color inherit
+      font-size 20px
+      margin-bottom 5px
+      text-decoration none
+      transition .5s
+      &:hover
+        color var(--red)
+
+  &__sidebar
+    z-index 2
+    background #fff
+    &-heading
+      font-size 22px !important
+      font-weight bold
+      margin 0 0 10px
+      .unit
+        font-weight normal
+        color var(--gray2)
+
+.select.nice-select
+  width 350px
+  height 55px
+  padding 0 25px 2px
+  font-size 18px
+  display flex
+  align-items center
+  border 2px solid var(--gray)
+  border-radius 55px
+  &::after
+    border-bottom 2px solid var(--red)
+    border-right 2px solid var(--red)
+    right 25px

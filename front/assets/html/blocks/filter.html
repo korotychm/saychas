@@ -1,0 +1,71 @@
+<div class="filter" id="filter">
+    <form>
+        <!--Категория--><input type="hidden" name="category" :value="category_id" />
+        <!--Фильтр по цене-->
+        <div class="filter__item">
+            <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>
+            <div class="range"><input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" /><input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
+                <div class="range__slider">
+                    <div class="range__track"></div>
+                    <div class="range__range"></div>
+                    <div class="range__thumb range__thumb--left"></div>
+                    <div class="range__thumb range__thumb--right"></div>
+                </div>
+                <div class="range__tooltips">
+                    <div><input class="tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                    <div><input class="tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                </div>
+            </div>
+        </div>
+        <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
+            <h2 class="catalog__sidebar-heading">{{ filter.title }} <span class="unit">{{ filter.unit }}</span></h2><!-- Тип число-->
+            <div class="range" v-if="filter.type==2"><input class="range__left" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /><input class="range__right" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" />
+                <div class="range__slider">
+                    <div class="range__track"></div>
+                    <div class="range__range"></div>
+                    <div class="range__thumb range__thumb--left"></div>
+                    <div class="range__thumb range__thumb--right"></div>
+                </div>
+                <div class="range__tooltips">
+                    <div><input class="tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>
+                    <div><input class="tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" /></div>
+                </div>
+            </div><!-- Тип вкл-выкл--><label class="boolean" v-if="filter.type==3"> <input type="checkbox" :name="filter.id" value="1" />
+                <div class="boolean__check"></div>
+            </label><!-- Тип чекбоксы-->
+            <div class="filter__checkboxes" v-if="filter.type==4 || filter.type==6 || filter.type==8">
+                <div class="filter__scroll"><label class="checkbox" v-for="option in filter.options" :key="option.valueCode"><input type="checkbox" :name="filter.id + '[]'" :value="option.valueCode" />
+                        <div class="checkbox__check"></div>
+                        <div class="checkbox__value">{{ option.value }}<span class="checkbox__count"></span></div>
+                    </label></div>
+                <div class="filter__search" v-if="filter.options.length &gt; 6">
+                    <div class="search"><input type="text" placeholder="Поиск значений" /></div>
+                </div>
+                <div class="filter__show-all" v-if="filter.options.length &gt; 6"></div>
+            </div><!-- Тип цвета-->
+            <div class="filter__colors" v-if="filter.type==7"><label class="color-checkbox" v-for="option in filter.options" :key="option.valueCode"><input type="checkbox" :name="filter.id + '[]'" :value="option.valueCode" />
+                    <div class="color-checkbox__check">
+                        <div class="color-checkbox__check-color" :style="{backgroundColor: option.value[0]}"></div>
+                    </div>
+                </label></div>
+        </div>
+        <div class="filter__item">
+            <!-- Тип да-нет-не важно-->
+            <h2 class="catalog__sidebar-heading">Слот для карты памяти</h2>
+            <div class="boolean2"> <label><input type="checkbox" />
+                    <div class="boolean2__check">Да</div>
+                </label><label><input type="checkbox" />
+                    <div class="boolean2__check">Нет</div>
+                </label></div>
+        </div>
+        <div class="filter__item">
+            <h2 class="catalog__sidebar-heading">Способ доставки</h2><!-- Тип радио-->
+            <div class="filter__checkboxes">
+                <div class="filter__scroll"><label class="checkbox checkbox--radio"><input name="radio" type="radio" />
+                        <div class="checkbox__check checkbox__check--radio"></div>
+                        <div class="checkbox__value">Доставка курьером</div>
+                    </label></div>
+            </div>
+        </div>
+    </form>
+</div>
