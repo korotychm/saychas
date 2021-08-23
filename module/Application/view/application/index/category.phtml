@@ -1,11 +1,11 @@
 <?php
-$this->headTitle('Категории', 'PREPEND');
+$this->headTitle(Application\Resource\Resource::THE_CATEGORY, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
 ?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div >
-        <?= $this->bread ?>
-        <div class="content-col" style="" id="tovary">
+       
+        <div class="content-col" style="" id="categoryes">
             <div id='ajaxfiltranswer'></div>
             <br class="both">
             <h1><?= $this->title ?>  <?= ($this->id) ? "<span>id: " . $this->id . "</span>" : "" ?></h1>

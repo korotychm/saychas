@@ -13,6 +13,9 @@ class Resource
     const FOR_EXAMPLE_TEXT = "Например:";
     const THE_BASKET = "Корзина";
     const THE_CATALOG = "Каталог";
+    const THE_CATALOG_OF_PRODUCTS = "Каталог товаров";
+    const THE_CATEGORY = "Категории";
+    const THE_CATEGORY_OF_PRODUCTS = "Категории товаров";
 
     /*
      *  user
