@@ -16,18 +16,16 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
         </div>
     </div>
     <div id="main-col">
-        <?= $this->bread ?>
-    
-        
         <div class="content-col" style="" id="tovary">
             <div id='ajaxfiltranswer'></div>
             <br class="both">
             <h1><?= $this->title ?>  <?= ($this->id) ? "<span>id: " . $this->id . "</span>" : "" ?></h1>
             
             <u class="pointer" onClick="$('#im-json').toggle();">Показать JSON</u>    
-        <div style="display:none"  id="im-json">       
-        <pre id="tovar-list-json"></pre>
-        </div>    
+       
+            <div style="display:none"  id="im-json">       
+                <pre id="tovar-list-json"></pre>
+            </div>    
             
             <div id="tovar-list"></div>
             
