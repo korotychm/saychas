@@ -3,11 +3,6 @@ vendor/
 config/development.config.php
 data/cache/*
 data/cache
-public/images/*
-public/images/product/*
-public/images/product
-public/images/brand
-public/images/provider
 front/node_modules
 front/node_modules/**
 !data/cache/.gitkeep
