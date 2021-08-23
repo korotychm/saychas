@@ -73,8 +73,7 @@
 
         <header class="header">
             <?= $this->partial("/application/index/partials/main-layout/header-menu", ["menu" => []]) ?>
-
-            <div id="head">
+            <div class="container">
 
                 <div id="catalogbutton" class="catalogshow">
                     <div class=catalogbutton >
@@ -105,9 +104,7 @@
                 </div>
                 
                 <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>
-            
             </div>
-
         </header>
 
         <main class="main">
