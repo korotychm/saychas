@@ -17,8 +17,8 @@
             <b >Телефон:</b>
         </div>
         <div class='pw-contentblock cblock-5 valign-top modaluserinf' >
-            <?php if (!$user['phone'] or $error["phone"]) : ?>     
-                <input type='phone' name='userPhone' id='userPhone' placeholder="+7(999)999-9999"  value="<?= $sendingPhone ?>" required class="phoneInput lableinfo short nobg <?= ($error["phone"]) ? "error" : "" ?>"/>
+            <?php if (!$user['phone'] or $error["phone"]) : ?>
+                <input type='phone' name='userPhone' id='userPhone' placeholder="+7(999)999-9999"  value="<?= $sendingPhone ?>" required class="phoneinput lableinfo short nobg <?= ($error["phone"]) ? "error" : "" ?>"/>
                 <span class="formcomment blok red errormessage"><?= $error["phone"] ?></span>
             <?php else:?>
                 <div class="lableinfo short nobg noborder"><?= $user['phone'] ?></div>
@@ -39,8 +39,8 @@
                 <span class="formcomment blok red pointer" id="forgetPass">Забыл пароль</span>
                 <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="<?=($user['passforget'])?"1":"0"?>" >
             </div>
-        </div>     
-    <?php endif; ?> 
+        </div>
+    <?php endif; ?>
 
 
     <?php
@@ -55,20 +55,20 @@
                 </div>
                 <div class='pw-contentblock cblock-5 valign-middle modaluserinf' >
                     <input  name='userSmsCode'  class="smsInput lableinfo short nobg"  id='userSmsCode' required />
-                    <?php if ($error['sms']): ?> <span class="formcomment blok red"><?= $error['sms'] ?></span> 
-        <?php else: 
-                        if ($error['smscode']): 
-                            ?> <span class="formcomment blok red"><?= $error['smscode'] ?></span>  
+                    <?php if ($error['sms']): ?> <span class="formcomment blok red"><?= $error['sms'] ?></span>
+        <?php else:
+                        if ($error['smscode']):
+                            ?> <span class="formcomment blok red"><?= $error['smscode'] ?></span>
                         <?php endif; ?>
-                        <span class="formcomment blok gray">Мы отправили его на телефон</span> 
+                        <span class="formcomment blok gray">Мы отправили его на телефон</span>
         <?php endif; ?>
-                 
+
                     <span class="formcomment blok red pointer" id="oneMoreSms">Выслать еще раз</span>
                 </div>
-            </div>     
+            </div>
         <?php endIf;
-            endif; ?>   
-                 
+            endif; ?>
+
 <?php if ($passForgetBlock):  ?>
         <div class="blok modaluserrow">
             <div class='pw-contentblock cblock-3 valign-top iblokr modalusertit' >
@@ -79,9 +79,9 @@
                 <span class="formcomment blok red errormessage"><?= $error["newpassword"] ?></span>
                 <span class="formcomment blok gray pointer" id="forgetPass">Минимум 6 символов,</span>
                 <span class="formcomment blok gray pointer" id="forgetPass">Сочетание букв и цифр</span>
-                
+
             </div>
-        </div>     
+        </div>
         <div class="blok modaluserrow">
             <div class='pw-contentblock cblock-3 valign-top iblokr modalusertit' >
                 <b >Еще раз:</b>
@@ -90,10 +90,10 @@
                 <input type="text" placeholder="***" name='forgetPassInput2'  value="<?=$user["newpassword2"]?>" class="lableinfo short nobg <?= ($error["newpassword2"]) ? "error" : "" ?>"  id='userPass' required />
                 <span class="formcomment blok red errormessage"><?= $error["newpassword2"] ?></span>
                    <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="1" >
-                
+
             </div>
-        </div>                      
-    <?php endif; ?> 
+        </div>
+    <?php endif; ?>
 
 <?php if ($UserBlock) : ?>
         <div class="blok modaluserrow">
@@ -102,31 +102,31 @@
             </div>
             <div class='pw-contentblock cblock-5 valign-middle modaluserinf' >
                 <input  name='userName'  class=" lableinfo  nobg  <?=($error["username"]) ? "error" : "" ?>"  id='userName' value="<?= $user["username"] ?>" required/>
-        <?php if ($error['username']) : ?> 
-                <span class="formcomment blok red"><?= $error['username'] ?></span>  
+        <?php if ($error['username']) : ?>
+                <span class="formcomment blok red"><?= $error['username'] ?></span>
         <?php endif; ?>
             </div>
-    
-        </div>     
+
+        </div>
         <div class="blok modaluserrow">
             <div class='pw-contentblock cblock-3 valign-top iblokr modalusertit' >
                 <b >Почта:</b>
             </div>
             <div class='pw-contentblock cblock-5 valign-middle modaluserinf' >
                 <input type="email" name='userMail'  class=" lableinfo  nobg <?=($error["usermail"]) ? "error" : "" ?>"  id='userMail'  value="<?= $user["usermail"] ?>" required />
-        <?php if ($error['usermail']) { ?> <span class="formcomment blok red"><?= $error['usermail'] ?></span>  <?php } ?>                    
+        <?php if ($error['usermail']) { ?> <span class="formcomment blok red"><?= $error['usermail'] ?></span>  <?php } ?>
             </div>
-        </div>     
-            <?php endif; ?>    
+        </div>
+            <?php endif; ?>
 
     <div class="blok">
         <div class='pw-contentblock cblock-3 valign-middle iblokl' >
-<?php 
-if ($user['passforget']) : ?>  <span class="red pointer" id="goStepPass" >&larr; Вернуться</span> <?php 
-else: 
-    if ($stepOne):  ?>  
-        <span class="red pointer" id="goStepOne" >&larr; Вернуться</span> 
-        <?php endif;  
+<?php
+if ($user['passforget']) : ?>  <span class="red pointer" id="goStepPass" >&larr; Вернуться</span> <?php
+else:
+    if ($stepOne):  ?>
+        <span class="red pointer" id="goStepOne" >&larr; Вернуться</span>
+        <?php endif;
 endif; ?>
 
         </div>
@@ -140,19 +140,19 @@ endif; ?>
         <span class='blok mini'>Представьтесь</span>
         <input type='phone' name='userNameInput' class="nameInput" id='nameInput' />
     </div>
-    
+
     <div class='blok none  olduser PT'  id='oldUser' >...</div>
 
     <div class='blok none  newuser'  id='sms' >
         <span class='blok mini'>Код из СМС (7777)</span>
         <input  name='userSmsCode'  class="smsInput"  id=''/>
     </div>
-    
+
     <div class='blok none  olduser'  id='pass' >
         <span class='blok mini'>Пароль</span>
         <input type='phone' name='userPass'  class="smsInput"  id=''/>
     </div>
-    
+
     <div class='blok' ><input type="submit" value='Войти' id='userAuthBotton' class="formsendbutton short"></div -->
 
 

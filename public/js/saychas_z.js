@@ -4,7 +4,7 @@ function showAjaxErrorPopupWindow (status, error){
                             "Ошибка " + status,
                             "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + status + " " + error
                             );
-    
+
 }
 
 function showServicePopupWindow(title, body, footer = "", noclose = false)
@@ -24,7 +24,7 @@ $(document).ready(function () {
     getLegalStores($("#geodatadadata").text(), ".testlegalstor", false);
     //console.log($("#geodatadadata").text());
 
-    $("#tree").delay(500).slideDown("slow");
+
     $(".overcover").delay(500).fadeOut("slow");
     window.onbeforeunload = function () {
         $(".overcover").stop().fadeIn();
@@ -34,89 +34,11 @@ $(document).ready(function () {
         addUserAddrees();
     })
 
-    $("body").on("keyUp, blur, focus, change", ".numonly", function () {
-        $(this).val($(this).val().replace(/[^0-9+]/g, ''));
-    });
-
-
-    show_scrollTop();
-    $(window).scroll(function () {
-        show_scrollTop();
-    });
-
-    $("#quicktop").click(function () {
-        $("html:not(:animated)").animate({scrollTop: 0}, 500);
-        return false;
-    });
-
-    $(".product-page-image").click(function () {
-        var newsrc = $(this).attr("src");
-        var parent = $(this).parent();
-        var oldsrc = $("#productimage0").attr("src");
-        $(".product-image-container-mini").removeClass("borderred");
-        parent.addClass("borderred");
-        $("#productimage0").attr("src", newsrc);
-        //$(this).attr("src", oldsrc);
-        return false;
-    });
-
-    $("body").on("click", ".checkgroup", function () {
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
-        } else {
-            $(this).addClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
-        }
-    });
-    $("body").on("click", ".fltronoff", function () {
-        var rel = $(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
-        } else {
-            $('.fltronoff[rel^=' + rel + ']').removeClass("zach");
-            $('.relcheck[rel^=' + rel + ']').prop("checked", false);
-            ;
-            $(this).addClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
-        }
-    });
-
-    $("body").on("click", ".user-modal-open", function () {
-        $('#usermodalwindow').modal('show')
-    });
-
-    $("body").on("click", ".radio", function () {
-        var rel = $(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        $('.radio[rel^=' + rel + ']').removeClass("zach");
-        $('.relradio[rel^=' + rel + ']').prop("checked", false);
-        ;
-        $('.relradio' + rel).prop("checked", false);
-        ;
-        $(this).addClass("zach");
-        $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
-
-    });
-
-    $("body").on("click", ".closefilteritem", function () {
-        hidefilteritem();
-    });
-
-    $(".filtritemtitle").click(function () {
-        hidefilteritem();
-        var id = $(this).attr("rel");
-        $("#fi" + id).addClass("active");
-        $("#fc" + id).slideDown();
-    });
-
     $(".searchpanelclose").click(function () {
         $("#searchpanel").stop().css({top: "-200px"});
         $("#uadress").show();
     });
+
     $(".setuseraddress").click(function () {
         var rel = $(this).attr("rel");
         $.ajax({
@@ -155,8 +77,6 @@ $(document).ready(function () {
         collapsed: true,
         animated: "medium"
     });
-
-    $(".phoneInput").mask("+7(999) 999-9999", {placeholder: " "});
 
     $("#dadataanswer").slideUp();
 
@@ -211,25 +131,6 @@ $(document).ready(function () {
              });/**/
             // myMap.geoObjects.add(placemark);
         }
-    });
-
-
-    $("#tree").treeview({
-        persist: "location",
-        collapsed: true,
-        animated: "medium"
-    });
-
-
-    
-
-    $("body").on("click", ".paybutton", function () {
-        var product = $(this).attr("rel");
-        showBasket(product);
-        $("#bascetbottomblok").slideDown();
-    });
-    $("#bascetbottomblok").on("click", ".close", function () {
-        $("#bascetbottomblok").slideUp();
     });
 
     $("#userAuthForm").submit(function () {
@@ -334,36 +235,6 @@ $(document).ready(function () {
         });
     });
 
-    $(window).resize(function () {
-        leftpanelclose();
-    });
-
-    $(".catalogshow").click(function () {
-        $("#overcoverblack").fadeIn();
-        $("#lefmobiletpanel").animate({left: "0"}, 500);
-
-    });
-
-    $("#lefmobiletpanelclose").click(function () {
-        leftpanelclose();
-    });
-
-    $(".spoileropenlink").click(function () {
-        var id = $(this).attr("rel");
-        $("#spoiler-show-" + id).show();
-        $("#spoiler-hide-" + id).hide();
-        return false;
-    });
-
-    $(".favstar").click(function () {
-        ($(this).hasClass("favon")) ? $(this).removeClass("favon") : $(this).addClass("favon");
-        return false;
-    });
-
-    $(".favtext").click(function () {
-        ($(this).hasClass("favon")) ? $(this).text("Убрать из избранного") : $(this).text("Добавить в избранное");
-        return false;
-    });
 });
 
 function getLocalStores(dataString, obj = "#ajaxanswer2") {
@@ -411,11 +282,6 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
             return true;
         }
     });
-}
-
-function leftpanelclose() {
-    $("#overcoverblack").fadeOut();
-    $("#lefmobiletpanel").stop().animate({left: "-110%"}, 300);
 }
 
 function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
@@ -478,11 +344,7 @@ function print_r(arr, level) {
     return print_red_text;
 }
 
-function show_scrollTop() {
-    var wst = $(window).scrollTop();
-    (wst > 500) ? $("#quicktop").stop().show() : $("#quicktop").stop().fadeOut();
 
-}
 function showBasket(productadd = 0) {
     $.ajax({
         url: "/ajax/add-to-basket",
