@@ -1,8 +1,8 @@
 <?= $this->doctype() ?>
 <html lang="ru">
     <head>
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+        <?php /*<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> */ ?>
         <meta charset="utf-8">
         <?= $this->headTitle('Saychas.ru')->setSeparator(' - ')->setAutoEscape(false) ?>
         <?=
@@ -102,7 +102,7 @@
                     <a  href="/product/000000000014" >Товар</a>
                     <a  href="/user" >User</a>
                     <!-- a  href="<?php //= $this->url('test-repos') ?>" >Banzaii</a-->
-                    <a  href="/phpmyadmin" >Sql</a>
+                    <?php // <a  href="/phpmyadmin" >Sql</a> ?>
                     <a  href="/preview" >Help</a>
                     <span  class="parthnerenter" ><b class="brandcolor">:</b><a href="/control-panel" target="_blank">Вход для партеров</a></span>
                 </div>
