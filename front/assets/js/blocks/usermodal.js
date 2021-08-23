@@ -1,4 +1,4 @@
-$("body").on("click", ".user-modal-open", function () {
+$(document).on('click', '.user-modal-open', function () {
     $('#usermodalwindow').fadeIn();
 });
 
