@@ -5,9 +5,9 @@
         $i=0;
         foreach ($characteristics[0] as $characteristic) : ?>
             <?php if ($characteristic['type'] == 0) :?>
-                <?php if ($i!=0):?>
+                <?php if ($i!=0): ?>
                     </table>
-                <?endif;?>
+                <?php endif;?>
                 <h3><?= $characteristic['title'] ?></h3>
                 <table>
             <?php else : ?>
@@ -16,7 +16,9 @@
                    <td><?= $characteristic['value'] ?></td>
                 </tr>
             <?php endif; ?>
-        <?php endforeach;  ?>
+        <?php
+        $i++;
+        endforeach;  ?>
         </table>
     <?php endif; ?>
 </section>
