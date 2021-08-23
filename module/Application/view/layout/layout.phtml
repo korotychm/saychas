@@ -46,34 +46,6 @@
         ?>
     </head>
     <body>
-        <?php /**
-          <div id="app" class="apps">
-          {{ message }}
-          </div>
-          <div id="app-2">
-          <span v-bind:title="message">
-          Наведи на меня курсор на пару секунд,
-          чтобы увидеть динамически связанное значение title!
-          </span>
-          </div>
-
-          <script>
-          var app = new Vue({
-          el: '.apps',
-          data: {
-          message: 'Привет, Vue!'
-          }
-          });
-          var app2 = new Vue({
-          el: '#app-2',
-          data: {
-          message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
-          }
-          });
-          </script>
-         *
-         */
-        ?>
         <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>
         <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>
         <div class="overcover"></div>
@@ -97,9 +69,7 @@
             <!---->
         </div>
 
-
-        <div id="header" class="blokc" >
-
+        <header class="header">
             <?= $this->partial("/application/index/partials/main-layout/header-menu", ["menu" => []]) ?>
 
             <div id="head">
@@ -135,13 +105,14 @@
                 <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>
             
             </div>
-        </div>
-        
-        <div class="full-wrap">
-            <div id="content">
+
+        </header>
+
+        <main class="main">
+            <div class="container" id="content">
                 <?= $this->content ?>
             </div>
-        </div>
+        </main>
 
 
         <div id="bascetbottomblok" class='none'>
