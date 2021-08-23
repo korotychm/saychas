@@ -1,9 +1,13 @@
 <section class="product-card__full-table" id="attributes">
     <?php if (!empty($characteristics[0])):?>
-        <?php print_r($characteristics[0])?>
         <h2 class="product-card__section-heading">Характеристики</h2>
-        <?php foreach ($characteristics[0] as $characteristic) : ?>
+        <?php
+        $i=0;
+        foreach ($characteristics[0] as $characteristic) : ?>
             <?php if ($characteristic['type'] == 0) :?>
+                <?php if ($i!=0):?>
+                    </table>
+                <?endif;?>
                 <h3><?= $characteristic['title'] ?></h3>
                 <table>
             <?php else : ?>
@@ -12,9 +16,7 @@
                    <td><?= $characteristic['value'] ?></td>
                 </tr>
             <?php endif; ?>
-            <?php if ($characteristic['type'] == 0) :?>
-                </table>
-            <?php endif; ?>
         <?php endforeach;  ?>
+        </table>
     <?php endif; ?>
-</sections>
+</section>
