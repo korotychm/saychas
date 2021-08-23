@@ -1,4 +1,5 @@
 <?php
+
 // src/Resource/Resource.php
 
 namespace Application\Resource;
@@ -8,28 +9,37 @@ class Resource
     /*
      * common
      */
+
     const FOR_EXAMPLE_TEXT = "Например:";
+    const THE_BASKET = "Корзина";
+
+    /*
+     *  user
+     */
+    const USER_MENU_PROFILE = "Профиль";
+    const USER_MENU_PROFILE_PAGE = "Личный кабинет";
+    const USER_MENU_ORDERS = "Мои заказы";
+    const USER_MENU_POST = "Мои оповещения";
+    const USER_MENU_EXIT = "Выход";
     
-   /*
-    * Поиск
-    */
+
+    /*
+     * Поиск
+     */
     const SEARCH_INPUT_PLACEHOLDER = "Быстрый поиск";
     const SEARCH_PANEL_HELPER = "Смратфон с диагональю до 5 дюймов";
-    
-    
+
     /*
-     * Товар
+     * Товары
      */
+    const BUTTON_CATALOG = "Каталог";
     const BUTTON_LABLE_ADD_TO_BASKET = "В корзину";
     const BUTTON_LABLE_PAY_NOW = "Купить сейчас";
     const ADD_TO_FAVORITES = "Добавить в избранное";
     const CURRENCY_RUBL = "&nbsp;&#8381; ";
-    
-    
-    
-    const YES   = 'да';
-    const NO    = 'нет';
-     const USER_ADDREES_PLASEHOLDER = "Укажи адрес доставки";
+    const YES = 'да';
+    const NO = 'нет';
+    const USER_ADDREES_PLASEHOLDER = "Укажи адрес доставки";
     const USER_ADDREES_ERROR_MESSAGE = "Необходимо указать адрес до номера дома!";
     const PRODUCT_FAILURE_MESSAGE = "Объект product не&nbsp;получен";
     const PRODUCT_SUCCESS_MESSAGE = "Объект product &nbsp;получен";
@@ -40,11 +50,10 @@ class Resource
     const BASKET_SAYCHAS_do = "в течение часа";
     const BASKET_SAYCHAS3_do = "в течение трех часов";
     const ERROR_MESSAGE = "Ошибка! ";
-    
+
     /*
      * авторизация
      */
-    
     const ERROR_INPUT_PHONE_MESSAGE = "Укажите корректный номер телефона. ";
     const ERROR_INPUT_PASSWORD_MESSAGE = "Введите пароль для&nbsp;входа. ";
     const ERROR_INPUT_NAME_SMS_MESSAGE = "Введите ваше имя и&nbsp;код&nbsp;из&nbsp;СМС. ";
@@ -54,16 +63,15 @@ class Resource
     const ERROR_SEND_EMAIL_MESSAGE = "Некорректнный адрес email  ";
     const MESSAGE_ENTER_OR_REGISTER_TITLE = "Войти или зарегистрироваться";
     const MESSAGE_REGISTER_TITLE = "Регистрация";
-    const ERROR_PASS_VALIDATION_MESSAGE ="Некорректно указан пароль";
-    const ERROR_PASS_SECOND_MESSAGE ="Пароли не совпадают";
-    
+    const ERROR_PASS_VALIDATION_MESSAGE = "Некорректно указан пароль";
+    const ERROR_PASS_SECOND_MESSAGE = "Пароли не совпадают";
     const MESSAGE_ENTER_OR_REGISTER_TEXT = "Для продолжения необходимо зарегистрироваться";
     const BUTTON_LABLE_CONTINUE = "Продолжить";
     const BUTTON_LABLE_ENTER = "Войти";
     const BUTTON_LABLE_PASS_CHANGE = "Изменить и войти";
-    const BUTTON_LABLE_RETURN = "&larr;Вернуться";            
-    const BUTTON_LABLE_REGISTER = "Зарегистрироваться";            
-    const MESSAGE_PASSFORGOT_TITLE = "Изменение пароля";            
+    const BUTTON_LABLE_RETURN = "&larr;Вернуться";
+    const BUTTON_LABLE_REGISTER = "Зарегистрироваться";
+    const MESSAGE_PASSFORGOT_TITLE = "Изменение пароля";
     const USER_LABLE_HELLO = "Привет, ";
 
     /*
@@ -71,33 +79,27 @@ class Resource
      */
     const STORE_CLOSE_FOR_NIGHT = "Магазин закрыт на ночь";
     const STORE_CLOSE_FOR_NIGHT_ALT = "К сожалению, ближайший к вам магазин закрыт на ночь. Откроется ";
-    
     const STORE_UNAVALBLE = "Магазин временно недоступен";
     const STORE_UNAVALBLE_ALT = "К сожалению, ближайший к вам магазин закрыт. Возможно, у него выходные, праздники, или ремонт";
-    
     const STORE_OUT_OF_RANGE = "Магазин вне зоны доставки";
     const STORE_OUT_OF_RANGE_ALT = "К сожалению, ближайший к вам магазин находится слишком далеко - мы не сможем привезти товары вовремя";
-    
+
     /*
-     * Ввод адреса
+     * Ввод адреса доставки
      */
     const BRING_NOW = "Привезем сейчас";
     const BRING_NOW_ACTION = "Укажи адрес и получи заказ за час!";
     const BRING_NOW_ACTION_DO = "Ввести адрес";
-    
-    
+
     /*
      * Заказы
      */
     const ORDER_TITLE = "Мои заказы";
     const ORDER_EMPTY = "Заказов не найдено";
-    
-    
+
     /*
      * Числовые данные
      */
-    
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
-    
-    
-} 
+
+}

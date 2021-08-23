@@ -1,0 +1,26 @@
+<?php
+use Application\Resource\Resource; 
+?>
+
+    <div class='pw-contentblock cblock-2'>
+        <div class='contentpadding blokc'>
+            <div class="hasalt" id=" " >    <div class="emptyblock"></div>
+                <div class="blokc"><?= Resource::USER_MENU_PROFILE ?></div>
+                <div class='altcontentview'>
+                    <span class='strelka'></span>
+                    <div class='blok '>
+<?php if ($userLegal) : ?>
+                            <h5><?= $username ?></h5>
+                            <div class=' menu-item ' ><a href="/user"><?= Resource::USER_MENU_PROFILE_PAGE ?></a></div> 
+                            <div class=' menu-item' ><a href="/client-orders"><?= Resource::USER_MENU_ORDERS ?></div> 
+                            <div class=' menu-item' ><?= Resource::USER_MENU_POST ?></div> 
+                            <div class='delevery-item menu-item ' ><a href="/clear-user-data"><?= Resource::USER_MENU_EXIT ?></a></div> 
+
+                        <?php else : ?>
+                            <div class='delevery-item menu-item user-modal-open' ><?= Resource::MESSAGE_ENTER_OR_REGISTER_TITLE ?></div> 
+<?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

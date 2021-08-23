@@ -1,7 +1,7 @@
 <?= $this->doctype() ?>
 <html lang="ru">
     <head>
-        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <meta charset="utf-8">
         <?= $this->headTitle('Saychas.ru')->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -43,35 +43,35 @@
     </head>
     <body>
         <?php /**
-        <div id="app" class="apps">
+          <div id="app" class="apps">
           {{ message }}
-        </div>
-        <div id="app-2">
+          </div>
+          <div id="app-2">
           <span v-bind:title="message">
-            Наведи на меня курсор на пару секунд,
-            чтобы увидеть динамически связанное значение title!
+          Наведи на меня курсор на пару секунд,
+          чтобы увидеть динамически связанное значение title!
           </span>
-        </div>
-        
-        <script>
-            var app = new Vue({
-              el: '.apps',
-              data: {
-                message: 'Привет, Vue!'
-              }
-            });
-            var app2 = new Vue({
-              el: '#app-2',
-              data: {
-                message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
-              }
-            });
-        </script>
-         * 
+          </div>
+
+          <script>
+          var app = new Vue({
+          el: '.apps',
+          data: {
+          message: 'Привет, Vue!'
+          }
+          });
+          var app2 = new Vue({
+          el: '#app-2',
+          data: {
+          message: 'Вы загрузили эту страницу: ' + new Date().toLocaleString()
+          }
+          });
+          </script>
+         *
          */
         ?>
-        <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>  
-        <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>  
+        <?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>
+        <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>
         <div class="overcover"></div>
         <div id="overcoverblack" class='overcoverblack none' ></div>
         <div id="quicktop" class='none2' ></div>
@@ -94,14 +94,14 @@
         </div>
 
 
-        <div id="header" class="blokc" >  
+        <div id="header" class="blokc" >
             <div id="headermenu" >
                 <div class="headermenucontent">
                     <a  href="<?= $this->url('home') ?>">Home</a>
                     <a  href="/catalog/000000006"  >Каталог</a>
                     <a  href="/product/000000000014" >Товар</a>
                     <a  href="/user" >User</a>
-                    <!-- a  href="<?php //= $this->url('test-repos') ?>" >Banzaii</a-->
+                    <!-- a  href="<?php //= $this->url('test-repos')  ?>" >Banzaii</a-->
                     <a  href="/phpmyadmin" >Sql</a>
                     <a  href="/preview" >Help</a>
                     <span  class="parthnerenter" ><b class="brandcolor">:</b><a href="/control-panel" target="_blank">Вход для партеров</a></span>
@@ -110,127 +110,48 @@
 
 
             <div id="head">
+
                 <div id="catalogbutton" class="catalogshow">
                     <div class=catalogbutton >
                         <div class=mobile_nav_icon></div>
-                        Каталог
+                        <?= Application\Resource\Resource::BUTTON_CATALOG ?>
                     </div>
                 </div>
+
                 <div class="iblok" id="logo" ></div>
+
                 <div id="topservice">
+
                     <div class='pw-contentblock cblock-2' id="searchblock">
-                   <?= $this->partial("/application/index/partials/main-layout/search-block", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>    
+                        <?= $this->partial("/application/index/partials/main-layout/search-block", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>
                     </div>
+
                     <div class='pw-contentblock cblock-2 nopadding'>
-                        <div  style="  " class="blokl nopadding" id="searchpanel">         
-                        
-                              <?= $this->partial("/application/index/partials/main-layout/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>    
-                            <!-- div class="blok" id="quickaddress">
-                                <div class='geo16 uadress' >Привезем сейчас:</div>
-                                <div class='open-user-address-form user_address_set uadress' id="uadress" >
-                                    <?=""//$userAddressHtml ?>
-                                </div>
-                            </div -->
-                        </div> 
+                        <div  style="  " class="blokl nopadding" id="searchpanel">
+                            <?= $this->partial("/application/index/partials/main-layout/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>
+                        </div>
                     </div>
-                
-                <div class='iblok' id="profileblock">
-                    <div class='contentpadding'>
-                        <div class='pw-contentblock cblock-2'>
-                            <div class='contentpadding blokc'>
-                                <div class="hasalt" id=" " >    <div class="emptyblock"></div>
-                                    <div class="blokc">профиль</div>
-                                    <div class='altcontentview'>
-                                        <span class='strelka'></span>
-                                        <div class='blok '>
-                                            <?php if ($this->userLegal) { ?>
-                                                <h5><?= $this->username ?></h5>
-                                                <div class=' menu-item ' ><a href="/user">Личный кабинет</a></div> 
-                                                <div class=' menu-item' ><a href="/client-orders">Мои заказы</div> 
-                                                <div class=' menu-item' >Мои оповещения</div> 
-                                                <div class='delevery-item menu-item ' ><a href="/clear-user-data">Выход</a></div> 
 
-                                            <?php } else { ?>
-                                                <div class='delevery-item menu-item user-modal-open' >Войти или зарегистрироваться</div> 
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class='pw-contentblock cblock-2' id="basketblok">
-                            <div class='contentpadding  blokc'>
-                                <?= (/* true or */$this->addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
-                                <div class="emptyblock">
-                                    <div id="zakazcount">0</div>
-                                </div>
-                                <div class="blokc">корзина</div>
-                                <?= (/* true or */$this->addressLegal) ? '</a>' : '</div>' ?>                     
-                            </div>
-                        </div>
-
+                    <div class='iblok' id="profileblock">
+                        <?= $this->partial("/application/index/partials/main-layout/top-user-profile-block", ["userLegal" => $this->userLegal, "username" => $this->username]) ?>
+                        <?= $this->partial("/application/index/partials/main-layout/top-basket-block", ["addressLegal" => $this->addressLegal]) ?>
                     </div>
                 </div>
-                
-            </div> 
+                                <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>
+                </div>
+                <div class="full-wrap">
+                    <div id="content">
+                        <?= $this->content ?>
+                    </div>
+                </div>
             
-         <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>  
             
-            <div class="full-wrap">
-                <div id="content">  
-                    <?= $this->content ?>                    
-                </div></div>
-        </div>
-        <div id="bascetbottomblok" class='none'>
-            <div class='close'></div>
-            <div class="content"></div>
-        </div>
-        <footer id="footer" class="blokc">
-
-            <div class="iblokl contentwrapper">
-                <div class="fitem fcopy">
-                    <div class="emptyblock"></div> <div class="emptyblock"></div>
-                    <p style="padding-top:30px;">2021&copy; ООО &laquo;Сейчас&raquo; <br>все права защищены</p>
-                    <?= date("Y-m-d H:i:s") ?>
-                </div>
-                <div class="fitem flogo"><span class="flogospan"></span></div>
-                <div class="fitem fcontent" >
-                    <div class="pw-contentblock cblock-4">
-                        <div class="contentpadding footerlink">
-                            <a href="/catalog/000000002" class="blok" >Электроника</a>
-                            <a href="#" class="blok" >Аксессуары</a>
-                            <a href="#" class="blok" >Одежда</a>
-                            <a href="#" class="blok" >Детям</a>
-                            <a href="#" class="blok" >Продукты</a>
-                        </div>
-                    </div>
-                    <div class="pw-contentblock cblock-4">
-                        <div class="contentpadding footerlink">
-                            <a href="#" class="blok" >Аптеки</a>
-                            <a href="#" class="blok" >Афиша</a>
-                            <a href="#" class="blok" >Билеты</a>
-                            <a href="#" class="blok" >Услуги</a>
-                            <a href="#" class="blok activlink" >Доставим за час</a>
-                        </div>
-                    </div>
-                    <div class="pw-contentblock cblock-4">
-                        <div class="contentpadding footerlink">
-                            <a href="#" class="blok" >Частые вопросы</a>
-                            <a href="#" class="blok" >Доставка</a>
-                            <a href="#" class="blok" >Скидки</a>
-                            <a href="#" class="blok" >Контакты</a>
-                            <a href="#" class="blok" >Бренды</a>
-                            <a href="#" class="blok" >Система лояльности</a>
-                            <a href="#" class="blok" >Стать партнером</a>
-                        </div>
-                    </div>
-                    <div class="pw-contentblock cblock-4">
-                        <div class="contentpadding footerlink">
-                            <span  class="parthnerenter blokr" ><b class="brandcolor">:</b><a href="#">Вход для партеров</a></span> 
-                        </div>
-                    </div>
-                </div>
+            <div id="bascetbottomblok" class='none'>
+                <div class='close'></div>
+                <div class="content"></div>
             </div>
-        </footer>
+            
+            <?= $this->partial("/application/index/partials/main-layout/footer", ["content" => [] /*$this->footer*/ ]) ?>
+            
     </body>
 </html>

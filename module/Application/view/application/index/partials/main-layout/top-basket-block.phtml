@@ -1,0 +1,13 @@
+<?php
+use Application\Resource\Resource;
+?>
+<div class='pw-contentblock cblock-2' id="basketblok">
+<div class='contentpadding  blokc'>
+<?= (/* true or */$addressLegal) ? '<a href="/basket" >' : '<div class="open-user-address-form ">' ?>                     
+    <div class="emptyblock">
+        <div id="zakazcount">0</div>
+    </div>
+    <div class="blokc"><?= Resource::THE_BASKET ?></div>
+<?= ($addressLegal) ? '</a>' : '</div>' ?>                     
+</div>
+</div>    
