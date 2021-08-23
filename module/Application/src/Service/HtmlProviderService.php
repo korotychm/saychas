@@ -570,7 +570,8 @@ class HtmlProviderService
             $return["brand"]["id"] = $product->getBrandId();
             $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]]);
             $return["brand"]["image"] = $brandobject->getImage();
-            if ($description = $product->getDescription()){
+            $description = $product->getDescription();
+            if (!empty($description)) {
                 $return['description']["text"] = StringHelper::eolFormating($description);
                 $return['description']['if_spoiler']=((strlen($description) < 501));
                 $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description,0,500));

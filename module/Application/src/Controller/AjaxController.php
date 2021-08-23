@@ -35,6 +35,7 @@ use Application\Service\HtmlProviderService;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
 //use RuntimeException;
@@ -111,6 +112,32 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(Delivery::class);
     }
 
+    
+    public function ajaxGetBasketJsonAction()
+    {
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $return['userId'] = $userId = $container->userIdentity;
+          if (!$return['userId']) {
+            $this->getResponse()->setStatusCode(403);
+            return;
+        }
+        $return['basket'] = [];
+        $basket = Basket::findAll(['user_id' => $userId, 'order_id' => "0"]);
+        if (null === $basket) {
+            return new JsonModel($return);
+        }
+        foreach ($basket as $basketItem){
+            $return['basket'][$basketItem->getProductId()] = [
+                "id" => $basketItem->getProductId(),
+                "total" => $basketItem->getTotal(),
+                "price" => $basketItem->getPrice(),
+                "discount" => $basketItem->getDiscount(),
+            ];
+        }
+        return new JsonModel($return);
+    }
+    
+    
     public function delFromBasketAction()
     {
         $return = ["error" => true, "count" => 0];
@@ -710,18 +737,50 @@ class AjaxController extends AbstractActionController
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
         unset($params['offset'], $params['limit']);
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        //$return['legalStores'] = 
+        $legalStores = $container->legalStore;
+        
         $params['where'] = $this->getWhere($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = [];
+        $store =[];
+        $available = false; 
+        
         foreach ($products as $product) {
             $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
             $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
             if ($matchResult && !isset($filteredProducts[$product->getId()])) {
+                
+                $provider = $product->getProvider();
+                $strs = $provider->getStores();
+                $product->getProvider();
+                $store =[];
+                $available = false; 
+                foreach  ($strs as $s){
+                    if (!empty($legalStores[$s->getId()])) {
+                        $available = true; 
+                       $store[] =  $s->getId();
+                       //break;
+                    }
+                }
+                
+                $oldPrice = 0;
+                $price = $product->getPrice();
+                $discont = $product->getDiscount();
+                if ($discont > 0 ){
+                    $oldPrice =  $price;
+                    $price = $oldPrice - ($oldPrice * $discont /100);
+                }
+                
+               // $productStores = $productProvider->storesToArray();
+                
                 $filteredProducts[$product->getId()] = [
-                    "reserve" => $product->receiveRest(),
+                    "reserve" => $product->receiveRest($store),
                     "price" => $product->getPrice(),
-                    "oldprice" => $product->getOldPrice(),
-                    //'store' => $product->getStoreId(),
+                    'available' =>  $available,
+                    'oldprice' => $oldPrice,
+                    //'stores' => $productStores,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
                 ];

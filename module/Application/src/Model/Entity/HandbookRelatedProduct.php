@@ -164,9 +164,9 @@ class HandbookRelatedProduct extends Entity
         $expression->setExpression('sum(rest)');
 
         $where = ['product_id' => $this->getId()];
-        if(count($storeIds) > 0) {
+        //if(count($storeIds) > 0) {
             $where = array_merge($where, ['store_id' => $storeIds]);
-        }
+        //}
         $result = self::$stockBalanceRepository->findAll(['where' => $where, 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
 
         $current = $result->current();

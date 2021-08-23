@@ -815,6 +815,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-get-basket-json'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-basket-json',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxGetBasketJson',
+                    ],
+                ],
+            ],
 //            'regex' => [
 //                'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
 //                'defaults' => [
