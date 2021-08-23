@@ -15,3 +15,6 @@ nbproject/private/*
 nbproject/private/private.xml
 nbproject/private/private.properties
 front/node_modules
+front/package-lock.json
+front/package.json
+front/gulpfile.js

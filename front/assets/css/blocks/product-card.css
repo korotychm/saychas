@@ -91,6 +91,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
+  display: flex;
 }
 .product-card__big-img.active {
   opacity: 1;
