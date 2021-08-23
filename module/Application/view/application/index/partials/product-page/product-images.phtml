@@ -7,10 +7,12 @@
     <?php $imgClass = '';   endforeach;?>
 </div>
 <div class="product-card__img">
-    <?php $imgClass = 'active';
-        foreach ($images as $image) :?>
-            <div class="product-card__big-img <?= $imgClass ?>">
-                <img src="<?= $image_path.'/'.$image ?>" />
-            </div>
+    <div>
+        <?php $imgClass = 'active';
+            foreach ($images as $image) :?>
+                <div class="product-card__big-img <?= $imgClass ?>">
+                    <img src="<?= $image_path.'/'.$image ?>" />
+                </div>
         <?php $imgClass = '';   endforeach;?>
+    </div>
 </div>

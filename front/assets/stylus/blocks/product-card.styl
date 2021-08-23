@@ -63,8 +63,12 @@
       height 100%
 
   &__img
-    position relative
-    padding-top 100%
+    > div
+      position relative
+      &::before
+        content ''
+        display block
+        padding-top 100%
   &__big-img
     position absolute
     width 100%
