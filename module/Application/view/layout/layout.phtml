@@ -76,7 +76,7 @@
         <?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>
         <div class="overcover"></div>
         <div id="overcoverblack" class='overcoverblack none' ></div>
-        <div id="quicktop" class='none2' ></div>
+        <div id="quicktop" class='none' ></div>
 
 
 
@@ -86,7 +86,7 @@
 
                 <div class='iblokok' id=supermenuinside>
 
-                    <ul id="tree" class="tree treeview" style=""><h3><?= Application\Resource\Resource::THE_CATALOG?></h3>
+                    <ul id="tree" class="tree treeview" style=""><h3><?= Application\Resource\Resource::THE_CATALOG ?></h3>
                         <?= $this->catalogCategoties ?>
                     </ul>
 
@@ -97,9 +97,9 @@
 
 
         <div id="header" class="blokc" >
-            
-             <?= $this->partial("/application/index/partials/main-layout/header-menu", ["menu" =>[]]) ?>
-            
+
+            <?= $this->partial("/application/index/partials/main-layout/header-menu", ["menu" => []]) ?>
+
             <div id="head">
 
                 <div id="catalogbutton" class="catalogshow">
@@ -127,23 +127,27 @@
                         <?= $this->partial("/application/index/partials/main-layout/top-user-profile-block", ["userLegal" => $this->userLegal, "username" => $this->username]) ?>
                         <?= $this->partial("/application/index/partials/main-layout/top-basket-block", ["addressLegal" => $this->addressLegal]) ?>
                     </div>
+                
                 </div>
-                                <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>
-                </div>
+                
+                <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>
+            
             </div>
-                <div class="full-wrap">
-                    <div id="content">
-                        <?= $this->content ?>
-                    </div>
-                </div>
-            
-            
-            <div id="bascetbottomblok" class='none'>
-                <div class='close'></div>
-                <div class="content"></div>
+        </div>
+        
+        <div class="full-wrap">
+            <div id="content">
+                <?= $this->content ?>
             </div>
-            
-            <?= $this->partial("/application/index/partials/main-layout/footer", ["content" => [] /*$this->footer*/ ]) ?>
-            
+        </div>
+
+
+        <div id="bascetbottomblok" class='none'>
+            <div class='close'></div>
+            <div class="content"></div>
+        </div>
+
+        <?= $this->partial("/application/index/partials/main-layout/footer", ["content" => [] /* $this->footer */]) ?>
+
     </body>
 </html>
