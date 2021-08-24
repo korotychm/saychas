@@ -122,11 +122,12 @@ $(document).ready(function(){
           }
         },
         setRangeStyles() {
+            // hack, try to escape timeout later
             setTimeout(function() {
               $('.range').each(function(){
                 setRange($(this));
               });
-            }, 1000);
+            }, 10);
         }
       },
       created() {

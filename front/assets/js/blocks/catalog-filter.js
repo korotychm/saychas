@@ -377,7 +377,7 @@ $(document).on('change','.tooltip-to',function(){
         max = +el.find('.range__right').attr('max'),
         minVal = +el.find('.range__left').val(),
         maxVal = +el.find('.range__right').val();
-    console.log('range',el,min,max,minVal,maxVal);
+    
     if (minVal < min){
       minVal = min;
       el.find('.range__left').val(minVal);
