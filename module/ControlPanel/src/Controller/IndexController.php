@@ -33,6 +33,10 @@ class IndexController extends AbstractActionController
     
     protected $userManager;
     
+    protected $productManager;
+    
+    protected $storeManager;
+
     protected $authService;
 
     /** @var array */
@@ -59,6 +63,8 @@ class IndexController extends AbstractActionController
         $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
+        $this->productManager = $this->container->get(\ControlPanel\Service\ProductManager::class);
+        $this->storeManager = $this->container->get(\ControlPanel\Service\StoreManager::class);
         $this->rbacManager->init(true);        
     }
 
@@ -110,7 +116,8 @@ class IndexController extends AbstractActionController
     {
         $this->assertLoggedIn();
         $dateTime = new \DateTime();
-        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime]);
+        //$stores = $this->storeManager->getAll();
+        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime,]);
         return $view->setTerminal(true);
     }
 
@@ -143,6 +150,8 @@ class IndexController extends AbstractActionController
     public function showProductsAction()
     {
         $this->assertLoggedIn();
+//        $products = $this->productManager->getAll();
+        //$view = new ViewModel(['products' => $products]);
         $view = new ViewModel();
         return $view->setTerminal(true);
     }

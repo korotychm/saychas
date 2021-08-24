@@ -1,7 +1,7 @@
 <div class="fluid-container">
     <div class="row">
         <div class="col-lg-6 col-md-12 <?php //bg-success  ?>">
-            <?= $this->partial('control-panel/index/partials/stores/list', ['table' => $table]); ?>
+            <?= $this->partial('control-panel/index/partials/stores/list', ['table' => $table, 'stores' => $stores,]); ?>
         </div>
         <div class="col-lg-6 col-md-12 <?php // bg-info  ?>">
             <?= $this->partial('control-panel/index/partials/stores/edit-form', ['row' => $table[0]]); ?>
