@@ -15,7 +15,8 @@ function getCategoryFilters(categoryId){
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
               console.log('data:',data);
               var filters = data;
-              for (filter of filters.filters) {
+              for (let filter of filters.filters) {
+                console.log(filter);
                 if (filter.type == 2){
                   let min = filter.options.reduce(function(prev, curr) {
                     return +prev.value < +curr.value ? prev : curr;
