@@ -66,7 +66,7 @@ function getCategoryFilters(categoryId){
         });
 }
 
-import axios from 'axios';
+
 
 $(document).ready(function(){
 
