@@ -1,10 +1,10 @@
 <?php use Application\Resource\Resource; ?>
-<input type=text 
-       id='useraddress'  
-       placeholder='<?= Resource::USER_ADDREES_PLASEHOLDER ?>'   
-       pattern="[A-Za-zА-Яа-яЁё]{3,}"  required 
+<input type=text
+       id='useraddress'
+       placeholder='<?= Resource::USER_ADDREES_PLASEHOLDER ?>'
+       pattern="[A-Za-zА-Яа-яЁё]{3,}"  required
        accept=""
-       class='pn-text iblok' 
+       class='pn-text iblok'
        />
 <div id="useradesserror" class="errorblock none"></div>
 <div class="searchpanelclose"></div>
@@ -21,11 +21,11 @@
                         <div class="altcontentview">
 
                             <div class="blok ">
-        <?php foreach ($addresses['addresses'] as $address): ?>  
+        <?php foreach ($addresses['addresses'] as $address): ?>
                                     <span class="menuitem pointer setuseraddress" rel="<?= $address["id"] ?>"><?= $address['text'] ?></span>
                         <?php endforeach; ?>
                                 <span class="menuitem pointer open-user-address-form red"><?= Resource::BRING_NOW_ACTION_DO ?></span></div>
-                        </div>         
+                        </div>
                 <?php endif; ?>
                     <span><?= $addresses['address']['text'] ?></span>
                     <textarea id="geodatadadata" class="none"><?= $addresses['address']['geodata'] ?></textarea>
@@ -34,12 +34,12 @@
                 <span class="blok relative  useraddressalt" >
                     <span><?= Resource::BRING_NOW_ACTION ?></span>
                     <textarea id="geodatadadata" class="none"></textarea>
-                </span>                                
+                </span>
 <?php endif; ?>
 
         </div>
         <u class="pointer mini iblok" style="margin-left:24px;" onClick="$('#jsonaddress').toggle();">Показать JSON</u>
     </div>
 
-    <div class="none mini" id="jsonaddress"><?= $addressesJson ?></div>     
+    <div class="none mini" id="jsonaddress"><?= $addressesJson ?></div>
 </div>
