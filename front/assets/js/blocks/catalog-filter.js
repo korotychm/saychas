@@ -1,4 +1,9 @@
-var filters = getCategoryFilters($("#testFiltersCategotyId").val());
+var filters;
+
+$(document).ready(function(){
+  filters = getCategoryFilters($("#testFiltersCategotyId").val());
+});
+
 // var filters = {
 //   "category_id":"000000006",
 //   "rangeprice":{"minprice":"580000","maxprice":"9899100"},
