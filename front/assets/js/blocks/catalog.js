@@ -138,7 +138,7 @@ $(document).ready(function(){
               this.category_id = response.data.category_id,
               this.rangeprice = response.data.rangeprice,
               this.filters = response.data.filters,
-              setRangesValues()
+              this.setRangesValues()
             ));
       }
     });
