@@ -12,6 +12,8 @@ use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\Provider;
+use Application\Model\Entity\Product;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 //use Laminas\Session\Container;
 //use Laminas\Json\Json;
@@ -30,9 +32,11 @@ class CommonHelperFunctionsService
      */
     private $config;
 
-    public function __construct($config)
+    public function __construct($config, 
+            HandbookRelatedProductRepositoryInterface $productRepository)
     {
         $this->config = $config;
+         $this->productRepository = $productRepository;
     }
 
     public function example()
@@ -79,7 +83,7 @@ class CommonHelperFunctionsService
         return $response;
     }
     
-    public function getProductCardJson($products)
+    public function getProductCardArray($products)
     {
         if (empty($products)){
             return [];
@@ -117,6 +121,5 @@ class CommonHelperFunctionsService
         }
         return $return;
     }
-    
-
+ 
 }

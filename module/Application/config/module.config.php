@@ -1146,7 +1146,9 @@ return [
         'TinkoffMerchantAPI'=> [
             'terminal' => '1629729309127DEMO',  
             'token' => 'z62eq0aa900wvaku',   
-            'api_url' => 'https://securepay.tinkoff.ru/v2/'
+            'api_url' => 'https://securepay.tinkoff.ru/v2/',
+            'company_email' => 'd.sizov@saychas.ru',
+            
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',

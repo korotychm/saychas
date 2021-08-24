@@ -699,6 +699,7 @@ class HtmlProviderService
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
         $return['phone'] = $user->getPhone();
+        $return['email'] = $user->getEmail();
         $userData = $user->getUserData();
         $usdat = $userData->current();
         if (null != $usdat) {

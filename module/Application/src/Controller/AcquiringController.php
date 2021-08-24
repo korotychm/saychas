@@ -47,6 +47,7 @@ use Application\Model\Entity\UserData;
 use Application\Helper\StringHelper;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
+use Application\Service\CommonHelperFunctionsService;
 
 class AcquiringController extends AbstractActionController
 {
@@ -77,6 +78,7 @@ class AcquiringController extends AbstractActionController
     private $basketRepository;
     //private $sessionContainer;
     private $sessionManager;
+    private $commonHelperFuncions;
 
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
@@ -86,7 +88,8 @@ class AcquiringController extends AbstractActionController
             PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct,
             $entityManager, $config, HtmlProviderService $htmlProvider, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager)
+            ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager,
+            CommonHelperFunctionsService $commonHelperFuncions)
     {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
@@ -111,6 +114,7 @@ class AcquiringController extends AbstractActionController
         $this->basketRepository = $basketRepository;
 //        $this->sessionContainer = $sessionContainer;
         $this->sessionManager = $sessionManager;
+        $this->commonHelperFuncions = $commonHelperFuncions;
 
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
@@ -129,19 +133,43 @@ class AcquiringController extends AbstractActionController
         $response = parent::onDispatch($e);
         return $response;
     }
+    
+    /*
+     * @return JsonModel
+     */
     public function tinkoffPaymentAction() 
     {
+        $param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
         $container = new Container(Resource::SESSION_NAMESPACE);
-        $return['userId'] = $userId = $container->userIdentity;
-        $return['text'] = "тест тинькофф";
-        $return['order_id'] = $this->params()->fromRoute('order', '');
-        $return['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
-        $basket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $return['order_id']]]);
-        if (null === $basket) {
-            return new JsonModel(["result" => false, "message" => "error order products" ]);
-        }
-        $return['basket'] = $this->acquiringCommunication->initTinkoff($basket);
+        $param['userId'] = $userId = $container->userIdentity;
+        $param['order_id'] = $this->params()->fromRoute('order', '');
+        $order = ClientOrder::find(["order_id" => $param['order_id']]); 
         
+        if (empty($order)) {
+            return new JsonModel(["result" => false, "message" => "error: order not found" ]);
+        }
+        
+        $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
+        $param['delivery_price'] = (int)$basket_info['delivery_price'];
+        $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
+        $param['delivery_tax'] = $delivery_params['deliveryTax'];
+        $param['userInfo'] = $this->htmlProvider->getUserInfo($this->userRepository->find(['id' => $userId]));
+        
+        if (empty($param['userInfo']['phone'])){
+             return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
+        }
+        
+        unset($param['userInfo']['userGeodata']);
+        
+        $basket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $param['order_id']]]);
+        
+        if (empty($basket)) {
+            return new JsonModel(["result" => false, "message" => "error: products of order not found " ]);
+        }
+        $param['basket'] = $this->acquiringCommunication->getBasketData($basket);
+        $return = $this->acquiringCommunication->tinkoffInit($param);
+                //getBasketData($basket);
+        //$param['basket']['basket_total']
         return new JsonModel($return);
     }
   

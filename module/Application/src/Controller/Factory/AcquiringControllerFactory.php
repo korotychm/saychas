@@ -33,7 +33,7 @@ use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Controller\AcquiringController;
-
+use Application\Service\CommonHelperFunctionsService;
 /**
  * This is the factory forAcquiringController. Its purpose is to instantiate the
  * controller.
@@ -66,6 +66,7 @@ class AcquiringControllerFactory implements FactoryInterface
         $productCharacteristic = $container->get(ProductCharacteristicRepositoryInterface::class);
         $colorRepository = $container->get(ColorRepositoryInterface::class);
         $basketRepository = $container->get(BasketRepositoryInterface::class);
+        $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
         
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
@@ -75,7 +76,7 @@ class AcquiringControllerFactory implements FactoryInterface
         
         return new AcquiringController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $colorRepository, $setting, $characteristic,
                 $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $acquiringCommunication, $userRepository, $authService, $productCharacteristic,
-                $basketRepository/*, $sessionContainer*/, $sessionManager);
+                $basketRepository/*, $sessionContainer*/, $sessionManager, $commonHelperFuncions);
     }
 
 }

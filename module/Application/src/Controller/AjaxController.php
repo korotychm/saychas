@@ -168,7 +168,7 @@ class AjaxController extends AbstractActionController
         $return["result"] = true;
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        $orders = ClientOrder::findAll(['user_id' => $userId]);
+        $orders = ClientOrder::findAll(["where" => ['user_id' => $userId]]);
         if (!empty($orders)) {
             $return["order_list"] = $this->htmlProvider->orderList($orders);
         }
@@ -697,7 +697,7 @@ class AjaxController extends AbstractActionController
 
         $params['where'] = $this->getWhereCategories($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = $this->commonHelperFuncions->getProductCardJson($products);
+        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products);
         return $filteredProducts;
     }
 

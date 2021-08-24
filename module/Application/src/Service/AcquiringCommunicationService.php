@@ -34,8 +34,12 @@ class AcquiringCommunicationService
        $this->config = $config;
        $this->productRepository = $productRepository;
     }
-
-    public function initTinkoff ($data){
+    public function tinkoffInit($param)
+    {
+        
+    }
+    public function getBasketData ($data)
+    {
         $return['basket_total'] = 0;
         foreach ($data as $basketItem){
             $total = $basketItem->getTotal();
@@ -54,12 +58,10 @@ class AcquiringCommunicationService
                 "oldprice" => $oldprice,
                 "discount" => $discount,
                 'price' => $price,
-                'tax' => 0,
+                'tax' => $product->getTax(),
             ];
             $return['basket_total']+=($price*$total);
         }
-        
-        
         return $return;
     }
     

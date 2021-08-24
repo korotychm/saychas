@@ -362,7 +362,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * @author Sizov D. 
+     * @author plusweb 
      * 
      * @return JsonModel
      */
@@ -397,21 +397,18 @@ class UserDataController extends AbstractActionController
             } else {
 
                 $userAutSession["phone"] = $return['phone'];
-
                 $stepOne = true;
-
                 $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
-                //$print_r = 
                 $userSuperId = $user->getUserId();
 
                 if ($user and $userSuperId and $userId = $user->getId()) {
 
                     $userData = $user->getUserData();
                     $usdat = $userData->current();
-                    if (null != $usdat) {
+                    /*if (null != $usdat) {
                         //$print_r = $userGeodata = $usdat->getGeodata();
                         //exit ($userGeodata);
-                    }
+                    }*/
                     if ($post->forgetPassHidden) {
 
                         // exit (print_r($user));
@@ -574,6 +571,7 @@ class UserDataController extends AbstractActionController
                                 $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
                                 $newUser->setId($container->userIdentity);
                                 $newUser->setName($userName);
+                                $newUser->setEmail($userMail);
                                 $newUser->setUserId($answer['id']);
                                 //$print_r = 
                                 $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
