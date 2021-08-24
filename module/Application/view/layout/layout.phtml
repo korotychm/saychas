@@ -94,9 +94,7 @@
                            <?= $this->partial("/application/index/partials/main-layout/search-block", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>
                         </div>
                         <div class="header__address">
-                           <div  style="  " class="blokl nopadding" id="searchpanel">
-                              <?= $this->partial("/application/index/partials/main-layout/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>
-                           </div>
+                           <?= $this->partial("/application/index/partials/main-layout/user-address-in-layout", ["addresses" => $this->addresses, "addressesJson" => $this->addressesJson]) ?>
                         </div>
                     </div>
                     <div class="header__icons" id="profileblock">
