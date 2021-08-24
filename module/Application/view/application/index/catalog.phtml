@@ -16,13 +16,13 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
   <div class="catalog__wrap">
     <aside class="catalog__sidebar">
       <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
+      <?= $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>
     </aside>
   </div>
 </section>
 
 
 <div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
-  <div class="pointer" id="testFiltersButton"><u>Получить json фильтров</u></div>
   <input type="hidden" value="<?=$id?>" id="testFiltersCategotyId"/>
     <div id="left-col">
         <div class="content-col">
