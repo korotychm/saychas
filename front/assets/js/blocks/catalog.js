@@ -122,6 +122,7 @@ $(document).ready(function(){
             }
           }
           $('.range').each(function(){
+            console.log('range');
             setRange($(this));
           });
         }
