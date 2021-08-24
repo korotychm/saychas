@@ -149,8 +149,10 @@
   color: var(--black);
   transition: 0.3s;
 }
-.header__address-val__dropdown-item:hover {
-  color: var(--red);
+@media (hover) {
+  .header__address-val__dropdown-item:hover {
+    color: var(--red);
+  }
 }
 .header__address-val__dropdown::before {
   content: '';
@@ -167,6 +169,10 @@
   .header__address-val:hover {
     color: var(--red);
   }
+}
+.header__address-val:hover .header__address-val__dropdown {
+  opacity: 1;
+  pointer-events: auto;
 }
 .header__icons {
   display: flex;

@@ -123,7 +123,8 @@
           color var(--black)
           transition .3s
           &:hover
-            color var(--red)
+            @media (hover)
+              color var(--red)
         &::before
           content ''
           width 20px
@@ -137,6 +138,10 @@
       &:hover
         @media (hover)
           color var(--red)
+        .header__address-val__dropdown
+          opacity 1
+          pointer-events auto
+
   &__icons
     display flex
     justify-content space-between
