@@ -1,12 +1,15 @@
 <?php use Application\Resource\Resource; ?>
 <div class="header__address-input" id="searchpanel">
-  <input type=text
-         id='useraddress'
-         placeholder='<?= Resource::USER_ADDREES_PLASEHOLDER ?>'
-         pattern="[A-Za-zА-Яа-яЁё]{3,}"  required
-         accept=""
-         class='pn-text iblok'
-         />
+  <div class="search">
+    <input type=text
+           id='useraddress'
+           placeholder='<?= Resource::USER_ADDREES_PLASEHOLDER ?>'
+           pattern="[A-Za-zА-Яа-яЁё]{3,}"  required
+           accept=""
+           class='pn-text iblok'
+           />
+    <button></button>
+  </div>
   <div id="useradesserror"></div>
   <div class="header__address-close searchpanelclose"></div>
 </div>
