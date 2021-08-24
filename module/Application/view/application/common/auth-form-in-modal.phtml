@@ -8,7 +8,7 @@
           <input name='userPhone' id='userPhone' class="phoneinput <?= ($error['phone']) ? 'error' : '' ?>" type="text" placeholder="+7 (999) 999-99-99" required />
         </div>
         <?php if ($error["phone"]):?>
-          <p class="formcomment red errormessage"><?= $error["phone"] ?></p>
+          <p class="error"><?= $error["phone"] ?></p>
         <?php endif; ?>
       <?php else:?>
         <div class="auth-reg__input-group__value"><?= $user['phone'] ?></div>
@@ -19,21 +19,92 @@
     <div class="auth-reg__input-group">
         <div class="auth-reg__input-group__label">Пароль:</div>
         <div class="auth-reg__input-group__input">
-          <input name='userPass' type="password" <?= ($error['password']) ? 'error' : '' ?> id='userPass' required />
+          <input name='userPass' type="password" class="<?= ($error['password']) ? 'error' : '' ?>" id='userPass' required />
           <?php if ($error["password"]):?>
-            <p class="formcomment red errormessage"><?= $error["password"] ?></p>
+            <p class="error"><?= $error["password"] ?></p>
           <?php endif; ?>
           <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="<?=($user['passforget'])?"1":"0"?>" >
           <a id="forgetPass">Забыли пароль?</a>
         </div>
     </div>
   <?php endif; ?>
-  <button class="btn btn--primary">Продолжить</button>
+  <?php if ($CodeBlock) :
+      if ($user['smscode']) :?>
+        <input type="hidden"  name='userSmsCode'  value="<?=$user['smscode']?>" />
+      <?php  else:  ?>
+        <div class="auth-reg__input-group">
+            <div class="auth-reg__input-group__label">Код:</div>
+            <div class="auth-reg__input-group__input">
+                <input name='userSmsCode' type="password" class="<?= ($error['sms'] || $error['smscode']) ? 'error' : '' ?>" id='userSmsCode' required />
+                <?php if ($error["sms"]):?>
+                  <p class="error"><?= $error["sms"] ?></p>
+                <?php else:
+                  if ($error['smscode']):?>
+                    <p class="error"><?= $error["smscode"] ?></p>
+                  <?php endif; ?>
+                  <p>Мы отправили его на телефон</p>
+                <?php endif; ?>
+
+                <a id="oneMoreSms">Выслать его еще раз?</a>
+            </div>
+        </div>
+      <?php endif; ?>
+  <?php endif; ?>
+  <?php if ($passForgetBlock): ?>
+    <div class="auth-reg__input-group">
+        <div class="auth-reg__input-group__label">Новый пароль:</div>
+        <div class="auth-reg__input-group__input">
+          <input name='forgetPassInput' type="password" value="<?=$user["newpassword"]?>" class="<?= ($error['newpassword']) ? 'error' : '' ?>" id='userPass' required />
+          <?php if ($error["newpassword"]):?>
+            <p class="error"><?= $error["newpassword"] ?></p>
+          <?php endif; ?>
+          <p>Минимум 6 символов</p>
+          <p>Сочетание букв и цифр</p>
+        </div>
+    </div>
+    <div class="auth-reg__input-group">
+        <div class="auth-reg__input-group__label">Еще раз:</div>
+        <div class="auth-reg__input-group__input">
+          <input name='forgetPassInput2' value="<?=$user["newpassword2"]?>" type="password" class="<?= ($error['newpassword2']) ? 'error' : '' ?>" id='userPass' required />
+          <?php if ($error["newpassword2"]):?>
+            <p class="error"><?= $error["newpassword2"] ?></p>
+          <?php endif; ?>
+          <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="1" >
+        </div>
+    </div>
+  <?php endif; ?>
+  <?php if ($UserBlock) : ?>
+    <div class="auth-reg__input-group">
+        <div class="auth-reg__input-group__label">Ваше имя:</div>
+        <div class="auth-reg__input-group__input auth-reg__input-group__input--large">
+          <input name='userName' type="text" class="<?= ($error['username']) ? 'error' : '' ?>" id='userName' value="<?= $user["username"] ?>" required />
+          <?php if ($error["username"]):?>
+            <p class="error"><?= $error["username"] ?></p>
+          <?php endif; ?>
+        </div>
+    </div>
+    <div class="auth-reg__input-group">
+        <div class="auth-reg__input-group__label">Почта:</div>
+        <div class="auth-reg__input-group__input auth-reg__input-group__input--large">
+          <input name='userMail' type="email" class="<?= ($error['usermail']) ? 'error' : '' ?>" id='userMail'  value="<?= $user["usermail"] ?>" required />
+          <?php if ($error["usermail"]):?>
+            <p class="error"><?= $error["usermail"] ?></p>
+          <?php endif; ?>
+        </div>
+    </div>
+  <?php endif; ?>
+  <?php if ($user['passforget']) : ?>
+    <a class="auth-reg__back" id="goStepPass">← Вернуться</a>
+  <?php elseif ($stepOne): ?>
+    <a class="auth-reg__back" id="goStepOne">← Вернуться</a>
+  <?php endif; ?>
+  <input type="submit" value='<?= $buttonLable ?>' id='userAuthButton<?= $buttonIdPrefix ?>' class="userformsendbutton btn btn--primary">
+  <p class="1c-error"><?= $error["1c"]?></p>
 </div>
 
 
 
-
+<!--
 
 <div class="modal-body">
                     <div class="overcoverlocal none" id="user-modal-cover"></div>
@@ -124,7 +195,7 @@
             </div>
         </div>
     <?php endif; ?>
-
+<!--
 <?php if ($UserBlock) : ?>
         <div class="blok modaluserrow">
             <div class='pw-contentblock cblock-3 valign-top iblokr modalusertit' >
@@ -185,5 +256,6 @@ endif; ?>
 
     <div class='blok' ><input type="submit" value='Войти' id='userAuthBotton' class="formsendbutton short"></div -->
 
-
+<!--
 </div>
+-->
