@@ -89,10 +89,10 @@ $(document).ready(function(){
                 test : this.category_id
               }))
             .then(response => (
-              console.log(response),
-              this.category_id = response.category_id,
-              this.rangeprice = response.rangeprice,
-              this.filters = response.filters
+              this.category_id = response.data.category_id,
+              this.rangeprice = response.data.rangeprice,
+              this.filters = response.data.filters,
+              console.log(this)
             ));
       }
     });
