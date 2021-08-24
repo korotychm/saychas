@@ -83,6 +83,7 @@ $(document).ready(function(){
       methods: {
         setRangesValues() {
           for (let filter of this.filters) {
+            console.log(filter);
             if (filter.type == 2){
               let min = filter.options.reduce(function(prev, curr) {
                 return +prev.value < +curr.value ? prev : curr;
