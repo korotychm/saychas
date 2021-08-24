@@ -83,7 +83,6 @@ $(document).ready(function(){
       methods: {
         setRangesValues() {
           for (let filter of this.filters) {
-            console.log(filter);
             if (filter.type == 2){
               let min = filter.options.reduce(function(prev, curr) {
                 return +prev.value < +curr.value ? prev : curr;
@@ -91,6 +90,7 @@ $(document).ready(function(){
               let max = filter.options.reduce(function(prev, curr) {
                 return +prev.value > +curr.value ? prev : curr;
               }).value;
+              console.log(min , max);
 
               let diff = max - min;
               let float = false;
@@ -113,6 +113,8 @@ $(document).ready(function(){
                 step = 0.1;
               }
 
+              console.log(step);
+
               if (!float && diff % step != 0){
                 max = +max + step;
               }
@@ -120,6 +122,8 @@ $(document).ready(function(){
               filter.min = min;
               filter.max = max;
               filter.step = step;
+
+              console.log(filter.min,filter.max,filter.step);
             }
           }
           $('.range').each(function(){
