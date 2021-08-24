@@ -85,7 +85,8 @@ $(document).ready(function(){
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
             .post('/ajax-get-category-filters', {
-              categoryId : this.category_id
+              categoryId : this.category_id,
+              test : this.category_id
             })
             .then(response => (
               console.log(response),
