@@ -22,3 +22,7 @@ function showBasket(productadd = 0) {
     });
     return false;
 }
+
+$("#basketbottom").on("click", ".basketbottom__close", function () {
+    $("#basketbottom").removeClass('active');
+});

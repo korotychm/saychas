@@ -27,8 +27,4 @@ $(document).ready(function () {
       $("#lefmobiletpanel").stop().animate({left: "-110%"}, 300);
   }
 
-  $("#bascetbottomblok").on("click", ".close", function () {
-      $("#bascetbottomblok").slideUp();
-  });
-
 });
