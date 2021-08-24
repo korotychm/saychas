@@ -15,6 +15,7 @@ function getCategoryFilters(categoryId){
             data: {"categoryId": categoryId},
             success: function (data) {
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
+              console.log('data:',data);
               var filter = new Vue({
                 el: '#filter',
                 data: data
