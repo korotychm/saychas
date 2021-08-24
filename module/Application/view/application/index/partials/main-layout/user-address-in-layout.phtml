@@ -25,12 +25,10 @@
         <textarea id="geodatadadata" style="display: none;"><?= $addresses['address']['geodata'] ?></textarea>
         <?php if (!empty($addresses['addresses'])): ?>
           <div class="header__address-val__dropdown">
-              <div class="blok ">
-                  <?php foreach ($addresses['addresses'] as $address): ?>
-                      <span class="header__address-val__dropdown-item setuseraddress" rel="<?= $address["id"] ?>"><?= $address['text'] ?></span>
-                  <?php endforeach; ?>
-                  <span class="header__address-val__dropdown-item open-user-address-form"><?= Resource::BRING_NOW_ACTION_DO ?></span>
-              </div>
+              <?php foreach ($addresses['addresses'] as $address): ?>
+                  <span class="header__address-val__dropdown-item setuseraddress" rel="<?= $address["id"] ?>"><?= $address['text'] ?></span>
+              <?php endforeach; ?>
+              <span class="header__address-val__dropdown-item open-user-address-form"><?= Resource::BRING_NOW_ACTION_DO ?></span>
           </div>
         <?php endif; ?>
       </div>
