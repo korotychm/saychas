@@ -371,12 +371,12 @@ $(document).on('change','.tooltip-to',function(){
 });
 
 function setRange(el) {
-  console.log('range',el);
+
   let min = +el.find('.range__left').attr('min'),
       max = +el.find('.range__right').attr('max'),
       minVal = +el.find('.range__left').val(),
       maxVal = +el.find('.range__right').val();
-
+  console.log('range',el,min,max,minVal,maxVal);
   if (minVal < min){
     minVal = min;
     el.find('.range__left').val(minVal);
