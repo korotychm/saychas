@@ -759,12 +759,10 @@ class AjaxController extends AbstractActionController
                 $available = false; 
                 foreach  ($strs as $s){
                     if (!empty($legalStores[$s->getId()])) {
-                        $available = true; 
+                       $available = true; 
                        $store[] =  $s->getId();
-                       //break;
-                    }
+                     }
                 }
-                
                 $oldPrice = 0;
                 $price = $product->getPrice();
                 $discont = $product->getDiscount();
@@ -772,9 +770,6 @@ class AjaxController extends AbstractActionController
                     $oldPrice =  $price;
                     $price = $oldPrice - ($oldPrice * $discont /100);
                 }
-                
-               // $productStores = $productProvider->storesToArray();
-                
                 $filteredProducts[$product->getId()] = [
                     "reserve" => $product->receiveRest($store),
                     "price" => $product->getPrice(),

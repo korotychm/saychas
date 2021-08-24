@@ -50,17 +50,12 @@ class CommonHelperFunctionsService
      */
     public function updateLegalStores($json)
     {
-
         $url = $this->config['parameters']['1c_request_links']['get_store'];
-        $result = file_get_contents(
-                $url,
-                false,
-                stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]])
-        );
+        $result = file_get_contents($url, false, stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]]));
         if (!$result) {
             return ["result" => false, "error" => "1C не отвечает "];
         }
-
+        
         $legalStore = Json::decode($result, true);
 
         foreach ($legalStore as $store) {
@@ -73,7 +68,7 @@ class CommonHelperFunctionsService
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
-
+        
         return ["result" => true, "message" => "Магазины получены"];
     }
     
@@ -89,8 +84,7 @@ class CommonHelperFunctionsService
         if (empty($products)){
             return [];
         }
-         $container = new Container(Resource::SESSION_NAMESPACE);
-        //$return['legalStores'] = 
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $legalStores = $container->legalStore;
         foreach ($products as $product) {
             if (!isset($filteredProducts[$product->getId()])) {
@@ -101,11 +95,9 @@ class CommonHelperFunctionsService
                     $oldPrice =  $price;
                     $price = $oldPrice - ($oldPrice * $discont /100);
                 }
-                //$provider = ;
                 $strs = $product->getProvider()->getStores();
                 $available = false; 
-                $store =[];
-                
+                $store =[];                
                 foreach($strs as $s){
                     if (!empty($legalStores[$s->getId()])) {
                         $available = true; 
@@ -117,7 +109,6 @@ class CommonHelperFunctionsService
                     "reserve" => $product->receiveRest($store),
                     "price" => $product->getPrice(),
                     'available' =>  $available,
-                    //'store' =>  $store,
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),

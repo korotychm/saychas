@@ -20,6 +20,7 @@ use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Application\Controller\Factory\FtpControllerFactory;
+use Application\Controller\Factory\AcquiringControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
@@ -969,6 +970,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-payment'=> [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/tinkoff-payment[/:order]',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffPayment',
+                    ],
+                ],
+            ],
             //getJsonCategoryFiltersAction
         ],
     ],
@@ -981,6 +992,7 @@ return [
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
             Controller\FtpController::class => FtpControllerFactory::class,
+            Controller\AcquiringController::class => AcquiringControllerFactory::class,
         ],
     ],
     'laminas-cli' => [
@@ -1070,6 +1082,7 @@ return [
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
             \Application\Service\ExternalCommunicationService::class => \Application\Service\Factory\ExternalCommunicationServiceFactory::class,
+            \Application\Service\AcquiringCommunicationService::class => \Application\Service\Factory\AcquiringCommunicationServiceFactory::class,
 
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
             
@@ -1129,6 +1142,11 @@ return [
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
+        ],
+        'TinkoffMerchantAPI'=> [
+            'terminal' => '1629729309127DEMO',  
+            'token' => 'z62eq0aa900wvaku',   
+            'api_url' => 'https://securepay.tinkoff.ru/v2/'
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
