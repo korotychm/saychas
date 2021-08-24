@@ -3,7 +3,7 @@ $(document).ready(function(){
   $('.select').niceSelect();
 });
 
-var filters2;
+var filters;
 
 function getCategoryFilters(categoryId){
       $.ajax({
@@ -16,7 +16,7 @@ function getCategoryFilters(categoryId){
             success: function (data) {
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
               console.log(data);
-              filters2 = data;
+              filters = data;
               return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -29,7 +29,16 @@ function getCategoryFilters(categoryId){
     return false;
 }
 
-getCategoryFilters($("#testFiltersCategotyId").val());
+$(document).ready(function(){
+  //Selects
+  getCategoryFilters($("#testFiltersCategotyId").val());
+
+  var filter = new Vue({
+    el: '#filter',
+    data: filters
+  });
+
+});
 
 function sendfilterform() {
     //alert("!!!!");
