@@ -15,10 +15,6 @@ function getCategoryFilters(categoryId){
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
               console.log('data:',data);
               var filters = data;
-              var filter = new Vue({
-                el: '#catalogfilter',
-                data: filters
-              });
               for (filter of filters.filters) {
                 if (filter.type == 2){
                   let min = filter.options.reduce(function(prev, curr) {
@@ -59,6 +55,10 @@ function getCategoryFilters(categoryId){
 
                 }
               }
+              var filter = new Vue({
+                el: '#catalogfilter',
+                data: filters
+              });
               //Ranges
               $('.range').each(function(){
                 setRange($(this));
