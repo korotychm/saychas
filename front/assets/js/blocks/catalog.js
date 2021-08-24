@@ -3,8 +3,6 @@ $(document).ready(function(){
   $('.select').niceSelect();
 });
 
-var filters;
-
 function getCategoryFilters(categoryId){
       $.ajax({
             beforeSend : function (){
@@ -16,9 +14,10 @@ function getCategoryFilters(categoryId){
             success: function (data) {
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
               console.log('data:',data);
+              var filters = data;
               var filter = new Vue({
                 el: '#catalogfilter',
-                data: data
+                data: filters
               });
               for (filter of filters.filters) {
                 if (filter.type == 2){
@@ -76,7 +75,7 @@ function getCategoryFilters(categoryId){
 
 $(document).ready(function(){
 
-  if ($('#catalogfilter').length()){
+  if ($('#catalogfilter').length){
     getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
   }
 
