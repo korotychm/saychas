@@ -7,9 +7,9 @@
             <div class="range"><input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" /><input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
                 <div class="range__slider">
                     <div class="range__track"></div>
-                    <div class="range__range"></div>
-                    <div class="range__thumb range__thumb--left"></div>
-                    <div class="range__thumb range__thumb--right"></div>
+                    <div class="range__range" style="left: 0; right: 0;"></div>
+                    <div class="range__thumb range__thumb--left" style="left: 0;"></div>
+                    <div class="range__thumb range__thumb--right" style="right: 0;"></div>
                 </div>
                 <div class="range__tooltips">
                     <div><input class="tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
@@ -22,9 +22,9 @@
             <div class="range" v-if="filter.type==2"><input class="range__left" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /><input class="range__right" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" />
                 <div class="range__slider">
                     <div class="range__track"></div>
-                    <div class="range__range"></div>
-                    <div class="range__thumb range__thumb--left"></div>
-                    <div class="range__thumb range__thumb--right"></div>
+                    <div class="range__range" style="left: 0; right: 0;"></div>
+                    <div class="range__thumb range__thumb--left" style="left: 0;"></div>
+                    <div class="range__thumb range__thumb--right" style="right: 0;"></div>
                 </div>
                 <div class="range__tooltips">
                     <div><input class="tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>

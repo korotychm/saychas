@@ -120,14 +120,6 @@ $(document).ready(function(){
               filter.step = step;
             }
           }
-        },
-        setRangeStyles() {
-            // hack, try to escape timeout later
-            setTimeout(function() {
-              $('.range').each(function(){
-                setRange($(this));
-              });
-            }, 500);
         }
       },
       created() {
@@ -144,9 +136,6 @@ $(document).ready(function(){
               this.filters = response.data.filters,
               this.setRangesValues()
             ));
-      },
-      mounted() {
-        this.setRangeStyles();
       }
     });
 
