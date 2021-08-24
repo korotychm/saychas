@@ -100,14 +100,14 @@ function sendfilterformAndGetJson() {
 
 $(document).ready(function () {
 
-    sendfilterform();
+    sendfilterformAndGetJson();
 
     $("#testProductButton").click(function(){
         sendfilterformAndGetJson();
     });
 
     $("#filter-form").on("change", "input", function () {
-        sendfilterform();
+        sendfilterformAndGetJson();
     });
 
 });
