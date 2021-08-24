@@ -1,5 +1,4 @@
-var filters;
-//
+
 function getCategoryFilters(categoryId){
       $.ajax({
             beforeSend : function (){
@@ -9,23 +8,18 @@ function getCategoryFilters(categoryId){
             cache: false,
             data: {"categoryId": categoryId},
             success: function (data) {
-              filters = data;
-              console.log('success');
+              return data;
             },
             error: function (xhr, ajaxOptions, thrownError) {
              if (xhr.status !== 0) {
                     showAjaxErrorPopupWindow (xhr.status, thrownError);
                 }
                 return false;
-                console.log('error');
             }
-        });
-    return false;
+        })
 }
 
-$(document).ready(function(){
-  getCategoryFilters($("#testFiltersCategotyId").val());
-});
+var filters = getCategoryFilters($("#testFiltersCategotyId").val());
 
 // var filters = {
 //   "category_id":"000000006",
