@@ -17,7 +17,7 @@ function getCategoryFilters(categoryId){
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
               console.log(data);
               filters = data;
-              return false;
+              return data;
             },
             error: function (xhr, ajaxOptions, thrownError) {
              if (xhr.status !== 0) {
