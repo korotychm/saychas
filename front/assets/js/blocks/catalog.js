@@ -127,7 +127,7 @@ $(document).ready(function(){
               $('.range').each(function(){
                 setRange($(this));
               });
-            }, 100);
+            }, 500);
         }
       },
       created() {
