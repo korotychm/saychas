@@ -115,7 +115,6 @@ $(document).ready(function(){
               if (!float && diff % step != 0){
                 max = +max + step;
               }
-
               filter.min = min;
               filter.max = max;
               filter.step = step;
@@ -124,7 +123,6 @@ $(document).ready(function(){
         },
         setRangeStyles() {
           $('.range').each(function(){
-            console.log('range');
             setRange($(this));
           });
         }

@@ -371,6 +371,7 @@ $(document).on('change','.tooltip-to',function(){
 });
 
 function setRange(el) {
+  console.log('range',el);
   let min = +el.find('.range__left').attr('min'),
       max = +el.find('.range__right').attr('max'),
       minVal = +el.find('.range__left').val(),
