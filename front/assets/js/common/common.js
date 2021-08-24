@@ -12,3 +12,7 @@ $(document).ready(function () {
 $(document).on('click', '.popup__close', function () {
     $(this).parent().parent().fadeOut();
 });
+
+$(document).ready(function(){
+  $('.select').niceSelect();
+});

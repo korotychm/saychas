@@ -1,8 +1,3 @@
-$(document).ready(function(){
-  //Selects
-  $('.select').niceSelect();
-});
-
 function getCategoryFilters(categoryId){
       $.ajax({
             beforeSend : function (){
@@ -71,10 +66,34 @@ function getCategoryFilters(categoryId){
         });
 }
 
+import axios from 'axios';
+
 $(document).ready(function(){
 
   if ($('#catalogfilter').length){
-    getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
+
+    //getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
+
+    var catalog = new Vue({
+      el: '#catalogfilter',
+      data: {
+        category_id: '',
+        rangeprice: {},
+        filters: []
+      },
+      mounted() {
+          this.category_id = window.location.href.split("/").slice(-1)[0],
+          axios
+            .post('/ajax-get-category-filters', {'categoryId':this.category_id})
+            .then(response => (
+              this.category_id = response.category_id,
+              this.rangeprice = response.rangeprice,
+              this.filters = response.filters,
+              console.log(this)
+            ));
+      }
+    });
+
   }
 
 });
@@ -122,14 +141,13 @@ function sendfilterformAndGetJson() {
                 showAjaxErrorPopupWindow (xhr.status, thrownError);
             }
         }
-
     });
     return false;
 }
 
 $(document).ready(function () {
 
-    //sendfilterform();
+    sendfilterform();
 
     $("#testProductButton").click(function(){
         sendfilterformAndGetJson();
