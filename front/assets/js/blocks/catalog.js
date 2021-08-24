@@ -84,7 +84,9 @@ $(document).ready(function(){
       mounted() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
-            .post('/ajax-get-category-filters', {'categoryId':this.category_id})
+            .post('/ajax-get-category-filters', {
+              categoryId : this.category_id
+            })
             .then(response => (
               console.log(response),
               this.category_id = response.category_id,
