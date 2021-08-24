@@ -33,6 +33,11 @@ $(document).ready(function(){
   //Selects
   getCategoryFilters($("#testFiltersCategotyId").val());
 
+  var filter = new Vue({
+    el: '#filter',
+    data: filters
+  });
+
 });
 
 function sendfilterform() {
