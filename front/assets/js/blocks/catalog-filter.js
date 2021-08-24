@@ -398,6 +398,7 @@ $(document).ready(function(){
   $('.range').each(function(){
     setRange($(this));
   });
+
 });
 
 $(document).on('input','.range input[type="range"]',function(){
