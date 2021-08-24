@@ -2,14 +2,26 @@
 $this->headTitle('Каталог товаров', 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
-?><div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
+?>
+
+<div class="page-heading">
+    <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1><select class="select catalog__sort">
+        <option selected="selected" value="">Сначала свежие</option>
+        <option value="">Сначала популярные</option>
+        <option value="">Сначала дешевые</option>
+        <option value="">Сначала дорогие</option>
+    </select>
+</div>
+
+
+<div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
     <div id="left-col">
         <div class="content-col">
             <form method="post" id="filtrform">
                 <input type='hidden' name='category_id' value='<?= $this->id ?>'>
                 <div id="filtrblock" class="container">
-                    <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>           
-                    <?= $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>           
+                    <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
+                    <?= $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>
                     <br class="both"/>
                 </div>
             </form>
@@ -20,15 +32,15 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
             <div id='ajaxfiltranswer'></div>
             <br class="both">
             <h1><?= $this->title ?>  <?= ($this->id) ? "<span>id: " . $this->id . "</span>" : "" ?></h1>
-            
-            <u class="pointer" onClick="$('#im-json').toggle();">Показать JSON</u>    
-       
-            <div style="display:none"  id="im-json">       
+
+            <u class="pointer" onClick="$('#im-json').toggle();">Показать JSON</u>
+
+            <div style="display:none"  id="im-json">
                 <pre id="tovar-list-json"></pre>
-            </div>    
-            
+            </div>
+
             <div id="tovar-list"></div>
-            
+
         </div>
     </div>
 </div>
