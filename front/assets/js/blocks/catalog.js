@@ -67,8 +67,6 @@ function getCategoryFilters(categoryId){
 }
 
 
-var qs = require('qs');
-
 $(document).ready(function(){
 
   if ($('#catalogfilter').length){
