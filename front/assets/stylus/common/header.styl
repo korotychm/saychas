@@ -82,13 +82,35 @@
     margin-top 23px !important
     position relative
     z-index 2
+    &-close
+      width 30px
+      height 30px
+      cursor pointer
+      position absolute
+      right 17px
+      top 13px
+      &::before
+      &::after
+        content ''
+        width 35px
+        height 2px
+        display block
+        position absolute
+        background var(--red)
+        top 50%
+        left 50%
+        transform translate(-50%,-50%) rotate(45deg)
+      &::after
+        transform translate(-50%,-50%) rotate(-45deg)
     &-input
       position absolute
       top -200px
-      left -40px
-      width calc(100% + 80px)
+      left -45px
+      width calc(100% + 95px)
       margin-top 4px
       z-index 2
+      input
+        padding-right 60px
     &-error
       font-size 14px
       margin-top 8px
@@ -117,7 +139,8 @@
         opacity 0
         pointer-events none
         left 50%
-        transform translateX(-50%)
+        bottom 5px
+        transform translate(-50%, 100%)
         transition .3s
         &-item
           display block

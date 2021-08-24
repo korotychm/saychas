@@ -102,13 +102,39 @@
   position: relative;
   z-index: 2;
 }
+.header__address-close {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  position: absolute;
+  right: 17px;
+  top: 13px;
+}
+.header__address-close::before,
+.header__address-close::after {
+  content: '';
+  width: 35px;
+  height: 2px;
+  display: block;
+  position: absolute;
+  background: var(--red);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.header__address-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
 .header__address-input {
   position: absolute;
   top: -200px;
-  left: -40px;
-  width: calc(100% + 80px);
+  left: -45px;
+  width: calc(100% + 95px);
   margin-top: 4px;
   z-index: 2;
+}
+.header__address-input input {
+  padding-right: 60px;
 }
 .header__address-error {
   font-size: 14px;
@@ -142,7 +168,8 @@
   opacity: 0;
   pointer-events: none;
   left: 50%;
-  transform: translateX(-50%);
+  bottom: 5px;
+  transform: translate(-50%, 100%);
   transition: 0.3s;
 }
 .header__address-val__dropdown-item {
