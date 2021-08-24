@@ -3,15 +3,17 @@ $this->headTitle('Каталог товаров', 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?>
-
-<div class="page-heading">
-    <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1><select class="select catalog__sort">
-        <option selected="selected" value="">Сначала свежие</option>
-        <option value="">Сначала популярные</option>
-        <option value="">Сначала дешевые</option>
-        <option value="">Сначала дорогие</option>
-    </select>
-</div>
+<section class="catalog">
+  <div class="page-heading">
+      <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1>
+      <select class="select catalog__sort">
+          <option selected="selected" value="">Сначала свежие</option>
+          <option value="">Сначала популярные</option>
+          <option value="">Сначала дешевые</option>
+          <option value="">Сначала дорогие</option>
+      </select>
+  </div>
+</section>
 
 
 <div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
