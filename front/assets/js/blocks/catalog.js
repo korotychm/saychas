@@ -12,11 +12,8 @@ function getCategoryFilters(categoryId){
             cache: false,
             data: {"categoryId": categoryId},
             success: function (data) {
-              showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
-              console.log('data:',data);
               var filters = data;
               for (let filter of filters.filters) {
-                console.log(filter);
                 if (filter.type == 2){
                   let min = filter.options.reduce(function(prev, curr) {
                     return +prev.value < +curr.value ? prev : curr;
@@ -84,11 +81,10 @@ $(document).ready(function(){
 
 function sendfilterform() {
     //alert("!!!!");
-    var dataString = $("#filtrform").serialize();
+    var dataString = $("#filter-form").serialize();
     $.ajax({
         beforeSend: function () {
             $("#overload").stop().show();
-
         },
         url: "/ajax-fltr",
         type: 'POST',
@@ -108,11 +104,10 @@ function sendfilterform() {
 
 function sendfilterformAndGetJson() {
     //alert("!!!!");
-    var dataString = $("#filtrform").serialize();
+    var dataString = $("#filter-form").serialize();
     $.ajax({
         beforeSend: function () {
             $("#overload").stop().show();
-
         },
         url: "/ajax-fltr-json",
         type: 'POST',
@@ -133,16 +128,14 @@ function sendfilterformAndGetJson() {
 }
 
 $(document).ready(function () {
-    sendfilterform() ;
+
+    //sendfilterform();
+
     $("#testProductButton").click(function(){
         sendfilterformAndGetJson();
     });
 
-    $("#filtrform").on("change", " input", function () {
-        sendfilterform();
-    });
-
-    $("body").on("click", ".formsendbutton", function () {
+    $("#filter-form").on("change", "input", function () {
         sendfilterform();
     });
 
