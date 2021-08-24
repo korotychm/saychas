@@ -31,6 +31,9 @@
   right: 50px;
   cursor: pointer;
 }
+.popup__close.disabled {
+  display: none;
+}
 .popup__close::before,
 .popup__close::after {
   content: '';

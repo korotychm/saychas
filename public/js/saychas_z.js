@@ -7,16 +7,19 @@ function showAjaxErrorPopupWindow (status, error){
 
 }
 
+
 function showServicePopupWindow(title, body, footer = "", noclose = false)
 {
-    $("#ServiceModalWindow .modal-title").html(title);
+    $("#ServiceModalWindow .popup__close").removeClass('disabled');
+    $("#ServiceModalWindow .popup__heading").html(title);
     $("#ServiceModalWindow #ServiceModalWraper").html(body);
-    $("#ServiceModalWindow .modal-footer").html(footer);
+    $("#ServiceModalWindow #ServiceModalWraper").append(footer);
     if (noclose) {
-        $("#ServiceModalWindow .close").remove();
+        $("#ServiceModalWindow .popup__close").addClass('disabled');
     }
-    $("#ServiceModalWindow").modal("show");
+    $("#ServiceModalWindow").fadeIn();
 }
+
 
 $(document).ready(function () {
 
