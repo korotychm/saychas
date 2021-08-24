@@ -370,46 +370,49 @@ $(document).on('change','.tooltip-to',function(){
   setRange(range.parent());
 });
 
-function setRange(el) {
+$(document).ready(function(){
+  function setRange(el) {
 
-  let min = +el.find('.range__left').attr('min'),
-      max = +el.find('.range__right').attr('max'),
-      minVal = +el.find('.range__left').val(),
-      maxVal = +el.find('.range__right').val();
-  console.log('range',el,min,max,minVal,maxVal);
-  if (minVal < min){
-    minVal = min;
-    el.find('.range__left').val(minVal);
-  }
-  if (maxVal > max){
-    maxVal = max;
-    el.find('.range__right').val(maxVal);
-  }
+    let min = +el.find('.range__left').attr('min'),
+        max = +el.find('.range__right').attr('max'),
+        minVal = +el.find('.range__left').val(),
+        maxVal = +el.find('.range__right').val();
+    console.log('range',el,min,max,minVal,maxVal);
+    if (minVal < min){
+      minVal = min;
+      el.find('.range__left').val(minVal);
+    }
+    if (maxVal > max){
+      maxVal = max;
+      el.find('.range__right').val(maxVal);
+    }
 
-  if (minVal > maxVal){
-    minVal = maxVal;
-    el.find('.range__left').val(minVal);
-    let tmp = maxVal;
-    maxVal = minVal;
-    minVal = tmp;
-    el.find('.range__left').val(minVal);
-    el.find('.range__right').val(maxVal);
-  }
+    if (minVal > maxVal){
+      minVal = maxVal;
+      el.find('.range__left').val(minVal);
+      let tmp = maxVal;
+      maxVal = minVal;
+      minVal = tmp;
+      el.find('.range__left').val(minVal);
+      el.find('.range__right').val(maxVal);
+    }
 
-  let leftPos =  (minVal - min) / (max - min) * 100 + '%',
-      rightPos = 100 - (maxVal - min) / (max - min) * 100 + '%';
+    let leftPos =  (minVal - min) / (max - min) * 100 + '%',
+        rightPos = 100 - (maxVal - min) / (max - min) * 100 + '%';
 
-  el.find('.range__range, .range__thumb--left').css('left', leftPos);
-  el.find('.range__range, .range__thumb--right').css('right', rightPos);
+    el.find('.range__range, .range__thumb--left').css('left', leftPos);
+    el.find('.range__range, .range__thumb--right').css('right', rightPos);
 
-  if (minVal != el.find('.tooltip-from').val()){
-    el.find('.tooltip-from').val(minVal);
+    if (minVal != el.find('.tooltip-from').val()){
+      el.find('.tooltip-from').val(minVal);
+    }
+    if (maxVal != el.find('.tooltip-to').val()){
+      el.find('.tooltip-to').val(maxVal);
+    }
+    return;
   }
-  if (maxVal != el.find('.tooltip-to').val()){
-    el.find('.tooltip-to').val(maxVal);
-  }
-  return;
-}
+})
+
 
 // Range end
 
