@@ -17,6 +17,9 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="offset" value="72" id="sqlOutline">
+        <input type="hidden" name="limit" value="72" id="sqlOutline">
+        <input type="hidden" name="category_id" :value="category_id">
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
             <h2 class="catalog__sidebar-heading">{{ filter.title }} <span class="unit">{{ filter.unit }}</span></h2><!-- Тип число-->
             <div class="range" v-if="filter.type==2"><input class="range__left" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /><input class="range__right" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" />
