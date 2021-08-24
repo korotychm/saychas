@@ -20,6 +20,50 @@ function getCategoryFilters(categoryId){
                 el: '#catalogfilter',
                 data: data
               });
+              for (filter of filters.filters) {
+                if (filter.type == 2){
+                  let min = filter.options.reduce(function(prev, curr) {
+                    return +prev.value < +curr.value ? prev : curr;
+                  }).value;
+                  let max = filter.options.reduce(function(prev, curr) {
+                    return +prev.value > +curr.value ? prev : curr;
+                  }).value;
+
+                  let diff = max - min;
+                  let float = false;
+
+                  for (option of filter.options){
+                    if (isFloat(+option.value)){
+                      float = true;
+                      break;
+                    }
+                  }
+
+                  let step = 1;
+                  if (diff > 10000) {
+                    step = 100;
+                  }
+                  else if (diff > 1000) {
+                    step = 10;
+                  }
+                  else if (diff < 10 && float) {
+                    step = 0.1;
+                  }
+
+                  if (!float && diff % step != 0){
+                    max = +max + step;
+                  }
+
+                  filter.min = min;
+                  filter.max = max;
+                  filter.step = step;
+
+                }
+              }
+              //Ranges
+              $('.range').each(function(){
+                setRange($(this));
+              });
             },
             error: function (xhr, ajaxOptions, thrownError) {
              if (xhr.status !== 0) {
