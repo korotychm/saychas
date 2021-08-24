@@ -32,7 +32,9 @@ function getCategoryFilters(categoryId){
 
 $(document).ready(function(){
 
-  getCategoryFilters($("#testFiltersCategotyId").val());
+  if ($('#catalogfilter').length()){
+    getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
+  }
 
 });
 
