@@ -10,33 +10,62 @@
   <div id="useradesserror"></div>
   <div class="header__address-close searchpanelclose"></div>
 </div>
+<div>
+  <div class="header__address-title"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+      </svg>
+      <span>><?= Resource::BRING_NOW ?></span>
+  </div>
+  <div class="header__address-val open-user-address-form user_address_set" id="uadress">
+    <?php if (!empty($addresses['address'])): ?>
+      <div class="<?= (!empty($addresses['addresses'])) ? 'hasalt' : '' ?> useraddressalt">
+        <span><?= $addresses['address']['text'] ?></span>
+        <textarea id="geodatadadata" style="display: none;"><?= $addresses['address']['geodata'] ?></textarea>
+        <?php if (!empty($addresses['addresses'])): ?>
+          <div class="header__address-val__dropdown">
+              <div class="blok ">
+                  <?php foreach ($addresses['addresses'] as $address): ?>
+                      <span class="header__address-val__dropdown-item setuseraddress" rel="<?= $address["id"] ?>"><?= $address['text'] ?></span>
+                  <?php endforeach; ?>
+                  <span class="header__address-val__dropdown-item open-user-address-form"><?= Resource::BRING_NOW_ACTION_DO ?></span>
+              </div>
+          </div>
+        <?php endif; ?>
+      </div>
+    <?php else: ?>
+      <div class="useraddressalt">
+        <span><?= Resource::BRING_NOW_ACTION ?></span>
+        <textarea id="geodatadadata"  style="display: none;"></textarea>
+      </div>
+    <?php endif; ?>
+  </div>
+</div>
 
+<!--
 <div class='contentpadding'>
     <div class="blok" id="quickaddress">
         <div class="geo16 uadress"><?= Resource::BRING_NOW ?></div>
         <div class="open-user-address-form user_address_set uadress" id="uadress">
-                <?php if (!empty($addresses['address'])): ?>
-
+            <?php if (!empty($addresses['address'])): ?>
                 <span class="blok relative  <?= (!empty($addresses['addresses'])) ? "hasalt" : "" ?>  useraddressalt">
-                            <?php if (!empty($addresses['addresses'])): ?>
-                        <div class="altcontentview">
-
-                            <div class="blok ">
-        <?php foreach ($addresses['addresses'] as $address): ?>
-                                    <span class="menuitem pointer setuseraddress" rel="<?= $address["id"] ?>"><?= $address['text'] ?></span>
-                        <?php endforeach; ?>
-                                <span class="menuitem pointer open-user-address-form red"><?= Resource::BRING_NOW_ACTION_DO ?></span></div>
-                        </div>
-                <?php endif; ?>
-                    <span><?= $addresses['address']['text'] ?></span>
-                    <textarea id="geodatadadata" class="none"><?= $addresses['address']['geodata'] ?></textarea>
+                  <?php if (!empty($addresses['addresses'])): ?>
+                    <div class="altcontentview">
+                        <div class="blok ">
+                            <?php foreach ($addresses['addresses'] as $address): ?>
+                                <span class="menuitem pointer setuseraddress" rel="<?= $address["id"] ?>"><?= $address['text'] ?></span>
+                            <?php endforeach; ?>
+                            <span class="menuitem pointer open-user-address-form red"><?= Resource::BRING_NOW_ACTION_DO ?></span></div>
+                    </div>
+                  <?php endif; ?>
+                  <span><?= $addresses['address']['text'] ?></span>
+                  <textarea id="geodatadadata" style="display: none;"><?= $addresses['address']['geodata'] ?></textarea>
                 </span>
-<?php else: ?>
+            <?php else: ?>
                 <span class="blok relative  useraddressalt" >
                     <span><?= Resource::BRING_NOW_ACTION ?></span>
-                    <textarea id="geodatadadata" class="none"></textarea>
+                    <textarea id="geodatadadata"  style="display: none;"></textarea>
                 </span>
-<?php endif; ?>
+            <?php endif; ?>
 
         </div>
         <u class="pointer mini iblok" style="margin-left:24px;" onClick="$('#jsonaddress').toggle();">Показать JSON</u>
@@ -44,3 +73,4 @@
 
     <div class="none mini" id="jsonaddress"><?= $addressesJson ?></div>
 </div>
+-->
