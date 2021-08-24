@@ -11,7 +11,7 @@ function showBasket(productadd = 0) {
             if (data.products) {
                 $.each(data.products, function (key, value) {
                     var basket = "<div class='basketbottom__item'><div class='basketbottom__img'><img src='/images/product/" + value.image + "' ></div><div class='basketbottom__text'>" + value.name + "</div></div>";
-                    $("#bascetbottomblok .content ").append(basket);
+                    $("#basketbottom .basketbottom__content").append(basket);
                 });
             }
             $("#zakazcount").html(data.count); //data.total
@@ -23,6 +23,6 @@ function showBasket(productadd = 0) {
     return false;
 }
 
-$("#basketbottom").on("click", ".basketbottom__close", function () {
+$(document).on("click", ".basketbottom__close", function () {
     $("#basketbottom").removeClass('active');
 });
