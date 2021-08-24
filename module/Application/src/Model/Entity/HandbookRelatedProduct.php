@@ -165,7 +165,7 @@ class HandbookRelatedProduct extends Entity
 
         $where = ['product_id' => $this->getId()];
         //if(count($storeIds) > 0) {
-            $where = array_merge($where, ['store_id' => $storeIds]);
+        $where = array_merge($where, ['store_id' => $storeIds]);
         //}
         $result = self::$stockBalanceRepository->findAll(['where' => $where, 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
 
@@ -234,12 +234,19 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $old_price;
-    
+
     /**
      * Product discount from joined price table
      * @var int
      */
     protected $discount;
+
+    /**
+     * Tax
+     *
+     * @var int
+     */
+    protected $tax;
 
     /**
      * Get price from one-to-one joined price table
@@ -516,14 +523,47 @@ class HandbookRelatedProduct extends Entity
         return $this;
     }
 
+    /**
+     * Get rest(balance)
+     *
+     * @return int
+     */
     public function getRest()
     {
         return $this->rest;
     }
 
+    /**
+     * Set rest(balance)
+     *
+     * @param int $rest
+     * @return $this
+     */
     public function setRest($rest)
     {
         $this->rest = $rest;
+        return $this;
+    }
+
+    /**
+     * Get tax
+     *
+     * @return int
+     */
+    public function getTax()
+    {
+        return $this->tax;
+    }
+
+    /**
+     * Set tax
+     *
+     * @param int $tax
+     * @return $this
+     */
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
         return $this;
     }
 

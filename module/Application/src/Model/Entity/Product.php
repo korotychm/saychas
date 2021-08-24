@@ -110,6 +110,19 @@ class Product extends Entity
      * @var string (json)
      */
     protected $param_variable_list;
+    
+    protected $tax;
+    
+    public function getTax()
+    {
+        return $this->tax;
+    }
+    
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
+        return $this;
+    }
 
     /**
      * Set color.
