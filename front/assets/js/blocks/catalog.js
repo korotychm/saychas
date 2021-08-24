@@ -15,9 +15,11 @@ function getCategoryFilters(categoryId){
             data: {"categoryId": categoryId},
             success: function (data) {
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
-              console.log(data);
               filters = data;
-              return data;
+              var filter = new Vue({
+                el: '#filter',
+                data: filters
+              });
             },
             error: function (xhr, ajaxOptions, thrownError) {
              if (xhr.status !== 0) {
@@ -26,17 +28,11 @@ function getCategoryFilters(categoryId){
                 return false;
             }
         });
-    return false;
 }
 
 $(document).ready(function(){
   //Selects
   getCategoryFilters($("#testFiltersCategotyId").val());
-
-  var filter = new Vue({
-    el: '#filter',
-    data: filters
-  });
 
 });
 
