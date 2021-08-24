@@ -17,7 +17,7 @@ function getCategoryFilters(categoryId){
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
               console.log('data:',data);
               var filter = new Vue({
-                el: '#filter',
+                el: '#catalogfilter',
                 data: data
               });
             },
@@ -31,7 +31,7 @@ function getCategoryFilters(categoryId){
 }
 
 $(document).ready(function(){
-  //Selects
+
   getCategoryFilters($("#testFiltersCategotyId").val());
 
 });
