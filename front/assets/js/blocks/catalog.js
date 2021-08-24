@@ -86,10 +86,10 @@ $(document).ready(function(){
           axios
             .post('/ajax-get-category-filters', {'categoryId':this.category_id})
             .then(response => (
+              console.log(response),
               this.category_id = response.category_id,
               this.rangeprice = response.rangeprice,
-              this.filters = response.filters,
-              console.log(this)
+              this.filters = response.filters
             ));
       }
     });
