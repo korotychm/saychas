@@ -57,7 +57,9 @@
                 <span class='char-title'>
                     <span><strong>Доставка <?=(!$ordermerge)?" за час":"за три часа"?>(<?=$countDelevery?>)</strong></span>
                 </span><span class=char-value >
-                    <span><strong><?=number_format(($priceDelevery/100),0,",","&nbsp;")?>&#8381;</strong></span>
+                    <span><strong><?=number_format(($priceDelevery/100),0,",","&nbsp;")?>&#8381;</strong>
+                    <input type="hidden" name ="delivery_price" value="<?=$priceDelevery?>" >
+                    </span>
                 </span>
             </div>
     <?php endif; ?>        

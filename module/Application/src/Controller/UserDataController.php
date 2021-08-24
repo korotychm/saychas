@@ -248,7 +248,7 @@ class UserDataController extends AbstractActionController
     {
         $content = $this->getRequest()->getPost()->toArray();
         $userId = $this->identity();
-        //return new JsonModel(["result"=>false, "description" => "banzaii"]);
+        //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
         
         $orderset = $this->externalCommunicationService->sendBasketData($content);
         $orderId = $orderset['response']['order_id'];
@@ -261,7 +261,7 @@ class UserDataController extends AbstractActionController
         // $sql="update `basket` set `order_id` = '$orderId' where `user_id` = '$user_id' and  `order_id`=0 and `product_id` in (".join(",",$$orderSet['products']).")";
         foreach($basketSet as $basket) {
             $basket->setOrderId($orderId);
-            $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0 ]);
+           // $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0 ]);
 //            $sql = new Sql($this->db);
 //            $sqlObj = $sql->update('basket');
 //            $sqlObj->set(['order_id' => $orderId]);

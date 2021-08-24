@@ -64,7 +64,8 @@ class Module implements ConfigProviderInterface
             $controllerName != \Application\Controller\AjaxController::class &&
             $controllerName != \Application\Controller\ReceivingController::class &&
             $controllerName != \Application\Controller\FtpController::class &&
-            $controllerName != \Application\Controller\MyTestController::class) {
+            $controllerName != \Application\Controller\MyTestController::class &&
+            $controllerName != \Application\Controller\AcquiringController::class) {
             
             $hasIdentity = $authManager->hasIdentity();
             if(!$hasIdentity) {
