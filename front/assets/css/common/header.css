@@ -97,6 +97,11 @@
 .header__address {
   width: 260px;
   margin-top: 23px !important;
+  position: relative;
+}
+.header__address-input {
+  position: absolute;
+  top: -200px;
 }
 .header__address-title {
   display: flex;
