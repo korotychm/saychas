@@ -18,7 +18,8 @@ function getCategoryFilters(categoryId){
                 console.log('error');
                 return false;
             }
-        })
+        });
+        return 123;
 }
 
 var filters = getCategoryFilters($("#testFiltersCategotyId").val());
