@@ -122,11 +122,11 @@ $(document).ready(function(){
           }
         },
         setRangeStyles() {
-          this.$nextTick(function () {
-            $('.range').each(function(){
-              setRange($(this));
-            });
-          });
+            setTimeout(function() {
+              $('.range').each(function(){
+                setRange($(this));
+              });
+            }, 1000);
         }
       },
       created() {
