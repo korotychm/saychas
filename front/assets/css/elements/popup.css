@@ -74,11 +74,10 @@
   font-weight: bold;
   margin-top: 13px;
 }
-.auth-reg__input-group--center {
+.auth-reg__input-group__value {
+  height: 55px;
+  display: flex;
   align-items: center;
-}
-.auth-reg__input-group--center .auth-reg__input-group__label {
-  margin-top: 0;
 }
 .auth-reg__input-group__input {
   width: 270px;
