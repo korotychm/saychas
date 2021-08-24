@@ -28,6 +28,25 @@
                 ->prependStylesheet($this->basePath('css/temp.css?' . time()))
                 ->prependStylesheet($this->basePath('css/style.min.css?' . time()))
         ?>
+        <!-- Scripts -->
+        <?= $this->headScript() ?>
+
+        <?=
+                $this->inlineScript()
+                ->prependFile($this->basePath('/js/useractions.js'))
+                ->prependFile($this->basePath('/js/custom_select.js'))
+                ->prependFile($this->basePath('/js/services.js'))
+                ->prependFile($this->basePath('/js/nouislider.min.js'))
+                ->prependFile($this->basePath('/js/nivo.slider.js'))
+                ->prependFile($this->basePath('js/jquery.treeview.js'))
+                ->prependFile($this->basePath('js/saychas_z.js?' . time()))
+                ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
+                ->prependFile($this->basePath('js/jquery.treeview.async.js'))
+                ->prependFile($this->basePath('js/bootstrap.min.js'))
+                ->prependFile($this->basePath('js/temp.js'))
+                ->prependFile($this->basePath('js/scripts.min.js'))
+                // ->prependFile($this->basePath('js/jquery.js'))
+        ?>
     </head>
     <body>
         <div class="overcover">
@@ -100,25 +119,6 @@
         </div>
 
         <?= $this->partial("/application/index/partials/main-layout/footer", ["content" => [] /* $this->footer */]) ?>
-        
-        <!-- Scripts -->
-        <?= $this->headScript() ?>
 
-        <?=
-                $this->inlineScript()
-                ->prependFile($this->basePath('/js/useractions.js'))
-                ->prependFile($this->basePath('/js/custom_select.js'))
-                ->prependFile($this->basePath('/js/services.js'))
-                ->prependFile($this->basePath('/js/nouislider.min.js'))
-                ->prependFile($this->basePath('/js/nivo.slider.js'))
-                ->prependFile($this->basePath('js/jquery.treeview.js'))
-                ->prependFile($this->basePath('js/saychas_z.js?' . time()))
-                ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
-                ->prependFile($this->basePath('js/jquery.treeview.async.js'))
-                ->prependFile($this->basePath('js/bootstrap.min.js'))
-                ->prependFile($this->basePath('js/temp.js'))
-                ->prependFile($this->basePath('js/scripts.min.js'))
-                // ->prependFile($this->basePath('js/jquery.js'))
-        ?>
     </body>
 </html>
