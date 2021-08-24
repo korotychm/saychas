@@ -80,6 +80,52 @@ $(document).ready(function(){
         rangeprice: {},
         filters: []
       },
+      methods: {
+        setRangesValues() {
+          for (let filter of this.filters) {
+            if (filter.type == 2){
+              let min = filter.options.reduce(function(prev, curr) {
+                return +prev.value < +curr.value ? prev : curr;
+              }).value;
+              let max = filter.options.reduce(function(prev, curr) {
+                return +prev.value > +curr.value ? prev : curr;
+              }).value;
+
+              let diff = max - min;
+              let float = false;
+
+              for (option of filter.options){
+                if (isFloat(+option.value)){
+                  float = true;
+                  break;
+                }
+              }
+
+              let step = 1;
+              if (diff > 10000) {
+                step = 100;
+              }
+              else if (diff > 1000) {
+                step = 10;
+              }
+              else if (diff < 10 && float) {
+                step = 0.1;
+              }
+
+              if (!float && diff % step != 0){
+                max = +max + step;
+              }
+
+              filter.min = min;
+              filter.max = max;
+              filter.step = step;
+            }
+          }
+          $('.range').each(function(){
+            setRange($(this));
+          });
+        }
+      },
       mounted() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
@@ -92,7 +138,7 @@ $(document).ready(function(){
               this.category_id = response.data.category_id,
               this.rangeprice = response.data.rangeprice,
               this.filters = response.data.filters,
-              console.log(this)
+              setRangesValues()
             ));
       }
     });
