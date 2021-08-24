@@ -63,6 +63,16 @@ class AuthController extends AbstractActionController
         $this->layout()->setTemplate('layout/control-panel-auth');
         return $response;
     }
+    
+    public function providerLoginAction()
+    {
+        $data = $this->params()->fromQuery('data');
+        if(null != $data) {
+            return new \Laminas\View\Model\JsonModel(['data' => true]);
+        }
+        $returnUrl = $this->params()->fromQuery('p');
+        return new ViewModel(['action' => '/control-panel/check-provider-login', 'returnUrl' => $returnUrl]);
+    }
 
     /**
      * Login get request
@@ -105,6 +115,12 @@ class AuthController extends AbstractActionController
         }
         
         return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel'/*$post['returnUrl']*/);
+    }
+    
+    public function checkProviderLoginAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        return $this->redirect()->toUrl('/control-panel/login?p='.'/control-panel/');
     }
 
     /**

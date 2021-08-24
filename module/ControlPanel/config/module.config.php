@@ -214,6 +214,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'provider-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/provider-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'provider-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'check-login' => [
                         'type' => Literal::class,
                         'options' => [
@@ -221,6 +232,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\AuthController::class,
                                 'action' => 'check-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'check-provider-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/check-provider-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'check-provider-login',
                             ],
                         ],
                         // 'may_terminate' => true,
