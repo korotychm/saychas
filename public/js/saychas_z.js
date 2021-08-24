@@ -10,10 +10,6 @@ $(document).ready(function () {
         $(".overcover").stop().fadeIn();
     };
 
-    $("#test").click(function () {
-        addUserAddrees();
-    })
-
     $(".searchpanelclose").click(function () {
         $("#searchpanel").stop().css({top: "-200px"});
         $("#uadress").show();
@@ -51,14 +47,6 @@ $(document).ready(function () {
         $("#searchpanel").stop().animate({top: "0px"});
         $("#uadress").hide();
     });
-
-    $("#tree22").treeview({
-        persist: "location",
-        collapsed: true,
-        animated: "medium"
-    });
-
-    $("#dadataanswer").slideUp();
 
     $("#address").click(function () {
         $("#adesserror").hide();
@@ -322,30 +310,4 @@ function print_r(arr, level) {
     } else
         print_red_text = "===>" + arr + "<===(" + typeof (arr) + ")";
     return print_red_text;
-}
-
-
-function showBasket(productadd = 0) {
-    $.ajax({
-        url: "/ajax/add-to-basket",
-        cache: false,
-        type: 'POST',
-        //dataType: 'json',
-        data: {"product": productadd},
-        success: function (data) {
-            //console.log(data);
-            $("#bascetbottomblok .content ").empty();
-            if (data.products) {
-                $.each(data.products, function (key, value) {
-                    var basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/" + value.image + "' ><span class='text'>" + value.name + "</span></div>";
-                    $("#bascetbottomblok .content ").append(basket);
-                });
-            }
-            $("#zakazcount").html(data.count); //data.total
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $("#bascetbottomblok .content ").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
-        }
-    });
-    return false;
 }
