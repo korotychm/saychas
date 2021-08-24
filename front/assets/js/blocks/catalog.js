@@ -90,7 +90,6 @@ $(document).ready(function(){
               let max = filter.options.reduce(function(prev, curr) {
                 return +prev.value > +curr.value ? prev : curr;
               }).value;
-              console.log(min , max);
 
               let diff = max - min;
               let float = false;
@@ -113,8 +112,6 @@ $(document).ready(function(){
                 step = 0.1;
               }
 
-              console.log(step);
-
               if (!float && diff % step != 0){
                 max = +max + step;
               }
@@ -122,17 +119,17 @@ $(document).ready(function(){
               filter.min = min;
               filter.max = max;
               filter.step = step;
-
-              console.log(filter.min,filter.max,filter.step);
             }
           }
+        },
+        setRangeStyles() {
           $('.range').each(function(){
             console.log('range');
             setRange($(this));
           });
         }
       },
-      mounted() {
+      created() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
             .post('/ajax-get-category-filters',
@@ -146,6 +143,9 @@ $(document).ready(function(){
               this.filters = response.data.filters,
               this.setRangesValues()
             ));
+      },
+      mounted() {
+        this.setRangeStyles();
       }
     });
 
