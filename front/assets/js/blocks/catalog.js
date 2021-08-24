@@ -122,8 +122,10 @@ $(document).ready(function(){
           }
         },
         setRangeStyles() {
-          $('.range').each(function(){
-            setRange($(this));
+          this.$nextTick(function () {
+            $('.range').each(function(){
+              setRange($(this));
+            });
           });
         }
       },

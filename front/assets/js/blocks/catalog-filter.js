@@ -370,7 +370,7 @@ $(document).on('change','.tooltip-to',function(){
   setRange(range.parent());
 });
 
-$(document).ready(function(){
+
   function setRange(el) {
 
     let min = +el.find('.range__left').attr('min'),
@@ -411,7 +411,6 @@ $(document).ready(function(){
     }
     return;
   }
-})
 
 
 // Range end
