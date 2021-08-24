@@ -3,6 +3,8 @@ $(document).ready(function(){
   $('.select').niceSelect();
 });
 
+var filters2;
+
 function getCategoryFilters(categoryId){
       $.ajax({
             beforeSend : function (){
@@ -13,6 +15,8 @@ function getCategoryFilters(categoryId){
             data: {"categoryId": categoryId},
             success: function (data) {
               showServicePopupWindow("Фильтры дла каталога",JSON.stringify(data));
+              console.log(data);
+              filters2 = data;
               return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -24,6 +28,8 @@ function getCategoryFilters(categoryId){
         });
     return false;
 }
+
+getCategoryFilters($("#testFiltersCategotyId").val());
 
 function sendfilterform() {
     //alert("!!!!");
@@ -80,8 +86,6 @@ $(document).ready(function () {
     $("#testProductButton").click(function(){
         sendfilterformAndGetJson();
     });
-
-    getCategoryFilters($("#testFiltersCategotyId").val());
 
     $("#filtrform").on("change", " input", function () {
         sendfilterform();
