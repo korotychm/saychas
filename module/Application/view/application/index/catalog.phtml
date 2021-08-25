@@ -45,35 +45,3 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
     </div>
   </div>
 </section>
-
-
-<div class="container"  style="position:relative; max-width:1600px; min-height:calc(100vh - 160px) " >
-  <input type="hidden" value="<?=$id?>" id="testFiltersCategotyId"/>
-    <div id="left-col">
-        <div class="content-col">
-            <form method="post" id="filtrform">
-                <input type='hidden' name='category_id' value='<?= $this->id ?>'>
-                <div id="filtrblock" class="container">
-                    <?php // $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>
-                    <br class="both"/>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div id="main-col">
-        <div class="content-col" style="" id="tovary">
-            <div id='ajaxfiltranswer'></div>
-            <br class="both">
-            <h1><?= $this->title ?>  <?= ($this->id) ? "<span>id: " . $this->id . "</span>" : "" ?></h1>
-
-            <u class="pointer" onClick="$('#im-json').toggle();">Показать JSON</u>
-
-            <div style="display:none"  id="im-json">
-                <pre id="tovar-list-json"></pre>
-            </div>
-
-            <div id="tovar-list"></div>
-
-        </div>
-    </div>
-</div>

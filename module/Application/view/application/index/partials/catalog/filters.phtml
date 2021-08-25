@@ -43,7 +43,7 @@
             <!-- Тип цвета-->
             <div class="filter__colors" v-if="filter.type==7">
               <label class="color-checkbox" v-for="option in filter.options" :key="option.valueCode">
-                <input type="checkbox" :name="'characteristics[' + filter.id + '][]'" :value="option.valueCode" />
+                <input type="checkbox" :name="'characteristics[' + filter.id + '][]'" :value="option.valueCode" @change="getProducts" />
                 <span class="color-checkbox__check">
                   <span class="color-checkbox__check-color" :style="{backgroundColor: option.value[0]}"></span>
                 </span>
@@ -53,7 +53,7 @@
             <div class="filter__checkboxes" v-if="filter.type==4 || filter.type==6 || filter.type==8">
                 <div class="filter__scroll">
                   <label class="checkbox" v-for="option in filter.options" :key="option.valueCode">
-                    <input type="checkbox" :name="'characteristics[' + filter.id + '][]'" :value="option.valueCode" />
+                    <input type="checkbox" :name="'characteristics[' + filter.id + '][]'" :value="option.valueCode"  @change="getProducts" />
                     <span class="checkbox__check"></span>
                     <span class="checkbox__value">{{ option.value }}
                       <span class="checkbox__count"></span>
