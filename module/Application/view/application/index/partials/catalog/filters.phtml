@@ -7,8 +7,8 @@
         <div class="filter__item">
             <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>
             <div class="range range--price">
-                <input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" />
-                <input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
+                <input v-once class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" />
+                <input v-once class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
                 <div class="range__slider">
                     <div class="range__track"></div>
                     <div class="range__range" style="left: 0; right: 0;"></div>
@@ -16,10 +16,10 @@
                     <div class="range__thumb range__thumb--right" style="right: 0;"></div>
                 </div>
                 <div class="range__tooltips">
-                    <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
-                    <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                    <div><input v-once class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                    <div><input v-once class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
                 </div>
-                <input type="hidden" class="range__hidden" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
+                <input v-once type="hidden" class="range__hidden" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
             </div>
         </div>
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
