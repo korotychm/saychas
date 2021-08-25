@@ -24,7 +24,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
           <div v-for="(name, product) in products" :key="name" class="product">
               <div class="product__label">Акция</div>
               <a class="product__img" :href="'/product/' + name">
-                <img :src="'/images/' + product.image" />
+                <img :src="'/images/product/' + product.image" />
               </a>
               <a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
               <div class="product__reviews">
@@ -35,7 +35,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
                   </div><a class="product__reviews-link" href="#">28 отзывов</a>
               </div>
               <div class="product__price">
-                  <div class="product__price-current">{{ toLocaleString(product.price) }} ₽</div>
+                  <div class="product__price-current">{{ product.price.toLocaleString() }} ₽</div>
                   <div class="product__price-old">21 990 ₽</div>
               </div>
               <div class="product__tocart"><button class="btn btn--primary paybutton" :rel="name">В корзину</button></div>
