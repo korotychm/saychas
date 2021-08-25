@@ -373,7 +373,7 @@ $(document).on('change','.tooltip-to',function(){
 $(document).on('change','.tooltip',function(){
   let left = $(this).parent().parent().parent().find('.range__left');
   let right = $(this).parent().parent().parent().find('.range__right');
-  let hidden = $(this).parent().parent().parent().find('.range__hidden').val();
+  let hidden = $(this).parent().parent().parent().find('.range__hidden');
   hidden.val(left.val() + ';' + right.val());
 });
 
