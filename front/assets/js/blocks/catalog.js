@@ -105,7 +105,7 @@ $(document).on('change','.range input[type="range"]',function(){
       minVal = +el.find('.range__left').val(),
       maxVal = +el.find('.range__right').val();
 
-  if (el.hasClass('.range--price')){
+  if (el.hasClass('range--price')){
     el.find('.range__hidden').val((minVal * 100) + ';' + (maxVal * 100)).change();
   } else {
     el.find('.range__hidden').val(minVal + ';' + maxVal).change();
