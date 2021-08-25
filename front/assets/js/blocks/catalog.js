@@ -5,7 +5,7 @@ $(document).ready(function(){
     //getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
 
     var catalog = new Vue({
-      el: '#catalog',
+      el: '#catalog-wrap',
       data: {
         category_id: '',
         rangeprice: {},
