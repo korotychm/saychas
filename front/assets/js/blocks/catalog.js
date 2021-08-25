@@ -77,6 +77,7 @@ $(document).ready(function(){
 function sendfilterformAndGetJson() {
     //alert("!!!!");
     var dataString = $("#filter-form").serialize();
+    console.log(dataString);
     $.ajax({
         beforeSend: function () {
             $("#overload").stop().show();
