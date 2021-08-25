@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  if ($('#catalogfilter').length){
+  if ($('#catalog-wrap').length){
 
     //getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
 
