@@ -67,6 +67,10 @@ $(document).ready(function(){
               this.filters = response.data.filters,
               this.setRangesValues()
             ));
+      },
+      mounted() {
+        let form = document.getElementById('filter-form');
+        console.log(form)
       }
     });
 
