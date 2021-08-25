@@ -1,5 +1,5 @@
 <div class="filter">
-    <form id="filter-form" @submit.prevent="getProducts">
+    <form id="filter-form">
         <input type="hidden" name="offset" value="72" id="sqlOutline">
         <input type="hidden" name="limit" value="72">
         <input type="hidden" name="category_id" :value="category_id">
@@ -70,6 +70,6 @@
                 <div class="filter__show-all" v-if="filter.options.length > 6"></div>
             </div>
         </div>
-        <button class="filter__hidden-btn" id="filter-button"></button>
+        <button class="filter__hidden-btn" id="filter-button" @click.prevent="getProducts">Тест</button>
     </form>
 </div>
