@@ -95,6 +95,9 @@ $(document).ready(function(){
             ));
       },
       mounted() {
+        
+      },
+      update() {
         let form = document.getElementById('filter-form');
         console.log(form)
         this.$nextTick(() => {
