@@ -75,6 +75,15 @@ $(document).ready(function(){
                 }
             });
             return false;
+        },
+        getProducts() {
+          let formData = $("#filter-form").serialize();
+          axios
+            .post('/ajax-fltr-json',formData)
+            .then(response => (
+              console.log(response),
+              $("#tovar-list-json").html(JSON.stringify(response,true,2))
+            ));
         }
       },
       created() {
@@ -97,7 +106,7 @@ $(document).ready(function(){
       },
       updated() {
         this.$nextTick(() => {
-          this.sendfilterformAndGetJson();
+          this.getProducts();
         })
       }
     });
