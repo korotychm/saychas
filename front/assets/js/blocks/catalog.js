@@ -103,12 +103,13 @@ $(document).on('change','.range input[type="range"]',function(){
 
   let el = $(this).parent(),
       minVal = +el.find('.range__left').val(),
-      maxVal = +el.find('.range__right').val();
+      maxVal = +el.find('.range__right').val(),
+      hidden = el.find('.range__hidden');
 
   if (el.hasClass('range--price')){
-    el.find('.range__hidden').val((minVal * 100) + ';' + (maxVal * 100)).change();
+    hidden.val((minVal * 100) + ';' + (maxVal * 100)).change();
   } else {
-    el.find('.range__hidden').val(minVal + ';' + maxVal).change();
+    hidden.val(minVal + ';' + maxVal).change();
   }
 
 });
