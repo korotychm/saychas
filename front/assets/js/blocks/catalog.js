@@ -9,7 +9,8 @@ $(document).ready(function(){
       data: {
         category_id: '',
         rangeprice: {},
-        filters: []
+        filters: [],
+        products: []
       },
       methods: {
         setRangesValues() {
