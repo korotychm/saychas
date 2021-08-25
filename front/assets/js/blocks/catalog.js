@@ -67,6 +67,11 @@ $(document).ready(function(){
               this.filters = response.data.filters,
               this.setRangesValues()
             ));
+      },
+      mounted() {
+        $('.checkbox input').each(function(){
+          console.log($(this));
+        })
       }
     });
 
