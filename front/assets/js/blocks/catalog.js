@@ -86,7 +86,7 @@ $(document).ready(function(){
       },
       updated() {
         if (this.filterUpdated) {
-          getProducts()
+          this.getProducts()
         }
       }
     });
