@@ -14,10 +14,10 @@
                     <div class="range__thumb range__thumb--right" style="right: 0;"></div>
                 </div>
                 <div class="range__tooltips">
-                    <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
-                    <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                    <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice" :min="rangeprice.minprice" :max="rangeprice.maxprice" /></div>
+                    <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice" :min="rangeprice.minprice" :max="rangeprice.maxprice" /></div>
                 </div>
-                <input type="text" class="range__hidden" id="prinput" name="priceRange" :value="(rangeprice.minprice / 100) + ';' + (rangeprice.maxprice / 100)">
+                <input type="text" class="range__hidden" id="prinput" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
             </div>
         </div>
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">

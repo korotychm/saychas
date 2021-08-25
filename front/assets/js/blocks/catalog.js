@@ -89,6 +89,8 @@ $(document).ready(function(){
               this.category_id = response.data.category_id,
               this.rangeprice = response.data.rangeprice,
               this.filters = response.data.filters,
+              this.rangeprice.maxprice = this.rangeprice.maxprice / 100,
+              this.rangeprice.minprice = this.rangeprice.minprice / 100,
               this.setRangesValues()
             ));
       },
