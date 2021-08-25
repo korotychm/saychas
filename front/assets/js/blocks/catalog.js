@@ -58,7 +58,9 @@ $(document).ready(function(){
           axios
             .post('/ajax-fltr-json',formData)
             .then(response => (
-              this.products = response.data.products
+              this.products = response.data.products,
+              console.log(response.data.products),
+              console.log(this.products)
             ));
         }
       },
