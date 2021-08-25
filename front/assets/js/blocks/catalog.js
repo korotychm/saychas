@@ -10,7 +10,8 @@ $(document).ready(function(){
         category_id: '',
         rangeprice: {},
         filters: [],
-        products: []
+        products: [],
+        filterUpdated: false
       },
       methods: {
         setRangesValues() {
@@ -50,8 +51,10 @@ $(document).ready(function(){
               filter.min = min;
               filter.max = max;
               filter.step = step;
+              filterUpdated: false
             }
           }
+          this.filterUpdated = true;
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
@@ -59,6 +62,7 @@ $(document).ready(function(){
           axios
             .post('/ajax-fltr-json',formData)
             .then(response => (
+              this.filterUpdated = false,
               console.log(response.data.products),
               this.products = response.data.products,
               console.log(this.products)
@@ -77,11 +81,13 @@ $(document).ready(function(){
               this.category_id = response.data.category_id,
               this.rangeprice = response.data.rangeprice,
               this.filters = response.data.filters,
-              this.setRangesValues(),
-              this.$nextTick(() => {
-                this.getProducts()
-              })
+              this.setRangesValues()
             ));
+      },
+      updated() {
+        if (this.filterUpdated) {
+          getProducts()
+        }
       }
     });
 
