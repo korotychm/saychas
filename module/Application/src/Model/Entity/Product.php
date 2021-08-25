@@ -111,16 +111,16 @@ class Product extends Entity
      */
     protected $param_variable_list;
     
-    protected $tax;
+    protected $vat;
     
-    public function getTax()
+    public function getVat()
     {
-        return $this->tax;
+        return $this->vat;
     }
     
-    public function setTax($tax)
+    public function setVat($vat)
     {
-        $this->tax = $tax;
+        $this->vat = $vat;
         return $this;
     }
 

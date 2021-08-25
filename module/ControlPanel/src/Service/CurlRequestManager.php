@@ -21,12 +21,18 @@ class CurlRequestManager
      * @param array $content
      * @return array
      */
-    public function sendCurlRequest($url, $content)
+    public function sendCurlRequest($url, $content, $curlHeader = false)
     {
 //        $login = $this->config['1C_order']['login'];
 //        $pass = $this->config['1C_order']['password'];
         $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_HEADER, $curlHeader);
+        if(true == $curlHeader) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Content-Type    application/json',
+                'partner-id: 00002'
+            ));
+        }
         //curl_setopt($curl, CURLOPT_HTTPHEADER, ['BOM_required: false', 'charset_response: UTF-8']);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
