@@ -106,7 +106,7 @@ $(document).on('change','.range input[type="range"]',function(){
 $(document).on('change','.tooltip-from',function(){
   let range = $(this).parent().parent().parent().find('.range__left');
   if ($(this).val() != range.val()){
-    range.val($(this).val());
+    range.val($(this).val()).change();
   }
   setRange(range.parent());
 });
@@ -114,7 +114,7 @@ $(document).on('change','.tooltip-from',function(){
 $(document).on('change','.tooltip-to',function(){
   let range = $(this).parent().parent().parent().find('.range__right');
   if ($(this).val() != range.val()){
-    range.val($(this).val());
+    range.val($(this).val()).change();
   }
   setRange(range.parent());
 });
