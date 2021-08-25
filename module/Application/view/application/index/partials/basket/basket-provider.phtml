@@ -1,6 +1,5 @@
 <?php
 if ($param and count($param)):
-
 ?>
 <div class="cart__all">
   <label class="checkbox" id="checkallavailble">
@@ -68,82 +67,6 @@ if ($param and count($param)):
         </div>
       <?php endif; ?>
     </div>
-
-<!--
-    <div class="contentpaddingbox basketproviderblok " id='providerblok-<?=$provider['provider_id']?>' rel='<?=$provider['provider_id']?>'>
-        <div class='blok basketrow'>
-
-            <div  class='basketcol  check'>
-    <?php if(!$provider['provider_disable'] and $provider['availblechek']):?>
-                <div class='nopub checkallallprovider checkprovider  allall zach' rel='<?=$provider['provider_id']?>' id='checkallallprovider-<?=$provider['provider_id']?>'></div>
-    <?php endif; ?>
-            </div>
-            <div  class='basketcol  titleprovider'>
-                <div class='brandlogo'  ><img src='<?=$this->imagePath('provider')?>/<?=$provider['provider_logo']?>' title='<?=$provider['provider_name']?>'></div>
-    <?php if(!$provider['provider_disable']): ?>
-                <div class='text-provider gray'  >
-                    <span class='blok mini'><?=$provider['provider_worktime'].$provider["provider_timeclose"]?></span>
-                    <span class='blok mini'><?=$provider['provider_address']?></span>
-                    <span class='blok mini gray'><?=$provider['infostore1c']?></span>
-                    <?=$provider['provider_store_id']?>
-                </div>
-    <?php else: ?>
-
-                <div class='text-provider gray'  >
-                  <div class='providerbasketdisable'><?=$provider['provider_disable']?>
-                  <div class='providerbasketdisablehelp'>?
-                    <div class='providerbasketdisablehelpcontent '>
-                        <span class='strelka'></span><span class='blok'><?=$provider['infostore1c']?></span>
-                    </div>
-                  </div>
-
-                  </div>
-                </div>
-
-    <?php endif; ?>
-            </div>
-        </div>
-        <?=$this->partial("/application/index/partials/basket/basket-provider-product", ["param" => $provider['products'], "provider" => $provider['provider_id'], 'provider_disable'=>$provider['provider_disable']]) ?>
-    <?php if(!$provider['provider_disable']):?>
-        <div class='blok basketrow'>
-            <div  class='basketcol  check'>
-
-            </div>
-
-           <div  class='basketcol  imageproduct '>
-                <div class='appendproviderbutton'><span>+</span></div>
-            </div>
-            <div  class='basketcol  appendprovider'>
-                <span class='blok'><a href='#<?=$provider['provider_id']?>' class="red" >Добавить еще товаров</a></span>
-                    <span class='blok gray'>из этого магазина бесплатно</span>
-
-            </div>
-        </div>
-        <div class='blok basketrow basketrowselfdelevery ' >
-            <div  class='basketcol  check'>
-
-            </div>
-
-           <div  class='basketcol  imageproduct '>
-
-            </div>
-            <div  class='basketcol selfdelevery'>
-                <span class='blok selfdeleveryonoff onoff' rel='<?=$provider['provider_id']?>' id='selfdeleveryonoff-<?=$provider['provider_id']?>' >Заберу из магазина самостоятельно</a></span>
-                <input type='checkbox' class="none selfdeleverycheckbox" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_store_id']?>' name='selfdelevery[]' >
-                <span class='blok gray none' id="provider_addressappend<?=$provider['provider_id']?>">
-            <?=($provider['provider_store'])?"<b class='blok'>".$provider['provider_store']."</b>":""?>
-            <?php echo $provider['provider_addressappend']?>
-                </span>
-                    <span class='blok gray'><?=$provider['provider_worktime']?></span>
-
-
-            </div>
-        </div>
-    <?php endif;?>
-
-    </div>
   <?php endforeach; ?>
-
-</div>
-
-<?php endif; ?> -->
+  </div>
+<?php endif; ?>
