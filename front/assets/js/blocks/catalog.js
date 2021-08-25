@@ -95,7 +95,9 @@ $(document).ready(function(){
       mounted() {
         let form = document.getElementById('filter-form');
         console.log(form)
-        this.sendfilterformAndGetJson();
+        this.$nextTick(() => {
+          this.sendfilterformAndGetJson();
+        })
       }
     });
 
