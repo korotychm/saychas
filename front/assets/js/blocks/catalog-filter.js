@@ -370,6 +370,13 @@ $(document).on('change','.tooltip-to',function(){
   setRange(range.parent());
 });
 
+$(document).on('change','.tooltip',function(){
+  let left = $(this).parent().parent().parent().find('.range__left');
+  let right = $(this).parent().parent().parent().find('.range__right');
+  let hidden = $(this).parent().parent().parent().find('.range__hidden').val();
+  hidden.val(left.val() + ';' + right.val());
+});
+
 
   function setRange(el) {
 
@@ -377,7 +384,7 @@ $(document).on('change','.tooltip-to',function(){
         max = +el.find('.range__right').attr('max'),
         minVal = +el.find('.range__left').val(),
         maxVal = +el.find('.range__right').val();
-    
+
     if (minVal < min){
       minVal = min;
       el.find('.range__left').val(minVal);
