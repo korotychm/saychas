@@ -96,6 +96,7 @@ $(document).ready(function(){
         let form = document.getElementById('filter-form');
         console.log(form)
         this.$nextTick(() => {
+          console.log('next tick');
           this.sendfilterformAndGetJson();
         })
       }
