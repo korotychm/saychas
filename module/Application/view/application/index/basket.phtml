@@ -27,12 +27,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
 <div class="container mainconteiner"  >
     <div  class="contentwrapper">
         <?= $this->bread ?>
-        <h1 id='h1title' сlass="h1"><?= $this->titleH ?></h1>
         <div id="user-basket">
             <form method='POST' id='user-basket-form'>
                 <div class="pw-contentblock cblock-5">
                     <?php //exit(print_r($this->content)); ?>
-                    <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
 
                     <?=
                     $this->partial("/application/index/partials/basket/basket-user",
