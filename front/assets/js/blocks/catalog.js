@@ -100,7 +100,17 @@ $(document).on('input','.range input[type="range"]',function(){
 });
 
 $(document).on('change','.range input[type="range"]',function(){
-  console.log('changed');
+
+  let el = $(this).parent(),
+      minVal = +el.find('.range__left').val(),
+      maxVal = +el.find('.range__right').val();
+
+  if (el.hasClass('.range--price')){
+    el.find('.range__hidden').val((minVal * 100) + ';' + (maxVal * 100)).change();
+  } else {
+    el.find('.range__hidden').val(minVal + ';' + maxVal).change();
+  }
+
 });
 
 $(document).on('change','.tooltip-from',function(){
@@ -157,12 +167,6 @@ function setRange(el) {
     if (maxVal != el.find('.tooltip-to').val()){
       el.find('.tooltip-to').val(maxVal);
     }
-    if (el.hasClass('.range--price')){
-      el.find('.range__hidden').val((minVal * 100) + ';' + (maxVal * 100));
-    } else {
-      el.find('.range__hidden').val(minVal + ';' + maxVal);
-    }
-
     return;
 }
 
