@@ -65,7 +65,7 @@ $(document).ready(function(){
             ));
         }
       },
-      mounted() {
+      created() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
             .post('/ajax-get-category-filters',
