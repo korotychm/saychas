@@ -81,12 +81,12 @@ $(document).ready(function(){
           axios
             .post('/ajax-fltr-json',formData)
             .then(response => (
-              console.log(response),
-              $("#tovar-list-json").html(JSON.stringify(response,true,2))
+              console.log(response.data),
+              $("#tovar-list-json").html(JSON.stringify(response.data,true,2))
             ));
         }
       },
-      created() {
+      mounted() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
             .post('/ajax-get-category-filters',
@@ -98,16 +98,11 @@ $(document).ready(function(){
               this.category_id = response.data.category_id,
               this.rangeprice = response.data.rangeprice,
               this.filters = response.data.filters,
-              this.setRangesValues()
+              this.setRangesValues(),
+              this.$nextTick(() => {
+                this.getProducts();
+              })
             ));
-      },
-      mounted() {
-
-      },
-      updated() {
-        this.$nextTick(() => {
-          this.getProducts();
-        })
       }
     });
 
