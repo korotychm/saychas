@@ -13,7 +13,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
           <option value="">Сначала дорогие</option>
       </select>
   </div>
-  <div class="catalog__wrap" id="catalog-wrap">
+  <div class="catalog__wrap">
     <aside class="catalog__sidebar">
       <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
       <?= $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>
