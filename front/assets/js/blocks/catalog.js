@@ -99,6 +99,10 @@ $(document).on('input','.range input[type="range"]',function(){
   setRange($(this).parent());
 });
 
+$(document).on('change','.range input[type="range"]',function(){
+  console.log('changed');
+});
+
 $(document).on('change','.tooltip-from',function(){
   let range = $(this).parent().parent().parent().find('.range__left');
   if ($(this).val() != range.val()){
