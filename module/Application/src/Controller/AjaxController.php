@@ -179,13 +179,13 @@ class AjaxController extends AbstractActionController
             //$return ['order_status'] = 1;  //test mode switch
             $deliveryinfo  = $order->getDeliveryInfo();
             $return['delivery_info'] = (!empty($deliveryinfo))?Json::decode($deliveryinfo, Json::TYPE_ARRAY):[];
-        }   
-        return new JsonModel($return);        
+        }
+        return new JsonModel($return);
     }
 
     public function ajaxUserDeleteAddressAction()
     {
-        
+
         $post = $this->getRequest()->getPost();
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
@@ -435,9 +435,9 @@ class AjaxController extends AbstractActionController
         /**/    //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
         $basketUser['name'] = $user->getName();
         $userData = $user->getUserData();
-        if ($userData->count() > 0) { 
+        if ($userData->count() > 0) {
             $basketUser['address'] = $userData->current()->getAddress();
-        }   
+        }
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
@@ -658,7 +658,7 @@ class AjaxController extends AbstractActionController
         $where->in('category_id', $params);
         return $where;
     }
-    
+
 /**
      * Return filtered HandbookRelatedProduct filtered products
      *
@@ -720,6 +720,7 @@ class AjaxController extends AbstractActionController
                 $filteredProducts[$product->getId()] = [
                     "reserve" => $product->receiveRest(),
                     "price" => $product->getPrice(),
+                    "title" => $product->getTitle(),
                     "oldprice" => $product->getOldPrice(),
                     //'store' => $product->getStoreId(),
                     "discount" => $product->getDiscount(),
@@ -769,8 +770,8 @@ class AjaxController extends AbstractActionController
         $products = $this->getProducts($post);
         return (new ViewModel(['products' => $products]))->setTerminal(true);
     }
-    
-    
+
+
 
     public function getProductCategoriesAction()
     {
@@ -780,7 +781,7 @@ class AjaxController extends AbstractActionController
         if (empty($params = Setting::find(['id' => 'main_menu']))){
             return new JsonModel([]);
         }
-        $categories = Json::decode( $params->getValue(), Json::TYPE_ARRAY);                
+        $categories = Json::decode( $params->getValue(), Json::TYPE_ARRAY);
         $category = $categories[$categoryId]["categories"];
         foreach ($category as $item){
             $param[] = $item["id"];

@@ -75,14 +75,14 @@ class CommonHelperFunctionsService
 
         return ["result" => true, "message" => "Магазины получены"];
     }
-    
+
     public function setErrorRedirect($errorCode)
     {
         $response = new Response();
         $response->setStatusCode($errorCode);
         return $response;
     }
-    
+
     public function getProductCardJson($products)
     {
         if (empty($products)) return [];
@@ -98,6 +98,7 @@ class CommonHelperFunctionsService
                 $return[$product->getId()] = [
                     "reserve" => $product->receiveRest(),
                     "price" => $product->getPrice(),
+                    "title" => $product->getTitle(),
                     //'store' => $product->getStoreId(),
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
@@ -107,6 +108,6 @@ class CommonHelperFunctionsService
         }
         return $return;
     }
-    
+
 
 }
