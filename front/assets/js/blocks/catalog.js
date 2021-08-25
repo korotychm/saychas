@@ -1,28 +1,3 @@
-function sendfilterformAndGetJson() {
-    //alert("!!!!");
-    var dataString = $("#filter-form").serialize();
-    console.log(dataString);
-    $.ajax({
-        beforeSend: function () {
-            $("#overload").stop().show();
-        },
-        url: "/ajax-fltr-json",
-        type: 'POST',
-        cache: false,
-        data: dataString,
-        success: function (data) {
-            $("#tovar-list-json").html(JSON.stringify(data,true,2));
-            return false;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status != 0) {
-                showAjaxErrorPopupWindow (xhr.status, thrownError);
-            }
-        }
-    });
-    return false;
-}
-
 $(document).ready(function(){
 
   if ($('#catalogfilter').length){
@@ -76,6 +51,30 @@ $(document).ready(function(){
               filter.step = step;
             }
           }
+        },
+        sendfilterformAndGetJson() {
+            //alert("!!!!");
+            var dataString = $("#filter-form").serialize();
+            console.log(dataString);
+            $.ajax({
+                beforeSend: function () {
+                    $("#overload").stop().show();
+                },
+                url: "/ajax-fltr-json",
+                type: 'POST',
+                cache: false,
+                data: dataString,
+                success: function (data) {
+                    $("#tovar-list-json").html(JSON.stringify(data,true,2));
+                    return false;
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status != 0) {
+                        showAjaxErrorPopupWindow (xhr.status, thrownError);
+                    }
+                }
+            });
+            return false;
         }
       },
       created() {
@@ -94,7 +93,9 @@ $(document).ready(function(){
             ));
       },
       mounted() {
-        sendfilterformAndGetJson();
+        let form = document.getElementById('filter-form');
+        console.log(form)
+        this.sendfilterformAndGetJson();
       }
     });
 
@@ -102,14 +103,15 @@ $(document).ready(function(){
 
 });
 
+
 $(document).ready(function () {
 
-    $("#testProductButton").click(function(){
-        sendfilterformAndGetJson();
-    });
-
-    $("#filter-form").on("change", "input", function () {
-        sendfilterformAndGetJson();
-    });
+    // $("#testProductButton").click(function(){
+    //     sendfilterformAndGetJson();
+    // });
+    //
+    // $("#filter-form").on("change", "input", function () {
+    //     sendfilterformAndGetJson();
+    // });
 
 });
