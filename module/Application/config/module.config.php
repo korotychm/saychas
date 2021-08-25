@@ -973,10 +973,30 @@ return [
             'tinkoff-payment'=> [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/tinkoff-payment[/:order]',
+                    'route'    => '/tinkoff/payment[/:order]',
                     'defaults' => [
                         'controller' => Controller\AcquiringController::class,
                         'action'     => 'tinkoffPayment',
+                    ],
+                ],
+            ],
+            'tinkoff-callback-success'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/success',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffSuccess',
+                    ],
+                ],
+            ],
+             'tinkoff-callback-error'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/error',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffError',
                     ],
                 ],
             ],
@@ -1144,11 +1164,15 @@ return [
             'password' => 'w48Es4562',
         ],
         'TinkoffMerchantAPI'=> [
-            'terminal' => '1629729309127DEMO',  
-            'token' => 'z62eq0aa900wvaku',   
+            'terminal' => '1629886947776DEMO',  
+            'token' => 'hm8xfcs6sjeqrieu',   
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
-            
+            'company_taxation' => 'osn',
+            'time_order_live' => 900,// время для оплаты заказа в сек.
+            'success_url' => 'https://z.saychas.ru/tinkoff/success', 
+            'fail_url' =>    'https://z.saychas.ru/tinkoff/error',
+            //'vat' => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',

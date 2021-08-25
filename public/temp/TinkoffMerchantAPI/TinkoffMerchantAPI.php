@@ -178,6 +178,8 @@ class TinkoffMerchantAPI
      */
     private function _sendRequest($api_url, $args)
     {
+        
+        exit("<pre>".print_r($args,true)."</pre>");
         $this->error = '';
         if (is_array($args)) {
             $args = json_encode($args);

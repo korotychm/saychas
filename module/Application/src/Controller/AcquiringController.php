@@ -139,38 +139,78 @@ class AcquiringController extends AbstractActionController
      */
     public function tinkoffPaymentAction() 
     {
-        $param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
+        //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
+        
+        $paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
+        
         $container = new Container(Resource::SESSION_NAMESPACE);
-        $param['userId'] = $userId = $container->userIdentity;
-        $param['order_id'] = $this->params()->fromRoute('order', '');
-        $order = ClientOrder::find(["order_id" => $param['order_id']]); 
+        $userId = $container->userIdentity;
+        $orderId = $this->params()->fromRoute('order', '');
+        
+        $param = [
+            'OrderId' => $orderId.time(),
+           // "RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
+            "SuccessURL"  =>  $paramApi['success_url'],     
+            "FailURL"=> $paramApi['fail_url'],     
+            "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
+          ];
+        //$param['OrderId'] = ;
+        $order = ClientOrder::find(["order_id" => $orderId]); 
         
         if (empty($order)) {
-            return new JsonModel(["result" => false, "message" => "error: order not found" ]);
+            return new JsonModel(["result" => false, "message" => "error: order ".$orderId." not found" ]);
         }
-        
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
-        $param['delivery_price'] = (int)$basket_info['delivery_price'];
+        $delivery_price = (int)$basket_info['delivery_price'];
         $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
-        $param['delivery_tax'] = $delivery_params['deliveryTax'];
-        $param['userInfo'] = $this->htmlProvider->getUserInfo($this->userRepository->find(['id' => $userId]));
-        
-        if (empty($param['userInfo']['phone'])){
+        $delivery_tax = (int)$delivery_params['deliveryTax'];
+        $userInfo = $this->htmlProvider->getUserInfo($this->userRepository->find(['id' => $userId]));
+        if (empty($userInfo ['phone'])){
              return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
         }
-        
-        unset($param['userInfo']['userGeodata']);
-        
-        $basket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $param['order_id']]]);
+        $param['DATA']['CustomerKey'] = $param['CustomerKey'] = 
+        $param['DATA']['Phone'] =  $param['Receipt']['Phone'] =  "+".$userInfo['phone'];
+        if($userInfo['email']){
+            $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];
+        }    
+        $param['Receipt']['EmailCompany'] = $paramApi['company_email'];
+        $param['Receipt']['Taxation'] = $paramApi['company_taxation'];
+            
+        $basket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
         
         if (empty($basket)) {
             return new JsonModel(["result" => false, "message" => "error: products of order not found " ]);
         }
-        $param['basket'] = $this->acquiringCommunication->getBasketData($basket);
-        $return = $this->acquiringCommunication->tinkoffInit($param);
-                //getBasketData($basket);
-        //$param['basket']['basket_total']
-        return new JsonModel($return);
+        
+        $orderItems = $this->acquiringCommunication->getBasketData($basket);
+        $param['Receipt']['Items'] =  $orderItems['Items'];
+        $param['Amount'] = $orderItems['Amount'];
+        $vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
+        if ($delivery_price > 0) {
+            $param['Receipt']['Items'][] = [
+               'Name' => Resource::ORDER_PAYMENT_DELIVERY,
+               'Quantity' => 1,
+               'PaymentObject' => "service",
+               'Amount' => $delivery_price,
+               'Price' => $delivery_price,
+               'Tax' => $vat,
+            ];
+            $param['Amount']+=$delivery_price;
+        }
+        return new JsonModel( $param);
+        return new JsonModel( $this->acquiringCommunication->initTinkoff($param));
+    }
+    
+    public function tinkoffErrorAction()
+    {
+        $param=["type"=>"error"];
+        return new JsonModel( $param);
+    }
+    
+    public function tinkoffSuccessAction()
+    {
+        $param=["type"=>"Success"];
+        return new JsonModel( $param);
     }
   
 }

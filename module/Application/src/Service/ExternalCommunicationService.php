@@ -1,6 +1,6 @@
 <?php
 
-// src\Service\ExternalCommunicationService.php
+// src\Service\AcquiringCommunicationService.php
 
 namespace Application\Service;
 
@@ -12,7 +12,7 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\ClientOrder;
 
 /**
- * Description of ExternalCommunicationService
+ * Description of AcquiringCommunicationService
  *
  * @author alex
  */
