@@ -6,7 +6,9 @@
         <!--Фильтр по цене-->
         <div class="filter__item">
             <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>
-            <div class="range range--price"><input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" /><input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
+            <div class="range range--price">
+                <input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" @change="getProducts"/>
+                <input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" @change="getProducts" />
                 <div class="range__slider">
                     <div class="range__track"></div>
                     <div class="range__range" style="left: 0; right: 0;"></div>

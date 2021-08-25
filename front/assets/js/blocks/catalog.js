@@ -2,8 +2,6 @@ $(document).ready(function(){
 
   if ($('#catalog-wrap').length){
 
-    //getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
-
     var catalog = new Vue({
       el: '#catalog-wrap',
       data: {
@@ -94,14 +92,100 @@ $(document).ready(function(){
 });
 
 
-$(document).ready(function () {
 
-    // $("#testProductButton").click(function(){
-    //     sendfilterformAndGetJson();
-    // });
-    //
-    // $("#filter-form").on("change", "input", function () {
-    //     sendfilterformAndGetJson();
-    // });
+function isFloat(n) {
+    return n === +n && n !== (n|0);
+}
 
+$(document).on('input','.range input[type="range"]',function(){
+  setRange($(this).parent());
+});
+
+$(document).on('change','.tooltip-from',function(){
+  let range = $(this).parent().parent().parent().find('.range__left');
+  if ($(this).val() != range.val()){
+    range.val($(this).val());
+  }
+  setRange(range.parent());
+});
+
+$(document).on('change','.tooltip-to',function(){
+  let range = $(this).parent().parent().parent().find('.range__right');
+  if ($(this).val() != range.val()){
+    range.val($(this).val());
+  }
+  setRange(range.parent());
+});
+
+
+function setRange(el) {
+
+    let min = +el.find('.range__left').attr('min'),
+        max = +el.find('.range__right').attr('max'),
+        minVal = +el.find('.range__left').val(),
+        maxVal = +el.find('.range__right').val();
+
+    if (minVal < min){
+      minVal = min;
+      el.find('.range__left').val(minVal);
+    }
+    if (maxVal > max){
+      maxVal = max;
+      el.find('.range__right').val(maxVal);
+    }
+
+    if (minVal > maxVal){
+      minVal = maxVal;
+      el.find('.range__left').val(minVal);
+      let tmp = maxVal;
+      maxVal = minVal;
+      minVal = tmp;
+      el.find('.range__left').val(minVal);
+      el.find('.range__right').val(maxVal);
+    }
+
+    let leftPos =  (minVal - min) / (max - min) * 100 + '%',
+        rightPos = 100 - (maxVal - min) / (max - min) * 100 + '%';
+
+    el.find('.range__range, .range__thumb--left').css('left', leftPos);
+    el.find('.range__range, .range__thumb--right').css('right', rightPos);
+
+    if (minVal != el.find('.tooltip-from').val()){
+      el.find('.tooltip-from').val(minVal);
+    }
+    if (maxVal != el.find('.tooltip-to').val()){
+      el.find('.tooltip-to').val(maxVal);
+    }
+    if (el.hasClass('.range--price')){
+      el.find('.range__hidden').val((minVal * 100) + ';' + (maxVal * 100));
+    } else {
+      el.find('.range__hidden').val(minVal + ';' + maxVal);
+    }
+
+    return;
+}
+
+
+// Range end
+
+$(document).on('click', '.filter__show-all', function(e){
+  e.preventDefault();
+  $(this).parent().find('.filter__scroll').toggleClass('active');
+  $(this).parent().find('.checkbox').removeClass('hidden');
+  $(this).parent().find('.filter__search input').val('');
+});
+
+jQuery.expr[':'].contains = function(a, i, m) {
+  return jQuery(a).text().toUpperCase()
+      .indexOf(m[3].toUpperCase()) >= 0;
+};
+
+$(document).on('keyup', '.filter__search input', function(e){
+  let val = $(this).val();
+  if (val!=''){
+    $(this).parent().parent().parent().find('.checkbox').addClass('hidden');
+    $(this).parent().parent().parent().find('.checkbox:contains(' + val + ')').removeClass('hidden');
+  } else {
+    $(this).parent().parent().parent().find('.checkbox').removeClass('hidden');
+  }
 });
