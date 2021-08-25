@@ -6,7 +6,7 @@
         <!--Фильтр по цене-->
         <div class="filter__item">
             <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>
-            <div class="range"><input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" /><input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
+            <div class="range range--price"><input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" /><input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
                 <div class="range__slider">
                     <div class="range__track"></div>
                     <div class="range__range" style="left: 0; right: 0;"></div>
@@ -14,10 +14,10 @@
                     <div class="range__thumb range__thumb--right" style="right: 0;"></div>
                 </div>
                 <div class="range__tooltips">
-                    <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice" :min="rangeprice.minprice" :max="rangeprice.maxprice" /></div>
-                    <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice" :min="rangeprice.minprice" :max="rangeprice.maxprice" /></div>
+                    <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                    <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
                 </div>
-                <input type="text" class="range__hidden" id="prinput" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
+                <input type="text" class="range__hidden" id="prinput" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
             </div>
         </div>
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
@@ -33,7 +33,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" /></div>
                 </div>
-                <input type="text" class="range__hidden" :value="filter.min + ';' + filter.max">
+                <input type="text" class="range__hidden" :name="'characteristics[' + filter.id + '][]'" :value="filter.min + ';' + filter.max">
             </div>
             <!-- Тип вкл-выкл-->
             <label class="boolean" v-if="filter.type==3">
