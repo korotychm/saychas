@@ -518,6 +518,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
             try {
+                print_r($sql);
+                continue;
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
