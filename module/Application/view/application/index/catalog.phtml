@@ -21,7 +21,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
     <div class="catalog__content">
       <section class="section">
         <div class="products-grid products-grid--3">
-          <div v-for="product in products" class="product">
+          <div v-for="product in products" :key="product" class="product">
               <div>{{ product }}</div>
               <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
               <div class="product__reviews">
