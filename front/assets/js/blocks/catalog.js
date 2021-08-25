@@ -55,11 +55,12 @@ $(document).ready(function(){
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
+          console.log(formData),
           axios
             .post('/ajax-fltr-json',formData)
             .then(response => (
-              this.products = response.data.products,
               console.log(response.data.products),
+              this.products = response.data.products,
               console.log(this.products)
             ));
         }
