@@ -5,7 +5,7 @@ $(document).ready(function(){
     //getCategoryFilters(window.location.href.split("/").slice(-1)[0]);
 
     var catalog = new Vue({
-      el: '#catalogfilter',
+      el: '#catalog',
       data: {
         category_id: '',
         rangeprice: {},
@@ -52,37 +52,12 @@ $(document).ready(function(){
             }
           }
         },
-        sendfilterformAndGetJson() {
-            //alert("!!!!");
-            var dataString = $("#filter-form").serialize();
-            console.log(dataString);
-            $.ajax({
-                beforeSend: function () {
-                    $("#overload").stop().show();
-                },
-                url: "/ajax-fltr-json",
-                type: 'POST',
-                cache: false,
-                data: dataString,
-                success: function (data) {
-                    $("#tovar-list-json").html(JSON.stringify(data,true,2));
-                    return false;
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    if (xhr.status != 0) {
-                        showAjaxErrorPopupWindow (xhr.status, thrownError);
-                    }
-                }
-            });
-            return false;
-        },
         getProducts() {
           let formData = $("#filter-form").serialize();
           axios
             .post('/ajax-fltr-json',formData)
             .then(response => (
-              console.log(response.data),
-              $("#tovar-list-json").html(JSON.stringify(response.data,true,2))
+              this.products = response.data.products
             ));
         }
       },
