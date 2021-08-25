@@ -69,6 +69,7 @@ $(document).ready(function(){
             ));
       },
       mounted() {
+        console.log('mounted!'),
         $('.checkbox input').each(function(){
           console.log($(this));
         })
