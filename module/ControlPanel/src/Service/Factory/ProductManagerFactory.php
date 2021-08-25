@@ -26,8 +26,12 @@ class ProductManagerFactory implements FactoryInterface
         
         $config = $container->get('Config');
         $curlRequestManager = $container->get(CurlRequestManager::class);
+        $mclient = new \MongoDB\Client(
+            'mongodb://saychas_cache:saychas_cache@localhost/saychas_cache'
+        );
         
-        return new ProductManager($config, $curlRequestManager);
+        
+        return new ProductManager($config, $curlRequestManager, $mclient);
     }
 
 }

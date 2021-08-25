@@ -150,9 +150,12 @@ class IndexController extends AbstractActionController
     public function showProductsAction()
     {
         $this->assertLoggedIn();
-//        $products = $this->productManager->getAll();
-        //$view = new ViewModel(['products' => $products]);
-        $view = new ViewModel();
+        $identity = $this->authService->getIdentity();
+//        $credentials = ['partner_id: 00002', 'login: Banzaii'];
+        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
+        $answer = $this->productManager->loadAll($credentials);
+        $view = new ViewModel(['products' => $answer['data'], 'http_code' => $answer['http_code']]);
+//        $view = new ViewModel();
         return $view->setTerminal(true);
     }
     
