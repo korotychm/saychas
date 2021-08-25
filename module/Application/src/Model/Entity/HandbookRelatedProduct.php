@@ -242,11 +242,11 @@ class HandbookRelatedProduct extends Entity
     protected $discount;
 
     /**
-     * Tax
+     * Vat
      *
      * @var int
      */
-    protected $tax;
+    protected $vat;
 
     /**
      * Get price from one-to-one joined price table
@@ -546,24 +546,24 @@ class HandbookRelatedProduct extends Entity
     }
 
     /**
-     * Get tax
+     * Get vat
      *
      * @return int
      */
-    public function getTax()
+    public function getVat()
     {
-        return $this->tax;
+        return $this->vat;
     }
 
     /**
-     * Set tax
+     * Set vat
      *
-     * @param int $tax
+     * @param int $vat
      * @return $this
      */
-    public function setTax($tax)
+    public function setVat($vat)
     {
-        $this->tax = $tax;
+        $this->vat = $vat;
         return $this;
     }
 
