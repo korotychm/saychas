@@ -91,8 +91,6 @@ $(document).ready(function(){
 
 });
 
-
-
 function isFloat(n) {
     return n === +n && n !== (n|0);
 }
@@ -116,7 +114,6 @@ $(document).on('change','.tooltip-to',function(){
   }
   setRange(range.parent());
 });
-
 
 function setRange(el) {
 
