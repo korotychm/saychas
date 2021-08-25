@@ -97,6 +97,7 @@ $(document).ready(function(){
         console.log(form)
         this.$nextTick(() => {
           console.log('next tick');
+          console.log($('#prinput').val());
           this.sendfilterformAndGetJson();
         })
       }
