@@ -107,11 +107,11 @@ $(document).on('change','.range input[type="range"]',function(){
       hidden = el.find('.range__hidden');
 
   if (el.hasClass('range--price')){
-    hidden.val((minVal * 100) + ';' + (maxVal * 100)).change();
+    hidden.val((minVal * 100) + ';' + (maxVal * 100));
   } else {
-    hidden.val(minVal + ';' + maxVal).change();
+    hidden.val(minVal + ';' + maxVal);
   }
-
+  $('#filter-form').submit();
 });
 
 $(document).on('change','.tooltip-from',function(){

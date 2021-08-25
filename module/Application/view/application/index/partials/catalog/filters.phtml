@@ -1,5 +1,5 @@
 <div class="filter">
-    <form id="filter-form">
+    <form id="filter-form" @submit="getProducts">
         <input type="hidden" name="offset" value="72" id="sqlOutline">
         <input type="hidden" name="limit" value="72">
         <input type="hidden" name="category_id" :value="category_id">
@@ -19,7 +19,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
                 </div>
-                <input type="text" class="range__hidden" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice" @input="getProducts">
+                <input type="hidden" class="range__hidden" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
             </div>
         </div>
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
@@ -37,7 +37,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" /></div>
                 </div>
-                <input type="text" class="range__hidden" :name="'characteristics[' + filter.id + '][]'" :value="filter.min + ';' + filter.max" @input="getProducts">
+                <input type="hidden" class="range__hidden" :name="'characteristics[' + filter.id + '][]'" :value="filter.min + ';' + filter.max">
             </div>
             <!-- Тип вкл-выкл-->
             <label class="boolean" v-if="filter.type==3">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="filter__show-all" v-if="filter.options.length > 6"></div>
             </div>
-
         </div>
+        <button class="filter__hidden-btn" id="filter-button"></button>
     </form>
 </div>
