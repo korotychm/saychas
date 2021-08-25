@@ -17,6 +17,7 @@
 .basketbottom__item {
   display: flex;
   align-items: center;
+  margin: 10px 0;
 }
 .basketbottom__img {
   display: flex;
