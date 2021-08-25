@@ -77,8 +77,8 @@ $(document).ready(function(){
               this.category_id = response.data.category_id,
               this.rangeprice = response.data.rangeprice,
               this.filters = response.data.filters,
+              this.setRangesValues(),
               this.$nextTick(() => {
-                this.setRangesValues(),
                 this.getProducts()
               })
             ));

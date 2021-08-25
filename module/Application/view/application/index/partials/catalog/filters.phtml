@@ -33,7 +33,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" /></div>
                 </div>
-                <input type="hidden" class="range__hidden" :value="filter.min + ';' + filter.max">
+                <input type="hidden" class="range__hidden" :name="'characteristics[' + filter.id + '][]'" :value="filter.min + ';' + filter.max">
             </div>
             <!-- Тип вкл-выкл-->
             <label class="boolean" v-if="filter.type==3">
