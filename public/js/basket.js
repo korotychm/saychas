@@ -88,7 +88,7 @@ function calculateBasketHeader(productId)
 //Чекбокс все товары
 $(document).on('click','#checkallavailble input',function(){
     console.log('all',$(this).prop('checked'));
-    $(".cart__product .checkbox input").prop('checked',$(this).prop('checked')).change();
+    $(".cart__store .checkbox input").prop('checked',$(this).prop('checked'));
     //$(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
     calculateBasketHeader();
     loadPayInfo();
@@ -101,7 +101,7 @@ $(document).on('click','.cart__store-top .checkbox input',function(){
     calculateBasketHeader();
     loadPayInfo();
 });
-$(document).on('change','.cart__product .checkbox input',function(){
+$(document).on('click','.cart__product .checkbox input',function(){
   let store = $(this).data('provider');
   $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
   // Отмечаем или снимаем чекбокс магазина

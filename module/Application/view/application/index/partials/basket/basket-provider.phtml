@@ -14,8 +14,8 @@ if ($param and count($param)):
       <div class="cart__store-top">
         <?php if(!$provider['provider_disable'] and $provider['availblechek']):?>
           <div class="cart__checkbox">
-            <label class="checkbox" data-provider="<?=$provider['provider_id']?>" id="checkallallprovider-<?=$provider['provider_id']?>">
-              <input type="checkbox" checked="checked" />
+            <label class="checkbox" id="checkallallprovider-<?=$provider['provider_id']?>">
+              <input type="checkbox" checked="checked" data-provider="<?=$provider['provider_id']?>" />
               <span class="checkbox__check"></span>
             </label>
           </div>
