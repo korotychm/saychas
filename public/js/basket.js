@@ -32,7 +32,7 @@ function calculateProductTotal() {
     });
     return total;
 }
-
+// Заголовок страницы корзины
 function calculateBasketHeader(productId)
 {
     let totalStores = 0, totalProducts = 0;
@@ -79,10 +79,83 @@ function calculateBasketHeader(productId)
 
       if (totalStores > 1) storeUnit = 'магазинов';
 
-      h1 = `${totalProducts} ${productUnit} из ${totalStores} ${storeUnit} <span>${calculateProductTotal()}</span>`;
+      let countTotalProducts = calculateProductTotal();
+
+      h1 = `${totalProducts} ${productUnit} из ${totalStores} ${storeUnit} <span>${countTotalProducts}</span>`;
     }
     $("#h1title").html(h1);
 }
+//Чекбокс все товары
+$("#checkallavailble input").click(function () {
+    $(".cart__product .checkbox input").prop('checked',$(this).prop('checked')).change();
+    //$(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
+    calculateBasketHeader();
+    loadPayInfo();
+});
+//Чекбокс товары магазина
+$('.cart__store-top .checkbox input').click(function(){
+    let store = $(this).data('provider');
+    $('.cart__product .checkbox input[data-provider="'+store+'"]').prop('checked',$(this).prop('checked'));
+    //$(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
+    calculateBasketHeader();
+    loadPayInfo();
+});
+$('.cart__product .checkbox input').change(function(){
+  let store = $(this).data('provider');
+  $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
+  // Отмечаем или снимаем чекбокс магазина
+  if ($('.cart__product .checkbox input[data-provider="'+store+'"]').length == $('.cart__product .checkbox input[data-provider="'+store+'"]:checked').length){
+    $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
+  } else {
+      $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',false);
+  }
+  // Отмечаем или снимаем чекбокс всех товаров
+  if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox inpu:checked').length){
+    $('#checkallavailble input').prop('checked',true);
+  } else {
+    $('#checkallavailble input').prop('checked',false);
+  }
+  calculateBasketHeader();
+  loadPayInfo();
+});
+//
+// $(".checkallallprovider").click(function () {
+//     $("#checkallavailble").removeClass("zach");
+//     var rel = $(this).attr('rel');
+//     if ($(this).hasClass("zach")) {
+//         $(this).removeClass("zach");
+//         $(".provider-" + rel).removeClass("zach");
+//         $(".povidercheck-" + rel).prop("checked", false);
+//         $(".selfdeleveryallprovider-" + rel).removeClass("selfdeleverycountme").hide();
+//     } else {
+//         $(this).addClass("zach");
+//         $(".provider-" + rel).addClass("zach");
+//         $(".povidercheck-" + rel).prop("checked", true);
+//         $(".selfdeleveryallprovider-" + rel).addClass("selfdeleverycountme").show();
+//     }
+//     calculateBasketHeader();
+//     loadPayInfo();
+// });
+//
+// $(".checkallprovider").click(function () {
+//
+//     var rel = $(this).attr('rel');
+//     var provider = $(this).attr('provider');
+//     $("#checkallavailble").removeClass("zach");
+//     $("#checkallallprovider-" + provider).removeClass("zach");
+//     if ($(this).hasClass("zach")) {
+//         $(this).removeClass("zach");
+//         $(".product-" + rel).prop("checked", false);
+//         $(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
+//
+//     } else {
+//         $(this).addClass("zach");
+//         $(".product-" + rel).prop("checked", true);
+//         $(".selfdeleveryproduct-" + rel).addClass("selfdeleverycountme").show();
+//     }
+//     calculateBasketHeader();
+//     loadPayInfo();
+// });
 
 function calculateBasketItem(productId)
 {
@@ -446,41 +519,6 @@ $(function () {
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
-    $("#checkallavailble").click(function () {
-        if ($(this).hasClass("zach")) {
-            $(".allall").removeClass("zach");
-            $("#checkallavailble").removeClass("zach");
-            $(".allallcheck").prop("checked", false);
-            $(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
-            $(".selfdeleverycheckbox").prop("checked", false);
-
-        } else {
-            $("#checkallavailble").addClass("zach");
-            $(".allall").addClass("zach");
-            $(".allallcheck").prop("checked", true);
-            $(".selfdeleveryallall").addClass("selfdeleverycountme").show();
-        }
-        loadPayInfo();
-    });
-
-    $(".checkallallprovider").click(function () {
-        $("#checkallavailble").removeClass("zach");
-        var rel = $(this).attr('rel');
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".provider-" + rel).removeClass("zach");
-            $(".povidercheck-" + rel).prop("checked", false);
-            $(".selfdeleveryallprovider-" + rel).removeClass("selfdeleverycountme").hide();
-        } else {
-            $(this).addClass("zach");
-            $(".provider-" + rel).addClass("zach");
-            $(".povidercheck-" + rel).prop("checked", true);
-            $(".selfdeleveryallprovider-" + rel).addClass("selfdeleverycountme").show();
-        }
-        calculateBasketHeader();
-        loadPayInfo();
-    });
-
     $(".basketrow .deleteproduct").click(function () {
         var productId = $(this).attr("rel");
         var provider = $(this).attr("provider");
@@ -507,26 +545,6 @@ $(function () {
                 }
             }
         });/**/
-    });
-
-    $(".checkallprovider").click(function () {
-
-        var rel = $(this).attr('rel');
-        var provider = $(this).attr('provider');
-        $("#checkallavailble").removeClass("zach");
-        $("#checkallallprovider-" + provider).removeClass("zach");
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".product-" + rel).prop("checked", false);
-            $(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
-
-        } else {
-            $(this).addClass("zach");
-            $(".product-" + rel).prop("checked", true);
-            $(".selfdeleveryproduct-" + rel).addClass("selfdeleverycountme").show();
-        }
-        calculateBasketHeader();
-        loadPayInfo();
     });
 
 });
