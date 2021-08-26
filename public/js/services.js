@@ -31,6 +31,30 @@ $(function () {
         });
     };
     
+    var sendTinkoff = function() {
+//        var formData = new FormData();
+//        formData.append('phone', '9185356024');
+//        formData.append('code', '7777');
+        //data = {'phone': phone};
+        $.ajax({
+            type: "POST",
+            url: "/tinkoff/callback",
+            //dataType: "json",
+            method: 'post',
+//            contentType: false, // Not to set any content header
+//            processData: false, // Not to process data
+            data: {"data":{"name":"value"}}, // formData,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Test sending failed', xhr, status);
+            }
+        });
+    };
+    
+    
+    
     var sendBack = function(code) {
         data = {'code': code };
         $.ajax({
@@ -152,6 +176,12 @@ $(function () {
     $('#userDataFormId').click(function(){
         sendSms($('#inputSomeDataId').val());
     });
+    
+    $('#sendTinkoff').click(function(){
+        sendTinkoff();
+    });
+    
+    
     $('#codeFeedbackId').click(function(){
         sendBack(7777);
     });
