@@ -1118,8 +1118,8 @@ return [
             \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
             \Application\Model\Entity\Setting::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
-
-            
+            \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
+            \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,

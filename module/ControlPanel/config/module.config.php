@@ -370,6 +370,8 @@ return [
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
+            /** StoreManager links */
+            'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
         ],
     ],
     'view_manager' => [

@@ -9,6 +9,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use ControlPanel\Service\CurlRequestManager;
 //use Application\Service\ExternalCommunicationService;
 use ControlPanel\Service\ProductManager;
+use Application\Model\Repository\CategoryRepository;
 
 /**
  * Description of ProductManagerFactory
@@ -29,9 +30,11 @@ class ProductManagerFactory implements FactoryInterface
         $mclient = new \MongoDB\Client(
             'mongodb://saychas_cache:saychas_cache@localhost/saychas_cache'
         );
+        $categoryRepo = $container->get(CategoryRepository::class);
+        $entityManager = $container->get('laminas.entity.manager');
         
         
-        return new ProductManager($config, $curlRequestManager, $mclient);
+        return new ProductManager($config, $curlRequestManager, $mclient, $entityManager, $categoryRepo);
     }
 
 }
