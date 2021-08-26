@@ -149,7 +149,8 @@ class AcquiringController extends AbstractActionController
         
         $param = [
             'OrderId' => $orderId,
-           // "RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
+            //"RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
+            "RedirectDueDate" => date('Y-m-d\TH:i:s+03:00', (time() + $paramApi['time_order_live'] )) ,
            // "SuccessURL"  =>  $paramApi['success_url'],     
            // "FailURL"=> $paramApi['fail_url'],     
             "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
