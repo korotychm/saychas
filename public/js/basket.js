@@ -112,6 +112,7 @@ $(document).on('click','.cart__product .checkbox input',function(){
   }
   // Отмечаем или снимаем чекбокс всех товаров
   if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox inpu:checked').length){
+    console.log($('.cart__product .checkbox input').length,$('.cart__product .checkbox inpu:checked').length);
     $('#checkallavailble input').prop('checked',true);
   } else {
     $('#checkallavailble input').prop('checked',false);
