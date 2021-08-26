@@ -72,7 +72,7 @@ function calculateBasketHeader(productId)
     if (totalProducts){
       let productUnit = 'позиций',
           storeUnit = 'магазина',
-          lastNumber = totalProducts.toString().split('').pop());
+          lastNumber = totalProducts.toString().split('').pop();
 
       if (lastNumber == 1) productUnit = 'позиция';
       else if (lastNumber > 1 && lastNumber < 5) productUnit = 'позиции';
