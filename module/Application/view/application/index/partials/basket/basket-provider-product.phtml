@@ -28,9 +28,9 @@
   <div class="cart__product-info">
     <?php if($enable) :?>
       <div class="cart__product-quantity">
-        <button class="cart__product-minus disabled"></button>
-        <input type="number" value="1" id="countproduct-<?=$product['id']?>" />
-        <button class="cart__product-plus"></button>
+        <button class="cart__product-minus <?=($product['count']==1) ? 'disabled' : ''?>" data-step="-1"></button>
+        <input type="number" max="<?=$product['availble']?>" value="<?=$product['count']?>" id="countproduct-<?=$product['id']?>" name="products[<?=$product['id']?>][count]" />
+        <button class="cart__product-plus" data-step="1"></button>
       </div>
       <div class="cart__product-price">
           <div class="cart__product-price-current"><?=number_format(((int)($product['price']*$product['count'])/100), 0, ',', '&nbsp;');?> ₽</div>

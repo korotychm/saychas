@@ -8,14 +8,24 @@ function setTimepointText(loadinfo = false) {
         loadPayInfo();
 }
 
+// Кнопки количества товаров
+$(document).on('click','.cart__product-quantity button',function(e){
+  e.preventDefault();
+  $(this).parent().find('button').removeClass('disabled');
+  let input = $(this).parent().find('input'),
+      newVal = +input.val() + +$(this).data('step');
+  if (newVal < 1 || newVal > input.data('max')){
+    $(this).addClass('disabled');
+  }
+  input.val(newVal);
+})
 // Подсчет количества товаров
 function calculateProductTotal() {
     let total = 0;
     $(".cart__product .checkbox input:checked").each(function() {
-        let productId = $(this).data('product');
-        console.log(productId);
-        total += +$('#countproduct-' + productId).val();
-        console.log(total);
+        let productId = $(this).data('product'),
+            quantityInput = $('#countproduct-' + productId);
+        total += +quantityInput.val();
     });
     return total;
 }
