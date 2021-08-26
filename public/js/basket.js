@@ -86,6 +86,37 @@ function calculateBasketItem(productId)
     });
 }
 
+function orderPayTinkoff(orderId)
+{
+    var apiUrl = "/tinkoff/payment/" + orderId
+    
+    $.ajax({
+        beforeSend: function () {
+            showServicePopupWindow("Оплата заказа", "Готовим к оплате заказ " + orderId, "", true);
+        },
+        url: apiUrl,
+        cache: false,
+        //type: 'POST',
+        //dataType: 'json',
+        //data: {"product": productId, "count": count},
+        success: function (data) {
+            if(data.result) {
+                location = data.answer.PaymentURL;
+            }
+            else {
+                showServicePopupWindow("Ошибка", "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
+            }
+                
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showAjaxErrorPopupWindow(xhr.status, thrownError);
+        }
+    });
+}
+
+
+
+
 function calculateSelfDelevery()
 {
     var store = $(".seldeleveryblokrowcountme").length;
@@ -251,7 +282,7 @@ function waitingOrderStatusVerification(orderId, idInterval = false) {
                 showServicePopupWindow("Ожидаем изменения статуса", "<b>Текущий статус: " + data.order_status + "</b><hr>" + date + "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
 
             } else {
-                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="location = \'/tinkoff/payment/' + orderId + '\'">Оплатить заказ</div>');
+                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="orderPayTinkoff(' + orderId +')">Оплатить заказ</div>');
                 if (idInterval != false) {
                     clearInterval(idInterval);
                 }
