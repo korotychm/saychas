@@ -87,6 +87,7 @@ function calculateBasketHeader(productId)
 }
 //Чекбокс все товары
 $("#checkallavailble input").click(function () {
+    console.log('all',$(this).prop('checked'));
     $(".cart__product .checkbox input").prop('checked',$(this).prop('checked')).change();
     //$(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
     calculateBasketHeader();
