@@ -111,8 +111,8 @@ $(document).on('click','.cart__product .checkbox input',function(){
       $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',false);
   }
   // Отмечаем или снимаем чекбокс всех товаров
-  console.log($('.cart__product .checkbox input').length,$('.cart__product .checkbox inpu:checked').length);
-  if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox inpu:checked').length){
+  console.log($('.cart__product .checkbox input').length,$('.cart__product .checkbox input:checked').length);
+  if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox input:checked').length){
     $('#checkallavailble input').prop('checked',true);
   } else {
     $('#checkallavailble input').prop('checked',false);
