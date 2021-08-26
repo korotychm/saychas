@@ -93,7 +93,7 @@ $(document).on('click','#checkallavailble input',function(){
     calculateBasketHeader();
     loadPayInfo();
 });
-//Чекбокс товары магазина
+// Чекбокс товары магазина
 $(document).on('click','.cart__store-top .checkbox input',function(){
     let store = $(this).data('provider');
     $('.cart__product .checkbox input[data-provider="'+store+'"]').prop('checked',$(this).prop('checked'));
@@ -111,7 +111,6 @@ $(document).on('click','.cart__product .checkbox input',function(){
       $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',false);
   }
   // Отмечаем или снимаем чекбокс всех товаров
-  console.log($('.cart__product .checkbox input').length,$('.cart__product .checkbox input:checked').length);
   if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox input:checked').length){
     $('#checkallavailble input').prop('checked',true);
   } else {
@@ -120,6 +119,35 @@ $(document).on('click','.cart__product .checkbox input',function(){
   calculateBasketHeader();
   loadPayInfo();
 });
+// Удалить продукт
+$(".cart__product-del").click(function () {
+    var productId = $(this).attr("rel");
+    var providerId = $(this).attr("provider");
+    $.ajax({
+        beforeSend: function () {
+        },
+        url: "/ajax/del-from-basket",
+        type: 'POST',
+        cache: false,
+        data: {"productId": productId},
+        success: function (data) {
+            $("#basketrow-" + productId).remove();
+            if ($("#providerblok-" + providerId + " .cart__product").length < 1) {
+                $("#providerblok-" + providerId).remove();
+            }
+            calculateBasketHeader();
+            loadPayInfo();
+            showBasket(0);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status !== 0) {
+                showAjaxErrorPopupWindow(xhr.status, thrownError);
+            }
+        }
+    });
+});
+
+
 //
 // $(".checkallallprovider").click(function () {
 //     $("#checkallavailble").removeClass("zach");
@@ -519,34 +547,6 @@ $(function () {
             $("#seldeleveryblokrow-" + rel).addClass('seldeleveryblokrowcountme').show();
         }
         calculateBasketMerge($("#user-basket-form").serialize(), true);
-    });
-
-    $(".basketrow .deleteproduct").click(function () {
-        var productId = $(this).attr("rel");
-        var provider = $(this).attr("provider");
-        /* */$.ajax({
-            beforeSend: function () {
-            },
-            url: "/ajax/del-from-basket",
-            type: 'POST',
-            cache: false,
-            data: {"productId": productId},
-            success: function (data) {
-                $("#basketrow-" + productId).remove();
-                if ($("#providerblok-" + provider + " .basketrowproduct").length < 1) {
-                    $("#providerblok-" + provider).remove();
-                }
-                calculateBasketHeader();
-                loadPayInfo();
-                showBasket(0);
-
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                if (xhr.status !== 0) {
-                    showAjaxErrorPopupWindow(xhr.status, thrownError);
-                }
-            }
-        });/**/
     });
 
 });
