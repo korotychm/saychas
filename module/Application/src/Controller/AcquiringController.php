@@ -221,7 +221,7 @@ class AcquiringController extends AbstractActionController
     }
     public function tinkoffCallbackAction()
     {
-            $post = $this->getRequest()->getPost()->toArray();
+            $post = $this->getRequest(); //->getPost()->toArray();
             $message = print_r($post, true);
             mail("user@localhost", "tinkoff.log", $message);
             $response = new Response();
