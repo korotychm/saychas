@@ -38,7 +38,7 @@ function calculateBasketHeader(productId)
     let totalStores = 0, totalProducts = 0;
     $(".cart__store").each(function() {
       let storeProducts = $(this).find(".cart__product .checkbox input:checked").length;
-      totalProducts += storeProduct;
+      totalProducts += storeProducts;
       if (storeProducts) totalShops++;
     });
     // $.each($(".basketproviderblok"), function (index, value) {
