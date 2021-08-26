@@ -8,11 +8,14 @@ function setTimepointText(loadinfo = false) {
         loadPayInfo();
 }
 
+// Подсчет количества товаров
 function calculateProductTotal() {
-
-    var total = 0;
-    $(".poroductcounme.zach").each(function (index) {
-        total += ($("#countprhidden-" + $(this).attr("rel")).val()) * 1;
+    let total = 0;
+    $(".cart__product .checkbox input:checked").each(function() {
+        let productId = $(this).data('product');
+        console.log(productId);
+        total += +$('#countproduct-' + productId).val();
+        console.log(total);
     });
     return total;
 }

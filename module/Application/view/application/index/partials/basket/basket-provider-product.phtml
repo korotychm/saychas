@@ -6,15 +6,8 @@
 <li class="cart__product <?=(!$enable) ? 'cart__product--na':''?>" id="basketrow-<?=$product['id']?>">
   <div class="cart__checkbox">
     <?php if($enable) :?>
-      <label class="checkbox provider-<?=$provider?>" rel='<?=$product['id']?>' provider='<?=$provider?>'>
-        <input type="checkbox" checked name="products[<?=$product['id']?>][count]" value="<?=$product['count']?>"
-               class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck " id="countprhidden-<?=$product['id']?>">
-        <input type="checkbox" checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
-               class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
-               />
-        <input type="checkbox" checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
-               class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
-               />
+      <label class="checkbox">
+        <input type="checkbox" checked data-product="<?=$product['id']?>" data-provider="<?=$provider?>"  />
         <span class="checkbox__check"></span>
       </label>
     <?php endif;?>
@@ -34,9 +27,9 @@
   </div>
   <div class="cart__product-info">
     <?php if($enable) :?>
-      <div class="cart__product-quantity" id="countproduct-<?=$product['id']?>">
+      <div class="cart__product-quantity">
         <button class="cart__product-minus disabled"></button>
-        <input type="number" value="1" />
+        <input type="number" value="1" id="countproduct-<?=$product['id']?>" />
         <button class="cart__product-plus"></button>
       </div>
       <div class="cart__product-price">
