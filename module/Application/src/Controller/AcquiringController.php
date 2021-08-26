@@ -148,7 +148,7 @@ class AcquiringController extends AbstractActionController
         $orderId = $this->params()->fromRoute('order', '');
         
         $param = [
-            'OrderId' => $orderId.time(),
+            'OrderId' => $orderId,
            // "RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
            // "SuccessURL"  =>  $paramApi['success_url'],     
            // "FailURL"=> $paramApi['fail_url'],     

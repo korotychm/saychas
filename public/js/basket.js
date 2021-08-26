@@ -282,7 +282,7 @@ function waitingOrderStatusVerification(orderId, idInterval = false) {
                 showServicePopupWindow("Ожидаем изменения статуса", "<b>Текущий статус: " + data.order_status + "</b><hr>" + date + "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
 
             } else {
-                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="orderPayTinkoff(' + orderId +')">Оплатить заказ</div>');
+                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="orderPayTinkoff(\'' + orderId +'\')">Оплатить заказ</div>');
                 if (idInterval != false) {
                     clearInterval(idInterval);
                 }
