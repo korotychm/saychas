@@ -39,7 +39,7 @@ function calculateBasketHeader(productId)
     $(".cart__store").each(function() {
       let storeProducts = $(this).find(".cart__product .checkbox input:checked").length;
       totalProducts += storeProducts;
-      if (storeProducts) totalShops++;
+      if (storeProducts) totalStores++;
     });
     // $.each($(".basketproviderblok"), function (index, value) {
     //     var id = $(this).attr("id"), rel = $(this).attr("rel");
