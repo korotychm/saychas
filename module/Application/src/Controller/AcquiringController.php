@@ -225,7 +225,8 @@ class AcquiringController extends AbstractActionController
             $message = print_r($post, true);
             mail("user@localhost", "tinkoff.log", $message);
             $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_200); 
+            $response->setStatusCode(Response::STATUS_CODE_200);
+            $response->setContent('OK');
             return $response;
     }
   
