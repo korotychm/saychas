@@ -197,7 +197,10 @@ class AcquiringController extends AbstractActionController
             ];
             $param['Amount']+=$delivery_price;
         }
-        return new JsonModel($param);
+        //return new JsonModel($param);
+            //$message = print_r($param, true);
+            //mail("plusweb@localhost", "tinkoff.log", $message);
+        
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
             return new JsonModel(["result" => true, "answer" =>$tinkoffAnswer['answer']]);
@@ -218,8 +221,12 @@ class AcquiringController extends AbstractActionController
     }
     public function tinkoffCallbackAction()
     {
-        $param=["type"=>"CallBack"];
-        return new JsonModel( $param);
+            $post = $this->getRequest()->getPost()->toArray();
+            $message = print_r($post, true);
+            mail("user@localhost", "tinkoff.log", $message);
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_200); 
+            return $response;
     }
   
 }
