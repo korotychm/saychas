@@ -81,12 +81,12 @@ function calculateBasketHeader(productId)
 
       let countTotalProducts = calculateProductTotal();
 
-      h1 = `${totalProducts} ${productUnit} из ${totalStores} ${storeUnit} <span>${countTotalProducts}</span>`;
+      h1 = `${totalProducts} ${productUnit} из ${totalStores} ${storeUnit} <span>(Всего товаров: ${countTotalProducts})</span>`;
     }
     $("#h1title").html(h1);
 }
 //Чекбокс все товары
-$("#checkallavailble input").click(function () {
+$(document).on('click','#checkallavailble input',function(){
     console.log('all',$(this).prop('checked'));
     $(".cart__product .checkbox input").prop('checked',$(this).prop('checked')).change();
     //$(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
@@ -94,14 +94,14 @@ $("#checkallavailble input").click(function () {
     loadPayInfo();
 });
 //Чекбокс товары магазина
-$('.cart__store-top .checkbox input').click(function(){
+$(document).on('click','.cart__store-top .checkbox input',function(){
     let store = $(this).data('provider');
     $('.cart__product .checkbox input[data-provider="'+store+'"]').prop('checked',$(this).prop('checked'));
     //$(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
     calculateBasketHeader();
     loadPayInfo();
 });
-$('.cart__product .checkbox input').change(function(){
+$(document).on('change','.cart__product .checkbox input',function(){
   let store = $(this).data('provider');
   $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
   // Отмечаем или снимаем чекбокс магазина
