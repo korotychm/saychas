@@ -43,7 +43,7 @@ class AcquiringCommunicationService
         //$return['t_url']= $this->tinkoffApiParams["api_url"];
         foreach ($data as $basketItem){
             $return['count']++;
-            $total = $basketItem->getTotal();
+            $total = (int)$basketItem->getTotal();
             $oldprice = $basketItem->getPrice();
             $discount = $basketItem->getDiscount();
             $price = ($oldprice - $oldprice*$discount/100);
@@ -144,7 +144,7 @@ class AcquiringCommunicationService
     {
        // exit (print_r($api_url));
         //exit ("<pre>".print_r($args, true)."</pre>");
-        return [$api_url, $args];
+        //return [$api_url, $args];
         //$return['error'] = false;
         $return['error'] = false;
         if (is_array($args)) {

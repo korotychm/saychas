@@ -980,6 +980,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-callback'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/callback',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffCallback',
+                    ],
+                ],
+            ],
             'tinkoff-redirect-success'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -1185,6 +1195,7 @@ return [
             'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
             //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
+            'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
             
         ],
         'image_path' => [

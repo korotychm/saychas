@@ -150,8 +150,8 @@ class AcquiringController extends AbstractActionController
         $param = [
             'OrderId' => $orderId.time(),
            // "RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
-            "SuccessURL"  =>  $paramApi['success_url'],     
-            "FailURL"=> $paramApi['fail_url'],     
+           // "SuccessURL"  =>  $paramApi['success_url'],     
+           // "FailURL"=> $paramApi['fail_url'],     
             "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
           ];
         //$param['OrderId'] = ;
@@ -197,8 +197,12 @@ class AcquiringController extends AbstractActionController
             ];
             $param['Amount']+=$delivery_price;
         }
-        return new JsonModel( $param);
-        return new JsonModel( $this->acquiringCommunication->initTinkoff($param));
+        return new JsonModel($param);
+        $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
+        if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
+            return new JsonModel(["result" => true, "answer" =>$tinkoffAnswer['answer']]);
+        }
+        return new JsonModel(["result" => false, "answer" => $this->acquiringCommunication->initTinkoff($param)]);
     }
     
     public function tinkoffErrorAction()
@@ -210,6 +214,11 @@ class AcquiringController extends AbstractActionController
     public function tinkoffSuccessAction()
     {
         $param=["type"=>"Success"];
+        return new JsonModel( $param);
+    }
+    public function tinkoffCallbackAction()
+    {
+        $param=["type"=>"CallBack"];
         return new JsonModel( $param);
     }
   
