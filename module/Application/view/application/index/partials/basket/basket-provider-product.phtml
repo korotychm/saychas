@@ -3,7 +3,7 @@
         $disabled = ($enable)?"":" disabled ";
 ?>
 
-<li class="cart__product <?=($enable) ? 'cart__product--na':''?>" id="basketrow-<?=$product['id']?>">
+<li class="cart__product <?=(!$enable) ? 'cart__product--na':''?>" id="basketrow-<?=$product['id']?>">
   <div class="cart__checkbox">
     <?php if($enable) :?>
       <label class="checkbox provider-<?=$provider?>" rel='<?=$product['id']?>' provider='<?=$provider?>'>
