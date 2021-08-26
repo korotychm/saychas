@@ -14,7 +14,7 @@ $(document).on('click','.cart__product-quantity button',function(e){
   $(this).parent().find('button').removeClass('disabled');
   let input = $(this).parent().find('input'),
       newVal = +input.val() + +$(this).data('step');
-  if (newVal < 1 || newVal > input.data('max')){
+  if (newVal == 1 || newVal == input.data('max')){
     $(this).addClass('disabled');
   }
   input.val(newVal);
