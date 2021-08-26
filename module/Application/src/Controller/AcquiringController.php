@@ -168,7 +168,7 @@ class AcquiringController extends AbstractActionController
         if (empty($userInfo ['phone'])){
              return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
         }
-        $param['DATA']['CustomerKey'] = $param['CustomerKey'] = 
+        $param['DATA']['CustomerKey'] = $param['CustomerKey'] = $userInfo ['userid'];
         $param['DATA']['Phone'] =  $param['Receipt']['Phone'] =  "+".$userInfo['phone'];
         if($userInfo['email']){
             $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];

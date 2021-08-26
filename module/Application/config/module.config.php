@@ -980,7 +980,7 @@ return [
                     ],
                 ],
             ],
-            'tinkoff-callback-success'=> [
+            'tinkoff-redirect-success'=> [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/tinkoff/success',
@@ -990,7 +990,7 @@ return [
                     ],
                 ],
             ],
-             'tinkoff-callback-error'=> [
+             'tinkoff-redirect-error'=> [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/tinkoff/error',
@@ -1164,8 +1164,8 @@ return [
             'password' => 'w48Es4562',
         ],
         'TinkoffMerchantAPI'=> [
-            'terminal' => '1629886947776DEMO',  
-            'token' => 'hm8xfcs6sjeqrieu',   
+            'terminal' => '1629956533317DEMO',  
+            'token' => '9mfca0gpenpfi4rb',   
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
