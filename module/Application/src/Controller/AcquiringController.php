@@ -222,7 +222,7 @@ class AcquiringController extends AbstractActionController
     public function tinkoffCallbackAction()
     {
             $post = $this->getRequest(); //->getPost()->toArray();
-            $message = print_r($post, true);
+            $message = print_r($_POST, true);
             mail("user@localhost", "tinkoff.log", $message);
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_200);
