@@ -189,7 +189,8 @@ $(document).on('click','.cart__product .cart__product-del',function(){
 
 function calculateBasketItem(productId)
 {
-    var count = $("#countprhidden-" + productId).val();
+    let count = $("#countproduct-" + productId).val();
+    console.log(count);
     $.ajax({
         url: "/ajax/calculate-basket-item",
         cache: false,
