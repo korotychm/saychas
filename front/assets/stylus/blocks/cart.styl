@@ -19,7 +19,7 @@
     margin-bottom 30px
   .panel__notice
     margin-top 25px
-    font-size 16px
+    font-size 12px
     a
       color var(--red)
       text-decoration none
@@ -209,7 +209,7 @@
       ~ .select
         margin-top 30px
     label
-      font-size 20px
+      font-size 19px
       display flex
       align-items center
       cursor pointer
@@ -259,6 +259,9 @@
     &-self-delivery
       margin-top 20px
       margin-left 163px
+      &.disabled
+        opacity .3
+          pointer-events none;
       .boolean
         margin-top 0
       > div

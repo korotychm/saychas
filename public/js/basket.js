@@ -63,9 +63,13 @@ function calculateBasketHeader(productId)
 
 //Чекбокс все товары
 $(document).on('click','#checkallavailble input',function(){
-    console.log('all',$(this).prop('checked'));
     $(".cart__store .checkbox input").prop('checked',$(this).prop('checked')).change();
-    //$(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
+    if ($(this).prop('checked')){
+        $('.cart__store-self-delivery').removeClass('disabled');
+    } else {
+        $('.cart__store-self-delivery input').prop('checked',false);
+        $('.cart__store-self-delivery').addClass('disabled');
+    }
     calculateBasketHeader();
     loadPayInfo();
 });
@@ -73,7 +77,13 @@ $(document).on('click','#checkallavailble input',function(){
 // Чекбокс товары магазина
 $(document).on('click','.cart__store-top .checkbox input',function(){
     let store = $(this).data('provider');
-    $('.cart__product .checkbox input[data-provider="'+store+'"]').prop('checked',$(this).prop('checked')).change();
+    $('.cart__product .checkbox input[data-provider="' + store + '"]').prop('checked',$(this).prop('checked')).change();
+    $('selfdeleverycheckbox-' + store).prop('checked',$(this).prop('checked'));
+    if ($(this).prop('checked')){
+        $('selfdeleverycheckbox-' + store).parents.eq(2).removeClass('disabled');
+    } else {
+        $('selfdeleverycheckbox-' + store).parents.eq(2).addClass('disabled');
+    }
     calculateBasketHeader();
     loadPayInfo();
 });

@@ -28,7 +28,7 @@
 }
 .panel--cart .panel__notice {
   margin-top: 25px;
-  font-size: 16px;
+  font-size: 12px;
 }
 .panel--cart .panel__notice a {
   color: var(--red);
@@ -260,7 +260,7 @@
   margin-top: 30px;
 }
 .cart__radio label {
-  font-size: 20px;
+  font-size: 19px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -316,6 +316,9 @@
 .cart__store-self-delivery {
   margin-top: 20px;
   margin-left: 163px;
+}
+.cart__store-self-delivery.disabled opacity .3 {
+  pointer-events: none;
 }
 .cart__store-self-delivery .boolean {
   margin-top: 0;
