@@ -45,7 +45,7 @@
 .panel--cart .panel__tr-items-total {
   display: flex;
 }
-.panel--cart .panel__tr-items-total > div:last-child {
+.panel--cart .panel__tr-items-total > div:nth-child(2) {
   color: var(--gray2);
   text-decoration: line-through;
   margin-left: 10px;
