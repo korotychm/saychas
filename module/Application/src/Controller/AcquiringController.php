@@ -229,11 +229,11 @@ class AcquiringController extends AbstractActionController
 			HTTP_CONNECTION: ". $_SERVER["HTTP_CONNECTION"]. "
 			HTTP_USER_AGENT: ". $_SERVER["HTTP_USER_AGENT"]. "
 			HTTP_ACCEPT: ". $_SERVER["HTTP_ACCEPT"]."
-			REQUES:".print_r($_REQUEST, true);
+			REQUEST:".print_r($_REQUEST, true);
 
             //$message = print_r($_REQUEST, true);
             mail("d.sizov@saychas.ru", "tinkoff.log", $message);
-            mail("user@localhost", "tinkoff.log", $message);
+            //mail("user@localhost", "tinkoff.log", $message);
 
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_200);
