@@ -8,69 +8,148 @@ function setTimepointText(loadinfo = false) {
         loadPayInfo();
 }
 
+// Изменение количества товара в корзине
+$(document).on('click','.cart__product-quantity button',function(e){
+  e.preventDefault();
+  $(this).parent().find('button').removeClass('disabled');
+  let input = $(this).parent().find('input'),
+      newVal = +input.val() + +$(this).data('step');
+  if (newVal == 1 || newVal == input.attr('max')){
+    $(this).addClass('disabled');
+  }
+  input.val(newVal);
+  let productId = input.data('product');
+  calculateBasketItem(productId);
+  loadPayInfo();
+})
+// Подсчет количества товаров в корзине
 function calculateProductTotal() {
-
-    var total = 0;
-    $(".poroductcounme.zach").each(function (index) {
-        total += ($("#countprhidden-" + $(this).attr("rel")).val()) * 1;
+    let total = 0;
+    $(".cart__product .checkbox input:checked").each(function() {
+          let productId = $(this).data('product'),
+              quantityInput = $('#countproduct-' + productId);
+          total += +quantityInput.val();
     });
     return total;
 }
-
+// Заголовок страницы корзины
 function calculateBasketHeader(productId)
 {
-    var totalshops = 0, totalproduct = 0;
+    let totalStores = 0, totalProducts = 0;
+    $(".cart__store").each(function() {
+      let storeProducts = $(this).find(".cart__product .checkbox input:checked").length;
+      totalProducts += storeProducts;
+      if (storeProducts) totalStores++;
+    });
+    // $.each($(".basketproviderblok"), function (index, value) {
+    //     var id = $(this).attr("id"), rel = $(this).attr("rel");
+    //     var products = $("#" + id + " .checkallprovider.zach ").length;
+    //
+    //     if ($("#" + id + " .checkallprovider.zach ").length === $("#" + id + " .checkallprovider").length) {
+    //         $("#checkallallprovider-" + rel).addClass("zach");
+    //     }
+    //
+    //     if ($(".checkprovider.zach ").length === $(".checkprovider").length) {
+    //         $("#checkallavailble").addClass("zach");
+    //     }
+    //
+    //     if (products > 0) {
+    //         totalshops++;
+    //         totalproduct += products;
+    //         $("#" + id + " .basketrowselfdelevery").show();
+    //     } else {
+    //         $("#selfdeleveryonoff-" + rel).removeClass("zach");
+    //         $("#" + id + " .basketrowselfdelevery").hide();
+    //
+    //         $("#selfdeleverycheckbox-" + rel).prop("checked", false);
+    //         $("#providerblok-" + rel).removeClass("goself");
+    //         $("#provider_addressappend" + rel).hide();
+    //         $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
+    //     }
+    // });
 
-    $.each($(".basketproviderblok"), function (index, value) {
-        var id = $(this).attr("id"), rel = $(this).attr("rel");
-        var products = $("#" + id + " .checkallprovider.zach ").length;
+    let h1 = "Товары не выбраны";
+    if (totalProducts){
+      let productUnit = 'позиций',
+          storeUnit = 'магазина',
+          lastNumber = totalProducts.toString().split('').pop();
 
-        if ($("#" + id + " .checkallprovider.zach ").length === $("#" + id + " .checkallprovider").length) {
-            $("#checkallallprovider-" + rel).addClass("zach");
-        }
+      if (lastNumber == 1) productUnit = 'позиция';
+      else if (lastNumber > 1 && lastNumber < 5 && (totalProducts < 10 || totalProducts > 20)) productUnit = 'позиции';
 
-        if ($(".checkprovider.zach ").length === $(".checkprovider").length) {
-            $("#checkallavailble").addClass("zach");
-        }
+      if (totalStores > 1) storeUnit = 'магазинов';
 
-        if (products > 0) {
-            totalshops++;
-            totalproduct += products;
-            $("#" + id + " .basketrowselfdelevery").show();
-        } else {
-            $("#selfdeleveryonoff-" + rel).removeClass("zach");
-            $("#" + id + " .basketrowselfdelevery").hide();
+      let countTotalProducts = calculateProductTotal();
 
-            $("#selfdeleverycheckbox-" + rel).prop("checked", false);
-            $("#providerblok-" + rel).removeClass("goself");
-            $("#provider_addressappend" + rel).hide();
-            $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
+      h1 = `${totalProducts} ${productUnit} из ${totalStores} ${storeUnit} <span>(Всего товаров: ${countTotalProducts})</span>`;
+    }
+    $("#h1title").html(h1);
+}
+//Чекбокс все товары
+$(document).on('click','#checkallavailble input',function(){
+    console.log('all',$(this).prop('checked'));
+    $(".cart__store .checkbox input").prop('checked',$(this).prop('checked'));
+    //$(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
+    calculateBasketHeader();
+    loadPayInfo();
+});
+// Чекбокс товары магазина
+$(document).on('click','.cart__store-top .checkbox input',function(){
+    let store = $(this).data('provider');
+    $('.cart__product .checkbox input[data-provider="'+store+'"]').prop('checked',$(this).prop('checked'));
+    //$(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
+    calculateBasketHeader();
+    loadPayInfo();
+});
+$(document).on('click','.cart__product .checkbox input',function(){
+  let store = $(this).data('provider');
+  $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
+  // Отмечаем или снимаем чекбокс магазина
+  if ($('.cart__product .checkbox input[data-provider="'+store+'"]').length == $('.cart__product .checkbox input[data-provider="'+store+'"]:checked').length){
+    $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
+  } else {
+      $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',false);
+  }
+  // Отмечаем или снимаем чекбокс всех товаров
+  if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox input:checked').length){
+    $('#checkallavailble input').prop('checked',true);
+  } else {
+    $('#checkallavailble input').prop('checked',false);
+  }
+  calculateBasketHeader();
+  loadPayInfo();
+});
+// Удалить продукт
+$(document).on('click','.cart__product .cart__product-del',function(){
+    var productId = $(this).data('product');
+    var providerId = $(this).data('provider');
+    $.ajax({
+        beforeSend: function () {
+        },
+        url: "/ajax/del-from-basket",
+        type: 'POST',
+        cache: false,
+        data: {'productId': productId},
+        success: function (data) {
+            $("#basketrow-" + productId).remove();
+            if (!$("#providerblok-" + providerId + " .cart__product").length){
+              $("#providerblok-" + providerId).remove();
+            }
+            calculateBasketHeader();
+            loadPayInfo();
+            showBasket(0);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status !== 0) {
+                showAjaxErrorPopupWindow(xhr.status, thrownError);
+            }
         }
     });
-    var totalproductcount = calculateProductTotal();
-    var h1 = "";
-    if (totalproduct < 1)
-        h1 = "Товары не выбраны";
-    else {
-
-        if (totalproduct === 1)
-            h1 = totalproduct + " позиция ";
-        else if (totalproduct > 1 && totalproduct < 5)
-            h1 = totalproduct + " позиции ";
-        else
-            h1 = totalproduct + " позиций ";
-        if (totalshops === 1)
-            h1 += " из " + totalshops + " магазина ";
-        else
-            h1 += " из " + totalshops + " магазинов ";
-        h1 += "<span calss='blok gray mini' >(всего товаров выбрано: " + totalproductcount + ")</span>";
-    }
-    $("#h1title").html(h1);//console.log("Магазинов" + totalshops + "; продуктов " + totalproduct );
-}
-
+});
+//Посчет суммы товаров одной позиции
 function calculateBasketItem(productId)
 {
-    var count = $("#countprhidden-" + productId).val();
+    let count = $("#countproduct-" + productId).val();
     $.ajax({
         url: "/ajax/calculate-basket-item",
         cache: false,
@@ -85,6 +164,52 @@ function calculateBasketItem(productId)
         }
     });
 }
+
+
+//
+// $(".checkallallprovider").click(function () {
+//     $("#checkallavailble").removeClass("zach");
+//     var rel = $(this).attr('rel');
+//     if ($(this).hasClass("zach")) {
+//         $(this).removeClass("zach");
+//         $(".provider-" + rel).removeClass("zach");
+//         $(".povidercheck-" + rel).prop("checked", false);
+//         $(".selfdeleveryallprovider-" + rel).removeClass("selfdeleverycountme").hide();
+//     } else {
+//         $(this).addClass("zach");
+//         $(".provider-" + rel).addClass("zach");
+//         $(".povidercheck-" + rel).prop("checked", true);
+//         $(".selfdeleveryallprovider-" + rel).addClass("selfdeleverycountme").show();
+//     }
+//     calculateBasketHeader();
+//     loadPayInfo();
+// });
+//
+// $(".checkallprovider").click(function () {
+//
+//     var rel = $(this).attr('rel');
+//     var provider = $(this).attr('provider');
+//     $("#checkallavailble").removeClass("zach");
+//     $("#checkallallprovider-" + provider).removeClass("zach");
+//     if ($(this).hasClass("zach")) {
+//         $(this).removeClass("zach");
+//         $(".product-" + rel).prop("checked", false);
+//         $(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
+//
+//     } else {
+//         $(this).addClass("zach");
+//         $(".product-" + rel).prop("checked", true);
+//         $(".selfdeleveryproduct-" + rel).addClass("selfdeleverycountme").show();
+//     }
+//     calculateBasketHeader();
+//     loadPayInfo();
+// });
+
+// Самовывоз из магазина
+$(document).on('change','.cart__store-self-delivery input',function(){
+    //let providerId = $(this).data('provider');
+    calculateBasketMerge($("#user-basket-form").serialize(), true);
+});
 
 function calculateSelfDelevery()
 {
@@ -403,152 +528,6 @@ $(function () {
 
 
     $("body").on("click dblclick", ".radiomergebut, .loadpayinfo", function () {
-        loadPayInfo();
-    });
-
-    $("body").on("click dblclick", ".countproductminus", function () {
-        if ($(this).hasClass("disabled"))
-            return false;
-        var id = $(this).attr("rel");
-        var max = ($("#countproductnum-" + id).attr("max")) * 1;
-        var count = count = ($("#countprhidden-" + id).val()) * 1;
-        var newcount = count - 1;
-        if (newcount <= 1) {
-            newcount = 1;
-            $(this).addClass("disabled");
-        }
-        $("#countprhidden-" + id).val(newcount);
-        $("#countproductnum-" + id).html(newcount);
-        $('.countproductplus[rel^=' + id + ']').removeClass("disabled");
-        calculateBasketItem(id);
-        loadPayInfo();
-        return false;
-    });
-
-    $("body").on("click dblclick", ".countproductplus", function () {
-        if ($(this).hasClass("disabled"))
-            return false;
-        var id = $(this).attr("rel");
-        var max = ($("#countproductnum-" + id).attr("max")) * 1;
-        var count = ($("#countprhidden-" + id).val()) * 1;
-        var newcount = count + 1;
-        if (newcount > 1)
-            $('.countproductminus[rel^=' + id + ']').removeClass("disabled");
-        if (newcount >= max) {
-            newcount = max;
-            $(this).addClass("disabled");
-        }
-        $("#countprhidden-" + id).val(newcount);
-        $("#countproductnum-" + id).html(newcount);
-        calculateBasketItem(id);
-        loadPayInfo();
-        return false;
-    });
-
-    $(".selfdeleveryonoff").click(function () {
-        var rel = $(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $("#selfdeleverycheckbox-" + rel).prop("checked", false);
-            $("#providerblok-" + rel).removeClass("goself");
-            $("#provider_addressappend" + rel).hide();
-            $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
-
-        } else {
-            $('.selfdeleveryonoff[rel^=' + rel + ']').removeClass("zach");
-            $('.relcheck[rel^=' + rel + ']').prop("checked", false);
-            ;
-            $(this).addClass("zach");
-            $("#selfdeleverycheckbox-" + rel).prop("checked", true);
-
-            $("#providerblok-" + rel).addClass("goself");
-            $("#provider_addressappend" + rel).show();
-            $("#seldeleveryblokrow-" + rel).addClass('seldeleveryblokrowcountme').show();
-        }
-        calculateBasketMerge($("#user-basket-form").serialize(), true);
-    });
-
-    $("#checkallavailble").click(function () {
-        if ($(this).hasClass("zach")) {
-            $(".allall").removeClass("zach");
-            $("#checkallavailble").removeClass("zach");
-            $(".allallcheck").prop("checked", false);
-            $(".selfdeleveryallall").removeClass("selfdeleverycountme").hide();
-            $(".selfdeleverycheckbox").prop("checked", false);
-
-        } else {
-            $("#checkallavailble").addClass("zach");
-            $(".allall").addClass("zach");
-            $(".allallcheck").prop("checked", true);
-            $(".selfdeleveryallall").addClass("selfdeleverycountme").show();
-        }
-        loadPayInfo();
-    });
-
-    $(".checkallallprovider").click(function () {
-        $("#checkallavailble").removeClass("zach");
-        var rel = $(this).attr('rel');
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".provider-" + rel).removeClass("zach");
-            $(".povidercheck-" + rel).prop("checked", false);
-            $(".selfdeleveryallprovider-" + rel).removeClass("selfdeleverycountme").hide();
-        } else {
-            $(this).addClass("zach");
-            $(".provider-" + rel).addClass("zach");
-            $(".povidercheck-" + rel).prop("checked", true);
-            $(".selfdeleveryallprovider-" + rel).addClass("selfdeleverycountme").show();
-        }
-        calculateBasketHeader();
-        loadPayInfo();
-    });
-
-    $(".basketrow .deleteproduct").click(function () {
-        var productId = $(this).attr("rel");
-        var provider = $(this).attr("provider");
-        /* */$.ajax({
-            beforeSend: function () {
-            },
-            url: "/ajax/del-from-basket",
-            type: 'POST',
-            cache: false,
-            data: {"productId": productId},
-            success: function (data) {
-                $("#basketrow-" + productId).remove();
-                if ($("#providerblok-" + provider + " .basketrowproduct").length < 1) {
-                    $("#providerblok-" + provider).remove();
-                }
-                calculateBasketHeader();
-                loadPayInfo();
-                showBasket(0);
-
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                if (xhr.status !== 0) {
-                    showAjaxErrorPopupWindow(xhr.status, thrownError);
-                }
-            }
-        });/**/
-    });
-
-    $(".checkallprovider").click(function () {
-
-        var rel = $(this).attr('rel');
-        var provider = $(this).attr('provider');
-        $("#checkallavailble").removeClass("zach");
-        $("#checkallallprovider-" + provider).removeClass("zach");
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".product-" + rel).prop("checked", false);
-            $(".selfdeleveryproduct-" + rel).removeClass("selfdeleverycountme").hide();
-
-        } else {
-            $(this).addClass("zach");
-            $(".product-" + rel).prop("checked", true);
-            $(".selfdeleveryproduct-" + rel).addClass("selfdeleverycountme").show();
-        }
-        calculateBasketHeader();
         loadPayInfo();
     });
 

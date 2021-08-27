@@ -3,11 +3,6 @@ vendor/
 config/development.config.php
 data/cache/*
 data/cache
-public/images/*
-public/images/product/*
-public/images/product
-public/images/brand
-public/images/provider
 front/node_modules
 front/node_modules/*
 front/node_modules/**
@@ -21,4 +16,6 @@ nbproject/private
 nbproject/private/*
 nbproject/private/private.xml
 nbproject/private/private.properties
-front/node_modules
+front/package-lock.json
+front/package.json
+front/gulpfile.js

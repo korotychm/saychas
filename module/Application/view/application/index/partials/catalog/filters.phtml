@@ -1,1 +1,74 @@
-<div id="filters-wrapper"><?=$filters?></div>
+<div class="filter">
+    <form id="filter-form">
+        <input type="hidden" name="offset" value="72" id="sqlOutline">
+        <input type="hidden" name="limit" value="72">
+        <input type="hidden" name="category_id" :value="category_id">
+        <!--Фильтр по цене-->
+        <div class="filter__item">
+            <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>
+            <div class="range range--price">
+                <input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.minprice / 100" />
+                <input class="range__right" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100 + 100" step="100" :value="rangeprice.maxprice / 100" />
+                <div class="range__slider">
+                    <div class="range__track"></div>
+                    <div class="range__range" style="left: 0; right: 0;"></div>
+                    <div class="range__thumb range__thumb--left" style="left: 0;"></div>
+                    <div class="range__thumb range__thumb--right" style="right: 0;"></div>
+                </div>
+                <div class="range__tooltips">
+                    <div><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                    <div><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
+                </div>
+                <input type="hidden" class="range__hidden" name="priceRange" :value="rangeprice.minprice + ';' + rangeprice.maxprice">
+            </div>
+        </div>
+        <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
+            <h2 class="catalog__sidebar-heading">{{ filter.title }} <span class="unit">{{ filter.unit }}</span></h2><!-- Тип число-->
+            <div class="range" v-if="filter.type==2">
+                <input class="range__left" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" />
+                <input class="range__right" type="range" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" />
+                <div class="range__slider">
+                    <div class="range__track"></div>
+                    <div class="range__range" style="left: 0; right: 0;"></div>
+                    <div class="range__thumb range__thumb--left" style="left: 0;"></div>
+                    <div class="range__thumb range__thumb--right" style="right: 0;"></div>
+                </div>
+                <div class="range__tooltips">
+                    <div><input class="tooltip tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>
+                    <div><input class="tooltip tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" /></div>
+                </div>
+                <input type="hidden" class="range__hidden" :name="'characteristics[' + filter.id + '][]'" :value="filter.min + ';' + filter.max">
+            </div>
+            <!-- Тип вкл-выкл-->
+            <label class="boolean" v-if="filter.type==3">
+              <input type="checkbox" :name="'characteristics[' + filter.id + ']'" value="1" />
+              <span class="boolean__check"></span>
+            </label>
+            <!-- Тип цвета-->
+            <div class="filter__colors" v-if="filter.type==7">
+              <label class="color-checkbox" v-for="option in filter.options" :key="option.valueCode">
+                <input type="checkbox" :name="'characteristics[' + filter.id + '][]'" :value="option.valueCode" @change="getProducts" />
+                <span class="color-checkbox__check">
+                  <span class="color-checkbox__check-color" :style="{backgroundColor: option.value[0]}"></span>
+                </span>
+              </label>
+            </div>
+            <!-- Тип чекбоксы-->
+            <div class="filter__checkboxes" v-if="filter.type==4 || filter.type==6 || filter.type==8">
+                <div class="filter__scroll">
+                  <label class="checkbox" v-for="option in filter.options" :key="option.valueCode">
+                    <input type="checkbox" :name="'characteristics[' + filter.id + '][]'" :value="option.valueCode"  @change="getProducts" />
+                    <span class="checkbox__check"></span>
+                    <span class="checkbox__value">{{ option.value }}
+                      <span class="checkbox__count"></span>
+                    </span>
+                  </label>
+                </div>
+                <div class="filter__search" v-if="filter.options.length > 6">
+                    <div class="search"><input type="text" placeholder="Поиск значений" /></div>
+                </div>
+                <div class="filter__show-all" v-if="filter.options.length > 6"></div>
+            </div>
+        </div>
+    </form>
+</div>

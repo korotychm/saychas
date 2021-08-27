@@ -1,7 +1,6 @@
 <?php use Application\Resource\Resource; ?>
-<div class='contentpadding'>
-    <div class="blok" id="quicksearch">
-        <input type="text" id="serchtopinput" placeholder="<?= Resource::SEARCH_INPUT_PLACEHOLDER?>"  >
-        <div class=blok ><span class=gray ><?= Resource::FOR_EXAMPLE_TEXT?></span><?= Resource::SEARCH_PANEL_HELPER?></div>
-    </div> 
-</div>
+<form class="search" id="quicksearch">
+  <input type="text" placeholder="Быстрый поиск" />
+  <button></button>
+</form>
+<div class="header__search-tooltip"><?= Resource::FOR_EXAMPLE_TEXT?> <span><?= Resource::SEARCH_PANEL_HELPER?></span></div>

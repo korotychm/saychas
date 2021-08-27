@@ -1,22 +1,16 @@
+<div class="popup" id="usermodalwindow">
+  <div class="popup__inner">
+      <div class="popup__close"></div>
+      <div class="popup__content">
+        <form method='POST' id='userAuthModalForm' class="blok relative">
 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"  data-show="true" data-keyboard="false" data-backdrop="static" id="usermodalwindow">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            
-            <form method='POST' id='userAuthModalForm' class="blok relative">
-
-                <?=
-                $this->partial("/application/common/auth-form-in-modal", [
-                    "title" => "Вход или регистрация",
-                    "buttonLable" => "Продолжить",
-                ])
-                ?>  
-            </form>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
+            <?=
+            $this->partial("/application/common/auth-form-in-modal", [
+                "title" => "Вход или регистрация",
+                "buttonLable" => "Продолжить",
+            ])
+            ?>
+        </form>
+      </div>
+  </div>
 </div>
-
-
-

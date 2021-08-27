@@ -1,189 +1,7 @@
-
-function showAjaxErrorPopupWindow (status, error){
-     showServicePopupWindow(
-                            "Ошибка " + status,
-                            "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + status + " " + error
-                            );
-    
-}
-
-function showServicePopupWindow(title, body, footer = "", noclose = false)
-{
-    $("#ServiceModalWindow .modal-title").html(title);
-    $("#ServiceModalWindow #ServiceModalWraper").html(body);
-    $("#ServiceModalWindow .modal-footer").html(footer);
-    if (noclose) {
-        $("#ServiceModalWindow .close").remove();
-    }
-    $("#ServiceModalWindow").modal("show");
-}
-
 $(document).ready(function () {
 
-    showBasket(0);
     getLegalStores($("#geodatadadata").text(), ".testlegalstor", false);
     //console.log($("#geodatadadata").text());
-
-    $("#tree").delay(500).slideDown("slow");
-    $(".overcover").delay(500).fadeOut("slow");
-    window.onbeforeunload = function () {
-        $(".overcover").stop().fadeIn();
-    };
-
-    $("#test").click(function () {
-        addUserAddrees();
-    })
-
-    $("body").on("keyUp, blur, focus, change", ".numonly", function () {
-        $(this).val($(this).val().replace(/[^0-9+]/g, ''));
-    });
-
-
-    show_scrollTop();
-    $(window).scroll(function () {
-        show_scrollTop();
-    });
-
-    $("#quicktop").click(function () {
-        $("html:not(:animated)").animate({scrollTop: 0}, 500);
-        return false;
-    });
-
-    $(".product-page-image").click(function () {
-        var newsrc = $(this).attr("src");
-        var parent = $(this).parent();
-        var oldsrc = $("#productimage0").attr("src");
-        $(".product-image-container-mini").removeClass("borderred");
-        parent.addClass("borderred");
-        $("#productimage0").attr("src", newsrc);
-        //$(this).attr("src", oldsrc);
-        return false;
-    });
-
-    $("body").on("click", ".checkgroup", function () {
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
-        } else {
-            $(this).addClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
-        }
-    });
-    $("body").on("click", ".fltronoff", function () {
-        var rel = $(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", false);
-        } else {
-            $('.fltronoff[rel^=' + rel + ']').removeClass("zach");
-            $('.relcheck[rel^=' + rel + ']').prop("checked", false);
-            ;
-            $(this).addClass("zach");
-            $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
-        }
-    });
-
-    $("body").on("click", ".user-modal-open", function () {
-        $('#usermodalwindow').modal('show')
-    });
-
-    $("body").on("click", ".radio", function () {
-        var rel = $(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        $('.radio[rel^=' + rel + ']').removeClass("zach");
-        $('.relradio[rel^=' + rel + ']').prop("checked", false);
-        ;
-        $('.relradio' + rel).prop("checked", false);
-        ;
-        $(this).addClass("zach");
-        $(".fltrcheck" + $(this).attr("for")).prop("checked", true);
-
-    });
-
-    $("body").on("click", ".closefilteritem", function () {
-        hidefilteritem();
-    });
-
-    $(".filtritemtitle").click(function () {
-        hidefilteritem();
-        var id = $(this).attr("rel");
-        $("#fi" + id).addClass("active");
-        $("#fc" + id).slideDown();
-    });
-
-    $(".searchpanelclose").click(function () {
-        $("#searchpanel").stop().css({top: "-200px"});
-        $("#uadress").show();
-    });
-    $(".setuseraddress").click(function () {
-        var rel = $(this).attr("rel");
-        $.ajax({
-            beforeSend: function () {},
-            url: "/user-set-default-address",
-            type: 'POST',
-            cache: false,
-            data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
-            success: function (data) {
-                //console.log(data);
-                //if(data.result == 1)
-                //    $("#useradress-" + rel ).fadeOut();
-                location = location.href;
-                return false;
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                if (xhr.status !== 0) {
-                    showServicePopupWindow(
-                            "Ошибка " + xhr.status,
-                            "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
-                            );
-                }
-                return false;
-            }
-        });
-        return false;
-    });
-
-    $(".open-user-address-form").click(function () {
-        $("#searchpanel").stop().animate({top: "0px"});
-        $("#uadress").hide();
-    });
-
-    $("#tree22").treeview({
-        persist: "location",
-        collapsed: true,
-        animated: "medium"
-    });
-
-    $(".phoneInput").mask("+7(999) 999-9999", {placeholder: " "});
-
-    $("#dadataanswer").slideUp();
-
-    $("#address").click(function () {
-        $("#adesserror").hide();
-        $("#dadataanswer").slideUp();
-        $("#dadataask").delay(500).slideUp();
-        $("#ycard").fadeOut();
-    });
-
-    $("#useraddress").suggestions({
-        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-        type: "ADDRESS",
-        onSelect: function (suggestion) {
-            $("#adesserror").hide();
-            //console.log(suggestion.data);
-            if (!suggestion.data.house)
-            {
-                $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
-                return false;
-            }
-            var dataString = JSON.stringify(suggestion);
-            $("#geodatadadata").val(dataString);
-            getLegalStores(dataString, '#useradesserror');
-            addUserAddrees(dataString, $("#useraddress").val());
-        }
-    });
 
     $("#address").suggestions({
         token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
@@ -211,25 +29,6 @@ $(document).ready(function () {
              });/**/
             // myMap.geoObjects.add(placemark);
         }
-    });
-
-
-    $("#tree").treeview({
-        persist: "location",
-        collapsed: true,
-        animated: "medium"
-    });
-
-
-    
-
-    $("body").on("click", ".paybutton", function () {
-        var product = $(this).attr("rel");
-        showBasket(product);
-        $("#bascetbottomblok").slideDown();
-    });
-    $("#bascetbottomblok").on("click", ".close", function () {
-        $("#bascetbottomblok").slideUp();
     });
 
     $("#userAuthForm").submit(function () {
@@ -334,36 +133,6 @@ $(document).ready(function () {
         });
     });
 
-    $(window).resize(function () {
-        leftpanelclose();
-    });
-
-    $(".catalogshow").click(function () {
-        $("#overcoverblack").fadeIn();
-        $("#lefmobiletpanel").animate({left: "0"}, 500);
-
-    });
-
-    $("#lefmobiletpanelclose").click(function () {
-        leftpanelclose();
-    });
-
-    $(".spoileropenlink").click(function () {
-        var id = $(this).attr("rel");
-        $("#spoiler-show-" + id).show();
-        $("#spoiler-hide-" + id).hide();
-        return false;
-    });
-
-    $(".favstar").click(function () {
-        ($(this).hasClass("favon")) ? $(this).removeClass("favon") : $(this).addClass("favon");
-        return false;
-    });
-
-    $(".favtext").click(function () {
-        ($(this).hasClass("favon")) ? $(this).text("Убрать из избранного") : $(this).text("Добавить в избранное");
-        return false;
-    });
 });
 
 function getLocalStores(dataString, obj = "#ajaxanswer2") {
@@ -413,50 +182,6 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
     });
 }
 
-function leftpanelclose() {
-    $("#overcoverblack").fadeOut();
-    $("#lefmobiletpanel").stop().animate({left: "-110%"}, 300);
-}
-
-function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
-    $.ajax({
-        url: "/ajax-add-user-address",
-        type: 'POST',
-        data: {'dadata': dadata, "address": address},
-        dataType: 'json',
-        cache: false,
-        success: function (data) {
-            //console.log(html);
-            location = location.href;
-            return true;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-            return true;
-        }
-    });
-}
-
-function setUserAddrees() {
-    var dadata = $("#geodatadadata").text();
-    var address = $("#uadress").text();
-
-    $.ajax({
-        url: "/ajax-set-user-address",
-        type: 'POST',
-        dataType: 'json',
-        cache: false,
-        success: function (html) {
-            $(".user_address_set").html(html.userAddress);
-            return true;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-            return true;
-        }
-    });
-}
-
 function print_r(arr, level) {
     var print_red_text = "";
     if (!level)
@@ -476,34 +201,4 @@ function print_r(arr, level) {
     } else
         print_red_text = "===>" + arr + "<===(" + typeof (arr) + ")";
     return print_red_text;
-}
-
-function show_scrollTop() {
-    var wst = $(window).scrollTop();
-    (wst > 500) ? $("#quicktop").stop().show() : $("#quicktop").stop().fadeOut();
-
-}
-function showBasket(productadd = 0) {
-    $.ajax({
-        url: "/ajax/add-to-basket",
-        cache: false,
-        type: 'POST',
-        //dataType: 'json',
-        data: {"product": productadd},
-        success: function (data) {
-            //console.log(data);
-            $("#bascetbottomblok .content ").empty();
-            if (data.products) {
-                $.each(data.products, function (key, value) {
-                    var basket = "<div class='blok both relative'><img class='imgicon iblok' src='/images/product/" + value.image + "' ><span class='text'>" + value.name + "</span></div>";
-                    $("#bascetbottomblok .content ").append(basket);
-                });
-            }
-            $("#zakazcount").html(data.count); //data.total
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $("#bascetbottomblok .content ").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
-        }
-    });
-    return false;
 }

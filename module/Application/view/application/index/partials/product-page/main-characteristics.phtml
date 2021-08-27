@@ -1,16 +1,11 @@
-<div class="contentpadding">
-    <div class="productpagecard ">
-        <div class="content opacity-20">
-            <div class="char-blok">
-<?php if (!empty($characteristics[1])):?>
-<?php  foreach($characteristics[1] as $characteristic):?>
-<?php if ($characteristic['type'] == 0) : ?>
-                   <h3><?=$characteristic['title']?></h3>
-<?php  else: ?>    <div class="char-row"><span class="char-title"><span><?=$characteristic['title']?></span></span><span class="char-value"><span><?=$characteristic['value']?></span></span></div>
-<?php  endif; ?>
-<?php endforeach;?>
-<?php endif;?>
-            </div>
-            </div>
-        </div>
- </div>
+<ul class="product-card__table product-card__table--justify">
+    <?php if (!empty($characteristics[1])):?>
+        <?php foreach($characteristics[1] as $characteristic):?>
+            <li class="product-card__table-tr">
+               <div class="product-card__table-th"><?=$characteristic['title']?></div>
+               <div class="product-card__table-val"><?=$characteristic['value']?></div>
+            </li>
+        <?php endforeach;?>
+    <?php endif;?>
+</ul>
+<a class="anchor product-card__to-table" href="#attributes">Все характеристики ↓</a>
