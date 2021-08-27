@@ -1,79 +1,49 @@
 <?php if ($countStors < 2) :   $ordermerge = false;  endIf;?>
-<br><br><br>
+
 <?php if ($countStors) :?>
-    <div class=' bordergetcontainer  '>
-        <div class="">
-            <div class='lborder pw-contentblock cblock-2  borderredhalf <?= (!$ordermerge) ? "  left " : "" ?>  <?= ($countStors < 2 ) ? " right " : "" ?>'>
-                <div class='contentpadding'>
-                    <div class='radio <?= (!$ordermerge) ? "zach" : "" ?>  black radiomergebut' rel='dostmerge' for='dostmergeoff'>
-                        <b>
-                            <span class='iblok valign-middle '>Доставки из <?= $countStors ?> магазинов </span>
-                            <span class='iblok valign-middle saychas'>за 1 час</span>
-                            <span class='iblok valign-middle '> &mdash;&nbsp;<?= number_format($hourPrice / 100, 0, "", "&nbsp;") ?>&nbsp;₽  </span>
-                        </b>
-                    </div>
-                    <span class='blok gray text'>
-                        Для каждого магазина мы назначим отдельного курьера,
-                        тем самым за час вы получите все свои товары в <?= ($countStors == 1) ? "$countStors доставке" : "$countStors доставках" ?>
-                        <hr>
-                        <span class="mini">крайнее время заказа: <?= date("r", $timeClose - 3600) ?></span>
-                    </span>
 
-                    <div class="blok overcoverswich relative">
-                        <div class="overcoverlocal"></div>
-
-                            <?php if ($select1hour and!empty($select1hour)) : ?>
-                            <select  class='lableinfo margin16 text timepoint' name="timepoint[0]" id="timepoint-dostmerge1" rel="timepointtext1" >
-                                <?php foreach ($select1hour as $option) : ?>
-                                    <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?> "  <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
-                                <?php endforeach; ?>
-                            </select>
-     <?php else: ?>
-                            <div class="lableinfo margin16 text timepoint">Нет доставки</div>
-    <?php endif; ?>
-                    </div>
-                </div>
-                <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeoff' value='0'  radio <?= (!$ordermerge) ? "checked" : "" ?>>
-            </div><?php if ($countStors > 1):
-            ?><div class='pw-contentblock cblock-2  rborder borderredhalf <?= ($ordermerge) ? "  right " : "" ?> '>
-                    <div class='contentpadding'>
-                        <div class='radio <?= ($ordermerge) ? "zach" : "" ?> black radiomergebut' rel='dostmerge' for='dostmergeon'>
-                            <b>
-                                <span class='iblok valign-middle '>Объеденить заказы </span>
-                                <span class='iblok valign-middle saychas'>за 3 часа</span>
-                                <span class='iblok valign-middle '> &mdash;&nbsp;<?= number_format($hour3Price / 100, 0, "", "&nbsp;") ?>&nbsp;₽  </span>
-                            </b>
-                        </div>
-                        <span class='blok gray text' >
-                            На каждые четыре магазина мы назначим по курьеру,
-                            тем самым, вы получите все свои товары
-                            в одной доставке (правда, это будет дольше)
-                            <hr>
-                            <span class="mini">крайнее время заказа: <?= date("r", $timeClose - 3600 * 3) ?></span>
-                        </span>
-
-
-        <?php if ($select3hour and!empty($select3hour)): ?>
-
-                            <div class="blok overcoverswich relative">
-                                <div class="overcoverlocal"></div>
-                                <select  class='lableinfo margin16 text timepoint' name="timepoint[1]" id="timepoint-dostmerge3" rel="timepointtext3" >
-
-                                    <?php foreach ($select3hour as $option3): ?>
-                                        <option value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" <?= $selectedtimepoint[1][$option3['value']] ?>><?= $option3['lable'] ?></option>
-                            <?php endforeach; ?>
-                                </select></div>
-        <?php endif; ?>
-
-                    </div>
-
-                    <input type="radio" name='ordermerge' class='relradiodostmerge none fltrcheckdostmergeon' value='1'   <?= ($ordermerge) ? "checked" : "" ?>>
-                </div>
-    <?php endif; ?>
-            <input type="hidden" name="timepointtext1" id="timepointtext1"  value="<?= $timepointtext1 ?>">
-            <input type="hidden" name="timepointtext3" id="timepointtext3"  value="<?= $timepointtext3 ?>">
+    <div class="cart__radio-group">
+        <input name='ordermerge' value="0" type="radio" name="delivery" <?= (!$ordermerge) ? 'checked' : '' ?> id="delivery1" />
+        <div class="cart__radio">
+          <label for="delivery1">
+            <span class="cart__radio-check"></span>
+            <span><b>Из <?= $countStors ?> магазинов <span class="accent">за 1 час</span>
+            </b> &mdash;&nbsp;<?= number_format($hourPrice / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
+          </label>
+          <div class="cart__radio-content">
+                <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>. Крайнее время доставки - <?= date("r", $timeClose - 3600) ?>.</p>
+                <?php if ($select1hour && !empty($select1hour)) : ?>
+                  <select class="select" name="timepoint[0]" id="timepoint-dostmerge1" rel="timepointtext1">
+                    <?php foreach ($select1hour as $option) : ?>
+                        <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?> "  <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                <?php else: ?>
+                  <div class="timepoint">Нет доставки</div>
+                <?endif;?>
+          </div>
+        </div>
+        <input type="radio" name="delivery" <?= ($ordermerge) ? 'checked' : '' ?> id="delivery2" />
+        <div class="cart__radio">
+          <label for="delivery2">
+            <span class="cart__radio-check"></span>
+            <span><b>Объединить заказы за 3 часа</b> &mdash;&nbsp;<?= number_format($hour3Price / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
+          </label>
+            <div class="cart__radio-content">
+                <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше). Крайнее время доставки - <?= date("r", $timeClose - 3600 * 3) ?>.</p>
+                <?php if ($select3hour && !empty($select3hour)): ?>
+                  <select class="select" name="timepoint[1]" id="timepoint-dostmerge3" rel="timepointtext3">
+                    <?php foreach ($select3hour as $option3): ?>
+                      <option value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" <?= $selectedtimepoint[1][$option3['value']] ?>><?= $option3['lable'] ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                <?php else: ?>
+                  <div class="timepoint">Нет доставки</div>
+                <?endif;?>>
+            </div>
         </div>
     </div>
-    <!--?=$printr?-->
+    <input type="hidden" name="timepointtext1" id="timepointtext1"  value="<?= $timepointtext1 ?>">
+    <input type="hidden" name="timepointtext3" id="timepointtext3"  value="<?= $timepointtext3 ?>">
 
 <?php endif; ?>
