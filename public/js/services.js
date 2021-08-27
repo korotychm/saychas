@@ -35,15 +35,16 @@ $(function () {
 //        var formData = new FormData();
 //        formData.append('phone', '9185356024');
 //        formData.append('code', '7777');
-        //data = {'phone': phone};
+        var data = {"OrderId": "000000540","ErrorCode": "0"};
         $.ajax({
             type: "POST",
             url: "/tinkoff/callback",
-            //dataType: "json",
-            method: 'post',
+            dataType: "json",
+            method: 'POST',
+            contentType: "application/json",
 //            contentType: false, // Not to set any content header
 //            processData: false, // Not to process data
-            data: {"data":{"name":"value"}}, // formData,
+            data: data ,  // formData,
             success: function (result, status, xhr) {
                 console.log('result = ', result, 'status = ', status);
             },

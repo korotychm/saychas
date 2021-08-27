@@ -57,9 +57,8 @@ class CommonHelperFunctionsService
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents($url, false, stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]]));
         if (!$result) {
-            return ["result" => false, "error" => "1C не отвечает "];
+            return ["result" => false, "error" => "server time out"];
         }
-        
         $legalStore = Json::decode($result, true);
 
         foreach ($legalStore as $store) {
@@ -73,7 +72,7 @@ class CommonHelperFunctionsService
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
         
-        return ["result" => true, "message" => "Магазины получены"];
+        return ["result" => true, "message" => "Stores received"];
     }
     
     public function setErrorRedirect($errorCode)

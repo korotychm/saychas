@@ -122,6 +122,7 @@ class AcquiringController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
+        //$this->entityManager->initRepository(Basket::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -145,11 +146,9 @@ class AcquiringController extends AbstractActionController
         //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
         
         $paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
-        
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $orderId = $this->params()->fromRoute('order', '');
-        
         $param = [
             'OrderId' => $orderId,
             //"RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
@@ -158,9 +157,7 @@ class AcquiringController extends AbstractActionController
            // "FailURL"=> $paramApi['fail_url'],     
             "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
           ];
-        //$param['OrderId'] = ;
-        $order = ClientOrder::find(["order_id" => $orderId, /**/ "status" => 1 /**/]); 
-        
+        $order = ClientOrder::find(["order_id" => $orderId /*/ "status" => 1 /**/]); 
         if (empty($order)) {
             return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
@@ -179,14 +176,13 @@ class AcquiringController extends AbstractActionController
         }    
         $param['Receipt']['EmailCompany'] = $paramApi['company_email'];
         $param['Receipt']['Taxation'] = $paramApi['company_taxation'];
-            
-        $basket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
+        $orderBasket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
         
-        if (empty($basket)) {
-            return new JsonModel(["result" => false, "message" => "error: products of order not found " ]);
+        if (empty($orderBasket)) {
+            return new JsonModel(["result" => false, "message" => "error: products of order not found ",["where" => ['user_id' => $userId, 'order_id' => $orderId]] ]);
         }
         
-        $orderItems = $this->acquiringCommunication->getBasketData($basket);
+        $orderItems = $this->acquiringCommunication->getOrderItems($orderBasket);
         $param['Receipt']['Items'] =  $orderItems['Items'];
         $param['Amount'] = $orderItems['Amount'];
         $vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
@@ -202,9 +198,6 @@ class AcquiringController extends AbstractActionController
             $param['Amount']+=$delivery_price;
         }
         //return new JsonModel($param);
-            //$message = print_r($param, true);
-            //mail("plusweb@localhost", "tinkoff.log", $message);
-        
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
             //$this->
@@ -214,6 +207,7 @@ class AcquiringController extends AbstractActionController
         }
         return new JsonModel(["result" => false, "answer" => $this->acquiringCommunication->initTinkoff($param)]);
     }
+    
     
     public function tinkoffErrorAction()
     {
@@ -226,28 +220,38 @@ class AcquiringController extends AbstractActionController
         $param=["type"=>"Success"];
         return new JsonModel( $param);
     }
+    
+    /*
+     * get post json
+     * @return response
+     */
+     
     public function tinkoffCallbackAction()
     {
-            //$post = $this->getRequest(); //->getPost()->toArray();
+        $jsonData = file_get_contents('php://input');    
+        //return new JsonModel([$jsonData]);
+ /*{    "TerminalKey": "1629956533317DEMO",
+    "OrderId": "000000564",
+    "Success": true,
+    "Status": "CONFIRMED",
+    "PaymentId": 699599295,
+    "ErrorCode": "0",
+    "Amount": 229900,
+    "CardId": 99866533,
+    "Pan": "430000******0777",
+    "ExpDate": "1122",
+    "Token": "08e3718b7790f24a2984d048526a8bfde97cb3de39c14af839d45d6d83eab5ed"}*/
         
-    $postData = file_get_contents('php://input');    
-			$message="
-    $postData
-    HTTP_X_REAL_IP: ". $_SERVER["HTTP_X_REAL_IP"]."
-    HTTP_X_FORWARDED_FOR: ". $_SERVER["HTTP_X_FORWARDED_FOR"]. "
-    HTTP_CONNECTION: ". $_SERVER["HTTP_CONNECTION"]. "
-    HTTP_USER_AGENT: ". $_SERVER["HTTP_USER_AGENT"]. "
-    HTTP_ACCEPT: ". $_SERVER["HTTP_ACCEPT"]."
-    REQUEST:
-    ".print_r($_REQUEST, true);
-
-            //$message = print_r($_REQUEST, true);
-            mail("d.sizov@saychas.ru", "tinkoff.log", $message);
-            //mail("user@localhost", "tinkoff.log", $message);
-
+        $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
+        if ($postData["ErrorCode"] == "0"){
+            $order = ClientOrder::find(["order_id" => $postData["OrderId"]]); 
+            $order->setPaymentInfo();
+            $order->persist(["order_id" => $postData["OrderId"]]);
+            $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
+        }
+            mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
             $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_200);
-            $response->setContent('OK');
+            $response->setStatusCode(Response::STATUS_CODE_200)->setContent('OK');
             return $response;
     }
   
