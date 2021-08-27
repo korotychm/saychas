@@ -1,13 +1,13 @@
 <?php
 
-// src/Model/Entity/Brand.php
+// src/Model/Entity/Country.php
 
 namespace Application\Model\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
-
+use Application\Model\Traits\Searchable;
+use Application\Model\Repository\CountryRepository;
 /**
- * Brand
+ * Country
  *
  * @ORM\Table(name="brand")
  * @ORM\Entity
@@ -15,6 +15,16 @@ namespace Application\Model\Entity;
 class Country extends Entity
 {
 
+    /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var CountryRepository
+     */
+    public static CountryRepository $repository;
+    
     /**
      * @var string
      */

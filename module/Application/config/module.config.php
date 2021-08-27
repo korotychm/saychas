@@ -20,6 +20,7 @@ use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Application\Controller\Factory\FtpControllerFactory;
+use Application\Controller\Factory\AcquiringControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
@@ -815,6 +816,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-get-basket-json'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-basket-json',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxGetBasketJson',
+                    ],
+                ],
+            ],
 //            'regex' => [
 //                'regex' => '/blog/(?<id>[a-zA-Z0-9_-]+)(\.(?<format>(json|html|xml|rss)))?',
 //                'defaults' => [
@@ -959,6 +970,36 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-payment'=> [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/tinkoff/payment[/:order]',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffPayment',
+                    ],
+                ],
+            ],
+            'tinkoff-redirect-success'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/success',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffSuccess',
+                    ],
+                ],
+            ],
+             'tinkoff-redirect-error'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/error',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffError',
+                    ],
+                ],
+            ],
             //getJsonCategoryFiltersAction
         ],
     ],
@@ -971,6 +1012,7 @@ return [
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
             Controller\FtpController::class => FtpControllerFactory::class,
+            Controller\AcquiringController::class => AcquiringControllerFactory::class,
         ],
     ],
     'laminas-cli' => [
@@ -1060,6 +1102,7 @@ return [
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
             \Application\Service\ExternalCommunicationService::class => \Application\Service\Factory\ExternalCommunicationServiceFactory::class,
+            \Application\Service\AcquiringCommunicationService::class => \Application\Service\Factory\AcquiringCommunicationServiceFactory::class,
 
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
             
@@ -1075,8 +1118,8 @@ return [
             \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
             \Application\Model\Entity\Setting::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
-
-            
+            \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
+            \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
@@ -1119,6 +1162,17 @@ return [
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
+        ],
+        'TinkoffMerchantAPI'=> [
+            'terminal' => '1629956533317DEMO',  
+            'token' => '9mfca0gpenpfi4rb',   
+            'api_url' => 'https://securepay.tinkoff.ru/v2/',
+            'company_email' => 'd.sizov@saychas.ru',
+            'company_taxation' => 'osn',
+            'time_order_live' => 900,// время для оплаты заказа в сек.
+            'success_url' => 'https://z.saychas.ru/tinkoff/success', 
+            'fail_url' =>    'https://z.saychas.ru/tinkoff/error',
+            //'vat' => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',

@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\BrandRepository;
+use Application\Model\Traits\Searchable;
+
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +18,17 @@ namespace Application\Model\Entity;
 class Brand extends Entity
 {
 
+     /**
+     * Behavior
+     */
+    use Searchable;
+
     /**
+     * @var BrandRepository
+     */
+
+    public static BrandRepository $repository;
+   /**
      * @var string
      */
     protected $id;

@@ -25,15 +25,21 @@ class IndexController extends AbstractActionController
 
     /** @var HtmlContentProvider */
     protected $htmlContentProvider;
-    
+
     /** @var RbacManager */
     protected $rbacManager;
-    
+
     protected $entityManager;
-    
+
     protected $userManager;
-    
+
+    protected $productManager;
+
+    protected $storeManager;
+
     protected $authService;
+
+    protected $config;
 
     /** @var array */
     protected $table = [
@@ -45,7 +51,7 @@ class IndexController extends AbstractActionController
 
     /**
      * Constructor
-     * 
+     *
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
@@ -59,7 +65,10 @@ class IndexController extends AbstractActionController
         $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
-        $this->rbacManager->init(true);        
+        $this->productManager = $this->container->get(\ControlPanel\Service\ProductManager::class);
+        $this->storeManager = $this->container->get(\ControlPanel\Service\StoreManager::class);
+        $this->config = $container->get('Config');
+        $this->rbacManager->init(true);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -110,7 +119,15 @@ class IndexController extends AbstractActionController
     {
         $this->assertLoggedIn();
         $dateTime = new \DateTime();
-        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime]);
+        $identity = $this->authService->getIdentity();
+        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
+        //$credentials = ['partner_id: '.'00003', 'login: '.'admin'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
+        $answer = $this->storeManager->loadAll($url, $credentials);
+
+        $this->storeManager->setPageSize(2);
+        $cursor = $this->storeManager->findAll(['pageNo' => 1]);
+        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime, 'stores' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
         return $view->setTerminal(true);
     }
 
@@ -143,13 +160,25 @@ class IndexController extends AbstractActionController
     public function showProductsAction()
     {
         $this->assertLoggedIn();
-        $view = new ViewModel();
+        $identity = $this->authService->getIdentity();
+        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
+        $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
+        $answer = $this->productManager->loadAll($url, $credentials);
+        $this->productManager->setPageSize(2);
+        $filter = [
+            'provider_id' => $identity['provider_id'],
+        ];
+        //$cursor = $this->productManager->findAll(['pageNo' => 1, 'filter' => $filter]);
+        $cursor = $this->productManager->findDocuments(['pageNo' => 1, 'filter' => $filter]);
+        //$this->productManager->findTest();
+        
+        $view = new ViewModel(['products' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
         return $view->setTerminal(true);
     }
-    
+
     /**
      * Show provider profile
-     * 
+     *
      * @return ViewModel
      */
     public function profileAction()
@@ -160,7 +189,7 @@ class IndexController extends AbstractActionController
 //        }
         return (new ViewModel())->setTerminal(true);
     }
-    
+
     public function userManagementAction()
     {
         $this->assertLoggedIn();
@@ -169,7 +198,7 @@ class IndexController extends AbstractActionController
 
     /**
      * Show action and discount page
-     * 
+     *
      * @return ViewModel
      */
     public function actionAndDiscountAction()
@@ -177,10 +206,10 @@ class IndexController extends AbstractActionController
         $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
-    
+
     /**
      * Show account management page
-     * 
+     *
      * @return ViewModel
      */
     public function accountManagementAction()
@@ -188,10 +217,10 @@ class IndexController extends AbstractActionController
         $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
-    
+
     /**
      * Show responding to reviews
-     * 
+     *
      * @return ViewModel
      */
     public function respondingToReviewsAction()
@@ -199,7 +228,7 @@ class IndexController extends AbstractActionController
         $this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
-    
+
     public function calendarDetailsAction()
     {
         $post = $this->getRequest()->getPost()->toArray();

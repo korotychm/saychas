@@ -512,12 +512,14 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $this->deleteProductCharacteristics($product->id);
             $this->saveProductCharacteristics($prods);
 
-            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
 
             try {
+//                print_r($sql);
+//                continue;
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {

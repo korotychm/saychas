@@ -100,6 +100,8 @@ class Resource
      */
     const ORDER_TITLE = "Мои заказы";
     const ORDER_EMPTY = "Заказов не найдено";
+    const ORDER_PAYMENT_TITLE = "Оплата заказа <OrderId/>. Saychas.ru "; // описание оплаты для платежной системы
+    const ORDER_PAYMENT_DELIVERY = "Стоимость доставки "; // описание оплаты для платежной системы
 
     /*
      * Числовые данные

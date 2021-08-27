@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height:100vh">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">Ввести код поставщика для начала</div>
+                <div class="card-body">
+                    <form method="POST" action="<?= $action ?>" autocomplete="off">
+                        <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
+                        <div class="input-group mb-2 input-group-sm">
+                            <div class="input-group-prepend">
+                                <span  class="field-prefix input-group-text">Код поставщика</span>
+                            </div>
+                            <input type="text" placeholder="00000" class="form-control" value="" name="code">
+                        </div>
+                        <input type="submit" id="send-provider-login" class="btn btn-primary" value="Ввод" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    $banzaii = 'vonzaii';
+    echo $banzaii;
+?>

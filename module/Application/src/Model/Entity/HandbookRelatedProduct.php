@@ -164,9 +164,9 @@ class HandbookRelatedProduct extends Entity
         $expression->setExpression('sum(rest)');
 
         $where = ['product_id' => $this->getId()];
-        if(count($storeIds) > 0) {
-            $where = array_merge($where, ['store_id' => $storeIds]);
-        }
+        //if(count($storeIds) > 0) {
+        $where = array_merge($where, ['store_id' => $storeIds]);
+        //}
         $result = self::$stockBalanceRepository->findAll(['where' => $where, 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
 
         $current = $result->current();
@@ -234,12 +234,19 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $old_price;
-    
+
     /**
      * Product discount from joined price table
      * @var int
      */
     protected $discount;
+
+    /**
+     * Vat
+     *
+     * @var int
+     */
+    protected $vat;
 
     /**
      * Get price from one-to-one joined price table
@@ -516,14 +523,47 @@ class HandbookRelatedProduct extends Entity
         return $this;
     }
 
+    /**
+     * Get rest(balance)
+     *
+     * @return int
+     */
     public function getRest()
     {
         return $this->rest;
     }
 
+    /**
+     * Set rest(balance)
+     *
+     * @param int $rest
+     * @return $this
+     */
     public function setRest($rest)
     {
         $this->rest = $rest;
+        return $this;
+    }
+
+    /**
+     * Get vat
+     *
+     * @return int
+     */
+    public function getVat()
+    {
+        return $this->vat;
+    }
+
+    /**
+     * Set vat
+     *
+     * @param int $vat
+     * @return $this
+     */
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
         return $this;
     }
 

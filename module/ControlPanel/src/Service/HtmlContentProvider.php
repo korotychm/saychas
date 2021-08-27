@@ -56,7 +56,7 @@ class HtmlContentProvider
             ['id' => 'storesId', 'url' => '#', 'name' => 'Адреса магазинов', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
             ['id' => 'actionAndDiscountId', 'url' => '#', 'name' => 'Акции и скидки', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
             ['id' => 'respondingToReviewsId', 'url' => '#', 'name' => 'Ответы на отзывы', 'route' => 'control-panel', 'type' => 'left', 'active' => true,],
-            ['id' => 'productsId', 'url' => '#', 'name' => 'Карточки товаров', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
+            ['id' => 'productsId', 'url' => '#', 'name' => 'Товары', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
             ['id' => 'exitId', 'url' => '/control-panel/logout', 'name' => 'Выход', 'route' => 'exit-control-panel', 'type' => 'left', 'active' => false,],
             ['id' => 'backToSiteId', 'url' => '/', 'name' => 'Перейти на сайт', 'route' => 'control-panel', 'type' => 'left', 'active' => false,],
         ];

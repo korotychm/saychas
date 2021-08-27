@@ -9,6 +9,7 @@ public/images/product
 public/images/brand
 public/images/provider
 front/node_modules
+front/node_modules/*
 front/node_modules/**
 !data/cache/.gitkeep
 composer.lock
@@ -16,6 +17,7 @@ phpunit.xml
 .phpunit.result.cache
 nbproject/*
 nbproject/**
+nbproject/private
 nbproject/private/*
 nbproject/private/private.xml
 nbproject/private/private.properties

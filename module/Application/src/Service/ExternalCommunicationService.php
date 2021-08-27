@@ -1,6 +1,6 @@
 <?php
 
-// src\Service\ExternalCommunicationService.php
+// src\Service\AcquiringCommunicationService.php
 
 namespace Application\Service;
 
@@ -12,7 +12,7 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\ClientOrder;
 
 /**
- * Description of ExternalCommunicationService
+ * Description of AcquiringCommunicationService
  *
  * @author alex
  */
@@ -88,7 +88,8 @@ class ExternalCommunicationService
             while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
-        $content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
+        $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] ,"selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
+        //$return["delivery_price"] = ;
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
         unset(
@@ -102,6 +103,7 @@ class ExternalCommunicationService
         //return $content;
         
         $return['basketinfo']['username'] = $content['username'];
+        $return['basketinfo']['delivery_price'] = $content['delivery_price'];
         $return['products'] = $productupdate;
         $return['response'] = $this->sendCurlRequest($url, $content);
    

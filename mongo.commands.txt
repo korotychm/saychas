@@ -2,6 +2,17 @@ mongodump -u saychas -p saychas --db=saychas
 mongodump -u admin -p admin --db=admin
 mongorestore -u saychas -p saychas --db=saychas dump/saychas
 
+/** create a new user and grant priveleges to the user */
+db.createUser({user: 'saychas_cache',pwd: 'saychas_cache', roles: [{role: 'dbOwner', db: 'saychas_cache'}]});
+
+/** create index */
+db.products.createIndex( { title: "text", description: "text" } )
+
+/** search; it looks like russian is not allowed; not clear though */
+db.products.find({$text: { "$search" : "vivo" } }).pretty();
+
+/** regular expressian search; russian is ok now */
+db.products.find({title: /март/i}).pretty();
 
 db.products.find({"characteristics": { $elemMatch: {value: "15%"} } }, {"id": 1, "title": 1, "provider_id": 1, "category_id": 1, "description": 1, "characteristics.$": 1, "_id": 0}).pretty()
 

@@ -110,6 +110,19 @@ class Product extends Entity
      * @var string (json)
      */
     protected $param_variable_list;
+    
+    protected $vat;
+    
+    public function getVat()
+    {
+        return $this->vat;
+    }
+    
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
+        return $this;
+    }
 
     /**
      * Set color.

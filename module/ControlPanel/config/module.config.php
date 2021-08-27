@@ -214,6 +214,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'provider-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/provider-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'provider-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'check-login' => [
                         'type' => Literal::class,
                         'options' => [
@@ -221,6 +232,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\AuthController::class,
                                 'action' => 'check-login',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'check-provider-login' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/check-provider-login',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'check-provider-login',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -321,6 +343,10 @@ return [
             \ControlPanel\Service\CurlRequestManager::class => \ControlPanel\Service\Factory\CurlRequestManagerFactory::class,
             /** User Manager */
             \ControlPanel\Service\UserManager::class => \ControlPanel\Service\Factory\UserManagerFactory::class,
+            /** Product Manager */
+            \ControlPanel\Service\ProductManager::class => \ControlPanel\Service\Factory\ProductManagerFactory::class,
+            /** Store Manager */
+            \ControlPanel\Service\StoreManager::class => \ControlPanel\Service\Factory\StoreManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
             /** Auth Adapter */
@@ -333,10 +359,19 @@ return [
     ],
     'parameters' => [
         '1c_provider_links' => [
+            /** UserManager links */
+            /** Provider login code */
             'lk_provider_login' => 'http://SRV02:8000/SC/hs/site/lk_provider_login',
+            /** Create user */
             'lk_create_user' => 'http://SRV02:8000/SC/hs/site/lk_create_user',
+            /** Update user */
             'lk_update_user' => 'http://SRV02:8000/SC/hs/site/lk_update_user',
+            /** Get all users */
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
+            /** ProductManager links */
+            'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
+            /** StoreManager links */
+            'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
         ],
     ],
     'view_manager' => [

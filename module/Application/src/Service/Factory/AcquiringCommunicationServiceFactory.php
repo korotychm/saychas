@@ -1,27 +1,27 @@
 <?php
 
-// Application\src\Service\Factory\CommonHelperFunctionsServiceFactory.php
+// Application\src\Service\Factory\AcquiringCommunicationServiceFactory.php
 
 namespace Application\Service\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Application\Service\CommonHelperFunctionsService;
+use Application\Service\AcquiringCommunicationService;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
-class CommonHelperFunctionsServiceFactory implements FactoryInterface
+class AcquiringCommunicationServiceFactory implements FactoryInterface
 {
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if ($requestedName instanceof CommonHelperFunctionsService) {
-            throw new Exception("not instanceof CommonHelperFunctionsService");
+        if ($requestedName instanceof AcquiringCommunicationService) {
+            throw new Exception("not instanceof AcquiringCommunicationService");
         }
 
         $config = $container->get('Config');
         $productRepository = $container->get(HandbookRelatedProductRepositoryInterface::class);
 
-        return new CommonHelperFunctionsService($config, $productRepository);
+        return new AcquiringCommunicationService($config, $productRepository);
     }
 
 }

@@ -552,8 +552,8 @@ class HtmlProviderService
 
             $return['price'] = (int)$product->getPrice();
             $return['price_formated' ]= number_format(($return['price']/100), 0, "", "&nbsp;");
-            $container = new Container(Resource::SESSION_NAMESPACE);
-            $legalStore = $container->legalStore;
+            //$container = new Container(Resource::SESSION_NAMESPACE);
+            //$legalStore = $container->legalStore;
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
             $return['rest'] =  (int) $rest->getRest();
             $return['product_id'] = $id = $product->getId();
@@ -570,7 +570,8 @@ class HtmlProviderService
             $return["brand"]["id"] = $product->getBrandId();
             $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]]);
             $return["brand"]["image"] = $brandobject->getImage();
-            if ($description = $product->getDescription()){
+            $description = $product->getDescription();
+            if (!empty($description)) {
                 $return['description']["text"] = StringHelper::eolFormating($description);
                 $return['description']['if_spoiler']=((strlen($description) < 501));
                 $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description,0,500));
@@ -583,25 +584,28 @@ class HtmlProviderService
                 $chArray = $ch->getIsList();
                 $chType = $ch->getType();
                 $getmain=($ch->getIsMain())?1:0;
-                if ($value = $char['value']) {
-                    ($chArray) ? $v = $value : $v[] = $value;
+                if ($char['value']) {
+                    ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
                     $value = $this->valueParce($v, $chType);
                     unset ($v);
                 }
                 $return["characteristics"][$getmain][] = [
                     "id" => $char['id'],
                     "title" => $ch->getTitle(),
-                    "type"=> $chType,
+                    "type" => $chType,
                     "array" => $chArray ,
                     "value" => $value,
                     "unit" => $ch->getUnit(),
                 ];
             }
-        } else $return["characteristics"]=[];
-        $productImages = array_unique($productImages);
-        $return['images']=$productImages;
+        } 
+        else {
+            $return["characteristics"]=[];
+        }    
+        //$productImages = ;
+        $return['images']=array_unique($productImages);
         $return['categoryId'] = $categoryId;
-        $return['appendParams'] = ['vendorCode' => $vendor,'rest' => $totalRest,'test' => "test",];
+        $return['appendParams'] = ['vendorCode' => $vendor,'rest' => $return['rest'] ,'test' => "test",];
         //exit(print_r($return));
         return $return;
     }
@@ -695,6 +699,7 @@ class HtmlProviderService
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
         $return['phone'] = $user->getPhone();
+        $return['email'] = $user->getEmail();
         $userData = $user->getUserData();
         $usdat = $userData->current();
         if (null != $usdat) {
@@ -750,7 +755,6 @@ class HtmlProviderService
         $return["countDeleveryText"] = $countDelevery;
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress;
-
         return $return;
     }
 
@@ -763,12 +767,14 @@ class HtmlProviderService
           "mergecount" => 4, //количество объеденямых магазинов
           ]; */
         $return = [];
-         $timeDelevery3Hour = $timeDelevery1Hour =[];
+        $timeDelevery3Hour = $timeDelevery1Hour =[];
         $products = $post->products;
-        if (!$selfdelevery = $post->selfdelevery)
+        if (!$selfdelevery = $post->selfdelevery){
             $countSelfdelevery = 0;
-        else
+        }
+        else {
             $countSelfdelevery = count($selfdelevery);
+        }
         //return ['count' => print_r($products , true)];
         $container = new Container(Resource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
@@ -793,11 +799,11 @@ class HtmlProviderService
                 "value" => 0,
                 "rel" => Resource::BASKET_SAYCHAS_do,
             ];
-            /**/$timeDelevery3Hour[] = [
+            $timeDelevery3Hour[] = [
                 "lable" => Resource::BASKET_SAYCHAS3_title,
                 "value" => 0,
                 "rel" => Resource::BASKET_SAYCHAS3_do,
-            ]; /**/
+            ];
 
             for ($i = 1; $i <= 12; $i++) {
                 $timeStart = time() + 3600 * $i;
@@ -889,7 +895,6 @@ class HtmlProviderService
                     $availblechek[$productProviderId] = true;
                 }
                 if ($productAvailable) {
-
                     $productStoreId = $productStore->getId();
                     if ($oldprice != $price) {
                         $whatHappened['products'][$pId]['oldprice'] = $oldprice;
@@ -940,8 +945,6 @@ class HtmlProviderService
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
                 $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
                 $timStoreOpen = $IntervalOpen + time();
-           
-
                 if (!$legalStoresArray[$idStore]['status']) {
                     //все работает
                     $provider_disable = false;
@@ -961,7 +964,7 @@ class HtmlProviderService
                         $infostore1c .= (date("d") == date("d", $timStoreOpen)) ? " сегодня " : " завтра ";
                         $infostore1c .= "в " . date("H:i", $timStoreOpen);
                     } else {
-                        $returnprefix = $j + 100;
+                        $returnprefix = $j + 100; //индекс для сортировки
                         //закрыт на неопределеноне время
                         $provider_disable = Resource::STORE_UNAVALBLE;
                         $infostore1c = Resource::STORE_UNAVALBLE_ALT;
@@ -972,11 +975,10 @@ class HtmlProviderService
             } 
             else {
                 $provider_disable = Resource::STORE_OUT_OF_RANGE;
-                $returnprefix = $j + 1000;
+                $returnprefix = $j + 1000; //индекс для сортировки
                 $provider_address = $provider_worktime = $provider_timeclose = "";
                 $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
             }
-
             $return["product"][$returnprefix] = [
                 "provider_id" => $provider_store_id, //$prov,
                 "availblechek" => $availblechek[$prov],

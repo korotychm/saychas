@@ -64,14 +64,16 @@ class Module implements ConfigProviderInterface
             $controllerName != \Application\Controller\AjaxController::class &&
             $controllerName != \Application\Controller\ReceivingController::class &&
             $controllerName != \Application\Controller\FtpController::class &&
-            $controllerName != \Application\Controller\MyTestController::class) {
+            $controllerName != \Application\Controller\MyTestController::class &&
+            $controllerName != \Application\Controller\AcquiringController::class) {
             
             $hasIdentity = $authManager->hasIdentity();
             if(!$hasIdentity) {
                 $request = $event->getApplication()->getRequest();
                 if($request->isXmlHttpRequest()) {
                     $data = Json::encode(['data' => true]);//  json_encode(['data' => false]); // 
-                    return $controller->redirect()->toUrl('/control-panel/login?data='.$data);
+                    //return $controller->redirect()->toUrl('/control-panel/login?data='.$data);
+                    return $controller->redirect()->toUrl('/control-panel/provider-login?data='.$data);
                 }
 //                $controller->layout()->setTemplate('layout/control-panel-auth');
 //                return $controller->redirect()->toUrl('/control-panel/login');
@@ -85,7 +87,8 @@ class Module implements ConfigProviderInterface
                     ->setHost(null)
                     ->setPort(null)
                     ->setUserInfo(null)
-                    ->setPath('/control-panel/login');
+                    ->setPath('/control-panel/provider-login');
+                    //->setPath('/control-panel/login');
 //                $redirectUrl = $uri->toString();
                 $redirectUrl = $uri->toString();
 //                $query = $uri->getQuery();
