@@ -63,13 +63,13 @@ function calculateBasketHeader(productId)
 
 //Чекбокс все товары
 $(document).on('click','#checkallavailble input',function(){
-    $(".cart__store .checkbox input").prop('checked',$(this).prop('checked')).change();
     if ($(this).prop('checked')){
         $('.cart__store-self-delivery').removeClass('disabled');
     } else {
         $('.cart__store-self-delivery input').prop('checked',false);
         $('.cart__store-self-delivery').addClass('disabled');
     }
+    $(".cart__store .checkbox input").prop('checked',$(this).prop('checked')).change();
     calculateBasketHeader();
     loadPayInfo();
 });
