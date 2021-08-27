@@ -1,3 +1,14 @@
+.page-heading--cart {
+  display: flex;
+  align-items: center;
+}
+.page-heading--cart span {
+  font-size: 22px;
+  color: var(--gray2);
+  font-weight: 400;
+  padding-left: 25px;
+  padding-bottom: 6px;
+}
 .panel--cart {
   position: sticky !important;
   top: 0;
