@@ -5,16 +5,14 @@
       <?php foreach ($param as $provider) :?>
         <div class="cart-self-delivery__store" id="seldeleveryblokrow-<?= $provider['provider_id'] ?>">
             <div class="cart-self-delivery__store-images">
-                <div class="cart__store-logo"><img src="<?=$this->imagePath('product')?>/<?= $provider['provider_logo'] ?>" alt="<?= $provider['provider_name'] ?>" title="<?= $provider['provider_name'] ?>" /></div>
+                <div class="cart__store-logo"><img src="<?=$this->imagePath('provider')?>/<?= $provider['provider_logo'] ?>" alt="<?= $provider['provider_name'] ?>" title="<?= $provider['provider_name'] ?>" /></div>
                 <div class="cart__store-products">
                   <?php foreach ($provider['products'] as $product): ?>
                       <?php if ($product['availble']) { ?>
 
 
                           <div class='selfdeleveryallprovider-<?= $provider['provider_id']?> selfdeleveryproduct-<?=$product['id']?>'>
-                              <img src="/images/products/product1.jpg" title="<?= $product["title"] ?>" />
-                              <img src='/img/zero.png'
-                                   title="<?= $product["title"] ?>"
+                              <img title="<?= $product["title"] ?>"
                                    src="<?=$this->imagePath('product')?>/<?= (($product["image"] ) ? $product["image"] : "nophoto_1.jpeg") ?>"
                                    />
                           </div>
