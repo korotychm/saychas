@@ -23,6 +23,7 @@
                 <?endif;?>
           </div>
         </div>
+        <?php if ($countStors > 1) :?>
         <input type="radio" name="delivery" <?= ($ordermerge) ? 'checked' : '' ?> id="delivery2" />
         <div class="cart__radio">
           <label for="delivery2">
@@ -42,6 +43,7 @@
                 <?endif;?>>
             </div>
         </div>
+      <?php endif;?>
     </div>
     <input type="hidden" name="timepointtext1" id="timepointtext1"  value="<?= $timepointtext1 ?>">
     <input type="hidden" name="timepointtext3" id="timepointtext3"  value="<?= $timepointtext3 ?>">
