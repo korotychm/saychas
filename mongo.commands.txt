@@ -17,6 +17,9 @@ db.products.find({$text: { "$search" : "vivo" } }).pretty();
 /** regular expressian search; russian is ok now */
 db.products.find({title: /март/i}).pretty();
 
+/** mongo commands */
+mongo localhost:27017 --eval 'printjson(db.runCommand({"isMaster": 1}))'
+
 db.products.find({"characteristics": { $elemMatch: {value: "15%"} } }, {"id": 1, "title": 1, "provider_id": 1, "category_id": 1, "description": 1, "characteristics.$": 1, "_id": 0}).pretty()
 
 db.products.aggregate([{$lookup: {from: "characteristics", "localField": "characteristics.value", "foreignField": "id", as: "characteristic_values"} } ]).pretty();
