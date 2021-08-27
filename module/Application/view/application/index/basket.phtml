@@ -28,7 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                                 'register_text' => $this->register_text,
                     ])
                     ?>
-                    <div class='pw-contentblock' id='basketordermerge'>
+                    <div id='basketordermerge'>
                       <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
                     </div>
                     <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
