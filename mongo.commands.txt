@@ -5,6 +5,9 @@ mongorestore -u saychas -p saychas --db=saychas dump/saychas
 /** create a new user and grant priveleges to the user */
 db.createUser({user: 'saychas_cache',pwd: 'saychas_cache', roles: [{role: 'dbOwner', db: 'saychas_cache'}]});
 
+/** crete admin user */
+db.createUser( { user: "admin", pwd: "admin", roles: [ { role: "root", db: "admin" } ] } )
+
 /** create index */
 db.products.createIndex( { title: "text", description: "text" } )
 
