@@ -3,73 +3,521 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 ?>
-<div class="blok">
-    <script>
-    $(function(){
-        $('.nivoSlider').nivoSlider({ animSpeed: 500, pauseTime: 5000,controlNav:true});
-    })</script>
- <?php
-
-echo "
-<link rel='stylesheet' href='/css/ns/default.css' type='text/css' media='screen' />
-	<link rel='stylesheet' href='/css/ns/nivo-slider.css' type='text/css' media='screen' />
-        
-	
-	<div class=blokc style=''>
-		<div class=iblokl style='width:1600px; max-width:100%; /*border:1px solid red;*/' >
-			<div class='slider-wrapper theme-default' >
-				<div id='slider' class='nivoSlider' style='background:#fff url(/img/loader.gif) center no-repeat; ' >
-					<img src=/images/slides/01.jpg id=slide-01 />
-					<img src=/images/slides/02.jpg id=slide-02 />
-					<img src=/images/slides/03.jpg id=slide-03 />
-				</div>
-			</div>
-		</div>
-	</div>";
 
 
-	
-?>
-</div>
-<?php if(false) : ?>
-<?php echo "<h1>".$this->provider->getTitle()."</h1>" ?>;
-<?php echo "<h1>".$this->product->getTitle()."</h1>" ?>;
-<?php echo "<h1>".$this->brand->getTitle()."</h1>" ?>;
-<?php echo "<h1>".$this->store->getTitle()."</h1>" ?>;
-<?php echo "<h1>".$this->category->getTitle()."</h1>" ?>;
 
-<?php endif; ?>
-
-
-<?php
-//    $escaper = new Laminas\Escaper\Escaper('utf-8');
-//    $output = $escaper->escapeUrl('input');
-//    echo $output;
-?>
-<h2>Горящие предложения до -70%</h2>
-<div class="jumbotron">
-    <h1 class="display-4">Товары с акциями не найдены</h1>
-    <p>
-    Функционал акций на товары в процессе разработки    
-   </p>
-</div>
-
-<h2>Популярные товары в этом месяце</h2>
-<div class="jumbotron">
-    <h1 class="display-4">Товары с пометкой "хит продаж" не найдены</h1>
-    <p>
-    Функционал меток (хит, новинка и т.д.) на товары в процессе разработки    
-   </p>
-</div>
-<h2>Пример отображения товаров</h2>
-<div id="tovar-list"><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000001">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/30046493b.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000001">Смартфон vivo Y31, голубой океан</a></strong>         <div class="inactiveblok"></div>       <span class="price">5&nbsp;800₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000001">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000001">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/30046493b.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000001">Смартфон vivo Y31, голубой океан</a></strong>         <div class="inactiveblok"></div>       <span class="price">5&nbsp;800₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity42"><a href="/product/000000000002">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/50141256b.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000002">Наушники True Wireless Huawei Freebuds Pro угольный черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">4&nbsp;701₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000002">в корзину</div>        </div>   </div>   <div class="content opacity42"><a href="/product/000000000002">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/50141256b.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000002">Наушники True Wireless Huawei Freebuds Pro угольный черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">4&nbsp;701₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity24"><a href="/product/000000000003">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/20068499b.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000003">Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R</a></strong>         <div class="inactiveblok"></div>       <span class="price">56&nbsp;990₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000003">в корзину</div>        </div>   </div>   <div class="content opacity24"><a href="/product/000000000003">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/20068499b.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000003">Холодильник Bosch Serie | 4 VitaFresh KGN39XW27R</a></strong>         <div class="inactiveblok"></div>       <span class="price">56&nbsp;990₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000007">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000007">Ноутбук Acer Nitro 5 AN515-43-R45P черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000007">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000007">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/1f19bc91ff7262a0d4c4d93e1ee663d403ee7f5888d07a80978c7b81b8c1cb35.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000007">Ноутбук Acer Nitro 5 AN515-43-R45P черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000008">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/2aea360b4ac330436b47f0f3edaae48d3a8bdac9ceb00fb4d1504c28a1c2821d.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000008">Ноутбук Lenovo IdeaPad 3 Gaming 15IMH05 черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000008">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000008">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/2aea360b4ac330436b47f0f3edaae48d3a8bdac9ceb00fb4d1504c28a1c2821d.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000008">Ноутбук Lenovo IdeaPad 3 Gaming 15IMH05 черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000009">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000009">Ноутбук ASUS TUF Gaming FX505DT-HN564T черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000009">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000009">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/79f9c8d1590e5036d2533c10a6d3030c4c3f37d57d93ce3ddab4d6a8a8586c69.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000009">Ноутбук ASUS TUF Gaming FX505DT-HN564T черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000010">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/6a8924e4368922057a4789f35c5045b013680f391a4728b99c8902fd4315536f.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000010">Ноутбук HP Pavilion Gaming 15-ec1086ur черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000010">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000010">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/6a8924e4368922057a4789f35c5045b013680f391a4728b99c8902fd4315536f.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000010">Ноутбук HP Pavilion Gaming 15-ec1086ur черный</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000011">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000011">Смартфон Nokia 2.4</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000011">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000011">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/5f8cd7daad03d1d39f97f6d35b371b8e231f3c74477fe191b589bcda966dbdb1.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000011">Смартфон Nokia 2.4</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000012">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/86d9153895ba98a3a9a8faccce9ff52e8284f4e102d77fc6c5e121f12e4c8f59.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000012">Huawei Honor 7A (розовый)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000012">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000012">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/86d9153895ba98a3a9a8faccce9ff52e8284f4e102d77fc6c5e121f12e4c8f59.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000012">Huawei Honor 7A (розовый)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000013">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/e0debca5125461d750890b54db6706d7ba8bc2b2bf0e71f706c238a3045b2a5e.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000013">Huawei Honor 7A (черный)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000013">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000013">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/e0debca5125461d750890b54db6706d7ba8bc2b2bf0e71f706c238a3045b2a5e.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000013">Huawei Honor 7A (черный)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000014">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000014">Xiaomi Redmi Note 10 (голубой)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000014">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000014">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/32bf4ce87d3d768c537720d0e4e27d267467927a586e0f7e9a52c864c7e0a5d8.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000014">Xiaomi Redmi Note 10 (голубой)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity0"><a href="/product/000000000015">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/dd5d3d9d22aa3b0b548d4fa56ad38ce9134620d5b69c166a214bce78ec2bd76f.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000015">Смартфон Xiaomi Redmi 9 (белый)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000015">в корзину</div>        </div>   </div>   <div class="content opacity0"><a href="/product/000000000015">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/dd5d3d9d22aa3b0b548d4fa56ad38ce9134620d5b69c166a214bce78ec2bd76f.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000015">Смартфон Xiaomi Redmi 9 (белый)</a></strong>         <div class="inactiveblok"></div>       <span class="price">0₽</span>       <span class="oldprice">0₽</span>   </div></div></div>
-
-<div class="pw-contentblock cblock-1">
-	<div class="contentpadding" >
-<div class=blok style="margin:40px 0">		<img src=/temp/test.png ></div>
-	</div>
-</div>						
-
-<div id="tovar-list"><div class="productcard "><div class="contentabsolute  content opacity12"><a href="/product/000000000004">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/40ec61411c92eac07cd543f0cee4ad81.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000004">Молоко</a></strong>         <div class="inactiveblok"></div>       <span class="price">65₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000004">в корзину</div>        </div>   </div>   <div class="content opacity12"><a href="/product/000000000004">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/40ec61411c92eac07cd543f0cee4ad81.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000004">Молоко</a></strong>         <div class="inactiveblok"></div>       <span class="price">65₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity95"><a href="/product/000000000005">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/1350x.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000005">Кефир</a></strong>         <div class="inactiveblok"></div>       <span class="price">78₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000005">в корзину</div>        </div>   </div>   <div class="content opacity95"><a href="/product/000000000005">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/1350x.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000005">Кефир</a></strong>         <div class="inactiveblok"></div>       <span class="price">78₽</span>       <span class="oldprice">0₽</span>   </div></div><div class="productcard "><div class="contentabsolute  content opacity113"><a href="/product/000000000006">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/571756.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000006">Ряженка</a></strong>         <div class="inactiveblok"></div>       <span class="price">83₽</span>       <span class="oldprice">0₽</span>        <div class="payblockcard">             <div class="paybutton" rel="000000000006">в корзину</div>        </div>   </div>   <div class="content opacity113"><a href="/product/000000000006">      <div class="zeroblok"><img src="/img/zero.png" alt="alt" class="productimage zero" style="background-image:url(/images/product/571756.jpg)"></div></a>       <strong class="blok producttitle"><a href="/product/000000000006">Ряженка</a></strong>         <div class="inactiveblok"></div>       <span class="price">83₽</span>       <span class="oldprice">0₽</span>   </div></div></div>
-<div class=blok style="margin:20px 0"></div>
-
+<section>
+    <div class="homeslider">
+        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
+        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
+        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
+        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
+        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
+    </div>
+</section>
+<section class="section">
+    <h2 class="h2 section__heading">Горящие предложения до -70%</h2>
+    <div class="products-carousel products-carousel--4">
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <h2 class="h2 section__heading">Популярные товары в этом месяце</h2>
+    <div class="products-grid">
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="banners-carousel"><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a></div>
+</section>
+<section class="section">
+    <div class="products-grid">
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <h2 class="h2 section__heading">Популярные бренды</h2>
+    <div class="brands-grid"><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a></div>
+</section>
+<section class="section">
+    <h2 class="h2 section__heading">Вы смотрели</h2>
+    <div class="products-carousel products-carousel--4">
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+        <div class="product">
+            <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+            <div class="product__reviews">
+                <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>4.7</span>
+                </div><a class="product__reviews-link" href="#">28 отзывов</a>
+            </div>
+            <div class="product__price">
+                <div class="product__price-current">17 990 ₽</div>
+                <div class="product__price-old">21 990 ₽</div>
+            </div>
+            <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+        </div>
+    </div>
+</section>
