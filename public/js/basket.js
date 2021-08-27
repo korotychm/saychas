@@ -75,7 +75,7 @@ function calculateBasketHeader(productId)
           lastNumber = totalProducts.toString().split('').pop();
 
       if (lastNumber == 1) productUnit = 'позиция';
-      else if (lastNumber > 1 && lastNumber < 5) productUnit = 'позиции';
+      else if (lastNumber > 1 && lastNumber < 5 && (totalProducts < 10 || totalProducts > 20)) productUnit = 'позиции';
 
       if (totalStores > 1) storeUnit = 'магазинов';
 
@@ -120,20 +120,20 @@ $(document).on('click','.cart__product .checkbox input',function(){
   loadPayInfo();
 });
 // Удалить продукт
-$(".cart__product-del").click(function () {
-    var productId = $(this).attr("rel");
-    var providerId = $(this).attr("provider");
+$(document).on('click','.cart__product .cart__product-del',function(){
+    var productId = $(this).data('product');
+    var providerId = $(this).data('provider');
     $.ajax({
         beforeSend: function () {
         },
         url: "/ajax/del-from-basket",
         type: 'POST',
         cache: false,
-        data: {"productId": productId},
+        data: {'productId': productId},
         success: function (data) {
             $("#basketrow-" + productId).remove();
-            if ($("#providerblok-" + providerId + " .cart__product").length < 1) {
-                $("#providerblok-" + providerId).remove();
+            if (!$("#providerblok-" + providerId + " .cart__product").length){
+              $("#providerblok-" + providerId).remove();
             }
             calculateBasketHeader();
             loadPayInfo();
