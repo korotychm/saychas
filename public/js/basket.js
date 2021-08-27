@@ -158,9 +158,14 @@ function calculateSelfDelevery()
 
     if (selftDeliveryCount > 0) {
         $("#selfdeleverymainblok").show();
+        $('.cart-self-delivery__store').hide();
+        $(".cart__store-self-delivery input:checked").parents().eq(3).find('.checkbox input:checked').each(function(){
+          $('.cart-self-delivery__store').eq().hide($(this).index()).show();
+        });
     } else {
         $("#selfdeleverymainblok").hide();
     }
+
     $("#selfdeleverycountproduct").html(selftDeliveryProducts);
     $("#selfdeleverycountstore").html(selftDeliveryCount);
 }

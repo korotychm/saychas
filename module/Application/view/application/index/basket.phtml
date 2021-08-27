@@ -35,7 +35,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                     <div id='baskepaycardinfo'>
                         <?= $this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1])?>
                     </div>
-                    <div>
+                    <div style="display:none;">
                       <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
                       <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
                       <textarea style="display:none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
