@@ -1,36 +1,24 @@
-<?php if($cardinfo) :?> 
 
-    <h2>Способы оплаты</h2>
-    
-        <div class='pw-contentblock cblock-2  borderredhalf <?=($paycard)?"left":""?>'>
-            <div class='contentpadding'>
-                <div class='radio <?=($paycard)?"zach":""?>  black loadpayinfo' rel='paynew' for='paynewoff'> 
-                    <b> 
-                         <span class='iblok valign-middle '>Оплата с привязанной карты </span> 
-                       
-					</b>
-		</div>
-             
-                <select name="cardinfo" class='lableinfo margin16 text'><option value="<?=strip_tags($cardinfo)?>" ><?=$cardinfo ?></select>
-                
-                 
-             </div>
-        </div>
-   <?php endif;?>
-        <div class='pw-contentblock cblock-2  borderredhalf <?=(!$paycard)?"right":""?>  <?=(!$cardinfo)?" left":""?>  '>
-            <div class='contentpadding'>
-                <div class='radio black <?=(!$paycard or !$cardinfo)?"zach":""?> loadpayinfo' rel='paynew' for='paynewon'> 
-                     <b>
-                         <span class='iblok valign-middle '>Оплата новой картой</span> 
-                     </b>
-			</div>
-                <span class='blok gray text' >
-                    Расплачиватесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз
-                </span>
-               
-                
+<div class="cart-payment">
+    <h2 class="h2">Оплата</h2>
+    <div class="cart__radio-group">
+        <?php if($cardinfo) :?>
+          <input type="radio" name='paycard' <?=($paycard)?"checked":""?> id="payment1" value="1" />
+          <div class="cart__radio">
+            <label for="payment1"><span class="cart__radio-check"></span><span><b>Оплата с привязанной карты</b></span></label>
+              <div class="cart__radio-content">
+                <select name="cardinfo" class="select">
+                      <option value="<?=strip_tags($cardinfo)?>"><?=$cardinfo ?></option>
+                </select>
+              </div>
+          </div>
+        <?php endif;?>
+        <input type="radio" name='paycard' <?=(!$paycard or !$cardinfo)?"checked":""?> id="payment2" value="0" />
+        <div class="cart__radio">
+            <label for="payment2"><span class="cart__radio-check"></span><span><b>Оплата новой картой</b></span></label>
+            <div class="cart__radio-content">
+                <p>Расплачиватесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз</p>
             </div>
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewon' value='0' <?=(!$paycard or !$cardinfo)?"checked":""?>  >
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewoff' value='1' <?=($paycard and $cardinfo)?"checked":""?>  >
         </div>
-    
+    </div>
+</div>

@@ -32,7 +32,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                       <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
                     </div>
                     <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
-                    <div  id='baskepaycardinfo'>
+                    <div id='baskepaycardinfo'>
                         <?= $this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1])?>
                     </div>
                     <div>
@@ -46,37 +46,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                     <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
                 </div>
             </div>
+            <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
+            <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
+            <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
         </form>
     </div>
 </section>
-
-<div class="container mainconteiner"  >
-    <div  class="contentwrapper">
-        <?= $this->bread ?>
-        <div>
-            <form method='POST'>
-                <div class="pw-contentblock cblock-5">
-                    <?php //exit(print_r($this->content)); ?>
-
-
-
-
-                        <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
-                    <div  id='baskepaycardinfo'>
-<?= $this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1])
-?>
-                    </div>
-                </div>
-                <div class="pw-contentblock cblock-3">
-                    <div class="contentpadding-dis">
-                        <!-- div class='blok pwbox'> сервисный блок</div -->
-<?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
-                <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
-                <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
-                <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
-                
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
