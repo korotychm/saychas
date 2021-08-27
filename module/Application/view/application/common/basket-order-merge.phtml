@@ -1,4 +1,8 @@
-<?php if ($countStors < 2) :   $ordermerge = false;  endIf;?>
+<?php
+if ($countStors < 2) {
+  $ordermerge = false;
+}
+?>
 
 <?php if ($countStors) :?>
 
@@ -23,6 +27,27 @@
               <?endif;?>
         </div>
       </div>
+      <?php if ($countStors > 1) :?>
+        <input type="radio" name="delivery" <?= ($ordermerge) ? 'checked' : '' ?> id="delivery2" />
+        <div class="cart__radio">
+          <label for="delivery2">
+            <span class="cart__radio-check"></span>
+            <span><b>Объединить заказы за 3 часа</b> &mdash;&nbsp;<?= number_format($hour3Price / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
+          </label>
+            <div class="cart__radio-content">
+                <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше). Крайнее время доставки - <?= date("r", $timeClose - 3600 * 3) ?>.</p>
+                <?php if ($select3hour && !empty($select3hour)): ?>
+                  <select class="select" name="timepoint[1]" id="timepoint-dostmerge3" rel="timepointtext3">
+                    <?php foreach ($select3hour as $option3): ?>
+                      <option value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" <?= $selectedtimepoint[1][$option3['value']] ?>><?= $option3['lable'] ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                <?php else: ?>
+                  <div class="timepoint">Нет доставки</div>
+                <?endif;?>>
+            </div>
+        </div>
+      <?php endif;?>
   </div>
   <input type="hidden" name="timepointtext1" id="timepointtext1"  value="<?= $timepointtext1 ?>">
   <input type="hidden" name="timepointtext3" id="timepointtext3"  value="<?= $timepointtext3 ?>">
