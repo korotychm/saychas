@@ -101,7 +101,7 @@ $(document).on('click','.cart__store-top .checkbox input',function(){
     calculateBasketHeader();
     loadPayInfo();
 });
-$(document).on('click','.cart__product .checkbox input',function(){
+$(document).on('change','.cart__product .checkbox input',function(){
   let store = $(this).data('provider');
   $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
   // Отмечаем или снимаем чекбокс магазина
@@ -118,6 +118,7 @@ $(document).on('click','.cart__product .checkbox input',function(){
   }
   calculateBasketHeader();
   loadPayInfo();
+  calculateBasketPayCard();
 });
 // Удалить продукт
 $(document).on('click','.cart__product .cart__product-del',function(){
