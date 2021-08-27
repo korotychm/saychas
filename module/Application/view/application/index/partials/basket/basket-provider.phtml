@@ -54,8 +54,8 @@ if ($param and count($param)):
         </div>
         <div class="cart__store-self-delivery">
             <div>Заберу из магазина самостоятельно (-299 ₽)
-              <label class="boolean" v-if="filter.type==3" rel='<?=$provider['provider_id']?>' id='selfdeleveryonoff-<?=$provider['provider_id']?>'>
-                <input type="checkbox" id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_store_id']?>' name='selfdelevery[]' />
+              <label class="boolean">
+                <input type="checkbox" data-provider='<?=$provider['provider_id']?>' id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_store_id']?>' name='selfdelevery[]' />
                 <span class="boolean__check"></span>
               </label>
             </div>

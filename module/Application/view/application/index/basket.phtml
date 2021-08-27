@@ -19,19 +19,6 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
             <div class="cart">
                 <div class="cart__left">
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
-                </div>
-            </div>
-        </form>
-    </div>
-</section>
-<div class="container mainconteiner"  >
-    <div  class="contentwrapper">
-        <?= $this->bread ?>
-        <div id="user-basket">
-            <form method='POST' id='user-basket-form'>
-                <div class="pw-contentblock cblock-5">
-                    <?php //exit(print_r($this->content)); ?>
-
                     <?=
                     $this->partial("/application/index/partials/basket/basket-user",
                             [
@@ -41,6 +28,21 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                                 'register_text' => $this->register_text,
                     ])
                     ?>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="container mainconteiner"  >
+    <div  class="contentwrapper">
+        <?= $this->bread ?>
+        <div>
+            <form method='POST'>
+                <div class="pw-contentblock cblock-5">
+                    <?php //exit(print_r($this->content)); ?>
+
+
                     <div class='pw-contentblock' id='basketordermerge'>
                     <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
                     </div>

@@ -146,6 +146,24 @@ $(document).on('click','.cart__product .cart__product-del',function(){
         }
     });
 });
+//Посчет суммы товаров одной позиции
+function calculateBasketItem(productId)
+{
+    let count = $("#countproduct-" + productId).val();
+    $.ajax({
+        url: "/ajax/calculate-basket-item",
+        cache: false,
+        type: 'POST',
+        dataType: 'json',
+        data: {"product": productId, "count": count},
+        success: function (data) {
+            $("#priceproduct-" + productId).html(data.totalFomated);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("Ошибка соединения " + xhr.status + "" + "\r\n " + xhr.status + " " + thrownError);
+        }
+    });
+}
 
 
 //
@@ -187,23 +205,11 @@ $(document).on('click','.cart__product .cart__product-del',function(){
 //     loadPayInfo();
 // });
 
-function calculateBasketItem(productId)
-{
-    let count = $("#countproduct-" + productId).val();
-    $.ajax({
-        url: "/ajax/calculate-basket-item",
-        cache: false,
-        type: 'POST',
-        dataType: 'json',
-        data: {"product": productId, "count": count},
-        success: function (data) {
-            $("#priceproduct-" + productId).html(data.totalFomated);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log("Ошибка соединения " + xhr.status + "" + "\r\n " + xhr.status + " " + thrownError);
-        }
-    });
-}
+// Самовывоз из магазина
+$(document).on('change','.cart__store-self-delivery input',function(){
+    //let providerId = $(this).data('provider');
+    calculateBasketMerge($("#user-basket-form").serialize(), true);
+});
 
 function calculateSelfDelevery()
 {
@@ -523,30 +529,6 @@ $(function () {
 
     $("body").on("click dblclick", ".radiomergebut, .loadpayinfo", function () {
         loadPayInfo();
-    });
-
-    $(".selfdeleveryonoff").click(function () {
-        var rel = $(this).attr('rel');
-        //console.log(".fltrcheck" + $(this).attr("for"));
-        if ($(this).hasClass("zach")) {
-            $(this).removeClass("zach");
-            $("#selfdeleverycheckbox-" + rel).prop("checked", false);
-            $("#providerblok-" + rel).removeClass("goself");
-            $("#provider_addressappend" + rel).hide();
-            $("#seldeleveryblokrow-" + rel).removeClass('seldeleveryblokrowcountme').hide();
-
-        } else {
-            $('.selfdeleveryonoff[rel^=' + rel + ']').removeClass("zach");
-            $('.relcheck[rel^=' + rel + ']').prop("checked", false);
-            ;
-            $(this).addClass("zach");
-            $("#selfdeleverycheckbox-" + rel).prop("checked", true);
-
-            $("#providerblok-" + rel).addClass("goself");
-            $("#provider_addressappend" + rel).show();
-            $("#seldeleveryblokrow-" + rel).addClass('seldeleveryblokrowcountme').show();
-        }
-        calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
 });
