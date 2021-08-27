@@ -630,6 +630,8 @@
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 .cart-delivery__logout svg {
   color: var(--gray);
