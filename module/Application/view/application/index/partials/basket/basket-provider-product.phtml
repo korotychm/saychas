@@ -33,7 +33,7 @@
         <button class="cart__product-plus" data-step="1"></button>
       </div>
       <div class="cart__product-price">
-          <div class="cart__product-price-current"><span class="priceproduct-<?=$product['id']?>"><?=number_format(((int)($product['price']*$product['count'])/100), 0, ',', '&nbsp;');?></span> ₽</div>
+          <div class="cart__product-price-current"><span id="priceproduct-<?=$product['id']?>"><?=number_format(((int)($product['price']*$product['count'])/100), 0, ',', '&nbsp;');?></span> ₽</div>
           <?if (+$product['oldprice'] < +$product['price']) ?>
             <div class="cart__product-price-old"><?=number_format(((int)$product['oldprice']/100), 0, ',', '&nbsp;')?> ₽</div>
           <? endif; ?>
