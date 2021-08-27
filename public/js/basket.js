@@ -117,6 +117,8 @@ $(document).on('change','.cart__product .checkbox input',function(){
   } else {
     $('#checkallavailble input').prop('checked',false);
   }
+  // Отмечаем или снимаем чекбоксы для whathappened
+  $(this).parent().parent().find('input').prop('checked',$(this).prop('checked'));
   calculateBasketHeader();
   loadPayInfo();
 });
