@@ -16,7 +16,7 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+//use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
@@ -31,6 +31,7 @@ use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
+use Application\Service\ExternalCommunicationService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Controller\AcquiringController;
 use Application\Service\CommonHelperFunctionsService;
@@ -50,7 +51,7 @@ class AcquiringControllerFactory implements FactoryInterface
         $store = $container->get(StoreRepositoryInterface::class);
         $product = $container->get(ProductRepositoryInterface::class);
         $filteredProduct = $container->get(FilteredProductRepositoryInterface::class);
-        $brand = $container->get(BrandRepositoryInterface::class);
+        //$brand = $container->get(BrandRepositoryInterface::class);
         $setting = $container->get(SettingRepositoryInterface::class);
         $characteristic = $container->get(CharacteristicRepositoryInterface::class);
         $price = $container->get(PriceRepositoryInterface::class);
@@ -60,6 +61,7 @@ class AcquiringControllerFactory implements FactoryInterface
         $entityManager = $container->get('laminas.entity.manager');
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
+        $externalCommunication = $container->get(ExternalCommunicationService::class);
         $acquiringCommunication = $container->get(AcquiringCommunicationService::class);
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
@@ -74,8 +76,8 @@ class AcquiringControllerFactory implements FactoryInterface
         //$sessionContainer = $container->get(SessionContainer::class);
         $sessionManager = $container->get(SessionManager::class);
         
-        return new AcquiringController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $colorRepository, $setting, $characteristic,
-                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $acquiringCommunication, $userRepository, $authService, $productCharacteristic,
+        return new AcquiringController($test, $category, $provider, $store, $product, $filteredProduct/*, $brand*/, $colorRepository, $setting, $characteristic,
+                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $externalCommunication, $acquiringCommunication, $userRepository, $authService, $productCharacteristic,
                 $basketRepository/*, $sessionContainer*/, $sessionManager, $commonHelperFuncions);
     }
 

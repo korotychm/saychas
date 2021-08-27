@@ -16,7 +16,7 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+//use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
@@ -36,6 +36,7 @@ use Application\Model\Entity\Delivery;
 use Application\Model\Entity\Basket;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
+use Application\Service\ExternalCommunicationService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Resource\Resource;
 use Laminas\Session\Container; // as SessionContainer;
@@ -61,7 +62,7 @@ class AcquiringController extends AbstractActionController
     private $storeRepository;
     private $productRepository;
     private $filteredProductRepository;
-    private $brandRepository;
+    //private $brandRepository;
     private $settingRepository;
     private $characteristicRepository;
     private $priceRepository;
@@ -70,6 +71,7 @@ class AcquiringController extends AbstractActionController
     private $entityManager;
     private $config;
     private $htmlProvider;
+    private $externalCommunication;
     private $acquiringCommunication;
     private $userRepository;
     private $authService;
@@ -83,11 +85,11 @@ class AcquiringController extends AbstractActionController
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
             ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
-            BrandRepositoryInterface $brandRepository, ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
+            /*BrandRepositoryInterface $brandRepository,*/ ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
             CharacteristicRepositoryInterface $characteristicRepository,
             PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, HtmlProviderService $htmlProvider, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
+            $entityManager, $config, HtmlProviderService $htmlProvider, ExternalCommunicationService $externalCommunication, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager,
             CommonHelperFunctionsService $commonHelperFuncions)
     {
@@ -97,7 +99,7 @@ class AcquiringController extends AbstractActionController
         $this->storeRepository = $storeRepository;
         $this->productRepository = $productRepository;
         $this->filteredProductRepository = $filteredProductRepository;
-        $this->brandRepository = $brandRepository;
+        //$this->brandRepository = $brandRepository;
         $this->colorRepository = $colorRepository;
         $this->settingRepository = $settingRepository;
         $this->characteristicRepository = $characteristicRepository;
@@ -107,6 +109,7 @@ class AcquiringController extends AbstractActionController
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
+        $this->externalCommunication = $externalCommunication;
         $this->acquiringCommunication = $acquiringCommunication;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
@@ -156,10 +159,10 @@ class AcquiringController extends AbstractActionController
             "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
           ];
         //$param['OrderId'] = ;
-        $order = ClientOrder::find(["order_id" => $orderId]); 
+        $order = ClientOrder::find(["order_id" => $orderId, /**/ "status" => 1 /**/]); 
         
         if (empty($order)) {
-            return new JsonModel(["result" => false, "message" => "error: order ".$orderId." not found" ]);
+            return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
         $delivery_price = (int)$basket_info['delivery_price'];
@@ -204,6 +207,9 @@ class AcquiringController extends AbstractActionController
         
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
+            //$this->
+            $order->setPaymentInfo(tinkoffAnswer['answer']);
+            $order->persist(["order_id" => $orderId, "status" => 1 ]);
             return new JsonModel(["result" => true, "answer" =>$tinkoffAnswer['answer']]);
         }
         return new JsonModel(["result" => false, "answer" => $this->acquiringCommunication->initTinkoff($param)]);
@@ -224,12 +230,13 @@ class AcquiringController extends AbstractActionController
     {
             //$post = $this->getRequest(); //->getPost()->toArray();
 			$message="
-			HTTP_X_REAL_IP: ". $_SERVER["HTTP_X_REAL_IP"]."
-			HTTP_X_FORWARDED_FOR: ". $_SERVER["HTTP_X_FORWARDED_FOR"]. "
-			HTTP_CONNECTION: ". $_SERVER["HTTP_CONNECTION"]. "
-			HTTP_USER_AGENT: ". $_SERVER["HTTP_USER_AGENT"]. "
-			HTTP_ACCEPT: ". $_SERVER["HTTP_ACCEPT"]."
-			REQUEST:".print_r($_REQUEST, true);
+    HTTP_X_REAL_IP: ". $_SERVER["HTTP_X_REAL_IP"]."
+    HTTP_X_FORWARDED_FOR: ". $_SERVER["HTTP_X_FORWARDED_FOR"]. "
+    HTTP_CONNECTION: ". $_SERVER["HTTP_CONNECTION"]. "
+    HTTP_USER_AGENT: ". $_SERVER["HTTP_USER_AGENT"]. "
+    HTTP_ACCEPT: ". $_SERVER["HTTP_ACCEPT"]."
+    REQUEST:
+    ".print_r($_REQUEST, true);
 
             //$message = print_r($_REQUEST, true);
             mail("d.sizov@saychas.ru", "tinkoff.log", $message);
