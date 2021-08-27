@@ -169,8 +169,8 @@ class IndexController extends AbstractActionController
             'provider_id' => $identity['provider_id'],
         ];
         //$cursor = $this->productManager->findAll(['pageNo' => 1, 'filter' => $filter]);
-        $cursor = $this->productManager->findDocuments(['pageNo' => 1, 'filter' => $filter]);
-        //$this->productManager->findTest();
+        //$cursor = $this->productManager->findDocuments(['pageNo' => 1, 'filter' => $filter]);
+        $this->productManager->findTest();
         
         $view = new ViewModel(['products' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
         return $view->setTerminal(true);

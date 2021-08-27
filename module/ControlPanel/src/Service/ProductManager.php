@@ -129,10 +129,18 @@ class ProductManager implements LoadableInterface
     
     public function findTest()
     {
-        $query = array('$text' => array('$search'=> 'vivo'));
+        //$query = array('$text' => array('$search'=> 'vivo'));
         $collection = $this->db->products;
-        $cursor = $collection->find($query);
+        //'city' => ['$regex' => '^garden', '$options' => 'i'],
+        $cursor = $collection->find([
+            //'title' => new \MongoDB\BSON\Regex('True', 'i'),
+            'title' => ['$regex' => 'vivo', '$options' => 'i'],
+            //'title' => ['$text' => ['$search' => 'vivo']], //- drops indexes for some reason
+        ], ['_id' => 0])->toArray();
+//        $cursor = $collection->find($query);
+        echo '<pre>';
         print_r($cursor);
+        echo '</pre>';
         exit;
     }
 
