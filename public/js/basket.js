@@ -82,11 +82,16 @@ $(document).on('change','.cart__product .checkbox input',function(){
   // Отмечаем или снимаем чекбокс магазина
   if ($('.cart__product .checkbox input[data-provider="'+store+'"]').length == $('.cart__product .checkbox input[data-provider="'+store+'"]:checked').length){
     $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
-    // Самовывоз недоступен
-    $('#providerblok-' + store).find('.cart__store-self-delivery').removeClass('disabled');
   } else {
       $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',false);
-      $('#providerblok-' + store).find('.cart__store-self-delivery').addClass('disabled');
+  }
+
+  if ($('.cart__product .checkbox input[data-provider="'+store+'"]:checked').length){
+    // Самовывоз доступен
+    $('#providerblok-' + store).find('.cart__store-self-delivery').removeClass('disabled');
+  } else {
+    // Самовывоз недоступен
+    $('#providerblok-' + store).find('.cart__store-self-delivery').addClass('disabled');
   }
   // Отмечаем или снимаем чекбокс всех товаров
   if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox input:checked').length){
