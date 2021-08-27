@@ -10,6 +10,12 @@
         <input type="checkbox" checked data-product="<?=$product['id']?>" data-provider="<?=$provider?>"  />
         <span class="checkbox__check"></span>
       </label>
+      <input type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
+             class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
+             />
+      <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
+             class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
+             />
     <?php endif;?>
   </div>
   <div class="cart__product-img">

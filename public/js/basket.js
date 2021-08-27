@@ -118,8 +118,8 @@ $(document).on('change','.cart__product .checkbox input',function(){
   }
   calculateBasketHeader();
   loadPayInfo();
-  calculateBasketPayCard();
 });
+
 // Удалить продукт
 $(document).on('click','.cart__product .cart__product-del',function(){
     var productId = $(this).data('product');
