@@ -38,17 +38,15 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                     <div style="display:none;">
                       <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
                       <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
-                      <textarea style="display:none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
-                      <div  class='pointer blokc' id="testbeforesend" >Тест проверки перед отправкой</div>
+                      <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
+                      <div id="testbeforesend" >Тест проверки перед отправкой</div>
                     </div>
                 </div>
                 <div class="cart__right">
                     <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
                 </div>
             </div>
-            <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
-            <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
-            <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
+
         </form>
     </div>
 </section>
