@@ -19,6 +19,7 @@ $(document).on('click','.cart__product-quantity button',function(e){
   }
   input.val(newVal);
   let productId = input.data('product');
+  $('.cart__checkbox input[data-product="' + productId + '"]').val(input.val());
   calculateBasketItem(productId);
   loadPayInfo();
 })
