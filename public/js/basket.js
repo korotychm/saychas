@@ -80,9 +80,9 @@ $(document).on('click','.cart__store-top .checkbox input',function(){
     $('.cart__product .checkbox input[data-provider="' + store + '"]').prop('checked',$(this).prop('checked')).change();
     $('selfdeleverycheckbox-' + store).prop('checked',$(this).prop('checked'));
     if ($(this).prop('checked')){
-        $('selfdeleverycheckbox-' + store).parents.eq(2).removeClass('disabled');
+        $('selfdeleverycheckbox-' + store).parents().eq(2).removeClass('disabled');
     } else {
-        $('selfdeleverycheckbox-' + store).parents.eq(2).addClass('disabled');
+        $('selfdeleverycheckbox-' + store).parents().eq(2).addClass('disabled');
     }
     calculateBasketHeader();
     loadPayInfo();
