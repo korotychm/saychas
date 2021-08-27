@@ -36,15 +36,12 @@ if ($countStors < 2) {
           </label>
             <div class="cart__radio-content">
                 <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше).<br>Крайнее время доставки - <?= date("r", $timeClose - 3600 * 3) ?>.</p>
-                <?php if ($select3hour && !empty($select3hour)): ?>
-                  <select class="select" name="timepoint[1]" id="timepoint-dostmerge3" rel="timepointtext3">
-                    <?php foreach ($select3hour as $option3): ?>
-                      <option value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" <?= $selectedtimepoint[1][$option3['value']] ?>><?= $option3['lable'] ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                <?php else: ?>
-                  <div class="timepoint">Нет доставки</div>
-                <?php endif;?>
+                <select class="select">
+                    <option selected="selected" value="">Сегодня, с 15 до 16</option>
+                    <option value="">Сегодня, с 15 до 16</option>
+                    <option value="">Сегодня, с 15 до 16</option>
+                    <option value="">Сегодня, с 15 до 16</option>
+                </select>
             </div>
         </div>
       <?php endif;?>
