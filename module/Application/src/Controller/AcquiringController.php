@@ -229,7 +229,10 @@ class AcquiringController extends AbstractActionController
     public function tinkoffCallbackAction()
     {
             //$post = $this->getRequest(); //->getPost()->toArray();
+        
+    $postData = file_get_contents('php://input');    
 			$message="
+    $postData
     HTTP_X_REAL_IP: ". $_SERVER["HTTP_X_REAL_IP"]."
     HTTP_X_FORWARDED_FOR: ". $_SERVER["HTTP_X_FORWARDED_FOR"]. "
     HTTP_CONNECTION: ". $_SERVER["HTTP_CONNECTION"]. "
