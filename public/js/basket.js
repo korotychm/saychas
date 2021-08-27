@@ -256,6 +256,7 @@ function calculateBasketMerge(dataString, loadinfo = false)
 function calculateBasketPayCard()
 {
     var dataString = $("#user-basket-form").serialize();
+    console.log('calculateBasketPayCard');
     $.ajax({
         url: "/ajax-basket-pay-card-info",
         type: 'POST',
@@ -468,7 +469,7 @@ function loadPayInfo() {
     $.ajax({
         beforeSend: function () {
             $("#basket-payinfo-cover").stop().fadeIn();
-
+            console.log('loadPayInfo before send');
             calculateBasketMerge(dataString);
             calculateBasketPayCard();
             calculateBasketHeader();
