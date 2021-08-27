@@ -7,10 +7,16 @@
   <div class="cart__checkbox">
     <?php if($enable) :?>
       <label class="checkbox">
-        <input type="checkbox" checked data-product="<?=$product['id']?>" data-provider="<?=$provider?>"  />
+        <input type="checkbox" checked data-product="<?=$product['id']?>" data-provider="<?=$provider?>" name="products[<?=$product['id']?>][count]" value="<?=$product['count']?>"  />
         <span class="checkbox__check"></span>
       </label>
     <?php endif;?>
+    <input type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
+           class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
+           />
+    <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
+           class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
+           />
   </div>
   <div class="cart__product-img">
     <img src="<?=$this->imagePath('product')?>/<?=$product['image']?>" />
@@ -29,7 +35,7 @@
     <?php if($enable) :?>
       <div class="cart__product-quantity">
         <button class="cart__product-minus <?=($product['count']==1) ? 'disabled' : ''?>" data-step="-1"></button>
-        <input type="number" data-product="<?=$product['id']?>" max="<?=$product['availble']?>" value="<?=$product['count']?>" id="countproduct-<?=$product['id']?>" name="products[<?=$product['id']?>][count]" />
+        <input type="number" data-product="<?=$product['id']?>" max="<?=$product['availble']?>" value="<?=$product['count']?>" id="countproduct-<?=$product['id']?>" />
         <button class="cart__product-plus" data-step="1"></button>
       </div>
       <div class="cart__product-price">

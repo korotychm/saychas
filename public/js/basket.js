@@ -19,6 +19,7 @@ $(document).on('click','.cart__product-quantity button',function(e){
   }
   input.val(newVal);
   let productId = input.data('product');
+  $('.cart__checkbox input[data-product="' + productId + '"]').val(input.val());
   calculateBasketItem(productId);
   loadPayInfo();
 })
@@ -101,7 +102,7 @@ $(document).on('click','.cart__store-top .checkbox input',function(){
     calculateBasketHeader();
     loadPayInfo();
 });
-$(document).on('click','.cart__product .checkbox input',function(){
+$(document).on('change','.cart__product .checkbox input',function(){
   let store = $(this).data('provider');
   $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
   // Отмечаем или снимаем чекбокс магазина
@@ -119,6 +120,7 @@ $(document).on('click','.cart__product .checkbox input',function(){
   calculateBasketHeader();
   loadPayInfo();
 });
+
 // Удалить продукт
 $(document).on('click','.cart__product .cart__product-del',function(){
     var productId = $(this).data('product');
@@ -241,6 +243,7 @@ function calculateBasketMerge(dataString, loadinfo = false)
             $("#basketordermerge").html(data);
             $("#basket-ordermerge-cover").hide();
             setTimepointText();
+            $('#basketordermerge .select').niceSelect();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#basketordermerge").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
@@ -254,6 +257,7 @@ function calculateBasketMerge(dataString, loadinfo = false)
 function calculateBasketPayCard()
 {
     var dataString = $("#user-basket-form").serialize();
+    console.log('calculateBasketPayCard');
     $.ajax({
         url: "/ajax-basket-pay-card-info",
         type: 'POST',
@@ -466,7 +470,7 @@ function loadPayInfo() {
     $.ajax({
         beforeSend: function () {
             $("#basket-payinfo-cover").stop().fadeIn();
-
+            console.log('loadPayInfo before send');
             calculateBasketMerge(dataString);
             calculateBasketPayCard();
             calculateBasketHeader();
