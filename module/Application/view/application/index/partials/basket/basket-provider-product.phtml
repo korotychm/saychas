@@ -11,10 +11,10 @@
         <span class="checkbox__check"></span>
       </label>
     <?php endif;?>
-    <input type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
+    <input style="display:none;" type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
            class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
            />
-    <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
+    <input style="display:none;" type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
            class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
            />
   </div>

@@ -5,6 +5,9 @@ mongorestore -u saychas -p saychas --db=saychas dump/saychas
 /** create a new user and grant priveleges to the user */
 db.createUser({user: 'saychas_cache',pwd: 'saychas_cache', roles: [{role: 'dbOwner', db: 'saychas_cache'}]});
 
+/** crete admin user */
+db.createUser( { user: "admin", pwd: "admin", roles: [ { role: "root", db: "admin" } ] } )
+
 /** create index */
 db.products.createIndex( { title: "text", description: "text" } )
 
@@ -13,6 +16,9 @@ db.products.find({$text: { "$search" : "vivo" } }).pretty();
 
 /** regular expressian search; russian is ok now */
 db.products.find({title: /март/i}).pretty();
+
+/** mongo commands */
+mongo localhost:27017 --eval 'printjson(db.runCommand({"isMaster": 1}))'
 
 db.products.find({"characteristics": { $elemMatch: {value: "15%"} } }, {"id": 1, "title": 1, "provider_id": 1, "category_id": 1, "description": 1, "characteristics.$": 1, "_id": 0}).pretty()
 
