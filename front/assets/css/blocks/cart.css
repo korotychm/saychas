@@ -317,7 +317,8 @@
   margin-top: 20px;
   margin-left: 163px;
 }
-.cart__store-self-delivery.disabled opacity .3 {
+.cart__store-self-delivery.disabled {
+  opacity: 0.3;
   pointer-events: none;
 }
 .cart__store-self-delivery .boolean {
