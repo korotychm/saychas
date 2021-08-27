@@ -63,12 +63,6 @@ function calculateBasketHeader(productId)
 
 //Чекбокс все товары
 $(document).on('click','#checkallavailble input',function(){
-    if ($(this).prop('checked')){
-        $('.cart__store-self-delivery').removeClass('disabled');
-    } else {
-        $('.cart__store-self-delivery input').prop('checked',false);
-        $('.cart__store-self-delivery').addClass('disabled');
-    }
     $(".cart__store .checkbox input").prop('checked',$(this).prop('checked')).change();
     calculateBasketHeader();
     loadPayInfo();
@@ -77,12 +71,6 @@ $(document).on('click','#checkallavailble input',function(){
 // Чекбокс товары магазина
 $(document).on('click','.cart__store-top .checkbox input',function(){
     let store = $(this).data('provider');
-    $('selfdeleverycheckbox-' + store).prop('checked',$(this).prop('checked'));
-    if ($(this).prop('checked')){
-        $('selfdeleverycheckbox-' + store).parents().eq(2).removeClass('disabled');
-    } else {
-        $('selfdeleverycheckbox-' + store).parents().eq(2).addClass('disabled');
-    }
     $('.cart__product .checkbox input[data-provider="' + store + '"]').prop('checked',$(this).prop('checked')).change();
     calculateBasketHeader();
     loadPayInfo();
@@ -94,8 +82,11 @@ $(document).on('change','.cart__product .checkbox input',function(){
   // Отмечаем или снимаем чекбокс магазина
   if ($('.cart__product .checkbox input[data-provider="'+store+'"]').length == $('.cart__product .checkbox input[data-provider="'+store+'"]:checked').length){
     $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',true);
+    // Самовывоз недоступен
+    $('#providerblok-' + store).find('.cart__store-self-delivery').addClass('disabled');
   } else {
       $('.cart__store-top .checkbox input[data-provider="'+store+'"]').prop('checked',false);
+      $('#providerblok-' + store).find('.cart__store-self-delivery').removeClass('disabled');
   }
   // Отмечаем или снимаем чекбокс всех товаров
   if ($('.cart__product .checkbox input').length == $('.cart__product .checkbox input:checked').length){
@@ -163,13 +154,13 @@ $(document).on('change','.cart__store-self-delivery input',function(){
 
 function calculateSelfDelevery()
 {
-    let selftDeliveryCount = $(".cart__store-self-delivery input:checked").length,
-        selftDeliveryProducts = $(".cart__store-self-delivery input:checked").parents().eq(3).find('.checkbox input:checked').length;
+    let selftDeliveryCount = $(".cart__store-self-delivery:not(.disabled) input:checked").length,
+        selftDeliveryProducts = $(".cart__store-self-delivery:not(.disabled) input:checked").parents().eq(3).find('.checkbox input:checked').length;
 
     if (selftDeliveryCount > 0) {
         $("#selfdeleverymainblok").show();
         $('.cart-self-delivery__store').hide();
-        $(".cart__store-self-delivery input:checked").each(function(){
+        $(".cart__store-self-delivery:not(.disabled) input:checked").each(function(){
           let store = $(this).parents().eq(3);
           $('.cart-self-delivery__store').eq(store.index()).show();
         });
@@ -181,7 +172,7 @@ function calculateSelfDelevery()
     $("#selfdeleverycountstore").html(selftDeliveryCount);
 }
 
-
+//Способы доставки
 function calculateBasketMerge(dataString, loadinfo = false)
 {
     $.ajax({
@@ -206,7 +197,7 @@ function calculateBasketMerge(dataString, loadinfo = false)
         }
     });
 }
-
+//Способы оплаты
 function calculateBasketPayCard()
 {
     var dataString = $("#user-basket-form").serialize();
@@ -225,7 +216,7 @@ function calculateBasketPayCard()
         }
     });
 }
-
+// Изменения в корзине за время отсутствия
 function whatHappened(noclose = false) {
     $.ajax({
         beforeSend: function () {
