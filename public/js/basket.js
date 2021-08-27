@@ -163,7 +163,6 @@ function calculateSelfDelevery()
     }
     $("#selfdeleverycountproduct").html(selftDeliveryProducts);
     $("#selfdeleverycountstore").html(selftDeliveryCount);
-
 }
 
 
@@ -190,7 +189,6 @@ function calculateBasketMerge(dataString, loadinfo = false)
             return false;
         }
     });
-
 }
 
 function calculateBasketPayCard()
@@ -210,7 +208,6 @@ function calculateBasketPayCard()
             return false;
         }
     });
-
 }
 
 function whatHappened(noclose = false) {
