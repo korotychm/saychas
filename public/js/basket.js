@@ -77,13 +77,13 @@ $(document).on('click','#checkallavailble input',function(){
 // Чекбокс товары магазина
 $(document).on('click','.cart__store-top .checkbox input',function(){
     let store = $(this).data('provider');
-    $('.cart__product .checkbox input[data-provider="' + store + '"]').prop('checked',$(this).prop('checked')).change();
     $('selfdeleverycheckbox-' + store).prop('checked',$(this).prop('checked'));
     if ($(this).prop('checked')){
         $('selfdeleverycheckbox-' + store).parents().eq(2).removeClass('disabled');
     } else {
         $('selfdeleverycheckbox-' + store).parents().eq(2).addClass('disabled');
     }
+    $('.cart__product .checkbox input[data-provider="' + store + '"]').prop('checked',$(this).prop('checked')).change();
     calculateBasketHeader();
     loadPayInfo();
 });
