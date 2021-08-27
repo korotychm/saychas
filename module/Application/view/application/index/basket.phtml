@@ -32,6 +32,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                       <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
                     </div>
                 </div>
+                <div class="cart__right">
+                    <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
+                </div>
             </div>
         </form>
     </div>
