@@ -30,41 +30,25 @@
                     <div><input class="tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.min" /></div>
                     <div><input class="tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" :value="filter.max" /></div>
                 </div>
-            </div><!-- Тип вкл-выкл--><label class="boolean" v-if="filter.type==3"> <input type="checkbox" :name="filter.id" value="1" />
-                <div class="boolean__check"></div>
-            </label><!-- Тип чекбоксы-->
+            </div><!-- Тип вкл-выкл--><label class="boolean" v-if="filter.type==3"> <input type="checkbox" :name="filter.id" value="1" /><span class="boolean__check"></span></label><!-- Тип чекбоксы-->
             <div class="filter__checkboxes" v-if="filter.type==4 || filter.type==6 || filter.type==8">
-                <div class="filter__scroll"><label class="checkbox" v-for="option in filter.options" :key="option.valueCode"><input type="checkbox" :name="filter.id + '[]'" :value="option.valueCode" />
-                        <div class="checkbox__check"></div>
-                        <div class="checkbox__value">{{ option.value }}<span class="checkbox__count"></span></div>
-                    </label></div>
+                <div class="filter__scroll"><label class="checkbox" v-for="option in filter.options" :key="option.valueCode"><input type="checkbox" :name="filter.id + '[]'" :value="option.valueCode" /><span class="checkbox__check"></span><span class="checkbox__value">{{ option.value }}<span class="checkbox__count"></span></span></label></div>
                 <div class="filter__search" v-if="filter.options.length &gt; 6">
                     <div class="search"><input type="text" placeholder="Поиск значений" /></div>
                 </div>
                 <div class="filter__show-all" v-if="filter.options.length &gt; 6"></div>
             </div><!-- Тип цвета-->
-            <div class="filter__colors" v-if="filter.type==7"><label class="color-checkbox" v-for="option in filter.options" :key="option.valueCode"><input type="checkbox" :name="filter.id + '[]'" :value="option.valueCode" />
-                    <div class="color-checkbox__check">
-                        <div class="color-checkbox__check-color" :style="{backgroundColor: option.value[0]}"></div>
-                    </div>
-                </label></div>
+            <div class="filter__colors" v-if="filter.type==7"><label class="color-checkbox" v-for="option in filter.options" :key="option.valueCode"><input type="checkbox" :name="filter.id + '[]'" :value="option.valueCode" /><span class="color-checkbox__check"><span class="color-checkbox__check-color" :style="{backgroundColor: option.value[0]}"></span></span></label></div>
         </div>
         <div class="filter__item">
             <!-- Тип да-нет-не важно-->
             <h2 class="catalog__sidebar-heading">Слот для карты памяти</h2>
-            <div class="boolean2"> <label><input type="checkbox" />
-                    <div class="boolean2__check">Да</div>
-                </label><label><input type="checkbox" />
-                    <div class="boolean2__check">Нет</div>
-                </label></div>
+            <div class="boolean2"> <label><input type="checkbox" /><span class="boolean2__check">Да</span></label><label><input type="checkbox" /><span class="boolean2__check">Нет</span></label></div>
         </div>
         <div class="filter__item">
             <h2 class="catalog__sidebar-heading">Способ доставки</h2><!-- Тип радио-->
             <div class="filter__checkboxes">
-                <div class="filter__scroll"><label class="checkbox checkbox--radio"><input name="radio" type="radio" />
-                        <div class="checkbox__check checkbox__check--radio"></div>
-                        <div class="checkbox__value">Доставка курьером</div>
-                    </label></div>
+                <div class="filter__scroll"><label class="checkbox checkbox--radio"><input name="radio" type="radio" /><span class="checkbox__check checkbox__check--radio"></span><span class="checkbox__value">Доставка курьером</span></label></div>
             </div>
         </div>
     </form>

@@ -1,86 +1,73 @@
-<div class="contentpadding"><?php
-   // print_r($this->post)
-;?>
+<div class="panel__delivery">
+    <?php if($countDelevery and $addressDelevery and $payEnable):?>
+      <div class="panel__delivery-item">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <div>
+              <h2>Доставка</h2>
+              <p><?=$countDeleveryText?>, <?=$timeDelevery?> <?=$addressDelevery?></p>
+          </div>
+      </div>
+    <?php endif;?>
+    <?php if($countSelfdelevery):?>
+      <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <div>
+              <h2>Самовывоз</h2>
+              <p><?=$countSelfdelevery?> <?=($countSelfdelevery == 1)?"магазина":"магазинов" ?></p>
+          </div>
+      </div>
+    <?php endif;?>
+    <?php if($payEnable ):?>
+      <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <div>
+              <h2>Оплата</h2>
+              <p><?=($paycard and $cardinfo)?"Оплата с привязанной карты <span class='panel__cardnumber'>$cardinfo</span>":"Оплатить банковской картой"?></p>
+          </div>
+      </div>
+    <?php endif;?>
 </div>
-
-<?php if($countDelevery and $addressDelevery and $payEnable):?>  
-<div class='contentpadding nopad'>
-<div class='delevery-item delevery-door' > 
-                <b class='blok'>Доставка </b>
-                <div class='blok'><?=$countDeleveryText?>, <?=$timeDelevery?> <?=$addressDelevery?></div>
-            </div>
-</div>
-  <?php endif;?>
-  <?php if($countSelfdelevery):?>            
-    <div class='contentpadding nopad'>
-        <div class='delevery-item delevery-self' > 
-                <b class='blok'>Самовывоз</b>
-                <div class='blok'>из <?=$countSelfdelevery?> <?=($countSelfdelevery == 1)?"магазина":"магазинов" ?> </div>
-                <!-- ol>
-    <?php /*foreach ($storeAdress as $adress): ?>
-        <li ><?=$adress?></li>
-    <?php endforeach;*/?>
-        </ol -->
-            </div>
-       </div> 
-  <?php endif; ?>
-<?php if($payEnable ):?>
-    <div class='contentpadding nopad'>
-            <div class='delevery-item delevery-self' > 
-                <b class='blok'>Оплата</b>
-               
-                <div class='blok'>
-                    
-<?=($paycard and $cardinfo)?"Оплата с привязанной карты <span class='blok gray'>$cardinfo</span>":"Оплатить банковской картой"?></div>
-            </div>
-    </div>
-
-
-        <div class='volna' ></div>  
-<?php endif;?>
-        <div class='contentpadding '>
-            <h2 class='blok price' ><tag id="basketpricetotalall"><?=number_format(((int)($basketpricetotalall + $priceDelevery )/100), 0, ',', '&nbsp;')?></tag>&#8381; 
-    <?php if($basketoldpricetotalall):?> 
-                <span class='oldprice' ><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span>&nbsp;&#8381;</span>
+<div class="panel__zip"></div>
+<div class="panel__price">
+    <div class="panel__price-current"><span id="basketpricetotalall"><?=number_format(((int)($basketpricetotalall + $priceDelevery )/100), 0, ',', '&nbsp;')?></span> ₽</div>
+    <?php if($basketoldpricetotalall):?>
+      <div class="panel__price-old"><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span> ₽</div>
     <?php endif; ?>
-            </h2>
-            <div class='char-row'>
-                <span class='char-title'>
-                    <span>Товары(<tag id="basketproductcount"><?=$productcount?></tag>)</span>
-                </span><span class=char-value >
-                    <span><?=number_format(((int)$producttotal/100), 0, ',', '&nbsp;')?>&#8381; 
-    <?php if($basketoldpricetotal) {?><tag class='oldprice'><?=$basketoldpricetotal?>&#8381;</tag> <?php }?></span>
-                </span>
-            </div>
-    <?php if ($countDelevery) :?>            
-            <div class='char-row'>
-                <span class='char-title'>
-                    <span><strong>Доставка <?=(!$ordermerge)?" за час":"за три часа"?>(<?=$countDelevery?>)</strong></span>
-                </span><span class=char-value >
-                    <span><strong><?=number_format(($priceDelevery/100),0,",","&nbsp;")?>&#8381;</strong>
-                    <input type="hidden" name ="delivery_price" value="<?=$priceDelevery?>" >
-                    </span>
-                </span>
-            </div>
-    <?php endif; ?>        
-    <?php if ($countSelfdelevery) :?>        <div class='char-row'>
-                <span class='char-title'>
-                    <span>Самовывоз(<?=$countSelfdelevery?>)</span>
-                </span><span class=char-value >
-                    <span><?=($countSelfdelevery * $priceSelfdelevery) ?>&#8381;</span>
-                </span>
-            </div>
-   <?php endif; ?>
-            <div class='contentpadding relative'>
-            <?php if(!$payEnable):?>  
-                <div class="overcoverlocal"></div> 
-            <?php endif;?>
-                    <div class="formsendbutton" id="sendbasketbutton" >перейти к оплате</div>
-                
-            </div>
+</div>
+<div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
+        <div class="question__icon">?</div>
+    </div>
+</div>
+<div class="panel__table">
+    <div class="panel__tr">
+        <div>Товары (<span id="basketproductcount"><?=$productcount?></span>)</div>
+        <div class="panel__tr-items-total">
+            <div><?=number_format(((int)$producttotal/100), 0, ',', '&nbsp;')?> ₽</div>
+            <?php if ($basketoldpricetotal):?>
+              <div><?=$basketoldpricetotal?> ₽</div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php if ($countDelevery) :?>
+      <div class="panel__tr">
+          <div> <b>Доставка <?=(!$ordermerge)?" за час":"за три часа"?> (<?=$countDelevery?>)</b></div>
+          <div><?=number_format(($priceDelevery/100),0,",","&nbsp;")?> ₽</div>
+      </div>
+    <?php endif; ?>
 
-            <div class='contentpadding'>
-                <div class='gray mini'  >Нажимая на кнопку, вы соглашаетесь с <a href=# class="red" >Условиями обработки перс. данных</a>, а также с <a href=# class="red" >Условиями продажи</a></div>
-            </div>
-
-        </div>    
+    <?php if ($countSelfdelevery) :?>
+      <div class="panel__tr">
+          <div>Самовывоз (<?=$countSelfdelevery?>)</div>
+          <div><?=($countSelfdelevery * $priceSelfdelevery) ?> ₽</div>
+      </div>
+    <?php endif; ?>
+</div>
+<?php if(!$payEnable):?>
+  <div class="overcoverlocal"></div>
+<?php endif;?>
+<div class="btn btn--primary" id="sendbasketbutton">Перейти к оплате</div>
+<div class="panel__notice">Нажимая на кнопку, вы соглашаетесь с <a href="#">Условиями обработки перс. данных</a>, а также с <a href="#">Условиями продажи</a></div>

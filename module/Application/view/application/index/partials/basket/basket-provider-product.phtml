@@ -3,23 +3,77 @@
         $disabled = ($enable)?"":" disabled ";
 ?>
 
-<div class='blok basketrow  basketrowproduct  ' id="basketrow-<?=$product['id']?>">
+<li class="cart__product <?=(!$enable) ? 'cart__product--na':''?>" id="basketrow-<?=$product['id']?>">
+  <div class="cart__checkbox">
+    <?php if($enable) :?>
+      <label class="checkbox">
+        <input type="checkbox" checked data-product="<?=$product['id']?>" data-provider="<?=$provider?>" name="products[<?=$product['id']?>][count]" value="<?=$product['count']?>"  />
+        <span class="checkbox__check"></span>
+      </label>
+    <?php endif;?>
+    <input type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
+           class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
+           />
+    <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
+           class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
+           />
+  </div>
+  <div class="cart__product-img">
+    <img src="<?=$this->imagePath('product')?>/<?=$product['image']?>" />
+  </div>
+  <a class="cart__product-title" href="/product/<?=$product['id']?>">
+    <?=$product['title']?>
+  </a>
+  <div>
+    <div class="cart__product-del deleteproduct" data-product='<?=$product['id']?>' data-provider='<?=$provider?>'>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </div>
+  </div>
+  <div class="cart__product-info">
+    <?php if($enable) :?>
+      <div class="cart__product-quantity">
+        <button class="cart__product-minus <?=($product['count']==1) ? 'disabled' : ''?>" data-step="-1"></button>
+        <input type="number" data-product="<?=$product['id']?>" max="<?=$product['availble']?>" value="<?=$product['count']?>" id="countproduct-<?=$product['id']?>" />
+        <button class="cart__product-plus" data-step="1"></button>
+      </div>
+      <div class="cart__product-price">
+          <div class="cart__product-price-current"><span id="priceproduct-<?=$product['id']?>"><?=number_format(((int)($product['price']*$product['count'])/100), 0, ',', '&nbsp;');?></span> ₽</div>
+          <?php if (+$product['oldprice'] < +$product['price']): ?>
+            <div class="cart__product-price-old"><?=number_format(((int)$product['oldprice']/100), 0, ',', '&nbsp;')?> ₽</div>
+          <?php endif; ?>
+      </div>
+    <?php else:?>
+      <div class="cart__product-na" id="priceproduct-<?=$product['id']?>">Товара нет в наличии</div>
+    <?php endif;?>
+  </div>
+  <div>
+    <button class="cart__product-wishlist active">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+      </svg>
+    </button>
+  </div>
+</li>
+
+<!-- <div class='blok basketrow  basketrowproduct  ' id="basketrow-<?=$product['id']?>">
         <div  class='basketcol<?=$disabled?>  check'>
 <?php if($enable) :?>
             <div class='poroductcounme nopub checkallprovider provider-<?=$provider?>  allall zach ' rel='<?=$product['id']?>' provider='<?=$provider?>' ></div>
-            <input type="checkbox" checked name="products[<?=$product['id']?>][count]" value="<?=$product['count']?>"  
+            <input type="checkbox" checked name="products[<?=$product['id']?>][count]" value="<?=$product['count']?>"
                    class="none povidercheck-<?=$provider ?> product-<?=$product['id']?>  allallcheck " id="countprhidden-<?=$product['id']?>">
-            <input type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>" 
+            <input type="checkbox"  checked  name="products[<?=$product['id']?>][price]" value="<?=$product['price']?>"
                    class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
                    />
-            <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>" 
+            <input type="checkbox"  checked  name="products[<?=$product['id']?>][store]" value="<?=$product['store']?>"
                    class="none povidercheck-<?=$provider ?> product-<?=$product['id']?> allallcheck"
                    />
 <?php endif;?>
-        </div>    
+        </div>
 
         <div  class='basketcol<?=$disabled?>  imageproduct '>
-            <img src="<?=$this->imagePath('product')?>/<?=$product['image']?>" alt="" 
+            <img src="<?=$this->imagePath('product')?>/<?=$product['image']?>" alt=""
                  class="product-page-image productimage1"  title="">
         </div>
 
@@ -35,7 +89,7 @@
             <span><div class="countproductminus <?=($product['count'] < 2)?"disabled":""?>" rel='<?=$product['id']?>' >
             </div></span><div class="countproductnum " id="countproductnum-<?=$product['id']?>" max="<?=$product['availble']?>"><?=$product['count']?>
             </div><div class="countproductplus <?=($product['count'] >= $product['availble'])?"disabled":""?>" rel='<?=$product['id']?>'></div>
-            
+
         </div>
 
         <div  class='basketcol<?=$disabled?>  priceproduct' >
@@ -55,6 +109,6 @@
             <img src="/img/saychas-zero.svg" class="favtprop" rel='<?=$product['id']?>'  />
         </div>
 
- </div>    
+ </div> -->
 
 <?php endforeach;?>

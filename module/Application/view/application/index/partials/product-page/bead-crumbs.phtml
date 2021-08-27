@@ -1,6 +1,5 @@
-<div class="blok">
-    
+<ul class="breadcrumbs">
      <?php foreach ($breadCrumbs as $breadCrumb) : ?>
-            &rarr; <span class="iblok"><a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a></span>
-        <?php endforeach;?>
-</div>
+        <li><a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a></li>
+     <?php endforeach;?>
+</ul>

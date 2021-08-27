@@ -9,10 +9,12 @@ $(document).on('click','.product-card__description-toggle',function(){
   $(this).parent().toggleClass('active');
 });
 
-$('.testimonials__photos--carousel').slick(
-  {
-    infinite: false,
-    slidesToShow: 10,
-    slidesToScroll: 1
-  }
-);
+$(document).ready(function(){
+  $('.testimonials__photos--carousel').slick(
+    {
+      infinite: false,
+      slidesToShow: 10,
+      slidesToScroll: 1
+    }
+  );
+});

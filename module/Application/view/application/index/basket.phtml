@@ -2,23 +2,23 @@
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
 ?>
-<?php if(!$this->legalUser) :?>
-<script>
-    $(function () {
-        $('#usermodalwindow').modal('show')
-    })
-</script>
-<?php endif ?>
-<div class="container mainconteiner"  >
-    <div  class="contentwrapper">
-        <?= $this->bread ?>
-        <h1 id='h1title' сlass="h1"><?= $this->titleH ?></h1>
-        <div id="user-basket">
-            <form method='POST' id='user-basket-form'>
-                <div class="pw-contentblock cblock-5">
-                    <?php //exit(print_r($this->content)); ?>
-                    <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
 
+<?php if(!$this->legalUser) :?>
+  <script>
+      $(function () {
+          $('#usermodalwindow').fadeIn();
+      })
+  </script>
+<?php endif ?>
+<section>
+    <div class="page-heading">
+        <h1 class="h1" id='h1title'><?= $this->titleH ?></h1>
+    </div>
+    <div id="user-basket">
+        <form method='POST' id='user-basket-form'>
+            <div class="cart">
+                <div class="cart__left">
+                    <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
                     <?=
                     $this->partial("/application/index/partials/basket/basket-user",
                             [
@@ -29,8 +29,37 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                     ])
                     ?>
                     <div class='pw-contentblock' id='basketordermerge'>
-                    <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
+                      <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
                     </div>
+                    <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
+                    <div  id='baskepaycardinfo'>
+                        <?= $this->partial("/application/common/basket-pay-card", ['cardinfo' => $this->cardinfo, 'paycard' => 1])?>
+                    </div>
+                    <div>
+                      <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
+                      <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
+                      <textarea style="display:none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
+                      <div  class='pointer blokc' id="testbeforesend" >Тест проверки перед отправкой</div>
+                    </div>
+                </div>
+                <div class="cart__right">
+                    <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="container mainconteiner"  >
+    <div  class="contentwrapper">
+        <?= $this->bread ?>
+        <div>
+            <form method='POST'>
+                <div class="pw-contentblock cblock-5">
+                    <?php //exit(print_r($this->content)); ?>
+
+
+
 
                         <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
                     <div  id='baskepaycardinfo'>
