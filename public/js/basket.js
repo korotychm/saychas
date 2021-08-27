@@ -534,7 +534,7 @@ $(function () {
     });
 
 
-    $("body").on("click dblclick", ".radiomergebut, .loadpayinfo", function () {
+    $(document).on("click", ".cart__radio-check", function () {
         loadPayInfo();
     });
 
