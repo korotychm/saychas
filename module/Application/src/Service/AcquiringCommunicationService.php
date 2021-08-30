@@ -11,7 +11,7 @@ use Laminas\Json\Json;
 //use Application\Model\Entity;
 //use Application\Model\Entity\ClientOrder;
 //use Application\Model\Entity\HandbookRelatedProduct;
-//use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 /**
  * Description of AcquiringCommunicationService
