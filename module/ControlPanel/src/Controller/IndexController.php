@@ -177,14 +177,44 @@ class IndexController extends AbstractActionController
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
-        $result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', 'characteristics.id' => '000000008' ], 'set' => ['characteristics.$.value' => '0.1345'] ]);
-        //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
-        //$cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'filter' => $filter]);
         $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
         //$this->productManager->findTest();
         
-        $view = new ViewModel(['products' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
+        $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
         return $view->setTerminal(true);
+    }
+    
+    private function canUpdateProduct($params)
+    {
+        return true;
+    }
+    
+    private function canDeleteProduct($params)
+    {
+        return true;
+    }
+
+    public function updateProductAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+//        $result = $this->productManager->updateDocument([
+//            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
+//            'set' => ['characteristics.$.value' => '0.1345']
+//        ]);
+        if($this->canUpdateProduct($post)) {
+            $result = $this->productManager->updateDocument([
+                'where' => ['id' => $post['product_id'] ],
+                'set' => [
+                    'category_id' => $post['category_id'],
+                    'brand_id' => $post['brand_id'],
+                    'color' => $post['color'],
+                    'country' => $post['country'],
+                    'title' => $post['title']
+                ],
+            ]);
+        }
+        //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
+        return $result;
     }
 
     /**

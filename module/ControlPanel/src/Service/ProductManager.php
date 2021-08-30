@@ -10,13 +10,14 @@ use ControlPanel\Contract\LoadableInterface;
 use Application\Model\Repository\CategoryRepository;
 use Application\Model\Entity\Country;
 use Application\Model\Entity\Brand;
+use Application\Model\Entity\Color;
 
 /**
  * Description of ProductManager
  *
  * @author alex
  */
-class ProductManager //implements LoadableInterface
+class ProductManager implements LoadableInterface
 {
 
     use Loadable;
@@ -40,12 +41,12 @@ class ProductManager //implements LoadableInterface
      * @var CurlRequestManager
      */
     protected $curlRequestManager;
-    
+
     /**
      * @var CategoryRepository
      */
     protected $categoryRepo;
-    
+
     /**
      * @var laminas.entity.manager
      */
@@ -66,10 +67,10 @@ class ProductManager //implements LoadableInterface
         $this->db = $this->mclient->{$this->dbName};
         $this->categoryRepo = $categoryRepo;
         $this->entityManager = $entityManager;
-        
+
         $this->entityManager->initRepository(Country::class);
         $this->entityManager->initRepository(Brand::class);
-        
+        $this->entityManager->initRepository(Color::class);
     }
 
     public function findAll($params)
@@ -78,80 +79,87 @@ class ProductManager //implements LoadableInterface
             $limits = $this->calcLimits($params['pageNo']);
             $collection = $this->db->{$this->collectionName};
             $cursor = $collection->find
-            (
-                $params['where'],
-                [
-                    'skip' => $limits['min'] - 1,
-                    'limit' => $this->pageSize,
-                    'projection' => [
-                        'id' => 1,
-                        'title' => 1,
-                        'category_id' => 1,
-                        'brand_id' => 1,
-                        'description' => 1,
-                        'vendor_code' => 1,
-                        'provider_id' => 1,
-                        'country' => 1,
-                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
-                        '_id' => 0
-                    ],
-                ]
+                    (
+                    $params['where'],
+                    [
+                        'skip' => $limits['min'] - 1,
+                        'limit' => $this->pageSize,
+                        'projection' => [
+                            'id' => 1,
+                            'title' => 1,
+                            'category_id' => 1,
+                            'brand_id' => 1,
+                            'description' => 1,
+                            'vendor_code' => 1,
+                            'provider_id' => 1,
+                            'color' => 1,
+                            'country' => 1,
+                            'characteristics' => 1, // ['id' => 1, 'type' => 1],
+                            '_id' => 0
+                        ],
+                    ]
             );
             return $cursor->toArray();
         }
         return [];
     }
-    
+
     public function findDocuments($params)
     {
         $cursor = $this->findAll($params);
         foreach ($cursor as &$c) {
-            if(empty($c['category_id'])) {
+            if (empty($c['category_id'])) {
                 continue;
             }
             //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
             $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
             $c['category_name'] = $category->getTitle();
-            if(empty($c['brand_id'])) {
+            if (empty($c['brand_id'])) {
                 continue;
             }
             $brand = Brand::find(['id' => $c['brand_id']]);
             $c['brand_name'] = $brand->getTitle();
-            
-            if(empty($c['country'])) {
+
+            if (empty($c['country'])) {
                 continue;
             }
-            
+
             $country = Country::find(['id' => $c['country']]);
             $c['country_name'] = $country->getTitle();
+
+            if (empty($c['color'])) {
+                continue;
+            }
+
+            $color = Color::find(['id' => $c['color']]);
+            $c['color_name'] = $color->getTitle();
         }
-        
+
         return $cursor;
-        
     }
-    
+
     public function updateDocument($params)
     {
         $collection = $this->db->{$this->collectionName};
         $updateResult = $collection->updateOne(
-            $params['where'],
-            ['$set' => $params['set']]
+                $params['where'],
+                ['$set' => $params['set']]
         );
 
-        print_r($updateResult);
+        //print_r($updateResult);
         return $updateResult;
     }
-    
+
     public function findTest()
     {
         //$query = array('$text' => array('$search'=> 'vivo'));
         $collection = $this->db->products;
         //'city' => ['$regex' => '^garden', '$options' => 'i'],
         $cursor = $collection->find([
-            //'title' => new \MongoDB\BSON\Regex('True', 'i'),
-            'title' => ['$regex' => 'vivo', '$options' => 'i'],
-            //'title' => ['$text' => ['$search' => 'vivo']], //- drops indexes for some reason
-        ], ['_id' => 0])->toArray();
+                    //'title' => new \MongoDB\BSON\Regex('True', 'i'),
+                    'title' => ['$regex' => 'vivo', '$options' => 'i'],
+                        //'title' => ['$text' => ['$search' => 'vivo']], //- drops indexes for some reason
+                        ], ['_id' => 0])->toArray();
 //        $cursor = $collection->find($query);
         echo '<pre>';
         print_r($cursor);
@@ -355,7 +363,7 @@ class ProductManager //implements LoadableInterface
 //        $category = $this->categoryRepo->findCategory(['id'=>$id]);
 //        return $category;
 //    }
-//    
+//
 //    public function findBrandById($params)
 //    {
 //        $id = $params['id'];

@@ -4,11 +4,21 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Traits\Searchable;
+use Application\Model\Repository\ColorRepository;
+
 /**
  * Color
  */
 class Color extends Entity
 {
+    
+    use Searchable;
+
+    /**
+     * @var ColorRepository
+     */
+    public static ColorRepository $repository;
 
     /**
      * @var string
