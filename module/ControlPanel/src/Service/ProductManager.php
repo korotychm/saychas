@@ -21,6 +21,9 @@ class ProductManager //implements LoadableInterface
 
     use Loadable;
 
+    /**
+     * @var string
+     */
     public const COLLECTION_NAME = 'products';
 
     /**
@@ -76,7 +79,7 @@ class ProductManager //implements LoadableInterface
             $collection = $this->db->{$this->collectionName};
             $cursor = $collection->find
             (
-                $params['filter'],
+                $params['where'],
                 [
                     'skip' => $limits['min'] - 1,
                     'limit' => $this->pageSize,
@@ -125,6 +128,18 @@ class ProductManager //implements LoadableInterface
         
         return $cursor;
         
+    }
+    
+    public function updateDocument($params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $updateResult = $collection->updateOne(
+            $params['where'],
+            ['$set' => $params['set']]
+        );
+
+        print_r($updateResult);
+        return $updateResult;
     }
     
     public function findTest()
