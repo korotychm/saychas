@@ -4,16 +4,11 @@
     </div>
     <div class="cart">
         <div class="cart__left">
-            <div class="cart__all"><label class="checkbox"><input type="checkbox" checked="checked" />
-                    <div class="checkbox__check"></div>
-                    <div class="checkbox__value">Все товары</div>
-                </label></div>
+            <div class="cart__all"><label class="checkbox"><input type="checkbox" checked="checked" /><span class="checkbox__check"></span><span class="checkbox__value">Все товары</span></label></div>
             <div class="cart__stores">
                 <div class="cart__store">
                     <div class="cart__store-top">
-                        <div class="cart__checkbox"><label class="checkbox"><input type="checkbox" checked="checked" />
-                                <div class="checkbox__check"></div>
-                            </label></div>
+                        <div class="cart__checkbox"><label class="checkbox"><input type="checkbox" checked="checked" /><span class="checkbox__check"></span></label></div>
                         <div class="cart__store-logo"><img src="/images/stores/store1.jpg" /></div>
                         <div class="cart__store-info">
                             <p>Ежедневно, 10:00–22:00 (до закрытия 3 часа)</p>
@@ -22,9 +17,7 @@
                     </div>
                     <ul class="cart__products">
                         <li class="cart__product">
-                            <div class="cart__checkbox"><label class="checkbox"><input type="checkbox" checked="checked" />
-                                    <div class="checkbox__check"></div>
-                                </label></div>
+                            <div class="cart__checkbox"><label class="checkbox"><input type="checkbox" checked="checked" /><span class="checkbox__check"></span></label></div>
                             <div class="cart__product-img"><img src="/images/products/product1.jpg" /></div><a class="cart__product-title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
                             <div><button class="cart__product-del"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
@@ -60,9 +53,7 @@
                     </ul>
                     <div class="cart__store-link"><a class="cart__store-link-plus" href="#"></a><a href="#">Добавить еще товаров<span>из этого магазина бесплатно</span></a></div>
                     <div class="cart__store-self-delivery">
-                        <div>Заберу из магазина самостоятельно (-299 ₽)<label class="boolean" v-if="filter.type==3"> <input type="checkbox" :name="filter.id" value="1" />
-                                <div class="boolean__check"></div>
-                            </label></div>
+                        <div>Заберу из магазина самостоятельно (-299 ₽)<label class="boolean" v-if="filter.type==3"> <input type="checkbox" :name="filter.id" value="1" /><span class="boolean__check"></span></label></div>
                         <div>Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно</div>
                     </div>
                 </div>
@@ -128,10 +119,7 @@
                     </div>
                 </div>
                 <div class="cart__radio-group"><input type="radio" name="delivery" checked="checked" id="delivery1" />
-                    <div class="cart__radio"><label for="delivery1">
-                            <div class="cart__radio-check"></div>
-                            <div><b>Из 5 магазинов <span class="accent">за 1 час</span></b> - 899 ₽</div>
-                        </label>
+                    <div class="cart__radio"><label for="delivery1"><span class="cart__radio-check"></span><span><b>Из 5 магазинов <span class="accent">за 1 час</span></b> - 899 ₽</span></label>
                         <div class="cart__radio-content">
                             <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в 5 доставках</p><select class="select">
                                 <option selected="selected" value="">Сегодня, с 15 до 16</option>
@@ -141,10 +129,7 @@
                             </select>
                         </div>
                     </div><input type="radio" name="delivery" id="delivery2" />
-                    <div class="cart__radio"><label for="delivery2">
-                            <div class="cart__radio-check"></div>
-                            <div><b>Объединить заказы за 3 часа</b> - 499 ₽</div>
-                        </label>
+                    <div class="cart__radio"><label for="delivery2"><span class="cart__radio-check"></span><span><b>Объединить заказы за 3 часа</b> - 499 ₽</span></label>
                         <div class="cart__radio-content">
                             <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше)</p><select class="select">
                                 <option selected="selected" value="">Сегодня, с 15 до 16</option>
@@ -205,10 +190,7 @@
             <div class="cart-payment">
                 <h2 class="h2">Оплата</h2>
                 <div class="cart__radio-group"><input type="radio" name="payment" checked="checked" id="payment1" />
-                    <div class="cart__radio"><label for="payment1">
-                            <div class="cart__radio-check"></div>
-                            <div><b>Оплата с привязанной карты</b></div>
-                        </label>
+                    <div class="cart__radio"><label for="payment1"><span class="cart__radio-check"></span><span><b>Оплата с привязанной карты</b></span></label>
                         <div class="cart__radio-content"><select class="select">
                                 <option selected="selected" value="">5213 2487 **** 0817</option>
                                 <option value="">5213 2487 **** 0817</option>
@@ -216,10 +198,7 @@
                                 <option value="">5213 2487 **** 0817</option>
                             </select></div>
                     </div><input type="radio" name="payment" id="payment2" />
-                    <div class="cart__radio"><label for="payment2">
-                            <div class="cart__radio-check"></div>
-                            <div><b>Оплата новой картой</b></div>
-                        </label>
+                    <div class="cart__radio"><label for="payment2"><span class="cart__radio-check"></span><span><b>Оплата новой картой</b></span></label>
                         <div class="cart__radio-content">
                             <p>Расплачиватесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз</p>
                         </div>

@@ -1,13 +1,9 @@
 <?php if (!empty($menu)): ?>
-<div class="iblok contentwrapper">
-    <div id="topmenu" >
-        <ul>
-            <?php while (list($key, $menuItem) = each($menu)): ?> 
-            <li><a href="/category/<?=$key?>" id="quick-menu-item-<?=$key?>" ><?=$menuItem['title']?></a></li>
-            <?php endwhile; ?>
-        </ul>
-    </div>
-</div>
+    <nav class="header__bottom">
+        <?php while (list($key, $menuItem) = each($menu)): ?>
+            <a href="/category/<?=$key?>" id="quick-menu-item-<?=$key?>"><?=$menuItem['title']?></a>
+        <?php endwhile; ?>
+    </nav>
 <?php endif; 
 /*$param["000001"]=["title"=>"title", "param"=>"params"];
 $param["000002"]=["title"=>"title2", "param"=>"params2"];*/

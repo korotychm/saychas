@@ -27,6 +27,8 @@
     top 50px
     right 50px
     cursor pointer
+    &.disabled
+      display none
     &::before
     &::after
       content ''
@@ -40,3 +42,65 @@
       transform translate(-50%,-50%) rotate(45deg)
     &::after
       transform translate(-50%,-50%) rotate(-45deg)
+
+
+.auth-reg
+  width 600px
+  position relative
+  .error1c
+    color var(--red)
+    margin 30px 0 0 190px
+  .btn
+    width 270px
+    margin-left 190px
+  &__back
+    position absolute
+    left 0
+    bottom 16px
+    color var(--red)
+    text-decoration none
+    cursor pointer
+  &__input-group
+    display flex
+    margin-bottom 25px
+    font-size 20px
+    &__label
+      width 190px
+      padding-right 25px
+      text-align right
+      font-weight bold
+      margin-top 13px
+    &__value
+      height 55px
+      display flex
+      align-items center
+    &__input
+      width 270px
+      position relative
+      &--large
+        width 440px
+      input
+        height 55px
+        width 100%
+        border 2px solid var(--gray)
+        padding 0 25px
+        font-size inherit
+        border-radius 55px
+        outline none
+        &.error
+          border-color var(--red)
+      p
+        font-size 16px
+        margin 5px 0 0 25px
+        color var(--gray2)
+        white-space nowrap
+        &.error
+          color var(--red)
+      a
+        display inline-block
+        text-decoration none
+        color var(--red)
+        margin-top 5px
+        margin-left 25px
+        font-size 16px
+        cursor pointer

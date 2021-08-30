@@ -1,61 +1,47 @@
-<div class='pw-contentblock cblock-1'>
-    <div class='pw-contentblock cblock-6'>
-        <div class='contentpadding'><h2>Доставка</h2></div>
+<div class="cart-delivery">
+    <h2 class="h2">Доставка</h2>
+    <div class="cart-delivery__item">
+        <h3 class="cart-delivery__heading">Адрес доставки:</h3>
+        <div class="cart-delivery__input">
+          <input id="basketuseradress" type="text"  value="<?= $basketUser['address'] ?>" name="basketuseradress" />
+          <p><span class="error" id="basketuseradresserror"></span>При изменении адреса изменяется доступность товаров в корзине</p>
+        </div>
     </div>
-    <div class='pw-contentblock cblock-4'>
-        <!--div class='contentpadding blokr' style='padding-top:16px;'><a href=# class="redlink">Изменить</a></div-->
+    <div class="cart-delivery__item">
+        <h3 class="cart-delivery__heading">Комментарий курьерам:</h3>
+        <div class="cart-delivery__input">
+          <input type="text" id="basketusercomment" name="usercomment" placeholder="О чем должен знать курьер?" />
+        </div>
     </div>
-    <div class='contentpadding' id='basketuserdata'>
-        <div class="char-row">
-            <span class="char-title"><span>Адрес доставки </span>
-            </span><span class="char-value">
-                <input type="text" id="basketuseradress"  value="<?= $basketUser['address'] ?>" class="lableinfo" name="basketuseradress" >
-                <span class="mini red blok" id="basketuseradresserror"></span>    
-                <span class="mini gray">При изменении адреса изменяется доступность товаров в корзине</span>
-            </span>
-        </div>    
-
-        <div class="char-row">
-            <span class="char-title"><span>Получатель </span>
-            </span><span class="char-value"><div class="contentpaddingbox contentpaddinguserbox <?=(!$legalUser)?" graybg user-modal-open":""?>">   
-                    <div class="basketrow">
-<?php if ($legalUser) :?>                        <div class="basketcol imageproduct">
-                            <div class="avatar"><?=mb_substr(trim($basketUser['name']),0,1)?></div>
-                        </div>
-             <div class="basketcol titleuser">
-                <b><?= $basketUser['name'] ?>
-                <input type="hidden" name="username" value="<?=$basketUser['name']?>" >
-                </b> <div class='blok'><?= $basketUser['phoneformated'] ?></div>
+    <div class="cart-delivery__item">
+        <h3 class="cart-delivery__heading">Получатель:</h3>
+        <?php if ($legalUser) :?>
+          <div class="cart-delivery__user">
+              <div class="cart-delivery__user-info">
+                  <div class="cart-delivery__avatar">
+                      <div class="cart-delivery__avatar-letter"><?=mb_substr(trim($basketUser['name']),0,1)?></div>
+                      <!--
+                      <div class="cart-delivery__avatar-img"><img src="/images/testimonials/avatar1.jpg" /></div>
+                      -->
+                  </div>
+                  <div>
+                      <div class="cart-delivery__name"><?=$basketUser['name']?></div>
+                      <div class="cart-delivery__phone"><?= $basketUser['phoneformated'] ?></div>
+                  </div>
+              </div>
+                <a class="cart-delivery__logout" href="/clear-user-data">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Выйти</span>
+                </a>
+          </div>
+        <?php else:?>
+          <div class="cart-delivery__user cart-delivery__user--notlegal">
+            <div class="cart__login user-modal-open">
+              <span>Войти или зарегистрироваться</span>
             </div>
-                    <div class="basketcol exituser">
-                        
-                            <div class="contentpadding"><a href="/clear-user-data" class=""><img src="/img/saychas-zero.svg" class="grayscale contentpadding">Выход</a></div>
-                        
-                    </div>
-<?php  else : ?>                    
-              
-            <div class='delevery-item ' > 
-                <b class='blok'><?=$register_title?></b>
-               
-                <div class='blok gray'>
-                    <?=$register_text?>
-
-                </div>
-    </div>              
-                        
-<?php endif; ?>                        
-                </div>
-                </div>
-            </span>
-            
-        </div>
-        <div class="char-row">
-            <span class="char-title"><span>Комментарий курьеру </span>
-            </span><span class="char-value">
-                <input type="text" id="basketusercomment" name="usercomment"   class="lableinfo" placeholder="О чем должен знать курьер?">
-                <span class="mini gray"></span>
-
-            </span>
-        </div>
+          </div>
+        <?php endif;?>
     </div>
 </div>

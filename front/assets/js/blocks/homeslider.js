@@ -1,6 +1,8 @@
-$('.homeslider').slick(
-  {
-    infinite: true,
-    dots: true
-  }
-);
+$(document).ready(function(){
+  $('.homeslider').slick(
+    {
+      infinite: true,
+      dots: true
+    }
+  );
+});

@@ -55,11 +55,49 @@ div.popup
   div.popup__inner
     div.popup__close
     div.popup__content
+      // auth phone
       div.popup__heading Вход или регистрация
       div.auth-reg
-        label.auth-reg__input-group
+        div.auth-reg__input-group
           div.auth-reg__input-group__label Телефон:
-          input(type="text")
+          div.auth-reg__input-group__input
+            input(type="text", placeholder="+7 (999) 999-99-99").phoneinput
         button.btn.btn--primary Продолжить
+      // auth login
+      div.popup__heading Привет, Алексей!
+      div.auth-reg
+        div.auth-reg__input-group.auth-reg__input-group--center
+          div.auth-reg__input-group__label Телефон:
+          div.auth-reg__input-group__value +7 (999) 999-99-99
+        div.auth-reg__input-group
+          div.auth-reg__input-group__label Пароль:
+          div.auth-reg__input-group__input
+            input(type="password")
+            a Забыли пароль?
+        button.btn.btn--primary Войти
+        a.auth-reg__back ← Вернуться
+      // reg
+      div.popup__heading Регистрация
+      div.auth-reg
+        div.auth-reg__input-group.auth-reg__input-group--center
+          div.auth-reg__input-group__label Телефон:
+          div.auth-reg__input-group__value +7 (999) 999-99-99
+        div.auth-reg__input-group
+          div.auth-reg__input-group__label Код:
+          div.auth-reg__input-group__input
+            input(type="password")
+            p Мы отправили его на телефон
+            a Выслать его еще раз?
+        div.auth-reg__input-group
+          div.auth-reg__input-group__label Ваше имя:
+          div.auth-reg__input-group__input.auth-reg__input-group__input--large
+            input(type="text")
+        div.auth-reg__input-group
+          div.auth-reg__input-group__label Почта:
+          div.auth-reg__input-group__input.auth-reg__input-group__input--large
+            input(type="text")
+        button.btn.btn--primary Зарегистрироваться
+        a.auth-reg__back ← Вернуться
+        
         
           

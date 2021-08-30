@@ -47,7 +47,7 @@ class CurlRequestManager
         }
     }
 
-    public function requestProducts($url, $content, $curlHeaders = [])
+    public function sendCurlRequestWithCredentials($url, $content, $curlHeaders = [])
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);

@@ -74,7 +74,7 @@ class CommonHelperFunctionsService
         
         return ["result" => true, "message" => "Stores received"];
     }
-    
+
     public function setErrorRedirect($errorCode)
     {
         $response = new Response();
@@ -112,7 +112,11 @@ class CommonHelperFunctionsService
                     "reserve" => $product->receiveRest($store),
                     "price" => $product->getPrice(),
                     "title" => $product->getTitle(),
+
                     'available' =>  $available,
+
+                    //'store' => $product->getStoreId(),
+
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
@@ -121,6 +125,7 @@ class CommonHelperFunctionsService
         }
         return $return;
     }
+
     public function getUserInfo($user)
     {
         if (null == $user) {

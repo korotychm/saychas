@@ -26,8 +26,11 @@ class StoreManagerFactory implements FactoryInterface
 
         $config = $container->get('Config');
         $curlRequestManager = $container->get(CurlRequestManager::class);
+        $mclient = new \MongoDB\Client(
+            'mongodb://saychas_cache:saychas_cache@localhost/saychas_cache'
+        );
 
-        return new StoreManager($config, $curlRequestManager);
+        return new StoreManager($config, $curlRequestManager, $mclient);
     }
 
 }

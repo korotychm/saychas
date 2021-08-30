@@ -1,16 +1,18 @@
-<div class="contentpadding" id="productpageimg">
-<?php $j = 0; 
-foreach ($images as $image) :?>
-<?php if ($j == 0) : ?>
-            <div class='iblok mainimg' >       
-                <div class='square'>
-                    <div class='squarecontent'><img src='<?= $image_path."/".$image ?>' alt='alt' class='product-page-image productimage0' id='productimage0' title='img<?= $j ?>' /></div>
+<div class="product-card__img-nav">
+    <?php $imgClass = 'active';
+    foreach ($images as $image) :?>
+        <div class="product-card__small-img <?= $imgClass ?>">
+            <img src="<?= $image_path.'/'.$image ?>" />
+        </div>
+    <?php $imgClass = '';   endforeach;?>
+</div>
+<div class="product-card__img">
+    <div>
+        <?php $imgClass = 'active';
+            foreach ($images as $image) :?>
+                <div class="product-card__big-img <?= $imgClass ?>">
+                    <img src="<?= $image_path.'/'.$image ?>" />
                 </div>
-            </div><div class='iblok iconimg'  >
-<?php endif ?>
-    <div class="product-image-container-mini iblok <?= ($j == 0) ? "borderred" : "" ?>" >
-                <img src='<?= $image_path."/".$image ?>' alt='alt' class='product-page-image productimage<?= $j ?>' id='productimage<?= $j ?>' title='img<?= $j ?>' />
-            </div>
-<?php $j++;   endforeach;?>
+        <?php $imgClass = '';   endforeach;?>
     </div>
 </div>

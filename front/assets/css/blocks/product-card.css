@@ -78,8 +78,12 @@
   width: 100%;
   height: 100%;
 }
-.product-card__img {
+.product-card__img > div {
   position: relative;
+}
+.product-card__img > div::before {
+  content: '';
+  display: block;
   padding-top: 100%;
 }
 .product-card__big-img {
@@ -91,6 +95,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
+  display: flex;
 }
 .product-card__big-img.active {
   opacity: 1;
@@ -98,8 +103,8 @@
 }
 .product-card__big-img img {
   object-fit: contain;
-  top: 0;
-  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .product-card__options-item {
   margin-bottom: 30px;
