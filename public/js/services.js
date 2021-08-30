@@ -21,7 +21,7 @@ $(function () {
             method: 'post',
 //            contentType: false, // Not to set any content header
 //            processData: false, // Not to process data
-            data: data, // formData,
+            data: JSON.stringify(data), // formData,
             success: function (result, status, xhr) {
                 console.log('result = ', result, 'status = ', status);
             },
@@ -35,18 +35,30 @@ $(function () {
 //        var formData = new FormData();
 //        formData.append('phone', '9185356024');
 //        formData.append('code', '7777');
-        var data = {"OrderId": "000000540","ErrorCode": "0"};
+        var data = {    "TerminalKey": "1629956533317DEMO",
+    "OrderId": "000000540",
+    "Success": true,
+    "Status": "CONFIRMED",
+    "PaymentId": 699599295,
+    "ErrorCode": "0",
+    "Amount": 229900,
+    "CardId": 99866533,
+    "Pan": "430000******0777",
+    "ExpDate": "1122",
+    "Token": "08e3718b7790f24a2984d048526a8bfde97cb3de39c14af839d45d6d83eab5ed"};
         $.ajax({
             type: "POST",
             url: "/tinkoff/callback",
+            //processData: false,
+            contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            method: 'POST',
-            contentType: "application/json",
+            //contentType: "application/json",
 //            contentType: false, // Not to set any content header
 //            processData: false, // Not to process data
-            data: data ,  // formData,
+            data: JSON.stringify(data) , 
+           // complete: callback,// formData,
             success: function (result, status, xhr) {
-                console.log('result = ', result, 'status = ', status);
+                console.log('result = ', result, 'status = ', status /*, 'xhr = ', xhr */);
             },
             error: function (xhr, status, error) {
                 console.log('Test sending failed', xhr, status);
