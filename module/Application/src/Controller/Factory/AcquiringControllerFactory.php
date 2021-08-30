@@ -30,7 +30,7 @@ use Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 
 use Application\Model\Repository\UserRepository;
-use Application\Service\HtmlProviderService;
+//use Application\Service\HtmlProviderService;
 use Application\Service\ExternalCommunicationService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Controller\AcquiringController;
@@ -60,7 +60,7 @@ class AcquiringControllerFactory implements FactoryInterface
         //$entityManager = $container->get('doctrine.entitymanager.orm_default');
         $entityManager = $container->get('laminas.entity.manager');
         $config = $container->get('Config');
-        $htmlProvider = $container->get(HtmlProviderService::class);
+//        $htmlProvider = $container->get(HtmlProviderService::class);
         $externalCommunication = $container->get(ExternalCommunicationService::class);
         $acquiringCommunication = $container->get(AcquiringCommunicationService::class);
         $userRepository = $container->get(UserRepository::class);
@@ -77,7 +77,7 @@ class AcquiringControllerFactory implements FactoryInterface
         $sessionManager = $container->get(SessionManager::class);
         
         return new AcquiringController($test, $category, $provider, $store, $product, $filteredProduct/*, $brand*/, $colorRepository, $setting, $characteristic,
-                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $externalCommunication, $acquiringCommunication, $userRepository, $authService, $productCharacteristic,
+                $price, $stockBalance, $handBookProduct, $entityManager, $config, /*$htmlProvider,*/ $externalCommunication, $acquiringCommunication, $userRepository, $authService, $productCharacteristic,
                 $basketRepository/*, $sessionContainer*/, $sessionManager, $commonHelperFuncions);
     }
 

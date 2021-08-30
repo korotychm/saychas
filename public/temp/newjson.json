@@ -1,15 +1,2 @@
 
 
-{
-    "TerminalKey": "1629956533317DEMO",
-    "OrderId": "000000564",
-    "Success": true,
-    "Status": "CONFIRMED",
-    "PaymentId": 699599295,
-    "ErrorCode": "0",
-    "Amount": 229900,
-    "CardId": 99866533,
-    "Pan": "430000******0777",
-    "ExpDate": "1122",
-    "Token": "08e3718b7790f24a2984d048526a8bfde97cb3de39c14af839d45d6d83eab5ed"
-}

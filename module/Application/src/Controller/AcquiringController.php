@@ -247,9 +247,18 @@ class AcquiringController extends AbstractActionController
         $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
         if ($postData["ErrorCode"] == "0"){
             $order = ClientOrder::find(["order_id" => $postData["OrderId"]]); 
-            $order->setPaymentInfo();
+            $order->setPaymentInfo($jsonData);
             $order->persist(["order_id" => $postData["OrderId"]]);
-            $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
+            if (!empty($postData["CardId"])) {
+                if (!empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))){
+                   if ($userId = $clientOrder->getUserId()){
+                        $userPaycard = UserPaycard::findFirstOrDefault(['card_id' => $postData["CardId"], "user_id" => $userId]);
+                        $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time());
+                        $userPaycard->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);    
+                   }
+                }
+            }
+           $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
         }
             mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
             $response = new Response();
