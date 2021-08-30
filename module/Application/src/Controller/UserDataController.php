@@ -252,9 +252,9 @@ class UserDataController extends AbstractActionController
         //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
 
         $orderset = $this->externalCommunicationService->sendBasketData($content);
-         return new JsonModel($orderset['response']);
+        //return new JsonModel($orderset['response']);
         $orderId = $orderset['response']['order_id'];
-        return new JsonModel(["result"=>false, "orderId"=> $orderId ]);
+        //return new JsonModel(["result"=>false, "orderId"=> $orderId ]);
         $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
         if (!$orderCreate['result']){
