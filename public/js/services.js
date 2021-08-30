@@ -36,7 +36,7 @@ $(function () {
 //        formData.append('phone', '9185356024');
 //        formData.append('code', '7777');
         var data = {    "TerminalKey": "1629956533317DEMO",
-    "OrderId": "000000540",
+    "OrderId": "000000566",
     "Success": true,
     "Status": "CONFIRMED",
     "PaymentId": 699599295,
