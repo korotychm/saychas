@@ -247,7 +247,7 @@ class UserDataController extends AbstractActionController
     public function sendBasketDataAction()
     {
         $content = $this->getRequest()->getPost()->toArray();
-        return new JsonModel($content);
+        //return new JsonModel($content);
         $userId = $this->identity();
         //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
 

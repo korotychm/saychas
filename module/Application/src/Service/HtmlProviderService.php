@@ -669,12 +669,16 @@ class HtmlProviderService
         $j = 0;
         if (!empty($products)){
             while (list($p, $c) = each($products)) {
-
+                if ($c["count"] <= 0) {
+                    continue;
+                }
                 $product = $this->productRepository->find(['id' => $p]);
-                if (null == $product)
+                if (null == $product){
                     continue;
-                if (!$price = (int) $product->receivePriceObject()->getPrice())
+                }
+                if (!$price = (int) $product->receivePriceObject()->getPrice()){
                     continue;
+                }
                 $total += ($price * $c['count']);
                 $j += $c["count"];
                 if ($providerId = $product->getProviderId())
@@ -691,6 +695,7 @@ class HtmlProviderService
             $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
             $priceDelevery = $countDelevery * $param['mergePrice'] + ceil($countDelevery / $param['mergecount']) * $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery / $param['mergecount']);
+            $countDelevery=($countDelevery < 0)?0:$countDelevery;
         }
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;
