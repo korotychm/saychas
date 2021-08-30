@@ -121,5 +121,24 @@ class CommonHelperFunctionsService
         }
         return $return;
     }
+    public function getUserInfo($user)
+    {
+        if (null == $user) {
+            return [];
+        }
+        //$container = new Container(Resource::SESSION_NAMESPACE);
+        $return['id'] = $user->getId();
+        $return['userid'] = $user->getUserId();
+        $return['name'] = $user->getName();
+        $return['phone'] = $user->getPhone();
+        $return['email'] = $user->getEmail();
+        $userData = $user->getUserData();
+        $usdat = $userData->current();
+        if (null != $usdat) {
+            $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
+            $return['userGeodata'] = $usdat->getGeoData();
+        }
+        return $return;
+    }
  
 }

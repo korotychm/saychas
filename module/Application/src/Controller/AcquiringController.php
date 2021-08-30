@@ -33,9 +33,10 @@ use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
+use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\Basket;
 use Laminas\Json\Json;
-use Application\Service\HtmlProviderService;
+//use Application\Service\HtmlProviderService;
 use Application\Service\ExternalCommunicationService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Resource\Resource;
@@ -70,7 +71,7 @@ class AcquiringController extends AbstractActionController
     private $handBookRelatedProductRepository;
     private $entityManager;
     private $config;
-    private $htmlProvider;
+    //private $htmlProvider;
     private $externalCommunication;
     private $acquiringCommunication;
     private $userRepository;
@@ -89,7 +90,7 @@ class AcquiringController extends AbstractActionController
             CharacteristicRepositoryInterface $characteristicRepository,
             PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, HtmlProviderService $htmlProvider, ExternalCommunicationService $externalCommunication, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
+            $entityManager, $config, /*HtmlProviderService $htmlProvider,*/ ExternalCommunicationService $externalCommunication, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager,
             CommonHelperFunctionsService $commonHelperFuncions)
     {
@@ -108,7 +109,7 @@ class AcquiringController extends AbstractActionController
         $this->handBookRelatedProductRepository = $handBookProduct;
         $this->entityManager = $entityManager;
         $this->config = $config;
-        $this->htmlProvider = $htmlProvider;
+        //$this->htmlProvider = $htmlProvider;
         $this->externalCommunication = $externalCommunication;
         $this->acquiringCommunication = $acquiringCommunication;
         $this->userRepository = $userRepository;
@@ -122,6 +123,7 @@ class AcquiringController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
+        $this->entityManager->initRepository(UserPaycard::class);
         //$this->entityManager->initRepository(Basket::class);
     }
 
@@ -165,7 +167,7 @@ class AcquiringController extends AbstractActionController
         $delivery_price = (int)$basket_info['delivery_price'];
         $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
         $delivery_tax = (int)$delivery_params['deliveryTax'];
-        $userInfo = $this->htmlProvider->getUserInfo($this->userRepository->find(['id' => $userId]));
+        $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
         if (empty($userInfo ['phone'])){
              return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
         }
