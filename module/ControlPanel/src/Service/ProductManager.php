@@ -16,7 +16,7 @@ use Application\Model\Entity\Brand;
  *
  * @author alex
  */
-class ProductManager implements LoadableInterface
+class ProductManager //implements LoadableInterface
 {
 
     use Loadable;
