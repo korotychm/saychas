@@ -46,3 +46,8 @@ db.products.aggregate([{$lookup: {from: "prices", localField: "id", foreignField
 
 
 db.products.find({}, {"description":0}).forEach(function(myDoc){ myDoc.characteristics.forEach( function(d){ if(d.type == 4) { cursor = db.characteristics.find({"id": d.value}, {"id": 0} ).toArray(); undefined === cursor[0] ? v = 0 : printjson( cursor[0].title ) }else{printjson(d.value)}  } ) })
+
+
+/** find and update operations */
+db.products.updateOne({'id': '000000000001', 'characteristics.id': '000000008'}, {"$set": {"characteristics.$.value": 0.134} } )
+db.products.find({id: '000000000001', "characteristics.id": '000000008'}).pretty()

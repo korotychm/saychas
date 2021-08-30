@@ -153,7 +153,7 @@ $(function () {
                 error403(data.status);
             });
         } else if ('productsId' === ths.currentTarget.id) {
-            $.post('/control-panel/show-products', {post: {}}, function (data) {
+            $.post('/control-panel/show-products', {page_no: 1}, function (data) {
                 redirectToLogin(data);
             })
             .fail(function (data) {

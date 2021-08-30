@@ -116,9 +116,9 @@ return [
                         ],
                     ],
                     'show-products' => [
-                        'type' => Literal::class,
+                        'type' => Segment::class,
                         'options' => [
-                            'route' => '/show-products',
+                            'route' => '/show-products[/:page_no]',
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\IndexController::class,
                                 'action' => 'show-products',
