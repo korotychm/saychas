@@ -159,6 +159,7 @@ class AcquiringController extends AbstractActionController
            // "FailURL"=> $paramApi['fail_url'],     
             "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
           ];
+        return new JsonModel(["result" => true, "answer" => $param]);
         $order = ClientOrder::find(["order_id" => $orderId /*/ "status" => 1 /**/]); 
         if (empty($order)) {
             return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
@@ -205,9 +206,9 @@ class AcquiringController extends AbstractActionController
             //$this->
             $order->setPaymentInfo(tinkoffAnswer['answer']);
             $order->persist(["order_id" => $orderId, "status" => 1 ]);
-            return new JsonModel(["result" => true, "answer" =>$tinkoffAnswer['answer']]);
+            return new JsonModel(["result" => true, 'param' => $param,  "answer" =>$tinkoffAnswer['answer']]);
         }
-        return new JsonModel(["result" => false, "answer" => $this->acquiringCommunication->initTinkoff($param)]);
+        return new JsonModel(["result" => false, 'param' => $param, "answer" => $this->acquiringCommunication->initTinkoff($param)]);
     }
     
     
