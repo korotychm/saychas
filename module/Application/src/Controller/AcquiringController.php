@@ -253,16 +253,16 @@ class AcquiringController extends AbstractActionController
                     $order->setPaymentInfo($jsonData);
                     $order->persist(["order_id" => $postData["OrderId"]]);
             }        
-            if (!empty($postData["CardId"]) and !empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))){
+        /*    if (!empty($postData["CardId"]) and !empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))){
                    
                        $postData['user']=$userId = $clientOrder->getUserId();
                        $userPaycard = UserPaycard::findFirstOrDefault(['card_id' => $postData["CardId"], "user_id" => $userId]);
                        $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time());
                        $userPaycard->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);    
-            }
+            }*/
            $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
         }
-        //return new JsonModel($postData);
+        return new JsonModel($postData);
         mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
         $response = new Response();
         $response->setStatusCode(Response::STATUS_CODE_200)->setContent('OK');
