@@ -65,7 +65,7 @@ class UserDataController extends AbstractActionController
      * @var Application\Service\ExternalCommunicationService
      */
     private $externalCommunicationService;
-    
+
     /**
      * @var EntityManager
      */
@@ -77,7 +77,7 @@ class UserDataController extends AbstractActionController
      * @var Laminas\Log\Logger
      */
     private $logger;
-    
+
     /**
      * @var CommonHelperFunctions
      */
@@ -88,7 +88,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Constructor.
-     * 
+     *
      * @param UserRepository $userRepository
      * @param type $authService
      * @param type $externalCommunicationService
@@ -105,7 +105,7 @@ class UserDataController extends AbstractActionController
         $this->db = $db;
 //        $this->userAdapter = $userAdapter;
         $this->externalCommunicationService = $externalCommunicationService;
-        
+
         $this->entityManager = $entityManager;
 
         $this->commonHelperFuncions = $commonHelperFunctions;
@@ -113,7 +113,7 @@ class UserDataController extends AbstractActionController
         $this->logger = new Logger();
         $writer = new StreamWriter('php://output');
         $this->logger->addWriter($writer);
-        
+
         $this->entityManager->initRepository(ClientOrder::class);
     }
 
@@ -145,7 +145,7 @@ class UserDataController extends AbstractActionController
         }
         $this->getResponse()->setStatusCode(301);
         return $this->redirect()->toRoute('home');
-       
+
     }
 
     /**
@@ -205,7 +205,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Send sms
-     * 
+     *
      * @param int $phone
      * @return array
      */
@@ -241,17 +241,20 @@ class UserDataController extends AbstractActionController
 
     /**
      * Send Basket Data Action
-     * 
+     *
      * @return JsonModel
      */
     public function sendBasketDataAction()
     {
         $content = $this->getRequest()->getPost()->toArray();
+        //return new JsonModel($content);
         $userId = $this->identity();
         //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
-        
+
         $orderset = $this->externalCommunicationService->sendBasketData($content);
+        //return new JsonModel($orderset['response']);
         $orderId = $orderset['response']['order_id'];
+        //return new JsonModel(["result"=>false, "orderId"=> $orderId ]);
         $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
         if (!$orderCreate['result']){
@@ -313,7 +316,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Get client info.
-     * 
+     *
      * @return JsonModel
      */
     public function getClientInfoAction()
@@ -326,7 +329,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Update client info.
-     * 
+     *
      * @return JsonModel
      */
     public function updateClientInfoAction()
@@ -339,7 +342,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Change client password
-     * 
+     *
      * @return JsonModel
      */
     public function changeClientPasswordAction()
@@ -351,7 +354,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Login client
-     * 
+     *
      * @return JsonModel
      */
     public function clientLoginAction()
@@ -362,8 +365,8 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * @author plusweb 
-     * 
+     * @author plusweb
+     *
      * @return JsonModel
      */
     public function userAuthModalAction()
@@ -371,12 +374,8 @@ class UserDataController extends AbstractActionController
 
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userAutSession = ($container->userAutSession)?$container->userAutSession:[];
-        $CodeBlock = false;
-        $passForgetBlock = false;
-        $registerPossible = false;
+        $CodeBlock = $passForgetBlock =  $registerPossible = false;
         $error=[];
-
-
         $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
 
@@ -438,7 +437,6 @@ class UserDataController extends AbstractActionController
                             } else {
                                 $userAutSession['smscode'] = $userSmsCode;
                             }
-
                             //if (isset($post->forgetPassInput)) {
                             if (!$forgetPassInput or!$this->testPassw($forgetPassInput)) {
                                 $registerPossible = false;
@@ -462,7 +460,7 @@ class UserDataController extends AbstractActionController
                                 $response = $this->externalCommunicationService->sendCredentials($req);
                                 if ($response['result']) {
                                     $container->userIdentity = $userId;
-                                   
+
                                     // получение магазинов
                                     if (!empty($userGeodata)) {
                                          $this->commonHelperFuncions->updateLegalStores($userGeodata);
@@ -479,9 +477,9 @@ class UserDataController extends AbstractActionController
                     } else {
                         $passBlock = true;
                         $title = Resource::USER_LABLE_HELLO . $user->getName();
-                        
+
                         if (!empty($post->userPass)) {
-                            //$print_r = 
+                            //$print_r =
                             $response = $this->externalCommunicationService->clientLogin([
                                 "phone" => StringHelper::phoneToNum($return['phone']),
                                 "password" => $post->userPass,
@@ -490,7 +488,7 @@ class UserDataController extends AbstractActionController
                                 $error["password"] = $response["errorDescription"];
                             } else {
                                 $container->userIdentity = $userId;
-                                
+
                                 // получение магазинов
                                 if (!empty($userGeodata)) {
                                     $print_r = $this->commonHelperFuncions->updateLegalStores($userGeodata);
@@ -509,9 +507,9 @@ class UserDataController extends AbstractActionController
                     $buttonLable = Resource::BUTTON_LABLE_REGISTER;
                     $userPhoneIdentity = $container->userPhoneIdentity;
                     $codeExist = $userPhoneIdentity['code'];
-                    
+
                     if (!$codeExist) {
-                        //$print_r = 
+                        //$print_r =
                         $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                         if (!$codeSendAnswer['result']) {
                             $error['sms'] = Resource::ERROR_SEND_SMS_MESSAGE;
@@ -550,15 +548,15 @@ class UserDataController extends AbstractActionController
                         }/* */
                         if ($registerPossible) {
 
-                            //$error["1c"] = "!!!";  
-                            //$print_r = 
+                            //$error["1c"] = "!!!";
+                            //$print_r =
                             $paramsFor1c = [
                                 'name' => $userName,
                                 'phone' => StringHelper::phoneToNum($return['phone']),
                                 'email' => $userMail,
                             ];
 
-                            //$print_r =  $user_Id = $container->userIdentity;  
+                            //$print_r =  $user_Id = $container->userIdentity;
                             $answer = $this->externalCommunicationService->setClientInfo($paramsFor1c);
 
                             if (!$answer["result"]) {
@@ -567,13 +565,13 @@ class UserDataController extends AbstractActionController
 
                                 $error["1c"] = $answer['id'] ;
                                 $userId = $container->userIdentity;
-                                //$print_r = 
+                                //$print_r =
                                 $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
                                 $newUser->setId($container->userIdentity);
                                 $newUser->setName($userName);
                                 $newUser->setEmail($userMail);
                                 $newUser->setUserId($answer['id']);
-                                //$print_r = 
+                                //$print_r =
                                 $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
                                 $this->userRepository->persist($newUser, ['id' => $userId]);
                                  if (!empty($userGeodata)) {

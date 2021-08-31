@@ -16,7 +16,7 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+//use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
@@ -33,9 +33,11 @@ use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
+use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\Basket;
 use Laminas\Json\Json;
-use Application\Service\HtmlProviderService;
+//use Application\Service\HtmlProviderService;
+use Application\Service\ExternalCommunicationService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Resource\Resource;
 use Laminas\Session\Container; // as SessionContainer;
@@ -61,7 +63,7 @@ class AcquiringController extends AbstractActionController
     private $storeRepository;
     private $productRepository;
     private $filteredProductRepository;
-    private $brandRepository;
+    //private $brandRepository;
     private $settingRepository;
     private $characteristicRepository;
     private $priceRepository;
@@ -69,7 +71,8 @@ class AcquiringController extends AbstractActionController
     private $handBookRelatedProductRepository;
     private $entityManager;
     private $config;
-    private $htmlProvider;
+    //private $htmlProvider;
+    private $externalCommunication;
     private $acquiringCommunication;
     private $userRepository;
     private $authService;
@@ -83,11 +86,11 @@ class AcquiringController extends AbstractActionController
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
             ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
-            BrandRepositoryInterface $brandRepository, ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
+            /*BrandRepositoryInterface $brandRepository,*/ ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
             CharacteristicRepositoryInterface $characteristicRepository,
             PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, HtmlProviderService $htmlProvider, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
+            $entityManager, $config, /*HtmlProviderService $htmlProvider,*/ ExternalCommunicationService $externalCommunication, AcquiringCommunicationService $acquiringCommunication, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager,
             CommonHelperFunctionsService $commonHelperFuncions)
     {
@@ -97,7 +100,7 @@ class AcquiringController extends AbstractActionController
         $this->storeRepository = $storeRepository;
         $this->productRepository = $productRepository;
         $this->filteredProductRepository = $filteredProductRepository;
-        $this->brandRepository = $brandRepository;
+        //$this->brandRepository = $brandRepository;
         $this->colorRepository = $colorRepository;
         $this->settingRepository = $settingRepository;
         $this->characteristicRepository = $characteristicRepository;
@@ -106,7 +109,8 @@ class AcquiringController extends AbstractActionController
         $this->handBookRelatedProductRepository = $handBookProduct;
         $this->entityManager = $entityManager;
         $this->config = $config;
-        $this->htmlProvider = $htmlProvider;
+        //$this->htmlProvider = $htmlProvider;
+        $this->externalCommunication = $externalCommunication;
         $this->acquiringCommunication = $acquiringCommunication;
         $this->userRepository = $userRepository;
         $this->authService = $authService;
@@ -119,6 +123,8 @@ class AcquiringController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
+        $this->entityManager->initRepository(UserPaycard::class);
+        //$this->entityManager->initRepository(Basket::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -142,29 +148,27 @@ class AcquiringController extends AbstractActionController
         //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
         
         $paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
-        
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $orderId = $this->params()->fromRoute('order', '');
-        
         $param = [
-            'OrderId' => $orderId.time(),
-           // "RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
-            "SuccessURL"  =>  $paramApi['success_url'],     
-            "FailURL"=> $paramApi['fail_url'],     
+            'OrderId' => $orderId,
+            //"RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
+            "RedirectDueDate" => date('Y-m-d\TH:i:s+03:00', (time() + $paramApi['time_order_live'] )) ,
+           // "SuccessURL"  =>  $paramApi['success_url'],     
+           // "FailURL"=> $paramApi['fail_url'],     
             "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
           ];
-        //$param['OrderId'] = ;
-        $order = ClientOrder::find(["order_id" => $orderId]); 
-        
+        //return new JsonModel(["result" => false, "answer" => $param]);
+        $order = ClientOrder::find(["order_id" => $orderId /*/ "status" => 1 /**/]); 
         if (empty($order)) {
-            return new JsonModel(["result" => false, "message" => "error: order ".$orderId." not found" ]);
+            return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
         $delivery_price = (int)$basket_info['delivery_price'];
         $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
         $delivery_tax = (int)$delivery_params['deliveryTax'];
-        $userInfo = $this->htmlProvider->getUserInfo($this->userRepository->find(['id' => $userId]));
+        $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
         if (empty($userInfo ['phone'])){
              return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
         }
@@ -175,14 +179,13 @@ class AcquiringController extends AbstractActionController
         }    
         $param['Receipt']['EmailCompany'] = $paramApi['company_email'];
         $param['Receipt']['Taxation'] = $paramApi['company_taxation'];
-            
-        $basket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
+        $orderBasket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
         
-        if (empty($basket)) {
-            return new JsonModel(["result" => false, "message" => "error: products of order not found " ]);
+        if (empty($orderBasket)) {
+            return new JsonModel(["result" => false, "message" => "error: products of order not found ",["where" => ['user_id' => $userId, 'order_id' => $orderId]] ]);
         }
         
-        $orderItems = $this->acquiringCommunication->getBasketData($basket);
+        $orderItems = $this->acquiringCommunication->getOrderItems($orderBasket);
         $param['Receipt']['Items'] =  $orderItems['Items'];
         $param['Amount'] = $orderItems['Amount'];
         $vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
@@ -197,9 +200,17 @@ class AcquiringController extends AbstractActionController
             ];
             $param['Amount']+=$delivery_price;
         }
-        return new JsonModel( $param);
-        return new JsonModel( $this->acquiringCommunication->initTinkoff($param));
+        //return new JsonModel($param);
+        $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
+        if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
+            //$this->
+            $order->setPaymentInfo(tinkoffAnswer['answer']);
+            $order->persist(["order_id" => $orderId, "status" => 1 ]);
+            return new JsonModel(["result" => true, 'param' => $param,  "answer" =>$tinkoffAnswer['answer']]);
+        }
+        return new JsonModel(["result" => false, 'param' => $param, "answer" => $tinkoffAnswer]);
     }
+    
     
     public function tinkoffErrorAction()
     {
@@ -211,6 +222,51 @@ class AcquiringController extends AbstractActionController
     {
         $param=["type"=>"Success"];
         return new JsonModel( $param);
+    }
+    
+    /*
+     * get post json
+     * @return response
+     */
+     
+    public function tinkoffCallbackAction()
+    {
+    /*
+    {    
+     "TerminalKey": "1629956533317DEMO",
+    "OrderId": "000000564",
+    "Success": true,
+    "Status": "CONFIRMED",
+    "PaymentId": 699599295,
+    "ErrorCode": "0",
+    "Amount": 229900,
+    "CardId": 99866533,
+    "Pan": "430000******0777",
+    "ExpDate": "1122",
+    "Token": "08e3718b7790f24a2984d048526a8bfde97cb3de39c14af839d45d6d83eab5ed"
+     }*/
+        $jsonData = file_get_contents('php://input');    
+        $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
+        if ($postData["ErrorCode"] == "0"){
+            $order = ClientOrder::find(["order_id" => $postData["OrderId"]]); 
+            if (!empty($order)){
+                    $order->setPaymentInfo($jsonData);
+                    $order->persist(["order_id" => $postData["OrderId"]]);
+            }        
+        /*    if (!empty($postData["CardId"]) and !empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))){
+                   
+                       $postData['user']=$userId = $clientOrder->getUserId();
+                       $userPaycard = UserPaycard::findFirstOrDefault(['card_id' => $postData["CardId"], "user_id" => $userId]);
+                       $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time());
+                       $userPaycard->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);    
+            }*/
+           $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
+        }
+        return new JsonModel($postData);
+        mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
+        $response = new Response();
+        $response->setStatusCode(Response::STATUS_CODE_200)->setContent('OK');
+        return $response;
     }
   
 }

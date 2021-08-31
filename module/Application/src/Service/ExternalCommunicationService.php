@@ -304,6 +304,12 @@ class ExternalCommunicationService
         $url = $this->config['parameters']['1c_request_links']['update_client_info'];
         return $this->sendCurlRequest($url, $content);
     }
+    
+    public function sendOrderPaymentInfo (array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['order_payment'];
+        return $this->sendCurlRequest($url, $content);
+    }
 
     /**
      * Login client

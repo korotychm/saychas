@@ -980,6 +980,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-callback'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/callback',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffCallback',
+                    ],
+                ],
+            ],
             'tinkoff-redirect-success'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -1120,6 +1130,9 @@ return [
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
             \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Model\Entity\UserPaycard::class => \Application\Model\Factory\UserPaycardRepositoryFactory::class,
+            \Application\Model\Entity\Color::class => \Application\Model\Factory\ColorRepositoryFactory::class,
+            \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
@@ -1164,8 +1177,10 @@ return [
             'password' => 'w48Es4562',
         ],
         'TinkoffMerchantAPI'=> [
-            'terminal' => '1629956533317DEMO',  
-            'token' => '9mfca0gpenpfi4rb',   
+            'terminal' => '1629956533317DEMO',  //наш
+            //'terminal' => '1629729309127DEMO',  //мишин
+            'token' => '9mfca0gpenpfi4rb',   //наш 
+            //'token' => 'z62eq0aa900wvaku',   // мишин
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
@@ -1185,6 +1200,7 @@ return [
             'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
             //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
+            'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
             
         ],
         'image_path' => [

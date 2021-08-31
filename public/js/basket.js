@@ -22,7 +22,7 @@ $(document).on('click','.cart__product-quantity button',function(e){
   $('.cart__checkbox input[data-product="' + productId + '"]').val(input.val());
   calculateBasketItem(productId);
   loadPayInfo();
-})
+});
 // Подсчет количества товаров в корзине
 function calculateProductTotal() {
     let total = 0;
@@ -147,6 +147,34 @@ function calculateBasketItem(productId)
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log("Ошибка соединения " + xhr.status + "" + "\r\n " + xhr.status + " " + thrownError);
+        }
+    });
+}
+
+function orderPayTinkoff(orderId)
+{
+    var apiUrl = "/tinkoff/payment/" + orderId
+    
+    $.ajax({
+        beforeSend: function () {
+            showServicePopupWindow("Оплата заказа", "Готовим к оплате заказ " + orderId, "", true);
+        },
+        url: apiUrl,
+        cache: false,
+        //type: 'POST',
+        //dataType: 'json',
+        //data: {"product": productId, "count": count},
+        success: function (data) {
+            if(data.result) {
+                location = data.answer.PaymentURL;
+            }
+            else {
+                showServicePopupWindow("Ошибка", "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
+            }
+                
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showAjaxErrorPopupWindow(xhr.status, thrownError);
         }
     });
 }
@@ -328,7 +356,7 @@ function waitingOrderStatusVerification(orderId, idInterval = false) {
                 showServicePopupWindow("Ожидаем изменения статуса", "<b>Текущий статус: " + data.order_status + "</b><hr>" + date + "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
 
             } else {
-                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="return false;">Оплатить заказ</div>');
+                showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="orderPayTinkoff(\'' + orderId +'\')">Оплатить заказ</div>');
                 if (idInterval != false) {
                     clearInterval(idInterval);
                 }

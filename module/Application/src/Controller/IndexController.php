@@ -32,6 +32,7 @@ use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
+use Application\Model\Entity\UserPaycard;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
@@ -113,6 +114,7 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
+        $this->entityManager->initRepository(UserPaycard::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -262,6 +264,18 @@ class IndexController extends AbstractActionController
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+        
+//        $userPaycard = new UserPaycard();
+//        $userPaycard->setUserId('000001');
+//        $userPaycard->setCardId('000000001');
+//        $userPaycard->setPan('pan-hujpan');
+//        $userPaycard->setTime(time());
+//        $userPaycard->persist(['card_id'=>'000000001']);
+//        
+//        $up = UserPaycard::find(['card_id' => '000000001']);
+//        
+//        print_r($up);
+        
         
 //        $container = new Container();
 //        print_r($container->banzaii);
