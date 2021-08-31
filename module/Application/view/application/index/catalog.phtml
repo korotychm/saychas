@@ -25,6 +25,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
               <div class="product__label">Акция</div>
               <a class="product__img" :href="'/product/' + name">
                 <img :src="'/images/product/' + product.image" />
+                <img :src="<?= $this->imagePath('product').'/' ?> + product.image" />
               </a>
               <a class="product__title" href="#">{{ product.title }}</a>
               <div class="product__reviews">
