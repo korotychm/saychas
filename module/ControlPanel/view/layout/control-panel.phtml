@@ -125,10 +125,10 @@
           </nav>
         </aside>
         <main class="main" id="controlPanelContentId">
-          {{ message }}
           <div>
               <span><?= null == $currentUser ? '' : $currentUser->getLogin() ?></span>
           </div>
+          <router-view></router-view>
         </main>
       </div>
         <script src="//cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
