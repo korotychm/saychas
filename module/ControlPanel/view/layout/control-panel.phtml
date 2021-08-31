@@ -124,6 +124,7 @@
           </nav>
         </aside>
         <main class="main" id="controlPanelContentId">
+          {{ message }}
           <div>
               <span><?= null == $currentUser ? '' : $currentUser->getLogin() ?></span>
           </div>
@@ -132,5 +133,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
         <script src="/js/cpanel.min.js"></script>
+        <script src="/js/cp.js"></script>
     </body>
 </html>
