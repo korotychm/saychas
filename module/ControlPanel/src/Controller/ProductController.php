@@ -91,7 +91,8 @@ class ProductController extends AbstractActionController
         $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
         //$this->productManager->findTest();
         
-        // json_encode($cursor, JSON_UNESCAPED_UNICODE)
+        print_r(json_encode($cursor, JSON_UNESCAPED_UNICODE));
+        exit;
         
 //        return new JsonModel(['data' => true, 'http_code' => $answer['http_code']]);
         $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
