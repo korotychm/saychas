@@ -262,7 +262,7 @@ class AcquiringController extends AbstractActionController
             } /**/
            $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
         }
-        return new JsonModel($postData);
+       // return new JsonModel($postData);
         mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
         $response = new Response();
         $response->setStatusCode(Response::STATUS_CODE_200)->setContent('OK');
