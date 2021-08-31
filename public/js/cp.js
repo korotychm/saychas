@@ -13,7 +13,7 @@ const Products = {
         Qs.stringify({
           categoryId : '000000006'
         })).then(response => (
-          console.log(response.data);
+          console.log(response.data)
         ));
   }
 }
