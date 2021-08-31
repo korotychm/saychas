@@ -3,16 +3,18 @@ const Analytics = { template: '<header class="header"><h1 class="header__heading
 const Products = {
   data: function () {
     return {
-      heading: 'Мои товары'
+      heading: 'Мои товары',
+      page: 1
     }
   },
   template: '<header class="header"><h1 class="header__heading"><span>{{heading}}</span></h1><div class="header__user"><div class="header__user-name"><h2>Сергей Заказчиков</h2><p>Администратор</p></div><div class="header__user-avatar">С</div></div></header>',
   created: function(){
     axios
-      .post('/ajax-get-category-filters',
+      .post('/control-panel/show-products',
         Qs.stringify({
-          categoryId : '000000006'
-        })).then(response => (
+          page : this.page
+        }))
+        .then(response => (
           console.log(response.data)
         ));
   }
