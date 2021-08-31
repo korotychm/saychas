@@ -97,6 +97,7 @@ class ProductManager implements LoadableInterface
                         'color' => 1,
                         'country' => 1,
                         'characteristics' => 1, // ['id' => 1, 'type' => 1],
+                        'images' => 1,
                         '_id' => 0
                     ],
                 ]
