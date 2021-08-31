@@ -52,11 +52,6 @@ const router = new VueRouter({
 
 const cp = new Vue({
   router,
-  computed: {
-    getH1() {
-      return this.$route.meta.h1;
-    }
-  },
   mounted: function(){
     router.replace('/analytics');
   }
