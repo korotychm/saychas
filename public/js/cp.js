@@ -39,7 +39,8 @@ const routes = [
     name: 'products',
     path: '/products',
     meta: {
-      h1: 'Мои товары'
+      h1: 'Мои товары',
+      back_route: '/analytics'
     },
     component: Products
   }
