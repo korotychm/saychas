@@ -165,7 +165,8 @@ class AcquiringController extends AbstractActionController
             return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
-        $delivery_price = (int)$basket_info['delivery_price'];
+        //$delivery_price = (int)$basket_info['delivery_price'];
+        $defaultCard = $basket_info['paycard'];
         $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
         $delivery_tax = (int)$delivery_params['deliveryTax'];
         $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
@@ -174,6 +175,7 @@ class AcquiringController extends AbstractActionController
         }
         $param['DATA']['CustomerKey'] = $param['CustomerKey'] = $userInfo ['userid'];
         $param['DATA']['Phone'] =  $param['Receipt']['Phone'] =  "+".$userInfo['phone'];
+        $param['DATA']['DefaultCard'] = $defaultCard;
         if($userInfo['email']){
             $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];
         }    

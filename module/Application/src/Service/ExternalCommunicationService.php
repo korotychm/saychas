@@ -102,7 +102,8 @@ class ExternalCommunicationService
           $content['userGeoLocation'] = []; */
         //return $content;
         
-        $return['basketinfo']['username'] = $content['username'];
+        //$return['basketinfo']['username'] = $content['username'];
+        $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
         $return['basketinfo']['delivery_price'] = $content['delivery_price'];
         $return['products'] = $productupdate;
         $return['response'] = $this->sendCurlRequest($url, $content);

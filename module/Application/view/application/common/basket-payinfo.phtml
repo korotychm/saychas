@@ -65,6 +65,7 @@
           <div><?=($countSelfdelevery * $priceSelfdelevery) ?> ₽</div>
       </div>
     <?php endif; ?>
+    <input type="hidden" name ="delivery_price" value="<?=$priceDelevery?>" />
 </div>
 <?php if(!$payEnable):?>
   <div class="overcoverlocal"></div>

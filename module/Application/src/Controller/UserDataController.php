@@ -19,12 +19,17 @@ use Laminas\Session\Container; // as SessionContainer;
 use Application\Service\ExternalCommunicationService;
 use Application\Model\Entity\ClientOrder;
 use ControlPanel\Service\EntityManager;
+//use Application\Model\RepositoryInterface\SettingRepositoryInterface;
+use Application\Model\Entity\Setting;
 use Laminas\View\Model\JsonModel;
 use Laminas\Http\Response;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Sql\Sql;
+use Laminas\Json\Json;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+
 
 //use Laminas\Session\SessionManager;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -115,6 +120,7 @@ class UserDataController extends AbstractActionController
         $this->logger->addWriter($writer);
 
         $this->entityManager->initRepository(ClientOrder::class);
+        $this->entityManager->initRepository(Setting::class);
     }
 
     /**
@@ -249,9 +255,10 @@ class UserDataController extends AbstractActionController
         $content = $this->getRequest()->getPost()->toArray();
         //return new JsonModel($content);
         $userId = $this->identity();
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
         //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
 
-        $orderset = $this->externalCommunicationService->sendBasketData($content);
+        $orderset = $this->externalCommunicationService->sendBasketData($content, $param);
         if (!$orderset['response']['result']){
             return new JsonModel(["result"=>false, "description" => $orderset['response']['errorDescription']]);
         }
