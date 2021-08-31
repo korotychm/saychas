@@ -252,8 +252,8 @@ class UserDataController extends AbstractActionController
         //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
 
         $orderset = $this->externalCommunicationService->sendBasketData($content);
-        if (!$orderser['result']){
-            return new JsonModel(["result"=>false, "description" => $orderset]);
+        if (!$orderset['response']['result']){
+            return new JsonModel(["result"=>false, "description" => $orderset['response'] ]);
         }
         //return new JsonModel($orderset['response']);
         $orderId = $orderset['response']['order_id'];
