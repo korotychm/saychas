@@ -13,7 +13,8 @@ const Products = {
       page_no: 1,
       rows_per_page: 2,
       products: {},
-      pages: 1
+      pages: 1,
+      imgPath: productImgPath
     }
   },
   template:
@@ -29,7 +30,7 @@ const Products = {
         <div class="tbody">
             <div v-for="product in products" class="tr">
                 <div class="td products__img">
-                  <img :src="(product.images.length) ? (productImgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
+                  <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                 </div>
                 <div class="td products__title"><a href="/edit-product.html">{{ product.title }}</a></div>
                 <div class="td products__category">
