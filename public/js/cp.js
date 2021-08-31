@@ -40,7 +40,7 @@ const Products = {
         </div>
       </div>
       <div class="pagination">
-        <a v-for="index in pages" class="active" :class="active : (index == page_no)" @click="loadPage(index)">{{ index }}</a>
+        <a v-for="index in pages" class="active" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
       </div>
     </div>`,
   methods: {
@@ -52,6 +52,7 @@ const Products = {
             rows_per_page : this.rows_per_page
           }))
           .then(response => (
+            console.log(response.data),
             this.pages = response.data.limits.total,
             this.products = response.data.body
           ));
