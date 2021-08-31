@@ -40,7 +40,7 @@ const Products = {
         </div>
       </div>
       <div class="pagination">
-        <a v-for="index in pages" class="active" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
+        <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
       </div>
     </div>`,
   methods: {
@@ -58,7 +58,7 @@ const Products = {
     },
     loadPage(index) {
       this.page_no = index;
-      getProducts();
+      this.getProducts();
     }
   },
   created: function(){
