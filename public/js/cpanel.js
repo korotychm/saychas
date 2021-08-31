@@ -1,5 +1,5 @@
 $(function () {
-    
+
     /** calendar loaded; lets add some event handlers */
 //    $(document).on('calendarLoaded', function(e, data){
 //        $('#calendar-left').unbind();
@@ -69,7 +69,7 @@ $(function () {
             console.log('d.status = ', d.status);
         });
     };
-    var panel = $('#controlPanelMenu li a');
+    var panel = $('#controlPanelMenu .sidebar__nav a');
     panel.unbind();
 
     panel.click(function (ths) {
@@ -94,7 +94,7 @@ $(function () {
             });
         } else if('accountManagementId' === ths.currentTarget.id) {
             $.post('/control-panel/account-management', {post: {}}, function (data) {
-                redirectToLogin(data);                
+                redirectToLogin(data);
             })
             .fail(function (data) {
 //                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
@@ -138,7 +138,7 @@ $(function () {
             });
         }else if('actionAndDiscountId' === ths.currentTarget.id) {
             $.post('/control-panel/action-and-discount', {post: {}}, function (data) {
-                redirectToLogin(data);                
+                redirectToLogin(data);
             })
             .fail(function (data) {
 //                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
