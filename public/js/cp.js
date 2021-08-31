@@ -2,7 +2,10 @@
 const Foo = { template: '<div>foo</div>' }
 
 const routes = [
-  { path: '/control-panel/foo', component: Foo }
+  {
+    name: 'analytics',
+    path: '/control-panel/analytics',
+    component: Foo }
 ]
 
 const router = new VueRouter({
@@ -13,6 +16,6 @@ const router = new VueRouter({
 const app = new Vue({
   router,
   mounted: function(){
-    router.replace('/control-panel/foo');
+    router.replace('/control-panel/analytics');
   }
 }).$mount('#cp')
