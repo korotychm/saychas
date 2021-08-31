@@ -12,20 +12,39 @@ const Products = {
     return {
       heading: 'Мои товары',
       page_no: 1,
-      rows_per_page: 2
+      rows_per_page: 2,
+      products: {},
+      pages: 1
     }
   },
-  template: '<div><ProductsFilters></ProductsFilters></div>',
+  template:
+    `<div>
+      <ProductsFilters></ProductsFilters>
+      <div class="products__list">
+        <div class="thead">
+          <div class="td"></div>
+          <div class="td">Наименование</div>
+          <div class="td">Категория</div>
+          <div class="td">Бренд</div>
+        </div>
+      </div>
+    </div>`,
+  methods: {
+    getProducts() {
+      axios
+        .post('/control-panel/show-products',
+          Qs.stringify({
+            page_no : this.page_no,
+            rows_per_page : this.rows_per_page
+          }))
+          .then(response => (
+            this.pages = response.data.limits.total,
+            this.products = response.data.body
+          ));
+    }
+  },
   created: function(){
-    axios
-      .post('/control-panel/show-products',
-        Qs.stringify({
-          page_no : this.page_no,
-          rows_per_page : this.rows_per_page
-        }))
-        .then(response => (
-          console.log(response.data)
-        ));
+    getProducts();
   }
 }
 
