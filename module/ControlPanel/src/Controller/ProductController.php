@@ -90,6 +90,10 @@ class ProductController extends AbstractActionController
             'provider_id' => $identity['provider_id'],
         ];
         $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
+//        echo '<pre>';
+//        print_r($cursor);
+//        echo '</pre>';
+//        exit;
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
     }
     

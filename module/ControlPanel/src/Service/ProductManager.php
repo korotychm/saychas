@@ -81,25 +81,25 @@ class ProductManager implements LoadableInterface
             $limits = $this->calcLimits($params['pageNo']);
             $collection = $this->db->{$this->collectionName};
             $cursor = $collection->find
-                    (
-                    $params['where'],
-                    [
-                        'skip' => $limits['min'] - 1,
-                        'limit' => $this->pageSize,
-                        'projection' => [
-                            'id' => 1,
-                            'title' => 1,
-                            'category_id' => 1,
-                            'brand_id' => 1,
-                            'description' => 1,
-                            'vendor_code' => 1,
-                            'provider_id' => 1,
-                            'color' => 1,
-                            'country' => 1,
-                            'characteristics' => 1, // ['id' => 1, 'type' => 1],
-                            '_id' => 0
-                        ],
-                    ]
+            (
+                $params['where'],
+                [
+                    'skip' => $limits['min'] - 1,
+                    'limit' => $this->pageSize,
+                    'projection' => [
+                        'id' => 1,
+                        'title' => 1,
+                        'category_id' => 1,
+                        'brand_id' => 1,
+                        'description' => 1,
+                        'vendor_code' => 1,
+                        'provider_id' => 1,
+                        'color' => 1,
+                        'country' => 1,
+                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
+                        '_id' => 0
+                    ],
+                ]
             );
             $result['body'] = $cursor->toArray();
             $result['limits'] = $limits;
@@ -111,39 +111,51 @@ class ProductManager implements LoadableInterface
     public function findDocuments($params)
     {
         $cursor = $this->findAll($params);
-        foreach ($cursor as &$c) {
-            if (empty($c['category_id'])) {
-                continue;
-            }
-            //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
-            $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
-            $c['category_name'] = $category->getTitle();
-            if (empty($c['brand_id'])) {
-                continue;
-            }
-            $brand = Brand::find(['id' => $c['brand_id']]);
-            $c['brand_name'] = $brand->getTitle();
-
-            if (empty($c['country'])) {
-                continue;
+        foreach ($cursor['body'] as &$c) {
+//            if (empty($c['category_id'])) {
+//                continue;
+//            }
+            if(!empty($c['category_id'])) {
+                //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
+                $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
+                $c['category_name'] = $category->getTitle();
             }
 
-            $country = Country::find(['id' => $c['country']]);
-            $c['country_name'] = $country->getTitle();
-
-            if (empty($c['color'])) {
-                continue;
-            }
-
-            $color = Color::find(['id' => $c['color']]);
-            $c['color_name'] = $color->getTitle();
+//            if (empty($c['brand_id'])) {
+//                continue;
+//            }
             
-            if(empty($c['id'])) {
-                continue;
+            if(!empty($c['brand_id'])) {
+                $brand = Brand::find(['id' => $c['brand_id']]);
+                $c['brand_name'] = $brand->getTitle();
+            }
+
+//            if (empty($c['country'])) {
+//                continue;
+//            }
+
+            if(!empty($c['country'])) {
+                $country = Country::find(['id' => $c['country']]);
+                $c['country_name'] = $country->getTitle();
+            }
+
+//            if (empty($c['color'])) {
+//                continue;
+//            }
+
+            if(!empty($c['color'])) {
+                $color = Color::find(['id' => $c['color']]);
+                $c['color_name'] = $color->getTitle();
             }
             
-            $price = Price::find([ 'product_id' => $c['id'] ]);
-            $c['price'] = $price->getPrice();
+//            if(empty($c['id'])) {
+//                continue;
+//            }
+
+            if(!empty($c['id'])) {
+                $price = Price::find([ 'product_id' => $c['id'] ]);
+                $c['price'] = $price->getPrice();
+            }
             
         }
 
