@@ -78,25 +78,19 @@ class ProductController extends AbstractActionController
         //$pageNo = $this->params()->fromRoute('page_no', '1');
         $post = $this->getRequest()->getPost()->toArray();
         $pageNo = $post['page_no'];
+        $rowsPerPage = $post['rows_per_page'];
         
         $this->assertLoggedIn();
         $identity = $this->authService->getIdentity();
         $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
         $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
         $answer = $this->productManager->loadAll($url, $credentials);
-        $this->productManager->setPageSize(self::PRODUCTS_PER_PAGE);
+        $this->productManager->setPageSize( !empty($rowsPerPage) ? $rowsPerPage : self::PRODUCTS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
         $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
-        //$this->productManager->findTest();
-        
-        print_r(json_encode($cursor, JSON_UNESCAPED_UNICODE));
-        exit;
-        
-//        return new JsonModel(['data' => true, 'http_code' => $answer['http_code']]);
-        $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
-        return $view->setTerminal(true);
+        return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
     }
     
     private function canUpdateProduct($params)
