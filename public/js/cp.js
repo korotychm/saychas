@@ -51,7 +51,7 @@ const cp = new Vue({
   computed: {
     getH1() {
       console.log(this.$route);
-      return this.$route.currentRoute.title;
+      return this.$route.title;
     }
   },
   mounted: function(){
