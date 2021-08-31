@@ -112,16 +112,20 @@ class ProductManager implements LoadableInterface
     public function findDocuments($params)
     {
         $cursor = $this->findAll($params);
+        $categories = [];
+        $brands = [];
         foreach ($cursor['body'] as &$c) {
             if(!empty($c['category_id'])) {
                 //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
                 $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
                 $c['category_name'] = $category->getTitle();
+                $categories[] = [$c['category_id'], $c['category_name'], ];
             }
 
             if(!empty($c['brand_id'])) {
                 $brand = Brand::find(['id' => $c['brand_id']]);
                 $c['brand_name'] = $brand->getTitle();
+                $brands[] = [$c['brand_id'], $c['brand_name'],];
             }
 
             if(!empty($c['country'])) {
@@ -138,15 +142,17 @@ class ProductManager implements LoadableInterface
                 $price = Price::find([ 'product_id' => $c['id'] ]);
                 $c['price'] = $price->getPrice();
             }
-            
-            $c['image'] = '';
-            if(0 < count($c['images'])) {
-                $c['image'] = $c['images'][0];
-            }
 
         }
 
+        $cursor['categories'] = $categories;
+        $cursor['brands'] = $brands;
         return $cursor;
+    }
+    
+    public function findCategories($params)
+    {
+        
     }
 
     public function updateDocument($params)
