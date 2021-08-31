@@ -23,12 +23,12 @@ const Products = {
 const routes = [
   {
     name: 'analytics',
-    path: '/control-panel/analytics',
+    path: '/analytics',
     component: Analytics
   },
   {
     name: 'products',
-    path: '/control-panel/products',
+    path: '/products',
     component: Products
   }
 ]
@@ -41,6 +41,6 @@ const router = new VueRouter({
 const cp = new Vue({
   router,
   mounted: function(){
-    router.replace('/control-panel/analytics');
+    router.replace('/analytics');
   }
 }).$mount('#cp')
