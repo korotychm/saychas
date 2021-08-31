@@ -85,7 +85,7 @@ class ProductController extends AbstractActionController
         $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
         $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
         $answer = $this->productManager->loadAll($url, $credentials);
-        $this->productManager->setPageSize( !empty($rowsPerPage) ? $rowsPerPage : self::PRODUCTS_PER_PAGE);
+        $this->productManager->setPageSize( !empty($rowsPerPage) ? (int) $rowsPerPage : self::PRODUCTS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
