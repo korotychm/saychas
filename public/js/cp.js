@@ -1,5 +1,5 @@
 
-const Analytics = { template: '<header class="header"><h1 class="header__heading"><span>Аналитика</span></h1><div class="header__user"><div class="header__user-name"><h2>Сергей Заказчиков</h2><p>Администратор</p></div><div class="header__user-avatar">С</div></div></header>' }
+const Analytics = { template: '<div>Аналитика</div>' }
 const Products = {
   data: function () {
     return {
@@ -7,12 +7,12 @@ const Products = {
       page: 1
     }
   },
-  template: '<header class="header"><h1 class="header__heading"><span>{{heading}}</span></h1><div class="header__user"><div class="header__user-name"><h2>Сергей Заказчиков</h2><p>Администратор</p></div><div class="header__user-avatar">С</div></div></header>',
+  template: '<div>Товары</div>',
   created: function(){
     axios
       .post('/control-panel/show-products',
         Qs.stringify({
-          page : this.page
+          page_no : this.page
         }))
         .then(response => (
           console.log(response.data)
@@ -24,12 +24,14 @@ const routes = [
   {
     name: 'analytics',
     path: '/analytics',
-    component: Analytics
+    component: Analytics,
+    title: 'Аналитика'
   },
   {
     name: 'products',
     path: '/products',
-    component: Products
+    component: Products,
+    title: 'Мои товары'
   }
 ]
 
