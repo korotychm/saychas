@@ -112,51 +112,37 @@ class ProductManager implements LoadableInterface
     {
         $cursor = $this->findAll($params);
         foreach ($cursor['body'] as &$c) {
-//            if (empty($c['category_id'])) {
-//                continue;
-//            }
             if(!empty($c['category_id'])) {
                 //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
                 $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
                 $c['category_name'] = $category->getTitle();
             }
 
-//            if (empty($c['brand_id'])) {
-//                continue;
-//            }
-            
             if(!empty($c['brand_id'])) {
                 $brand = Brand::find(['id' => $c['brand_id']]);
                 $c['brand_name'] = $brand->getTitle();
             }
-
-//            if (empty($c['country'])) {
-//                continue;
-//            }
 
             if(!empty($c['country'])) {
                 $country = Country::find(['id' => $c['country']]);
                 $c['country_name'] = $country->getTitle();
             }
 
-//            if (empty($c['color'])) {
-//                continue;
-//            }
-
             if(!empty($c['color'])) {
                 $color = Color::find(['id' => $c['color']]);
                 $c['color_name'] = $color->getTitle();
             }
             
-//            if(empty($c['id'])) {
-//                continue;
-//            }
-
             if(!empty($c['id'])) {
                 $price = Price::find([ 'product_id' => $c['id'] ]);
                 $c['price'] = $price->getPrice();
             }
             
+            $c['image'] = '';
+            if(0 < count($c['images'])) {
+                $c['image'] = $c['images'][0];
+            }
+
         }
 
         return $cursor;
