@@ -17,9 +17,10 @@ if ($countStors < 2) {
         <div class="cart__radio-content">
               <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>. <br>Крайнее время доставки - <?= date("r", $timeClose - 3600) ?>.</p>
               <?php if ($select1hour && !empty($select1hour)) : ?>
+                <?php print_r($select1hour)?>
                 <select class="select" name="timepoint[0]" id="timepoint-dostmerge1" rel="timepointtext1">
                   <?php foreach ($select1hour as $option) : ?>
-                      <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?> "  <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
+                      <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
                   <?php endforeach; ?>
                 </select>
               <?php else: ?>
