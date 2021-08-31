@@ -1131,6 +1131,8 @@ return [
             \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
             \Application\Model\Entity\UserPaycard::class => \Application\Model\Factory\UserPaycardRepositoryFactory::class,
+            \Application\Model\Entity\Color::class => \Application\Model\Factory\ColorRepositoryFactory::class,
+            \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,

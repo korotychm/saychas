@@ -51,3 +51,7 @@ db.products.find({}, {"description":0}).forEach(function(myDoc){ myDoc.character
 /** find and update operations */
 db.products.updateOne({'id': '000000000001', 'characteristics.id': '000000008'}, {"$set": {"characteristics.$.value": 0.134} } )
 db.products.find({id: '000000000001', "characteristics.id": '000000008'}).pretty()
+db.products.find({id: '000000000001', "characteristics.id": '000000008'},{"_id": 0, title: 1, description: 1, characteristics: {$elemMatch: {value: "0.1345"}}}).pretty()
+db.products.find({id: '000000000001', "characteristics.id": '000000008'},{"_id": 0, title: 1, description: 1, characteristics: {$elemMatch: {value: "0.1345"}}}).pretty()
+
+db.products.find({id: '000000000001', "characteristics.id": '000000008'},{"_id": 0, title: 1, description: 1, characteristics: {$elemMatch: {value: "0.1345"}}}).pretty()

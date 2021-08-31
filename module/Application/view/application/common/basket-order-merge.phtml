@@ -19,7 +19,7 @@ if ($countStors < 2) {
               <?php if ($select1hour && !empty($select1hour)) : ?>
                 <select class="select" name="timepoint[0]" id="timepoint-dostmerge1" rel="timepointtext1">
                   <?php foreach ($select1hour as $option) : ?>
-                      <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?> "  <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
+                      <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
                   <?php endforeach; ?>
                 </select>
               <?php else: ?>
