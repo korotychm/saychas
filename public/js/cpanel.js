@@ -155,10 +155,11 @@ $(function () {
         } else if ('productsId' === ths.currentTarget.id) {
             $.post('/control-panel/show-products', {page_no: 1}, function (data) {
                 //redirectToLogin(data);
-                $.each(data.data, function(idx, val){
-                    console.log($(val));
-                    //$('#controlPanelContentId').append($(val).html());
-                });
+                console.log(data);
+//                $.each(data.data, function(idx, val){
+//                    console.log($(val));
+//                    //$('#controlPanelContentId').append($(val).html());
+//                });
                 
                 //$('#controlPanelContentId').text(l);
             })
