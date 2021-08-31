@@ -101,7 +101,7 @@ class ProductManager implements LoadableInterface
                         ],
                     ]
             );
-            $result = $cursor->toArray();
+            $result['body'] = $cursor->toArray();
             $result['limits'] = $limits;
             return $result;
         }
