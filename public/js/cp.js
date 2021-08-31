@@ -32,10 +32,9 @@ const Products = {
                 <div class="td products__img"><img src="/images/products/products1.jpg" /></div>
                 <div class="td products__title"><a href="/edit-product.html">{{ product.title }}</a></div>
                 <div class="td products__category">
-                    <div>Электроника</div>
-                    <div>Смартфоны и телефоны</div>
+                    <div>{{ product.category_name }}</div>
                 </div>
-                <div class="td">Huawei</div>
+                <div class="td">{{ product.brand_name }}</div>
             </div>
         </div>
       </div>
