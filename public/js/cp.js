@@ -30,14 +30,14 @@ const routes = [
   {
     name: 'analytics',
     path: '/analytics',
-    component: Analytics,
-    title: 'Аналитика'
+    title: 'Аналитика',
+    component: Analytics
   },
   {
     name: 'products',
     path: '/products',
-    component: Products,
-    title: 'Мои товары'
+    title: 'Мои товары',
+    component: Products
   }
 ]
 
@@ -50,7 +50,8 @@ const cp = new Vue({
   router,
   computed: {
     getH1() {
-      return this.$route.title;
+      console.log(this.$route);
+      return this.$route.currentRoute.title;
     }
   },
   mounted: function(){
