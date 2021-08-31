@@ -193,7 +193,7 @@ function calculateBasketMerge(dataString, loadinfo = false)
             $("#basketordermerge").html(data);
             $("#basket-ordermerge-cover").hide();
             setTimepointText();
-            //$('#basketordermerge .select').niceSelect();
+            $('#basketordermerge .select').niceSelect();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#basketordermerge").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
@@ -213,7 +213,7 @@ function calculateBasketPayCard()
         data: dataString,
         success: function (data) {
             $("#baskepaycardinfo").html(data);
-            $('.select').niceSelect();
+            $('#baskepaycardinfo .select').niceSelect();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#baskepaycardinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
