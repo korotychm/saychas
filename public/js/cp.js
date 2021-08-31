@@ -10,7 +10,6 @@ Vue.component("ProductsFilters", ProductsFilters);
 const Products = {
   data: function () {
     return {
-      heading: 'Мои товары',
       page_no: 1,
       rows_per_page: 2,
       products: {},
@@ -29,7 +28,9 @@ const Products = {
         </div>
         <div class="tbody">
             <div v-for="product in products" class="tr">
-                <div class="td products__img"><img src="/images/products/products1.jpg" /></div>
+                <div class="td products__img">
+                  <img :src="(product.brand_images.length) ? product.brand_images[0] : '/images/products/nophoto.jpg'" />
+                </div>
                 <div class="td products__title"><a href="/edit-product.html">{{ product.title }}</a></div>
                 <div class="td products__category">
                     <div>{{ product.category_name }}</div>
