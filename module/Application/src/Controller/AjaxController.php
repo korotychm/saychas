@@ -35,6 +35,7 @@ use Application\Service\HtmlProviderService;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -110,6 +111,7 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
+        $this->entityManager->initRepository(UserPaycard::class);
     }
 
     
@@ -390,10 +392,12 @@ class AjaxController extends AbstractActionController
     public function calculateBasketItemAction()
     {
         $post = $this->getRequest()->getPost();
-        if (!$userId = $this->identity())
+        if (!$userId = $this->identity()){
             return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
-        if (!$return['productId'] = $productId = $post->product)
+        }
+        if (!$return['productId'] = $productId = $post->product){
             return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
+        }
 
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
         if (null == $product
@@ -443,12 +447,19 @@ class AjaxController extends AbstractActionController
 
     public function basketPayCardInfoAction()
     {
-        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($userId);
+        if (!$userId = $this->identity()){
+            return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
+        }
+        $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
+        $paycards =($userPaycards->count())?$userPaycards:null;
+        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
+        
         $post = $this->getRequest()->getPost();
         $paycard = $post->paycard;
         $view = new ViewModel([
             'paycard' => $paycard,
             'cardinfo' => $cardInfo,
+            'default' => $post->cardinfo,
         ]);
         $view->setTemplate('application/common/basket-pay-card');
         return $view->setTerminal(true);
@@ -470,7 +481,15 @@ class AjaxController extends AbstractActionController
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
         $row['payEnable'] = ($row['total'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
-        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($userId);
+        
+        if ($post->cardinfo) {
+            $userPaycards = UserPaycard::findAll(["where" => ["user_id" => $userId, "card_id"=>$post->cardinfo]]);
+            $cardUpdate = $userPaycards->current();
+            $cardInfo = $cardUpdate ->getPan();
+            $cardUpdate->setTime(time());
+            $cardUpdate->persist(["user_id" => $userId, "card_id"=>$post->cardinfo]);
+        }
+        
         $view = new ViewModel([
             "payEnable" => $row["payEnable"],
             "textDelevery" => $row["textDelevery"],
@@ -489,7 +508,7 @@ class AjaxController extends AbstractActionController
             'producttotal' => $row['total'],
             'countSelfdelevery' => $row['countSelfdelevery'],
             'storeAdress' => $row["storeAdress"],
-            "cardinfo" => $cardInfo ,
+            "cardinfo" => $cardInfo,
             'paycard' => $post->paycard,
             'timeDelevery' => $timeDelevery,
         ]);

@@ -92,8 +92,16 @@ class HtmlProviderService
      * Returns Array
      * @return Array
      */
-    public function getUserPayCardInfoService ($userId) {
-        
+    public function getUserPayCardInfoService ($userPaycards) {
+        $payCards=[];
+        if (!empty($userPaycards)){
+            
+            foreach ($userPaycards as $paycard){
+                $payCards[] = ["id" => $paycard->getCardId(), "pan" => $paycard->getPan()];
+            }
+            
+        }
+        return $payCards; 
         /* 
          * костылик 
          */

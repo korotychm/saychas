@@ -379,14 +379,15 @@ class IndexController extends AbstractActionController
         $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
 
         $content = $this->htmlProvider->basketData($basket);
-        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($userId);
+       
+        
         return new ViewModel([
             /* "providers" => $providers, */
             "content" => $content["product"],
             "title" => "Корзина",
             "titleH" => $content["title"],
             "basketUser" => $basketUser,
-            "cardinfo" => $cardInfo,
+       //     "cardinfo" => $cardInfo,
             "countproviders" => $content["countproviders"],
             "countprducts" => $content["countproducts"],
             "legalUser" => $legalUser,

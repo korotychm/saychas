@@ -1,14 +1,17 @@
 
 <div class="cart-payment">
-    <h2 class="h2">Оплата</h2>
+    <h2 class="h2">Оплата     <?=$default?></h2>
     <div class="cart__radio-group">
-        <?php if($cardinfo) :?>
+        <?php if(!empty($cardinfo)) :?>
           <input type="radio" name='paycard' <?=($paycard)?"checked":""?> id="payment1" value="1" />
           <div class="cart__radio">
             <label for="payment1"><span class="cart__radio-check"></span><span><b>Оплата с привязанной карты</b></span></label>
               <div class="cart__radio-content">
+              
                 <select name="cardinfo" class="select">
-                      <option value="<?=strip_tags($cardinfo)?>"><?=$cardinfo ?></option>
+                    <?php foreach ($cardinfo as $card):?>
+                      <option value="<?=strip_tags($card["id"])?>" <?=($default == $card["id"])?"selected":""?> ><?=$card["pan"]?></option>
+                   <?php endforeach;?>   
                 </select>
               </div>
           </div>
