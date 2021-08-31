@@ -193,7 +193,9 @@ function calculateBasketMerge(dataString, loadinfo = false)
             $("#basketordermerge").html(data);
             $("#basket-ordermerge-cover").hide();
             setTimepointText();
-            $('#basketordermerge .select').niceSelect();
+            setTimeout(function(){
+              $('#basketordermerge .select').niceSelect();
+            }, 100);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#basketordermerge").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
