@@ -15,7 +15,7 @@ $api = new TinkoffMerchantAPI(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="main.css"/>
+    <link rel="stylesheet" href="/saychas_z.css"/>
     <title>Testing Merchant API</title>
 </head>
 <body>

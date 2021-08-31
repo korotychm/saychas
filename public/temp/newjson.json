@@ -1,20 +1,2 @@
-{
-    "address": {
-        "id": "29",
-        "text": "г Москва, ул Днепропетровская, д 1 ",
-        "geodata": "{\"value\":\"г Москва, ул Днепропетровская, д 1\",\"unrestricted_value\":\"117587, г Москва, Чертаново Центральное р-н, ул Днепропетровская, д 1\",\"data\":{\"postal_code\":\"117587\",\"country\":\"Россия\",\"country_iso_code\":\"RU\",\"federal_district\":\"Центральный\",\"region_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"region_kladr_id\":\"7700000000000\",\"region_iso_code\":\"RU-MOW\",\"region_with_type\":\"г Москва\",\"region_type\":\"г\",\"region_type_full\":\"город\",\"region\":\"Москва\",\"area_fias_id\":null,\"area_kladr_id\":null,\"area_with_type\":null,\"area_type\":null,\"area_type_full\":null,\"area\":null,\"city_fias_id\":\"0c5b2444-70a0-4932-980c-b4dc0d3f02b5\",\"city_kladr_id\":\"7700000000000\",\"city_with_type\":\"г Москва\",\"city_type\":\"г\",\"city_type_full\":\"город\",\"city\":\"Москва\",\"city_area\":\"Южный\",\"city_district_fias_id\":null,\"city_district_kladr_id\":null,\"city_district_with_type\":\"Чертаново Центральное р-н\",\"city_district_type\":\"р-н\",\"city_district_type_full\":\"район\",\"city_district\":\"Чертаново Центральное\",\"settlement_fias_id\":null,\"settlement_kladr_id\":null,\"settlement_with_type\":null,\"settlement_type\":null,\"settlement_type_full\":null,\"settlement\":null,\"street_fias_id\":\"1c49db68-724c-4155-9fb1-57c909f696fb\",\"street_kladr_id\":\"77000000000119700\",\"street_with_type\":\"ул Днепропетровская\",\"street_type\":\"ул\",\"street_type_full\":\"улица\",\"street\":\"Днепропетровская\",\"house_fias_id\":\"e31545b0-9022-4fcb-a85b-1d78e2ca24d6\",\"house_kladr_id\":\"7700000000011970136\",\"house_cadnum\":null,\"house_type\":\"д\",\"house_type_full\":\"дом\",\"house\":\"1\",\"block_type\":null,\"block_type_full\":null,\"block\":null,\"entrance\":null,\"floor\":null,\"flat_fias_id\":null,\"flat_cadnum\":null,\"flat_type\":null,\"flat_type_full\":null,\"flat\":null,\"flat_area\":null,\"square_meter_price\":null,\"flat_price\":null,\"postal_box\":null,\"fias_id\":\"e31545b0-9022-4fcb-a85b-1d78e2ca24d6\",\"fias_code\":\"77000000000000011970136\",\"fias_level\":\"8\",\"fias_actuality_state\":\"0\",\"kladr_id\":\"7700000000011970136\",\"geoname_id\":\"524901\",\"capital_marker\":\"0\",\"okato\":\"45296595000\",\"oktmo\":\"45925000\",\"tax_office\":\"7726\",\"tax_office_legal\":\"7726\",\"timezone\":null,\"geo_lat\":\"55.6213817\",\"geo_lon\":\"37.6068277\",\"beltway_hit\":null,\"beltway_distance\":null,\"metro\":null,\"qc_geo\":\"0\",\"qc_complete\":null,\"qc_house\":null,\"history_values\":null,\"unparsed_parts\":null,\"source\":null,\"qc\":null}}"
-    },
-    "addresses": [{
-            "id": "18",
-            "text": "г Москва, ул Южнопортовая, д 7 "
-        }, {
-            "id": "20",
-            "text": "г Москва, ул Угрешская, д 1Б "
-        }, {
-            "id": "31",
-            "text": "г Москва, км Киевское шоссе 23-й (п Московский), д 5 к 2 "
-        }, {
-            "id": "16",
-            "text": "г Москва, Волгоградский пр-кт, д 2 "
-        }]
-}
+
+

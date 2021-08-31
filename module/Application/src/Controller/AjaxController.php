@@ -733,6 +733,7 @@ class AjaxController extends AbstractActionController
     private function getProductCards($params)
     {
         $this->prepareCharacteristics($params['characteristics']);
+        //$this-\Laminas\Log\Writer\Mail::
         if (empty($params['priceRange'])) {
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }

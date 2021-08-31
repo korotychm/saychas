@@ -609,60 +609,6 @@ class HtmlProviderService
         //exit(print_r($return));
         return $return;
     }
-
-    /*public function writeUserAddress($user = null)
-    {
-        //$userId = $this->identity();
-        /* $userData = new UserData();
-          $userData->getUserId($userId)
-          ->getAddress()
-          ->getGeodata(); *//*
-        $userData = $userAddress = $username = $hasalt = $altcontent="";
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        if (null != $user){
-            $username = $user->getName();
-            $userData = $user->getUserData();
-            $usdat = $userData->current();
-        }
-        if (!empty($usdat)) {
-            $userAddress = $usdat->getAddress(); //$container->userAddress;
-            $userGeodata = $usdat->getGeoData();
-            //exit ($userGeodata);
-            $i = 0;  //индекс для лимита вывода адресов!
-            foreach ($userData as $adress) {
-                $adressId = $adress->getId();
-                $adressText = $adress->getAddress();
-                $altmenu[] = "<span class='menuitem pointer setuseraddress' rel='$adressId' >$adressText</span>";
-                $i++;
-                if ($i == 5)
-                    break;
-            }
-            //unset($altmenu[0]);
-            if (!empty($altmenu)) {
-                $hasalt = " hasalt ";
-                $altmenu[] = "<span class='menuitem pointer open-user-address-form red'  >Ввести адрес</span>";
-                //<span class="strelka"></span>
-                $altcontent = '<div class="altcontentview">
-
-                          <div class="blok ">'
-                        . join("", $altmenu)
-                        . '</div>
-                 </div>         ';
-            } else { 
-             
-            }
-        }
-        ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-        return "<span class='blok relative $hasalt useraddressalt' >"
-                . "$altcontent"
-                . "<span>$userAddress</span>"
-                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea></span>"
-        //. "<h1></h1>"
-        //
-        //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
-        ;
-    }
-    */
     
     public function getUserAddresses($user = null, $limit)
     {
@@ -723,12 +669,16 @@ class HtmlProviderService
         $j = 0;
         if (!empty($products)){
             while (list($p, $c) = each($products)) {
-
+                if ($c["count"] <= 0) {
+                    continue;
+                }
                 $product = $this->productRepository->find(['id' => $p]);
-                if (null == $product)
+                if (null == $product){
                     continue;
-                if (!$price = (int) $product->receivePriceObject()->getPrice())
+                }
+                if (!$price = (int) $product->receivePriceObject()->getPrice()){
                     continue;
+                }
                 $total += ($price * $c['count']);
                 $j += $c["count"];
                 if ($providerId = $product->getProviderId())
@@ -745,6 +695,7 @@ class HtmlProviderService
             $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
             $priceDelevery = $countDelevery * $param['mergePrice'] + ceil($countDelevery / $param['mergecount']) * $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery / $param['mergecount']);
+            $countDelevery=($countDelevery < 0)?0:$countDelevery;
         }
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;

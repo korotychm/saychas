@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\PriceRepository;
+use Application\Model\Traits\Searchable;
+
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,6 +17,13 @@ namespace Application\Model\Entity;
  */
 class Price extends Entity
 {
+
+    use Searchable;
+
+    /**
+     * @var PriceRepository
+     */
+    public static PriceRepository $repository;
 
     /**
      * @var string
