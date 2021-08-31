@@ -3,10 +3,13 @@ const Analytics = { template: '<header class="header"><h1 class="header__heading
 const Products = {
   data: function () {
     return {
-      test: 'test vue'
+      heading: 'Мои товары'
     }
   },
-  template: '<header class="header"><h1 class="header__heading"><span>{{test}}</span></h1><div class="header__user"><div class="header__user-name"><h2>Сергей Заказчиков</h2><p>Администратор</p></div><div class="header__user-avatar">С</div></div></header>'
+  template: '<header class="header"><h1 class="header__heading"><span>{{heading}}</span></h1><div class="header__user"><div class="header__user-name"><h2>Сергей Заказчиков</h2><p>Администратор</p></div><div class="header__user-avatar">С</div></div></header>',
+  mounted: function(){
+    console.log('products component mounted');
+  }
 }
 
 const routes = [
@@ -30,6 +33,6 @@ const router = new VueRouter({
 const cp = new Vue({
   router,
   mounted: function(){
-    router.replace('/control-panel/products');
+    router.replace('/control-panel/analytics');
   }
 }).$mount('#cp')
