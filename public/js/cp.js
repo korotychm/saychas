@@ -27,6 +27,20 @@ const Products = {
           <div class="td">Категория</div>
           <div class="td">Бренд</div>
         </div>
+        <div class="tbody">
+            <div v-for="product in products" class="tr">
+                <div class="td products__img"><img src="/img/demo/products1.jpg" /></div>
+                <div class="td products__title"><a href="/edit-product.html">{{ product.title }}</a></div>
+                <div class="td products__category">
+                    <div>Электроника</div>
+                    <div>Смартфоны и телефоны</div>
+                </div>
+                <div class="td">Huawei</div>
+            </div>
+        </div>
+      </div>
+      <div class="pagination">
+        <a v-for="index in pages" class="active" :class="active : (index == page_no)" @click="loadPage(index)">{{ index }}</a>
       </div>
     </div>`,
   methods: {
@@ -41,10 +55,14 @@ const Products = {
             this.pages = response.data.limits.total,
             this.products = response.data.body
           ));
+    },
+    loadPage(index) {
+      this.page_no = index;
+      getProducts();
     }
   },
   created: function(){
-    getProducts();
+    this.getProducts();
   }
 }
 
