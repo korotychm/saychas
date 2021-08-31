@@ -113,6 +113,9 @@ class IndexController extends AbstractActionController
         return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
     }
 
+    /************************************************************************************
+     * Store Actions
+     ************************************************************************************/
     /**
      * Show stores action        // $this->sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
      * Shows a table of stores
@@ -155,6 +158,9 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
+    /************************************************************************************
+     * Product Actions
+     ************************************************************************************/
     /**
      * Show products action
      * Shows a table of products
@@ -180,6 +186,7 @@ class IndexController extends AbstractActionController
         $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
         //$this->productManager->findTest();
         
+        // json_encode($cursor, JSON_UNESCAPED_UNICODE)
         $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
         return $view->setTerminal(true);
     }

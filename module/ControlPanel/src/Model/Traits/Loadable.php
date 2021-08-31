@@ -95,7 +95,7 @@ trait Loadable
      */
     public function calcLimits(int $pageNumber) : array
     {
-        $limits = ['min' => 0, 'max' => 0];
+        $limits = ['min' => 0, 'max' => 0, 'total' => 0];
         
         $this->collectionSize = $this->countCollection();
 
@@ -107,6 +107,7 @@ trait Loadable
             $limits['min'] = ($limits['min'] > $div * $this->pageSize + $mod) ? $div * $this->pageSize + 1 : $limits['min'];
             $limits['max'] = $pageNumber * $this->pageSize;
             $limits['max'] = ($limits['max'] > $this->collectionSize ? $this->collectionSize : $limits['max']);
+            $limits['total'] = $div + (0 == $mod ? 0 : 1);
         }
 
         return $limits;

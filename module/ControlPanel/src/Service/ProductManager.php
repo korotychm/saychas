@@ -11,6 +11,7 @@ use Application\Model\Repository\CategoryRepository;
 use Application\Model\Entity\Country;
 use Application\Model\Entity\Brand;
 use Application\Model\Entity\Color;
+use Application\Model\Entity\Price;
 
 /**
  * Description of ProductManager
@@ -71,6 +72,7 @@ class ProductManager implements LoadableInterface
         $this->entityManager->initRepository(Country::class);
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(Color::class);
+        $this->entityManager->initRepository(Price::class);
     }
 
     public function findAll($params)
@@ -99,7 +101,9 @@ class ProductManager implements LoadableInterface
                         ],
                     ]
             );
-            return $cursor->toArray();
+            $result = $cursor->toArray();
+            $result['limits'] = $limits;
+            return $result;
         }
         return [];
     }
@@ -133,6 +137,14 @@ class ProductManager implements LoadableInterface
 
             $color = Color::find(['id' => $c['color']]);
             $c['color_name'] = $color->getTitle();
+            
+            if(empty($c['id'])) {
+                continue;
+            }
+            
+            $price = Price::find([ 'product_id' => $c['id'] ]);
+            $c['price'] = $price->getPrice();
+            
         }
 
         return $cursor;

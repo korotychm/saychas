@@ -8,6 +8,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 use ControlPanel\Controller\Factory\IndexControllerFactory;
 use ControlPanel\Controller\Factory\AuthControllerFactory;
+use ControlPanel\Controller\Factory\ProductControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
@@ -17,6 +18,7 @@ return [
 //            \ControlPanel\Controller\AuthController::class => StandardControllerFactory::class,
             \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
             \ControlPanel\Controller\AuthController::class => AuthControllerFactory::class,
+            \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
         ],        
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
@@ -56,6 +58,9 @@ return [
                 ['actions' => ['actionAndDiscount',], 'allow' => '+analyst'],
                 ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
                 ['actions' => ['showStores',], 'allow' => '+analyst'],
+            ],
+            \ControlPanel\Controller\ProductController::class => [
+                ['actions' => ['showProducts', ], 'allow' => '+developer'],
             ],
         ]
     ],    
@@ -116,11 +121,11 @@ return [
                         ],
                     ],
                     'show-products' => [
-                        'type' => Segment::class,
+                        'type' => Literal::class,
                         'options' => [
-                            'route' => '/show-products[/:page_no]',
+                            'route' => '/show-products',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'show-products',
                             ],
                         ],
