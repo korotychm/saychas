@@ -29,7 +29,7 @@ const Products = {
         </div>
         <div class="tbody">
             <div v-for="product in products" class="tr">
-                <div class="td products__img"><img src="/img/demo/products1.jpg" /></div>
+                <div class="td products__img"><img src="/images/products/products1.jpg" /></div>
                 <div class="td products__title"><a href="/edit-product.html">{{ product.title }}</a></div>
                 <div class="td products__category">
                     <div>Электроника</div>
