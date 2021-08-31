@@ -48,7 +48,7 @@
       <div id="cp">
         <aside class="sidebar" id="controlPanelMenu">
           <?php //$this->partial('partials/sidebar-menu-items', ['menuItems' => $this->sidebarMenuItems]); ?>
-          <div class="sidebar__logo"><a href="#"><img src="/img/logo.png" /></a></div>
+          <div class="sidebar__logo"><a href="#"><img src="/img/cp-logo.png" /></a></div>
           <nav class="sidebar__nav">
               <div class="sidebar__section">
                 <router-link to="/control-panel/analytics" class="sidebar__link" :class="{ active: ($route.name == 'analytics') }">
@@ -125,9 +125,6 @@
           </nav>
         </aside>
         <main class="main" id="controlPanelContentId">
-          <div>
-              <span><?php// null == $currentUser ? '' : $currentUser->getLogin() ?></span>
-          </div>
           <router-view></router-view>
         </main>
       </div>
