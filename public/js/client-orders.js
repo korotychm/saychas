@@ -48,7 +48,7 @@ $(document).ready(function () {
           } else {
             order.pickupUnit = 'магазинов';
           }
-          let deliveriesCount = order.deliveryInfo.deliveries.length;
+          let deliveryCount = order.deliveryInfo.deliveries.length;
           if (deliveryCount == 1){
             order.deliveryUnit = 'доставка';
           } else if (deliveryCount > 1 && deliveryCount < 5) {
