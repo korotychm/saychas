@@ -12,7 +12,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
         <div v-for="order in orders" class="orders-history__item">
           <div class="orders-history__left">
             <div v-if="order.deliveryInfo.deliveries.length" class="orders-history__delivery">
-              <div class="orders-history__delivery">
+              <div class="orders-history__delivery-item">
                   <h2>Доставка</h2>
                   <div class="orders-history__statuses">
                       <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>

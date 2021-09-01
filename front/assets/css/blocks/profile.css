@@ -45,12 +45,14 @@
   grid-gap: 30px;
 }
 .orders-history__delivery {
-  display: flex;
-  align-items: center;
   margin-top: 35px;
 }
 .orders-history__delivery:first-child {
   margin-top: 0;
+}
+.orders-history__delivery--item {
+  display: flex;
+  align-items: center;
 }
 .orders-history__delivery h2 {
   font-size: 34px;
