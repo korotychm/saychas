@@ -145,8 +145,8 @@ class ProductManager implements LoadableInterface
 
         }
 
-        $cursor['categories'] = $categories;
-        $cursor['brands'] = $brands;
+        $cursor['filters']['categories'] = $categories;
+        $cursor['filters']['brands'] = $brands;
         return $cursor;
     }
     
