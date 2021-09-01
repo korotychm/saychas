@@ -71,12 +71,6 @@ const Products = {
     </div>`,
   methods: {
     getProducts() {
-      console.log(Qs.stringify({
-        page_no : this.page_no,
-        rows_per_page : this.rows_per_page,
-        filters: this.selectedFilters,
-        search: this.search
-      }));
       axios
         .post('/control-panel/show-products',
           Qs.stringify({
