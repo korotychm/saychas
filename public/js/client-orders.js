@@ -43,7 +43,7 @@ $(document).ready(function () {
             }
           }
         }
-        console.log(orders);
+        console.log('computed',orders);
         return orders;
       }
     },
