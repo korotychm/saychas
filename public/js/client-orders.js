@@ -21,3 +21,25 @@ function getClientOrders(){
 $(document).ready(function () {
     getClientOrders();
 });
+
+var clientOrders = new Vue({
+  el: '#client-orders',
+  data: {
+    orders: [],
+    products: []
+  },
+  methods: {
+    getClientOrders() {
+      axios
+        .post('/ajax-get-order-list')
+        .then(response => (
+          this.orders = response.data.order_list,
+          this.products = response.data.productsMap,
+          console.log(this.orders)
+        ));
+    }
+  },
+  mounted() {
+    this.getClientOrders()
+  }
+});

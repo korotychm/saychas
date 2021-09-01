@@ -1,7 +1,7 @@
- <ul class='menu usermenu'>
-                <?php //=$this->partial('application/index/partials/user-menu') 
-                ?>
-                <li><a href='/user'>Профиль</a></li>
-                <li><a href='/client-orders'>История заказов</a></li>
-                <?=($auth)?"<li><a href='/clear-user-data' class='redlink' >Выход</a></li>":"";?>
-</ul>    
+<nav class="profile-nav">
+    <a href="/client-orders">История заказов</a>
+    <a href="#">Избранные товары</a>
+    <a href="#">Бонусная система</a>
+    <a href="/user">Мои данные</a>
+    <a href="/clear-user-data">Выход</a>
+</nav>
