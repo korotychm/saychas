@@ -76,7 +76,7 @@ const Products = {
           .then(response => (
             console.log(response.data),
             this.pages = response.data.data.limits.total,
-            this.products = response.data.data.body
+            this.products = response.data.data.body,
             this.filters = response.data.data.filters
           ));
     },
