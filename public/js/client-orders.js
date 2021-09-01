@@ -42,6 +42,21 @@ $(document).ready(function () {
           let orderDate = new Date(order.date * 1000);
           order.dateLocaled = orderDate.toLocaleString();
 
+          let pickupCount = order.deliveryInfo.pickup.length;
+          if (pickupCount == 1){
+            order.pickupUnit = 'магазина';
+          } else {
+            order.pickupUnit = 'магазинов';
+          }
+          let deliveriesCount = order.deliveryInfo.deliveries.length;
+          if (deliveryCount == 1){
+            order.deliveryUnit = 'доставка';
+          } else if (deliveryCount > 1 && deliveryCount < 5) {
+            order.deliveryUnit = 'доставки';
+          } else {
+            order.deliveryUnit = 'доставок';
+          }
+
           for (delivery of order.deliveryInfo.deliveries){
             for (requisition of delivery.requisitions){
               for (product of requisition.products){

@@ -22,7 +22,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                   </div>
               </div>
               <div class="orders-history__text">
-                <p>{{order.deliveryInfo.deliveries.length}} доставок, сегодня с 15 до 16</p>
+                <p>{{order.deliveryInfo.deliveries.length}} {{order.deliveryUnit}}, сегодня с 15 до 16</p>
                 <p>{{order.basketInfo.userGeoLocation.value}}</p>
               </div>
               <div class="orders-history__products">
@@ -44,8 +44,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                   </div>
               </div>
               <div class="orders-history__text">
-                <p>Из {{order.deliveryInfo.pickup.length}} магазинов</p>
-                <p>Хранение - до 19 мая включительно</p>
+                <p>Из {{order.deliveryInfo.pickup.length}} {{order.pickupUnit}}</p>
               </div>
               <div class="orders-history__products">
                 <a v-for="product in order.pickupProducts" :href="'/product/' + product.id">
