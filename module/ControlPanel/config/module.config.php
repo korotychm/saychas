@@ -131,6 +131,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-products-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-products-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'show-products-from-cache',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'profile' => [
                         'type' => Literal::class,
                         'options' => [
