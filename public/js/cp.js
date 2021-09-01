@@ -25,14 +25,14 @@ const Products = {
           </button>
         </div>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.categories">
-            <option val="" selected="selected" value="">Все категории</option>
+          <select class="select select--white" v-model="selectedFilters.categories" value="">
+            <option value="" selected >Все категории</option>
             <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
           </select>
         </div>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.brands">
-            <option value="" selected="selected">Все бренды</option>
+          <select class="select select--white" v-model="selectedFilters.brands" value="">
+            <option value="" selected >Все бренды</option>
             <option v-for="brand in filters.brands" :value="brand[0]">{{ brand[1] }}</option>
           </select>
         </div>
