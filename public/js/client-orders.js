@@ -43,11 +43,11 @@ $(document).ready(function () {
                 product.img = this.products[product.id].image;
                 product.title = this.products[product.id].title;
                 order.products.push(product);
-                order.total += +product.price;
+                order.total += (product.price / 100);
                 if (+product.discount > 0) {
-                  order.oldtotal += (product.price / (100 - product.discount) * 100);
+                  order.oldtotal += (product.price / (100 - product.discount));
                 } else {
-                  order.oldtotal += product.price;
+                  order.oldtotal += (product.price / 100);
                 }
               }
             }
