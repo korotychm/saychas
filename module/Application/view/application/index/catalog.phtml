@@ -24,8 +24,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
           <div v-for="(product, name) in products" :key="name" class="product">
               <div class="product__label">Акция</div>
               <a class="product__img" :href="'/product/' + name">
-                <img :src="'/images/product/' + product.image" />
-                <img :src="<?= $this->imagePath('product').'/' ?> + product.image" />
+                <img :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
               </a>
               <a class="product__title" href="#">{{ product.title }}</a>
               <div class="product__reviews">

@@ -28,7 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
               <div class="orders-history__products">
                 <a v-for="product in order.deliveryProducts" :href="'/product/' + product.id">
                   <div class="product-small-img">
-                    <img :src="'/images/product/' + product.img" :alt="product.title" />
+                    <img :src="'<?= $this->imagePath('product').'/' ?>' + product.img" :alt="product.title" />
                   </div>
                 </a>
               </div>
@@ -49,7 +49,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
               <div class="orders-history__products">
                 <a v-for="product in order.pickupProducts" :href="'/product/' + product.id">
                   <div class="product-small-img">
-                    <img :src="'/images/product/' + product.img" :alt="product.title" />
+                    <img :src="'<?= $this->imagePath('product').'/' ?>' + product.img" :alt="product.title" />
                   </div>
                 </a>
               </div>
