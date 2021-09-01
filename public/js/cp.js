@@ -72,7 +72,7 @@ const Products = {
   methods: {
     getProducts() {
       let requestUrl = '/control-panel/show-products';
-      if (filtersCreated) {
+      if (this.filtersCreated) {
         requestUrl = '/control-panel/show-products-from-cache';
       }
       axios
