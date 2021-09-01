@@ -98,11 +98,7 @@ class ExternalCommunicationService
                 $content['timepointtext3'],
                 // $content['selfdelevery'], 
                 $content["products"]);
-        /* unset($content['userGeoLocation']);
-          $content['userGeoLocation'] = []; */
-        //return $content;
         
-        //$return['basketinfo']['username'] = $content['username'];
         $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
         $return['basketinfo']['timepoint'] = $content["timepoint"];
         $return['basketinfo']['ordermerge'] = $content["ordermerge"];
@@ -112,30 +108,7 @@ class ExternalCommunicationService
    
         
         return $return;
-        /*try {
-            $arr = Json::decode($answer, Json::TYPE_ARRAY);
-            return $arr;
-        } catch (LaminasJsonRuntimeException $e) {
-            //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
-            return ['result' => false, 'message' => $e->getMessage() . ' >>> ' . $answer];
-        }*/
-        
-        
-        /*$response = file_get_contents(
-          $url,
-          false,
-          stream_context_create([
-          'http' => [
-          'method' => 'POST',
-          'header' => 'Content-type: application/x-www-form-urlencoded',
-          'content' => http_build_query($content)]
-          ])*/
-        
-        //$return = json_decode($answer, true);
-        //$order = ClientOrder::findFirstOrDefault([]);
-       //return "<pre>" .print_r($return, true) ."</pre>";
-        //return $return;
-        
+       
         
     }
     
