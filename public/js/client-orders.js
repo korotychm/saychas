@@ -38,9 +38,8 @@ $(document).ready(function () {
           order.pickupProducts = [];
           order.total = 0;
           order.oldtotal = 0;
-          let orderTime = order.date * 1000;
-          let dateObject = new Date(milliseconds);
-          order.dateLocaled = dateObject.toLocaleString();
+          let orderDate = new Date(order.date * 1000);
+          order.dateLocaled = orderDate.toLocaleString();
 
           for (delivery of order.deliveryInfo.deliveries){
             for (requisition of delivery.requisitions){
