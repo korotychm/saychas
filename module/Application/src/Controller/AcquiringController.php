@@ -157,7 +157,7 @@ class AcquiringController extends AbstractActionController
             "RedirectDueDate" => date('Y-m-d\TH:i:s+03:00', (time() + $paramApi['time_order_live'] )) ,
            // "SuccessURL"  =>  $paramApi['success_url'],     
            // "FailURL"=> $paramApi['fail_url'],     
-            "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_TITLE),     
+            "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_DESCRIPTION),     
           ];
         //return new JsonModel(["result" => false, "answer" => $param]);
         $order = ClientOrder::find(["order_id" => $orderId /*/ "status" => 1 /**/]); 
@@ -165,7 +165,7 @@ class AcquiringController extends AbstractActionController
             return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
-        //$delivery_price = (int)$basket_info['delivery_price'];
+        $delivery_price = (int)$basket_info['delivery_price'];
         $defaultCard = $basket_info['paycard'];
         $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
         $delivery_tax = (int)$delivery_params['deliveryTax'];

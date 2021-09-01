@@ -1,3 +1,4 @@
+<?php use Application\Resource\Resource; ?>
 <div class="panel__delivery">
     <?php if($countDelevery and $addressDelevery and $payEnable):?>
       <div class="panel__delivery-item">
@@ -5,7 +6,7 @@
               <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
           </svg>
           <div>
-              <h2>Доставка</h2>
+              <h2><?=Resource::ORDER_DELIVERY_TITLE?></h2>
               <p><?=$countDeleveryText?>, <?=$timeDelevery?> <?=$addressDelevery?></p>
           </div>
       </div>
@@ -15,7 +16,7 @@
               <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
           </svg>
           <div>
-              <h2>Самовывоз</h2>
+              <h2><?=Resource::ORDER_PICKUP_TITLE?></h2>
               <p><?=$countSelfdelevery?> <?=($countSelfdelevery == 1)?"магазина":"магазинов" ?></p>
           </div>
       </div>
@@ -25,8 +26,8 @@
               <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
           </svg>
           <div>
-              <h2>Оплата</h2>
-              <p><?=($paycard and $cardinfo)?"Онлайн оплата картой <span class='panel__cardnumber'>$cardinfo</span>":"Оплатить банковской картой"?></p>
+              <h2><?=Resource::ORDER_PAYMENT_TITLE?></h2>
+              <p><?=($paycard and $cardinfo)?Resource::ORDER_MEMBER_PAYCARD_TITLE."<span class='panel__cardnumber'>$cardinfo</span>":Resource::ORDER_NEW_PAYCARD_TITLE?></p>
           </div>
       </div>
     <?php endif;?>
@@ -38,10 +39,10 @@
       <div class="panel__price-old"><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span> ₽</div>
     <?php endif; ?>
 </div>
-<div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
+<!-- div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
         <div class="question__icon">?</div>
     </div>
-</div>
+</div -->
 <div class="panel__table">
     <div class="panel__tr">
         <div>Товары (<span id="basketproductcount"><?=$productcount?></span>)</div>
@@ -54,14 +55,14 @@
     </div>
     <?php if ($countDelevery) :?>
       <div class="panel__tr">
-          <div> <b>Доставка <?=(!$ordermerge)?" за час":"за три часа"?> (<?=$countDelevery?>)</b></div>
+          <div> <b><?= Resource::ORDER_DELIVERY_TITLE?><?=(!$ordermerge) ? Resource::BASKET_SAYCHAS_short : Resource::BASKET_SAYCHAS3_short?> (<?=$countDelevery?>)</b></div>
           <div><?=number_format(($priceDelevery/100),0,",","&nbsp;")?> ₽</div>
       </div>
     <?php endif; ?>
 
     <?php if ($countSelfdelevery) :?>
       <div class="panel__tr">
-          <div>Самовывоз (<?=$countSelfdelevery?>)</div>
+          <div><?= Resource::ORDER_PICKUP_TITLE?>(<?=$countSelfdelevery?>)</div>
           <div><?=($countSelfdelevery * $priceSelfdelevery) ?> ₽</div>
       </div>
     <?php endif; ?>
@@ -70,5 +71,5 @@
 <?php if(!$payEnable):?>
   <div class="overcoverlocal"></div>
 <?php endif;?>
-<div class="btn btn--primary" id="sendbasketbutton">Перейти к оплате</div>
-<div class="panel__notice">Нажимая на кнопку, вы соглашаетесь с <a href="#">Условиями обработки перс. данных</a>, а также с <a href="#">Условиями продажи</a></div>
+  <div class="btn btn--primary" id="sendbasketbutton"><?= Resource::ORDER_PAYMENT_BUTTON ?></div>
+  <div class="panel__notice"><?= Resource::ORDER_AGGREMENT_NOTES ?></div>

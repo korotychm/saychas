@@ -53,6 +53,8 @@ class Resource
     const BASKET_SAYCHAS3_title = "сейчас за три часа";
     const BASKET_SAYCHAS_do = "в течение часа";
     const BASKET_SAYCHAS3_do = "в течение трех часов";
+    const BASKET_SAYCHAS_short = "за час";
+    const BASKET_SAYCHAS3_short = "за три часа";
     const ERROR_MESSAGE = "Ошибка! ";
 
     /*
@@ -100,11 +102,19 @@ class Resource
      */
     const ORDER_TITLE = "Мои заказы";
     const ORDER_EMPTY = "Заказов не найдено";
-    const ORDER_PAYMENT_TITLE = "Оплата заказа <OrderId/>. Saychas.ru "; // описание оплаты для платежной системы
+    const ORDER_PAYMENT_DESCRIPTION = "Оплата заказа <OrderId/>. Saychas.ru "; // описание оплаты для платежной системы
     const ORDER_PAYMENT_DELIVERY = "Стоимость доставки "; // описание оплаты для платежной системы
     const ORDER_NEW_PAYCARD_TEXT = "Расплачивайтесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз";
     const ORDER_NEW_PAYCARD_TITLE = "Оплата новой картой";
     const ORDER_MEMBER_PAYCARD_TITLE = "Оплата с привязанной карты";
+    const ORDER_DELIVERY_TITLE = "Доставка";
+    const ORDER_PICKUP_TITLE = "Самовывоз";
+    const ORDER_PAYMENT_TITLE = "Оплата";
+    const ORDER_PAYMENT_BUTTON = "Перейти к оплате";
+    const ORDER_AGGREMENT_NOTES = "Нажимая на кнопку, вы соглашаетесь с <a href=\"#\">Условиями обработки перс. данных</a>, а также с <a href=\"#\">Условиями продажи</a>";
+    
+    
+    
     /*
      * Числовые данные
      */

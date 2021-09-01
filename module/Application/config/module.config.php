@@ -303,7 +303,18 @@ return [
                         'action'     => 'sendBasketData',
                     ],
                 ],
-            ],//userAuth
+            ],
+            'get-client-order-bill' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/get-client-order-bill',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action'     => 'getOrderBill',
+                    ],
+                ],
+            ],
+            
             'product' => [
                 'type'    => Segment::class,
                 'options' => [

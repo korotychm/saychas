@@ -244,6 +244,19 @@ class UserDataController extends AbstractActionController
 
         return new JsonModel($answer);
     }
+    
+    public function getOrderBillAction()
+    {
+        //$post = $this->getRequest()->getPost(); 
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+
+            $answer = ['result' => true, 'description' => 'ok'];
+
+            return new JsonModel($answer);
+        
+    }
+    
 
     /**
      * Send Basket Data Action
