@@ -33,11 +33,11 @@ $(document).ready(function () {
     computed: {
       preparedOrders() {
         let orders = this.orders;
-        for (order in orders){
+        for (order of orders){
           order.products = [];
-          for (delivery in order.deliveryInfo.deliveries){
-            for (requisition in delivery.requisitions){
-              for (product in requisition.products){
+          for (delivery of order.deliveryInfo.deliveries){
+            for (requisition of delivery.requisitions){
+              for (product of requisition.products){
                 order.products.push(product);
               }
             }
