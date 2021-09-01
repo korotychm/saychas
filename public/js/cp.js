@@ -81,6 +81,7 @@ const Products = {
             if (!this.filtersCreated){
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
+              $('.filter .select').niceSelect();
             }
           });
     },
