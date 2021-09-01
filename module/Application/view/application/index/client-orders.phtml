@@ -26,7 +26,29 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                 <p>{{order.basketInfo.userGeoLocation.value}}</p>
               </div>
               <div class="orders-history__products">
-                <a v-for="product in order.products" href="">
+                <a v-for="product in order.deliveryProducts" :href="'/product/' + product.id">
+                  <div class="product-small-img">
+                    <img :src="'/images/product/' + product.img" :alt="product.title" />
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div v-if="order.deliveryInfo.pickup.length" class="orders-history__delivery">
+              <div class="orders-history__delivery-item">
+                  <h2>Самовывоз</h2>
+                  <div class="orders-history__statuses">
+                      <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
+                      <div class="orders-history__status orders-history__status--ready">Готов</div>
+                      <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
+                      <div class="orders-history__status orders-history__status--canceled">Отменен</div>
+                  </div>
+              </div>
+              <div class="orders-history__text">
+                <p>Из {{order.deliveryInfo.pickup.length}} магазинов</p>
+                <p>Хранение - до 19 мая включительно</p>
+              </div>
+              <div class="orders-history__products">
+                <a v-for="product in order.pickupProducts" :href="'/product/' + product.id">
                   <div class="product-small-img">
                     <img :src="'/images/product/' + product.img" :alt="product.title" />
                   </div>

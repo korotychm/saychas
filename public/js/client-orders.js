@@ -34,7 +34,8 @@ $(document).ready(function () {
       preparedOrders() {
         let orders = this.orders;
         for (order of orders){
-          order.products = [];
+          order.deliveryProducts = [];
+          order.pickupProducts = [];
           order.total = 0;
           order.oldtotal = 0;
           for (delivery of order.deliveryInfo.deliveries){
@@ -42,7 +43,22 @@ $(document).ready(function () {
               for (product of requisition.products){
                 product.img = this.products[product.id].image;
                 product.title = this.products[product.id].title;
-                order.products.push(product);
+                order.deliveryProducts.push(product);
+                order.total += (product.price / 100);
+                if (+product.discount > 0) {
+                  order.oldtotal += (product.price / (100 - product.discount));
+                } else {
+                  order.oldtotal += (product.price / 100);
+                }
+              }
+            }
+          }
+          for (delivery of order.deliveryInfo.pickup){
+            for (requisition of delivery.requisitions){
+              for (product of requisition.products){
+                product.img = this.products[product.id].image;
+                product.title = this.products[product.id].title;
+                order.pickupProducts.push(product);
                 order.total += (product.price / 100);
                 if (+product.discount > 0) {
                   order.oldtotal += (product.price / (100 - product.discount));
