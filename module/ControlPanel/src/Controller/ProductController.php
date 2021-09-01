@@ -104,6 +104,7 @@ class ProductController extends AbstractActionController
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
+        $this->productManager->setPageSize( !empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];

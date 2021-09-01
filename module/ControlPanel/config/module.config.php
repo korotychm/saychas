@@ -61,6 +61,7 @@ return [
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['showProducts', ], 'allow' => '+developer'],
+                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
         ]
     ],    
