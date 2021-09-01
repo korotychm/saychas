@@ -80,7 +80,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                 </div>
                 <div class="panel__table">
                     <div class="panel__tr">
-                        <div>Товары (order.count)</div>
+                        <div>Товары ({{order.count}})</div>
                         <div class="panel__tr-items-total">
                             <div>{{ order.total.toLocaleString() }} ₽</div>
                             <div v-if="(order.total > order.oldtotal)">{{ order.oldtotal.toLocaleString() }} ₽</div>
