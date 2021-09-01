@@ -158,72 +158,6 @@ class IndexController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
-    /************************************************************************************
-     * Product Actions
-     ************************************************************************************/
-    /**
-     * Show products action
-     * Shows a table of products
-     *
-     * @return ViewModel
-     */
-    public function showProductsAction()
-    {
-        
-        //$pageNo = $this->params()->fromRoute('page_no', '1');
-        $post = $this->getRequest()->getPost()->toArray();
-        $pageNo = $post['page_no'];
-        
-        $this->assertLoggedIn();
-        $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-        $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
-        $answer = $this->productManager->loadAll($url, $credentials);
-        $this->productManager->setPageSize(self::PRODUCTS_PER_PAGE);
-        $where = [
-            'provider_id' => $identity['provider_id'],
-        ];
-        $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
-        //$this->productManager->findTest();
-        
-        // json_encode($cursor, JSON_UNESCAPED_UNICODE)
-        $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
-        return $view->setTerminal(true);
-    }
-    
-    private function canUpdateProduct($params)
-    {
-        return true;
-    }
-    
-    private function canDeleteProduct($params)
-    {
-        return true;
-    }
-
-    public function updateProductAction()
-    {
-        $post = $this->getRequest()->getPost()->toArray();
-//        $result = $this->productManager->updateDocument([
-//            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
-//            'set' => ['characteristics.$.value' => '0.1345']
-//        ]);
-        if($this->canUpdateProduct($post)) {
-            $result = $this->productManager->updateDocument([
-                'where' => ['id' => $post['product_id'] ],
-                'set' => [
-                    'category_id' => $post['category_id'],
-                    'brand_id' => $post['brand_id'],
-                    'color' => $post['color'],
-                    'country' => $post['country'],
-                    'title' => $post['title']
-                ],
-            ]);
-        }
-        //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
-        return $result;
-    }
-
     /**
      * Show provider profile
      *
@@ -318,3 +252,100 @@ class IndexController extends AbstractActionController
 
 
 //$cursor = $this->productManager->findAll(['pageNo' => 1, 'filter' => $filter]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    /************************************************************************************
+//     * Product Actions
+//     ************************************************************************************/
+//    /**
+//     * Show products action
+//     * Shows a table of products
+//     *
+//     * @return ViewModel
+//     */
+//    public function showProductsAction()
+//    {
+//        
+//        //$pageNo = $this->params()->fromRoute('page_no', '1');
+//        $post = $this->getRequest()->getPost()->toArray();
+//        $pageNo = $post['page_no'];
+//        
+//        $this->assertLoggedIn();
+//        $identity = $this->authService->getIdentity();
+//        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
+//        $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
+//        $answer = $this->productManager->loadAll($url, $credentials);
+//        $this->productManager->setPageSize(self::PRODUCTS_PER_PAGE);
+//        $where = [
+//            'provider_id' => $identity['provider_id'],
+//        ];
+//        $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
+//        //$this->productManager->findTest();
+//        
+//        // json_encode($cursor, JSON_UNESCAPED_UNICODE)
+//        $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
+//        return $view->setTerminal(true);
+//    }
+//    
+//    private function canUpdateProduct($params)
+//    {
+//        return true;
+//    }
+//    
+//    private function canDeleteProduct($params)
+//    {
+//        return true;
+//    }
+//
+//    public function updateProductAction()
+//    {
+//        $post = $this->getRequest()->getPost()->toArray();
+////        $result = $this->productManager->updateDocument([
+////            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
+////            'set' => ['characteristics.$.value' => '0.1345']
+////        ]);
+//        if($this->canUpdateProduct($post)) {
+//            $result = $this->productManager->updateDocument([
+//                'where' => ['id' => $post['product_id'] ],
+//                'set' => [
+//                    'category_id' => $post['category_id'],
+//                    'brand_id' => $post['brand_id'],
+//                    'color' => $post['color'],
+//                    'country' => $post['country'],
+//                    'title' => $post['title']
+//                ],
+//            ]);
+//        }
+//        //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
+//        return $result;
+//    }
+
