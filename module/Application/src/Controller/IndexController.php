@@ -30,7 +30,7 @@ use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
-use Application\Model\Entity\ClientOrder;z
+use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\UserPaycard;
 use Laminas\Json\Json;
