@@ -28,7 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
               <div class="orders-history__products">
                 <a v-for="product in order.products" href="">
                   <div class="product-small-img">
-                    <img src="/images/products/product1.jpg" />
+                    <img :src="'/images/product/' + products[product.id].img" />
                   </div>
                 </a>
               </div>
