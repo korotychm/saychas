@@ -245,19 +245,22 @@ class UserDataController extends AbstractActionController
         return new JsonModel($answer);
     }
     
+    /**
+     * Get final bill for client order and confirm payment
+     *
+     * @return Json
+     */
     public function getOrderBillAction()
     {
-        //$post = $this->getRequest()->getPost(); 
+        $post = $this->getRequest()->getPost(); 
+        mail("d.sizov@saychas.ru", "confirm_payment.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
-
-            $answer = ['result' => true, 'description' => 'ok'];
-
-            return new JsonModel($answer);
+        $answer = ['result' => true, 'description' => 'ok'];
+        return new JsonModel($answer);
         
     }
     
-
     /**
      * Send Basket Data Action
      *

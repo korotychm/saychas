@@ -104,6 +104,8 @@ class ExternalCommunicationService
         
         //$return['basketinfo']['username'] = $content['username'];
         $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
+        $return['basketinfo']['timepoint'] = $content["timepoint"];
+        $return['basketinfo']['ordermerge'] = $content["ordermerge"];
         $return['basketinfo']['delivery_price'] = $content['delivery_price'];
         $return['products'] = $productupdate;
         $return['response'] = $this->sendCurlRequest($url, $content);

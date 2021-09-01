@@ -569,6 +569,10 @@ class IndexController extends AbstractActionController
         $user = User::find(['id' => $userId]);
         $userData = $user->getUserData();
         $phone = $user->getPhone();
+        $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
+        $paycards =($userPaycards->count())?$userPaycards:null;
+        $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
+        
         if (!$phone) {
             /* $this->getResponse()->setStatusCode(403);
               //return new ViewModel()->setTemplate('error/403.phtml')
@@ -589,6 +593,7 @@ class IndexController extends AbstractActionController
             "id" => "userid: " . $userId,
             "bread" => "bread ",
             "auth" => ($user->getPhone()),
+            "paycards" =>  $cardInfo, 
         ]);
     }
 
