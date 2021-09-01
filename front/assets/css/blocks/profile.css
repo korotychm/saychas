@@ -50,7 +50,7 @@
 .orders-history__delivery:first-child {
   margin-top: 0;
 }
-.orders-history__delivery--item {
+.orders-history__delivery-item {
   display: flex;
   align-items: center;
 }
