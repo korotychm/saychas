@@ -8,16 +8,15 @@ namespace ControlPanel\Controller;
 
 use ControlPanel\Service\HtmlContentProvider;
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 
 class ProductController extends AbstractActionController
 {
-    
+
     private const PRODUCTS_PER_PAGE = 2;
-    
+
     /** @var ContainerInterface */
     protected $container;
 
@@ -26,15 +25,20 @@ class ProductController extends AbstractActionController
 
     /** @var HtmlContentProvider */
     protected $htmlContentProvider;
-
+    
+    /** @var laminas.entity.manager */
     protected $entityManager;
-
+    
+    /** @var UserManager */
     protected $userManager;
-
+    
+    /** @var ProductManager */
     protected $productManager;
-
+    
+    /** @var AuthenticationService */
     protected $authService;
-
+    
+    /** @var Config */
     protected $config;
 
     /**
@@ -55,12 +59,18 @@ class ProductController extends AbstractActionController
         $this->config = $container->get('Config');
     }
 
+    /**
+     * onDispatch
+     * 
+     * @param MvcEvent $e
+     * @return Response
+     */
     public function onDispatch(MvcEvent $e)
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
         $hasIdentity = $this->authService->hasIdentity();
-        if(!$hasIdentity) {
+        if (!$hasIdentity) {
             $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
         }
         return $response;
@@ -69,7 +79,7 @@ class ProductController extends AbstractActionController
     /**
      * Show products action
      * Shows a table of products
-     * 
+     *
      * @return JsonModel
      */
     public function showProductsAction()
@@ -78,15 +88,17 @@ class ProductController extends AbstractActionController
         //$pageNo = $this->params()->fromRoute('page_no', '1');
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
-        
+
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login']];
         $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
+
         $answer['http_code'] = '200';
-        if(true != $useCache) {
+        if (true != $useCache) {
             $answer = $this->productManager->loadAll($url, $credentials);
         }
-        $this->productManager->setPageSize( !empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
+
+        $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
@@ -96,7 +108,7 @@ class ProductController extends AbstractActionController
 
     /**
      * Show products from cache
-     * 
+     *
      * @return JsonModel
      */
     public function showProductsFromCacheAction()
@@ -104,19 +116,24 @@ class ProductController extends AbstractActionController
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
-        $this->productManager->setPageSize( !empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
+        $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
+        foreach($post['filters'] as $key => $value) {
+            if(!empty($value)) {
+                $where[$key] = $value;
+            }
+        }
         $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
-        return new JsonModel(['data' => $cursor, ]);
+        return new JsonModel(['data' => $cursor,]);
     }
-    
+
     private function canUpdateProduct($params)
     {
         return true;
     }
-    
+
     private function canDeleteProduct($params)
     {
         return true;
@@ -129,9 +146,9 @@ class ProductController extends AbstractActionController
 //            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
 //            'set' => ['characteristics.$.value' => '0.1345']
 //        ]);
-        if($this->canUpdateProduct($post)) {
+        if ($this->canUpdateProduct($post)) {
             $result = $this->productManager->updateDocument([
-                'where' => ['id' => $post['product_id'] ],
+                'where' => ['id' => $post['product_id']],
                 'set' => [
                     'category_id' => $post['category_id'],
                     'brand_id' => $post['brand_id'],
@@ -151,39 +168,14 @@ class ProductController extends AbstractActionController
      */
     private function assertLoggedIn()
     {
-        if(!$this->authService->hasIdentity()) {
+        if (!$this->authService->hasIdentity()) {
             return new JsonModel(['data' => false]);
         }
     }
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //$pageNo = $post['page_no'];
+//$pageNo = $post['page_no'];
 //        $rowsPerPage = $post['rows_per_page'];
 //        $filters = $post['filters'];
 //        $search = $post['search'];
