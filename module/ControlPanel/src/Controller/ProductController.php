@@ -25,19 +25,19 @@ class ProductController extends AbstractActionController
 
     /** @var HtmlContentProvider */
     protected $htmlContentProvider;
-    
+
     /** @var laminas.entity.manager */
     protected $entityManager;
-    
+
     /** @var UserManager */
     protected $userManager;
-    
+
     /** @var ProductManager */
     protected $productManager;
-    
+
     /** @var AuthenticationService */
     protected $authService;
-    
+
     /** @var Config */
     protected $config;
 
@@ -61,7 +61,7 @@ class ProductController extends AbstractActionController
 
     /**
      * onDispatch
-     * 
+     *
      * @param MvcEvent $e
      * @return Response
      */
@@ -94,7 +94,7 @@ class ProductController extends AbstractActionController
         $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
 
         $answer['http_code'] = '200';
-        if (true != $useCache) {
+        if (true /* != $useCache */) {
             $answer = $this->productManager->loadAll($url, $credentials);
         }
 
@@ -120,10 +120,13 @@ class ProductController extends AbstractActionController
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
-        foreach($post['filters'] as $key => $value) {
-            if(!empty($value)) {
+        foreach ($post['filters'] as $key => $value) {
+            if (!empty($value)) {
                 $where[$key] = $value;
             }
+        }
+        if (!empty($post['search'])) {
+            $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
         }
         $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
         return new JsonModel(['data' => $cursor,]);

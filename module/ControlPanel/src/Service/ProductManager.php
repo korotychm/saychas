@@ -83,10 +83,9 @@ class ProductManager implements LoadableInterface
             $cursor = $collection->find
             (
                 $params['where'],
-                //['provider_id' => '00003', 'category_id' => '000000006', ],
                 [
-//                    'skip' => $limits['min'] - 1,
-//                    'limit' => $this->pageSize,
+                    'skip' => $limits['min'] - 1,
+                    'limit' => $this->pageSize,
                     'projection' => [
                         'id' => 1,
                         'title' => 1,
@@ -141,7 +140,7 @@ class ProductManager implements LoadableInterface
             
             if(!empty($c['id'])) {
                 $price = Price::find([ 'product_id' => $c['id'] ]);
-                $c['price'] = $price->getPrice();
+                $c['price'] = (null == $price) ? 0 : $price->getPrice();
             }
 
         }
