@@ -69,32 +69,46 @@ class ProductController extends AbstractActionController
     /**
      * Show products action
      * Shows a table of products
-     *
-     * @return ViewModel
+     * 
+     * @return JsonModel
      */
     public function showProductsAction()
     {
-        
+        $this->assertLoggedIn();
         //$pageNo = $this->params()->fromRoute('page_no', '1');
         $post = $this->getRequest()->getPost()->toArray();
-        $pageNo = $post['page_no'];
-        $rowsPerPage = $post['rows_per_page'];
+        $useCache = $post['use_cache'];
         
-        $this->assertLoggedIn();
         $identity = $this->authService->getIdentity();
         $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
         $url = $this->config['parameters']['1c_provider_links']['lk_product_info'];
-        $answer = $this->productManager->loadAll($url, $credentials);
-        $this->productManager->setPageSize( !empty($rowsPerPage) ? (int) $rowsPerPage : self::PRODUCTS_PER_PAGE);
+        $answer['http_code'] = '200';
+        if(true != $useCache) {
+            $answer = $this->productManager->loadAll($url, $credentials);
+        }
+        $this->productManager->setPageSize( !empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
-        $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
-//        echo '<pre>';
-//        print_r($cursor);
-//        echo '</pre>';
-//        exit;
+        $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
+    }
+
+    /**
+     * Show products from cache
+     * 
+     * @return JsonModel
+     */
+    public function showProductsFromCacheAction()
+    {
+        $this->assertLoggedIn();
+        $post = $this->getRequest()->getPost()->toArray();
+        $identity = $this->authService->getIdentity();
+        $where = [
+            'provider_id' => $identity['provider_id'],
+        ];
+        $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        return new JsonModel(['data' => $cursor, ]);
     }
     
     private function canUpdateProduct($params)
@@ -142,3 +156,33 @@ class ProductController extends AbstractActionController
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //$pageNo = $post['page_no'];
+//        $rowsPerPage = $post['rows_per_page'];
+//        $filters = $post['filters'];
+//        $search = $post['search'];
