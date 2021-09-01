@@ -80,6 +80,7 @@ const Products = {
             this.products = response.data.data.body;
             if (!this.filtersCreated){
               this.filters = response.data.data.filters;
+              console.log(this.filters);
               this.filtersCreated = true;
               $('.filter .select').niceSelect();
             }
