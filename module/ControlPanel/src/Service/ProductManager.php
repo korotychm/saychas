@@ -80,6 +80,7 @@ class ProductManager implements LoadableInterface
         if (isset($params['pageNo'])) {
             $limits = $this->calcLimits($params['pageNo']);
             $collection = $this->db->{$this->collectionName};
+            $c = $collection->count($params['where']);
             $cursor = $collection->find
             (
                 $params['where'],
@@ -104,6 +105,7 @@ class ProductManager implements LoadableInterface
             );
             $result['body'] = $cursor->toArray();
             $result['limits'] = $limits;
+            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
             return $result;
         }
         return [];
@@ -118,24 +120,24 @@ class ProductManager implements LoadableInterface
             if(!empty($c['category_id'])) {
                 //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
                 $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
-                $c['category_name'] = $category->getTitle();
+                $c['category_name'] = (null == $category) ? '' : $category->getTitle();
                 $categories[] = [$c['category_id'], $c['category_name'], ];
             }
 
             if(!empty($c['brand_id'])) {
                 $brand = Brand::find(['id' => $c['brand_id']]);
-                $c['brand_name'] = $brand->getTitle();
+                $c['brand_name'] = (null == $brand) ? '' : $brand->getTitle();
                 $brands[] = [$c['brand_id'], $c['brand_name'],];
             }
 
             if(!empty($c['country'])) {
                 $country = Country::find(['id' => $c['country']]);
-                $c['country_name'] = $country->getTitle();
+                $c['country_name'] = (null == $country) ? '' : $country->getTitle();
             }
 
             if(!empty($c['color'])) {
                 $color = Color::find(['id' => $c['color']]);
-                $c['color_name'] = $color->getTitle();
+                $c['color_name'] = (null == $color) ? '' : $color->getTitle();
             }
             
             if(!empty($c['id'])) {
