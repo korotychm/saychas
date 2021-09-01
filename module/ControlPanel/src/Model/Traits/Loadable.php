@@ -93,11 +93,14 @@ trait Loadable
      * @param int $pageNumber
      * @return array
      */
-    public function calcLimits(int $pageNumber) : array
+    public function calcLimits(int $pageNumber, $collectionSize = -1) : array
     {
         $limits = ['min' => 0, 'max' => 0, 'total' => 0];
         
-        $this->collectionSize = $this->countCollection();
+        $this->collectionSize = $collectionSize;
+        if($collectionSize < 0) {
+            $this->collectionSize = $this->countCollection();
+        }
 
         if (0 < $this->collectionSize) {
             $div = (int) ($this->collectionSize / $this->pageSize);
