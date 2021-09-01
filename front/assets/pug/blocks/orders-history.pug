@@ -1,0 +1,98 @@
+div.orders-history
+  div.orders-history__item
+    div.orders-history__left
+      div.orders-history__delivery
+        h2 Доставка
+        div.orders-history__statuses
+          div.orders-history__status.orders-history__status--progress
+            span Собирается
+          div.orders-history__status.orders-history__status--ready Готов
+          div.orders-history__status.orders-history__status--deliveried Доставлен
+          div.orders-history__status.orders-history__status--canceled Отменен
+      div.orders-history__text
+        p 5 доставок, сегодня с 15 до 16
+        p Москва, Самая длинная угрешская улица, 2с34
+      div.orders-history__products
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+      div.orders-history__delivery
+        h2 Самовывоз
+        div.orders-history__statuses
+          div.orders-history__status.orders-history__status--progress
+            span Собирается
+          div.orders-history__status.orders-history__status--ready Готов
+          div.orders-history__status.orders-history__status--deliveried Доставлен
+          div.orders-history__status.orders-history__status--canceled Отменен
+      div.orders-history__text
+        p 5 доставок, сегодня с 15 до 16
+        p Москва, Самая длинная угрешская улица, 2с34
+      div.orders-history__products
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+        a(href="")
+          div.product-small-img
+            img(src="/images/products/product1.jpg")
+          
+          
+          
+    div.orders-history__right
+      div.panel.panel--cart.panel--history
+        input(type="checkbox").orders-history__detailed-trigger#orders-detailed
+        div.panel__delivery
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 Заказ №000234
+              p Создан 12 мая 2021 в 14:46
+        div.panel__zip
+        div.panel__price
+          div.panel__price-current 17 990 ₽
+          div.panel__price-old 21 990 ₽
+        div.panel__bonuses
+          <span>+179</span> сейбонов
+          div.question
+            div.question__icon ?
+        div.panel__table
+          div.panel__tr
+            div Товары (13)
+            div.panel__tr-items-total
+              div 389 800 ₽
+              div 402 190 ₽
+          div.panel__tr
+            div 
+              b Доставка за час
+            div 899 ₽
+          div.panel__tr
+            div Самовывоз
+            div 0 ₽
+        label(for="orders-detailed").btn.btn--secondary Подробности заказа
+        
+      
+      
+      

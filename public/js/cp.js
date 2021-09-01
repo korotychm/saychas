@@ -77,7 +77,8 @@ const Products = {
             page_no : this.page_no,
             rows_per_page : this.rows_per_page,
             filters: this.selectedFilters,
-            search: this.search
+            search: this.search,
+            use_cache: this.filtersCreated
           }))
           .then(response => {
             console.log(response.data);
