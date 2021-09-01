@@ -14,7 +14,8 @@ const Products = {
     }
   },
   template:
-    `<form v-once class="filter">
+    `<div>
+      <form v-once class="filter">
         <div class="filter__search">
           <input class="input input--white" type="text" placeholder="Быстрый поиск" />
           <button>
@@ -39,7 +40,6 @@ const Products = {
         </div>
       </form>
 
-      <ProductsFilters></ProductsFilters>
       <div class="products__list">
         <div class="thead">
           <div class="td"></div>
