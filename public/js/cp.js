@@ -53,7 +53,7 @@ const Products = {
             rows_per_page : this.rows_per_page
           }))
           .then(response => (
-            console.log(response.data.data.body),
+            console.log(response.data),
             this.pages = response.data.data.limits.total,
             this.products = response.data.data.body
           ));
