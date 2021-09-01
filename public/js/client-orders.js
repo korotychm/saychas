@@ -38,11 +38,14 @@ $(document).ready(function () {
           for (delivery of order.deliveryInfo.deliveries){
             for (requisition of delivery.requisitions){
               for (product of requisition.products){
+                product.img = this.products[product.id].img;
+                product.title = this.products[product.id].title;
                 order.products.push(product);
               }
             }
           }
         }
+        console.log(orders);
         return orders;
       }
     },
