@@ -10,7 +10,10 @@ const Products = {
       pages: 1,
       filters: {},
       imgPath: productImgPath,
-      selectedFilters: {},
+      selectedFilters: {
+        brands: '',
+        categories: ''
+      },
       filtersCreated: false
     }
   },
