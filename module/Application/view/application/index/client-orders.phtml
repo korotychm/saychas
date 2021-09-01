@@ -10,7 +10,28 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
   <div id="client-orders">
     <div v-if="orders.length" class="orders-history">
         <div v-for="order in orders" class="orders-history__item">
-          
+          <div class="orders-history__left">
+            <div v-if="order.deliveryInfo.deliveries.length" class="orders-history__delivery">
+                <h2>Доставка</h2>
+                <div class="orders-history__statuses">
+                    <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
+                    <div class="orders-history__status orders-history__status--ready">Готов</div>
+                    <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
+                    <div class="orders-history__status orders-history__status--canceled">Отменен</div>
+                </div>
+                <div class="orders-history__text">
+                    <p>{{order.deliveryInfo.delivery.length}} доставок, сегодня с 15 до 16</p>
+                    <p>{{order.basketInfo.userGeoLocation.value}}</p>
+                </div>
+                <div class="orders-history__products">
+                    <a href="">
+                        <div class="product-small-img">
+                          <img src="/images/products/product1.jpg" />
+                        </div>
+                    </a>
+                </div>
+            </div>
+          </div>
           <div class="orders-history__right">
             <div class="panel panel--cart panel--history">
                 <input class="orders-history__detailed-trigger" type="checkbox" id="orders-detailed" />
