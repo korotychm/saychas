@@ -71,8 +71,12 @@ const Products = {
     </div>`,
   methods: {
     getProducts() {
+      let requestUrl = '/control-panel/show-products';
+      if (filtersCreated) {
+        requestUrl = '/control-panel/show-products-from-cache';
+      }
       axios
-        .post('/control-panel/show-products',
+        .post(requestUrl,
           Qs.stringify({
             page_no : this.page_no,
             rows_per_page : this.rows_per_page,
