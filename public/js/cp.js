@@ -86,7 +86,7 @@ const Products = {
             if (!this.filtersCreated){
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
-              setTimeout(() => $('.filter .select').niceSelect(), 100);
+              //setTimeout(() => $('.filter .select').niceSelect(), 100);
             }
           });
     },
