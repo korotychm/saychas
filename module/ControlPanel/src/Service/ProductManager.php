@@ -150,11 +150,6 @@ class ProductManager implements LoadableInterface
         return $cursor;
     }
     
-    public function findCategories($params)
-    {
-        
-    }
-
     public function updateDocument($params)
     {
         $collection = $this->db->{$this->collectionName};
