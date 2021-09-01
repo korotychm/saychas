@@ -38,6 +38,7 @@ $(document).ready(function () {
           order.pickupProducts = [];
           order.total = 0;
           order.oldtotal = 0;
+          order.count = 0;
           let orderDate = new Date(order.date * 1000);
           order.dateLocaled = orderDate.toLocaleString();
 
@@ -53,6 +54,7 @@ $(document).ready(function () {
                 } else {
                   order.oldtotal += (product.price / 100);
                 }
+                order.count++;
               }
             }
           }
@@ -68,6 +70,7 @@ $(document).ready(function () {
                 } else {
                   order.oldtotal += (product.price / 100);
                 }
+                order.count++;
               }
             }
           }
