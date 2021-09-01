@@ -71,7 +71,7 @@ const Products = {
           Qs.stringify({
             page_no : this.page_no,
             rows_per_page : this.rows_per_page,
-            filters: selectedFilters
+            filters: this.selectedFilters
           }))
           .then(response => (
             console.log(response.data),
