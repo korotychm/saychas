@@ -28,13 +28,13 @@ const Products = {
           </button>
         </div>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.categories" value="">
+          <select class="select select--white" v-model="selectedFilters.categories" value="" @change="loadPage()">
             <option value="" selected >Все категории</option>
             <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
           </select>
         </div>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.brands" value="">
+          <select class="select select--white" v-model="selectedFilters.brands" value="" @change="loadPage()">
             <option value="" selected >Все бренды</option>
             <option v-for="brand in filters.brands" :value="brand[0]">{{ brand[1] }}</option>
           </select>
@@ -88,7 +88,7 @@ const Products = {
             }
           });
     },
-    loadPage(index) {
+    loadPage(index = 1) {
       this.page_no = index;
       this.getProducts();
     }
