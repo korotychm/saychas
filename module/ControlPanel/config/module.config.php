@@ -61,6 +61,7 @@ return [
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['showProducts', ], 'allow' => '+developer'],
+                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
         ]
     ],    
@@ -127,6 +128,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'show-products',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-products-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-products-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'show-products-from-cache',
                             ],
                         ],
                         // 'may_terminate' => true,

@@ -153,10 +153,17 @@ $(function () {
                 error403(data.status);
             });
         } else if ('productsId' === ths.currentTarget.id) {
-            $.post('/control-panel/show-products', {page_no: 1}, function (data) {
+            $.post('/control-panel/show-products', {page_no: 1, rows_per_page: 10}, function (data) {
                 //redirectToLogin(data);
-                $.each(data.data, function(idx, val){
-                    console.log($(val));
+                //console.log(data.data.body);
+                var sum = '';
+                $.each(data.data.body, function(idx, val){
+                    //console.log($(val));
+                    //var e = $('<tr><td>'+_args.NomerZakazaText+ '</td></tr>');
+                    //var e = $(`<div>${val.id}</div>`);
+                    sum += `<div>${val.id} ${val.category_id} ${val.title}</div>`;
+                    $('#controlPanelContentId').html();
+                    $('#controlPanelContentId').html(sum);
                     //$('#controlPanelContentId').append($(val).html());
                 });
                 

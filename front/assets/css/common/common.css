@@ -14,6 +14,9 @@ body {
   box-sizing: border-box;
   font-family: 'Montserrat';
 }
+.main {
+  min-height: calc(100vh - 600px);
+}
 .container {
   width: 1490px;
   margin: auto;
