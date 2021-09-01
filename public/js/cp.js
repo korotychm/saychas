@@ -10,12 +10,13 @@ const Products = {
       pages: 1,
       filters: {},
       imgPath: productImgPath,
-      selectedFilters: {}
+      selectedFilters: {},
+      filtersCreated: false
     }
   },
   template:
     `<div>
-      <form v-once class="filter">
+      <form class="filter">
         <div class="filter__search">
           <input class="input input--white" type="text" placeholder="Быстрый поиск" />
           <button>
@@ -77,7 +78,10 @@ const Products = {
             console.log(response.data),
             this.pages = response.data.data.limits.total,
             this.products = response.data.data.body,
-            this.filters = response.data.data.filters
+            if (!this.filtersCreated) {
+              this.filters = response.data.data.filters;
+              this.filtersCreated = true;
+            }
           ));
     },
     loadPage(index) {
