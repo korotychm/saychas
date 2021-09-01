@@ -16,9 +16,6 @@ const Products = {
   },
   template:
     `<div>
-      <div v-for="category in filters.categories">
-        {{ category }}{{ category[0] }}{{ category[1] }}
-      </div>
       <form class="filter">
         <div class="filter__search">
           <input class="input input--white" type="text" placeholder="Быстрый поиск" />
@@ -84,7 +81,7 @@ const Products = {
             if (!this.filtersCreated){
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
-              $('.filter .select').niceSelect();
+              setTimeout(() => $('.filter .select').niceSelect(), 100);
             }
           });
     },
