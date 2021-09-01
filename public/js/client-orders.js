@@ -30,6 +30,22 @@ $(document).ready(function () {
       orders: [],
       products: []
     },
+    computed: {
+      preparedOrders() {
+        let orders = this.orders;
+        for (order in orders){
+          order.products = [];
+          for (delivery in order.deliveryInfo.deliveries){
+            for (requisition in delivery.requisitions){
+              for (product in requisition.products){
+                order.products.push(product);
+              }
+            }
+          }
+        }
+        return orders;
+      }
+    },
     methods: {
       getClientOrders() {
         axios

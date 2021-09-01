@@ -8,8 +8,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
 <div class="profile-page">
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div id="client-orders">
-    <div v-if="orders.length" class="orders-history">
-        <div v-for="order in orders" class="orders-history__item">
+    <div v-if="preparedOrders.length" class="orders-history">
+        <div v-for="order in preparedOrders" class="orders-history__item">
           <div class="orders-history__left">
             <div v-if="order.deliveryInfo.deliveries.length" class="orders-history__delivery">
               <div class="orders-history__delivery-item">
@@ -26,7 +26,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                 <p>{{order.basketInfo.userGeoLocation.value}}</p>
               </div>
               <div class="orders-history__products">
-                <a href="">
+                <a v-for="product in order.products" href="">
                   <div class="product-small-img">
                     <img src="/images/products/product1.jpg" />
                   </div>
