@@ -35,12 +35,20 @@ $(document).ready(function () {
         let orders = this.orders;
         for (order of orders){
           order.products = [];
+          order.total = 0;
+          order.oldtotal = 0;
           for (delivery of order.deliveryInfo.deliveries){
             for (requisition of delivery.requisitions){
               for (product of requisition.products){
                 product.img = this.products[product.id].image;
                 product.title = this.products[product.id].title;
                 order.products.push(product);
+                order.total += +product.price;
+                if (+product.discount > 0) {
+                  order.oldtotal += (product.price / (100 - product.discount) * 100);
+                } else {
+                  order.oldtotal += product.price;
+                }
               }
             }
           }
