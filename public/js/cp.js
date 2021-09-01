@@ -77,13 +77,14 @@ const Products = {
           .then(response => (
             console.log(response.data),
             this.pages = response.data.data.limits.total,
-            this.products = response.data.data.body
-          )).then(response => {
-            if (!this.filtersCreated) {
-              this.filters = response.data.data.filters;
-              this.filtersCreated = true;
+            this.products = response.data.data.body,
+            {
+              if (!this.filtersCreated) {
+                this.filters = response.data.data.filters;
+                this.filtersCreated = true;
+              }
             }
-          });
+          ));
     },
     loadPage(index) {
       this.page_no = index;
