@@ -32,7 +32,7 @@ $(document).ready(function () {
     },
     computed: {
       preparedOrders() {
-        if (!this.orders.deliveryInfo && this.orders.deliveryInfo.deliveries != undefined && this.orders.deliveryInfo.pickup != undefined) return this.orders;
+        //if (!this.orders.deliveryInfo && this.orders.deliveryInfo.deliveries != undefined && this.orders.deliveryInfo.pickup != undefined) return this.orders;
         let orders = this.orders;
         for (order of orders){
           order.deliveryProducts = [];
