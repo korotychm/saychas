@@ -6,7 +6,7 @@ function getClientOrders(){
             cache: false,
             success: function (data) {
                 //if(data.result == 1)
-                $("#order-list").html(JSON.stringify(data,  null, 2 ));
+                $("#order-list").html(JSON.stringify(data, null, '\t' ));
             },
             error: function (xhr, ajaxOptions, thrownError) {
               showServicePopupWindow(
