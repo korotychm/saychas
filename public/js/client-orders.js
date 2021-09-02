@@ -41,7 +41,12 @@ $(document).ready(function () {
           order.oldtotal = 0;
           order.count = 0;
           let orderDate = new Date(order.date * 1000);
-          order.dateLocaled = orderDate.toLocaleString();
+          if (this.isToday(orderDate)){
+            order.dateLocaled = 'сегодня';
+          } else {
+            order.dateLocaled = orderDate.toLocaleString({day: "numeric", month: "long", year: "numeric"});
+          }
+          order.timeLocaled = orderDate.toLocaleString({hour: "numeric", minute: "numeric"});
 
           let pickupCount = order.deliveryInfo.pickup.length;
           if (pickupCount == 1){
@@ -140,6 +145,12 @@ $(document).ready(function () {
             this.products = response.data.productsMap,
             console.log(this.orders)
           ));
+      },
+      isToday(someDate) {
+          const today = new Date();
+          return someDate.getDate() == today.getDate() &&
+            someDate.getMonth() == today.getMonth() &&
+            someDate.getFullYear() == today.getFullYear()
       }
     },
     mounted() {

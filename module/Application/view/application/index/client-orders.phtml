@@ -22,7 +22,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                   </div>
               </div>
               <div class="orders-history__text">
-                <p>{{order.deliveryInfo.deliveries.length}} {{order.deliveryUnit}}<span v-if="order.timepoint">, сегодня с {{order.timepoint[0]}}.00 до {{order.timepoint[1]}}.00</span></p>
+                <p>{{order.deliveryInfo.deliveries.length}} {{order.deliveryUnit}}<span v-if="order.timepoint">, {{ dateLocaled }} с {{order.timepoint[0]}}:00 до {{order.timepoint[1]}}:00</span></p>
                 <p>{{order.basketInfo.userGeoLocation.value}}</p>
               </div>
               <div class="orders-history__products">
@@ -64,7 +64,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                         </svg>
                         <div>
                             <h2>Заказ №{{ order.orderId }}</h2>
-                            <p>Создан {{ order.dateLocaled }}</p>
+                            <p>Создан {{ order.dateLocaled }}, {{ order.timeLocaled }}</p>
                         </div>
                     </div>
                 </div>
