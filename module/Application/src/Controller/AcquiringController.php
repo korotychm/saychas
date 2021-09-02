@@ -204,10 +204,10 @@ class AcquiringController extends AbstractActionController
         }
         //return new JsonModel($param);
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
-        return new JsonModel($tinkoffAnswer);
+        //return new JsonModel($tinkoffAnswer);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
             //$this->
-            $order->setPaymentInfo(tinkoffAnswer['answer']);
+            $order->setPaymentInfo($tinkoffAnswer['answer']);
             $order->persist(["order_id" => $orderId, "status" => 1 ]);
             return new JsonModel(["result" => true, 'param' => $param,  "answer" =>$tinkoffAnswer['answer']]);
         }
