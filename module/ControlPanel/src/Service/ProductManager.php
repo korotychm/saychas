@@ -74,6 +74,58 @@ class ProductManager implements LoadableInterface
         $this->entityManager->initRepository(Color::class);
         $this->entityManager->initRepository(Price::class);
     }
+    
+    public function findFilters($params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $cursor = $collection->find($params['where'], ['projection' => ['_id' => 0, 'category_id' => 1, 'brand_id' => 1]])->toArray();
+        $categories = [];
+        $brands = [];
+        foreach($cursor as &$c) {
+            if(!empty($c['category_id'])) {
+                $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
+                $c['category_name'] = (null == $category) ? '' : $category->getTitle();
+                $categories[] = [$c['category_id'], $c['category_name'], ];
+            }
+            if(!empty($c['brand_id'])) {
+                $brand = Brand::find(['id' => $c['brand_id']]);
+                $c['brand_name'] = (null == $brand) ? '' : $brand->getTitle();
+                $brands[] = [$c['brand_id'], $c['brand_name'],];
+            }
+        }
+        return ['categories' => $categories, 'brands' => $brands];
+    }
+    
+    private function findCategories($params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $results = $collection->distinct('category_id', $params['where']);
+        $accumulator = [];
+        foreach($results as &$c) {
+            //$c1 = $c;
+            if(!empty($c)) {
+                $category = $this->categoryRepo->findCategory(['id' => $c]);
+                $category_name = (null == $category) ? '' : $category->getTitle();
+                $accumulator[] = [$c, $category_name, ];
+            }
+        }
+        return $accumulator;
+    }
+    
+    private function findBrands($params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $results = $collection->distinct('brand_id', $params['where']);
+        $accumulator = [];
+        foreach($results as &$c) {
+            if(!empty($c)) {
+                $brand = Brand::find(['id' => $c]);
+                $brand_name = (null == $brand) ? '' : $brand->getTitle();
+                $accumulator[] = [$c, $brand_name,];
+            }
+        }
+        return $accumulator;
+    }
 
     public function findAll($params)
     {
@@ -147,8 +199,9 @@ class ProductManager implements LoadableInterface
 
         }
 
-        $cursor['filters']['categories'] = $categories;
-        $cursor['filters']['brands'] = $brands;
+        $cursor['filters']['categories'] = $this->findCategories($params);
+        $cursor['filters']['brands'] = $this->findBrands($params);
+
         return $cursor;
     }
     
