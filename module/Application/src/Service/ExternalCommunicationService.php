@@ -117,14 +117,15 @@ class ExternalCommunicationService
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
         $deliveries = Json::encode($content['response']['delivery_info']);
-        $payment = Json::encode([]);
+        $jsonNull = Json::encode([]);
         $orderId = $content['response']['order_id'];
-//      $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+    //    $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         $order->setOrderId($orderId); 
         $order->setUserId($userId); 
         $order->setDeliveryInfo($deliveries); 
-        $order->setBasketInfo($basketinfo); 
-        //$order->setPaymentInfo($payment); 
+        $order->setBasketInfo($jsonNull); 
+        $order->setPaymentInfo($jsonNull); 
+        $order->setConfirmInfo($payment); 
         $order->setDateCreated(time());
         try {
             $order->persist(['order_id'=>$orderId]);
