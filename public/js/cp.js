@@ -118,7 +118,7 @@ const Stores = {
             this.response = response.data;
           });
     }
-  }
+  },
   created: function(){
     this.getStores();
   }
