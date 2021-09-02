@@ -171,15 +171,16 @@ class AjaxController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $orders = ClientOrder::findAll(["where" => ['user_id' => $userId]]);
-        if (!empty($orders)) {
-            $return["order_list"] = $this->htmlProvider->orderList($orders);
+        if ($orders->cont() < 1) {
+            return new JsonModel(["result" => false]);
         }
+        $return["order_list"] = $this->htmlProvider->orderList($orders);
         $where = new Where();
         $where->equalTo('user_id', $userId);
         $where->notEqualTo('order_id', 0);
         $columns = ['product_id'];
         $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
-        if (empty($userBasketHistory)) {
+        if ($userBasketHistory->count() < 1) {
             return new JsonModel(["result" => false]);
         }
         foreach ($userBasketHistory as $basketItem) {
