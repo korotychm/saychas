@@ -49,6 +49,7 @@ $(document).ready(function () {
           } else {
             order.pickupUnit = 'магазинов';
           }
+
           let deliveryCount = order.deliveryInfo.deliveries.length;
           if (deliveryCount == 1){
             order.deliveryUnit = 'доставка';
@@ -56,6 +57,31 @@ $(document).ready(function () {
             order.deliveryUnit = 'доставки';
           } else {
             order.deliveryUnit = 'доставок';
+          }
+
+          if (order.basketInfo.ordermerge && order.basketInfo.timepoint){
+            order.basketInfo.timepoint = order.basketInfo.timepoint[+order.basketInfo.ordermerge];
+            let deliveryTime = 1;
+            if (+order.basketInfo.ordermerge == 1){
+              deliveryTime = 3;
+            }
+            if (order.basketInfo.timepoint !== '0'){
+              order.timepoint = [+order.basketInfo.timepoint, +order.basketInfo.timepoint + deliveryTime];
+            } else {
+              order.timepoint = [orderDate.getHours() + 1, orderDate.getHours() + 1 + deliveryTime];
+            }
+            if (order.timepoint[1] > 24){
+              order.timepoint[1] = order.timepoint[1] - 24;
+            }
+            else if (order.timepoint[1] == 24){
+              order.timepoint[1] = 0;
+            }
+            if (order.timepoint[0] < 10){
+              order.timepoint[0] = '0' + order.timepoint[0];
+            }
+            if (order.timepoint[1] < 10){
+              order.timepoint[1] = '0' + order.timepoint[1];
+            }
           }
 
           for (delivery of order.deliveryInfo.deliveries){
