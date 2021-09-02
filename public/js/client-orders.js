@@ -32,6 +32,7 @@ $(document).ready(function () {
     },
     computed: {
       preparedOrders() {
+        if (!this.orders.deliveryInfo && this.orders.deliveryInfo.deliveries != undefined && this.orders.deliveryInfo.pickup != undefined) return this.orders;
         let orders = this.orders;
         for (order of orders){
           order.deliveryProducts = [];
@@ -58,34 +59,38 @@ $(document).ready(function () {
           }
 
           for (delivery of order.deliveryInfo.deliveries){
-            for (requisition of delivery.requisitions){
-              for (product of requisition.products){
-                product.img = this.products[product.id].image;
-                product.title = this.products[product.id].title;
-                order.deliveryProducts.push(product);
-                order.total += (product.price / 100);
-                if (+product.discount > 0) {
-                  order.oldtotal += (product.price / (100 - product.discount));
-                } else {
-                  order.oldtotal += (product.price / 100);
+            if (delivery.requisitions){
+              for (requisition of delivery.requisitions){
+                for (product of requisition.products){
+                  product.img = this.products[product.id].image;
+                  product.title = this.products[product.id].title;
+                  order.deliveryProducts.push(product);
+                  order.total += (product.price / 100);
+                  if (+product.discount > 0) {
+                    order.oldtotal += (product.price / (100 - product.discount));
+                  } else {
+                    order.oldtotal += (product.price / 100);
+                  }
+                  order.count++;
                 }
-                order.count++;
               }
             }
           }
           for (delivery of order.deliveryInfo.pickup){
-            for (requisition of delivery.requisitions){
-              for (product of requisition.products){
-                product.img = this.products[product.id].image;
-                product.title = this.products[product.id].title;
-                order.pickupProducts.push(product);
-                order.total += (product.price / 100);
-                if (+product.discount > 0) {
-                  order.oldtotal += (product.price / (100 - product.discount));
-                } else {
-                  order.oldtotal += (product.price / 100);
+            if (delivery.requisitions){
+              for (requisition of delivery.requisitions){
+                for (product of requisition.products){
+                  product.img = this.products[product.id].image;
+                  product.title = this.products[product.id].title;
+                  order.pickupProducts.push(product);
+                  order.total += (product.price / 100);
+                  if (+product.discount > 0) {
+                    order.oldtotal += (product.price / (100 - product.discount));
+                  } else {
+                    order.oldtotal += (product.price / 100);
+                  }
+                  order.count++;
                 }
-                order.count++;
               }
             }
           }
