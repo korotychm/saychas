@@ -36,46 +36,92 @@ class AcquiringCommunicationService
         $this->tinkoffApiParams = $config['parameters']['TinkoffMerchantAPI'];
     }
 
+    /*
+     * создает идетификатор платежа и ссылку на платежную форму
+     * @return Json
+     */
     public function initTinkoff($args)
     {
         return $this->buildQueryTinkoff('Init', $args);
     }
 
+    /*
+     * Возвращает статус платежа
+     * @return Json
+     */
     public function getStateTinkoff($args)
     {
         return $this->buildQueryTinkoff('GetState', $args);
     }
 
+    /*
+     * Подтверждает платеж 
+     * @return Json
+     */
     public function confirmTinkoff($args)
     {
         return $this->buildQueryTinkoff('Confirm', $args);
     }
 
+    /*
+     * Осуществляет рекуррентный (повторный) платеж — безакцептное списание денежных
+     * средств со счета банковской карты Покупателя
+     * @return Json
+     */
     public function chargeTinkoff($args)
     {
         return $this->buildQueryTinkoff('Charge', $args);
     }
+     
+    /*
+     * Отменяет платеж 
+     * @return Json
+     */
+    public function cancelTinkoff($args)
+    {
+        return $this->buildQueryTinkoff('Cancel', $args);
+    }
 
+     /*
+     * Регистрирует покупателя в терминале
+     * @return Json
+     */
     public function addCustomerTinkoff($args)
     {
         return $this->buildQueryTinkoff('AddCustomer', $args);
     }
 
+     /*
+     * Возвращает данные покупателя, зарегестрированного в терминале
+     * @return Json
+     */
     public function getCustomerTinkoff($args)
     {
         return $this->buildQueryTinkoff('GetCustomer', $args);
     }
 
+    /*
+     * Удаляет покупателя из терминала
+     * @return Json
+     */
     public function removeCustomerTinkoff($args)
     {
         return $this->buildQueryTinkoff('RemoveCustomer', $args);
     }
 
+    /*
+     * Возвращает список привязанных карт покупателя
+     * @return Json
+     */
     public function getCardListTinkoff($args)
     {
         return $this->buildQueryTinkoff('GetCardList', $args);
     }
 
+    /*
+     * Отвязывает карту покупателя
+     * @return Json
+     */
     public function removeCardTinkoff($args)
     {
         return $this->buildQueryTinkoff('RemoveCard', $args);
@@ -150,9 +196,8 @@ class AcquiringCommunicationService
                 $token .= $arg;
             }
         }
-        $token = hash('sha256', $token);
-
-        return $token;
+       return hash('sha256', $token);
+        // $token;
     }
 
     /**
