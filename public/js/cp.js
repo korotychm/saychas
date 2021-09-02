@@ -105,7 +105,7 @@ const Products = {
 }
 
 const Stores = {
-  template: '<div>{{ responsedata }}</div>',
+  template: '<div><div v-html="responsedata"></div></div>',
   data: function () {
     return {
       responsedata: ''
