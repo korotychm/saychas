@@ -171,7 +171,7 @@ class AjaxController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $orders = ClientOrder::findAll(["where" => ['user_id' => $userId]]);
-        if ($orders->cont() < 1) {
+        if ($orders->count() < 1) {
             return new JsonModel(["result" => false]);
         }
         $return["order_list"] = $this->htmlProvider->orderList($orders);
