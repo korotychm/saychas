@@ -53,24 +53,49 @@ class StoreManager
     {
         if (isset($params['pageNo'])) {
             $limits = $this->calcLimits($params['pageNo']);
-            $collection = $this->db->{$this->collectionName};
-            $cursor = $collection->find([
-                    ], [
+            $collection = $this->db->{$this->collectionName};            
+            $c = $collection->count($params['where']);
+            
+            $cursor = $collection->find(
+            $params['where'],
+            [
                 'skip' => $limits['min'] - 1,
                 'limit' => $this->pageSize,
                 'projection' => [
                     'id' => 1,
                     'title' => 1,
                     'description' => 1,
+                    'status_id' => 1,
+                    'status_name' => 1,
                     'address' => 1,
                     'provider_id' => 1,
                     '_id' => 0
                 ],
             ]);
-            return $cursor->toArray();
+            $result['body'] = $cursor->toArray();
+            $result['limits'] = $limits;
+            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
+
+            return $result;
         }
         return [];
     }
+    
+    private function findStatuses()
+    {
+        $collectionName = 'store_statuses';
+        $collection = $this->db->{$collectionName};
+        return $collection->find([], ['_id' => 0, 'status_id' => 1, 'status_name' => 1])->toArray();
+    }
+    
+    public function findDocuments($params)
+    {
+        $cursor = $this->findAll($params);
+
+        $cursor['filters']['statuses'] = $this->findStatuses();
+
+        return $cursor;
+    }    
 
 }
 

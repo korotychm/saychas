@@ -19,7 +19,7 @@ class IndexController extends AbstractActionController
     
     //private const PRODUCTS_PER_PAGE = 2;
     
-    //private const STORES_PER_PAGE = 2;
+    private const STORES_PER_PAGE = 2;
 
     /** @var ContainerInterface */
     protected $container;
@@ -125,17 +125,33 @@ class IndexController extends AbstractActionController
     public function showStoresAction()
     {
         $this->assertLoggedIn();
-        $dateTime = new \DateTime();
+        $post = $this->getRequest()->getPost()->toArray();
+        $useCache = $post['use_cache'];
+
         $identity = $this->authService->getIdentity();
         $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-        //$credentials = ['partner_id: '.'00003', 'login: '.'admin'];
         $url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
-        $answer = $this->storeManager->loadAll($url, $credentials);
 
-        $this->storeManager->setPageSize(2);
-        $cursor = $this->storeManager->findAll(['pageNo' => 1]);
-        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime, 'stores' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
-        return $view->setTerminal(true);
+        $answer['http_code'] = '200';
+        if(true /* != $useCache */) {
+            $answer = $this->storeManager->loadAll($url, $credentials);
+        }
+
+        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
+        $where = [
+            'provider_id' => $identity['provider_id'],
+        ];
+        $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
+        //$cursor = $this->storeManager->findAll(['pageNo' => $pageNo /*$post['page_no']*/, 'where' => $where]);
+        $cursor = $this->storeManager->findDocuments(['pageNo' => $pageNo /*$post['page_no']*/, 'where' => $where]);
+
+        return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
+
+//        $result = json_encode($cursor);
+//        print_r($result);
+//        exit;
+//        $view = new ViewModel(['stores' => $cursor, 'http_code' => $answer['http_code']]);
+//        return $view->setTerminal(true);
     }
 
     /**
