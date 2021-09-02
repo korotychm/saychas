@@ -90,6 +90,13 @@ $(document).ready(function () {
             }
           }
         }
+
+        order.productsTotal = order.total;
+        order.oldProductsTotal = order.oldtotal;
+        if (order.basketInfo.delivery_price){
+          order.total += (order.basketInfo.delivery_price / 100);
+          order.oldtotal += (order.basketInfo.delivery_price / 100);
+        }
         console.log(orders);
         return orders;
       }
