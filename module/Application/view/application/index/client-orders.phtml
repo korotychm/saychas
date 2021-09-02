@@ -87,7 +87,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                     </div>
                     <div v-if="order.deliveryInfo.deliveries.length" class="panel__tr">
                         <div><b>Доставка</b></div>
-                        <div v-if="order.delivery_price">{{ order.delivery_price.toLocaleString() }} ₽</div>
+                        <div><span v-if="order.basketInfo.delivery_price">{{ order.basketInfo.delivery_price.toLocaleString() }} ₽</span></div>
                     </div>
                     <div v-if="order.deliveryInfo.pickup.length" class="panel__tr">
                         <div>Самовывоз</div>
