@@ -127,13 +127,14 @@ const Stores = {
 
     <div class="products__list">
       <div class="thead">
-        <div class="td"></div>
+        <span></span>
         <div class="td">Наименование</div>
         <div class="td">Категория</div>
         <div class="td">Бренд</div>
       </div>
       <div class="tbody">
           <div v-for="store in stores" class="tr">
+              <span></span>
               <div class="td products__title">
                 <a href="">{{ store.title }}</a>
               </div>
