@@ -44,9 +44,9 @@ $(document).ready(function () {
           if (this.isToday(orderDate)){
             order.dateLocaled = 'сегодня';
           } else {
-            order.dateLocaled = orderDate.toLocaleString({day: "numeric", month: "long", year: "numeric"});
+            order.dateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
           }
-          order.timeLocaled = orderDate.toLocaleString({hour: "numeric", minute: "numeric"});
+          order.timeLocaled = orderDate.toLocaleDateString('ru-RU', {hour: "numeric", minute: "numeric"});
 
           let pickupCount = order.deliveryInfo.pickup.length;
           if (pickupCount == 1){
