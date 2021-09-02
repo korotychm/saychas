@@ -123,9 +123,9 @@ class ExternalCommunicationService
         $order->setOrderId($orderId); 
         $order->setUserId($userId); 
         $order->setDeliveryInfo($deliveries); 
-        $order->setBasketInfo($jsonNull); 
+        $order->setBasketInfo($basketinfo); 
         $order->setPaymentInfo($jsonNull); 
-        $order->setConfirmInfo($payment); 
+        $order->setConfirmInfo($jsonNull); 
         $order->setDateCreated(time());
         try {
             $order->persist(['order_id'=>$orderId]);

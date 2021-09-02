@@ -202,7 +202,7 @@ class AcquiringController extends AbstractActionController
             ];
             $param['Amount']+=$delivery_price;
         }
-        //return new JsonModel($param);
+        return new JsonModel($param);
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
             //$this->
