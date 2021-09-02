@@ -104,6 +104,26 @@ const Products = {
   }
 }
 
+const Stores = {
+  template: '<div><pre>{{ response }}</pre></div>',
+  data: {
+    response: ''
+  },
+  methods: {
+    getStores() {
+      axios
+        .post('/control-panel/show-stores')
+          .then(response => {
+            console.log(response.data);
+            this.response = response.data;
+          });
+    }
+  }
+  created: function(){
+    this.getStores();
+  }
+}
+
 const routes = [
   {
     name: 'analytics',
@@ -121,6 +141,14 @@ const routes = [
       back_route: '/analytics'
     },
     component: Products
+  },
+  {
+    name: 'stores',
+    path: '/stores',
+    meta: {
+      h1: 'Магазины'
+    },
+    component: Stores
   }
 ]
 
