@@ -105,17 +105,18 @@ const Products = {
 }
 
 const Stores = {
-  template: '<div><pre>{{ response }}</pre></div>',
-  data: {
-    response: ''
+  template: '<div><pre>{{ responsedata }}</pre></div>',
+  data: function () {
+    return {
+      responsedata: ''
+    }
   },
   methods: {
     getStores() {
       axios
         .post('/control-panel/show-stores')
           .then(response => {
-            console.log(response.data);
-            this.response = response.data;
+            this.responsedata = response.data;
           });
     }
   },
