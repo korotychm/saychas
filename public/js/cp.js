@@ -105,10 +105,20 @@ const Products = {
 }
 
 const Stores = {
-  template: '<div><div v-html="responsedata"></div></div>',
+  template: '<div><pre>{{ responsedata }}</pre></div>',
   data: function () {
     return {
-      responsedata: ''
+      page_no: 1,
+      rows_per_page: 2,
+      stores: {},
+      pages: 1,
+      filters: {},
+      //imgPath: productImgPath,
+      selectedFilters: {
+        status_id: ''
+      },
+      search: '',
+      filtersCreated: false
     }
   },
   methods: {
