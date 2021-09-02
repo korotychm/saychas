@@ -105,7 +105,7 @@ const Products = {
 }
 
 const Stores = {
-  template: '<div><pre>{{ responsedata }}</pre></div>',
+  template: '<div>{{ responsedata }}</div>',
   data: function () {
     return {
       responsedata: ''
