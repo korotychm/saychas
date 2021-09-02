@@ -62,6 +62,7 @@ class StoreManager
                     'id' => 1,
                     'title' => 1,
                     'description' => 1,
+                    'address' => 1,
                     'provider_id' => 1,
                     '_id' => 0
                 ],

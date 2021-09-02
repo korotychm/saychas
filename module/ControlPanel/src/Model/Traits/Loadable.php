@@ -31,7 +31,7 @@ trait Loadable
      * 
      * @var int
      */
-    protected $pageSize = 3;
+    protected $pageSize;// = 3;
 
     /**
      * @var int
@@ -49,8 +49,15 @@ trait Loadable
         $result = $this->db->dropCollection($collection);
         return $result;
     }
-    
-    protected function deleteMany($collectionName, $params = [])
+
+    /**
+     * Delete documents from $collectionName identified by provider_id(partner_id)
+     * 
+     * @param string $collectionName
+     * @param array $params
+     * @return MongoObject
+     */
+    protected function deleteMany(string $collectionName, array $params = [])
     {
         $collection = $this->db->$collectionName;
         $deleteResult = $collection->deleteMany($params);

@@ -9,6 +9,7 @@ use Laminas\Router\Http\Segment;
 use ControlPanel\Controller\Factory\IndexControllerFactory;
 use ControlPanel\Controller\Factory\AuthControllerFactory;
 use ControlPanel\Controller\Factory\ProductControllerFactory;
+use ControlPanel\Controller\Factory\StoreControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
@@ -19,6 +20,7 @@ return [
             \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
             \ControlPanel\Controller\AuthController::class => AuthControllerFactory::class,
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
+            \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
         ],        
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
