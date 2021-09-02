@@ -37,6 +37,7 @@ trait Loadable
      * @var int
      */
     protected $collectionSize;
+    
     /**
      * Drop collection from db
      *
@@ -46,6 +47,24 @@ trait Loadable
     protected function dropCollection($collection)
     {
         $result = $this->db->dropCollection($collection);
+        return $result;
+    }
+    
+    protected function deleteMany($collectionName, $params = [])
+    {
+        $collection = $this->db->$collectionName;
+        $deleteResult = $collection->deleteMany($params);
+        return $deleteResult;
+    }
+    
+    private function extractCredentials($credentials)
+    {
+        $result = [];
+        foreach ($credentials as $c) {
+            list($key, $value) = explode(':', $c);
+            $result[trim($key)] = trim($value);
+        }
+        
         return $result;
     }
 
@@ -127,7 +146,11 @@ trait Loadable
     {
         $answer = $this->curlRequestManager->sendCurlRequestWithCredentials($url, [], $credentials);
 
-        $this->dropCollection(self::COLLECTION_NAME);
+        //$this->dropCollection(self::COLLECTION_NAME);
+        
+        $cred = $this->extractCredentials($credentials);
+        
+        $this->deleteMany(self::COLLECTION_NAME, ['provider_id' => $cred['partner_id']]);
 
         $this->insertManyInto(self::COLLECTION_NAME, $answer['data']);
 
