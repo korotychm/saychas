@@ -17,9 +17,9 @@ use Laminas\Session\Container;
 class IndexController extends AbstractActionController
 {
     
-    private const PRODUCTS_PER_PAGE = 2;
+    //private const PRODUCTS_PER_PAGE = 2;
     
-    private const STORES_PER_PAGE = 2;
+    //private const STORES_PER_PAGE = 2;
 
     /** @var ContainerInterface */
     protected $container;
