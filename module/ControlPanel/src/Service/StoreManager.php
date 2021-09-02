@@ -49,13 +49,19 @@ class StoreManager
         $this->db = $this->mclient->{$this->dbName};
     }
 
+    /**
+     * Find all stores
+     * 
+     * @param array $params
+     * @return array
+     */
     public function findAll($params)
     {
         if (isset($params['pageNo'])) {
             $limits = $this->calcLimits($params['pageNo']);
-            $collection = $this->db->{$this->collectionName};            
+            $collection = $this->db->{$this->collectionName};
             $c = $collection->count($params['where']);
-            
+
             $cursor = $collection->find(
             $params['where'],
             [
@@ -80,14 +86,30 @@ class StoreManager
         }
         return [];
     }
-    
+
+    /**
+     * Find store statuses
+     * 
+     * @return array
+     */
     private function findStatuses()
     {
         $collectionName = 'store_statuses';
         $collection = $this->db->{$collectionName};
-        return $collection->find([], ['_id' => 0, 'status_id' => 1, 'status_name' => 1])->toArray();
+        $results = $collection->find([], ['_id' => 0, 'status_id' => 1, 'status_name' => 1])->toArray();
+        $result = [];
+        foreach ($results as $c) {
+            $result[] = [$c['status_id'], $c['status_name']];
+        }
+        return $result;
     }
-    
+
+    /**
+     * Find store documents for specified provider
+     * 
+     * @param array $params
+     * @return array
+     */
     public function findDocuments($params)
     {
         $cursor = $this->findAll($params);
@@ -95,7 +117,7 @@ class StoreManager
         $cursor['filters']['statuses'] = $this->findStatuses();
 
         return $cursor;
-    }    
+    }
 
 }
 
