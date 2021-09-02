@@ -190,7 +190,7 @@ const Stores = {
     },
     loadPage(index = 1) {
       this.page_no = index;
-      this.getProducts();
+      this.getStores();
     }
   },
   created: function(){
