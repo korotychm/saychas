@@ -209,9 +209,45 @@ const ProductEdit = {
       editable: true
     }
   },
-  template: `<div>
-                <span v-if="editable">Продукт с id {{ $route.params.id }}</span>
-                <span v-else="editable">Вы не можете редактировать продукт с id {{ $route.params.id }}</span>
+  template: `<div class="product">
+                <div v-if="editable">
+                  <div class="product__category">
+                      <h2>Категория</h2>
+                      <div class="search-select"><input class="input search-select__input" type="text" />
+                          <div class="search-select__suggestions">
+                              <div class="search-select__empty">Ничего не найдено</div>
+                                <label>
+                                  <input type="radio" name="suggest" />
+                                  <span class="search-select__suggestion">
+                                  <span class="search-select__suggestion-category--parent">Родительская категория</span>
+                                  <span class="search-select__suggestion-category">Конечная категория</span>
+                                  </span>
+                                </label>
+                                <label>
+                                  <input type="radio" name="suggest" />
+                                  <span class="search-select__suggestion">
+                                  <span class="search-select__suggestion-category--parent">Родительская категория</span>
+                                  <span class="search-select__suggestion-category">Конечная категория</span>
+                                  </span>
+                                </label>
+                                <label>
+                                  <input type="radio" name="suggest" />
+                                  <span class="search-select__suggestion">
+                                  <span class="search-select__suggestion-category--parent">Родительская категория</span>
+                                  <span class="search-select__suggestion-category">Конечная категория</span>
+                                  </span>
+                                </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="product__info">
+                      <div class="product__attribute">
+                          <h2>Название товара</h2>
+                          <input class="input" type="text" :value="'Товар с id ' $route.params.id" />
+                      </div>
+                  </div>
+                </div>
+                <div v-else class="product__error">Вы не можете редактировать этот товар</div>
             </div>`,
   methods: {
     getStores() {
