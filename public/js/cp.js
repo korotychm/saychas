@@ -293,6 +293,6 @@ const router = new VueRouter({
 const cp = new Vue({
   router,
   mounted: function(){
-    router.replace('/analytics');
+    //router.replace('/analytics');
   }
 }).$mount('#cp')
