@@ -400,7 +400,8 @@ $(document).on('focusin','.search-select__input',function(){
   $(this).parent().find('.search-select__suggestions').addClass('active')
 });
 $(document).on('focusout','.search-select__input',function(){
+  let el = $(this).parent().find('.search-select__suggestions');
   setTimeout(function() {
-    $(this).parent().find('.search-select__suggestions').removeClass('active')
+    el.removeClass('active')
   }, 300);
 });
