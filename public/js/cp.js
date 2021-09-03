@@ -332,7 +332,7 @@ const ProductEdit = {
   },
   created: function(){
     let flat = this.categories;
-    console.log(flat.flat(infinity));
+    console.log(flat.flat(Infinity));
     this.getProduct();
   }
 }
