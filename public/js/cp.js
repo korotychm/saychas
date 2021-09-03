@@ -243,7 +243,7 @@ const ProductEdit = {
                   <div class="product__info">
                       <div class="product__attribute">
                           <h2>Название товара</h2>
-                          <input class="input" type="text" :value="'Товар с id ' $route.params.id" />
+                          <input class="input" type="text" :value="'Товар с id ' + $route.params.id" />
                       </div>
                   </div>
                 </div>
