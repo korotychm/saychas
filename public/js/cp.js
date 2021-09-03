@@ -212,27 +212,13 @@ const ProductEdit = {
                           <input class="input search-select__input" type="text" v-model="categorySearch" />
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
-                              <div v-if="(categorySearch && !categorySearchResults)" class="search-select__empty">Ничего не найдено</div>
-                              <div v-if="categorySearchResults">
-                                <label>
-                                  <input type="radio" name="suggest" @click="selectCategory('Конечная категория')" />
+                              <div v-if="(categorySearch && !filteredCategories)" class="search-select__empty">Ничего не найдено</div>
+                              <div v-if="filteredCategories">
+                                <label v-for="category in filteredCategories">
+                                  <input type="radio" name="suggest" @click="selectCategory(category.name)" />
                                   <span class="search-select__suggestion">
-                                    <span class="search-select__suggestion-category--parent">Родительская категория</span>
-                                    <span class="search-select__suggestion-category">Конечная категория</span>
-                                  </span>
-                                </label>
-                                <label>
-                                  <input type="radio" name="suggest" @click="selectCategory('Конечная категория')" />
-                                  <span class="search-select__suggestion">
-                                    <span class="search-select__suggestion-category--parent">Родительская категория</span>
-                                    <span class="search-select__suggestion-category">Конечная категория</span>
-                                  </span>
-                                </label>
-                                <label>
-                                  <input type="radio" name="suggest" @click="selectCategory('Конечная категория')" />
-                                  <span class="search-select__suggestion">
-                                    <span class="search-select__suggestion-category--parent">Родительская категория</span>
-                                    <span class="search-select__suggestion-category">Конечная категория</span>
+                                    <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
+                                    <span class="search-select__suggestion-category">{{category.name}}</span>
                                   </span>
                                 </label>
                               </div>
@@ -314,8 +300,12 @@ const ProductEdit = {
     }
   },
   computed: {
-    categorySearchResults(){
-      return true;
+    filteredCategories(){
+      let categories = this.categoriesFla
+      categories = categories.filter((category) => {
+        return (category.name.includes(this.categorySearch))
+      })
+      return categories;
     }
   },
   methods: {
@@ -345,14 +335,14 @@ const ProductEdit = {
       this.categoriesFlat = categoriesFlat;
     },
     getProduct() {
-      let requestUrl = '/control-panel/'
+      let requestUrl = '/control-panel/edit-product/'
       axios
         .post(requestUrl,
           Qs.stringify({
             product_id : this.$route.params.id
           }))
           .then(response => {
-            //console.log(response);
+            console.log(response.data);
           })
           .catch(error => {
             if (error.response.status == '403'){
@@ -361,9 +351,7 @@ const ProductEdit = {
           });
     },
     selectCategory(value) {
-      console.log(value);
       this.categorySearch = value;
-      console.log(this.categorySearch);
     }
   },
   created: function(){
