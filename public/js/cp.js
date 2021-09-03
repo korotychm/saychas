@@ -323,8 +323,13 @@ const ProductEdit = {
       let categoriesFlat = [];
       function iterateArray(array) {
         for (category of array){
+          if (parent){
+            // Если передано значение родителя
+            category.parent = parent;
+          }
           if (category.childs){
-            iterateArray(category.childs);
+            let newParent = category.parent + ' > ' + category.name;
+            iterateArray(category.childs, newParent);
           } else {
             categoriesFlat.push({
               id: category.id,
@@ -335,6 +340,8 @@ const ProductEdit = {
       }
       iterateArray(this.categories);
       this.categoriesFlat = categoriesFlat;
+
+
       console.log('flatten categories', this.categoriesFlat);
     },
     getProduct() {
