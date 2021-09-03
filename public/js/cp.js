@@ -209,13 +209,13 @@ const ProductEdit = {
                   <div class="product__category">
                       <h2>Категория</h2>
                       <div class="search-select">
-                          <input class="input search-select__input" type="text" v-model="categorySearch" />
+                          <input class="input search-select__input" type="text" v-model="categorySearch" @focusout="checkCategory()" />
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
                               <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
                               <div v-if="(categorySearch && filteredCategories.length)">
                                 <label v-for="category in filteredCategories">
-                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategory)" />
+                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
                                   <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
                                     <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
                                     <span class="search-select__suggestion-category">{{category.name}}</span>
@@ -240,7 +240,8 @@ const ProductEdit = {
       categorySearch: '',
       categories: [],
       categoriesFlat: [],
-      selectedCategory: ''
+      selectedCategoryId: '',
+      selectedCategoryName: ''
     }
   },
   computed: {
@@ -299,9 +300,15 @@ const ProductEdit = {
             }
           });
     },
+    checkCategory() {
+      if (!this.categorySearch){
+        this.categorySearch = this.selectedCategoryName;
+      }
+    },
     selectCategory(id,value) {
       this.selectedCategory = id;
       this.categorySearch = value;
+      this.selectedCategoryName = value;
     }
   },
   created: function(){
