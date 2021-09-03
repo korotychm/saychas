@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel/src/Controller/StoreController.php
+// ControlPanel/src/Controller/ListController.php
 
 declare(strict_types=1);
 
@@ -12,7 +12,7 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 
-class StoreController extends AbstractActionController
+class ListController extends AbstractActionController
 {
 
     private const STORES_PER_PAGE = 2;
@@ -31,9 +31,6 @@ class StoreController extends AbstractActionController
 
     /** @var UserManager */
     protected $userManager;
-
-    /** @var StoreManager */
-    protected $storeManager;
 
     /** @var AuthenticationService */
     protected $authService;
@@ -55,7 +52,6 @@ class StoreController extends AbstractActionController
         $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
-        $this->storeManager = $this->container->get(\ControlPanel\Service\StoreManager::class);
         $this->config = $container->get('Config');
     }
 
@@ -75,43 +71,9 @@ class StoreController extends AbstractActionController
         }
         return $response;
     }
-
-    /**
-     * Show stores action
-     * 
-     * @return JsonModel
-     */
-//    public function showStores1Action()
-//    {
-//        $this->assertLoggedIn();
-//        $post = $this->getRequest()->getPost()->toArray();
-//        $useCache = $post['use_cache'];
-//
-//        $identity = $this->authService->getIdentity();
-//        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-//        $url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
-//
-//        $answer['http_code'] = '200';
-//        if(true /* != $useCache */) {
-//            $answer = $this->storeManager->loadAll($url, $credentials);
-//        }
-//
-//        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
-//        $where = [
-//            'provider_id' => $identity['provider_id'],
-//        ];
-//        $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
-//        $cursor = $this->storeManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
-//
-//        return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
-//
-//    }
-
-    public function showStoresAction()
+    
+    protected function getManagerInfo($routeMatch)
     {
-        
-        $routeMatch = $this->getEvent()->getRouteMatch();
-
         $routeName = $routeMatch->getMatchedRouteName();
         
         list($leftName, $rightName) = explode('/', $routeName);
@@ -122,21 +84,27 @@ class StoreController extends AbstractActionController
         
         $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
 
-        $manager = $this->container->get($managerName);
-    
+        return ['manager' => $this->container->get($managerName), 'manager_name' => $managerName];
+    }
+
+    public function showListAction()
+    {
         
+        $routeMatch = $this->getEvent()->getRouteMatch();
+        $result = $this->getManagerInfo($routeMatch);
+        $manager = $result['manager'];
+        $managerName = $result['manager_name'];
+
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
         $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-        //$url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
         if(true /* != $useCache */) {
-            //$answer = $this->storeManager->loadAll($url, $credentials);
             $answer = $manager->loadAll($url, $credentials);
         }
 
@@ -156,22 +124,13 @@ class StoreController extends AbstractActionController
      * 
      * @return JsonModel
      */
-    public function showStoresFromCacheAction()
+    public function showListFromCacheAction()
     {
         $routeMatch = $this->getEvent()->getRouteMatch();
+        $result = $this->getManagerInfo($routeMatch);
+        $manager = $result['manager'];
+        $managerName = $result['manager_name'];
 
-        $routeName = $routeMatch->getMatchedRouteName();
-        
-        list($leftName, $rightName) = explode('/', $routeName);
-
-        //$params = $routeMatch->getParams();
-
-        $config = $this->container->get('Config');
-        
-        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
-
-        $manager = $this->container->get($managerName);
-        
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
@@ -191,27 +150,6 @@ class StoreController extends AbstractActionController
         return new JsonModel(['data' => $cursor,]);
     }
 
-//    public function showStores1FromCacheAction()
-//    {
-//        $this->assertLoggedIn();
-//        $post = $this->getRequest()->getPost()->toArray();
-//        $identity = $this->authService->getIdentity();
-//        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
-//        $where = [
-//            'provider_id' => $identity['provider_id'],
-//        ];
-//        foreach ($post['filters'] as $key => $value) {
-//            if (!empty($value)) {
-//                $where[$key] = $value;
-//            }
-//        }
-//        if (!empty($post['search'])) {
-//            $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
-//        }
-//        $cursor = $this->storeManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
-//        return new JsonModel(['data' => $cursor,]);
-//    }
-    
     /**
      * Signal ajax script
      * if provider is not logged in
@@ -224,3 +162,39 @@ class StoreController extends AbstractActionController
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+//        $routeName = $routeMatch->getMatchedRouteName();
+//        
+//        list($leftName, $rightName) = explode('/', $routeName);
+//
+//        //$params = $routeMatch->getParams();
+//
+//        $config = $this->container->get('Config');
+//        
+//        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
+//
+//        $manager = $this->container->get($managerName);
+    
+        
+//        $routeName = $routeMatch->getMatchedRouteName();
+//        
+//        list($leftName, $rightName) = explode('/', $routeName);
+//
+//        //$params = $routeMatch->getParams();
+//
+//        $config = $this->container->get('Config');
+//        
+//        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
+//
+//        $manager = $this->container->get($managerName);
+        

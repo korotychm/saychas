@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel/src/Controller/Factory/ProductControllerFactory.php
+// ControlPanel/src/Controller/Factory/ListControllerFactory.php
 
 namespace ControlPanel\Controller\Factory;
 
@@ -8,7 +8,6 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Session\Container;
 use ControlPanel\Resource\StringResource;
-use Application\Model\Repository\CategoryRepository;
 //use Application\Service\EntityManager;
 //use ControlPanel\Service\UserManager;
 
@@ -16,7 +15,7 @@ use Application\Model\Repository\CategoryRepository;
  * This is the factory for Index Controllers. Its purpose is to instantiate the
  * index controllers.
  */
-class ProductControllerFactory implements FactoryInterface
+class ListControllerFactory implements FactoryInterface
 {
 
     public function __invoke(ContainerInterface $container, $requestName, array $options = null)
@@ -24,8 +23,7 @@ class ProductControllerFactory implements FactoryInterface
         // Instantiate the controller and inject dependencies
         $sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
         $entityManager = $container->get('laminas.entity.manager');
-        $categoryRepository = $container->get(CategoryRepository::class);
-        return new $requestName($container, $sessionContainer, $entityManager, $categoryRepository);
+        return new $requestName($container, $sessionContainer, $entityManager);
     }
 
 }

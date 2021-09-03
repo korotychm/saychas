@@ -113,88 +113,6 @@ class IndexController extends AbstractActionController
         return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
     }
 
-    /************************************************************************************
-     * Store Actions
-     ************************************************************************************/
-    /**
-     * Show stores action        // $this->sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
-     * Shows a table of stores
-     *
-     * @return ViewModel
-     */
-//    public function showStoresAction()
-//    {
-//        $this->assertLoggedIn();
-//        $post = $this->getRequest()->getPost()->toArray();
-//        $useCache = $post['use_cache'];
-//
-//        $identity = $this->authService->getIdentity();
-//        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-//        $url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
-//
-//        $answer['http_code'] = '200';
-//        if(true /* != $useCache */) {
-//            $answer = $this->storeManager->loadAll($url, $credentials);
-//        }
-//
-//        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
-//        $where = [
-//            'provider_id' => $identity['provider_id'],
-//        ];
-//        $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
-//        //$cursor = $this->storeManager->findAll(['pageNo' => $pageNo /*$post['page_no']*/, 'where' => $where]);
-//        $cursor = $this->storeManager->findDocuments(['pageNo' => $pageNo /*$post['page_no']*/, 'where' => $where]);
-//
-//        return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
-//
-////        $result = json_encode($cursor);
-////        print_r($result);
-////        exit;
-////        $view = new ViewModel(['stores' => $cursor, 'http_code' => $answer['http_code']]);
-////        return $view->setTerminal(true);
-//    }
-
-//    public function showStoresFromCacheAction()
-//    {
-//        $this->assertLoggedIn();
-//        $post = $this->getRequest()->getPost()->toArray();
-//        $identity = $this->authService->getIdentity();
-//        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
-//        $where = [
-//            'provider_id' => $identity['provider_id'],
-//        ];
-//        foreach ($post['filters'] as $key => $value) {
-//            if (!empty($value)) {
-//                $where[$key] = $value;
-//            }
-//        }
-//        if (!empty($post['search'])) {
-//            $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
-//        }
-//        $cursor = $this->storeManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
-//        return new JsonModel(['data' => $cursor,]);
-//    }
-
-    /**
-     * showOneStoreAction
-     * Shows one store specified by id/login?returnUrl=/control-panel
-     *
-     * @return ViewModel
-     */
-    public function showOneStoreAction()
-    {
-        $params = $this->params()->fromRoute();
-        $this->assertLoggedIn();
-        foreach ($this->table as $row) {
-            if ($row['id'] == $params['id']) {
-                break;
-            }
-        }
-        $view = new ViewModel(['row' => $row]);
-        $view->setTemplate('control-panel/index/partials/stores/edit-form.phtml');
-        return $view->setTerminal(true);
-    }
-
     /**
      * Show provider profile
      *
@@ -386,3 +304,30 @@ class IndexController extends AbstractActionController
 //        return $result;
 //    }
 
+
+
+
+
+
+
+
+//    /**
+//     * showOneStoreAction
+//     * Shows one store specified by id/login?returnUrl=/control-panel
+//     *
+//     * @return ViewModel
+//     */
+//    public function showOneStoreAction()
+//    {
+//        $params = $this->params()->fromRoute();
+//        $this->assertLoggedIn();
+//        foreach ($this->table as $row) {
+//            if ($row['id'] == $params['id']) {
+//                break;
+//            }
+//        }
+//        $view = new ViewModel(['row' => $row]);
+//        $view->setTemplate('control-panel/index/partials/stores/edit-form.phtml');
+//        return $view->setTerminal(true);
+//    }
+//
