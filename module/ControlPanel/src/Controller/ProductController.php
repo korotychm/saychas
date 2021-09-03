@@ -34,6 +34,9 @@ class ProductController extends AbstractActionController
 
     /** @var ProductManager */
     protected $productManager;
+    
+    /** @var CategoryRepository */
+    protected $categoryRepository;
 
     /** @var AuthenticationService */
     protected $authService;
@@ -47,7 +50,7 @@ class ProductController extends AbstractActionController
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
-    public function __construct($container, $sessionContainer, $entityManager)
+    public function __construct($container, $sessionContainer, $entityManager, $categoryRepository)
     {
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
@@ -57,6 +60,7 @@ class ProductController extends AbstractActionController
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
         $this->productManager = $this->container->get(\ControlPanel\Service\ProductManager::class);
         $this->config = $container->get('Config');
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -128,8 +132,15 @@ class ProductController extends AbstractActionController
         if (!empty($post['search'])) {
             $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
         }
-        $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
+        $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
         return new JsonModel(['data' => $cursor,]);
+    }
+    
+    public function editProductAction()
+    {
+        $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+        return new JsonModel(['category_tree' => $categoryTree]);
     }
 
     private function canUpdateProduct($params)
