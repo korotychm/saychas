@@ -306,7 +306,7 @@ const ProductEdit = {
   },
   computed: {
     categorySearchResults(){
-      return false;
+      return true;
     }
   },
   methods: {
