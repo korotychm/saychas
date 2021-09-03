@@ -113,6 +113,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-stores-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-stores-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\StoreController::class,
+                                'action' => 'show-stores-from-cache',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'show-one-store' => [
                         'type' => Segment::class,
                         'options' => [
@@ -393,6 +404,11 @@ return [
             'lk_edit_product' => ' http://SRV02:8000/SC/hs/site/lk_edit_product',
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
+        ],
+        'store_statuses' => [
+            [ '0', 'Работает' ],
+            [ '1', 'Временно не работает' ],
+            [ '2', 'Закрыт' ],
         ],
     ],
     'view_manager' => [
