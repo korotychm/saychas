@@ -204,18 +204,16 @@ const Stores = {
 }
 
 const ProductEdit = {
-  data: function () {
-    return {
-      editable: true
-    }
-  },
   template: `<div class="product">
                 <div v-if="editable">
                   <div class="product__category">
                       <h2>Категория</h2>
-                      <div class="search-select"><input class="input search-select__input" type="text" />
+                      <div class="search-select">
+                          <input class="input search-select__input" type="text" value="" v-model="categorySearch" />
                           <div class="search-select__suggestions">
-                              <div class="search-select__empty">Ничего не найдено</div>
+                              <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
+                              <div v-if="(categorySearch && !categorySearchResults)" class="search-select__empty">Ничего не найдено</div>
+                              <div v-if="categorySearchResults">
                                 <label>
                                   <input type="radio" name="suggest" />
                                   <span class="search-select__suggestion">
@@ -237,6 +235,7 @@ const ProductEdit = {
                                   <span class="search-select__suggestion-category">Конечная категория</span>
                                   </span>
                                 </label>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -249,6 +248,67 @@ const ProductEdit = {
                 </div>
                 <div v-else class="product__error">Вы не можете редактировать этот товар</div>
             </div>`,
+  data: function () {
+    return {
+      editable: true,
+      categorySearch: '',
+      categories: [
+        {
+          id: 1,
+          name: 'Женская одежда',
+          childs: [
+            {
+              id: 2,
+              name: 'Белье',
+              childs: [
+                {
+                  id: 3,
+                  name: 'Трусы'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 4,
+          name: 'Мужская одежда',
+          childs: [
+            {
+              id: 5,
+              name: 'Белье',
+              childs: [
+                {
+                  id: 6,
+                  name: 'Трусы'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 7,
+          name: 'Электроника',
+          childs: [
+            {
+              id: 8,
+              name: 'Смартфоны и смарт-часы',
+              childs: [
+                {
+                  id: 9,
+                  name: 'Смарт-часы'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  computed: {
+    categorySearchResults(){
+      return false;
+    }
+  },
   methods: {
     getStores() {
       let requestUrl = '/control-panel/'
