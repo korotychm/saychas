@@ -383,5 +383,5 @@ $(document).on('focusin','.search-select__input',function(){
 $(document).on('focusout','.search-select__input',function(){
   setTimeout(function() {
     $('.search-select__suggestions').removeClass('active');
-  }, 100);
+  }, 300);
 });
