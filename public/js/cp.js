@@ -215,21 +215,21 @@ const ProductEdit = {
                               <div v-if="(categorySearch && !categorySearchResults)" class="search-select__empty">Ничего не найдено</div>
                               <div v-if="categorySearchResults">
                                 <label>
-                                  <input type="radio" name="suggest" />
+                                  <input type="radio" name="suggest" @change="selectCategory('Конечная категория')" />
                                   <span class="search-select__suggestion">
                                   <span class="search-select__suggestion-category--parent">Родительская категория</span>
                                   <span class="search-select__suggestion-category">Конечная категория</span>
                                   </span>
                                 </label>
                                 <label>
-                                  <input type="radio" name="suggest" />
+                                  <input type="radio" name="suggest" @change="selectCategory('Конечная категория')" />
                                   <span class="search-select__suggestion">
                                   <span class="search-select__suggestion-category--parent">Родительская категория</span>
                                   <span class="search-select__suggestion-category">Конечная категория</span>
                                   </span>
                                 </label>
                                 <label>
-                                  <input type="radio" name="suggest" />
+                                  <input type="radio" name="suggest" @change="selectCategory('Конечная категория')" />
                                   <span class="search-select__suggestion">
                                   <span class="search-select__suggestion-category--parent">Родительская категория</span>
                                   <span class="search-select__suggestion-category">Конечная категория</span>
@@ -321,10 +321,13 @@ const ProductEdit = {
             console.log(response);
           })
           .catch(error => {
-            if (error.response.status == '404' || error.response.status == '403'){
+            if (error.response.status == '403'){
               this.editable = false;
             }
           });
+    },
+    selectCategory(value) {
+      this.categorySearch = value;
     }
   },
   created: function(){
