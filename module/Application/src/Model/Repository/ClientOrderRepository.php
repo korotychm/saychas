@@ -17,7 +17,7 @@ use RuntimeException;
 //use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Repository\Repository;
-use Application\Resource;
+use Application\Resource\Resource;
 use Application\Service\AcquiringCommunicationService;
 
 class ClientOrderRepository extends Repository
