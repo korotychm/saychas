@@ -34,7 +34,7 @@ class ProductController extends AbstractActionController
 
     /** @var ProductManager */
     protected $productManager;
-    
+
     /** @var CategoryRepository */
     protected $categoryRepository;
 
@@ -136,11 +136,11 @@ class ProductController extends AbstractActionController
         $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
         return new JsonModel(['data' => $cursor,]);
     }
-    
+
     /**
      * Edit product
      * returns data to edit product screen
-     * 
+     *
      * @return JsonModel
      */
     public function editProductAction()
@@ -194,8 +194,3 @@ class ProductController extends AbstractActionController
     }
 
 }
-
-//$pageNo = $post['page_no'];
-//        $rowsPerPage = $post['rows_per_page'];
-//        $filters = $post['filters'];
-//        $search = $post['search'];

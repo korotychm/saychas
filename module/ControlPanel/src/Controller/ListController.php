@@ -72,10 +72,15 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         }
         return $response;
     }
-    
+
+    /**
+     * Get products from 1c, store them in cache and show on browser
+     *
+     * @return JsonModel
+     */
     public function showListAction()
     {
-        
+
         $routeMatch = $this->getEvent()->getRouteMatch();
         $result = $this->getManagerInfo($routeMatch);
         $manager = $result['manager'];
@@ -86,11 +91,11 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login']];
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
-        if(true /* != $useCache */) {
+        if (true /* != $useCache */) {
             $answer = $manager->loadAll($url, $credentials);
         }
 
@@ -102,12 +107,11 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
 
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
-
     }
-        
+
     /**
-     * Show stores from cache action
-     * 
+     * Show list from collection stored in cache
+     *
      * @return JsonModel
      */
     public function showListFromCacheAction()
@@ -115,7 +119,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $routeMatch = $this->getEvent()->getRouteMatch();
         $result = $this->getManagerInfo($routeMatch);
         $manager = $result['manager'];
-        $managerName = $result['manager_name'];
+        //$managerName = $result['manager_name'];
 
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
@@ -148,67 +152,3 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-//        $routeName = $routeMatch->getMatchedRouteName();
-//        
-//        list($leftName, $rightName) = explode('/', $routeName);
-//
-//        //$params = $routeMatch->getParams();
-//
-//        $config = $this->container->get('Config');
-//        
-//        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
-//
-//        $manager = $this->container->get($managerName);
-    
-        
-//        $routeName = $routeMatch->getMatchedRouteName();
-//        
-//        list($leftName, $rightName) = explode('/', $routeName);
-//
-//        //$params = $routeMatch->getParams();
-//
-//        $config = $this->container->get('Config');
-//        
-//        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
-//
-//        $manager = $this->container->get($managerName);
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    protected function getManagerInfo($routeMatch)
-//    {
-//        $routeName = $routeMatch->getMatchedRouteName();
-//        
-//        list($leftName, $rightName) = explode('/', $routeName);
-//
-//        //$params = $routeMatch->getParams();
-//
-//        $config = $this->container->get('Config');
-//        
-//        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
-//
-//        return ['manager' => $this->container->get($managerName), 'manager_name' => $managerName];
-//    }
-
