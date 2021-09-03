@@ -397,11 +397,12 @@ const cp = new Vue({
 
 
 $(document).on('focusin','.search-select__input',function(){
-  $(this).parent().find('.search-select__suggestions').addClass('active')
+  $(this).parent().find('.search-select__suggestions').addClass('active').css('pointer-events','auto');
 });
 $(document).on('focusout','.search-select__input',function(){
   let el = $(this).parent().find('.search-select__suggestions');
+  el.removeClass('active')
   setTimeout(function() {
-    el.removeClass('active')
-  }, 200);
+    el.css('pointer-events','none');
+  }, 300);
 });
