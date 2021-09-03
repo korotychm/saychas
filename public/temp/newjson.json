@@ -1,12 +1,15 @@
 {       
     "order_id": "000000601",  
-    "amount_product": 10000,
     "amount_delevery": 100,
     "products": [{
-                    "id": "0001",
-                    "count": 1,
-                    
-                }]
+            "Name": "Наименование товара - обяз!",
+            "Price": "10000  обяз!",
+            "Quantity": "1  обяз!",
+            "Amount": "Quantity * Price с учетом скидкии",  
+            "Tax": "10  обяз!",
+            "Ean13": "303130323930303030630333435 - необяз",
+            "ShopCode": "12345 - необяз",
+            "MeasurementUnit": "шт - необяз"
+        }]
 }
-       
-url /get-client-order-bill,
+

@@ -18,6 +18,7 @@ use Laminas\Log\Writer\Stream as StreamWriter;
 use Laminas\Session\Container; // as SessionContainer;
 use Application\Service\ExternalCommunicationService;
 use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\User;
 use ControlPanel\Service\EntityManager;
 //use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\Entity\Setting;
@@ -121,6 +122,7 @@ class UserDataController extends AbstractActionController
 
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
+        $this->entityManager->initRepository(User::class);
     }
 
     /**
@@ -223,7 +225,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * Send registration sms
+     * Send registration SMS
      *
      * @return JsonModel
      */
@@ -252,9 +254,15 @@ class UserDataController extends AbstractActionController
      */
     public function getOrderBillAction()
     {
-        $post[] = $this->getRequest()->getPost()->toArray(); 
-        $post[] = file_get_contents('php://input');    
-        mail("d.sizov@saychas.ru", "confirm_payment.log", print_r($post, true)); // лог на почту
+        //$post[] = $this->getRequest()->getPost()->toArray(); 
+        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
+        $orderId = $post["OrderId"];
+        $order = ClientOrder::find(['order_id' => $orderId]);
+        $userId = $order->getUserId();
+        $user = User::find(["id" => $userId]);
+        $post["User"] =
+        $userInfo = $this->commonHelperFuncions->getUserInfo();        
+        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $answer = ['result' => true, 'description' => 'ok'];

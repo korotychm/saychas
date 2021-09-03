@@ -213,7 +213,7 @@ class AcquiringController extends AbstractActionController
         }
         return new JsonModel(["result" => false, 'param' => $param, "answer" => $tinkoffAnswer]);
     }
-    
+   
     
     public function tinkoffErrorAction()
     {
