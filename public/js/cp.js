@@ -306,12 +306,11 @@ const ProductEdit = {
   },
   computed: {
     categorySearchResults(){
-      console.log(this.categories.flat(6));
       return true;
     }
   },
   methods: {
-    getStores() {
+    getProduct() {
       let requestUrl = '/control-panel/'
       axios
         .post(requestUrl,
@@ -332,7 +331,8 @@ const ProductEdit = {
     }
   },
   created: function(){
-    this.getStores();
+    console.log(this.categories.flat(6));
+    this.getProduct();
   }
 }
 
