@@ -290,6 +290,7 @@ const ProductEdit = {
             //console.log(response.data);
             this.categories = response.data.category_tree;
             console.log(this.categories);
+            this.flatCategories();
           })
           .catch(error => {
             if (error.response.status == '403'){
@@ -303,7 +304,6 @@ const ProductEdit = {
   },
   created: function(){
     this.getProduct();
-    this.flatCategories();
   }
 }
 
