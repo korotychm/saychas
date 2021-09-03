@@ -306,7 +306,7 @@ const ProductEdit = {
       }
     },
     selectCategory(id,value) {
-      this.selectedCategory = id;
+      this.selectedCategoryId = id;
       this.categorySearch = value;
       this.selectedCategoryName = value;
     }
