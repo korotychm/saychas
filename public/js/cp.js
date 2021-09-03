@@ -57,7 +57,9 @@ const Products = {
                 <div class="td products__img">
                   <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                 </div>
-                <div class="td products__title"><a href="/edit-product.html">{{ product.title }}</a></div>
+                <div class="td products__title">
+                  <router-link :to="'/products/' + product.id">{{ product.title }}</router-link>
+                </div>
                 <div class="td products__category">
                     <div>{{ product.category_name }}</div>
                 </div>
@@ -201,6 +203,8 @@ const Stores = {
   }
 }
 
+const ProductEdit = { template: '<div>Продукт с id {{ $route.params.id }}</div>' }
+
 const routes = [
   {
     name: 'analytics',
@@ -214,8 +218,7 @@ const routes = [
     name: 'products',
     path: '/products',
     meta: {
-      h1: 'Мои товары',
-      back_route: '/analytics'
+      h1: 'Мои товары'
     },
     component: Products
   },
@@ -226,8 +229,19 @@ const routes = [
       h1: 'Магазины'
     },
     component: Stores
+  },
+  {
+    name: 'product-edit',
+    path: '/products/:id',
+    meta: {
+      h1: 'Редактирование товара',
+      back_route: '/products'
+    },
+    component: ProductEdit
   }
 ]
+
+
 
 const router = new VueRouter({
   routes,
