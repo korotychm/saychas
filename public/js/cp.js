@@ -29,7 +29,7 @@ const Products = {
           </button>
         </form>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.category_id" value="" @input="loadPage()">
+          <select class="select select--white" v-model="selectedFilters.category_id" value="" @input="$emit('input',selectedFilters.category_id)">
             <option value="" selected >Все категории</option>
             <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
           </select>
