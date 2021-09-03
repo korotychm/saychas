@@ -213,7 +213,7 @@ const ProductEdit = {
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
                               <div v-if="(categorySearch && !filteredCategories)" class="search-select__empty">Ничего не найдено</div>
-                              <div v-if="filteredCategories">
+                              <div v-if="(categorySearch && filteredCategories)">
                                 <label v-for="category in filteredCategories">
                                   <input type="radio" name="suggest" @click="selectCategory(category.name)" />
                                   <span class="search-select__suggestion">
@@ -303,7 +303,7 @@ const ProductEdit = {
     filteredCategories(){
       let categories = this.categoriesFlat;
       categories = categories.filter((category) => {
-        return (category.name.includes(this.categorySearch))
+        return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
       })
       return categories;
     }
