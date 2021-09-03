@@ -244,7 +244,7 @@ const ProductEdit = {
   },
   computed: {
     filteredCategories(){
-      if (categorySearch.length < 3) return false;
+      if (this.categorySearch.length < 3) return false;
       let categories = this.categoriesFlat;
       categories = categories.filter((category) => {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
