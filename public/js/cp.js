@@ -211,7 +211,7 @@ const ProductEdit = {
       axios
         .post(requestUrl,
           Qs.stringify({
-            product_id : $route.params.id
+            product_id : this.$route.params.id
           }))
           .then(response => {
             console.log(response);
