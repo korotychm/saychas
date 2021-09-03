@@ -203,7 +203,26 @@ const Stores = {
   }
 }
 
-const ProductEdit = { template: '<div>Продукт с id {{ $route.params.id }}</div>' }
+const ProductEdit = {
+  template: '<div>Продукт с id {{ $route.params.id }}</div>',
+  methods: {
+    getStores() {
+      let requestUrl = '/control-panel/try'
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            product_id : $route.params.id
+          }))
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => console.log(error));
+    }
+  },
+  created: function(){
+    this.getStores();
+  }
+}
 
 const StoreEdit = { template: '<div>Магазин с id {{ $route.params.id }}</div>' }
 
