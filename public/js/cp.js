@@ -323,15 +323,13 @@ const ProductEdit = {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
         for (category of array){
-          console.log(parent);
           if (parent){
-            // Если передано значение родителя
             category.parent = parent;
           }
           if (category.childs){
             let newParent = category.name;
-            if (parent){
-              let newParent = category.parent + ' > ' + category.name;
+            if (parent) {
+              newParent = category.parent + ' > ' + category.name;
             }
             iterateArray(category.childs, newParent);
           } else {
