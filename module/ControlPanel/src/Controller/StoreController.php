@@ -77,33 +77,47 @@ class StoreController extends AbstractActionController
     }
 
     /**
-     * Show stores action        // $this->sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
-     * Shows a table of stores
-     *
-     * @return ViewModel
+     * Show stores action
+     * 
+     * @return JsonModel
      */
     public function showStoresAction()
     {
         $this->assertLoggedIn();
-        $dateTime = new \DateTime();
+        $post = $this->getRequest()->getPost()->toArray();
+        $useCache = $post['use_cache'];
+
         $identity = $this->authService->getIdentity();
         $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-        //$credentials = ['partner_id: '.'00003', 'login: '.'admin'];
         $url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
-        $answer = $this->storeManager->loadAll($url, $credentials);
 
-        $this->storeManager->setPageSize(2);
-        $cursor = $this->storeManager->findAll(['pageNo' => 1]);
-        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime, 'stores' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
-        return $view->setTerminal(true);
+        $answer['http_code'] = '200';
+        if(true /* != $useCache */) {
+            $answer = $this->storeManager->loadAll($url, $credentials);
+        }
+
+        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
+        $where = [
+            'provider_id' => $identity['provider_id'],
+        ];
+        $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
+        $cursor = $this->storeManager->findDocuments(['pageNo' => $pageNo /*$post['page_no']*/, 'where' => $where]);
+
+        return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
+
     }
 
+    /**
+     * Show stores from cache action
+     * 
+     * @return JsonModel
+     */
     public function showStoresFromCacheAction()
     {
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
-        $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
+        $this->storeManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
@@ -115,7 +129,7 @@ class StoreController extends AbstractActionController
         if (!empty($post['search'])) {
             $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
         }
-        $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        $cursor = $this->storeManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
         return new JsonModel(['data' => $cursor,]);
     }
 
