@@ -119,5 +119,14 @@ class Resource
      * Числовые данные
      */
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
+    
+    /*
+     * Статусы заказов
+     */
+    const ORDER_STATUS_CODE_NEW         = ["id" => 0, "description" => "новый" ];
+    const ORDER_STATUS_CODE_REGISTRED   = ["id" => 1, "description" => "зарегистрирован" ];
+    const ORDER_STATUS_CODE_DELIVERY    = ["id" => 2, "description" => "доставляется" ];
+    const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 3, "description" => "доставлен" ];
+    const ORDER_STATUS_CODE_CANCELED    = ["id" => 4, "description" => "отменен" ];
 
 }

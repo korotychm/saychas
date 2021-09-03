@@ -17,6 +17,8 @@ use RuntimeException;
 //use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Repository\Repository;
+use Application\Resource;
+use Application\Service\AcquiringCommunicationService;
 
 class ClientOrderRepository extends Repository
 {
@@ -35,6 +37,8 @@ class ClientOrderRepository extends Repository
      * @var ClientOrder
      */
     protected ClientOrder $prototype;
+    
+    protected AcquiringCommunicationService $acquiringService;
 
     /**
      * @param AdapterInterface $db
@@ -44,12 +48,14 @@ class ClientOrderRepository extends Repository
     public function __construct(
             AdapterInterface $db,
             HydratorInterface $hydrator,
-            ClientOrder $prototype
+            ClientOrder $prototype,
+            AcquiringCommunicationService $acquiringService
     )
     {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        $this->acquiringService = $acquiringService;
 
         parent::__construct();
     }
@@ -214,6 +220,20 @@ class ClientOrderRepository extends Repository
 
     }
     
+    private function cancelOrder($clientOrder)
+    {
+        //$this->acquiringService->addCustomerTinkoff($args);
+        $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
+        if (!empty($paymentInfo["PaymentId"])){
+                $arg = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
+                $tinkoffData = $this->acquiringService->cancelTinkoff($args);
+                mail("d.sizov@saychas.ru", "odercancel.log", print_r($tinkoffData, true)); // лог на почту
+                return true;
+        }
+        return false;
+    }
+
+
     /**
      * Replace
      * 
@@ -244,6 +264,9 @@ class ClientOrderRepository extends Repository
                 case self::ORDER:
                 default:
                     $orderStatus = $item['status'];
+                    if ($orderStatus === Resource::ORDER_STATUS_CODE_CANCELED) {
+                        $this->cancelOrder($clientOrder);
+                    }
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
                 case self::DELIVERY:
