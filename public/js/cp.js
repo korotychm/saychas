@@ -129,8 +129,8 @@ const Stores = {
       <div class="thead">
         <span></span>
         <div class="td">Наименование</div>
-        <div class="td">Категория</div>
-        <div class="td">Бренд</div>
+        <div class="td">Адрес</div>
+        <div class="td">Статус</div>
       </div>
       <div class="tbody">
           <div v-for="store in stores" class="tr">
@@ -169,6 +169,9 @@ const Stores = {
   methods: {
     getStores() {
       let requestUrl = '/control-panel/show-stores';
+      if (this.filtersCreated) {
+        requestUrl = '/control-panel/show-stores-from-cache';
+      }
       axios
         .post(requestUrl,
           Qs.stringify({
