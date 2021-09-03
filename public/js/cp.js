@@ -325,7 +325,7 @@ const ProductEdit = {
         }
       }
       this.categoriesFlat = categoriesFlat;
-      console.log(this.categoriesFlat);
+      console.log('flatten categories', this.categoriesFlat);
     },
     getProduct() {
       let requestUrl = '/control-panel/'
@@ -335,7 +335,7 @@ const ProductEdit = {
             product_id : this.$route.params.id
           }))
           .then(response => {
-            console.log(response);
+            //console.log(response);
           })
           .catch(error => {
             if (error.response.status == '403'){
@@ -349,6 +349,7 @@ const ProductEdit = {
   },
   created: function(){
     this.getProduct();
+    console.log('categories',this.categories);
     this.flatCategories();
   }
 }
