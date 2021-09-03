@@ -206,7 +206,7 @@ const Stores = {
 const ProductEdit = {
   data: function () {
     return {
-      editable: true;
+      editable: true
     }
   },
   template: `<div>
