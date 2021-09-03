@@ -277,6 +277,7 @@ const ProductEdit = {
       }
       iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
+      console.log(this.categoriesFlat);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
