@@ -315,12 +315,13 @@ const ProductEdit = {
       let categoriesFlat = [];
       function iterateArray(array) {
         for (category of array){
-          categoriesFlat.push({
-            id: category.id,
-            name: category.name
-          })
           if (category.childs){
             iterateArray(category.childs);
+          } else {
+            categoriesFlat.push({
+              id: category.id,
+              name: category.name
+            })
           }
         }
       }
