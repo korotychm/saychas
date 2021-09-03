@@ -138,7 +138,7 @@ const Stores = {
           <div v-for="store in stores" class="tr">
               <span></span>
               <div class="td products__title">
-                <a href="">{{ store.title }}</a>
+                  <router-link :to="'/stores/' + store.id">{{ store.title }}</router-link>
               </div>
               <div class="td products__category">
                   <div>{{ store.address }}</div>
@@ -205,6 +205,8 @@ const Stores = {
 
 const ProductEdit = { template: '<div>Продукт с id {{ $route.params.id }}</div>' }
 
+const StoreEdit = { template: '<div>Магазин с id {{ $route.params.id }}</div>' }
+
 const routes = [
   {
     name: 'analytics',
@@ -238,6 +240,15 @@ const routes = [
       back_route: '/products'
     },
     component: ProductEdit
+  },
+  {
+    name: 'store-edit',
+    path: '/stores/:id',
+    meta: {
+      h1: 'Редактирование магазина',
+      back_route: '/stores'
+    },
+    component: StoreEdit
   }
 ]
 
