@@ -292,7 +292,7 @@ const ProductEdit = {
       if (this.brandSearch.length < 3) return false;
       let brands = this.brands;
       brands = brands.filter((brand) => {
-        return (brand.name.toLowerCase().includes(this.brandSearch.toLowerCase()))
+        return (brand.title.toLowerCase().includes(this.brandSearch.toLowerCase()))
       })
       return brands;
     }
