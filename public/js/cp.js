@@ -363,7 +363,7 @@ const ProductEdit = {
     selectCategory(value) {
       console.log(value);
       this.categorySearch = value;
-      console.log(categorySearch);
+      console.log(this.categorySearch);
     }
   },
   created: function(){
