@@ -204,7 +204,15 @@ const Stores = {
 }
 
 const ProductEdit = {
-  template: '<div>Продукт с id {{ $route.params.id }}</div>',
+  data: function () {
+    return {
+      editable: true;
+    }
+  },
+  template: `<div>
+                <span v-if="editable">Продукт с id {{ $route.params.id }}</span>
+                <span v-else="editable">Вы не можете редактировать продукт с id {{ $route.params.id }}</span>
+            </div>`,
   methods: {
     getStores() {
       let requestUrl = '/control-panel/try'
@@ -217,8 +225,9 @@ const ProductEdit = {
             console.log(response);
           })
           .catch(error => {
-            console.log(error.response.status);
-            console.clear();
+            if (error.response.status == '404' || error.response.status == '403'){
+              this.editable = false;
+            }
           });
     }
   },
