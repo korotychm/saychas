@@ -301,7 +301,8 @@ const ProductEdit = {
             }
           ]
         }
-      ]
+      ],
+      categoriesFlat: []
     }
   },
   computed: {
@@ -310,6 +311,22 @@ const ProductEdit = {
     }
   },
   methods: {
+    flatCategories() {
+      let categoriesFlat = [];
+      iterateArray(array) {
+        for (category of array){
+          if (category.childs){
+            iterateArray(category.childs);
+            categoriesFlat.push({
+              id: category.id,
+              name: category.name
+            })
+          }
+        }
+      }
+      this.categoriesFlat = categoriesFlat;
+      console.log(this.categoriesFlat);
+    },
     getProduct() {
       let requestUrl = '/control-panel/'
       axios
@@ -331,9 +348,8 @@ const ProductEdit = {
     }
   },
   created: function(){
-    let flat = this.categories;
-    console.log(flat.flat(Infinity));
     this.getProduct();
+    this.flatCategories();
   }
 }
 
