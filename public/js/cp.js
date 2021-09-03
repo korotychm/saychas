@@ -226,19 +226,18 @@ const ProductEdit = {
                       </div>
                   </div>
                   <div class="product__info">
-                      <div class="product__attribute">
+                      <div class="product__attribute product__attribute--short">
                           <h2>Бренд</h2>
                             <div class="search-select">
-                                <input class="input search-select__input" type="text" v-model="categorySearch" @focusout="checkCategory()" />
+                                <input class="input search-select__input" type="text" v-model="brandSearch" @focusout="checkBrand()" />
                                 <div class="search-select__suggestions">
-                                    <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
-                                    <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
-                                    <div v-if="(categorySearch && filteredCategories.length)">
-                                      <label v-for="category in filteredCategories">
-                                        <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
-                                        <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
-                                          <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
-                                          <span class="search-select__suggestion-category">{{category.name}}</span>
+                                    <div v-if="!brandSearch" class="search-select__empty">Начните вводить название категории для поиска</div>
+                                    <div v-if="(brandSearch && !filteredBrands.length)" class="search-select__empty">Ничего не найдено</div>
+                                    <div v-if="(brandSearch && filteredBrands.length)">
+                                      <label v-for="brand in filteredBrands">
+                                        <input type="radio" name="suggest" :checked="(brand.id == selectedBrandId)" />
+                                        <span class="search-select__suggestion" @click="selectBrand(brand.id, brand.title)">
+                                          {{ brand.title }}
                                         </span>
                                       </label>
                                     </div>
@@ -260,7 +259,24 @@ const ProductEdit = {
       categories: [],
       categoriesFlat: [],
       selectedCategoryId: '',
-      selectedCategoryName: ''
+      selectedCategoryName: '',
+      brands: [
+        {
+          id: 1,
+          title: 'Samsung'
+        },
+        {
+          id: 2,
+          title: 'Apple'
+        },
+        {
+          id: 3,
+          title: 'DNS'
+        }
+      ],
+      brandSearch: '',
+      selectedBrandId: '',
+      selectedBrandName: '',
     }
   },
   computed: {
@@ -271,6 +287,14 @@ const ProductEdit = {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
       })
       return categories;
+    },
+    filteredBrands(){
+      if (this.brandSearch.length < 3) return false;
+      let brands = this.brands;
+      brands = brands.filter((brand) => {
+        return (brand.name.toLowerCase().includes(this.brandSearch.toLowerCase()))
+      })
+      return brands;
     }
   },
   methods: {
@@ -323,10 +347,20 @@ const ProductEdit = {
         this.categorySearch = this.selectedCategoryName;
       }
     },
+    checkBrand() {
+      if (!this.brandSearch){
+        this.brandSearch = this.brandCategoryName;
+      }
+    },
     selectCategory(id,value) {
       this.selectedCategoryId = id;
       this.categorySearch = value;
       this.selectedCategoryName = value;
+    },
+    selectBrand(id,value) {
+      this.selectedBrandId = id;
+      this.brandSearch = value;
+      this.selectedBrandName = value;
     }
   },
   created: function(){
