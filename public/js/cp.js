@@ -432,3 +432,13 @@ const cp = new Vue({
     //router.replace('/analytics');
   }
 }).$mount('#cp')
+
+
+$(document).on('focusin','.search-select__input',function(){
+  $('.search-select__suggestions').addClass('active')
+});
+$(document).on('focusout','.search-select__input',function(){
+  setTimeout(function() {
+    $('.search-select__suggestions').removeClass('active');
+  }, 100);
+});
