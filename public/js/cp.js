@@ -29,11 +29,13 @@ const Products = {
           </button>
         </form>
         <div class="filter__select">
-          
-          <div class="nice-select select select--white" tabindex="0"><span class="current">Все категории</span><ul class="list"><li data-value="" class="option selected">Все категории</li><li data-value="000000006" class="option focus">Смартфоны</li><li data-value="000000009" class="option">Линзы для камер</li></ul></div>
+          <select class="select select--white" v-model="selectedFilters.category_id" value="" @change="loadPage()">
+            <option value="" selected >Все категории</option>
+            <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
+          </select>
         </div>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.brand_id" value="" @input="loadPage()">
+          <select class="select select--white" v-model="selectedFilters.brand_id" value="" @change="loadPage()">
             <option value="" selected >Все бренды</option>
             <option v-for="brand in filters.brands" :value="brand[0]">{{ brand[1] }}</option>
           </select>
@@ -90,9 +92,6 @@ const Products = {
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
             }
-            setTimeout(function(){
-              $('.select').niceSelect();
-            }, 100);
           });
     },
     loadPage(index = 1) {
@@ -116,7 +115,7 @@ const Stores = {
         </button>
       </form>
       <div class="filter__select">
-        <select class="select select--white" v-model="selectedFilters.status_id" value="" @input="loadPage()">
+        <select class="select select--white" v-model="selectedFilters.status_id" value="" @change="loadPage()">
           <option value="" selected >Все статусы</option>
           <option v-for="status in filters.statuses" :value="status[0]">{{ status[1] }}</option>
         </select>
@@ -187,9 +186,6 @@ const Stores = {
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
             }
-            setTimeout(function(){
-              $('.select').niceSelect();
-            },100);
           });
     },
     loadPage(index = 1) {
