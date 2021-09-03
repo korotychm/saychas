@@ -212,8 +212,8 @@ const ProductEdit = {
                           <input class="input search-select__input" type="text" v-model="categorySearch" />
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
-                              <div v-if="(categorySearch && !filteredCategories)" class="search-select__empty">Ничего не найдено</div>
-                              <div v-if="(categorySearch && filteredCategories)">
+                              <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
+                              <div v-if="(categorySearch && filteredCategories.length)">
                                 <label v-for="category in filteredCategories">
                                   <input type="radio" name="suggest" @click="selectCategory(category.name)" />
                                   <span class="search-select__suggestion">
@@ -238,69 +238,13 @@ const ProductEdit = {
     return {
       editable: true,
       categorySearch: '',
-      categories: [
-        {
-          id: 1,
-          name: 'Женская одежда',
-          childs: [
-            {
-              id: 2,
-              name: 'Белье',
-              childs: [
-                {
-                  id: 3,
-                  name: 'Трусы'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 4,
-          name: 'Мужская одежда',
-          childs: [
-            {
-              id: 5,
-              name: 'Белье',
-              childs: [
-                {
-                  id: 6,
-                  name: 'Трусы'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 7,
-          name: 'Электроника',
-          childs: [
-            {
-              id: 8,
-              name: 'Смартфоны и смарт-часы',
-              childs: [
-                {
-                  id: 9,
-                  name: 'Смарт-часы'
-                },
-                {
-                  id: 10,
-                  name: 'Смартфоны'
-                }
-              ]
-            },
-            {
-              id: 11,
-              name: 'Холодильники'
-            }
-          ]
-        }
-      ],
+      categories: [],
       categoriesFlat: []
     }
   },
   computed: {
     filteredCategories(){
+      if (categorySearch.length < 3) return false;
       let categories = this.categoriesFlat;
       categories = categories.filter((category) => {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
@@ -316,16 +260,16 @@ const ProductEdit = {
           if (parent){
             category.parent = parent;
           }
-          if (category.childs){
-            let newParent = category.name;
+          if (category.children){
+            let newParent = category.title;
             if (parent) {
-              newParent = category.parent + ' > ' + category.name;
+              newParent = category.parent + ' > ' + category.title;
             }
-            iterateArray(category.childs, newParent);
+            iterateArray(category.children, newParent);
           } else {
             categoriesFlat.push({
               id: category.id,
-              name: category.name,
+              name: category.title,
               parent: category.parent
             })
           }
@@ -343,6 +287,7 @@ const ProductEdit = {
           }))
           .then(response => {
             console.log(response.data);
+            this.categories = response.data.category_tree;
           })
           .catch(error => {
             if (error.response.status == '403'){
