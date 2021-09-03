@@ -287,8 +287,9 @@ const ProductEdit = {
             product_id : this.$route.params.id
           }))
           .then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             this.categories = response.data.category_tree;
+            console.log(this.categories);
           })
           .catch(error => {
             if (error.response.status == '403'){
