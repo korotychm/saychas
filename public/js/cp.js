@@ -301,7 +301,7 @@ const ProductEdit = {
   },
   computed: {
     filteredCategories(){
-      let categories = this.categoriesFla
+      let categories = this.categoriesFlat;
       categories = categories.filter((category) => {
         return (category.name.includes(this.categorySearch))
       })
