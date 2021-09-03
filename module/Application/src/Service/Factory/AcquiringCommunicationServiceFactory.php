@@ -20,8 +20,9 @@ class AcquiringCommunicationServiceFactory implements FactoryInterface
 
         $config = $container->get('Config');
         $productRepository = $container->get(HandbookRelatedProductRepositoryInterface::class);
+        $entityManager = $container->get('laminas.entity.manager');
 
-        return new AcquiringCommunicationService($config, $productRepository);
+        return new AcquiringCommunicationService($config, $productRepository, $entityManager);
     }
 
 }

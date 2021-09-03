@@ -1144,6 +1144,7 @@ return [
             \Application\Model\Entity\UserPaycard::class => \Application\Model\Factory\UserPaycardRepositoryFactory::class,
             \Application\Model\Entity\Color::class => \Application\Model\Factory\ColorRepositoryFactory::class,
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
+            \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,

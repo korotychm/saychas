@@ -9,7 +9,7 @@ use Laminas\Session\Container;
 use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Application\Model\Entity;
-//use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\Basket;
 //use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
@@ -28,12 +28,17 @@ class AcquiringCommunicationService
     private $config;
     private $productRepository;
     private $tinkoffApiParams;
+    private $entityManager;
 
     public function __construct($config,
-            HandbookRelatedProductRepositoryInterface $productRepository)
+            HandbookRelatedProductRepositoryInterface $productRepository, $entityManager)
     {
         $this->productRepository = $productRepository;
         $this->tinkoffApiParams = $config['parameters']['TinkoffMerchantAPI'];
+        $this->entityManager = $entityManager;
+        
+        $this->entityManager->initRepository(Basket::class);
+        
     }
 
     /*
@@ -157,7 +162,17 @@ class AcquiringCommunicationService
         }
         return $return;
     }
-
+    
+    public function returnProductsToBasket($orderId, $userId)
+    {
+        //return  ;
+        $basketSet = Basket::findAll(['where' => ['user_id' => $userId, 'order_id' => $orderId] ]);
+        foreach($basketSet as $basket) {
+            $basket->setOrderId(0);
+            $basket->persist(['user_id' => $userId, 'order_id' => $orderId]);
+        }/**/
+    }
+    
     /**
      * Build query
      *

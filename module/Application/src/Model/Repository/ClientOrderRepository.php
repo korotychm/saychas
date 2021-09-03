@@ -152,11 +152,12 @@ class ClientOrderRepository extends Repository
     {
         //$this->acquiringService->addCustomerTinkoff($args);
         $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
-        mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
-        if (!empty($paymentInfo["PaymentId"])){
+        //$deliveryInfo = Json::decode( $clientOrder->getDeliveryInfo(), Json::TYPE_ARRAY);
+        //mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
+       if (!empty($paymentInfo["PaymentId"])){
                 $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
                 $tinkoffData = $this->acquiringService->cancelTinkoff($args);
-                mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
+          //      mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
                 return true;
         }
         return false;
@@ -183,6 +184,7 @@ class ClientOrderRepository extends Repository
         
         foreach($result['data'] as $item) {
             $orderId = $item['order_id'];
+            $userId = $item['user_id'];
             
             $clientOrder = $this->find(['order_id' => $orderId]);
             if(null == $clientOrder) {
@@ -195,6 +197,7 @@ class ClientOrderRepository extends Repository
                     $orderStatus = $item['status'];
                     if ($orderStatus == 4 /*Resource::ORDER_STATUS_CODE_CANCELED*/) {
                         $this->cancelOrder($clientOrder);
+                        $this->acquiringService->returnProductsToBasket($orderId, $userId);
                     }
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
