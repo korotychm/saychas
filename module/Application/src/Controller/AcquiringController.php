@@ -258,8 +258,10 @@ class AcquiringController extends AbstractActionController
     
     private function addDeliveryItem ($delivery_price)
     {
-        $delivery_tax = $this->config['parameters']['TinkoffMerchantAPI']['deliveryTax'];
-        $vat = ($delivery_tax < 0)?"none":"vat".$delivery_tax;
+        //$delivery_tax = $this->config['parameters']['TinkoffMerchantAPI']['deliveryTax'];
+        //$vat = ($delivery_tax < 0)?"none":"vat".$delivery_tax;
+        $vat = "vat20";
+        exit (print_r($this->config['parameters']['TinkoffMerchantAPI']));
         return [
             'Name' => Resource::ORDER_PAYMENT_DELIVERY,
             'Quantity' => 1,
