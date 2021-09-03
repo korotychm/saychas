@@ -313,7 +313,7 @@ const ProductEdit = {
   methods: {
     flatCategories() {
       let categoriesFlat = [];
-      iterateArray(array) {
+      function iterateArray(array) {
         for (category of array){
           if (category.childs){
             iterateArray(category.childs);
