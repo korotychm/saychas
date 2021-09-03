@@ -147,18 +147,18 @@ class AcquiringController extends AbstractActionController
     {
         //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
         
-        $paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
+        
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $orderId = $this->params()->fromRoute('order', '');
-        $param = [
-            'OrderId' => $orderId,
-            //"RedirectDueDate" => date(DATE_ISO8601, (time() + $paramApi['time_order_live'] )),
-            "RedirectDueDate" => date('Y-m-d\TH:i:s+03:00', (time() + $paramApi['time_order_live'] )) ,
-           // "SuccessURL"  =>  $paramApi['success_url'],     
-           // "FailURL"=> $paramApi['fail_url'],     
-            "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_DESCRIPTION),     
-          ];
+        $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
+        //$paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
+         
+        if (empty($userInfo ['phone'])){
+             return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
+        }
+        
+    
         //return new JsonModel(["result" => false, "answer" => $param]);
         $order = ClientOrder::find(["order_id" => $orderId /*/ "status" => 1 /**/]); 
         if (empty($order)) {
@@ -166,21 +166,21 @@ class AcquiringController extends AbstractActionController
         }
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
         $delivery_price = (int)$basket_info['delivery_price'];
-        $defaultCard = $basket_info['paycard'];
+        $userInfo['paycard'] = $basket_info['paycard'];
+        $param =$this->buildTinkoffArgs($orderId, $userInfo);
+        
+        
         $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
         $delivery_tax = (int)$delivery_params['deliveryTax'];
-        $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
-        if (empty($userInfo ['phone'])){
-             return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
-        }
-        $param['DATA']['CustomerKey'] = $param['CustomerKey'] = $userInfo ['userid'];
-        $param['DATA']['Phone'] =  $param['Receipt']['Phone'] =  "+".$userInfo['phone'];
-        $param['DATA']['DefaultCard'] = $defaultCard;
-        if($userInfo['email']){
-            $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];
-        }    
-        $param['Receipt']['EmailCompany'] = $paramApi['company_email'];
-        $param['Receipt']['Taxation'] = $paramApi['company_taxation'];
+       
+       // $param['DATA']['CustomerKey'] = $param['CustomerKey'] = $userInfo ['userid'];
+       // $param['DATA']['Phone'] =  $param['Receipt']['Phone'] =  "+".$userInfo['phone'];
+       // $param['DATA']['DefaultCard'] = $defaultCard;
+       // if($userInfo['email']){
+       //     $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];
+       // }    
+        //$param['Receipt']['EmailCompany'] = $paramApi['company_email'];
+        //$param['Receipt']['Taxation'] = $paramApi['company_taxation'];
         $orderBasket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
         
         if (empty($orderBasket)) {
@@ -192,16 +192,19 @@ class AcquiringController extends AbstractActionController
         $param['Amount'] = $orderItems['Amount'];
         $vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
         if ($delivery_price > 0) {
-            $param['Receipt']['Items'][] = [
+            $param['Receipt']['Items'][] = $this->addDeliveryItem($delivery_price);
+            $param['Amount']+=$delivery_price;
+         }
+            /*[
                'Name' => Resource::ORDER_PAYMENT_DELIVERY,
                'Quantity' => 1,
                'PaymentObject' => "service",
                'Amount' => $delivery_price,
                'Price' => $delivery_price,
                'Tax' => $vat,
-            ];
-            $param['Amount']+=$delivery_price;
-        }
+            ];*/
+            
+        
         //return new JsonModel($param);
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         //return new JsonModel($tinkoffAnswer);
@@ -226,6 +229,70 @@ class AcquiringController extends AbstractActionController
         $param=["type"=>"Success"];
         return new JsonModel( $param);
     }
+    
+    
+    public function tinkoffOrderBillAction()
+    {
+        //$post[] = $this->getRequest()->getPost()->toArray(); 
+        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
+        $orderId = $post["OrderId"];
+        $order = ClientOrder::find(['order_id' => $orderId]);
+        $userId = $order->getUserId();
+        $user = User::find(["id" => $userId]);
+        $post["User"] =
+        $userInfo = $this->commonHelperFuncions->getUserInfo($user);        
+        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+        $answer = ['result' => true, 'description' => 'ok'];
+        return new JsonModel($answer);
+        
+    }
+    
+    
+    private function buildTinkoffArgs($orderId, $userInfo)
+    {
+        $paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
+        $param = [
+            'OrderId' => $orderId,
+            "RedirectDueDate" => date('Y-m-d\TH:i:s+03:00', (time() + $paramApi['time_order_live'] )) ,
+            "Description"=> str_replace("<OrderId/>", $orderId, Resource::ORDER_PAYMENT_DESCRIPTION),     
+            "CustomerKey" => $userInfo ['userid'],
+            'DATA' => [
+                "CustomerKey" => $userInfo ['userid'],
+                'Phone' => "+".$userInfo['phone'],
+                'DefaultCard' => $userInfo['paycard'],
+               // 'Email' =>  $userInfo['email'],
+                ],
+            'Receipt' => [
+                'Phone' => "+".$userInfo['phone'],
+                'EmailCompany' => $paramApi['company_email'],
+                'Taxation' => $paramApi['company_taxation'],
+              ]
+          ];
+        if($userInfo['email']){
+            $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];
+        }
+        return $param;
+    }
+    private function addDeliveryItem ($delivery_price)
+    {
+        $delivery_tax = $this->config['parameters']['TinkoffMerchantAPI']['deliveryTax'];
+        $vat = ($delivery_tax < 0)?"none":"vat".$delivery_tax;
+        
+        return [
+               'Name' => Resource::ORDER_PAYMENT_DELIVERY,
+               'Quantity' => 1,
+               'PaymentObject' => "service",
+               'Amount' => $delivery_price,
+               'Price' => $delivery_price,
+               'Tax' => $vat,
+            ];
+        
+    }
+    
+    
+    
     
     /*
      * get post json

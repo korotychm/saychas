@@ -309,8 +309,8 @@ return [
                 'options' => [
                     'route'    => '/get-client-order-bill',
                     'defaults' => [
-                        'controller' => Controller\UserDataController::class,
-                        'action'     => 'getOrderBill',
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffOrderBill',
                     ],
                 ],
             ],
