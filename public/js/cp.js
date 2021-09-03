@@ -115,7 +115,7 @@ const Stores = {
         </button>
       </form>
       <div class="filter__select">
-        <select class="select select--white" v-model="selectedFilters.status_id" value="" @change="loadPage()">
+        <select class="select select--white" v-model="selectedFilters.status_id" value="" @input="loadPage()">
           <option value="" selected >Все статусы</option>
           <option v-for="status in filters.statuses" :value="status[0]">{{ status[1] }}</option>
         </select>
@@ -186,6 +186,9 @@ const Stores = {
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
             }
+            setTimeout(function(){
+              $('.select').niceSelect();
+            });
           });
     },
     loadPage(index = 1) {
