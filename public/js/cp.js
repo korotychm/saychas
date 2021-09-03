@@ -329,7 +329,10 @@ const ProductEdit = {
             category.parent = parent;
           }
           if (category.childs){
-            let newParent = category.parent + ' > ' + category.name;
+            let newParent = category.name;
+            if (parent){
+              let newParent = category.parent + ' > ' + category.name;
+            }
             iterateArray(category.childs, newParent);
           } else {
             categoriesFlat.push({
