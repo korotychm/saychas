@@ -237,7 +237,7 @@ const ProductEdit = {
                                       <label v-for="brand in filteredBrands">
                                         <input type="radio" name="suggest" :checked="(brand.id == selectedBrandId)" />
                                         <span class="search-select__suggestion" @click="selectBrand(brand.id, brand.title)">
-                                          {{ brand.title }}
+                                          <span>{{ brand.title }}</span>
                                         </span>
                                       </label>
                                     </div>
