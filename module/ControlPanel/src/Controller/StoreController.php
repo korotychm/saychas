@@ -98,6 +98,27 @@ class StoreController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
+    public function showStoresFromCacheAction()
+    {
+        $this->assertLoggedIn();
+        $post = $this->getRequest()->getPost()->toArray();
+        $identity = $this->authService->getIdentity();
+        $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
+        $where = [
+            'provider_id' => $identity['provider_id'],
+        ];
+        foreach ($post['filters'] as $key => $value) {
+            if (!empty($value)) {
+                $where[$key] = $value;
+            }
+        }
+        if (!empty($post['search'])) {
+            $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
+        }
+        $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        return new JsonModel(['data' => $cursor,]);
+    }
+
     /**
      * Signal ajax script
      * if provider is not logged in

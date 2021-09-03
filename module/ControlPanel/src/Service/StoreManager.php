@@ -92,7 +92,7 @@ class StoreManager
      * 
      * @return array
      */
-    private function findStatuses()
+    private function findStatuses1()
     {
         $collectionName = 'store_statuses';
         $collection = $this->db->{$collectionName};
@@ -102,6 +102,16 @@ class StoreManager
             $result[] = [$c['status_id'], $c['status_name']];
         }
         return $result;
+    }
+    
+    /**
+     * Find store statuses in config
+     * 
+     * @return array
+     */
+    private function findStatuses()
+    {
+        return $this->config['parameters']['store_statuses'];
     }
 
     /**
