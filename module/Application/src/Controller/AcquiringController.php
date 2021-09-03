@@ -167,20 +167,8 @@ class AcquiringController extends AbstractActionController
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY); 
         $delivery_price = (int)$basket_info['delivery_price'];
         $userInfo['paycard'] = $basket_info['paycard'];
-        $param =$this->buildTinkoffArgs($orderId, $userInfo);
+                $param =$this->buildTinkoffArgs($orderId, $userInfo);
         
-        
-        $delivery_params= Json::decode(Setting::find(["id" => "delivery_params"])->getValue(), Json::TYPE_ARRAY); 
-        $delivery_tax = (int)$delivery_params['deliveryTax'];
-       
-       // $param['DATA']['CustomerKey'] = $param['CustomerKey'] = $userInfo ['userid'];
-       // $param['DATA']['Phone'] =  $param['Receipt']['Phone'] =  "+".$userInfo['phone'];
-       // $param['DATA']['DefaultCard'] = $defaultCard;
-       // if($userInfo['email']){
-       //     $param['DATA']['Email'] =  $param['Receipt']['Email'] =  $userInfo['email'];
-       // }    
-        //$param['Receipt']['EmailCompany'] = $paramApi['company_email'];
-        //$param['Receipt']['Taxation'] = $paramApi['company_taxation'];
         $orderBasket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
         
         if (empty($orderBasket)) {
@@ -190,26 +178,13 @@ class AcquiringController extends AbstractActionController
         $orderItems = $this->acquiringCommunication->getOrderItems($orderBasket);
         $param['Receipt']['Items'] =  $orderItems['Items'];
         $param['Amount'] = $orderItems['Amount'];
-        $vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
+        //$vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
         if ($delivery_price > 0) {
             $param['Receipt']['Items'][] = $this->addDeliveryItem($delivery_price);
             $param['Amount']+=$delivery_price;
          }
-            /*[
-               'Name' => Resource::ORDER_PAYMENT_DELIVERY,
-               'Quantity' => 1,
-               'PaymentObject' => "service",
-               'Amount' => $delivery_price,
-               'Price' => $delivery_price,
-               'Tax' => $vat,
-            ];*/
-            
-        
-        //return new JsonModel($param);
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
-        //return new JsonModel($tinkoffAnswer);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
-            //$this->
             $order->setPaymentInfo($tinkoffAnswer['answer']);
             $order->persist(["order_id" => $orderId, "status" => 1 ]);
             return new JsonModel(["result" => true, 'param' => $param,  "answer" =>$tinkoffAnswer['answer']]);
@@ -234,13 +209,17 @@ class AcquiringController extends AbstractActionController
     public function tinkoffOrderBillAction()
     {
         //$post[] = $this->getRequest()->getPost()->toArray(); 
-        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
+        $post["post1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
+        
         $orderId = $post["OrderId"];
         $order = ClientOrder::find(['order_id' => $orderId]);
         $userId = $order->getUserId();
-        $user = User::find(["id" => $userId]);
-        $post["User"] =
-        $userInfo = $this->commonHelperFuncions->getUserInfo($user);        
+        //$user = ;
+        $post["user"] =
+        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));        
+        
+        $post["requestTinkoff"] = $this->buildTinkoffArgs($orderId, $userInfo);
+        
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
@@ -275,19 +254,20 @@ class AcquiringController extends AbstractActionController
         }
         return $param;
     }
+    
+    
     private function addDeliveryItem ($delivery_price)
     {
         $delivery_tax = $this->config['parameters']['TinkoffMerchantAPI']['deliveryTax'];
         $vat = ($delivery_tax < 0)?"none":"vat".$delivery_tax;
-        
         return [
-               'Name' => Resource::ORDER_PAYMENT_DELIVERY,
-               'Quantity' => 1,
-               'PaymentObject' => "service",
-               'Amount' => $delivery_price,
-               'Price' => $delivery_price,
-               'Tax' => $vat,
-            ];
+            'Name' => Resource::ORDER_PAYMENT_DELIVERY,
+            'Quantity' => 1,
+            'PaymentObject' => "service",
+            'Amount' => $delivery_price,
+            'Price' => $delivery_price,
+            'Tax' => $vat,
+         ];
         
     }
     
