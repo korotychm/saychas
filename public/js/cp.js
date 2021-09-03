@@ -227,6 +227,25 @@ const ProductEdit = {
                   </div>
                   <div class="product__info">
                       <div class="product__attribute">
+                          <h2>Бренд</h2>
+                            <div class="search-select">
+                                <input class="input search-select__input" type="text" v-model="categorySearch" @focusout="checkCategory()" />
+                                <div class="search-select__suggestions">
+                                    <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
+                                    <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
+                                    <div v-if="(categorySearch && filteredCategories.length)">
+                                      <label v-for="category in filteredCategories">
+                                        <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
+                                        <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
+                                          <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
+                                          <span class="search-select__suggestion-category">{{category.name}}</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                      <div class="product__attribute">
                           <h2>Название товара</h2>
                           <input class="input" type="text" :value="'Товар с id ' + $route.params.id" />
                       </div>
