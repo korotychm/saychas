@@ -324,6 +324,7 @@ const ProductEdit = {
           }
         }
       }
+      iterateArray(this.categories);
       this.categoriesFlat = categoriesFlat;
       console.log('flatten categories', this.categoriesFlat);
     },
