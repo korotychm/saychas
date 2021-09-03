@@ -29,10 +29,8 @@ const Products = {
           </button>
         </form>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.category_id" value="" @input="$emit('input',selectedFilters.category_id)">
-            <option value="" selected >Все категории</option>
-            <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
-          </select>
+          
+          <div class="nice-select select select--white" tabindex="0"><span class="current">Все категории</span><ul class="list"><li data-value="" class="option selected">Все категории</li><li data-value="000000006" class="option focus">Смартфоны</li><li data-value="000000009" class="option">Линзы для камер</li></ul></div>
         </div>
         <div class="filter__select">
           <select class="select select--white" v-model="selectedFilters.brand_id" value="" @input="loadPage()">
