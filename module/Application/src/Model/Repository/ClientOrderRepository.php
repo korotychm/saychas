@@ -82,79 +82,7 @@ class ClientOrderRepository extends Repository
         return parent::persist($entity, $params, $hydrator);
     }
     
-//    public function findAll($params)
-//    {
-//        $join = new Join();
-//        $join->join(['rh' => 'role_hierarchy'], "{$this->tableName}.id = rh.id", ['parent_role_id'], Select::JOIN_LEFT);
-//        $params['joins'] = $join;
-//        return parent::findAll($params);
-//    }
 
-    /**
-     * receive-client-order-statuses
-        [
-            {
-              "orderId": "000000023",
-              "order_status": "0",
-              "deliveries": [
-                {
-                  "delivery_id": "000000000000000090",
-                  "delivery_status": "0",
-                  "requisitions": [
-                    {
-                      "requisition_id": "000000000000000133",
-                      "requisition_status": "0"
-                    },
-                    {
-                      "requisition_id": "000000000000000134",
-                      "requisition_status": "0"
-                    }
-                  ]
-                },
-                {
-                  "delivery_id": "000000000000000088",
-                  "delivery_status": "1",
-                  "requisitions": [
-                    {
-                      "requisition_id": "000000000000000130",
-                      "requisition_status": "0"
-                    }
-                  ]
-                },
-                {
-                  "delivery_id": "000000000000000087",
-                  "delivery_status": "0",
-                  "requisitions": [
-                    {
-                      "requisition_id": "000000000000000129",
-                      "requisition_status": "0"
-                    }
-                  ]
-                },
-                {
-                  "delivery_id": "000000000000000089",
-                  "delivery_status": "0",
-                  "requisitions": [
-                    {
-                      "requisition_id": "000000000000000131",
-                      "requisition_status": "0"
-                    },
-                    {
-                      "requisition_id": "000000000000000132",
-                      "requisition_status": "0"
-                    }
-                  ]
-                }
-              ]
-            }
-        ]
-
-        [{"orderId":"000000023","order_status":"0","deliveries":[{"delivery_id":"000000000000000090","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000133","requisition_status":"0"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"000000000000000088","delivery_status":"1","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"0"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}]
-
-     * 
-     * 
-     */
-    
     /**
      * Adds given client_order into it's repository
      *
@@ -264,7 +192,8 @@ class ClientOrderRepository extends Repository
                 case self::ORDER:
                 default:
                     $orderStatus = $item['status'];
-                    if ($orderStatus === Resource::ORDER_STATUS_CODE_CANCELED) {
+                    if ($orderStatus == 4 /*Resource::ORDER_STATUS_CODE_CANCELED*/) {
+                        return ['result' => true, 'description' => 'не записалось!', 'statusCode' => 200];
                         $this->cancelOrder($clientOrder);
                     }
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
