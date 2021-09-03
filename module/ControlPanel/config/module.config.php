@@ -59,11 +59,16 @@ return [
                     /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
                 ['actions' => ['actionAndDiscount',], 'allow' => '+analyst'],
                 ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
-                ['actions' => ['showStores',], 'allow' => '+analyst'],
+//                ['actions' => ['showStores',], 'allow' => '+analyst'],
+//                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['showProducts', ], 'allow' => '+developer'],
                 ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
+            ],
+            \ControlPanel\Controller\StoreController::class => [
+                ['actions' => ['showStores',], 'allow' => '+analyst'],
+                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
         ]
     ],    
@@ -107,7 +112,7 @@ return [
                         'options' => [
                             'route' => '/show-stores',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\IndexController::class,
+                                'controller' => \ControlPanel\Controller\StoreController::class,
                                 'action' => 'show-stores',
                             ],
                         ],
