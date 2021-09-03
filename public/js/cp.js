@@ -216,7 +216,7 @@ const ProductEdit = {
           .then(response => {
             console.log(response);
           })
-          .catch(error => console.log(error));
+          .catch(error => console.log(error.response.status));
     }
   },
   created: function(){
