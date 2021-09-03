@@ -139,20 +139,20 @@ class ProductManager implements LoadableInterface
                 [
                     'skip' => $limits['min'] - 1,
                     'limit' => $this->pageSize,
-                    'projection' => [
-                        'id' => 1,
-                        'title' => 1,
-                        'category_id' => 1,
-                        'brand_id' => 1,
-                        'description' => 1,
-                        'vendor_code' => 1,
-                        'provider_id' => 1,
-                        'color' => 1,
-                        'country' => 1,
-                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
-                        'images' => 1,
-                        '_id' => 0
-                    ],
+//                    'projection' => [
+//                        'id' => 1,
+//                        'title' => 1,
+//                        'category_id' => 1,
+//                        'brand_id' => 1,
+//                        'description' => 1,
+//                        'vendor_code' => 1,
+//                        'provider_id' => 1,
+//                        'color' => 1,
+//                        'country' => 1,
+//                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
+//                        'images' => 1,
+//                        '_id' => 0
+//                    ],
                 ]
             );
             $result['body'] = $cursor->toArray();
