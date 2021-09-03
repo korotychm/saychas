@@ -323,6 +323,7 @@ const ProductEdit = {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
         for (category of array){
+          console.log(parent);
           if (parent){
             // Если передано значение родителя
             category.parent = parent;
@@ -338,7 +339,7 @@ const ProductEdit = {
           }
         }
       }
-      iterateArray(this.categories);
+      iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
 
 
