@@ -251,7 +251,7 @@ const ProductEdit = {
             </div>`,
   methods: {
     getStores() {
-      let requestUrl = '/control-panel/try'
+      let requestUrl = '/control-panel/'
       axios
         .post(requestUrl,
           Qs.stringify({
