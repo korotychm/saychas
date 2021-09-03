@@ -29,13 +29,13 @@ const Products = {
           </button>
         </form>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.category_id" value="" @change="loadPage()">
+          <select class="select select--white" v-model="selectedFilters.category_id" value="" @input="loadPage()">
             <option value="" selected >Все категории</option>
             <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
           </select>
         </div>
         <div class="filter__select">
-          <select class="select select--white" v-model="selectedFilters.brand_id" value="" @change="loadPage()">
+          <select class="select select--white" v-model="selectedFilters.brand_id" value="" @input="loadPage()">
             <option value="" selected >Все бренды</option>
             <option v-for="brand in filters.brands" :value="brand[0]">{{ brand[1] }}</option>
           </select>
@@ -92,6 +92,9 @@ const Products = {
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
             }
+            setTimeout(function(){
+              $('.select').niceSelect();
+            }, 100);
           });
     },
     loadPage(index = 1) {
@@ -188,7 +191,7 @@ const Stores = {
             }
             setTimeout(function(){
               $('.select').niceSelect();
-            });
+            },100);
           });
     },
     loadPage(index = 1) {
