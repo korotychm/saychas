@@ -334,7 +334,8 @@ const ProductEdit = {
           } else {
             categoriesFlat.push({
               id: category.id,
-              name: category.name
+              name: category.name,
+              parent: category.parent
             })
           }
         }
