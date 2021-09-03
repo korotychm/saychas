@@ -252,7 +252,8 @@ class UserDataController extends AbstractActionController
      */
     public function getOrderBillAction()
     {
-        $post = $this->getRequest()->getPost(); 
+        $post[] = $this->getRequest()->getPost()->toArray(); 
+        $post[] = file_get_contents('php://input');    
         mail("d.sizov@saychas.ru", "confirm_payment.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
