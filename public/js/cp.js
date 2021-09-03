@@ -215,8 +215,8 @@ const ProductEdit = {
                               <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
                               <div v-if="(categorySearch && filteredCategories.length)">
                                 <label v-for="category in filteredCategories">
-                                  <input type="radio" name="suggest" @click="selectCategory(category.name)" />
-                                  <span class="search-select__suggestion">
+                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategory)" />
+                                  <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
                                     <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
                                     <span class="search-select__suggestion-category">{{category.name}}</span>
                                   </span>
@@ -239,7 +239,8 @@ const ProductEdit = {
       editable: true,
       categorySearch: '',
       categories: [],
-      categoriesFlat: []
+      categoriesFlat: [],
+      selectedCategory: ''
     }
   },
   computed: {
@@ -298,7 +299,8 @@ const ProductEdit = {
             }
           });
     },
-    selectCategory(value) {
+    selectCategory(id,value) {
+      this.selectedCategory = id;
       this.categorySearch = value;
     }
   },
