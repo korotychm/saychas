@@ -154,7 +154,7 @@ class ClientOrderRepository extends Repository
         $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
         mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
         if (!empty($paymentInfo["PaymentId"])){
-                $arg = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
+                $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
                 $tinkoffData = $this->acquiringService->cancelTinkoff($args);
                 mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
                 return true;
