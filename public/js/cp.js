@@ -209,30 +209,30 @@ const ProductEdit = {
                   <div class="product__category">
                       <h2>Категория</h2>
                       <div class="search-select">
-                          <input class="input search-select__input" type="text" value="" v-model="categorySearch" />
+                          <input class="input search-select__input" type="text" v-model="categorySearch" />
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
                               <div v-if="(categorySearch && !categorySearchResults)" class="search-select__empty">Ничего не найдено</div>
                               <div v-if="categorySearchResults">
                                 <label>
-                                  <input type="radio" name="suggest" @change="selectCategory('Конечная категория')" />
+                                  <input type="radio" name="suggest" @click="selectCategory('Конечная категория')" />
                                   <span class="search-select__suggestion">
-                                  <span class="search-select__suggestion-category--parent">Родительская категория</span>
-                                  <span class="search-select__suggestion-category">Конечная категория</span>
+                                    <span class="search-select__suggestion-category--parent">Родительская категория</span>
+                                    <span class="search-select__suggestion-category">Конечная категория</span>
                                   </span>
                                 </label>
                                 <label>
-                                  <input type="radio" name="suggest" @change="selectCategory('Конечная категория')" />
+                                  <input type="radio" name="suggest" @click="selectCategory('Конечная категория')" />
                                   <span class="search-select__suggestion">
-                                  <span class="search-select__suggestion-category--parent">Родительская категория</span>
-                                  <span class="search-select__suggestion-category">Конечная категория</span>
+                                    <span class="search-select__suggestion-category--parent">Родительская категория</span>
+                                    <span class="search-select__suggestion-category">Конечная категория</span>
                                   </span>
                                 </label>
                                 <label>
-                                  <input type="radio" name="suggest" @change="selectCategory('Конечная категория')" />
+                                  <input type="radio" name="suggest" @click="selectCategory('Конечная категория')" />
                                   <span class="search-select__suggestion">
-                                  <span class="search-select__suggestion-category--parent">Родительская категория</span>
-                                  <span class="search-select__suggestion-category">Конечная категория</span>
+                                    <span class="search-select__suggestion-category--parent">Родительская категория</span>
+                                    <span class="search-select__suggestion-category">Конечная категория</span>
                                   </span>
                                 </label>
                               </div>
@@ -343,9 +343,6 @@ const ProductEdit = {
       }
       iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
-
-
-      console.log('flatten categories', this.categoriesFlat);
     },
     getProduct() {
       let requestUrl = '/control-panel/'
@@ -364,12 +361,13 @@ const ProductEdit = {
           });
     },
     selectCategory(value) {
+      console.log(value);
       this.categorySearch = value;
+      console.log(categorySearch);
     }
   },
   created: function(){
     this.getProduct();
-    console.log('categories',this.categories);
     this.flatCategories();
   }
 }
