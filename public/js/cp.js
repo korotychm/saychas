@@ -321,7 +321,7 @@ const ProductEdit = {
   methods: {
     flatCategories() {
       let categoriesFlat = [];
-      function iterateArray(array) {
+      function iterateArray(array, parent) {
         for (category of array){
           if (parent){
             // Если передано значение родителя
