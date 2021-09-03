@@ -137,6 +137,12 @@ class ProductController extends AbstractActionController
         return new JsonModel(['data' => $cursor,]);
     }
     
+    /**
+     * Edit product
+     * returns data to edit product screen
+     * 
+     * @return JsonModel
+     */
     public function editProductAction()
     {
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));

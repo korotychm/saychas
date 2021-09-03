@@ -15,7 +15,7 @@ use Laminas\Session\Container;
 class ListController extends AbstractActionController
 {
 
-    private const STORES_PER_PAGE = 2;
+    private const ROWS_PER_PAGE = 2;
 
     /** @var ContainerInterface */
     protected $container;
@@ -108,7 +108,7 @@ class ListController extends AbstractActionController
             $answer = $manager->loadAll($url, $credentials);
         }
 
-        $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
+        $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::ROWS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
@@ -134,7 +134,7 @@ class ListController extends AbstractActionController
         $this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
-        $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
+        $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::ROWS_PER_PAGE);
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
