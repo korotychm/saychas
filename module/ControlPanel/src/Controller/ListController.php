@@ -7,12 +7,13 @@ declare(strict_types=1);
 namespace ControlPanel\Controller;
 
 use ControlPanel\Service\HtmlContentProvider;
-use Laminas\Mvc\Controller\AbstractActionController;
+//use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
+use ControlPanel\Controller\AbstractControlPanelActionController;
 
-class ListController extends AbstractActionController
+class ListController extends AbstractControlPanelActionController // AbstractActionController
 {
 
     private const ROWS_PER_PAGE = 2;
@@ -72,21 +73,6 @@ class ListController extends AbstractActionController
         return $response;
     }
     
-    protected function getManagerInfo($routeMatch)
-    {
-        $routeName = $routeMatch->getMatchedRouteName();
-        
-        list($leftName, $rightName) = explode('/', $routeName);
-
-        //$params = $routeMatch->getParams();
-
-        $config = $this->container->get('Config');
-        
-        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
-
-        return ['manager' => $this->container->get($managerName), 'manager_name' => $managerName];
-    }
-
     public function showListAction()
     {
         
@@ -198,3 +184,31 @@ class ListController extends AbstractActionController
 //
 //        $manager = $this->container->get($managerName);
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    protected function getManagerInfo($routeMatch)
+//    {
+//        $routeName = $routeMatch->getMatchedRouteName();
+//        
+//        list($leftName, $rightName) = explode('/', $routeName);
+//
+//        //$params = $routeMatch->getParams();
+//
+//        $config = $this->container->get('Config');
+//        
+//        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
+//
+//        return ['manager' => $this->container->get($managerName), 'manager_name' => $managerName];
+//    }
+
