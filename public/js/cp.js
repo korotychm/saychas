@@ -226,12 +226,12 @@ const ProductEdit = {
                       </div>
                   </div>
                   <div class="product__info">
-                      <div class="product__attribute product__attribute--short">
+                      <div class="product__attribute">
                           <h2>Бренд</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" v-model="brandSearch" @focusout="checkBrand()" />
                                 <div class="search-select__suggestions">
-                                    <div v-if="!brandSearch" class="search-select__empty">Начните вводить название категории для поиска</div>
+                                    <div v-if="!brandSearch" class="search-select__empty">Начните вводить название бренда для поиска</div>
                                     <div v-if="(brandSearch && !filteredBrands.length)" class="search-select__empty">Ничего не найдено</div>
                                     <div v-if="(brandSearch && filteredBrands.length)">
                                       <label v-for="brand in filteredBrands">
