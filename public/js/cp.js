@@ -335,7 +335,7 @@ const ProductEdit = {
       this.categoriesFlat = categoriesFlat;
     },
     getProduct() {
-      let requestUrl = '/control-panel/edit-product/'
+      let requestUrl = '/control-panel/edit-product'
       axios
         .post(requestUrl,
           Qs.stringify({
