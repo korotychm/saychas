@@ -403,5 +403,5 @@ $(document).on('focusout','.search-select__input',function(){
   let el = $(this).parent().find('.search-select__suggestions');
   setTimeout(function() {
     el.removeClass('active')
-  }, 300);
+  }, 200);
 });
