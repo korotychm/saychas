@@ -223,7 +223,7 @@ class AcquiringController extends AbstractActionController
         
         foreach ($post["post1C"]["products"] as $item){
             $item["tax"] = ($item["tax"] == null ) ? "none":"vat".$item["tax"];
-            $Amount += $item["Price"] * $item["Quantity"];
+            $Amount += $item["Amount"] * $item["Quantity"];
             $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
                 
         }        
@@ -238,6 +238,7 @@ class AcquiringController extends AbstractActionController
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
+        //$post["answerTinkoff"][] 
         $answer = ['result' => true, 'description' => 'ok'];
         return new JsonModel($answer);
         
