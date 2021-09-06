@@ -216,7 +216,7 @@ class AcquiringController extends AbstractActionController
         $order = ClientOrder::find(['order_id' => $orderId]);
         $userId = $order->getUserId();
         //$user = ;
-        $post["user"] =
+        //$post["user"] =
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));        
         $post["requestTinkoff"] = $this->buildTinkoffArgs($orderId, $userInfo);
         
@@ -230,8 +230,8 @@ class AcquiringController extends AbstractActionController
         $Amount += $post["post1C"]["amount_delevery"];
         $post["requestTinkoff"]["Amount"] = $Amount;
         
-        $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
-        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post["requestTinkoff"], true)); // лог на почту
+        $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
+        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $answer = ['result' => true, 'description' => 'ok'];
