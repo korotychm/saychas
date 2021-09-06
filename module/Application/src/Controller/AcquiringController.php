@@ -232,7 +232,7 @@ class AcquiringController extends AbstractActionController
         $post["requestTinkoff"]["Amount"] = $Amount;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         $order->setConfirmInfo($json);
-        $order->pesist(['order_id' => $orderId]);
+        $order->persist(['order_id' => $orderId]);
         
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
