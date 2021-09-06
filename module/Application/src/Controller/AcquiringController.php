@@ -325,6 +325,9 @@ class AcquiringController extends AbstractActionController
     "ExpDate": "1122",
     "Token": "08e3718b7790f24a2984d048526a8bfde97cb3de39c14af839d45d6d83eab5ed"
      }*/
+        $response = new Response();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+        echo "ОК";
         $jsonData = file_get_contents('php://input');    
         $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
         if ($postData["ErrorCode"] == "0"){
@@ -344,8 +347,7 @@ class AcquiringController extends AbstractActionController
         }
        // return new JsonModel($postData);
         mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
-        $response = new Response();
-        $response->setStatusCode(Response::STATUS_CODE_200)->setContent('OK');
+        //->setContent('OK');
         return $response;
     }
   
