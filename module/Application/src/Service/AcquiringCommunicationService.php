@@ -245,7 +245,7 @@ class AcquiringCommunicationService
      */
     private function sendRequestTinkoff($api_url, $args)
     {
-        return $args;
+        //return $args;
         $return=[];//     $return['error'] = false;
         if (is_array($args)) {
             $args = Json::encode($args);
