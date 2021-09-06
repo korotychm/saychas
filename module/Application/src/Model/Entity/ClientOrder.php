@@ -34,7 +34,7 @@ class ClientOrder extends Entity
      */
     public function primaryKey()
     {
-        return ['order_id'];
+        return ['user_id', 'order_id'];
     }
     
     public static ClientOrderRepository $repository;
