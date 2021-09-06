@@ -210,7 +210,8 @@ class AcquiringController extends AbstractActionController
     {
         //$post[] = $this->getRequest()->getPost()->toArray(); 
         $Amount = 0;
-        $post["post1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
+        $json = file_get_contents('php://input');
+        $post["post1C"] = Json::decode($json , Json::TYPE_ARRAY);  
         
         $orderId = $post["post1C"]["order_id"];
         $order = ClientOrder::find(['order_id' => $orderId]);
@@ -230,6 +231,8 @@ class AcquiringController extends AbstractActionController
         $Amount += $post["post1C"]["amount_delevery"];
         $post["requestTinkoff"]["Amount"] = $Amount;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
+        $order->setConfirmInfo($json);
+        $order->pesist(['order_id' => $orderId]);
         
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
