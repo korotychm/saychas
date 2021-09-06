@@ -6,13 +6,15 @@ namespace Application\Service;
 
 use Laminas\Config\Config;
 use Laminas\Json\Json;
+use Laminas\View\Model\ViewModel;
 use Laminas\Session\Container;
 use Application\Resource\Resource;
-use Application\Model\Entity\Basket;
+
+/*use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\Provider;
-use Application\Model\Entity\Product;
+use Application\Model\Entity\Product;*/
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 //use Laminas\Session\Container;
@@ -145,5 +147,8 @@ class CommonHelperFunctionsService
         }
         return $return;
     }
+
+    
+    
  
 }

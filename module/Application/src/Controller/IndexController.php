@@ -239,17 +239,6 @@ class IndexController extends AbstractActionController
             $vw->setTemplate('error/403.phtml');
             return $vw;
         }
-        /* $orders = ClientOrder::findAll(['user_id'=>$userId]);
-          if (!empty($orders)){
-
-          //$orderList = $this->htmlProvider->orderList($orders);
-
-          }
-          else {
-          //$orderList = Resource::ORDER_EMPTY;
-
-          }
-          //$orderList = Json:: $orderList,true)."</pre>";   /* */
 
         return new ViewModel([
             'title' => Resource::ORDER_TITLE, //  $container->item
@@ -257,6 +246,29 @@ class IndexController extends AbstractActionController
             "auth" => $userPhone,
         ]);
     }
+    
+    
+    public function clientOrderPageAction()
+    {
+        $userId = $this->identity();
+        $user = User::find(['id' => $userId]);
+        $userPhone = $user->getPhone();
+        if (!$userPhone) {
+            return $this->unauthorizedLocation();
+        }
+        return new ViewModel([
+            'title' => "Cтраница заказа ",//. Resource::ORDER_TITLE, //  $container->item
+            //'orders'=> $orderList,
+            "auth" => $userPhone,
+        ]);
+        
+        
+    }    
+        
+    
+    
+    
+    
 
     public function indexAction()
     {
@@ -574,14 +586,8 @@ class IndexController extends AbstractActionController
         $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
         
         if (!$phone) {
-            /* $this->getResponse()->setStatusCode(403);
-              //return new ViewModel()->setTemplate('error/403.phtml')
-              // $this->redirect()->toRoute('not-authorized');
-              /** */
-            $this->getResponse()->setStatusCode(403);
-            $vw = new ViewModel();
-            //$vw;
-            return $vw->setTemplate('error/403.phtml');
+            
+            return $this->unauthorizedLocation();
         }
         $userPhone = StringHelper::phoneFromNum($phone);
         $title = ($user->getName()) ? $user->getName() : "Войти на сайт";
@@ -596,5 +602,16 @@ class IndexController extends AbstractActionController
             "paycards" =>  $cardInfo, 
         ]);
     }
+    
+            
+    private function unauthorizedLocation()
+    {
+           $this->getResponse()->setStatusCode(403);
+           $vw = new ViewModel();
+           $vw->setTemplate('error/403.phtml');
+           return $vw;
+    }
+    
+    
 
 }

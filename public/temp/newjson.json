@@ -1,15 +1,31 @@
-{       
-    "order_id": "000000601",  
-    "amount_delevery": 100,
-    "products": [{
-            "Name": "Наименование товара - обяз!",
-            "Price": "10000  обяз!",
-            "Quantity": "1  обяз!",
-            "Amount": "Quantity * Price с учетом скидкии",  
-            "Tax": "10  обяз!",
-            "Ean13": "303130323930303030630333435 - необяз",
-            "ShopCode": "12345 - необяз",
-            "MeasurementUnit": "шт - необяз"
-        }]
+{
+    "deliveries": {
+        "delivery_price": "29900",
+        "delivery": [{
+                "store": "000000005",
+                "products": [{
+                        "id": "000000000003",
+                        "count": "1",
+                        "price": "5699000",
+                        "discont": 0
+                    }],
+                "pickup": true
+            }, {
+                "0": {
+                    "store": "000000007",
+                    "products": [{
+                            "id": "000000000014",
+                            "count": "2",
+                            "price": "2000000",
+                            "discont": 0
+                        }, {
+                            "id": "000000000017",
+                            "count": "1",
+                            "price": "1250000",
+                            "discont": 0
+                        }]
+                },
+                "pickup": false
+            }]
+    }
 }
-

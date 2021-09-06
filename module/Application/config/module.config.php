@@ -187,6 +187,16 @@ return [
                     ],
                 ],
             ],
+            'client-order' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/client-order[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'clientOrderPage',
+                    ],
+                ],
+            ],
             
 //            'show-provider' => [
 //                'type'    => Segment::class,

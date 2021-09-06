@@ -7,7 +7,9 @@ namespace Application\Service;
 use Application\Model\Entity;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
+use Laminas\Http\Response;
 use Application\Resource\Resource;
+
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
@@ -182,11 +184,13 @@ class HtmlProviderService
 
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
+            
             $return['basketInfo'] = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY);
             unset($return['basketInfo']['userGeoLocation']['data']);
 
             $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
             $return['paymentInfo'] = Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY);
+            $return['totalBill'] = Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY);
             $return['date'] = $order->getDateCreated();
             $returns[] = $return;
             

@@ -1,0 +1,13 @@
+<?php
+$this->headTitle($this->title, 'PREPEND');
+//$this->inlineScript()->prependFile($this->basePath('/js/client-order.js'));
+?>
+<div class="page-heading">
+    <h1 class="h1"><?=$this->title?></h1>
+</div>
+<div class="profile-page">
+  <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
+  <div id="client-order">
+  </div> 
+<div id="order-list">
+</div>

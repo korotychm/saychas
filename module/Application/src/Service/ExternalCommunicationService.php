@@ -50,7 +50,7 @@ class ExternalCommunicationService
     public function sendBasketData($content)
     {
         $url = $this->config['parameters']['1c_request_links']['create_order'];
-
+        $selfdeliv = $deliv =[];
         if (!$content["products"])
             return false;
         if (empty($content["products"]))
@@ -74,7 +74,7 @@ class ExternalCommunicationService
             //$selfdelevery = false;
             if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
 
-                $selfdeliv[] = ["store" => $key, "products" => $val];
+                $selfdeliv[] = ["store" => $key,  "products" => $val];
             } else {
                 if ($i < $limit) {
                     $i = 1;
@@ -88,7 +88,18 @@ class ExternalCommunicationService
             while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
-        $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] ,"selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
+        
+        foreach ($selfdeliv as $itemDelivery){
+            $itemDelivery["pickup"] = true;
+            $deliveries[] = $itemDelivery;
+        }    
+        
+        foreach ($deliv as $itemDelivery){
+            $itemDelivery["pickup"] = false;
+            $deliveries[] = $itemDelivery;
+        }    
+        
+        $return["deliveries"] = $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] , 'delivery' => $deliveries];
         //$return["delivery_price"] = ;
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
