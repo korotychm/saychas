@@ -229,6 +229,7 @@ class AcquiringController extends AbstractActionController
         $post["requestTinkoff"]["Receipt"]["Items"][] = $this->addDeliveryItem($post["post1C"]["amount_delevery"]);
         $Amount += $post["post1C"]["amount_delevery"];
         $post["requestTinkoff"]["Amount"] = $Amount;
+        $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
