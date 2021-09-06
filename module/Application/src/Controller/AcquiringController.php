@@ -223,7 +223,8 @@ class AcquiringController extends AbstractActionController
         
         foreach ($post["post1C"]["products"] as $item){
             $item["tax"] = ($item["tax"] == null ) ? "none":"vat".$item["tax"];
-            $Amount += $item["Amount"] * $item["Quantity"];
+            $Amount +=  $item["Amount"] = $item["Price"] * $item["Quantity"];
+            
             $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
                 
         }        
