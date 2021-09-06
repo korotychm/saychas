@@ -1,0 +1,70 @@
+.filter
+  display flex
+  margin-bottom 40px
+  &__search
+    position relative
+    width 100%
+    button
+      position absolute
+      border none
+      padding 0
+      right 20px
+      top 50%
+      transform translateY(-50%)
+      background none
+      outline none !important
+      cursor pointer
+  &__select
+    width 240px
+    margin-left 10px
+    flex-shrink 0
+  &__btn
+    margin-left 10px
+    flex-shrink 0
+
+
+.input
+  width 100%
+  height 55px
+  display block
+  padding 0 25px
+  border-radius 55px
+  border 2px solid var(--gray)
+  font-size 18px
+  outline none !important
+  &--white
+    border-color #fff
+  &:focus
+    border-color var(--red) !important
+
+.select
+  width 100%
+  height 55px
+  border-radius 55px
+  padding 0 25px
+  display flex
+  align-items center
+  font-size 18px
+  border 2px solid var(--gray) !important
+  &::after
+    border-color var(--red)
+    right 25px
+  &:hover
+    border-color var(--gray) !important
+  &--white
+    border-color #fff !important
+    &:hover
+      border-color #fff !important
+  &.open
+    border-color var(--red) !important
+
+.nice-select .list
+  border-radius 20px
+  border none
+  box-shadow: 0px 5px 35px 0px rgba(66, 66, 66, 0.2)
+  padding 10px 0
+
+.nice-select .option
+  line-height 40px
+  min-height 40px
+  font-size 18px
