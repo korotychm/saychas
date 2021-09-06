@@ -5,28 +5,35 @@
 namespace ControlPanel\Service;
 
 use ControlPanel\Service\CurlRequestManager;
-use ControlPanel\Model\Traits\Loadable;
+//use ControlPanel\Model\Traits\Loadable;
 use ControlPanel\Contract\LoadableInterface;
+use Application\Resource\Resource;
 use Application\Model\Repository\CategoryRepository;
 use Application\Model\Entity\Country;
 use Application\Model\Entity\Brand;
 use Application\Model\Entity\Color;
 use Application\Model\Entity\Price;
+use Application\Model\Entity\Provider;
+use Application\Model\Entity\CharacteristicValue;
 
 /**
  * Description of ProductManager
  *
  * @author alex
  */
-class ProductManager implements LoadableInterface
+class ProductManager extends ListManager implements LoadableInterface
 {
 
-    use Loadable;
+    //use Loadable;
 
     /**
      * @var string
      */
-    public const COLLECTION_NAME = 'products';
+    //public const COLLECTION_NAME = 'products';
+    
+    //public static $collection_name = 'products';
+    
+    protected $collectionName = 'products';
 
     /**
      * @var string
@@ -73,6 +80,8 @@ class ProductManager implements LoadableInterface
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(Color::class);
         $this->entityManager->initRepository(Price::class);
+        $this->entityManager->initRepository(Provider::class);
+        $this->entityManager->initRepository(CharacteristicValue::class);
     }
     
     public function findFilters($params)
@@ -127,44 +136,16 @@ class ProductManager implements LoadableInterface
         return $accumulator;
     }
 
-    public function findAll($params)
-    {
-        if (isset($params['pageNo'])) {
-            $limits = $this->calcLimits($params['pageNo']);
-            $collection = $this->db->{$this->collectionName};
-            $c = $collection->count($params['where']);
-            $cursor = $collection->find
-            (
-                $params['where'],
-                [
-                    'skip' => $limits['min'] - 1,
-                    'limit' => $this->pageSize,
-//                    'projection' => [
-//                        'id' => 1,
-//                        'title' => 1,
-//                        'category_id' => 1,
-//                        'brand_id' => 1,
-//                        'description' => 1,
-//                        'vendor_code' => 1,
-//                        'provider_id' => 1,
-//                        'color' => 1,
-//                        'country' => 1,
-//                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
-//                        'images' => 1,
-//                        '_id' => 0
-//                    ],
-                ]
-            );
-            $result['body'] = $cursor->toArray();
-            $result['limits'] = $limits;
-            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
-            return $result;
-        }
-        return [];
-    }
-
+    /**
+     * Find all documents and lookup mysql fields that are referenced by mongodb fields
+     * 
+     * @param type $params
+     * @return array
+     */
     public function findDocuments($params)
     {
+//        $this->findCharacteristics($params[ 'where']['product_id']);
+
         $cursor = $this->findAll($params);
         $categories = [];
         $brands = [];
@@ -203,6 +184,50 @@ class ProductManager implements LoadableInterface
         $cursor['filters']['brands'] = $this->findBrands($params);
 
         return $cursor;
+    }
+    
+    public function findProductCharacteristics(string $productId)
+    {
+        $product = $this->find(['id' => $productId]);
+        foreach($product->characteristics as &$c) {
+            switch ($c['type']) {
+                case Resource::HEADER:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::STRING:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::INTEGER:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::BOOLEAN:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::CHAR_VALUE_REF:
+                    $entity = CharacteristicValue::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    break;
+                case Resource::PROVIDER_REF:
+                    $entity = Provider::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    break;
+                case Resource::BRAND_REF:
+                    $entity = Brand::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    break;
+                case Resource::COLOR_REF:
+                    $entity = Color::find(['id' => $c['value']]);
+                    $c['title'] = $entity->getTitle();
+                    $c['real_value'] = $entity->getValue();
+                    break;
+                case Resource::COUNTRY_REF:
+                    $entity = Country::find(['id' => $c['value']]);
+                    $c['title'] = $entity->getTitle();
+                    $c['real_value'] = $entity->getCode();
+                    break;
+            }
+        }
+        return $product->characteristics;
     }
     
     public function updateDocument($params)
@@ -437,3 +462,56 @@ class ProductManager implements LoadableInterface
 //        $brand = $this->brandRepo->find(['id' => $id]);
 //        return $brand;
 //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public function findAll($params)
+//    {
+//        if (isset($params['pageNo'])) {
+//            $limits = $this->calcLimits($params['pageNo']);
+//            $collection = $this->db->{$this->collectionName};
+//            $c = $collection->count($params['where']);
+//            $cursor = $collection->find
+//            (
+//                $params['where'],
+//                [
+//                    'skip' => $limits['min'] - 1,
+//                    'limit' => $this->pageSize,
+//                    'projection' => [],
+////                    'projection' => [
+////                        'id' => 1,
+////                        'title' => 1,
+////                        'category_id' => 1,
+////                        'brand_id' => 1,
+////                        'description' => 1,
+////                        'vendor_code' => 1,
+////                        'provider_id' => 1,
+////                        'color' => 1,
+////                        'country' => 1,
+////                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
+////                        'images' => 1,
+////                        '_id' => 0
+////                    ],
+//                ]
+//            );
+//            $result['body'] = $cursor->toArray();
+//            $result['limits'] = $limits;
+//            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
+//            return $result;
+//        }
+//        return [];
+//    }
+
