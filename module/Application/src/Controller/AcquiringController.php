@@ -222,7 +222,7 @@ class AcquiringController extends AbstractActionController
         $post["requestTinkoff"] = $this->buildTinkoffArgs($orderId, $userInfo);
         
         foreach ($post["post1C"]["products"] as $item){
-            $item["tax"] = ($item["tax"] == null ) ? "none":"vat".$item["tax"];
+            $item["Tax"] = ($item["Tax"] == null ) ? "none":"vat".$item["Tax"];
             $Amount +=  $item["Amount"] = $item["Price"] * $item["Quantity"];
             
             $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
@@ -236,6 +236,9 @@ class AcquiringController extends AbstractActionController
         $order->persist(['order_id' => $orderId]);
         
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
+        if (!empty($post["answerTinkoff"]['error'])) {
+            return new JsonModel(['result' => false, 'description' => $post["answerTinkoff"]['error']]);
+        }
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
