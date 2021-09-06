@@ -211,7 +211,7 @@ class AcquiringController extends AbstractActionController
         //$post[] = $this->getRequest()->getPost()->toArray(); 
         $post["post1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
         
-        $orderId = $post["post1C"]["OrderId"];
+        $orderId = $post["post1C"]["order_id"];
         $order = ClientOrder::find(['order_id' => $orderId]);
         $userId = $order->getUserId();
         //$user = ;
