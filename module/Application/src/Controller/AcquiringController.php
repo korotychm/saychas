@@ -209,6 +209,7 @@ class AcquiringController extends AbstractActionController
     public function tinkoffOrderBillAction()
     {
         //$post[] = $this->getRequest()->getPost()->toArray(); 
+        $Amount = 0;
         $post["post1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
         
         $orderId = $post["post1C"]["order_id"];
@@ -217,8 +218,17 @@ class AcquiringController extends AbstractActionController
         //$user = ;
         $post["user"] =
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));        
-        
         $post["requestTinkoff"] = $this->buildTinkoffArgs($orderId, $userInfo);
+        
+        foreach ($post["post1C"]["products"] as $item){
+            $item["tax"] = ($item["tax"] == null ) ? "none":"vat".$item["tax"];
+            $Amount += $item["Price"] * $item["Quantity"];
+            $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
+                
+        }        
+        $post["requestTinkoff"]["Receipt"]["Items"][] = $this->addDeliveryItem($post["post1C"]["amount_delevery"]);
+        $Amount += $post["post1C"]["amount_delevery"];
+        $post["requestTinkoff"]["Amount"] = $Amount;
         
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
