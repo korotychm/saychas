@@ -178,7 +178,7 @@ class AcquiringController extends AbstractActionController
         $orderItems = $this->acquiringCommunication->getOrderItems($orderBasket);
         $param['Receipt']['Items'] =  $orderItems['Items'];
         $param['Amount'] = $orderItems['Amount'];
-        $param['RedirectDueDate'] = date('Y-m-d\TH:i:s+03:00', (time() + $paramApi['time_order_live'] ));
+        $param['RedirectDueDate'] = date('Y-m-d\TH:i:s+03:00', (time() + $this->config['parameters']['TinkoffMerchantAPI']['time_order_live'] ));
         //$vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
         if ($delivery_price > 0) {
             $param['Receipt']['Items'][] = $this->addDeliveryItem($delivery_price);
