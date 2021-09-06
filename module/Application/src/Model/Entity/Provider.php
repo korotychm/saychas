@@ -5,10 +5,19 @@
 namespace Application\Model\Entity;
 
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\Repository\ProviderRepository;
+use Application\Model\Traits\Searchable;
 
 class Provider extends Entity
 {
 
+    use Searchable;
+    
+    /**
+     * @var ProviderRepository
+     */
+    public static ProviderRepository $repository;
+    
     /**
      * @var StoreRepository
      */

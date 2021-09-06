@@ -119,5 +119,18 @@ class Resource
      * Числовые данные
      */
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
+    
+    /**
+     * Characteristic types
+     */
+    const HEADER = 0;
+    const STRING = 1;
+    const INTEGER = 2;
+    const BOOLEAN = 3;
+    const CHAR_VALUE_REF = 4;
+    const PROVIDER_REF = 5;
+    const BRAND_REF = 6;
+    const COLOR_REF = 7;
+    const COUNTRY_REF = 8;
 
 }

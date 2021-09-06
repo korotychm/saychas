@@ -26,8 +26,8 @@ class Brand extends Entity
     /**
      * @var BrandRepository
      */
-
     public static BrandRepository $repository;
+
    /**
      * @var string
      */

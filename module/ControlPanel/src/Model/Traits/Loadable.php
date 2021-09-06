@@ -14,7 +14,7 @@ trait Loadable
     /**
      * @var string
      */
-    protected $collectionName = self::COLLECTION_NAME;
+    //protected $collectionName = self::COLLECTION_NAME;
     
     /**
      * @var \MongoDB\Client
@@ -64,7 +64,7 @@ trait Loadable
         return $deleteResult;
     }
     
-    private function extractCredentials($credentials)
+    private function extractCredentials(array $credentials) : array
     {
         $result = [];
         foreach ($credentials as $c) {
@@ -82,9 +82,9 @@ trait Loadable
      * @param array $documents
      * @return type
      */
-    protected function insertManyInto($collectionName, array $documents)
+    protected function insertManyInto(/*$collectionName,*/ array $documents)
     {
-        $collection = $this->db->$collectionName;
+        $collection = $this->db->{$this->collectionName};
         return $collection->insertMany($documents);
     }
 
@@ -94,9 +94,9 @@ trait Loadable
      * @param string $collectionName
      * @return int
      */
-    protected function countCollection($collectionName = self::COLLECTION_NAME)
+    protected function countCollection(/*$collectionName = self::COLLECTION_NAME*/)
     {
-        $collection = $this->db->$collectionName;
+        $collection = $this->db->{$this->collectionName};
         return $collection->count();
     }
 
@@ -157,13 +157,55 @@ trait Loadable
         
         $cred = $this->extractCredentials($credentials);
         
-        $this->deleteMany(self::COLLECTION_NAME, ['provider_id' => $cred['partner_id']]);
+        $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
 
-        $this->insertManyInto(self::COLLECTION_NAME, $answer['data']);
+        $this->insertManyInto(/*$this->collectionName*/ /*self::COLLECTION_NAME,*/ $answer['data']);
 
         $this->collectionSize = $this->countCollection();
         
         return $answer;
+    }
+    
+    /**
+     * Find all in collection
+     * 
+     * @param array $params
+     * @return array
+     */
+    public function findAll(array $params) : array
+    {
+        if(!isset($params['columns'])) {
+            $params['columns'] = [];
+        }
+        if (isset($params['pageNo'])) {
+            $limits = $this->calcLimits($params['pageNo']);
+            $collection = $this->db->{$this->collectionName};
+            $c = $collection->count($params['where']);
+
+            $cursor = $collection->find(
+            $params['where'],
+            [
+                'skip' => $limits['min'] - 1,
+                'limit' => $this->pageSize,
+                'projection' => $params['columns'],
+            ]);
+            $result['body'] = $cursor->toArray();
+            $result['limits'] = $limits;
+            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
+
+            return $result;
+        }
+        return [];
+    }
+    
+    public function find(array $params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $document = $collection->findOne($params);
+        if(null == $document) {
+            throw \Exception('Product cannot be null');
+        }
+        return $document;
     }
     
 
