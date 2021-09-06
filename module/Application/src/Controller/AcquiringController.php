@@ -161,6 +161,7 @@ class AcquiringController extends AbstractActionController
     
         //return new JsonModel(["result" => false, "answer" => $param]);
         $order = ClientOrder::find(["order_id" => $orderId /*/ "status" => 1 /**/]); 
+        mail('user@localhost', 'asdf', print_r($order, true));
         if (empty($order)) {
             return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
