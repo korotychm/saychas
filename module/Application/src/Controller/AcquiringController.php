@@ -230,7 +230,8 @@ class AcquiringController extends AbstractActionController
         $Amount += $post["post1C"]["amount_delevery"];
         $post["requestTinkoff"]["Amount"] = $Amount;
         
-        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
+        $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
+        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post["requestTinkoff"], true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $answer = ['result' => true, 'description' => 'ok'];
