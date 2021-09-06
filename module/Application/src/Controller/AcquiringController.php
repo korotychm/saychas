@@ -236,10 +236,11 @@ class AcquiringController extends AbstractActionController
         $order->persist(['order_id' => $orderId]);
         
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
+        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         if (!empty($post["answerTinkoff"]['error'])) {
             return new JsonModel(['result' => false, 'description' => $post["answerTinkoff"]['error']]);
         }
-        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
+        
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         //$post["answerTinkoff"][] 
