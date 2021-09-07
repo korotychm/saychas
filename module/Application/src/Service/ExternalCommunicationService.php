@@ -128,7 +128,7 @@ class ExternalCommunicationService
         
         foreach ($selfdeliv as $d)
         {
-            $deliveries[] = ["pickup" => true, "requisitions" => $d];
+            $deliveries[] = ["pickup" => true, "requisitions" => [$d]];
         }
         
 //        array_push($delivery, [$selfdeliv]);
