@@ -11,6 +11,8 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\MarkerRepositoryInterface;
+use Application\Model\Repository\HandbookRelatedProductRepository;
+use Application\Model\Traits\Searchable;
 
 /**
  * HandbookRelatedProduct
@@ -20,6 +22,13 @@ use Application\Model\RepositoryInterface\MarkerRepositoryInterface;
  */
 class HandbookRelatedProduct extends Entity
 {
+    
+    use Searchable;
+
+    /**
+     * @var HandbookRelatedProductRepository
+     */
+    public static HandbookRelatedProductRepository $repository;
 
     /**
      * @var BrandRepositoryInterface
