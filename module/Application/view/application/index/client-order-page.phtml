@@ -4,9 +4,17 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
 ?>
 <div class="page-heading">
     <h1 class="h1"><?=$this->title?></h1>
+        <span>от <?=$this->orderDate?></span>
+    
+    
 </div>
 <div class="profile-page">
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
+
+    
   <pre id="client-order">
   </pre> 
+
+
+<pre><?=print_r($this->order_info)?></pre>
     

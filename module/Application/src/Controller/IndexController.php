@@ -256,10 +256,18 @@ class IndexController extends AbstractActionController
         if (!$userPhone) {
             return $this->unauthorizedLocation();
         }
+        if (empty($orderId = $this->params()->fromRoute('id', '')) or null ==  $order = ClientOrder::find(['user_id' => $userId, 'order_id' => $orderId ])){
+            $this->getResponse()->setStatusCode(301);
+            return $this->redirect()->toRoute('client-orders');
+            
+        }
+        $orderInfo = $this->htmlProvider->orderList([$order]);
+        
         return new ViewModel([
-            'title' => "Cтраница заказа ",//. Resource::ORDER_TITLE, //  $container->item
+            'title' => "Заказ №".$orderInfo[0]['orderId']. "",//. Resource::ORDER_TITLE, //  $container->item
+            'orderDate' => strftime('%c', (int)$orderInfo[0]['orderDate']),
             //'orders'=> $orderList,
-            "auth" => $userPhone,
+            "orderInfo" => $this->htmlProvider->orderList([$order]),
         ]);
         
         

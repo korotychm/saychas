@@ -197,8 +197,9 @@ class UserDataController extends AbstractActionController
         //$container = new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
 
         $code = 7777; // simulate generation
-
-        /* //real generation
+        
+        /* *///real generation
+          $code ="";
           $lenght=($lenght<1 and $lenght>9)?$lenght:4;
           $suffle=[0,1,3,4,5,6,7,8,9];
           shuffle($suffle);
@@ -463,7 +464,7 @@ class UserDataController extends AbstractActionController
                         if (!$codeExist) {
                             $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                            // if (!$codeSendAnswer['result']) {
-                                $error['sms'] =  (!$codeSendAnswer['result'])?(Resource::ERROR_SEND_SMS_MESSAGE):"";
+                                $error['sms'] =  (!$codeSendAnswer['result'])?(Resource::ERROR_SEND_SMS_MESSAGE.print_r($codeSendAnswer, true) ):"";
                             //} else {}
                         } else {
 
@@ -549,7 +550,7 @@ class UserDataController extends AbstractActionController
                         //$print_r =
                         $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                         if (!$codeSendAnswer['result']) {
-                            $error['sms'] = Resource::ERROR_SEND_SMS_MESSAGE;
+                            $error['sms'] = Resource::ERROR_SEND_SMS_MESSAGE.print_r($codeSendAnswer, true);
                         } else {
                             //  $print_r = $codeExist;
                         }
