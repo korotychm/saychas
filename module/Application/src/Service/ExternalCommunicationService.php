@@ -46,18 +46,12 @@ class ExternalCommunicationService
         ];
         return $this->sendCurlRequest($url, $content);
     }
-
-    public function sendBasketData($content)
-    {
-        $url = $this->config['parameters']['1c_request_links']['create_order'];
-        $selfdeliv = $deliv =[];
-        if (!$content["products"])
-            return false;
-        if (empty($content["products"]))
-            return false;
-
-        while (list($id, $value) = each($content["products"])) {
-            $store[$value["store"]][] = [
+    
+    
+    /***********************
+    
+    
+     $store[$value["store"]][] = [
                 "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
             ];
             $productupdate[]=$id;
@@ -65,7 +59,7 @@ class ExternalCommunicationService
         }
         //(надо вынести в resource)
         $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
-        
+
         $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
         $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
         //$q = -1;
@@ -74,7 +68,7 @@ class ExternalCommunicationService
             //$selfdelevery = false;
             if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
 
-                $selfdeliv[] = ["store" => $key,  "products" => $val];
+                $selfdeliv[] = ["store" => $key, "products" => $val];
             } else {
                 if ($i < $limit) {
                     $i = 1;
@@ -88,18 +82,67 @@ class ExternalCommunicationService
             while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
+        $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] ,"selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
+
+    ************************/
+
+    public function sendBasketData($content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['create_order'];
+        $selfdeliv = $deliv =[];
+        if (empty($content["products"]))
+            return false;
+
+        while (list($id, $value) = each($content["products"])) {
+            $store[$value["store"]][] = [
+                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
+            ];
+            $productupdate[]=$id;
+            //$coontent["delevery"][] = $store[$value['store']];
+        }
+        //(надо вынести в resource)
+        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
         
-        foreach ($selfdeliv as $itemDelivery){
-            $itemDelivery["pickup"] = true;
-            $deliveries[] = $itemDelivery;
-        }    
+            $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
+        $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
+        //$q = -1;
+        while (list($key, $val) = each($store)) {
+            $i++;
+            //$selfdelevery = false;
+            if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
+
+                $selfdeliv[] = ["store" => $key, "products" => $val];
+                
+            } else {
+                if ($i < $limit) {
+                    $i = 1;
+                    $j++;
+                }
+                $delivery[$j][] = ["store" => $key, "products" => $val];
+            }
+        }
+        foreach ($delivery as $d)
+        {
+            $deliveries[] = ["pickup" => false, "requisitions" => $d];
+        }
         
-        foreach ($deliv as $itemDelivery){
-            $itemDelivery["pickup"] = false;
-            $deliveries[] = $itemDelivery;
-        }    
+        foreach ($selfdeliv as $d)
+        {
+            $deliveries[] = ["pickup" => true, "requisitions" => $d];
+        }
         
-        $return["deliveries"] = $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] , 'delivery' => $deliveries];
+//        array_push($delivery, [$selfdeliv]);
+//        
+//
+//        if (!empty($delivery)) {
+//            while (list($key, $val) = each($delivery))
+//                $deliv[] = $val;
+//        }
+//        //$content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
+        $content["deliveries"] =  $deliveries;
+        $return["deliveries"] = $content["deliveries"]; //; =  $deliveries;
+        
+        $return["delivery_price"] = $content['delivery_price'];
         //$return["delivery_price"] = ;
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
@@ -107,14 +150,14 @@ class ExternalCommunicationService
                 $content['timepointtext1'],
                 $content['timepointtext3'],
                 $content['timepointtext3'],
-                // $content['selfdelevery'], 
+                $content['selfdelevery'], 
                 $content["products"]);
         
         $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
         $return['basketinfo']['timepoint'] = $content["timepoint"];
         $return['basketinfo']['ordermerge'] = $content["ordermerge"];
         $return['basketinfo']['delivery_price'] = $content['delivery_price'];
-        $return['products'] = $productupdate;
+        $return['basketinfo']['products'] = $return['products'] = $productupdate;
         $return['response'] = $this->sendCurlRequest($url, $content);
    
         

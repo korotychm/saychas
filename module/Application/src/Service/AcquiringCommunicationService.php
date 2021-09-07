@@ -166,10 +166,13 @@ class AcquiringCommunicationService
     public function returnProductsToBasket($orderId, $userId)
     {
         //return  ;
+        
         $basketSet = Basket::findAll(['where' => ['user_id' => $userId, 'order_id' => $orderId] ]);
         foreach($basketSet as $basket) {
+            $productId =  $basket->getProductId();
             $basket->setOrderId(0);
-            $basket->persist(['user_id' => $userId, 'order_id' => $orderId]);
+            Basket::remove(['user_id' => $userId, 'product_id' => $productId,  'order_id' => 0]);
+            $basket->persist(['user_id' => $userId, 'product_id' => $productId,  'order_id' => 0]);
         }/**/
     }
     

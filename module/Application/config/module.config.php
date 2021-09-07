@@ -951,6 +951,18 @@ return [
                     ],
                 ],
             ],
+            'ajax-get-order-page'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-order-page',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getUserOrderPage',
+                    ],
+                ],
+            ],
+            
+            
             'add-to-basket'=> [
                 'type'    => Literal::class,
                 'options' => [

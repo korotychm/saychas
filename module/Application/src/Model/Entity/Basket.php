@@ -26,6 +26,10 @@ class Basket extends Entity
      */
     public static BasketRepository $repository;
 
+    public function autoIncrementKey(): string
+    {
+        return 'id';
+    }
     /**
      * Get primary key
      *

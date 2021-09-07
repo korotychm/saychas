@@ -196,6 +196,48 @@ class AjaxController extends AbstractActionController
 
         return new JsonModel($return);
     }
+    
+    public function getUserOrderPageAction()
+    {   
+        $return["result"] = false;
+        $post = $this->getRequest()->getPost();
+        if (!$return['order_id'] = /*"000000629"/**/ $post->orderId /**/){
+            return new JsonModel($return);
+        }    
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $return['userId'] =  $container->userIdentity;
+        $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
+        if (empty($order)) {
+            return new JsonModel($return);
+        }
+        $return["order_info"] = $this->htmlProvider->orderList([$order]);
+        $return["result"] = true;
+        
+        /*$where = new Where();
+        $where->equalTo('user_id', $return['userId']);
+        $where->equalTo('order_id', 0);
+        $columns = ['product_id'];
+        $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
+        if ($userBasketHistory->count() < 1) {
+            return new JsonModel(["result" => false]);
+        }
+        foreach ($userBasketHistory as $basketItem) {
+            $product_id = $basketItem->getProductId();
+            try {
+                $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
+                $return["productsMap"][$product_id]["image"] = $product->receiveProductImages()->current()->getHttpUrl();
+                $return["productsMap"][$product_id]["title"] = $product->getTitle();
+            } catch (\Throwable $ex) {
+                return new JsonModel(["result" => false, 'error' => $ex->getMessage()]);
+            }
+        }*/
+
+        return new JsonModel($return);
+    }
+    
+    
+    
+    
 
     public function checkOrderStatusAction()
     {
