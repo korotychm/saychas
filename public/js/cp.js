@@ -322,7 +322,6 @@ const ProductEdit = {
       }
       iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
-      console.log(this.categoriesFlat);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
@@ -336,6 +335,9 @@ const ProductEdit = {
             this.categories = response.data.category_tree;
             this.flatCategories();
             this.product = response.data.product;
+            this.brandSearch = this.product.brand_name;
+            this.selectedBrandId: this.product.brand_id;,
+            this.selectedBrandName: this.product.brand_name;
           })
           .catch(error => {
             if (error.response.status == '403'){
