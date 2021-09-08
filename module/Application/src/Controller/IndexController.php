@@ -267,7 +267,7 @@ class IndexController extends AbstractActionController
             'title' => "Заказ №".$orderInfo[0]['orderId']. "",//. Resource::ORDER_TITLE, //  $container->item
             'orderDate' => strftime('%c', (int)$orderInfo[0]['orderDate']),
             //'orders'=> $orderList,
-            "orderInfo" => $this->htmlProvider->orderList([$order]),
+            "orderInfo" => $this->htmlProvider->orderList([$order])[0],
         ]);
         
         
@@ -425,25 +425,10 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toUrl('/my-login');
         }
 
-        //$this->layout()->setTemplate('layout/mainpage');
-        //$categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
             'menu' => null,
         ]);
     }
-
-    /* public function providerAction()
-      {
-      $id = $this->params()->fromRoute('id', '');
-      //$this->layout()->setTemplate('layout/mainpagenew');
-      $categories = (empty($id))?null:$this->categoryRepository->findAllCategories("", 0, $id);
-      /* $providers = $this->providerRepository->findAll(['table'=>'provider', 'limit' => 100, 'order'=>'id ASC', 'offset' => 0]);
-      return new ViewModel([
-
-      "catalog" => $categories,
-      ]);
-
-      } */
 
     private function packParams($params)
     {
@@ -457,37 +442,6 @@ class IndexController extends AbstractActionController
         }
         return $res;
     }
-
-    /* public function productAction()
-      {
-      $product_id=$this->params()->fromRoute('id', '');
-      if (empty($product_id)) {header("location:/"); exit();}
-      $params['equal']=$product_id;
-
-      $products = $this->productRepository->filterProductsByStores($params);
-      if (empty($products)) {header("location:/"); exit();}
-
-      $productPage = $this->htmlProvider->productPage($products);
-      $categoryId= $productPage['categoryId'];
-
-      //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
-      $container = new Container(Resource::SESSION_NAMESPACE);
-      $filtrForCategory=$container->filtrForCategory;
-      $categories = $this->categoryRepository->findAllCategories("", 0, $categoryId);
-      $bread = $this->categoryRepository->findAllMatherCategories($categoryId);
-      $bread = $this->htmlProvider->breadCrumbs($bread);
-      $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-      $vwm=[
-      'id' => $product_id,
-      'catalog' => $categories,
-      'title' => $productPage['title'],
-      'category' => $categoryTitle,
-      'bread'=> $bread,
-      'product'=> $productPage['card'],
-      'filter' =>  $returnProductFilter,
-      ];
-      return new ViewModel($vwm);
-      } */
 
     public function productPageAction()
     {
@@ -529,19 +483,17 @@ class IndexController extends AbstractActionController
         return new ViewModel($vwm);
     }
 
-    public function catalogAction($category_id = false)
+    public function catalogAction()
     {
         $container = new Container();
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
-
-        if (!$category_id) $category_id = $this->params()->fromRoute('id', '');
+        $category_id = $this->params()->fromRoute('id', '');
+       
         if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
             $this->getResponse()->setStatusCode(301);
-            //exit ($category_id);
             return $this->redirect()->toRoute('home');
-
         }
         $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
@@ -554,12 +506,7 @@ class IndexController extends AbstractActionController
         $minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-        return new ViewModel([
-            "catalog" => $categories,
-            "title" => $categoryTitle,
-            "id" => $category_id,
-            "breadCrumbs" => $breadCrumbs,
-            'filterform' => $filterForm,
+        return new ViewModel([ "catalog" => $categories,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs,'filterform' => $filterForm,
         ]);
     }
 

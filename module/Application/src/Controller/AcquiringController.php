@@ -152,17 +152,10 @@ class AcquiringController extends AbstractActionController
         $userId = $container->userIdentity;
         $orderId = $this->params()->fromRoute('order', '');
         $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
-        //$paramApi = $this->config['parameters']['TinkoffMerchantAPI'];
-         
         if (empty($userInfo ['phone'])){
              return new JsonModel(["result" => false, "message" => "error: user phone not found" ]);
         }
-        
-    
-        //return new JsonModel(["result" => false, "answer" => $param]);
         $order = ClientOrder::find(["order_id" => $orderId,  "status" => 1]); 
-        //mail('user@localhost', 'asdf', print_r($order, true));
-        //mail('user@localhost', 'orderId', print_r($orderId, true));
         if (empty($order)) {
             return new JsonModel(["result" => false, "message" => "error: order ".$orderId." can't be paid" ]);
         }
@@ -181,6 +174,7 @@ class AcquiringController extends AbstractActionController
         $param['Receipt']['Items'] =  $orderItems['Items'];
         $param['Amount'] = $orderItems['Amount'];
         $param['RedirectDueDate'] = date('Y-m-d\TH:i:s+03:00', (time() + $this->config['parameters']['TinkoffMerchantAPI']['time_order_live'] ));
+    
         //$vat=($delivery_tax < 0)?"none":"vat".$delivery_tax;
         if ($delivery_price > 0) {
             $param['Receipt']['Items'][] = $this->addDeliveryItem($delivery_price);
