@@ -15,6 +15,7 @@ use Application\Model\Entity\Color;
 use Application\Model\Entity\Price;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\CharacteristicValue;
+use Application\Model\Entity\HandbookRelatedProduct as Product;
 
 /**
  * Description of ProductManager
@@ -82,6 +83,7 @@ class ProductManager extends ListManager implements LoadableInterface
         $this->entityManager->initRepository(Price::class);
         $this->entityManager->initRepository(Provider::class);
         $this->entityManager->initRepository(CharacteristicValue::class);
+        $this->entityManager->initRepository(Product::class);
     }
     
     public function findFilters($params)
@@ -186,9 +188,14 @@ class ProductManager extends ListManager implements LoadableInterface
         return $cursor;
     }
     
-    public function findProductCharacteristics(string $productId)
+    public function findProduct(string $productId)
     {
         $product = $this->find(['id' => $productId]);
+        $provider = Provider::find(['id' => $product['provider_id']]);
+        $product['provider_name'] = $provider->getTitle();
+        $product['provider_description'] = $provider->getDescription();
+        $b = Brand::find(['id' => $product['brand_id']]);
+        $product['brand_name'] = $b->getTitle();
         foreach($product->characteristics as &$c) {
             switch ($c['type']) {
                 case Resource::HEADER:
@@ -227,7 +234,7 @@ class ProductManager extends ListManager implements LoadableInterface
                     break;
             }
         }
-        return $product->characteristics;
+        return $product;//->characteristics;
     }
     
     public function updateDocument($params)

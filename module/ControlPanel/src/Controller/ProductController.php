@@ -147,11 +147,11 @@ class ProductController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
         
-        $characteristics = $this->productManager->findProductCharacteristics($post['product_id']);
+        $product = $this->productManager->findProduct($post['product_id']);
 
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
         
-        return new JsonModel(['category_tree' => $categoryTree, 'characteristics' => $characteristics]);
+        return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
 
     private function canUpdateProduct($params)

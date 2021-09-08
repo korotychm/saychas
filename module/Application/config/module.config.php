@@ -1146,6 +1146,7 @@ return [
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
             \Application\Model\Entity\Provider::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Entity\CharacteristicValue::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
+            \Application\Model\Entity\HandbookRelatedProduct::class => \Application\Model\Factory\HandbookRelatedProductRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
