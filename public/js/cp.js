@@ -336,8 +336,8 @@ const ProductEdit = {
             this.flatCategories();
             this.product = response.data.product;
             this.brandSearch = this.product.brand_name;
-            this.selectedBrandId: this.product.brand_id;,
-            this.selectedBrandName: this.product.brand_name;
+            this.selectedBrandId = this.product.brand_id;
+            this.selectedBrandName = this.product.brand_name;
           })
           .catch(error => {
             if (error.response.status == '403'){
