@@ -328,7 +328,7 @@ const ProductEdit = {
       this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id);
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
-      console.log(this.categorySearch, this.selectedCategoryId);
+      console.log(this.categorySearch, this.product.category_id);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
@@ -340,12 +340,12 @@ const ProductEdit = {
           .then(response => {
             console.log(response.data);
             this.categories = response.data.category_tree;
-            this.flatCategories();
             this.product = response.data.product;
             this.brandSearch = this.product.brand_name;
             this.selectedBrandId = this.product.brand_id;
             this.selectedBrandName = this.product.brand_name;
             console.log(this.product);
+            this.flatCategories();
           })
           .catch(error => {
             if (error.response.status == '403'){
