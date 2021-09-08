@@ -40,12 +40,25 @@ class ProductHistory extends Entity
      * @var timestamp
      */
     protected $timestamp;
+    
+    /**
+     * @var  int  
+     * Unix time
+     */
+    protected $time;
 
     /**
      * Get user_id.
      *
      * @return string
      */
+    
+    public function primaryKey()
+    {
+        return ['user_id', 'product_id'];
+    }
+    
+    
     public function getUserId()
     {
         return $this->user_id;
@@ -98,6 +111,18 @@ class ProductHistory extends Entity
         return $this->timestamp;
     }
 
+      public function setTime($time)
+    {
+        $this->time = $time;
+        return $this;
+    }
+    
+    public function getTime()
+    {
+        return $this->time;
+    }
+    
+    
     /**
      * Get ts
      * 

@@ -33,6 +33,7 @@ use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\UserPaycard;
+//use Application\Model\Entity\ProductHistory;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
@@ -46,6 +47,7 @@ use Application\Model\Entity\UserData;
 use Application\Helper\StringHelper;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
+//use Application\Model\Entity\ProductHistory;
 
 class IndexController extends AbstractActionController
 {
@@ -74,6 +76,7 @@ class IndexController extends AbstractActionController
     private $productCharacteristicRepository;
     private $colorRepository;
     private $basketRepository;
+    private $productHistoryRepository;
     //private $sessionContainer;
     private $sessionManager;
 
@@ -115,6 +118,7 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
         $this->entityManager->initRepository(UserPaycard::class);
+        $this->entityManager->initRepository(ProductHistory::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -464,6 +468,7 @@ class IndexController extends AbstractActionController
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($categoryId))) {
             $breadCrumbs = array_reverse($matherCategories);
         }
+        $this->addProductToHistory($product_id);
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
         $vwm = [
@@ -566,6 +571,18 @@ class IndexController extends AbstractActionController
            $vw->setTemplate('error/403.phtml');
            return $vw;
     }
+    
+    private function addProductToHistory($productId)
+    {
+        $userId = $this->identity();
+        $historyItem = ProductHistory::findFirstOrDefault(['user_id' => $usertId, 'product_id' => $productId]);
+        $historyItem->setUserId($userId); 
+        $historyItem->setProductId($productId); 
+        $historyItem->setTime(time()); 
+        $historyItem->persist(['user_id' => $usertId, 'product_id' => $productId]);
+    }
+    
+    
     
     
 

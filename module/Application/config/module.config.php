@@ -973,6 +973,19 @@ return [
                     ],
                 ],
             ],
+             'add-to-favorites'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/add-to-favorites',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'addToFavorites',
+                    ],
+                ],
+            ],
+            
+            
+            
              'del-from-basket'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -1168,6 +1181,7 @@ return [
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
+            \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,

@@ -38,7 +38,7 @@ class CommonHelperFunctionsService
             HandbookRelatedProductRepositoryInterface $productRepository)
     {
         $this->config = $config;
-         $this->productRepository = $productRepository;
+        $this->productRepository = $productRepository;
     }
 
     public function example()
