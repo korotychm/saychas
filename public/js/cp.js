@@ -87,7 +87,6 @@ const Products = {
             use_cache: this.filtersCreated
           }))
           .then(response => {
-            console.log(response.data);
             this.pages = response.data.data.limits.total;
             this.products = response.data.data.body;
             if (!this.filtersCreated){
@@ -322,7 +321,6 @@ const ProductEdit = {
       }
       iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
-      console.log(this.categoriesFlat);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
