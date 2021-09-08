@@ -244,6 +244,9 @@ const ProductEdit = {
                             </div>
                       </div>
                       <div class="product__attribute">
+                      </div>
+
+                      <div class="product__attribute">
                           <h2>Название товара</h2>
                           <input class="input" type="text" :value="product.title" />
                       </div>
@@ -322,6 +325,9 @@ const ProductEdit = {
       }
       iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
+      this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id);
+      this.selectedCategoryName = this.categorySearch;
+      this.selectedCategoryId = this.product.category_id;
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
