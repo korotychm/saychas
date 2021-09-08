@@ -208,7 +208,7 @@ const ProductEdit = {
                   <div class="product__category">
                       <h2>Категория</h2>
                       <div class="search-select">
-                          <input class="input search-select__input" type="text" v-model="categorySearch" @focusout="checkCategory()" />
+                          <input class="input search-select__input" type="text" value="product.brand_name" v-model="categorySearch" @focusout="checkCategory()" />
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
                               <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
@@ -228,7 +228,7 @@ const ProductEdit = {
                       <div class="product__attribute">
                           <h2>Бренд</h2>
                             <div class="search-select">
-                                <input class="input search-select__input" type="text" v-model="brandSearch" @focusout="checkBrand()" />
+                                <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
                                 <div class="search-select__suggestions">
                                     <div v-if="!brandSearch" class="search-select__empty">Начните вводить название бренда для поиска</div>
                                     <div v-if="(brandSearch && !filteredBrands.length)" class="search-select__empty">Ничего не найдено</div>
@@ -245,7 +245,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2>Название товара</h2>
-                          <input class="input" type="text" :value="'Товар с id ' + $route.params.id" />
+                          <input class="input" type="text" :value="product.title" />
                       </div>
                   </div>
                 </div>
@@ -276,6 +276,7 @@ const ProductEdit = {
       brandSearch: '',
       selectedBrandId: '',
       selectedBrandName: '',
+      product: ''
     }
   },
   computed: {
@@ -321,6 +322,7 @@ const ProductEdit = {
       }
       iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
+      console.log(this.categoriesFlat);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
@@ -333,6 +335,7 @@ const ProductEdit = {
             console.log(response.data);
             this.categories = response.data.category_tree;
             this.flatCategories();
+            this.product = response.data.product;
           })
           .catch(error => {
             if (error.response.status == '403'){
