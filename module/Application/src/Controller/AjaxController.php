@@ -36,6 +36,7 @@ use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Entity\UserPaycard;
+use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -111,6 +112,7 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
+        $this->entityManager->initRepository(UserPaycard::class);
         $this->entityManager->initRepository(UserPaycard::class);
     }
 
@@ -411,18 +413,67 @@ class AjaxController extends AbstractActionController
         }
         return new JsonModel(['result' => false, "reload" => true, "reloadUrl" => "/"]);
     }
+   
+    public function addToFavoritesAction()
+    {
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
+       //$productId ="11111111111"; 
+       /**/
+        if (empty($productId = $this->getRequest()->getPost()->productId)) {
+           return new JsonModel(['result' => false, "description" => " product undefinded "]);
+       }
+       /**/
+       $favoritesItem = ProductFavorites::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
+       $favoritesItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
+       
+       return new JsonModel(['result' => true, "description" => "product $productId added to favorites", 'lable' => Resource::REMOVE_FROM_FAVORITES]);
+       
+    }
+    
+    public function removeFromFavoritesAction()
+    {
+       if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
+       if (empty($productId = $this->getRequest()->getPost()->productId)) {
+           return new JsonModel(['result' => false, "description" => " product undefinded "]);
+       }  
+       ProductFavorites::remove(['user_id' => $userId, 'product_id' => $productId]);
+       return new JsonModel(['result' => true, "description" => "product $productId removed from favorites",  'lable' => Resource::ADD_TO_FAVORITES]);
+    }
+    
+   /* private function isInFavorites ($productId)
+    {
+        if ( $userId = $this->identity() ) {
+            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
+                return true;
+            }
+        }
+        return  false; 
+    } */       
+    /**/
 
     public function addToBasketAction()
     {
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
         $return = ["error" => true, "count" => 0];
         $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
-        $return['productId'] = $productId = $post->product;
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        $return['userId'] = $userId = $container->userIdentity;
-        if ($userId) {
+        if (empty($return['productId'] = $productId = $post->product))
+        {
+            return new JsonModel($return);
+        }
+        
+       
             $return['error'] = false;
-            if ($productId) {
+            
                 $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
                 $basketItemTotal = (int) $basketItem->getTotal();
                 $basketItem->setUserId($userId);
@@ -432,7 +483,7 @@ class AjaxController extends AbstractActionController
                 $basketItem->setPrice($productaddPrice);
                 $basketItem->setTotal($basketItemTotal + 1);
                 $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-            }
+            
             $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);
@@ -451,11 +502,11 @@ class AjaxController extends AbstractActionController
                     $return['count']++;
                 }
             }
-        }
+       
         return new JsonModel($return);
     }
 
-    public function userAuthAction()
+    /*public function userAuthAction()
     {
         $password = $smsCode = "7777"; //костыль
         $return = ["error" => true, "message" => Resource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
@@ -493,7 +544,7 @@ class AjaxController extends AbstractActionController
         }
         $return['post'] = $post;
         return new JsonModel($return);
-    }
+    }*/
 
     public function calculateBasketItemAction()
     {
@@ -506,11 +557,7 @@ class AjaxController extends AbstractActionController
         }
 
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-        if (null == $product
-                or!$productPrice = (int) $product->getPrice()
-                or!$productCount = (int) $post->count
-                or $productCount < 1
-        ) {
+        if (null == $product  or !$productPrice = (int) $product->getPrice() or! $productCount = (int) $post->count   or $productCount < 1) {
             return new JsonModel(["error" => true, "errorMessage" => "product price error"]);
         }
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
@@ -524,8 +571,8 @@ class AjaxController extends AbstractActionController
     public function basketOrderMergeAction()
     {
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
-        $userId = $this->identity();
-        if (!$userId) {
+        
+        if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return ; //$this->redirect()->toRoute('home');
         }
@@ -573,7 +620,10 @@ class AjaxController extends AbstractActionController
 
     public function basketPayInfoAction()
     {
-        $userId = $this->identity();
+         if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
         $user = $this->userRepository->find(['id' => $userId]);
         $basketUser['phone'] = $user->getPhone();
         /**/    //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
@@ -701,7 +751,10 @@ class AjaxController extends AbstractActionController
 
     public function ajaxAddUserAddressAction()
     {
-        $userId = $this->identity();
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
         $user = $this->userRepository->find(['id' => $userId]);
         $post = $this->getRequest()->getPost();
         $return["user"] = $userId;
@@ -725,7 +778,10 @@ class AjaxController extends AbstractActionController
 
     public function ajaxSetUserAddressAction()
     {
-        $userId = $this->identity();
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
         $user = $this->userRepository->find(['id' => $userId]);
         $return["userAddress"] = $this->htmlProvider->writeUserAddress($user);
         $return["legalStore"] = $container->legalStore;

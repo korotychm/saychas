@@ -119,6 +119,7 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(Delivery::class);
         $this->entityManager->initRepository(UserPaycard::class);
         $this->entityManager->initRepository(ProductHistory::class);
+        $this->entityManager->initRepository(ProductFavorites::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -480,6 +481,7 @@ class IndexController extends AbstractActionController
             'product' => $productPage['card'],
             'description' => $productPage['description'],
             'append' => $productPage['appendParams'],
+            'isFav' => $this->isInFavorites($product_id),
             'price' => $productPage['price'],
             'brand' => $productPage['brand'],
             'price_formated' => $productPage['price_formated'],
@@ -575,13 +577,22 @@ class IndexController extends AbstractActionController
     private function addProductToHistory($productId)
     {
         $userId = $this->identity();
-        $historyItem = ProductHistory::findFirstOrDefault(['user_id' => $usertId, 'product_id' => $productId]);
+        ProductHistory::remove(['user_id' => $userId, 'product_id' => $productId]);
+        $historyItem = ProductHistory::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
         $historyItem->setUserId($userId); 
         $historyItem->setProductId($productId); 
         $historyItem->setTime(time()); 
         $historyItem->persist(['user_id' => $usertId, 'product_id' => $productId]);
     }
-    
+    private function isInFavorites ($productId)
+    {
+        if ($userId = $this->identity()) {
+            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
+                return true;
+            }
+        }
+        return  false; 
+    }
     
     
     

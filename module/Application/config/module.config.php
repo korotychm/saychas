@@ -983,9 +983,16 @@ return [
                     ],
                 ],
             ],
-            
-            
-            
+             'remove-from-favorites'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/remove-from-favorites',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'removeFromFavorites',
+                    ],
+                ],
+            ],
              'del-from-basket'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -1182,6 +1189,7 @@ return [
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
+            \Application\Model\Entity\ProductFavorites::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,

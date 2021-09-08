@@ -84,7 +84,7 @@ class CommonHelperFunctionsService
         return $response;
     }
     
-    public function getProductCardArray($products)
+    public function getProductCardArray($products, $userId)
     {
         if (empty($products)){
             return [];
@@ -147,6 +147,17 @@ class CommonHelperFunctionsService
         }
         return $return;
     }
+    
+    private function isInFavorites ($productId)
+    {
+        if ($userId = $this->identity()) {
+            if (!empty(\Application\Model\Entity\ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
+                return true;
+            }
+        }
+        return  false; 
+    }
+    
 
     
     

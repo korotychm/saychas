@@ -37,6 +37,8 @@ class Resource
      * Товары
      */
    
+   
+    const REMOVE_FROM_FAVORITES = "Убрать из избранного";
     const BUTTON_LABLE_ADD_TO_BASKET = "В корзину";
     const BUTTON_LABLE_PAY_NOW = "Купить сейчас";
     const ADD_TO_FAVORITES = "Добавить в избранное";
