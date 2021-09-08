@@ -208,7 +208,7 @@ const ProductEdit = {
                   <div class="product__category">
                       <h2>Категория</h2>
                       <div class="search-select">
-                          <input class="input search-select__input" type="text" value="product.brand_name" v-model="categorySearch" @focusout="checkCategory()" />
+                          <input class="input search-select__input" type="text" value="selectedCategoryName" v-model="categorySearch" @focusout="checkCategory()" />
                           <div class="search-select__suggestions">
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
                               <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
