@@ -188,8 +188,8 @@ class HtmlProviderService
             $return['basketInfo'] = ($order->getBasketInfo())?Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY):[];
             unset($return['basketInfo']['userGeoLocation']['data']);
 
-            $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
-            $return['paymentInfo'] = Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY);
+            $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
+            $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
             $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
             $return['date'] = $order->getDateCreated();
             $returns[] = $return;
