@@ -1,0 +1,1 @@
+sudo mount -t cifs //nas01.saychas.office/1CMEDIA /home/alex/ftp -o username=1C,password=ree7EC2A,noexec
