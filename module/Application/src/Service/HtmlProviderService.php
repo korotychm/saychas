@@ -185,12 +185,12 @@ class HtmlProviderService
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['orderDate'] = $order->getDateCreated(); //date_created 
-            $return['basketInfo'] = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY);
+            $return['basketInfo'] = ($order->getBasketInfo())?Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY):[];
             unset($return['basketInfo']['userGeoLocation']['data']);
 
             $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
             $return['paymentInfo'] = Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY);
-            $return['totalBill'] = Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY);
+            $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
             $return['date'] = $order->getDateCreated();
             $returns[] = $return;
             
