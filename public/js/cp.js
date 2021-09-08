@@ -328,6 +328,7 @@ const ProductEdit = {
       this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id);
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
+      console.log(this.categorySearch,this.selectedCategoryId);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product'
