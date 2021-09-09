@@ -128,8 +128,7 @@
           <div class="main__loader">
             <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
           </div>
-          <div class="main__filter active">
-            <header class="header">
+          <header class="header">
                 <h1 class="header__heading">
                   <router-link v-if="$route.meta.back_route" :to="$route.meta.back_route" class="header__back">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="13px">
@@ -147,9 +146,8 @@
                     </div>
                     <div class="header__user-avatar">С</div>
                 </div>
-            </header>
-            <router-view></router-view>
-          </div>
+          </header>
+          <router-view></router-view>
         </main>
       </div>
         <script>
