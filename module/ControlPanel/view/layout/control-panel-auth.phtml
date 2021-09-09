@@ -21,7 +21,7 @@
                 // ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
                 ->prependStylesheet($this->basePath('css/cpanel.min.css?' . time()))
         ?>
-        
+
         <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;amp;display=swap" />
 
         <!-- Scripts -->
@@ -42,12 +42,13 @@
                 ->prependFile($this->basePath('js/jquery.js'))
         ?>
     </head>
-    <body style="padding-left: 0;">
-        <div class="cp-login">
-          <div class="cp-login__content" id="controlPanelContentId"> <?php //  container-dashboard ?>
+    <body>
+      <div>
+        <main id="controlPanelContentId"> <?php //  container-dashboard ?>
               <?= $this->content ?>
-          </div>
-        </div>
+        </main>
+      </div>
+
 
 <!--        <script>
             var loginForm = function() {
