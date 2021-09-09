@@ -291,8 +291,6 @@ const ProductEdit = {
                                 </div>
                             </div>
                       </div>
-                      <div class="product__attribute">
-                      </div>
 
                       <div class="product__attribute">
                           <h2>Название товара</h2>
