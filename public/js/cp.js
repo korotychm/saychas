@@ -292,20 +292,7 @@ const ProductEdit = {
       categoriesFlat: [],
       selectedCategoryId: '',
       selectedCategoryName: '',
-      brands: [
-        {
-          id: 1,
-          title: 'Samsung'
-        },
-        {
-          id: 2,
-          title: 'Apple'
-        },
-        {
-          id: 3,
-          title: 'DNS'
-        }
-      ],
+      brands: [],
       brandSearch: '',
       selectedBrandId: '',
       selectedBrandName: '',
@@ -377,6 +364,7 @@ const ProductEdit = {
               this.brandSearch = this.product.brand_name;
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
+              this.brands = this.product.brands;
               console.log(this.product);
               this.flatCategories();
             }
@@ -603,8 +591,6 @@ const routes = [
     component: Support
   }
 ]
-
-
 
 const router = new VueRouter({
   routes,
