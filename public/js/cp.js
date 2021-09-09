@@ -191,7 +191,7 @@ const Stores = {
             filters: this.selectedFilters,
             search: this.search,
             use_cache: this.filtersCreated
-          }))
+          }),{headers})
           .then(response => {
             if (response.data.data === true) {
               location.reload();
@@ -355,7 +355,7 @@ const ProductEdit = {
         .post(requestUrl,
           Qs.stringify({
             product_id : this.$route.params.id
-          }))
+          }),{headers})
           .then(response => {
             if (response.data.data === true) {
               location.reload();
