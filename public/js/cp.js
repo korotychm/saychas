@@ -416,7 +416,7 @@ const ApiIntegration = {
   },
   methods: {
     getContent() {
-      let requestUrl = '/control-panel/api-inegration';
+      let requestUrl = '/control-panel/api-integration';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       axios
           .post(requestUrl,
