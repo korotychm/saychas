@@ -256,6 +256,24 @@ const ProductEdit = {
                   </div>
                   <div class="product__info">
                       <div class="product__attribute">
+                          <h2>Страна производства</h2>
+                            <div class="search-select">
+                                <input class="input search-select__input" type="text" value="" v-model="brandSearch" @focusout="checkCountry()" />
+                                <div class="search-select__suggestions">
+                                    <div v-if="!countrySearch" class="search-select__empty">Начните вводить название страны для поиска</div>
+                                    <div v-if="(countrySearch && !filteredCountries.length)" class="search-select__empty">Ничего не найдено</div>
+                                    <div v-if="(countrySearch && filteredCountries.length)">
+                                      <label v-for="country in filteredCountries">
+                                        <input type="radio" name="suggest" :checked="(country.id == selectedCountryId)" />
+                                        <span class="search-select__suggestion" @click="selectBrand(country.id, country.title)">
+                                          <span>{{ country.title }}</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                      <div class="product__attribute">
                           <h2>Бренд</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
@@ -287,16 +305,20 @@ const ProductEdit = {
   data: function () {
     return {
       editable: true,
-      categorySearch: '',
       categories: [],
       categoriesFlat: [],
+      categorySearch: '',
       selectedCategoryId: '',
       selectedCategoryName: '',
       brands: [],
       brandSearch: '',
       selectedBrandId: '',
       selectedBrandName: '',
-      product: ''
+      countries: [],
+      countrySearch: '',
+      selectedCountryId: '',
+      selectedCountryName: '',
+      product: {}
     }
   },
   computed: {
@@ -309,12 +331,20 @@ const ProductEdit = {
       return categories;
     },
     filteredBrands(){
-      if (this.brandSearch.length < 3) return false;
+      if (this.brandSearch.length < 2) return false;
       let brands = this.brands;
       brands = brands.filter((brand) => {
         return (brand.title.toLowerCase().includes(this.brandSearch.toLowerCase()))
       })
       return brands;
+    },
+    filteredCountries(){
+      if (this.countrySearch.length < 2) return false;
+      let countries = this.countries;
+      countries = countries.filter((country) => {
+        return (country.title.toLowerCase().includes(this.countrySearch.toLowerCase()))
+      })
+      return countries;
     }
   },
   methods: {
@@ -358,15 +388,14 @@ const ProductEdit = {
             if (response.data.data === true) {
               location.reload();
             } else {
-              console.log(response.data);
               this.categories = response.data.category_tree;
               this.product = response.data.product;
               this.brandSearch = this.product.brand_name;
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
               this.brands = this.product.brands;
-              console.log(this.product);
               this.flatCategories();
+              console.log(this.product);
             }
           })
           .catch(error => {
