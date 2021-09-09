@@ -182,6 +182,7 @@ const Stores = {
       if (this.filtersCreated) {
         requestUrl = '/control-panel/show-stores-from-cache';
       }
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       axios
         .post(requestUrl,
           Qs.stringify({
@@ -192,12 +193,16 @@ const Stores = {
             use_cache: this.filtersCreated
           }))
           .then(response => {
-            console.log(response.data);
-            this.pages = response.data.data.limits.total;
-            this.stores = response.data.data.body;
-            if (!this.filtersCreated){
-              this.filters = response.data.data.filters;
-              this.filtersCreated = true;
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              console.log(response.data);
+              this.pages = response.data.data.limits.total;
+              this.stores = response.data.data.body;
+              if (!this.filtersCreated){
+                this.filters = response.data.data.filters;
+                this.filtersCreated = true;
+              }
             }
           });
     },
@@ -344,21 +349,26 @@ const ProductEdit = {
       console.log(this.categorySearch, this.product.category_id);
     },
     getProduct() {
-      let requestUrl = '/control-panel/edit-product'
+      let requestUrl = '/control-panel/edit-product';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       axios
         .post(requestUrl,
           Qs.stringify({
             product_id : this.$route.params.id
           }))
           .then(response => {
-            console.log(response.data);
-            this.categories = response.data.category_tree;
-            this.product = response.data.product;
-            this.brandSearch = this.product.brand_name;
-            this.selectedBrandId = this.product.brand_id;
-            this.selectedBrandName = this.product.brand_name;
-            console.log(this.product);
-            this.flatCategories();
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              console.log(response.data);
+              this.categories = response.data.category_tree;
+              this.product = response.data.product;
+              this.brandSearch = this.product.brand_name;
+              this.selectedBrandId = this.product.brand_id;
+              this.selectedBrandName = this.product.brand_name;
+              console.log(this.product);
+              this.flatCategories();
+            }
           })
           .catch(error => {
             if (error.response.status == '403'){
