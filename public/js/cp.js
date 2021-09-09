@@ -85,9 +85,7 @@ const Products = {
             filters: this.selectedFilters,
             search: this.search,
             use_cache: this.filtersCreated
-          }),{
-            headers: {'X-Requested-With':'XMLHttpRequest'}
-          })
+          }),{headers: {'X-Requested-With':'XMLHttpRequest'}})
           .then(response => {
             console.log(response);
             if (response.data.data) {
