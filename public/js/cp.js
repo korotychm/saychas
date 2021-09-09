@@ -88,8 +88,9 @@ const Products = {
             use_cache: this.filtersCreated
           }), {headers})
           .then(response => {
-            console.log(response);
-            if (response.data.data) {
+            if (response.data.data === true) {
+              location.reload();
+            } else {
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
               if (!this.filtersCreated){
