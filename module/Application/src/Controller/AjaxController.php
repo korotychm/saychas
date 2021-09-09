@@ -444,7 +444,7 @@ class AjaxController extends AbstractActionController
        if (empty($productId = $this->getRequest()->getPost()->productId)) {
            return new JsonModel(['result' => false, "description" => " product undefinded "]);
        }  
-       ProductFavorites::remove(['user_id' => $userId, 'product_id' => $productId]);
+       ProductFavorites::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
        return new JsonModel(['result' => true, "description" => "product $productId removed from favorites",  'lable' => Resource::ADD_TO_FAVORITES]);
     }
     
