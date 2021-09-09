@@ -8,6 +8,7 @@ namespace ControlPanel\Controller;
 
 use ControlPanel\Service\HtmlContentProvider;
 //use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
@@ -66,10 +67,10 @@ class ApiController extends AbstractControlPanelActionController // AbstractActi
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $hasIdentity = $this->authService->hasIdentity();
-        if (!$hasIdentity) {
-            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
-        }
+//        $hasIdentity = $this->authService->hasIdentity();
+//        if (!$hasIdentity) {
+//            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
+//        }
         return $response;
     }
     

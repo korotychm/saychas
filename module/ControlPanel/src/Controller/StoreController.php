@@ -69,10 +69,10 @@ class StoreController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $hasIdentity = $this->authService->hasIdentity();
-        if (!$hasIdentity) {
-            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
-        }
+//        $hasIdentity = $this->authService->hasIdentity();
+//        if (!$hasIdentity) {
+//            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
+//        }
         return $response;
     }
 
