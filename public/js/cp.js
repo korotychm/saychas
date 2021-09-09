@@ -566,7 +566,7 @@ const routes = [
     name: 'testimonials',
     path: '/testimonials',
     meta: {
-      h1: 'Цены и скидки'
+      h1: 'Отзывы'
     },
     component: Testimonials
   },
@@ -574,7 +574,7 @@ const routes = [
     name: 'instructions',
     path: '/instructions',
     meta: {
-      h1: 'Цены и скидки'
+      h1: 'Инструкции'
     },
     component: Instructions
   },
