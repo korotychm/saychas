@@ -1,16 +1,18 @@
-<div class="cp-login__card">
-  <h1>Введите логин и пароль для входа</h1>
-  <form method="POST" action="<?= $action ?>" autocomplete="off">
-      <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
-      <input type="hidden" name="code" value="<?= $code ?>" />
-      <h2>Логин</h2>
-      <div class="cp-login__input">
-        <input type="text" placeholder="username" class="input" name="username" value='Banzaii'>
-      </div>
-      <h2>Пароль</h2>
-      <div class="cp-login__input">
-        <input type="password" placeholder="****" class="input" value="1234" name="password">
-      </div>
-      <input type="submit" id="sendlogin" class="btn btn-primary" value="Войти" />
-  </form>
+<div class="cp-login__content">
+  <div class="cp-login__card">
+    <h1>Введите логин и пароль для входа</h1>
+    <form method="POST" action="<?= $action ?>" autocomplete="off">
+        <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
+        <input type="hidden" name="code" value="<?= $code ?>" />
+        <h2>Логин</h2>
+        <div class="cp-login__input">
+          <input type="text" placeholder="username" class="input" name="username" value='Banzaii'>
+        </div>
+        <h2>Пароль</h2>
+        <div class="cp-login__input">
+          <input type="password" placeholder="****" class="input" value="1234" name="password">
+        </div>
+        <input type="submit" id="sendlogin" class="btn btn-primary" value="Войти" />
+    </form>
+  </div>
 </div>

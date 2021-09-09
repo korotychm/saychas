@@ -87,11 +87,14 @@ const Products = {
             use_cache: this.filtersCreated
           }))
           .then(response => {
-            this.pages = response.data.data.limits.total;
-            this.products = response.data.data.body;
-            if (!this.filtersCreated){
-              this.filters = response.data.data.filters;
-              this.filtersCreated = true;
+            console.log(response);
+            if (response.data.data) {
+              this.pages = response.data.data.limits.total;
+              this.products = response.data.data.body;
+              if (!this.filtersCreated){
+                this.filters = response.data.data.filters;
+                this.filtersCreated = true;
+              }
             }
           });
     },
@@ -101,7 +104,11 @@ const Products = {
     }
   },
   created: function(){
+    $('.main__loader').show();
     this.getProducts();
+  },
+  updated: function(){
+    $('.main__loader').hide();
   }
 }
 
@@ -198,7 +205,11 @@ const Stores = {
     }
   },
   created: function(){
+    $('.main__loader').show();
     this.getStores();
+  },
+  updated: function(){
+    $('.main__loader').hide();
   }
 }
 
@@ -375,7 +386,11 @@ const ProductEdit = {
     }
   },
   created: function(){
+    $('.main__loader').show();
     this.getProduct();
+  },
+  updated: function(){
+    $('.main__loader').hide();
   }
 }
 
