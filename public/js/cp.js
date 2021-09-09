@@ -101,7 +101,13 @@ const Products = {
     }
   },
   created: function(){
+    $('.main__loader').show();
+    $('.main__filter').addClass('active');
     this.getProducts();
+  },
+  updated: function(){
+    $('.main__loader').hide();
+    $('.main__filter').removeClass('active');
   }
 }
 
