@@ -93,7 +93,7 @@ const Products = {
               this.filters = response.data.data.filters;
               this.filtersCreated = true;
             }
-            console.log(response.data);
+            console.log(response);
           });
     },
     loadPage(index = 1) {
