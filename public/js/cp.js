@@ -346,7 +346,6 @@ const ProductEdit = {
       this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id).name;
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
-      console.log(this.categorySearch, this.product.category_id);
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product';
@@ -408,6 +407,37 @@ const ProductEdit = {
 
 const StoreEdit = { template: '<div>Магазин с id {{ $route.params.id }}</div>' }
 
+const Api = {
+  template: '<div><div v-html="htmlcontent"></div></div>',
+  data: function () {
+    return {
+      htmlcontent: ''
+    }
+  },
+  methods: {
+    getContent() {
+      let requestUrl = '/control-panel/edit-product';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,{},{headers})
+          .then(response => {
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              this.htmlcontent = response.data.data;
+            }
+          })
+    }
+  },
+  created: function(){
+    $('.main__loader').show();
+    this.getContent();
+  },
+  updated: function(){
+    $('.main__loader').hide();
+  }
+}
+
 const routes = [
   {
     name: 'analytics',
@@ -450,6 +480,14 @@ const routes = [
       back_route: '/stores'
     },
     component: StoreEdit
+  },
+  {
+    name: 'api',
+    path: '/api',
+    meta: {
+      h1: 'Интеграция API'
+    },
+    component: Api
   }
 ]
 
