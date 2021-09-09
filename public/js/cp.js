@@ -84,7 +84,8 @@ const Products = {
             rows_per_page : this.rows_per_page,
             filters: this.selectedFilters,
             search: this.search,
-            use_cache: this.filtersCreated
+            use_cache: this.filtersCreated,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
           }))
           .then(response => {
             console.log(response);
