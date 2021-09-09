@@ -614,7 +614,7 @@ const router = new VueRouter({
 const cp = new Vue({
   router,
   mounted: function(){
-    console.log(router);
+    console.log($route.name);
     router.replace('/orders');
   }
 }).$mount('#cp')
