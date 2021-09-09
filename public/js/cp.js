@@ -291,10 +291,33 @@ const ProductEdit = {
                                 </div>
                             </div>
                       </div>
-
                       <div class="product__attribute">
                           <h2>Название товара</h2>
                           <input class="input" type="text" :value="product.title" />
+                      </div>
+                      <div class="product__attribute">
+                          <h2>Цвет</h2>
+                            <div class="product__colors">
+                                <label v-for="color in product.colors" class="color-checkbox">
+                                  <input type="checkbox" :value="color.id">
+                                  <span class="color-checkbox__check">
+                                    <span class="color-checkbox__check-color" :style="{'backgroundColor' : color.value}"></span>
+                                  </span>
+                                </label>
+                                <div class="search-select__suggestions">
+                                    <div v-if="!brandSearch" class="search-select__empty">Начните вводить название бренда для поиска</div>
+                                    <div v-if="(brandSearch && !filteredBrands.length)" class="search-select__empty">Ничего не найдено</div>
+                                    <div v-if="(brandSearch && filteredBrands.length)">
+                                      <label v-for="brand in filteredBrands">
+                                        <input type="radio" name="suggest" :checked="(brand.id == selectedBrandId)" />
+                                        <span class="search-select__suggestion" @click="selectBrand(brand.id, brand.title)">
+                                          <span>{{ brand.title }}</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                </div>
+
+                            </div>
                       </div>
                   </div>
                 </div>
