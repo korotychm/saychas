@@ -204,7 +204,13 @@ const Stores = {
     }
   },
   created: function(){
+    $('.main__loader').show();
+    $('.main__filter').addClass('active');
     this.getStores();
+  },
+  updated: function(){
+    $('.main__loader').hide();
+    $('.main__filter').removeClass('active');
   }
 }
 
@@ -381,7 +387,13 @@ const ProductEdit = {
     }
   },
   created: function(){
+    $('.main__loader').show();
+    $('.main__filter').addClass('active');
     this.getProduct();
+  },
+  updated: function(){
+    $('.main__loader').hide();
+    $('.main__filter').removeClass('active');
   }
 }
 
