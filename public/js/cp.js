@@ -1,5 +1,17 @@
 
-const Analytics = { template: '<div>Аналитика</div>' }
+const Orders = {
+  template: '<div>Заказы и возвраты</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
+const Analytics = {
+  template: '<div>Аналитика</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
 
 const Products = {
   data: function () {
@@ -441,7 +453,57 @@ const ApiIntegration = {
   }
 }
 
+const PriceList = {
+  template: '<div>Цены и скидки</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
+const Testimonials = {
+  template: '<div>Отзывы</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
+const Instructions = {
+  template: '<div>Инструкции</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
+const Documents = {
+  template: '<div>Документы</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
+const Support = {
+  template: '<div>Поддержка</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
+const Settings = {
+  template: '<div>Управление аккаунтом</div>',
+  created: function(){
+    $('.main__loader').hide();
+  }
+}
+
 const routes = [
+  {
+    name: 'orders',
+    path: '/orders',
+    meta: {
+      h1: 'Заказы и возвраты'
+    },
+    component: Orders
+  },
   {
     name: 'analytics',
     path: '/analytics',
@@ -491,6 +553,54 @@ const routes = [
       h1: 'Интеграция API'
     },
     component: ApiIntegration
+  },
+  {
+    name: 'price-list',
+    path: '/price-list',
+    meta: {
+      h1: 'Цены и скидки'
+    },
+    component: PriceList
+  },
+  {
+    name: 'testimonials',
+    path: '/testimonials',
+    meta: {
+      h1: 'Цены и скидки'
+    },
+    component: Testimonials
+  },
+  {
+    name: 'instructions',
+    path: '/instructions',
+    meta: {
+      h1: 'Цены и скидки'
+    },
+    component: Instructions
+  },
+  {
+    name: 'documents',
+    path: '/documents',
+    meta: {
+      h1: 'Документы'
+    },
+    component: Documents
+  },
+  {
+    name: 'support',
+    path: '/support',
+    meta: {
+      h1: 'Поддержка'
+    },
+    component: Support
+  },
+  {
+    name: 'settings',
+    path: '/settings',
+    meta: {
+      h1: 'Управление аккаунтом'
+    },
+    component: Support
   }
 ]
 
