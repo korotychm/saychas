@@ -77,6 +77,7 @@ const Products = {
       if (this.filtersCreated) {
         requestUrl = '/control-panel/show-products-from-cache';
       }
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' }
       axios
         .post(requestUrl,
           Qs.stringify({
@@ -85,7 +86,7 @@ const Products = {
             filters: this.selectedFilters,
             search: this.search,
             use_cache: this.filtersCreated
-          }),{headers: {'X-Requested-With':'XMLHttpRequest'}})
+          }), {headers})
           .then(response => {
             console.log(response);
             if (response.data.data) {
