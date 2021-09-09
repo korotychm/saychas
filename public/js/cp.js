@@ -88,7 +88,7 @@ const Products = {
           }))
           .then(response => {
             console.log(response);
-            if (response.data.data.limits) {
+            if (response.data.data) {
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
               if (!this.filtersCreated){
