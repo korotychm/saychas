@@ -407,7 +407,7 @@ const ProductEdit = {
 
 const StoreEdit = { template: '<div>Магазин с id {{ $route.params.id }}</div>' }
 
-const Api = {
+const ApiIntegration = {
   template: '<div><div v-html="htmlcontent"></div></div>',
   data: function () {
     return {
@@ -416,10 +416,13 @@ const Api = {
   },
   methods: {
     getContent() {
-      let requestUrl = '/control-panel/edit-product';
+      let requestUrl = '/control-panel/api-inegration';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       axios
-        .post(requestUrl,{},{headers})
+          .post(requestUrl,
+            Qs.stringify({
+              page : this.$route.name
+            }),{headers})
           .then(response => {
             if (response.data.data === true) {
               location.reload();
@@ -483,11 +486,11 @@ const routes = [
   },
   {
     name: 'api',
-    path: '/api',
+    path: '/api-integration',
     meta: {
       h1: 'Интеграция API'
     },
-    component: Api
+    component: ApiIntegration
   }
 ]
 
