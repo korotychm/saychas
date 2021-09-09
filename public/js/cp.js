@@ -394,6 +394,7 @@ const ProductEdit = {
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
               this.brands = this.product.brands;
+              this.countries = this.product.countries;
               this.flatCategories();
               console.log(this.product);
             }
