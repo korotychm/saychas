@@ -11,6 +11,7 @@ use ControlPanel\Controller\Factory\AuthControllerFactory;
 use ControlPanel\Controller\Factory\ProductControllerFactory;
 use ControlPanel\Controller\Factory\StoreControllerFactory;
 use ControlPanel\Controller\Factory\ListControllerFactory;
+use ControlPanel\Controller\Factory\ApiControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
@@ -23,6 +24,7 @@ return [
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
             \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
             \ControlPanel\Controller\ListController::class => ListControllerFactory::class,
+            \ControlPanel\Controller\ApiController::class => ApiControllerFactory::class,
         ],        
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
@@ -76,6 +78,9 @@ return [
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',], 'allow' => '+analyst'],
                 ['actions' => ['showListFromCache', ], 'allow' => '+developer'],
+            ],
+            \ControlPanel\Controller\ApiController::class => [
+                ['actions' => ['index',], 'allow' => '+developer'],
             ],
         ]
     ],    
@@ -179,6 +184,18 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'edit-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
+                    'api-integration' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/api-integration',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ApiController::class,
+                                'action' => 'index',
                             ],
                         ],
                         // 'may_terminate' => true,

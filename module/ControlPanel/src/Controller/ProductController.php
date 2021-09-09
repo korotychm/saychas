@@ -73,10 +73,10 @@ class ProductController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $hasIdentity = $this->authService->hasIdentity();
-        if (!$hasIdentity) {
-            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
-        }
+//        $hasIdentity = $this->authService->hasIdentity();
+//        if (!$hasIdentity) {
+//            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
+//        }
         return $response;
     }
 
@@ -88,7 +88,7 @@ class ProductController extends AbstractActionController
      */
     public function showProductsAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         //$pageNo = $this->params()->fromRoute('page_no', '1');
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
@@ -117,7 +117,7 @@ class ProductController extends AbstractActionController
      */
     public function showProductsFromCacheAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
         $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
@@ -191,11 +191,11 @@ class ProductController extends AbstractActionController
      * Signal ajax script
      * if provider is not logged in
      */
-    private function assertLoggedIn()
-    {
-        if (!$this->authService->hasIdentity()) {
-            return new JsonModel(['data' => false]);
-        }
-    }
+//    private function assertLoggedIn()
+//    {
+//        if (!$this->authService->hasIdentity()) {
+//            return new JsonModel(['data' => false]);
+//        }
+//    }
 
 }
