@@ -1,6 +1,30 @@
 <?php use Application\Resource\Resource; ?>
 <form class="search" id="quicksearch">
-  <input type="text" placeholder="Быстрый поиск" />
+  <input type="text" placeholder="Быстрый поиск"  id='quicksearch-input'/>
   <button></button>
+  <script>!function(e,t,n,c,o){e[o]=e[o]||function()
+      {(e[o].a=e[o].a||[]).push(arguments)},e[o].h=c,e[o].n=o,e[o].i=1*new Date,s=t.createElement(n),a=t.getElementsByTagName(n)[0],s.async=1,s.src=c,a.parentNode.insertBefore(s,a)
+  }
+  (window,document,"script","https://cdn2.searchbooster.net/scripts/v2/init.js","searchbooster"),searchbooster({
+      "apiUrl":"/get-search-booster-api",
+      "popup":{
+          "search":true
+      },
+      "theme":{"variables":{
+              "color-primary":"#ff5522"
+          }
+      },
+      "apiKey":"4d1944b9-e201-42cf-bb34-098c8a13b76f",
+      "completions":true,
+      "search":{"image":false,
+          "groupCategories":true,
+          "catalog":true,
+          "limit":24
+      },
+      "offer":{"cart":false}, 
+      initialized: function(sb) { 
+          sb.mount('#quicksearch');
+      }
+  });</script>
 </form>
 <div class="header__search-tooltip"><?= Resource::FOR_EXAMPLE_TEXT?> <span><?= Resource::SEARCH_PANEL_HELPER?></span></div>

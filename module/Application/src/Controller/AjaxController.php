@@ -503,7 +503,17 @@ class AjaxController extends AbstractActionController
     }
     
     
-    
+    public function searchBoosterApiAction ()
+    {
+         
+         //$json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io".$_SERVER["REQUEST_URI"]));
+         
+         //$return =(!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
+         
+         return new JsonModel(["url" => str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io".$_SERVER["REQUEST_URI"])]);
+        //return $view->setTerminal(true);*/
+         
+     }
     
    /* private function isInFavorites ($productId)
     {

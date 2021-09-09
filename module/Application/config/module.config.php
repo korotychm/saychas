@@ -227,6 +227,17 @@ return [
                     ],
                 ],
             ],
+            'get-search-booster-api' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/get-search-booster-api[/:id1][/:id2][/:id3]',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'searchBoosterApi',
+                    ],
+                ],
+            ],
+            
             
 //            'show-provider' => [
 //                'type'    => Segment::class,
