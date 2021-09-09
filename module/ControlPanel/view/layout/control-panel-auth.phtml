@@ -11,14 +11,15 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-                ->prependStylesheet($this->basePath('css/cpanel.css'))
-                ->prependStylesheet($this->basePath('css/style.css'))
-                ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-                ->prependStylesheet($this->basePath('css/bs.css'))
-                ->prependStylesheet($this->basePath('css/treeview.css'))
-                ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
-                ->prependStylesheet($this->basePath('css/nouislider.css'))
-                ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
+                // ->prependStylesheet($this->basePath('css/cpanel.css'))
+                // ->prependStylesheet($this->basePath('css/style.css'))
+                // ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                // ->prependStylesheet($this->basePath('css/bs.css'))
+                // ->prependStylesheet($this->basePath('css/treeview.css'))
+                // ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
+                // ->prependStylesheet($this->basePath('css/nouislider.css'))
+                // ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
+                ->prependStylesheet($this->basePath('css/cpanel.min.css?' . time()))
         ?>
 
         <!-- Scripts -->
@@ -40,14 +41,12 @@
         ?>
     </head>
     <body>
-        <div class="fluid-container" style="overflow: hidden"> <?php //  container-dashboard ?>
-            <div class="row">
-                <div id="controlPanelContentId" class="col <?php // bg-light ?>">
-                    <?= $this->content ?>
-<!--                    <div class="fluid-container login-form">banzaii</div>-->
-                </div>
-            </div>
+        <div class="cp-login">
+          <div class="cp-login__content" id="controlPanelContentId"> <?php //  container-dashboard ?>
+              <?= $this->content ?>
+          </div>
         </div>
+
 <!--        <script>
             var loginForm = function() {
                 $.ajax({
@@ -63,7 +62,7 @@
                     }
                 });
             };
-            loginForm(); 
+            loginForm();
         </script>-->
     </body>
 </html>
