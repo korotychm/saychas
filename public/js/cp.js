@@ -258,7 +258,7 @@ const ProductEdit = {
                       <div class="product__attribute">
                           <h2>Страна производства</h2>
                             <div class="search-select">
-                                <input class="input search-select__input" type="text" value="" v-model="countrySearch" @focusout="checkCountry()" />
+                                <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                 <div class="search-select__suggestions">
                                     <div v-if="!countrySearch" class="search-select__empty">Начните вводить название страны для поиска</div>
                                     <div v-if="(countrySearch && !filteredCountries.length)" class="search-select__empty">Ничего не найдено</div>
@@ -402,6 +402,9 @@ const ProductEdit = {
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
               this.brands = this.product.brands;
+              this.countrySearch = this.product.country_name;
+              this.selectedCountryId = this.product.country_id;
+              this.selectedCountryName = this.product.country_name;
               this.countries = this.product.countries;
               this.flatCategories();
               console.log(this.product);
