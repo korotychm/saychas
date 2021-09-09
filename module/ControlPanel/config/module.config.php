@@ -184,6 +184,18 @@ return [
                         // 'may_terminate' => true,
                     ],
                     
+                    'api-integration' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/api-integration',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ApiController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'profile' => [
                         'type' => Literal::class,
                         'options' => [

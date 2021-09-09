@@ -86,7 +86,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $manager = $result['manager'];
         $managerName = $result['manager_name'];
 
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
 
@@ -121,7 +121,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $manager = $result['manager'];
         //$managerName = $result['manager_name'];
 
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
         $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::ROWS_PER_PAGE);
@@ -144,11 +144,11 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
      * Signal ajax script
      * if provider is not logged in
      */
-    private function assertLoggedIn()
-    {
-        if (!$this->authService->hasIdentity()) {
-            return new JsonModel(['data' => false]);
-        }
-    }
+//    private function assertLoggedIn()
+//    {
+//        if (!$this->authService->hasIdentity()) {
+//            return new JsonModel(['data' => false]);
+//        }
+//    }
 
 }
