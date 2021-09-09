@@ -1,14 +1,14 @@
 
 const Orders = {
   template: '<div>Заказы и возвраты</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
 
 const Analytics = {
   template: '<div>Аналитика</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
@@ -455,42 +455,42 @@ const ApiIntegration = {
 
 const PriceList = {
   template: '<div>Цены и скидки</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
 
 const Testimonials = {
   template: '<div>Отзывы</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
 
 const Instructions = {
   template: '<div>Инструкции</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
 
 const Documents = {
   template: '<div>Документы</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
 
 const Support = {
   template: '<div>Поддержка</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
 
 const Settings = {
   template: '<div>Управление аккаунтом</div>',
-  created: function(){
+  mounted: function(){
     $('.main__loader').hide();
   }
 }
