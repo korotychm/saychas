@@ -16,6 +16,7 @@ use Application\Model\Entity\Price;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\CharacteristicValue;
 use Application\Model\Entity\HandbookRelatedProduct as Product;
+use Application\Model\Entity\Characteristic;
 
 /**
  * Description of ProductManager
@@ -84,6 +85,7 @@ class ProductManager extends ListManager implements LoadableInterface
         $this->entityManager->initRepository(Provider::class);
         $this->entityManager->initRepository(CharacteristicValue::class);
         $this->entityManager->initRepository(Product::class);
+        $this->entityManager->initRepository(Characteristic::class);
     }
     
     public function findFilters($params)
@@ -188,6 +190,11 @@ class ProductManager extends ListManager implements LoadableInterface
         return $cursor;
     }
     
+    private function fullCharacteristicId($categoryId, $characteristicId) : string
+    {
+        return $characteristicId.'-'.$categoryId;
+    }
+    
     public function findProduct(string $productId)
     {
         $product = $this->find(['id' => $productId]);
@@ -195,8 +202,10 @@ class ProductManager extends ListManager implements LoadableInterface
         $product['provider_name'] = $provider->getTitle();
         $product['provider_description'] = $provider->getDescription();
         $b = Brand::find(['id' => $product['brand_id']]);
-        $product['brand_name'] = $b->getTitle();
+        $product['brand_name'] = (null == $b) ? '' : $b->getTitle();
         foreach($product->characteristics as &$c) {
+            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
             switch ($c['type']) {
                 case Resource::HEADER:
                     $c['real_value'] = $c['value'];
@@ -231,6 +240,9 @@ class ProductManager extends ListManager implements LoadableInterface
                     $entity = Country::find(['id' => $c['value']]);
                     $c['title'] = $entity->getTitle();
                     $c['real_value'] = $entity->getCode();
+                    break;
+                default:
+                    throw new Exception('Characteristic of the given type does not exist');
                     break;
             }
         }

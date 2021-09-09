@@ -1147,6 +1147,7 @@ return [
             \Application\Model\Entity\Provider::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Entity\CharacteristicValue::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
             \Application\Model\Entity\HandbookRelatedProduct::class => \Application\Model\Factory\HandbookRelatedProductRepositoryFactory::class,
+            \Application\Model\Entity\Characteristic::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
