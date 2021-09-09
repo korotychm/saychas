@@ -37,7 +37,8 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
 use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\ProductFavorites;
-use Application\Model\Entity\Provider;
+use Application\Model\Entity\ProductHistory;
+//use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
 //use RuntimeException;
@@ -45,7 +46,7 @@ use Laminas\Authentication\AuthenticationService;
 use Application\Resource\Resource;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-use Laminas\Http\Response;
+//use Laminas\Http\Response;
 use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
@@ -113,7 +114,8 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(Delivery::class);
         $this->entityManager->initRepository(UserPaycard::class);
-        $this->entityManager->initRepository(UserPaycard::class);
+        $this->entityManager->initRepository(ProductFavorites::class);
+        $this->entityManager->initRepository(ProductHistory::class);
     }
 
     
@@ -445,6 +447,47 @@ class AjaxController extends AbstractActionController
        ProductFavorites::remove(['user_id' => $userId, 'product_id' => $productId]);
        return new JsonModel(['result' => true, "description" => "product $productId removed from favorites",  'lable' => Resource::ADD_TO_FAVORITES]);
     }
+    
+    public function getClientFavoritesAction()
+    {
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
+        $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId]]);
+        if ($favProducts->count() < 1){
+            return new JsonModel([]);
+        }
+        $productsId=[];
+        foreach ($favProducts as $favProduct)
+        {
+            $productsId[] = $favProduct->getProductId();
+        }
+        $products = $this->handBookRelatedProductRepository->findAll(["where"=>["id" => $productsId]]); 
+        return new JsonModel($this->commonHelperFuncions->getProductCardArray($products, $userId));
+    }
+    
+    public function getClientHistoryAction()
+    {
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return ; //$this->redirect()->toRoute('home');
+        }
+        $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId]]);
+        if ($favProducts->count() < 1){
+            return new JsonModel([]);
+        }
+        $productsId=[];
+        foreach ($favProducts as $favProduct)
+        {
+            $productsId[] = $favProduct->getProductId();
+        }
+        $products = $this->handBookRelatedProductRepository->findAll(["where"=>["id" => $productsId]]); 
+        return new JsonModel($this->commonHelperFuncions->getProductCardArray($products, $userId));
+    }
+    
+    
+    
     
    /* private function isInFavorites ($productId)
     {

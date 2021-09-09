@@ -1,0 +1,27 @@
+<?php
+use Application\Resource\Resource;
+$this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js'));
+?>
+<div class="page-heading">
+    <h1 class="h1"><?= Resource::FAVORITES_TITLE. " ". $this->userInfo['name']?></h1>
+
+    
+    
+</div>
+<div class="profile-page">
+    
+
+  <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
+    
+    <div  >
+        <h1><?= Resource::FAVORITES_TITLE ?></h1>     
+        <pre id="client-favorites"></pre>
+    </div>
+   <div >
+       <h1><?=  Resource::HISTORY_TITLE ?></h1>
+       <pre id="client-history" ></pre>
+   </div>
+  
+
+    

@@ -185,6 +185,7 @@ $(document).on('change','.cart__store-self-delivery input',function(){
     calculateBasketMerge($("#user-basket-form").serialize(), true);
 });
 
+
 function calculateSelfDelevery()
 {
     let selftDeliveryCount = $(".cart__store-self-delivery:not(.disabled) input:checked").length,

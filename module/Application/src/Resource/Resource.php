@@ -31,7 +31,7 @@ class Resource
      * Поиск
      */
     const SEARCH_INPUT_PLACEHOLDER = "Быстрый поиск";
-    const SEARCH_PANEL_HELPER = "Смратфон с диагональю до 5 дюймов";
+    const SEARCH_PANEL_HELPER = "Смартфон с диагональю до 5 дюймов";
 
     /*
      * Товары
@@ -39,6 +39,8 @@ class Resource
    
    
     const REMOVE_FROM_FAVORITES = "Убрать из избранного";
+    const FAVORITES_TITLE = "Избранные товары";
+    const HISTORY_TITLE = "Просмотренные товары";
     const BUTTON_LABLE_ADD_TO_BASKET = "В корзину";
     const BUTTON_LABLE_PAY_NOW = "Купить сейчас";
     const ADD_TO_FAVORITES = "Добавить в избранное";
@@ -58,6 +60,8 @@ class Resource
     const BASKET_SAYCHAS_short = "за час";
     const BASKET_SAYCHAS3_short = "за три часа";
     const ERROR_MESSAGE = "Ошибка! ";
+    
+    
 
     /*
      * авторизация

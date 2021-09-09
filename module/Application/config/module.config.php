@@ -180,7 +180,7 @@ return [
             'client-orders' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/client-orders',
+                    'route'    => '/user/orders',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'clientOrders',
@@ -190,10 +190,40 @@ return [
             'client-order' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/client-order[/:id]',
+                    'route'    => '/user/order[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'clientOrderPage',
+                    ],
+                ],
+            ],
+            'client-favorites' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/user/favorites',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'clientFavoritesPage',
+                    ],
+                ],
+            ],
+            'ajax-get-client-favorites' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-client-favorites',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getClientFavorites',
+                    ],
+                ],
+            ],
+            'ajax-get-client-history' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-client-history',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getClientHistory',
                     ],
                 ],
             ],

@@ -28,6 +28,7 @@ $this->headTitle($this->title, 'PREPEND');
                    "id" => $this->id,
                    "brand" => $this->brand,
                    "image_path" => $this->imagePath('brand'),
+                    "isFav" => $this->isFav,
                 ])
         ?>
         <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>

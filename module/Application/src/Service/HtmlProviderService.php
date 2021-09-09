@@ -133,7 +133,7 @@ class HtmlProviderService
         }
         while (list($key, $product) = each($param['postedProducts'])) { //
             if (empty($basketProducts[$key])) {
-                $error["reloadUrl"] = "/client-orders";
+                $error["reloadUrl"] = "/user/orders";
                 return $error;
             }
             if (empty($param["legalStore"][$product['store']]) ) {
@@ -245,7 +245,8 @@ class HtmlProviderService
      * Return Html
      * @return string
      */
-    public function getCategoryFilterHtml($filters, $category_id, $price = ["minprice" => 12000, "maxprice" => 54000])
+   
+    /*public function getCategoryFilterHtml($filters, $category_id, $price = ["minprice" => 12000, "maxprice" => 54000])
     {
         $typeText[0] = "Заголовок";
         $typeText[1] = "Строка";
@@ -292,7 +293,7 @@ class HtmlProviderService
                                 //. "      {$color->getTitle()}   "
                                 . "</div>";
                     } elseif ($row['type'] == 8)
-                        $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
+                        $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); 
 
                     if ($row['type'] == 2) {
                         $options[] = $val;
@@ -384,11 +385,7 @@ class HtmlProviderService
                                 <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[" . $row['id'] . "]' value='1' >
                         </div>
                     </div>";
-                    /* . "<radiogroup>"
-                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=1 > Да</div>"
-                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=0 > Нет</div>"
-                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=-1 checked > Не важно</div>"
-                      . "</radiogroup>"; */
+                    
                 }
 
                 $return .= '<div class="ifilterblock"  >
@@ -468,22 +465,10 @@ class HtmlProviderService
         " . $return : "";
         //
         return $return;
-    }
+    } /**/
 
     public function getCategoryFilterJson($filters)
     {
-        /*$typeText[0] = "Заголовок";
-        $typeText[1] = "Строка";
-        $typeText[2] = "Число";
-        $typeText[3] = "Булево";
-        $typeText[4] = "Ссылка.Характеристики";
-        $typeText[5] = "Ссылка.Поставщики";
-        $typeText[6] = "Ссылка.Бренды";
-        $typeText[7] = "Ссылка.Цвета";
-        $typeText[8] = "Ссылка.Страна"; */
-        /*$pricesel['maxprice'] = $price['maxprice'];
-        $pricesel['minprice'] = $price['minprice'];*/
-        
         if (empty($filters)){
             return["error" => "errorId"];
         }
@@ -694,8 +679,9 @@ class HtmlProviderService
                 }
                 $total += ($price * $c['count']);
                 $j += $c["count"];
-                if ($providerId = $product->getProviderId())
+                if ($providerId = $product->getProviderId()){
                     $provider[$providerId] = 1;
+                }
             }
         }
         if (!empty($provider)){
@@ -705,10 +691,10 @@ class HtmlProviderService
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
         } else {
-            $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
+            $timeDelevery  = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
             $priceDelevery = $countDelevery * $param['mergePrice'] + ceil($countDelevery / $param['mergecount']) * $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery / $param['mergecount']);
-            $countDelevery=($countDelevery < 0)?0:$countDelevery;
+            $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;
@@ -724,12 +710,6 @@ class HtmlProviderService
 
     public function basketMergeData($post, $param)
     {
-        /* $param = [
-          "hourPrice" => 29900,  //цена доставки за час
-          "mergePrice" => 5000, //цена доставки за три часа
-          "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
-          "mergecount" => 4, //количество объеденямых магазинов
-          ]; */
         $return = [];
         $timeDelevery3Hour = $timeDelevery1Hour =[];
         $products = $post->products;

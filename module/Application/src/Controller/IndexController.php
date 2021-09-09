@@ -23,6 +23,7 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+//use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\Repository\UserRepository;
@@ -67,6 +68,12 @@ class IndexController extends AbstractActionController
     private $priceRepository;
     private $stockBalanceRepository;
     private $handBookRelatedProductRepository;
+    
+    /**
+    * @var CommonHelperFunctions
+    */
+    private $commonHelperFuncions;
+    
     private $entityManager;
     private $config;
     private $htmlProvider;
@@ -80,14 +87,15 @@ class IndexController extends AbstractActionController
     //private $sessionContainer;
     private $sessionManager;
 
+
     public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
             ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
             BrandRepositoryInterface $brandRepository, ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
             CharacteristicRepositoryInterface $characteristicRepository,
             PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
-            HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
+            HandbookRelatedProductRepositoryInterface $handBookProduct,  $commonHelperFunctions,  
+            $entityManager, $config,   HtmlProviderService $htmlProvider, HtmlFormProviderService $htmlFormProvider, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager)
     {
         $this->testRepository = $testRepository;
@@ -103,6 +111,7 @@ class IndexController extends AbstractActionController
         $this->priceRepository = $priceRepository;
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->handBookRelatedProductRepository = $handBookProduct;
+        $this->commonHelperFuncions = $commonHelperFunctions;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->htmlProvider = $htmlProvider;
@@ -136,7 +145,7 @@ class IndexController extends AbstractActionController
         $user = $this->userRepository->find(['id' => $userId]);
         //$userAddressHtml = $this->htmlProvider->writeUserAddress($user);
         $userAddressArray = $this->htmlProvider->getUserAddresses($user, Resource::LIMIT_USER_ADDRESS_LIST);
-        $userInfo = $this->htmlProvider->getUserInfo($user);
+        $userInfo = $this->commonHelperFuncions->getUserInfo($user);
         $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
         $addressLegal = ($userInfo["userAddress"]) ? true : false;
         $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
@@ -263,7 +272,7 @@ class IndexController extends AbstractActionController
         }
         if (empty($orderId = $this->params()->fromRoute('id', '')) or null ==  $order = ClientOrder::find(['user_id' => $userId, 'order_id' => $orderId ])){
             $this->getResponse()->setStatusCode(301);
-            return $this->redirect()->toRoute('client-orders');
+            return $this->redirect()->toRoute('/user/orders');
             
         }
         $orderInfo = $this->htmlProvider->orderList([$order]);
@@ -434,19 +443,29 @@ class IndexController extends AbstractActionController
             'menu' => null,
         ]);
     }
-
-    private function packParams($params)
+    
+    public function clientFavoritesPageAction()
     {
-        $a = [];
-        foreach ($params['filter'] as $p) {
-            $a[] = "find_in_set('$p', param_value_list)";
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
         }
-        $res = ' 1';
-        if (count($a) > 0) {
-            $res = '(' . implode(' OR ', $a) . ')';
+
+       $userId = $this->identity();
+        $user = User::find(['id' => $userId]);
+        $userInfo = $this->commonHelperFuncions->getUserInfo($user);
+        if (empty($userInfo["phone"])) {
+            return $this->unauthorizedLocation();
         }
-        return $res;
+        
+        return new ViewModel([
+            'userInfo' => $userInfo,
+            
+        ]);
     }
+    
+    
+    
 
     public function productPageAction()
     {
@@ -512,8 +531,8 @@ class IndexController extends AbstractActionController
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
-        $filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-        return new ViewModel([ "catalog" => $categories,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs,'filterform' => $filterForm,
+        //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
+        return new ViewModel([ "catalog" => $categories,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
 
@@ -565,6 +584,18 @@ class IndexController extends AbstractActionController
         ]);
     }
     
+    private function packParams($params)
+    {
+        $a = [];
+        foreach ($params['filter'] as $p) {
+            $a[] = "find_in_set('$p', param_value_list)";
+        }
+        $res = ' 1';
+        if (count($a) > 0) {
+            $res = '(' . implode(' OR ', $a) . ')';
+        }
+        return $res;
+    }
             
     private function unauthorizedLocation()
     {
@@ -577,16 +608,17 @@ class IndexController extends AbstractActionController
     private function addProductToHistory($productId)
     {
         $userId = $this->identity();
-        ProductHistory::remove(['user_id' => $userId, 'product_id' => $productId]);
+        //ProductHistory::remove(['user_id' => $userId, 'product_id' => $productId]);
         $historyItem = ProductHistory::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
         $historyItem->setUserId($userId); 
         $historyItem->setProductId($productId); 
         $historyItem->setTime(time()); 
-        $historyItem->persist(['user_id' => $usertId, 'product_id' => $productId]);
+        $historyItem->persist(['user_id' => $userId, 'product_id' => $productId]);
     }
+    
     private function isInFavorites ($productId)
     {
-        if ($userId = $this->identity()) {
+        if (!empty($userId = $this->identity())) {
             if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
                 return true;
             }
@@ -595,6 +627,4 @@ class IndexController extends AbstractActionController
     }
     
     
-    
-
 }

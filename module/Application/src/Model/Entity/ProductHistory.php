@@ -111,7 +111,7 @@ class ProductHistory extends Entity
         return $this->timestamp;
     }
 
-      public function setTime($time)
+    public function setTime($time)
     {
         $this->time = $time;
         return $this;
