@@ -218,11 +218,11 @@ class ProductManager extends ListManager implements LoadableInterface
     public function findProduct(string $productId)
     {
         $product = $this->find(['id' => $productId]);
-        $provider = Provider::find(['id' => $product['provider_id']]);
-        $product['provider_name'] = $provider->getTitle();
-        $product['provider_description'] = $provider->getDescription();
-        $b = Brand::find(['id' => $product['brand_id']]);
-        $product['brand_name'] = (null == $b) ? '' : $b->getTitle();
+//        $provider = Provider::find(['id' => $product['provider_id']]);
+//        $product['provider_name'] = $provider->getTitle();
+//        $product['provider_description'] = $provider->getDescription();
+//        $b = Brand::find(['id' => $product['brand_id']]);
+//        $product['brand_name'] = (null == $b) ? '' : $b->getTitle();
         $product['brands'] = Brand::findAll([])->toArray();
         $product['colors'] = Color::findAll([])->toArray();
         $product['countries'] = Country::findAll([])->toArray();
