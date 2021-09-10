@@ -306,6 +306,70 @@ const ProductEdit = {
                                 </label>
                             </div>
                       </div>
+                      <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
+                      <div class="product__additional-attributes">
+
+                      </div>
+                      <div class="product__images">
+                          <div class="product__attribute">
+                              <h2>Фото товара <span>Рекомендуемый размер <br>фото — 1000х1000 px. </span><span>Вы можете загрузить до 8 фотографий.</span></h2>
+                              <div class="product__images-wrap">
+                                  <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
+                                      <div class="product__images-list product__images-list--slider">
+                                          <div class="product__images-track" data-shift="0" data-viewed="5">
+                                              <div class="product-small-img product-small-img--1 active"><img src="/img/demo/product/product1.jpg" /></div>
+                                              <div class="product-small-img product-small-img--2"><img src="/img/demo/product/products1.jpg" /></div>
+                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
+                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
+                                              <div class="product-small-img"><img src="/img/demo/product/products1.jpg" /></div>
+                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
+                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
+                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
+                                          </div>
+                                      </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
+                                  </div>
+                                  <div class="product__images-selected">
+                                      <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img src="/img/demo/product/product1.jpg" />
+                                  </div>
+                                  <div class="product__images-controls">
+                                      <div class="product__images-control product__images-control--add"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M1.499,5.999 L13.499,5.999 C14.328,5.999 14.999,6.671 14.999,7.499 C14.999,8.328 14.328,8.999 13.499,8.999 L1.499,8.999 C0.671,8.999 0.0,8.328 0.0,7.499 C0.0,6.671 0.671,5.999 1.499,5.999 Z" />
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M7.499,0.0 C8.328,0.0 8.999,0.671 8.999,1.499 L8.999,13.499 C8.999,14.328 8.328,14.999 7.499,14.999 C6.671,14.999 5.999,14.328 5.999,13.499 L5.999,1.499 C5.999,0.671 6.671,0.0 7.499,0.0 Z" />
+                                          </svg>
+                                          <span>добавить фото</span>
+                                      </div>
+                                      <div class="product__images-control product__images-control--up"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M10.532,0.431 L17.567,7.436 C18.149,8.16 18.149,8.957 17.567,9.537 C16.984,10.118 16.39,10.118 15.456,9.537 L8.422,2.532 C7.839,1.952 7.839,1.11 8.422,0.431 C9.5,0.149 9.949,0.149 10.532,0.431 Z" />
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M2.574,9.537 L9.608,2.532 C10.191,1.952 10.191,1.11 9.608,0.431 C9.25,0.149 8.80,0.149 7.498,0.431 L0.463,7.436 C0.118,8.16 0.118,8.957 0.463,9.537 C1.46,10.118 1.991,10.118 2.574,9.537 Z" />
+                                          </svg>
+                                          <span>поднять вверх</span>
+                                      </div>
+                                      <div class="product__images-control product__images-control--down"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M10.532,0.431 L17.567,7.436 C18.149,8.16 18.149,8.957 17.567,9.537 C16.984,10.118 16.39,10.118 15.456,9.537 L8.422,2.532 C7.839,1.952 7.839,1.11 8.422,0.431 C9.5,0.149 9.949,0.149 10.532,0.431 Z" />
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M2.574,9.537 L9.608,2.532 C10.191,1.952 10.191,1.11 9.608,0.431 C9.25,0.149 8.80,0.149 7.498,0.431 L0.463,7.436 C0.118,8.16 0.118,8.957 0.463,9.537 C1.46,10.118 1.991,10.118 2.574,9.537 Z" />
+                                          </svg>
+                                          <span>опустить вниз</span>
+                                      </div>
+                                      <div class="product__images-control product__images-control--del"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M3.317,1.196 L12.803,10.681 C13.388,11.267 13.388,12.217 12.803,12.803 C12.217,13.389 11.267,13.389 10.681,12.803 L1.196,3.317 C0.610,2.732 0.610,1.782 1.196,1.196 C1.782,0.610 2.732,0.610 3.317,1.196 Z" />
+                                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M12.803,1.196 C13.389,1.782 13.389,2.732 12.803,3.317 L3.317,12.803 C2.732,13.388 1.782,13.388 1.196,12.803 C0.610,12.217 0.610,11.267 1.196,10.681 L10.681,1.196 C11.267,0.610 12.217,0.610 12.803,1.196 Z" />
+                                          </svg>
+                                          <span>удалить фото</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="product__save-back">
+                        <router-link :to="$route.meta.back_route" class="btn btn--secondary">
+                          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8px" height="13px">
+                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M0.903,4.974 L4.974,0.903 C5.560,0.317 6.510,0.317 7.96,0.903 C7.681,1.489 7.681,2.439 7.96,3.25 L3.25,7.96 C2.439,7.681 1.489,7.681 0.903,7.96 C0.318,6.510 0.318,5.560 0.903,4.974 Z" />
+                              <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M7.96,9.974 L3.25,5.903 C2.439,5.317 1.489,5.317 0.903,5.903 C0.318,6.489 0.318,7.439 0.903,8.25 L4.974,12.96 C5.560,12.681 6.510,12.681 7.96,12.96 C7.681,11.510 7.681,10.560 7.96,9.974 Z" />
+                          </svg>
+                          <span>Вернуться</span>
+                        </router-link>
+                        <button class="btn btn--primary">Сохранить изменения</button>
+                      </div>
                   </div>
                 </div>
                 <div v-else class="product__error">Вы не можете редактировать этот товар</div>
