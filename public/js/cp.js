@@ -1,6 +1,6 @@
-var error403template = `<div class="product"><div class="error403"><h2>403</h2><p>Тип вашей учетной записи не позволяет просматривать эту страницу.</p></div></div>`;
-var error404template = `<div class="product"><div class="error403"><h2>404</h2><p>Запрашиваемая страница не найдена.</p></div></div>`;
-var error500template = `<div class="product"><div class="error403"><h2>404</h2><p>Внутренняя ошибка сервера.</p></div></div>`;
+var error403template = `<div class="cp-container"><div class="error403"><h2>403</h2><p>Тип вашей учетной записи не позволяет просматривать эту страницу.</p></div></div>`;
+var error404template = `<div class="cp-container"><div class="error403"><h2>404</h2><p>Запрашиваемая страница не найдена.</p></div></div>`;
+var error500template = `<div class="cp-container"><div class="error403"><h2>404</h2><p>Внутренняя ошибка сервера.</p></div></div>`;
 
 const Orders = {
   template: '<div>Заказы и возвраты</div>',
@@ -63,7 +63,7 @@ const Products = {
           </div>
         </div>
 
-        <div class="products__list">
+        <div class="cp-container products__list">
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
@@ -168,7 +168,7 @@ const Stores = {
           <a class="btn btn--primary" href="">+ Добавить магазин</a>
         </div>
       </div>
-      <div class="products__list">
+      <div class="cp-container products__list">
         <div class="thead">
           <span></span>
           <div class="td">Наименование</div>
@@ -268,7 +268,7 @@ const Stores = {
 }
 
 const ProductEdit = {
-  template: `<div class="product">
+  template: `<div class="cp-container product">
                 <div v-if="editable">
                   <div class="product__category">
                       <h2>Категория</h2>
