@@ -34,6 +34,9 @@ class ProductController extends AbstractActionController
 
     /** @var ProductManager */
     protected $productManager;
+    
+    /** @var RbacManager */
+    protected $rbacManager;
 
     /** @var CategoryRepository */
     protected $categoryRepository;
@@ -61,6 +64,7 @@ class ProductController extends AbstractActionController
         $this->productManager = $this->container->get(\ControlPanel\Service\ProductManager::class);
         $this->config = $container->get('Config');
         $this->categoryRepository = $categoryRepository;
+        $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
     }
 
     /**
@@ -146,6 +150,15 @@ class ProductController extends AbstractActionController
     public function editProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
+        
+        $access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
+        
+        if(!$access) {
+            $this->getResponse()->setStatusCode(403);
+            return;
+        }
+        
+//        $post = $this->getRequest()->getPost()->toArray();
         
         $product = $this->productManager->findProduct($post['product_id']);
 
