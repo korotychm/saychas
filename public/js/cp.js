@@ -318,7 +318,7 @@ const ProductEdit = {
                                       <div class="product__images-list product__images-list--slider">
                                           <div class="product__images-track" data-shift="0" data-viewed="5">
                                               <div v-if="product.images">
-                                                <div class="product-small-img" v-for="(image, index) in product.images" :class="'active':(index==0)">
+                                                <div class="product-small-img" v-for="(image, index) in product.images" :class="'active': index == 0">
                                                   <img :src="productImgPath + image" />
                                                 </div>
                                               </div>
