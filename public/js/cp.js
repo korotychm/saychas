@@ -636,12 +636,12 @@ const PriceList = {
             <div class="td">Стоимость</div>
           </div>
           <div class="tbody">
-              <div v-for="product in products" class="tr">
-                  <div class="td products__img">
+              <div v-for="product in products" class="tr pricelist__item">
+                  <div class="td pricelist__img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                   </div>
-                  <div class="td">
-                    {{ product.title }}
+                  <div class="td pricelist__title">
+                    <a>{{ product.title }}</a>
                   </div>
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
@@ -649,6 +649,27 @@ const PriceList = {
                   <div class="td">0%</div>
                   <div class="td">
                     {{ (product.price / 100).toLocaleString() }} ₽
+                  </div>
+                  <div class="pricelist__popup">
+                    <div class="pricelist__popup-category">Техника для дома</div>
+                    <div class="pricelist__popup-inputs">
+                      <div class="pricelist__popup-input-group">
+                        <div class="pricelist__popup-sale">
+                          <input type="number" />
+                        </div>
+                        <div class="pricelist__popup-price">
+                          <input type="number" />
+                        </div>
+                      </div>
+                      <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
+                    </div>
+                    <div class="pricelist__popup-right">
+                      <div class="pricelist__popup-total">
+                        <p>Итого<br> с учетом скидки</p>
+                        <h3>28 161 ₽</h3>
+                      </div>
+                      <button class="btn btn--primary">Применить</button>
+                    </div>
                   </div>
               </div>
           </div>
@@ -880,4 +901,8 @@ $(document).on('focusout','.search-select__input',function(){
   setTimeout(function() {
     el.css('pointer-events','none');
   }, 300);
+});
+$(document).on('click','.pricelist__title',function(){
+  $('.pricelist__popup').removeClass('active');
+  $(this).parent().parent().parent().parent().find('.pricelist__popup').addClass('active');
 });
