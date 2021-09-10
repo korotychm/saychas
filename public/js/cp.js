@@ -904,5 +904,5 @@ $(document).on('focusout','.search-select__input',function(){
 });
 $(document).on('click','.pricelist__title',function(){
   $('.pricelist__popup').removeClass('active');
-  $(this).parent().parent().parent().parent().find('.pricelist__popup').addClass('active');
+  $(this).parent().parent().find('.pricelist__popup').addClass('active');
 });
