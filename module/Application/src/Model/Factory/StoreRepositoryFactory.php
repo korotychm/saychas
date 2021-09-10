@@ -9,6 +9,7 @@ use Application\Model\Entity\Store;
 use Application\Model\Repository\StoreRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class StoreRepositoryFactory implements FactoryInterface
@@ -23,7 +24,7 @@ class StoreRepositoryFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
 
         $prototype = new Store;
-        $hydrator = new ReflectionHydrator();
+        $hydrator = new ClassMethodsHydrator();// new ReflectionHydrator();
         $prototype::$repository = new StoreRepository(
                 $adapter,
                 $hydrator,
