@@ -91,7 +91,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login']];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login']/*, 'is_test: true'*/];
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
