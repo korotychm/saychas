@@ -92,7 +92,7 @@ const Products = {
     </div>`,
   methods: {
     getProducts() {
-      let requestUrl = '/control-panel/show-products';
+      let requestUrl = '/control-panel/show-productss';
       if (this.filtersCreated) {
         requestUrl = '/control-panel/show-products-from-cache';
       }
