@@ -63,7 +63,7 @@ const Products = {
           </div>
         </div>
 
-        <div class="cp-container products__list">
+        <div class="cp-container products list">
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
@@ -75,7 +75,7 @@ const Products = {
                   <div class="td products__img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                   </div>
-                  <div class="td products__title">
+                  <div class="td">
                     <router-link :to="'/products/' + product.id">{{ product.title }}</router-link>
                   </div>
                   <div class="td products__category">
@@ -168,23 +168,21 @@ const Stores = {
           <a class="btn btn--primary" href="">+ Добавить магазин</a>
         </div>
       </div>
-      <div class="cp-container products__list">
+      <div class="cp-container list stores">
         <div class="thead">
-          <span></span>
           <div class="td">Наименование</div>
           <div class="td">Адрес</div>
           <div class="td">Статус</div>
         </div>
         <div class="tbody">
             <div v-for="store in stores" class="tr">
-                <span></span>
-                <div class="td products__title">
+                <div class="td">
                     <router-link :to="'/stores/' + store.id">{{ store.title }}</router-link>
                 </div>
-                <div class="td products__category">
+                <div class="td">
                     <div>{{ store.address }}</div>
                 </div>
-                <div class="td">
+                <div class="td stores__status">
                   {{ store.status_name }}
                 </div>
             </div>
