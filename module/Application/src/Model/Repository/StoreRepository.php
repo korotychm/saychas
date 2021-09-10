@@ -106,13 +106,13 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `store`( `id`, `provider_id`, `title`, `description`, `address`, `geox`, `geoy`, `icon`, `contact_phone`, `contact_person`) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %u, '%s' )",
                     $row['id'], $row['provider_id'], $row['title'], $row['description'], $row['address'], $row['geox'], $row['geoy'], $row['icon'], $row['contact_phone'], $row['contact_person']);
-            print_r($sql);
-            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
 
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
+                print_r($sql);
+                exit;
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
