@@ -509,6 +509,7 @@ const ProductEdit = {
     this.getProduct();
   },
   updated: function(){
+    checkProductImagesSlider();
     $('.main__loader').hide();
   }
 }
