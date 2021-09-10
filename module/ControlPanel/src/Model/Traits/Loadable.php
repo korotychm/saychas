@@ -203,7 +203,7 @@ trait Loadable
         $collection = $this->db->{$this->collectionName};
         $document = $collection->findOne($params);
         if(null == $document) {
-            throw \Exception('Product cannot be null');
+            throw new \Exception('Product cannot be null');
         }
         return $document;
     }
