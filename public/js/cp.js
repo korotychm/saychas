@@ -183,7 +183,7 @@ const Stores = {
                     <div>{{ store.address }}</div>
                 </div>
                 <div class="td stores__status">
-                  {{ store.status_name }}
+                  <span :class="'stores__status-circle stores__status-circle--' + store.status_id"></span> {{ store.status_name }}
                 </div>
             </div>
         </div>
