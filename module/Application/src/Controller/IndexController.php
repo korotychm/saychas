@@ -412,7 +412,7 @@ class IndexController extends AbstractActionController
         $columns = ['product_id', 'order_id', 'total', 'price'];
         $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
 
-        $content = $this->htmlProvider->basketData($basket);
+        $content = $this->htmlProvider->basketData($basket, $userId);
        
         
         return new ViewModel([
@@ -473,7 +473,7 @@ class IndexController extends AbstractActionController
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
-
+        $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
         if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))) {
@@ -500,7 +500,7 @@ class IndexController extends AbstractActionController
             'product' => $productPage['card'],
             'description' => $productPage['description'],
             'append' => $productPage['appendParams'],
-            'isFav' => $this->isInFavorites($product_id),
+            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
             'price' => $productPage['price'],
             'brand' => $productPage['brand'],
             'price_formated' => $productPage['price_formated'],
@@ -616,9 +616,9 @@ class IndexController extends AbstractActionController
         $historyItem->persist(['user_id' => $userId, 'product_id' => $productId]);
     }
     
-    private function isInFavorites ($productId)
+    private function isInFavorites ($productId, $userId)
     {
-        if (!empty($userId = $this->identity())) {
+        if (!empty($userId)) {
             if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
                 return true;
             }

@@ -7,11 +7,11 @@ namespace Application\Service;
 use Application\Model\Entity;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
-use Laminas\Http\Response;
+//use Laminas\Http\Response;
 use Application\Resource\Resource;
 
-use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Laminas\Db\ResultSet\HydratingResultSet;
+//use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
+//use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
@@ -25,12 +25,13 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
-use Application\Model\RepositoryInterface\StoreRepositoryInterface;
-use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
+//use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+//use Application\Model\Entity\User;
+//use Application\Model\Entity\UserData;
 use Application\Model\Entity\Store;
 use Application\Model\Entity\Basket;
-use Application\Helper\ArrayHelper;
+use Application\Model\Entity\ProductFavorites;
+//use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
 class HtmlProviderService
@@ -107,7 +108,7 @@ class HtmlProviderService
         /* 
          * костылик 
          */
-        return "4276 5555 **** <span class='red'>1234</span>";
+        //return "4276 5555 **** <span class='red'>1234</span>";
         
     }
     /**
@@ -809,7 +810,7 @@ class HtmlProviderService
         //return $product_id;
     }
 
-    public function basketData($basket)
+    public function basketData($basket, $userId)
     {
         $countproducts = 0;
         $countprovider = [];
@@ -867,6 +868,7 @@ class HtmlProviderService
                     'availble' => $rest,
                     'count' => $count,
                     'store' => $productStoreId,
+                    'isFav' => $this->isInFavorites($pId, $userId ),
                 ];
             }
             if ($whatHappened) {
@@ -952,5 +954,15 @@ class HtmlProviderService
             ksort($return["product"]);
         }
         return $return;
+    }
+    
+    private function isInFavorites ($productId, $userId)
+    {
+        if (!empty($userId)) {
+            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
+                return true;
+            }
+        }
+        return  false; 
     }
 }

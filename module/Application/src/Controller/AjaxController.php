@@ -947,7 +947,7 @@ class AjaxController extends AbstractActionController
 
         $params['where'] = $this->getWhereCategories($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products);
+        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;
     }
 
@@ -1030,6 +1030,7 @@ class AjaxController extends AbstractActionController
                     //'stores' => $productStores,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+                    'isFav' => $this->commonHelperFuncions->isInFavorites($product->getId(), $this->identity()),
                 ];
             }
         }

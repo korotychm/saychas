@@ -3,13 +3,13 @@
 // src\Service\Factory\CommonHelperFunctionsService.php
 
 namespace Application\Service;
-
+use Application\Model\Entity;
 use Laminas\Config\Config;
 use Laminas\Json\Json;
-use Laminas\View\Model\ViewModel;
+//use Laminas\View\Model\ViewModel;
 use Laminas\Session\Container;
 use Application\Resource\Resource;
-
+use Application\Model\Entity\ProductFavorites;
 /*use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
@@ -43,7 +43,7 @@ class CommonHelperFunctionsService
 
     public function example()
     {
-//        Basket::findAll([]);
+          ProductFavorites::findAll([]);
 //        ClientOrder::findAll([]);
 //        Delivery::findAll([]);
     }
@@ -122,6 +122,7 @@ class CommonHelperFunctionsService
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+                    'isFav' => $this->isInFavorites($product->getId(), $userId ),
                 ];
             }
         }
@@ -148,16 +149,15 @@ class CommonHelperFunctionsService
         return $return;
     }
     
-    private function isInFavorites ($productId)
+    public function isInFavorites ($productId, $userId)
     {
-        if ($userId = $this->identity()) {
-            if (!empty(\Application\Model\Entity\ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
+        if (!empty($userId)) {
+            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
                 return true;
             }
         }
         return  false; 
     }
-    
 
     
     
