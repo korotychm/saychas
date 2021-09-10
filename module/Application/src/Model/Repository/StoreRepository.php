@@ -111,8 +111,6 @@ class StoreRepository extends Repository implements StoreRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                print_r($sql);
-                exit;
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
