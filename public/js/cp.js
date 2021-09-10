@@ -109,6 +109,7 @@ const Products = {
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
               }
+              console.log(this.products);
             }
           });
     },
@@ -475,6 +476,7 @@ const ProductEdit = {
           .catch(error => {
             if (error.response.status == '403'){
               this.editable = false;
+              $('.main__loader').hide();
             }
           });
     },
