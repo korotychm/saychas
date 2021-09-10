@@ -49,7 +49,7 @@ class RbacAssertionManager
          */
         $identity = $this->authService->getIdentity();
         $product = $this->productManager->find(['id' => $params['product_id']]);
-        if($product['provider_id'] == $identity['provider_id']) {
+        if(null != $product && ($product['provider_id'] == $identity['provider_id']) ) {
             return true;
         }
 //        $currentUser = $this->userManager->findOne(['provider_id' => $identity['provider_id'], 'login' => $identity['login'],]);
