@@ -317,19 +317,16 @@ const ProductEdit = {
                                   <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                       <div class="product__images-list product__images-list--slider">
                                           <div class="product__images-track" data-shift="0" data-viewed="5">
-                                              <div class="product-small-img product-small-img--1 active"><img src="/img/demo/product/product1.jpg" /></div>
-                                              <div class="product-small-img product-small-img--2"><img src="/img/demo/product/products1.jpg" /></div>
-                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
-                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
-                                              <div class="product-small-img"><img src="/img/demo/product/products1.jpg" /></div>
-                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
-                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
-                                              <div class="product-small-img"><img src="/img/demo/product/product1.jpg" /></div>
+                                              <div v-if="product.images">
+                                                <div class="product-small-img" v-for="(image, index) in product.images" :class="'active':(index==0)">
+                                                  <img :src="productImgPath + image" />
+                                                </div>
+                                              </div>
                                           </div>
                                       </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                   </div>
                                   <div class="product__images-selected">
-                                      <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img src="/img/demo/product/product1.jpg" />
+                                      <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="product.images ? (productImgPath + product.images[0]) : ''" />
                                   </div>
                                   <div class="product__images-controls">
                                       <div class="product__images-control product__images-control--add"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
