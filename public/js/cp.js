@@ -319,14 +319,14 @@ const ProductEdit = {
                                           <div class="product__images-track" data-shift="0" data-viewed="5">
                                               <div v-if="product.images">
                                                 <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : index == 0 }">
-                                                  <img :src="productImgPath + image" />
+                                                  <img :src="imgPath + image" />
                                                 </div>
                                               </div>
                                           </div>
                                       </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                   </div>
                                   <div class="product__images-selected">
-                                      <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="product.images ? (productImgPath + product.images[0]) : ''" />
+                                      <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="product.images ? (imgPath + product.images[0]) : ''" />
                                   </div>
                                   <div class="product__images-controls">
                                       <div class="product__images-control product__images-control--add"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
@@ -373,6 +373,7 @@ const ProductEdit = {
             </div>`,
   data: function () {
     return {
+      imgPath: productImgPath,
       editable: true,
       categories: [],
       categoriesFlat: [],
