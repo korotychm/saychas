@@ -502,31 +502,18 @@ class AjaxController extends AbstractActionController
         return new JsonModel($products);
     }
     
-    
+    /*
+     *  промежуточный скрипт для http://api4.searchbooster.io 
+     * @return json
+     */
     public function searchBoosterApiAction ()
     {
-         
          $json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io".$_SERVER["REQUEST_URI"]));
-         
          $return =(!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-         
-         //return new JsonModel(["url" => str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io".$_SERVER["REQUEST_URI"])]);
          return new JsonModel($return);
-        //return $view->setTerminal(true);*/
-         
      }
-    
-   /* private function isInFavorites ($productId)
-    {
-        if ( $userId = $this->identity() ) {
-            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
-                return true;
-            }
-        }
-        return  false; 
-    } */       
-    /**/
 
+     
     public function addToBasketAction()
     {
         if (!$userId = $this->identity()) {
