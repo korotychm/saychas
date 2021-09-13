@@ -26,4 +26,7 @@
                 </div>
             </div>
         </div>
-    </footer>
+</footer>
+
+<?= (!$this->legalUser) ? $this->partial("/application/common/user-modal-win", ["param" => []]) : "" ?>
+<?= $this->partial("/application/common/service-modal-window", ["param" => []]) ?>
