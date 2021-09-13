@@ -26,3 +26,19 @@ function showBasket(productadd = 0) {
 $(document).on("click", ".basketbottom__close", function () {
     $("#basketbottom").removeClass('active');
 });
+
+$(document).ready(function(){
+  $.ajax({
+      url: "/ajax/add-to-basket",
+      cache: false,
+      type: 'POST',
+      //dataType: 'json',
+      data: {"product": 0},
+      success: function (data) {
+          $("#zakazcount").html(data.count); //data.total
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+          $("#basketbottom .basketbottom__content").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
+      }
+  });
+})
