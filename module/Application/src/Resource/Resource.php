@@ -126,6 +126,7 @@ class Resource
      */
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
     
+
     /*
      * Статусы заказов
      */
@@ -134,5 +135,19 @@ class Resource
     const ORDER_STATUS_CODE_DELIVERY    = ["id" => 2, "description" => "доставляется" ];
     const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 3, "description" => "доставлен" ];
     const ORDER_STATUS_CODE_CANCELED    = ["id" => 4, "description" => "отменен" ];
+
+    /**
+     * Characteristic types
+     */
+    const HEADER = 0;
+    const STRING = 1;
+    const INTEGER = 2;
+    const BOOLEAN = 3;
+    const CHAR_VALUE_REF = 4;
+    const PROVIDER_REF = 5;
+    const BRAND_REF = 6;
+    const COLOR_REF = 7;
+    const COUNTRY_REF = 8;
+
 
 }

@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\CharacteristicValueRepository;
+use Application\Model\Traits\Searchable;
+
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,9 +15,13 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="characteristic_value")
  * @ORM\Entity
  */
-class CharacteristicValue
+class CharacteristicValue extends Entity
 {
 
+    use Searchable;
+    
+    public static CharacteristicValueRepository $repository;
+    
     /**
      * id
      * @var string, length=9

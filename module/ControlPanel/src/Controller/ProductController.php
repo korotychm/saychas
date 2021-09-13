@@ -34,6 +34,12 @@ class ProductController extends AbstractActionController
 
     /** @var ProductManager */
     protected $productManager;
+    
+    /** @var RbacManager */
+    protected $rbacManager;
+
+    /** @var CategoryRepository */
+    protected $categoryRepository;
 
     /** @var AuthenticationService */
     protected $authService;
@@ -47,7 +53,7 @@ class ProductController extends AbstractActionController
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
-    public function __construct($container, $sessionContainer, $entityManager)
+    public function __construct($container, $sessionContainer, $entityManager, $categoryRepository)
     {
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
@@ -57,6 +63,8 @@ class ProductController extends AbstractActionController
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
         $this->productManager = $this->container->get(\ControlPanel\Service\ProductManager::class);
         $this->config = $container->get('Config');
+        $this->categoryRepository = $categoryRepository;
+        $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
     }
 
     /**
@@ -69,10 +77,10 @@ class ProductController extends AbstractActionController
     {
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
-        $hasIdentity = $this->authService->hasIdentity();
-        if (!$hasIdentity) {
-            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
-        }
+//        $hasIdentity = $this->authService->hasIdentity();
+//        if (!$hasIdentity) {
+//            $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
+//        }
         return $response;
     }
 
@@ -84,7 +92,7 @@ class ProductController extends AbstractActionController
      */
     public function showProductsAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         //$pageNo = $this->params()->fromRoute('page_no', '1');
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
@@ -113,7 +121,7 @@ class ProductController extends AbstractActionController
      */
     public function showProductsFromCacheAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
         $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
@@ -128,8 +136,35 @@ class ProductController extends AbstractActionController
         if (!empty($post['search'])) {
             $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
         }
-        $cursor = $this->productManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
+        $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
         return new JsonModel(['data' => $cursor,]);
+    }
+
+    /**
+     * Edit product
+     * returns data to edit product screen
+     *
+     * @return JsonModel
+     */
+    public function editProductAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        
+        $access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
+        
+        if(!$access) {
+            $this->getResponse()->setStatusCode(403);
+            return;
+        }
+        
+//        $post = $this->getRequest()->getPost()->toArray();
+        
+        $product = $this->productManager->findProduct($post['product_id']);
+
+        $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+        
+        return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
 
     private function canUpdateProduct($params)
@@ -169,16 +204,11 @@ class ProductController extends AbstractActionController
      * Signal ajax script
      * if provider is not logged in
      */
-    private function assertLoggedIn()
-    {
-        if (!$this->authService->hasIdentity()) {
-            return new JsonModel(['data' => false]);
-        }
-    }
+//    private function assertLoggedIn()
+//    {
+//        if (!$this->authService->hasIdentity()) {
+//            return new JsonModel(['data' => false]);
+//        }
+//    }
 
 }
-
-//$pageNo = $post['page_no'];
-//        $rowsPerPage = $post['rows_per_page'];
-//        $filters = $post['filters'];
-//        $search = $post['search'];

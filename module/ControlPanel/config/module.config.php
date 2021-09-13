@@ -9,6 +9,9 @@ use Laminas\Router\Http\Segment;
 use ControlPanel\Controller\Factory\IndexControllerFactory;
 use ControlPanel\Controller\Factory\AuthControllerFactory;
 use ControlPanel\Controller\Factory\ProductControllerFactory;
+use ControlPanel\Controller\Factory\StoreControllerFactory;
+use ControlPanel\Controller\Factory\ListControllerFactory;
+use ControlPanel\Controller\Factory\ApiControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
 
 return [
@@ -19,6 +22,9 @@ return [
             \ControlPanel\Controller\IndexController::class => IndexControllerFactory::class,
             \ControlPanel\Controller\AuthController::class => AuthControllerFactory::class,
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
+            \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
+            \ControlPanel\Controller\ListController::class => ListControllerFactory::class,
+            \ControlPanel\Controller\ApiController::class => ApiControllerFactory::class,
         ],        
     ],
     // The 'access_filter' key is used by the User module to restrict or permit
@@ -57,11 +63,24 @@ return [
                     /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
                 ['actions' => ['actionAndDiscount',], 'allow' => '+analyst'],
                 ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
-                ['actions' => ['showStores',], 'allow' => '+analyst'],
+//                ['actions' => ['showStores',], 'allow' => '+analyst'],
+//                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
             \ControlPanel\Controller\ProductController::class => [
-                ['actions' => ['showProducts', ], 'allow' => '+developer'],
-                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
+                ['actions' => ['editProduct', ], 'allow' => '+developer'],
+//                ['actions' => ['showProducts', ], 'allow' => '+developer'],
+//                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
+            ],
+//            \ControlPanel\Controller\StoreController::class => [
+//                ['actions' => ['showStores',], 'allow' => '+analyst'],
+//                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
+//            ],
+            \ControlPanel\Controller\ListController::class => [
+                ['actions' => ['showList',], 'allow' => '+analyst'],
+                ['actions' => ['showListFromCache', ], 'allow' => '+developer'],
+            ],
+            \ControlPanel\Controller\ApiController::class => [
+                ['actions' => ['index',], 'allow' => '+developer'],
             ],
         ]
     ],    
@@ -105,30 +124,44 @@ return [
                         'options' => [
                             'route' => '/show-stores',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\IndexController::class,
-                                'action' => 'show-stores',
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
                             ],
+                            'repository' => \ControlPanel\Service\StoreManager::class,
                         ],
                         // 'may_terminate' => true,
                     ],
-                    'show-one-store' => [
-                        'type' => Segment::class,
+                    'show-stores-from-cache' => [
+                        'type' => Literal::class,
                         'options' => [
-                            'route' => '/show-one-store[/:id]',
+                            'route' => '/show-stores-from-cache',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\IndexController::class,
-                                'action' => 'show-one-store',
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
                             ],
+                            'repository' => \ControlPanel\Service\StoreManager::class,
                         ],
+                        // 'may_terminate' => true,
                     ],
+//                    'show-one-store' => [
+//                        'type' => Segment::class,
+//                        'options' => [
+//                            'route' => '/show-one-store[/:id]',
+//                            'defaults' => [
+//                                'controller' => \ControlPanel\Controller\IndexController::class,
+//                                'action' => 'show-one-store',
+//                            ],
+//                        ],
+//                    ],
                     'show-products' => [
                         'type' => Literal::class,
                         'options' => [
                             'route' => '/show-products',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\ProductController::class,
-                                'action' => 'show-products',
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
                             ],
+                            'repository' => \ControlPanel\Service\ProductManager::class,
                         ],
                         // 'may_terminate' => true,
                     ],
@@ -137,12 +170,37 @@ return [
                         'options' => [
                             'route' => '/show-products-from-cache',
                             'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\ProductManager::class,
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'edit-product' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/edit-product',
+                            'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
-                                'action' => 'show-products-from-cache',
+                                'action' => 'edit-product',
                             ],
                         ],
                         // 'may_terminate' => true,
                     ],
+                    
+                    'api-integration' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/api-integration',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ApiController::class,
+                                'action' => 'index',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'profile' => [
                         'type' => Literal::class,
                         'options' => [
@@ -387,10 +445,19 @@ return [
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
+            /** ProductManager link alias */
+            \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             /** ProductManager; Edit product */
             'lk_edit_product' => ' http://SRV02:8000/SC/hs/site/lk_edit_product',
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
+            /** StoreManager link alias */
+            \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SC/hs/site/lk_store_info',
+        ],
+        'store_statuses' => [
+            [ '0', 'Работает' ],
+            [ '1', 'Временно не работает' ],
+            [ '2', 'Закрыт' ],
         ],
     ],
     'view_manager' => [

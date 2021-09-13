@@ -17,7 +17,7 @@ use Laminas\Session\Container;
 class IndexController extends AbstractActionController
 {
     
-    private const PRODUCTS_PER_PAGE = 2;
+    //private const PRODUCTS_PER_PAGE = 2;
     
     private const STORES_PER_PAGE = 2;
 
@@ -109,53 +109,9 @@ class IndexController extends AbstractActionController
         //$roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
 //        $this->rbacManager->init(true);
         $currentUser = $this->currentUser();
-        $access = $this->access('analyst');
+        //$access = $this->access('analyst');
+        $access = $this->rbacManager->isGranted(null, 'analyst'/*, ['banzaii' => 'vonzaii']*/);
         return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
-    }
-
-    /************************************************************************************
-     * Store Actions
-     ************************************************************************************/
-    /**
-     * Show stores action        // $this->sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
-     * Shows a table of stores
-     *
-     * @return ViewModel
-     */
-    public function showStoresAction()
-    {
-        $this->assertLoggedIn();
-        $dateTime = new \DateTime();
-        $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
-        //$credentials = ['partner_id: '.'00003', 'login: '.'admin'];
-        $url = $this->config['parameters']['1c_provider_links']['lk_store_info'];
-        $answer = $this->storeManager->loadAll($url, $credentials);
-
-        $this->storeManager->setPageSize(2);
-        $cursor = $this->storeManager->findAll(['pageNo' => 1]);
-        $view = new ViewModel(['table' => $this->table, 'dateTime' => $dateTime, 'stores' => $cursor /*$answer['data']*/, 'http_code' => $answer['http_code']]);
-        return $view->setTerminal(true);
-    }
-
-    /**
-     * showOneStoreAction
-     * Shows one store specified by id/login?returnUrl=/control-panel
-     *
-     * @return ViewModel
-     */
-    public function showOneStoreAction()
-    {
-        $params = $this->params()->fromRoute();
-        $this->assertLoggedIn();
-        foreach ($this->table as $row) {
-            if ($row['id'] == $params['id']) {
-                break;
-            }
-        }
-        $view = new ViewModel(['row' => $row]);
-        $view->setTemplate('control-panel/index/partials/stores/edit-form.phtml');
-        return $view->setTerminal(true);
     }
 
     /**
@@ -165,7 +121,7 @@ class IndexController extends AbstractActionController
      */
     public function profileAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
 //        if(!$this->authService->hasIdentity()) {
 //            return new JsonModel(['data' => false]);
 //        }
@@ -174,7 +130,7 @@ class IndexController extends AbstractActionController
 
     public function userManagementAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -185,7 +141,7 @@ class IndexController extends AbstractActionController
      */
     public function actionAndDiscountAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -196,7 +152,7 @@ class IndexController extends AbstractActionController
      */
     public function accountManagementAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -207,14 +163,14 @@ class IndexController extends AbstractActionController
      */
     public function respondingToReviewsAction()
     {
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
     public function calendarDetailsAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $this->assertLoggedIn();
+        //$this->assertLoggedIn();
         return (new ViewModel(['day'=>$post['day'], 'month'=>$post['month'], 'year'=>$post['year']]))->setTerminal(true);
     }
 
@@ -222,20 +178,20 @@ class IndexController extends AbstractActionController
      * Signal ajax script
      * if provider is not logged in
      */
-    private function assertLoggedIn()
-    {
-        if(!$this->authService->hasIdentity()) {
-            return new JsonModel(['data' => false]);
-        }
-//        $identity = $this->authService->getIdentity();
-//        $hasIdentity = $this->authService->hasIdentity();
-//        $identity2 = $this->identity();
-        //if(!isset($this->sessionContainer->partnerLoggedIn)){
-//        if(!$hasIdentity) {
-//            echo 'null';
-//            exit;
+//    private function assertLoggedIn()
+//    {
+//        if(!$this->authService->hasIdentity()) {
+//            return new JsonModel(['data' => false]);
 //        }
-    }
+////        $identity = $this->authService->getIdentity();
+////        $hasIdentity = $this->authService->hasIdentity();
+////        $identity2 = $this->identity();
+//        //if(!isset($this->sessionContainer->partnerLoggedIn)){
+////        if(!$hasIdentity) {
+////            echo 'null';
+////            exit;
+////        }
+//    }
 
 }
 
@@ -349,3 +305,30 @@ class IndexController extends AbstractActionController
 //        return $result;
 //    }
 
+
+
+
+
+
+
+
+//    /**
+//     * showOneStoreAction
+//     * Shows one store specified by id/login?returnUrl=/control-panel
+//     *
+//     * @return ViewModel
+//     */
+//    public function showOneStoreAction()
+//    {
+//        $params = $this->params()->fromRoute();
+//        $this->assertLoggedIn();
+//        foreach ($this->table as $row) {
+//            if ($row['id'] == $params['id']) {
+//                break;
+//            }
+//        }
+//        $view = new ViewModel(['row' => $row]);
+//        $view->setTemplate('control-panel/index/partials/stores/edit-form.phtml');
+//        return $view->setTerminal(true);
+//    }
+//

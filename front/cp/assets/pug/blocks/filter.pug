@@ -1,0 +1,24 @@
+form.filter
+  div.filter__search
+    input(type="text",placeholder="Быстрый поиск").input.input--white
+    button
+      include ../../img/icons/icon-search.svg
+  div.filter__select
+    div.select
+      select.select.select--white
+        option(val="", selected) Все категории
+        option(val="") Смартфоны
+        option(val="") Кнопочные телефоны
+        option(val="") Аксессуары
+        option(val="") Рации и прочие телефоны
+        option(val="") Тарифные планы и номера
+        option(val="") Мобильные телефоны
+  div.filter__select
+    div.select
+      select.select.select--white
+        option(val="", selected) Все бренды
+        option(val="") Huawei
+        option(val="") Samsung
+        option(val="") Tefal
+  div.filter__btn
+    a(href="/product-add.html").btn.btn--primary + Добавить товары

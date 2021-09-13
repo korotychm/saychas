@@ -1,0 +1,16 @@
+- var page_title = "ЛК Товары"
+- var page_description = ""
+- var page_keywords = ""
+
+<!DOCTYPE HTML>
+html(lang="ru")
+  include common/head.pug
+  body
+    include common/sidebar.pug
+    main.main
+      include common/header.pug
+      div.content
+        include blocks/filter.pug
+        include blocks/products.pug
+    include common/footer.pug
+    include common/footer_scripts.pug

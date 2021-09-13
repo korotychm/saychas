@@ -5,19 +5,22 @@
 namespace ControlPanel\Service;
 
 use ControlPanel\Service\CurlRequestManager;
-use ControlPanel\Model\Traits\Loadable;
+//use ControlPanel\Model\Traits\Loadable;
+use ControlPanel\Contract\LoadableInterface;
+//use Application\Model\Repository\CategoryRepository;
 
 /**
  * Description of StoreManager
  *
  * @author alex
  */
-class StoreManager
+class StoreManager extends ListManager implements LoadableInterface
 {
 
-    use Loadable;
+//    use Loadable;
 
-    public const COLLECTION_NAME = 'stores';
+    // public const COLLECTION_NAME = 'stores';
+    protected $collectionName = 'stores';
 
     /**
      * @var string
@@ -49,26 +52,46 @@ class StoreManager
         $this->db = $this->mclient->{$this->dbName};
     }
 
-    public function findAll($params)
+    /**
+     * Find store statuses
+     * 
+     * @return array
+     */
+    private function findStatuses1()
     {
-        if (isset($params['pageNo'])) {
-            $limits = $this->calcLimits($params['pageNo']);
-            $collection = $this->db->{$this->collectionName};
-            $cursor = $collection->find([
-                    ], [
-                'skip' => $limits['min'] - 1,
-                'limit' => $this->pageSize,
-                'projection' => [
-                    'id' => 1,
-                    'title' => 1,
-                    'description' => 1,
-                    'provider_id' => 1,
-                    '_id' => 0
-                ],
-            ]);
-            return $cursor->toArray();
+        $collectionName = 'store_statuses';
+        $collection = $this->db->{$collectionName};
+        $results = $collection->find([], ['_id' => 0, 'status_id' => 1, 'status_name' => 1])->toArray();
+        $result = [];
+        foreach ($results as $c) {
+            $result[] = [$c['status_id'], $c['status_name']];
         }
-        return [];
+        return $result;
+    }
+    
+    /**
+     * Find store statuses in config
+     * 
+     * @return array
+     */
+    private function findStatuses()
+    {
+        return $this->config['parameters']['store_statuses'];
+    }
+
+    /**
+     * Find store documents for specified provider
+     * 
+     * @param array $params
+     * @return array
+     */
+    public function findDocuments($params)
+    {
+        $cursor = $this->findAll($params);
+
+        $cursor['filters']['statuses'] = $this->findStatuses();
+
+        return $cursor;
     }
 
 }
@@ -113,4 +136,83 @@ class StoreManager
 //        return $answer;
 //        //return ['store1', 'store2', 'store3', 'store4',];
 //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Find all stores
+     * 
+     * @param array $params
+     * @return array
+     */
+//    public function findAll($params)
+//    {
+//        if (isset($params['pageNo'])) {
+//            $limits = $this->calcLimits($params['pageNo']);
+//            $collection = $this->db->{$this->collectionName};
+//            $c = $collection->count($params['where']);
+//
+//            $cursor = $collection->find(
+//            $params['where'],
+//            [
+//                'skip' => $limits['min'] - 1,
+//                'limit' => $this->pageSize,
+//                'projection' => [],
+////                'projection' => [
+////                    'id' => 1,
+////                    'title' => 1,
+////                    'description' => 1,
+////                    'status_id' => 1,
+////                    'status_name' => 1,
+////                    'address' => 1,
+////                    'provider_id' => 1,
+////                    '_id' => 0
+////                ],
+//            ]);
+//            $result['body'] = $cursor->toArray();
+//            $result['limits'] = $limits;
+//            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
+//
+//            return $result;
+//        }
+//        return [];
+//    }
+
 

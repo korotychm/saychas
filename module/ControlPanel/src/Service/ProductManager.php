@@ -5,28 +5,37 @@
 namespace ControlPanel\Service;
 
 use ControlPanel\Service\CurlRequestManager;
-use ControlPanel\Model\Traits\Loadable;
+//use ControlPanel\Model\Traits\Loadable;
 use ControlPanel\Contract\LoadableInterface;
+use Application\Resource\Resource;
 use Application\Model\Repository\CategoryRepository;
 use Application\Model\Entity\Country;
 use Application\Model\Entity\Brand;
 use Application\Model\Entity\Color;
 use Application\Model\Entity\Price;
+use Application\Model\Entity\Provider;
+use Application\Model\Entity\CharacteristicValue;
+use Application\Model\Entity\HandbookRelatedProduct as Product;
+use Application\Model\Entity\Characteristic;
 
 /**
  * Description of ProductManager
  *
  * @author alex
  */
-class ProductManager implements LoadableInterface
+class ProductManager extends ListManager implements LoadableInterface
 {
 
-    use Loadable;
+    //use Loadable;
 
     /**
      * @var string
      */
-    public const COLLECTION_NAME = 'products';
+    //public const COLLECTION_NAME = 'products';
+    
+    //public static $collection_name = 'products';
+    
+    protected $collectionName = 'products';
 
     /**
      * @var string
@@ -73,46 +82,74 @@ class ProductManager implements LoadableInterface
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(Color::class);
         $this->entityManager->initRepository(Price::class);
+        $this->entityManager->initRepository(Provider::class);
+        $this->entityManager->initRepository(CharacteristicValue::class);
+        $this->entityManager->initRepository(Product::class);
+        $this->entityManager->initRepository(Characteristic::class);
     }
-
-    public function findAll($params)
+    
+    public function findFilters($params)
     {
-        if (isset($params['pageNo'])) {
-            $limits = $this->calcLimits($params['pageNo']);
-            $collection = $this->db->{$this->collectionName};
-            $c = $collection->count($params['where']);
-            $cursor = $collection->find
-            (
-                $params['where'],
-                [
-                    'skip' => $limits['min'] - 1,
-                    'limit' => $this->pageSize,
-                    'projection' => [
-                        'id' => 1,
-                        'title' => 1,
-                        'category_id' => 1,
-                        'brand_id' => 1,
-                        'description' => 1,
-                        'vendor_code' => 1,
-                        'provider_id' => 1,
-                        'color' => 1,
-                        'country' => 1,
-                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
-                        'images' => 1,
-                        '_id' => 0
-                    ],
-                ]
-            );
-            $result['body'] = $cursor->toArray();
-            $result['limits'] = $limits;
-            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
-            return $result;
+        $collection = $this->db->{$this->collectionName};
+        $cursor = $collection->find($params['where'], ['projection' => ['_id' => 0, 'category_id' => 1, 'brand_id' => 1]])->toArray();
+        $categories = [];
+        $brands = [];
+        foreach($cursor as &$c) {
+            if(!empty($c['category_id'])) {
+                $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
+                $c['category_name'] = (null == $category) ? '' : $category->getTitle();
+                $categories[] = [$c['category_id'], $c['category_name'], ];
+            }
+            if(!empty($c['brand_id'])) {
+                $brand = Brand::find(['id' => $c['brand_id']]);
+                $c['brand_name'] = (null == $brand) ? '' : $brand->getTitle();
+                $brands[] = [$c['brand_id'], $c['brand_name'],];
+            }
         }
-        return [];
+        return ['categories' => $categories, 'brands' => $brands];
+    }
+    
+    private function findCategories($params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $results = $collection->distinct('category_id', $params['where']);
+        $accumulator = [];
+        foreach($results as &$c) {
+            //$c1 = $c;
+            if(!empty($c)) {
+                $category = $this->categoryRepo->findCategory(['id' => $c]);
+                $category_name = (null == $category) ? '' : $category->getTitle();
+                $accumulator[] = [$c, $category_name, ];
+            }
+        }
+        return $accumulator;
+    }
+    
+    private function findBrands($params)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $results = $collection->distinct('brand_id', $params['where']);
+        $accumulator = [];
+        foreach($results as &$c) {
+            if(!empty($c)) {
+                $brand = Brand::find(['id' => $c]);
+                $brand_name = (null == $brand) ? '' : $brand->getTitle();
+                $accumulator[] = [$c, $brand_name,];
+            }
+        }
+        return $accumulator;
     }
 
+    /**
+     * Find all documents and lookup mysql fields that are referenced by mongodb fields
+     * 
+     * @param type $params
+     * @return array
+     */
     public function findDocuments($params)
     {
+//        $this->findCharacteristics($params[ 'where']['product_id']);
+
         $cursor = $this->findAll($params);
         $categories = [];
         $brands = [];
@@ -143,13 +180,104 @@ class ProductManager implements LoadableInterface
             if(!empty($c['id'])) {
                 $price = Price::find([ 'product_id' => $c['id'] ]);
                 $c['price'] = (null == $price) ? 0 : $price->getPrice();
+                $c['old_price'] = (null == $price) ? 0 : $price->getOldPrice();
+                $c['discount'] = (null == $price) ? 0 : $price->getDiscount();
             }
 
         }
 
-        $cursor['filters']['categories'] = $categories;
-        $cursor['filters']['brands'] = $brands;
+        $cursor['filters']['categories'] = $this->findCategories($params);
+        $cursor['filters']['brands'] = $this->findBrands($params);
+
         return $cursor;
+    }
+    
+    private function fullCharacteristicId($categoryId, $characteristicId) : string
+    {
+        return $characteristicId.'-'.$categoryId;
+    }
+    
+    private function getAvailableCharacteristicValues($characteristic) : array
+    {
+        $result = [];
+        switch($characteristic['type']) {
+            case Resource::CHAR_VALUE_REF:
+                $result = CharacteristicValue::findAll(['where' => ['characteristic_id' => $characteristic['id'] ] ])->toArray();
+                break;
+//            case Resource::BRAND_REF:
+//                $result = Brand::findAll([])->toArray();
+//                break;
+//            case Resource::COLOR_REF:
+//                $result = Color::findAll([])->toArray();
+//                break;
+//            case Resource::COUNTRY_REF:
+//                $result = Country::findAll([])->toArray();
+//                break;
+        }
+        return $result;
+    }
+    
+    public function findProduct(string $productId)
+    {
+        $product = $this->find(['id' => $productId]);
+//        $provider = Provider::find(['id' => $product['provider_id']]);
+//        $product['provider_name'] = $provider->getTitle();
+//        $product['provider_description'] = $provider->getDescription();
+//        $b = Brand::find(['id' => $product['brand_id']]);
+//        $product['brand_name'] = (null == $b) ? '' : $b->getTitle();
+        $product['brands'] = Brand::findAll([])->toArray();
+        $product['colors'] = Color::findAll([])->toArray();
+        $product['countries'] = Country::findAll([])->toArray();
+        
+        foreach($product->characteristics as &$c) {
+            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
+            switch ($c['type']) {
+                case Resource::HEADER:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::STRING:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::INTEGER:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::BOOLEAN:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::CHAR_VALUE_REF:
+                    $entity = CharacteristicValue::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['available_values'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::PROVIDER_REF:
+                    $entity = Provider::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+//                    $c['available_providers'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::BRAND_REF:
+                    $entity = Brand::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+//                    $c['available_brands'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::COLOR_REF:
+                    $entity = Color::find(['id' => $c['value']]);
+                    $c['title'] = $entity->getTitle();
+                    $c['real_value'] = $entity->getValue();
+//                    $c['available_colors'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::COUNTRY_REF:
+                    $entity = Country::find(['id' => $c['value']]);
+                    $c['title'] = $entity->getTitle();
+                    $c['real_value'] = $entity->getCode();
+//                    $c['available_countries'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                default:
+                    throw new Exception('Characteristic of the given type does not exist');
+                    break;
+            }
+        }
+        return $product;//->characteristics;
     }
     
     public function updateDocument($params)
@@ -384,3 +512,56 @@ class ProductManager implements LoadableInterface
 //        $brand = $this->brandRepo->find(['id' => $id]);
 //        return $brand;
 //    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public function findAll($params)
+//    {
+//        if (isset($params['pageNo'])) {
+//            $limits = $this->calcLimits($params['pageNo']);
+//            $collection = $this->db->{$this->collectionName};
+//            $c = $collection->count($params['where']);
+//            $cursor = $collection->find
+//            (
+//                $params['where'],
+//                [
+//                    'skip' => $limits['min'] - 1,
+//                    'limit' => $this->pageSize,
+//                    'projection' => [],
+////                    'projection' => [
+////                        'id' => 1,
+////                        'title' => 1,
+////                        'category_id' => 1,
+////                        'brand_id' => 1,
+////                        'description' => 1,
+////                        'vendor_code' => 1,
+////                        'provider_id' => 1,
+////                        'color' => 1,
+////                        'country' => 1,
+////                        'characteristics' => 1, // ['id' => 1, 'type' => 1],
+////                        'images' => 1,
+////                        '_id' => 0
+////                    ],
+//                ]
+//            );
+//            $result['body'] = $cursor->toArray();
+//            $result['limits'] = $limits;
+//            $result['limits']['total'] = $this->calcLimits($params['pageNo'], $c)['total'];
+//            return $result;
+//        }
+//        return [];
+//    }
+

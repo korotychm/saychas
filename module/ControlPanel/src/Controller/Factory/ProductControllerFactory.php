@@ -8,6 +8,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Session\Container;
 use ControlPanel\Resource\StringResource;
+use Application\Model\Repository\CategoryRepository;
 //use Application\Service\EntityManager;
 //use ControlPanel\Service\UserManager;
 
@@ -23,7 +24,8 @@ class ProductControllerFactory implements FactoryInterface
         // Instantiate the controller and inject dependencies
         $sessionContainer = new Container(StringResource::CONTROL_PANEL_SESSION);
         $entityManager = $container->get('laminas.entity.manager');
-        return new $requestName($container, $sessionContainer, $entityManager);
+        $categoryRepository = $container->get(CategoryRepository::class);
+        return new $requestName($container, $sessionContainer, $entityManager, $categoryRepository);
     }
 
 }

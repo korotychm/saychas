@@ -1,25 +1,18 @@
-<div class="container">
-    <div class="row justify-content-center align-items-center" style="height:100vh">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">Ввести код поставщика для начала</div>
-                <div class="card-body">
-                    <form method="POST" action="<?= $action ?>" autocomplete="off">
-                        <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
-                        <div class="input-group mb-2 input-group-sm">
-                            <div class="input-group-prepend">
-                                <span  class="field-prefix input-group-text">Код поставщика</span>
-                            </div>
-                            <input type="text" placeholder="00000" class="form-control" value="" name="code">
-                        </div>
-                        <input type="submit" id="send-provider-login" class="btn btn-primary" value="Ввод" />
-                    </form>
-                </div>
-            </div>
+<div class="cp-login__content">
+  <div class="cp-login__card">
+    <h1>Введите код поставщика</h1>
+    <form method="POST" action="<?= $action ?>" autocomplete="off">
+        <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
+        <h2>Код поставщика</h2>
+        <div class="cp-login__input">
+          <input type="text" placeholder="00000" class="input" value="" name="code">
         </div>
-    </div>
+        <input type="submit" id="send-provider-login" class="btn btn--primary" value="Войти" />
+    </form>
+  </div>
 </div>
+
 <?php
     $banzaii = 'vonzaii';
-    echo $banzaii;
+    //echo $banzaii;
 ?>

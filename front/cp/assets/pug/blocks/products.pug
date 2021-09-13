@@ -1,0 +1,37 @@
+mixin product()
+  div.tr
+    div.td.products__img
+      img(src="/img/demo/products1.jpg")
+    div.td.products__title
+      a(href="/edit-product.html") Смартфон Huawei P Smart 2021 4+128GB Crush Green
+    div.td.products__category
+      div Электроника
+      div Смартфоны и телефоны
+    div.td Huawei
+    
+div.products
+  div.products__list
+    div.thead
+      div.td
+      div.td Наименование
+      div.td Категория
+      div.td Бренд
+    div.tbody
+      +product()
+      +product()
+      +product()
+      +product()
+      +product()
+      +product()
+      +product()
+      +product()
+      +product()
+      +product()
+  div.pagination
+    a(href="#").active 1
+    a(href="#") 2
+    a(href="#") 3
+    a(href="#") 4
+    a(href="#") 5
+          
+          

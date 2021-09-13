@@ -27,6 +27,8 @@ class ProviderRepositoryFactory implements FactoryInterface
         $hydrator = new ReflectionHydrator(); // new ClassMethodsHydrator();//
 
         $storeRepository = $container->get(StoreRepository::class);
+        
+        $entityManager = $container->get('laminas.entity.manager');
 
         $prototype = new Provider;
 
@@ -35,7 +37,8 @@ class ProviderRepositoryFactory implements FactoryInterface
         return new ProviderRepository(
                 $adapter,
                 $hydrator,
-                $prototype
+                $prototype,
+                $entityManager
         );
     }
 
