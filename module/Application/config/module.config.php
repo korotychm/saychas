@@ -1232,6 +1232,7 @@ return [
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Entity\ProductFavorites::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
+            //\Application\Model\Entity\ProductCharacteristic::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
 
             \Application\Model\Entity\Provider::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Entity\CharacteristicValue::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,

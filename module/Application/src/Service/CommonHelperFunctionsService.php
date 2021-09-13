@@ -3,7 +3,7 @@
 // src\Service\Factory\CommonHelperFunctionsService.php
 
 namespace Application\Service;
-use Application\Model\Entity;
+//use Application\Model\Entity;
 use Laminas\Config\Config;
 use Laminas\Json\Json;
 //use Laminas\View\Model\ViewModel;
@@ -41,13 +41,14 @@ class CommonHelperFunctionsService
         $this->productRepository = $productRepository;
     }
 
-    public function example()
+ /*   public function example()
     {
-          ProductFavorites::findAll([]);
+//         ProductFavorites::findAll([]);
 //        ClientOrder::findAll([]);
 //        Delivery::findAll([]);
     }
-
+*/
+    
     /**
      * Update legal stores
      *
@@ -58,10 +59,10 @@ class CommonHelperFunctionsService
     {
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents($url, false, stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]]));
-        if (!$result) {
+        if (empty($result)) {
             return ["result" => false, "error" => "server time out"];
         }
-        $legalStore = Json::decode($result, true);
+        $legalStore = Json::decode($result, Json::TYPE_ARRAY);
 
         foreach ($legalStore as $store) {
             $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
@@ -86,13 +87,14 @@ class CommonHelperFunctionsService
     
     public function getProductCardArray($products, $userId)
     {
+        $return =[];
         if (empty($products)){
-            return [];
+            return $return;
         }
         $container = new Container(Resource::SESSION_NAMESPACE);
         $legalStores = $container->legalStore;
         foreach ($products as $product) {
-            if (!isset($filteredProducts[$product->getId()])) {
+            //if (!isset($filteredProducts[$product->getId()])) {
                 $oldPrice = 0;
                 $price = $product->getPrice();
                 $discont = $product->getDiscount();
@@ -105,26 +107,21 @@ class CommonHelperFunctionsService
                 $store =[];                
                 foreach($strs as $s){
                     if (!empty($legalStores[$s->getId()])) {
-                        $available = true; 
+                       $available = true; 
                        $store[] =  $s->getId();
-                       //break;
                     }
                 }
                 $return[$product->getId()] = [
                     "reserve" => $product->receiveRest($store),
                     "price" => $product->getPrice(),
                     "title" => $product->getTitle(),
-
                     'available' =>  $available,
-
-                    //'store' => $product->getStoreId(),
-
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
                     "image" => $product->receiveFirstImageObject()->getHttpUrl(),
                     'isFav' => $this->isInFavorites($product->getId(), $userId ),
                 ];
-            }
+           // }
         }
         return $return;
     }
@@ -134,16 +131,14 @@ class CommonHelperFunctionsService
         if (null == $user) {
             return [];
         }
-        //$container = new Container(Resource::SESSION_NAMESPACE);
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
         $return['phone'] = $user->getPhone();
         $return['email'] = $user->getEmail();
-        $userData = $user->getUserData();
-        $usdat = $userData->current();
+        $usdat = $user->getUserData()->current();
         if (null != $usdat) {
-            $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
+            $return['userAddress'] = $usdat->getAddress(); 
             $return['userGeodata'] = $usdat->getGeoData();
         }
         return $return;
@@ -159,7 +154,5 @@ class CommonHelperFunctionsService
         return  false; 
     }
 
-    
-    
- 
+  
 }
