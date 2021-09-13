@@ -670,10 +670,10 @@ const PriceList = {
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" value="0" />
+                          <input type="number" max="99" min="0" value="0" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" :value="product.price / 100" />
+                          <input type="number" min="0" :value="product.price / 100" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
