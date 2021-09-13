@@ -33,7 +33,7 @@ $(document).ready(function(){
       cache: false,
       type: 'POST',
       //dataType: 'json',
-      data: {"product": 0},
+      //data: {"product": 0},
       success: function (data) {
           $("#zakazcount").html(data.count); //data.total
           console.log(data);
