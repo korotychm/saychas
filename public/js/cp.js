@@ -670,10 +670,10 @@ const PriceList = {
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" />
+                          <input type="number" value="0" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" />
+                          <input type="number" :value="product.price / 100" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -681,7 +681,7 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3>28 161 ₽</h3>
+                        <h3>{{ (product.price / 100).toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary">Применить</button>
                     </div>
