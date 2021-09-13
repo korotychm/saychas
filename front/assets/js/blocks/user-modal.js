@@ -21,6 +21,7 @@ function sendauthformmodal(data = false) {
             }
             $("#user-modal-cover").stop().hide();
             $("#userAuthModalForm").html(data);
+            $(".phoneinput").mask("+7 (999) 999-99-99");
             return false;
         },
         error: function (xhr, ajaxOptions, thrownError) {
