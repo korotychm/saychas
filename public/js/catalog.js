@@ -65,9 +65,9 @@ $(document).ready(function(){
           axios
             .post('/ajax-fltr-json',formData)
             .then(response => {
+              console.log('Response',response.data);
               this.filterUpdated = false;
               this.products = response.data.products;
-              console.log('Response',response.data);
             });
         }
       },
