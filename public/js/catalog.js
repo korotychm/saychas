@@ -67,7 +67,7 @@ $(document).ready(function(){
             .then(response => (
               this.filterUpdated = false,
               this.products = response.data.products,
-              console.log(response)
+              console.log(response.data)
             ));
         }
       },
