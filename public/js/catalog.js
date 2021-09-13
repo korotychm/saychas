@@ -66,7 +66,8 @@ $(document).ready(function(){
             .post('/ajax-fltr-json',formData)
             .then(response => (
               this.filterUpdated = false,
-              this.products = response.data.products
+              this.products = response.data.products,
+              console.log(response)
             ));
         }
       },
