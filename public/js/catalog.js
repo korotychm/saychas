@@ -13,9 +13,10 @@ $(document).ready(function(){
       },
       methods: {
         setRangesValues() {
-          this.rangeprice.currentMin = this.rangeprice.min / 100;
-          this.rangeprice.currentMax = this.rangeprice.max / 100;
+          this.rangeprice.currentMin = this.rangeprice.minprice / 100;
+          this.rangeprice.currentMax = this.rangeprice.maxprice / 100;
           console.log(this.rangeprice.currentMin , this.rangeprice.currentMax);
+
           for (let filter of this.filters) {
             if (filter.type == 2){
               let min = filter.options.reduce(function(prev, curr) {
