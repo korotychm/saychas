@@ -51,6 +51,8 @@ $(document).ready(function(){
               }
               filter.min = min;
               filter.max = max;
+              filter.currentMin = min;
+              filter.currentMax = max;
               filter.step = step;
               filterUpdated: false
             }
