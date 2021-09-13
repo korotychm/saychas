@@ -15,7 +15,7 @@
                     <div class="range__thumb range__thumb--left" style="left: 0;"></div>
                     <div class="range__thumb range__thumb--right" style="right: 0;"></div>
                 </div>
-                <div class="range__tooltips">
+                <div class="range__tooltips" v-if="filterUpdated">
                     <div v-once><input class="tooltip tooltip-from" type="number" :value="rangeprice.minprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
                     <div v-once><input class="tooltip tooltip-to" type="number" :value="rangeprice.maxprice / 100" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" /></div>
                 </div>
