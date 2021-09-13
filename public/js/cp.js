@@ -343,6 +343,9 @@ const ProductEdit = {
                       <div class="product__additional-attributes">
                         <div v-for="characteristic in characteristics" class="product__attribute">
                             <h2>{{ characteristic.characteristic_name }}</h2>
+                            <select v-if="characteristic.type == 4" class="select" :value="characteristic.value">
+                              <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
+                            </select>
                         </div>
                       </div>
                       <div class="product__images">
