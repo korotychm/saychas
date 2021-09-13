@@ -6,7 +6,6 @@ $(document).ready(function () {
     window.onbeforeunload = function () {
         $(".overcover").stop().fadeIn();
     };
-
 });
 
 $(document).on('click', '.popup__close', function () {
