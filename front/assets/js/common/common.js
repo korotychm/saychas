@@ -36,7 +36,7 @@ $(document).ready(function () {
     });
 
     $(document).on('focusin','.phoneinput',function(){
-       doSetCaretPosition($(this), 4);
+       doSetCaretPosition($(this), 2);
     });
 
     window.onbeforeunload = function () {
