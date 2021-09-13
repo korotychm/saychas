@@ -16,6 +16,7 @@ $(document).ready(function () {
     $(".phoneinput").mask("+7 (999) 999-99-99");
 
     $(document).on('click','.phoneinput',function(){
+      console.log('phone input focused');
       $(this).setCursorPosition(4);
     });
 
