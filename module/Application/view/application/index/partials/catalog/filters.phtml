@@ -2,7 +2,7 @@
     <form id="filter-form">
         <input type="hidden" name="offset" value="72" id="sqlOutline">
         <input type="hidden" name="limit" value="72">
-        <input type="hidden" name="category_id" :value="category_id">
+        <input type="hidden" name="category_id" :value="category_id" @submit.prevent="getProducts">
         <!--Фильтр по цене-->
         <div class="filter__item">
             <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>

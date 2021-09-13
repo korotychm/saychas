@@ -55,7 +55,6 @@ $(document).ready(function(){
           this.filterUpdated = true;
         },
         getProducts() {
-          console.log('keyup');
           let formData = $("#filter-form").serialize();
           console.log(formData),
           axios
@@ -112,7 +111,7 @@ $(document).on('change','.range input[type="range"]',function(){
   } else {
     hidden.val(minVal + ';' + maxVal);
   }
-  //$('#filter-button').trigger('click');
+  $('#filter-form').submit();
 });
 
 $(document).on('change','.tooltip-from',function(){
