@@ -28,8 +28,12 @@ abstract class AbstractControlPanelActionController extends AbstractActionContro
         $config = $this->container->get('Config');
 
         $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
+        
+        $isTest = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['is_test'];
+        
+        $prefix = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['prefix'];
 
-        return ['manager' => $this->container->get($managerName), 'manager_name' => $managerName];
+        return ['manager' => $this->container->get($managerName), 'manager_name' => $managerName, 'is_test' => $isTest, 'prefix' => $prefix];
     }
 
 }
