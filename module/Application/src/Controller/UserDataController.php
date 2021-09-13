@@ -217,7 +217,7 @@ class UserDataController extends AbstractActionController
      * @param int $length
      * @return string
      */
-    private function generateRegistrationCode($phone, $length = 5)
+    private function generateRegistrationCode($phone, $length = 4)
     {
 
         /** @var $phone */
@@ -229,19 +229,19 @@ class UserDataController extends AbstractActionController
 //        $code = 7777; // simulate generation
 //        
 //        /* *///real generation
-          $code ="";
-          $lenght=($lenght<1 and $lenght>9)?$lenght:4;
-          $suffle=[0,1,3,4,5,6,7,8,9];
-          shuffle($suffle);
-          for ($i=0; $i < $length; $i++ ){
-          $code.=$suffle[$i];
-          }
+//          $code ="";
+//          $lenght=($lenght<1 and $lenght>9)?$lenght:4;
+//          $suffle=[0,1,3,4,5,6,7,8,9];
+//          shuffle($suffle);
+//          for ($i=0; $i < $length; $i++ ){
+//          $code.=$suffle[$i];
+//          }
           /* */
 
-//        $deck=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-//        shuffle($deck);
-//        $output = array_slice($deck, 0, $length);
-//        $code = join('', $output);
+        $deck=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        shuffle($deck);
+        $output = array_slice($deck, 0, $length);
+        $code = join('', $output);
 
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code, 'live' => (time() + 60)];
