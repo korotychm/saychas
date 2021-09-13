@@ -121,7 +121,6 @@ class IndexController extends AbstractActionController
      */
     public function profileAction()
     {
-        //$this->assertLoggedIn();
 //        if(!$this->authService->hasIdentity()) {
 //            return new JsonModel(['data' => false]);
 //        }
@@ -130,7 +129,6 @@ class IndexController extends AbstractActionController
 
     public function userManagementAction()
     {
-        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -141,7 +139,6 @@ class IndexController extends AbstractActionController
      */
     public function actionAndDiscountAction()
     {
-        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -152,7 +149,6 @@ class IndexController extends AbstractActionController
      */
     public function accountManagementAction()
     {
-        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
@@ -163,35 +159,14 @@ class IndexController extends AbstractActionController
      */
     public function respondingToReviewsAction()
     {
-        //$this->assertLoggedIn();
         return (new ViewModel())->setTerminal(true);
     }
 
     public function calendarDetailsAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        //$this->assertLoggedIn();
         return (new ViewModel(['day'=>$post['day'], 'month'=>$post['month'], 'year'=>$post['year']]))->setTerminal(true);
     }
-
-    /**
-     * Signal ajax script
-     * if provider is not logged in
-     */
-//    private function assertLoggedIn()
-//    {
-//        if(!$this->authService->hasIdentity()) {
-//            return new JsonModel(['data' => false]);
-//        }
-////        $identity = $this->authService->getIdentity();
-////        $hasIdentity = $this->authService->hasIdentity();
-////        $identity2 = $this->identity();
-//        //if(!isset($this->sessionContainer->partnerLoggedIn)){
-////        if(!$hasIdentity) {
-////            echo 'null';
-////            exit;
-////        }
-//    }
 
 }
 

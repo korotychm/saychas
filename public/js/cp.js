@@ -341,7 +341,13 @@ const ProductEdit = {
                       </div>
                       <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                       <div class="product__additional-attributes">
-
+                        <div v-for="characteristic in characteristics" class="product__attribute">
+                            <h2>{{ characteristic.characteristic_name }}</h2>
+                            <select v-if="characteristic.type == 4" class="select" :value="characteristic.value">
+                              <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
+                            </select>
+                            <input v-if="characteristic.type == 1" type="text" class="input" :value="characteristic.value"/>
+                        </div>
                       </div>
                       <div class="product__images">
                           <div class="product__attribute">
@@ -425,6 +431,15 @@ const ProductEdit = {
     }
   },
   computed: {
+    characteristics(){
+      if (!this.product.characteristics) return false;
+      let characteristics = this.product.characteristics;
+      characteristics = characteristics.filter((characteristic) => {
+        return (characteristic.type != 0 && characteristic.id != "000000002" && characteristic.id != "000000003" && characteristic.id != "000000004")
+      })
+      console.log(characteristics);
+      return characteristics;
+    },
     filteredCategories(){
       if (this.categorySearch.length < 3) return false;
       let categories = this.categoriesFlat;
@@ -655,10 +670,10 @@ const PriceList = {
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" />
+                          <input type="number" max="99" min="0" value="0" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" />
+                          <input type="number" min="0" :value="product.price / 100" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -666,7 +681,7 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3>28 161 ₽</h3>
+                        <h3>{{ (product.price / 100).toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary">Применить</button>
                     </div>
@@ -903,6 +918,14 @@ $(document).on('focusout','.search-select__input',function(){
   }, 300);
 });
 $(document).on('click','.pricelist__title',function(){
-  $('.pricelist__popup').removeClass('active');
+  $('.pricelist__item').removeClass('active');
   $(this).parent().addClass('active');
+});
+$(document).mouseup(function(e)
+{
+    var container = $(".pricelist__popup");
+    if (!container.is(e.target) && container.has(e.target).length === 0)
+    {
+        container.parent().removeClass('active');
+    }
 });

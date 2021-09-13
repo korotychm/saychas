@@ -86,12 +86,16 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $manager = $result['manager'];
         $managerName = $result['manager_name'];
 
-        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
+        //$post['is_test'] = true;
+        $is_test = 'false';
+        if(isset($post['is_test']) && true == $post['is_test']) {
+            $is_test = 'true';
+        }
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login']/*, 'is_test: true'*/];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$is_test/*, 'is_test: true'*/];
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
@@ -121,7 +125,6 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $manager = $result['manager'];
         //$managerName = $result['manager_name'];
 
-        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
         $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::ROWS_PER_PAGE);
@@ -139,16 +142,5 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $cursor = $manager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
         return new JsonModel(['data' => $cursor,]);
     }
-
-    /**
-     * Signal ajax script
-     * if provider is not logged in
-     */
-//    private function assertLoggedIn()
-//    {
-//        if (!$this->authService->hasIdentity()) {
-//            return new JsonModel(['data' => false]);
-//        }
-//    }
 
 }
