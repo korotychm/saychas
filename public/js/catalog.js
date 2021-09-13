@@ -116,7 +116,7 @@ $(document).on('change','.range input[type="range"]',function(){
   } else {
     hidden.val(minVal + ';' + maxVal);
   }
-  //$('#test-filter-button').trigger('click');
+  $('#test-filter-button').trigger('click');
 });
 
 $(document).on('change','.tooltip-from',function(){
