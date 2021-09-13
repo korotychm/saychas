@@ -918,6 +918,14 @@ $(document).on('focusout','.search-select__input',function(){
   }, 300);
 });
 $(document).on('click','.pricelist__title',function(){
-  $('.pricelist__popup').removeClass('active');
+  $('.pricelist__item').removeClass('active');
   $(this).parent().addClass('active');
+});
+$(document).mouseup(function(e)
+{
+    var container = $(".pricelist__popup");
+    if (!container.is(e.target) && container.has(e.target).length === 0)
+    {
+        container.parent().removeClass('active');
+    }
 });
