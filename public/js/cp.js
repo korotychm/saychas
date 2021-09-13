@@ -428,6 +428,7 @@ const ProductEdit = {
   },
   computed: {
     characteristics(){
+      if (!this.product) return false;
       let characteristics = this.product.characteristics;
       characteristics = characteristics.filter((characteristic) => {
         return (characteristic.type != 0 && characteristic.id != "000000003" && characteristic.id != "000000004")
