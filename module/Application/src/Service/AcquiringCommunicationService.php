@@ -214,9 +214,8 @@ class AcquiringCommunicationService
                 $token .= $arg;
             }
         }
-       return hash('sha256', $token);
-        // $token;
-    }
+       return hash('sha256', $token); 
+     }
 
     /**
      * build URL
