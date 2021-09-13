@@ -88,10 +88,15 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
 
         //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
+        //$post['is_test'] = true;
+        $is_test = 'false';
+        if(isset($post['is_test']) && true == $post['is_test']) {
+            $is_test = 'true';
+        }
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login']/*, 'is_test: true'*/];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$is_test/*, 'is_test: true'*/];
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
