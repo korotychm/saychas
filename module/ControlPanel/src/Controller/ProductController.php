@@ -92,7 +92,6 @@ class ProductController extends AbstractActionController
      */
     public function showProductsAction()
     {
-        //$this->assertLoggedIn();
         //$pageNo = $this->params()->fromRoute('page_no', '1');
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
@@ -121,7 +120,6 @@ class ProductController extends AbstractActionController
      */
     public function showProductsFromCacheAction()
     {
-        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
         $this->productManager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::PRODUCTS_PER_PAGE);
@@ -199,16 +197,5 @@ class ProductController extends AbstractActionController
         //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
         return $result;
     }
-
-    /**
-     * Signal ajax script
-     * if provider is not logged in
-     */
-//    private function assertLoggedIn()
-//    {
-//        if (!$this->authService->hasIdentity()) {
-//            return new JsonModel(['data' => false]);
-//        }
-//    }
 
 }

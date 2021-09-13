@@ -125,7 +125,6 @@ class StoreController extends AbstractActionController
         $manager = $this->container->get($managerName);
     
         
-        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $useCache = $post['use_cache'];
 
@@ -172,7 +171,6 @@ class StoreController extends AbstractActionController
 
         $manager = $this->container->get($managerName);
         
-        //$this->assertLoggedIn();
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
         $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
