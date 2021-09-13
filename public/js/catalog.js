@@ -61,13 +61,14 @@ $(document).ready(function(){
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
-          console.log(formData),
+          console.log('Request',formData),
           axios
             .post('/ajax-fltr-json',formData)
-            .then(response => (
-              this.filterUpdated = false,
-              this.products = response.data.products
-            ));
+            .then(response => {
+              this.filterUpdated = false;
+              this.products = response.data.products;
+              console.log('Response',response.data);
+            });
         }
       },
       created() {
