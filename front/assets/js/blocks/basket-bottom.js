@@ -36,9 +36,10 @@ $(document).ready(function(){
       data: {"product": 0},
       success: function (data) {
           $("#zakazcount").html(data.count); //data.total
+          console.log(data);
       },
       error: function (xhr, ajaxOptions, thrownError) {
           $("#basketbottom .basketbottom__content").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
       }
   });
-})
+});
