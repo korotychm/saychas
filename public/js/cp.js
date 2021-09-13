@@ -341,7 +341,9 @@ const ProductEdit = {
                       </div>
                       <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                       <div class="product__additional-attributes">
-
+                        <div v-for="characteristic in characteristics" class="product__attribute">
+                            <h2>{{ characteristic.characteristic_name }}</h2>
+                        </div>
                       </div>
                       <div class="product__images">
                           <div class="product__attribute">
@@ -425,6 +427,14 @@ const ProductEdit = {
     }
   },
   computed: {
+    characteristics(){
+      let characteristics = this.product.characteristics;
+      characteristics = characteristics.filter((characteristic) => {
+        return (characteristic.type != 0 && characteristic.id != "000000003" && characteristic.id != "000000004")
+      })
+      console.log(characteristics);
+      return characteristics;
+    },
     filteredCategories(){
       if (this.categorySearch.length < 3) return false;
       let categories = this.categoriesFlat;
