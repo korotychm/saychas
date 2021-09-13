@@ -19,7 +19,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" v-model="rangeprice.currentMin" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" v-model="rangeprice.currentMax" /></div>
                 </div>
-                <input type="hidden" class="range__hidden" name="priceRange" :value="rangeprice.currentMin + ';' + rangeprice.currentMax" @input="getProducts">
+                <input type="hidden" class="range__hidden" name="priceRange" :value="(rangeprice.currentMin * 100) + ';' + (rangeprice.currentMax * 100)" @input="getProducts">
             </div>
         </div>
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
