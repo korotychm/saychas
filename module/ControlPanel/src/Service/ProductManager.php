@@ -180,6 +180,8 @@ class ProductManager extends ListManager implements LoadableInterface
             if(!empty($c['id'])) {
                 $price = Price::find([ 'product_id' => $c['id'] ]);
                 $c['price'] = (null == $price) ? 0 : $price->getPrice();
+                $c['old_price'] = (null == $price) ? 0 : $price->getOldPrice();
+                $c['discount'] = (null == $price) ? 0 : $price->getDiscount();
             }
 
         }
