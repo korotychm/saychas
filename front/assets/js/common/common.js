@@ -31,10 +31,6 @@ $(document).ready(function () {
     $(".overcover").delay(500).fadeOut("slow");
     $(".phoneinput").mask("+7 (999) 999-99-99");
 
-    $(".phoneinput").focusin(function(){
-
-    });
-
     $(document).on('focusin','.phoneinput',function(){
        doSetCaretPosition($(this), 2);
     });
