@@ -15,6 +15,7 @@ function showBasket(productadd = 0) {
                 });
             }
             $("#zakazcount").html(data.count); //data.total
+            console.log(data);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#basketbottom .basketbottom__content").html("Ошибка соединения " + xhr.status + ", попробуйте повторить попытку позже." + "<hr> " + xhr.status + " " + thrownError);
@@ -33,7 +34,7 @@ $(document).ready(function(){
       cache: false,
       type: 'POST',
       //dataType: 'json',
-      //data: {"product": 0},
+      data: {"product": 0},
       success: function (data) {
           $("#zakazcount").html(data.count); //data.total
           console.log(data);
