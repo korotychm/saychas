@@ -64,11 +64,11 @@ $(document).ready(function(){
           console.log(formData),
           axios
             .post('/ajax-fltr-json',formData)
-            .then(response => (
-              this.filterUpdated = false,
-              this.products = response.data.products
-            ));
-          console.log(response.data);
+            .then(response => {
+              this.filterUpdated = false;
+              this.products = response.data.products;
+              console.log(response.data);
+            });
         }
       },
       created() {
