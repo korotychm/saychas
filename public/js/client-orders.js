@@ -48,6 +48,15 @@ $(document).ready(function () {
           }
           order.timeLocaled = orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
 
+          order.deliveryInfo.pickup = order.deliveryInfo.deliveries;
+          order.deliveryInfo.pickup = order.deliveryInfo.pickup.filter((delivery) => {
+            return (delivery.pickup == true)
+          })
+
+          order.deliveryInfo.deliveries = order.deliveryInfo.deliveries.filter((delivery) => {
+            return (delivery.pickup == false)
+          })
+
           let pickupCount = order.deliveryInfo.pickup.length;
           if (pickupCount == 1){
             order.pickupUnit = 'магазина';
@@ -107,6 +116,7 @@ $(document).ready(function () {
               }
             }
           }
+
           for (delivery of order.deliveryInfo.pickup){
             if (delivery.requisitions){
               for (requisition of delivery.requisitions){
@@ -125,6 +135,7 @@ $(document).ready(function () {
               }
             }
           }
+
           order.productsTotal = order.total;
           order.oldProductsTotal = order.oldtotal;
           if (order.basketInfo.delivery_price){
