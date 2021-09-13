@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @see       https://github.com/laminas/laminas-mvc-skeleton for the canonical source repository
  * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
@@ -38,6 +39,7 @@ use Application\Model\Entity\UserData;
 use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
+use Application\Model\Entity\ProductCharacteristic;
 //use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -116,14 +118,14 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(UserPaycard::class);
         $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(ProductHistory::class);
+        $this->entityManager->initRepository(ProductCharacteristic::class);
     }
 
-    
     public function ajaxGetBasketJsonAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-          if (!$return['userId']) {
+        if (!$return['userId']) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
@@ -132,7 +134,7 @@ class AjaxController extends AbstractActionController
         if (null === $basket) {
             return new JsonModel($return);
         }
-        foreach ($basket as $basketItem){
+        foreach ($basket as $basketItem) {
             $return['basket'][$basketItem->getProductId()] = [
                 "id" => $basketItem->getProductId(),
                 "total" => $basketItem->getTotal(),
@@ -142,8 +144,7 @@ class AjaxController extends AbstractActionController
         }
         return new JsonModel($return);
     }
-    
-    
+
     public function delFromBasketAction()
     {
         $return = ["error" => true, "count" => 0];
@@ -180,11 +181,11 @@ class AjaxController extends AbstractActionController
         }
         $return["order_list"] = $this->htmlProvider->orderList($orders);
         $productMap = $this->getBasketProductMap($userId);
-        if ($productMap['result'] == false ) {
+        if ($productMap['result'] == false) {
             return new JsonModel($productMap);
-        }    
+        }
         $return["productsMap"] = $productMap['products'];
-         
+
 //        $where = new Where();
 //        $where->equalTo('user_id', $userId);
 //        $where->notEqualTo('order_id', 0);
@@ -206,21 +207,20 @@ class AjaxController extends AbstractActionController
 
         return new JsonModel($return);
     }
-    
-    private function getBasketProductMap ($userId, $orderId = 0)
+
+    private function getBasketProductMap($userId, $orderId = 0)
     {
         $where = new Where();
         $where->equalTo('user_id', $userId);
         if ($orderId == 0) {
             $where->notEqualTo('order_id', $orderId);
-        }
-        else {
+        } else {
             $where->equalTo('order_id', $orderId);
         }
         $columns = ['product_id'];
         $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
         if ($userBasketHistory->count() < 1) {
-            return ["result" => false, "error" => "order $orderId have not basket products ".Json::encode(['where' => $where, 'columns' => $columns]) ];
+            return ["result" => false, "error" => "order $orderId have not basket products " . Json::encode(['where' => $where, 'columns' => $columns])];
         }
         foreach ($userBasketHistory as $basketItem) {
             $product_id = $basketItem->getProductId();
@@ -232,23 +232,20 @@ class AjaxController extends AbstractActionController
                 return ["result" => false, 'error' => $ex->getMessage()];
             }
         }
-        return ["result" => true, "products" => $products ]; 
-        
+        return ["result" => true, "products" => $products];
     }
-    
-    
-    
+
     public function getUserOrderPageAction()
-    {   
+    {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
-        if (!$return['order_id'] = /*"000000629"/**/ $post->orderId /**/){
+        if (!$return['order_id'] = /* "000000629"/* */ $post->orderId /**/) {
             return new JsonModel($return);
-        }    
+        }
         $container = new Container(Resource::SESSION_NAMESPACE);
-        $return['userId'] =  $container->userIdentity;
+        $return['userId'] = $container->userIdentity;
         $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
         if (empty($order)) {
             return new JsonModel($return);
@@ -269,42 +266,34 @@ class AjaxController extends AbstractActionController
             }
         }
         $productMap = $this->getBasketProductMap($userId, $return['order_id']);
-        if ($productMap['result'] == false ) {
+        if ($productMap['result'] == false) {
             return new JsonModel($productMap);
-        }    
-        $return["productsMap"] = $productMap['products'];
-        
-        
-        $return["result"] = true;
-        
-        
-        
-        
-        /*$where = new Where();
-        $where->equalTo('user_id', $return['userId']);
-        $where->equalTo('order_id', 0);
-        $columns = ['product_id'];
-        $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
-        if ($userBasketHistory->count() < 1) {
-            return new JsonModel(["result" => false]);
         }
-        foreach ($userBasketHistory as $basketItem) {
-            $product_id = $basketItem->getProductId();
-            try {
-                $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
-                $return["productsMap"][$product_id]["image"] = $product->receiveProductImages()->current()->getHttpUrl();
-                $return["productsMap"][$product_id]["title"] = $product->getTitle();
-            } catch (\Throwable $ex) {
-                return new JsonModel(["result" => false, 'error' => $ex->getMessage()]);
-            }
-        }*/
+        $return["productsMap"] = $productMap['products'];
+
+        $return["result"] = true;
+
+        /* $where = new Where();
+          $where->equalTo('user_id', $return['userId']);
+          $where->equalTo('order_id', 0);
+          $columns = ['product_id'];
+          $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
+          if ($userBasketHistory->count() < 1) {
+          return new JsonModel(["result" => false]);
+          }
+          foreach ($userBasketHistory as $basketItem) {
+          $product_id = $basketItem->getProductId();
+          try {
+          $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
+          $return["productsMap"][$product_id]["image"] = $product->receiveProductImages()->current()->getHttpUrl();
+          $return["productsMap"][$product_id]["title"] = $product->getTitle();
+          } catch (\Throwable $ex) {
+          return new JsonModel(["result" => false, 'error' => $ex->getMessage()]);
+          }
+          } */
 
         return new JsonModel($return);
     }
-    
-    
-    
-    
 
     public function checkOrderStatusAction()
     {
@@ -313,11 +302,11 @@ class AjaxController extends AbstractActionController
         $return['order_status'] = false;
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        if(!empty($order = ClientOrder::find(["order_id" => $orderId ]))){
+        if (!empty($order = ClientOrder::find(["order_id" => $orderId]))) {
             $return ['order_status'] = $order->getStatus();
             //$return ['order_status'] = 1;  //test mode switch
-            $deliveryinfo  = $order->getDeliveryInfo();
-            $return['delivery_info'] = (!empty($deliveryinfo))?Json::decode($deliveryinfo, Json::TYPE_ARRAY):[];
+            $deliveryinfo = $order->getDeliveryInfo();
+            $return['delivery_info'] = (!empty($deliveryinfo)) ? Json::decode($deliveryinfo, Json::TYPE_ARRAY) : [];
         }
         return new JsonModel($return);
     }
@@ -415,206 +404,140 @@ class AjaxController extends AbstractActionController
         }
         return new JsonModel(['result' => false, "reload" => true, "reloadUrl" => "/"]);
     }
-   
+
     public function addToFavoritesAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return; 
         }
-       //$productId ="11111111111"; 
-       /**/
         if (empty($productId = $this->getRequest()->getPost()->productId)) {
-           return new JsonModel(['result' => false, "description" => " product undefinded "]);
-       }
-       /**/
-       $favoritesItem = ProductFavorites::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
-       $favoritesItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
-       
-       return new JsonModel(['result' => true, "description" => "product $productId added to favorites", 'lable' => Resource::REMOVE_FROM_FAVORITES]);
-       
+            return new JsonModel(['result' => false, "description" => " product undefinded "]);
+        }
+        $favoritesItem = ProductFavorites::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
+        $favoritesItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
+        return new JsonModel(['result' => true, "description" => "product $productId added to favorites", 'lable' => Resource::REMOVE_FROM_FAVORITES]);
     }
-    
+
     public function removeFromFavoritesAction()
     {
-       if (!$userId = $this->identity()) {
+        if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return; //$this->redirect()->toRoute('home');
         }
-       if (empty($productId = $this->getRequest()->getPost()->productId)) {
-           return new JsonModel(['result' => false, "description" => " product undefinded "]);
-       }  
-       ProductFavorites::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
-       return new JsonModel(['result' => true, "description" => "product $productId removed from favorites",  'lable' => Resource::ADD_TO_FAVORITES]);
+        if (empty($productId = $this->getRequest()->getPost()->productId)) {
+            return new JsonModel(['result' => false, "description" => " product undefinded "]);
+        }
+        ProductFavorites::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
+        return new JsonModel(['result' => true, "description" => "product $productId removed from favorites", 'lable' => Resource::ADD_TO_FAVORITES]);
     }
-    
+
     public function getClientFavoritesAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return; //$this->redirect()->toRoute('home');
         }
         $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
-        if ($favProducts->count() < 1){
+        if ($favProducts->count() < 1) {
             return new JsonModel([]);
         }
-        /*$productsId=[];
-        foreach ($favProducts as $favProduct)
-        {
-            $productsId[] = $favProduct->getProductId();
-        }
-        $products = $this->handBookRelatedProductRepository->findAll(["where"=>["id" => $productsId]]); 
-        return new JsonModel($this->commonHelperFuncions->getProductCardArray($products, $userId));*/
         $products = [];
-        foreach ($favProducts as $favProduct){
-            if (null != $product = $this->handBookRelatedProductRepository->find(["id" => $favProduct->getProductId()])){
-                $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);   
-            }; 
+        foreach ($favProducts as $favProduct) {
+            if (null != $product = $this->handBookRelatedProductRepository->find(["id" => $favProduct->getProductId()])) {
+                $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);
+            }
         }
         return new JsonModel($products);
     }
-    
-    private function mySqlSort(array $input)
-    {
-        $sql = new Sql();
-        
-    }
-    
+
     public function getClientHistoryAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return; //$this->redirect()->toRoute('home');
         }
         $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
-        if ($favProducts->count() < 1){
+        if ($favProducts->count() < 1) {
             return new JsonModel([]);
         }
         $products = [];
-        foreach ($favProducts as $favProduct)
-        {
-            if (null != $product = $this->handBookRelatedProductRepository->find(["id" => $favProduct->getProductId()])){
-                $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);   
-                
-            }; 
+        foreach ($favProducts as $favProduct) {
+            if (null != $product = $this->handBookRelatedProductRepository->find(["id" => $favProduct->getProductId()])) {
+                $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);
+            };
         }
-        //$this->handBookRelatedProductRepository->findAll(["where"=>["id" => $productsId], 'order' => ['id' => $productsId ]]); 
+        //$this->handBookRelatedProductRepository->findAll(["where"=>["id" => $productsId], 'order' => ['id' => $productsId ]]);
         return new JsonModel($products);
     }
-    
+
     /*
-     *  промежуточный скрипт для http://api4.searchbooster.io 
+     *  промежуточный скрипт для http://api4.searchbooster.io
      * @return json
      */
-    public function searchBoosterApiAction ()
-    {
-         $json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io".$_SERVER["REQUEST_URI"]));
-         $return =(!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-         return new JsonModel($return);
-     }
 
-     
+    public function searchBoosterApiAction()
+    {
+        $json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io" . $_SERVER["REQUEST_URI"]));
+        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
+        return new JsonModel($return);
+    }
+
     public function addToBasketAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return; //$this->redirect()->toRoute('home');
         }
         $return = ["error" => true, "count" => 0];
         $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
-        if (empty($return['productId'] = $productId = $post->product))
-        {
+        if (empty($return['productId'] = $productId = $post->product)) {
             return new JsonModel($return);
         }
-        
-       
-            $return['error'] = false;
-            
-                $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-                $basketItemTotal = (int) $basketItem->getTotal();
-                $basketItem->setUserId($userId);
-                $basketItem->setProductId($productId);
-                $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-                $productaddPrice = (int) $productadd->getPrice();
-                $basketItem->setPrice($productaddPrice);
-                $basketItem->setTotal($basketItemTotal + 1);
-                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-            
-            $where = new Where();
-            $where->equalTo('user_id', $userId);
-            $where->equalTo('order_id', 0);
-            $columns = ['product_id', 'order_id', 'total'];
-            $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
-            foreach ($basket as $b) {
-                if ($pId = $b->productId) {
-                    $product = $this->productRepository->find(['id' => $pId]);
-                    $return['products'][] = [
-                        "id" => $pId,
-                        "name" => $product->getTitle(),
-                        "count" => $b->total,
-                        'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
-                    ];
-                    $return['total'] += $b->total;
-                    $return['count']++;
-                }
-            }
-       
-        return new JsonModel($return);
-    }
+        $return['error'] = false;
+        $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+        $basketItemTotal = (int) $basketItem->getTotal();
+        $basketItem->setUserId($userId);
+        $basketItem->setProductId($productId);
+        $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
+        $productaddPrice = (int) $productadd->getPrice();
+        $basketItem->setPrice($productaddPrice);
+        $basketItem->setTotal($basketItemTotal + 1);
+        $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
 
-    /*public function userAuthAction()
-    {
-        $password = $smsCode = "7777"; //костыль
-        $return = ["error" => true, "message" => Resource::ERROR_MESSAGE, "isUser" => false, "username" => ""];
-        $post = $this->getRequest()->getPost();
-        $return['phone'] = StringHelper::phoneToNum($post->userPhone); // $this->phoneToNum($post->userPhone);
-        $return['name'] = $post->userNameInput;
-        $code = $post->userSmsCode;
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        if (!$return['phone']) {
-              $return["message"] .= Resource::ERROR_INPUT_PHONE_MESSAGE;
-        } else {
-            $user = $this->userRepository->findFirstOrDefault(["phone" => $return['phone']]);
-            if ($user and $userId = $user->getId()) {
-                $return['userId'] = $userId;
-                $return["isUser"] = true;
-                if ($post->userPass == $password) {
-                    $container->userIdentity = $return['userId'];
-                    $return["error"] = false;
-                }
-                $return["message"] = Resource::ERROR_INPUT_PASSWORD_MESSAGE
-                        . "($password)"
-                ;
-                $return["username"] = $user->getName();
-            } else {
-                if ($return['name'] and $code == $smsCode) {
-
-                    $user = $this->userRepository->findFirstOrDefault(["id" => $container->userIdentity]);
-                    $user->setName($return['name']);
-                    $user->setPhone($return['phone']);
-                    $this->userRepository->persist($user, ['id' => $user->getId()]);
-                    $return["error"] = false;
-                }
-                $return["message"] = Resource::ERROR_INPUT_NAME_SMS_MESSAGE;  //это телефонный номер  юзера
+        $where = new Where();
+        $where->equalTo('user_id', $userId);
+        $where->equalTo('order_id', 0);
+        $columns = ['product_id', 'order_id', 'total'];
+        $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
+        foreach ($basket as $b) {
+            if ($pId = $b->productId) {
+                $product = $this->productRepository->find(['id' => $pId]);
+                $return['products'][] = [
+                    "id" => $pId,
+                    "name" => $product->getTitle(),
+                    "count" => $b->total,
+                    'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
+                ];
+                $return['total'] += $b->total;
+                $return['count']++;
             }
         }
-        $return['post'] = $post;
         return new JsonModel($return);
-    }*/
+    }
 
     public function calculateBasketItemAction()
     {
         $post = $this->getRequest()->getPost();
-        if (!$userId = $this->identity()){
+        if (!$userId = $this->identity()) {
             return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
         }
-        if (!$return['productId'] = $productId = $post->product){
+        if (!$return['productId'] = $productId = $post->product) {
             return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         }
-
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-        if (null == $product  or !$productPrice = (int) $product->getPrice() or! $productCount = (int) $post->count   or $productCount < 1) {
+        if (null == $product or!$productPrice = (int) $product->getPrice() or!$productCount = (int) $post->count or $productCount < 1) {
             return new JsonModel(["error" => true, "errorMessage" => "product price error"]);
         }
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
@@ -627,14 +550,14 @@ class AjaxController extends AbstractActionController
 
     public function basketOrderMergeAction()
     {
-        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
-        
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return; //$this->redirect()->toRoute('home');
         }
         $post = $this->getRequest()->getPost();
         $timepoint = $post->timepoint;
+        $selectedtimepoint = [];
         $selectedtimepoint[0][$timepoint[0]] = " selected ";
         $selectedtimepoint[1][$timepoint[1]] = " selected ";
         $return = $this->htmlProvider->basketMergeData($post, $param);
@@ -657,13 +580,13 @@ class AjaxController extends AbstractActionController
 
     public function basketPayCardInfoAction()
     {
-        if (!$userId = $this->identity()){
+        if (!$userId = $this->identity()) {
             return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
         }
         $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
-        $paycards =($userPaycards->count())?$userPaycards:null;
+        $paycards = ($userPaycards->count()) ? $userPaycards : null;
         $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
-        
+
         $post = $this->getRequest()->getPost();
         $paycard = $post->paycard;
         $view = new ViewModel([
@@ -677,32 +600,31 @@ class AjaxController extends AbstractActionController
 
     public function basketPayInfoAction()
     {
-         if (!$userId = $this->identity()) {
+        if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return;
         }
         $user = $this->userRepository->find(['id' => $userId]);
         $basketUser['phone'] = $user->getPhone();
-        /**/    //$basketUser['phoneformated'] = "+".sprintf("%s (%s) %s-%s-%s",substr($basketUser['phone'], 0, 1),substr($basketUser['phone'], 1, 3),substr($basketUser['phone'], 4, 3),substr($basketUser['phone'], 7, 2),substr($basketUser['phone'], 9));
         $basketUser['name'] = $user->getName();
         $userData = $user->getUserData();
         if ($userData->count() > 0) {
             $basketUser['address'] = $userData->current()->getAddress();
         }
-        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
         $row['payEnable'] = ($row['total'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
-        
+
         if ($post->cardinfo) {
-            $userPaycards = UserPaycard::findAll(["where" => ["user_id" => $userId, "card_id"=>$post->cardinfo]]);
+            $userPaycards = UserPaycard::findAll(["where" => ["user_id" => $userId, "card_id" => $post->cardinfo]]);
             $cardUpdate = $userPaycards->current();
-            $cardInfo = $cardUpdate ->getPan();
+            $cardInfo = $cardUpdate->getPan();
             $cardUpdate->setTime(time());
-            $cardUpdate->persist(["user_id" => $userId, "card_id"=>$post->cardinfo]);
+            $cardUpdate->persist(["user_id" => $userId, "card_id" => $post->cardinfo]);
         }
-        
+
         $view = new ViewModel([
             "payEnable" => $row["payEnable"],
             "textDelevery" => $row["textDelevery"],
@@ -741,7 +663,7 @@ class AjaxController extends AbstractActionController
     public function ajaxGetLegalStoreAction()
     {
         $post = $this->getRequest()->getPost();
-        if (!$json = $post->value){
+        if (!$json = $post->value) {
             return new JsonModel(NULL);
         }
         try {
@@ -753,64 +675,15 @@ class AjaxController extends AbstractActionController
         if (!$ob->house) {
             return new JsonModel(["result" => false, "error" => Resource::USER_ADDREES_ERROR_MESSAGE]);
         }
-        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
-        /* $container = new Container(Resource::SESSION_NAMESPACE);
-          $url = $this->config['parameters']['1c_request_links']['get_store'];
-          $result = file_get_contents(
-          $url,
-          false,
-          stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
-          );
-
-          if (!$result) return new JsonModel(["result"=>false, "error"=>"1C не отвечает "]);
-          $legalStore = Json::decode($result, true);
-          foreach ($legalStore as $store) {
-          $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
-          if($store['time_until_closing']) $store['time_until_closing']+=time();
-          $sessionLegalStoreArray[$store['store_id']] = $store ;
-          }
-          $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
-          $container->legalStoreArray = $sessionLegalStoreArray;
-          //exit (print_r($sessionLegalStoreArray));//Json::decode($result, true); */
-        // $return = $this->getLegalStore($json);
-
         $return = $this->commonHelperFuncions->updateLegalStores($json);
         return new JsonModel($return);
     }
-
-    /* private function getLegalStore ($json)
-      {
-
-
-      $url = $this->config['parameters']['1c_request_links']['get_store'];
-      $result = file_get_contents(
-      $url,
-      false,
-      stream_context_create(['http' => ['method' => 'POST','header' => 'Content-type: application/json','content' => $json]])
-      );
-      if (!$result) {
-      return ["result"=>false, "error"=>"1C не отвечает "];
-      }
-
-      $legalStore = Json::decode($result, true);
-
-      foreach ($legalStore as $store) {
-      $sessionLegalStore[$store['store_id']] = $store['delivery_speed_in_hours'];
-      if($store['time_until_closing']) $store['time_until_closing']+=time();
-      $sessionLegalStoreArray[$store['store_id']] = $store ;
-      }
-      $container = new Container(Resource::SESSION_NAMESPACE);
-      $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
-      $container->legalStoreArray = $sessionLegalStoreArray;
-
-      return ["result"=>true, "message"=>"Магазины получены"];
-      } */
 
     public function ajaxAddUserAddressAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return;
         }
         $user = $this->userRepository->find(['id' => $userId]);
         $post = $this->getRequest()->getPost();
@@ -828,8 +701,9 @@ class AjaxController extends AbstractActionController
             } catch (InvalidQueryException $e) {
                 $return['error'] = $e->getMessage();
             }
-        } else
+        } else {
             $return["error"] = "Error! ";
+        }
         return new JsonModel($return);
     }
 
@@ -837,10 +711,11 @@ class AjaxController extends AbstractActionController
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return ; //$this->redirect()->toRoute('home');
+            return;
         }
         $user = $this->userRepository->find(['id' => $userId]);
         $return["userAddress"] = $this->htmlProvider->writeUserAddress($user);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $return["legalStore"] = $container->legalStore;
         return new JsonModel($return);
     }
@@ -873,7 +748,7 @@ class AjaxController extends AbstractActionController
             $type = $found->getType();
             switch ($type) {
                 case CharacteristicRepository::INTEGER_TYPE:
-                    reset($value);
+                    //reset($value);
                     list($left, $right) = explode(';', current($value));
                     //list($left, $right) = explode(';', $value[0]);
                     $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
@@ -908,11 +783,50 @@ class AjaxController extends AbstractActionController
         list($low, $high) = explode(';', $params['priceRange']);
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
         $where->in('category_id', $categoryTree);
+        $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+        $charsId = array_keys($characteristics);
+        //exit(print_r($charsId));
+        return $this->subQueryWhere($charsId, $where);
+    }
+
+    private function subQueryWhere($charsId, $where): Where
+    {
+        $allCahrs = ProductCharacteristic::findAll(['where' => ['characteristic_id' => $charsId]]);//->toArray();
+        //exit(print_r($allCahrs));
+        if ($allCahrs->count() < 1) {
+            return $where;
+        }
+        $columns = ['product_id'];
+        $inValue = [];
+        $subWhere = new Where();
+
+        foreach ($allCahrs as $found) {
+            $type = $found->getType();
+            $value = $found->getValue();
+            switch ($type) {
+                case CharacteristicRepository::INTEGER_TYPE:
+                    //reset($value);
+                    list($min, $max) = explode(';', $value );
+                    $subWhere->lessThanOrEqualTo('value', $max)->greaterThanOrEqualTo('value', $min);
+                 break;
+                case CharacteristicRepository::BOOL_TYPE:
+                    $subWhere->equalTo('value', $value);
+                break;
+                default:
+                    $inValue[] = $value;//
+                break;
+            }
+            
+        }
+        if (!empty($inValue)) $subWhere->in('value', $inValue);
+        $subQuery = ProductCharacteristic::findAll(["where" => $subWhere, "columns" => $columns])->toArray();
+        exit(print_r($subQuery));
+        //$where->in('product_id', $subQuery);
         return $where;
     }
 
     /**
-     * Return where clause for qwery
+     * Return where clause for query
      *
      * @param array $params
      * @return Where
@@ -924,13 +838,13 @@ class AjaxController extends AbstractActionController
         return $where;
     }
 
-/**
+    /**
      * Return filtered HandbookRelatedProduct filtered products
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
      */
-    private function getProductsCategories ($params)
+    private function getProductsCategories($params)
     {
 
         $params['where'] = $this->getWhereCategories($params);
@@ -958,13 +872,13 @@ class AjaxController extends AbstractActionController
         $products = $this->handBookRelatedProductRepository->findAll($params);
 
         $filteredProducts = [];
-        foreach ($products as $product) {
-            $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
-            $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
-            if ($matchResult && !isset($filteredProducts[$product->getId()])) {
-                $filteredProducts[$product->getId()] = $product;
-            }
-        }
+        //foreach ($products as $product) {
+          //  $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+            //$matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
+            //if ($matchResult && !isset($filteredProducts[$product->getId()])) {
+              //  $filteredProducts[$product->getId()] = $product;
+            //}
+        //}
         return $filteredProducts;
     }
 
@@ -977,43 +891,43 @@ class AjaxController extends AbstractActionController
         }
         unset($params['offset'], $params['limit']);
         $container = new Container(Resource::SESSION_NAMESPACE);
-        //$return['legalStores'] = 
+        //$return['legalStores'] =
         $legalStores = $container->legalStore;
-        
+
         $params['where'] = $this->getWhere($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = [];
-        $store =[];
-        $available = false; 
-        
+        $store = [];
+        $available = false;
+
         foreach ($products as $product) {
             $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
             $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
             if ($matchResult && !isset($filteredProducts[$product->getId()])) {
-                
+
                 $provider = $product->getProvider();
                 $strs = $provider->getStores();
                 $product->getProvider();
-                $store =[];
-                $available = false; 
-                foreach  ($strs as $s){
+                $store = [];
+                $available = false;
+                foreach ($strs as $s) {
                     if (!empty($legalStores[$s->getId()])) {
-                       $available = true; 
-                       $store[] =  $s->getId();
-                     }
+                        $available = true;
+                        $store[] = $s->getId();
+                    }
                 }
                 $oldPrice = 0;
                 $price = $product->getPrice();
                 $discont = $product->getDiscount();
-                if ($discont > 0 ){
-                    $oldPrice =  $price;
-                    $price = $oldPrice - ($oldPrice * $discont /100);
+                if ($discont > 0) {
+                    $oldPrice = $price;
+                    $price = $oldPrice - ($oldPrice * $discont / 100);
                 }
                 $filteredProducts[$product->getId()] = [
                     "reserve" => $product->receiveRest($store),
                     "price" => $price,
                     "title" => $product->getTitle(),
-                    'available' =>  $available,
+                    'available' => $available,
                     'oldprice' => $oldPrice,
                     //'stores' => $productStores,
                     "discount" => $product->getDiscount(),
@@ -1065,24 +979,22 @@ class AjaxController extends AbstractActionController
         return (new ViewModel(['products' => $products]))->setTerminal(true);
     }
 
-
-
     public function getProductCategoriesAction()
     {
         $post = $this->getRequest()->getPost();
         $categoryId = $post->categoryId;
         //$categoryId = "000000001";
-        if (empty($params = Setting::find(['id' => 'main_menu']))){
+        if (empty($params = Setting::find(['id' => 'main_menu']))) {
             return new JsonModel([]);
         }
-        $categories = Json::decode( $params->getValue(), Json::TYPE_ARRAY);
+        $categories = Json::decode($params->getValue(), Json::TYPE_ARRAY);
         $category = $categories[$categoryId]["categories"];
-        foreach ($category as $item){
+        foreach ($category as $item) {
             $param[] = $item["id"];
         }
         $products = $this->getProductsCategories($param);
         return new JsonModel($products);
-     }
+    }
 
     public function getFiltredProductForCategoryJsonAction()
     {

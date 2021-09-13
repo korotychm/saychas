@@ -1238,6 +1238,7 @@ return [
             \Application\Model\Entity\CharacteristicValue::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
             \Application\Model\Entity\HandbookRelatedProduct::class => \Application\Model\Factory\HandbookRelatedProductRepositoryFactory::class,
             \Application\Model\Entity\Characteristic::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
+            \Application\Model\Entity\ProductCharacteristic::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
 
         ],
         'invokables' => [
