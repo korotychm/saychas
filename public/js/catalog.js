@@ -55,6 +55,7 @@ $(document).ready(function(){
           this.filterUpdated = true;
         },
         getProducts() {
+          console.log('keyup');
           let formData = $("#filter-form").serialize();
           console.log(formData),
           axios
