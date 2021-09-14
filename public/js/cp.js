@@ -347,6 +347,7 @@ const ProductEdit = {
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
                             </select>
                             <input v-if="characteristic.type == 1" type="text" class="input" :value="characteristic.value"/>
+                            <input v-if="characteristic.type == 2" type="number" class="input input--number" :value="characteristic.value"/>
                         </div>
                       </div>
                       <div class="product__images">
@@ -435,7 +436,7 @@ const ProductEdit = {
       if (!this.product.characteristics) return false;
       let characteristics = this.product.characteristics;
       characteristics = characteristics.filter((characteristic) => {
-        return (characteristic.type != 0 && characteristic.id != "000000002" && characteristic.id != "000000003" && characteristic.id != "000000004")
+        return (characteristic.type != 0 && characteristic.id != "000000001" && characteristic.id != "000000002" && characteristic.id != "000000003" && characteristic.id != "000000004")
       })
       console.log(characteristics);
       return characteristics;
