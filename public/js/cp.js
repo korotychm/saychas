@@ -356,9 +356,9 @@ const ProductEdit = {
                             <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                               <div class="multiple-input">
-                                <div v-for="(value, index) in characteristic.value" class="multiple-input__item">
-                                  <input type="text" class="input input--multiple" v-model="characteristic.value[index]"/>
-                                  <div class="multiple-input__del">
+                                <div v-for="(value, idx) in characteristic.value" class="multiple-input__item">
+                                  <input type="text" class="input input--multiple" v-model="characteristic.value[idx]"/>
+                                  <div class="multiple-input__del" @click="deleteValue(index,idx)">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -369,7 +369,7 @@ const ProductEdit = {
                                   </div>
                                 </div>
                               </div>
-                              <button class="btn btn--secondary multiple-input__add">Добавить значение</button>
+                              <button class="btn btn--secondary multiple-input__add" @click="addValue(index)">Добавить значение</button>
                             </div>
                             <input v-if="characteristic.type == 2" type="number" class="input input--number" v-model="characteristic.value"/>
                             <label v-if="characteristic.type == 3" class="boolean">
@@ -624,6 +624,13 @@ const ProductEdit = {
       this.selectedCountryId = id;
       this.countrySearch = value;
       this.selectedCountryName = value;
+    },
+    delValue(characteristicIndex,valueIndex){
+      if (this.product.characteristics[characteristicIndex].value.length > 1){
+        this.product.characteristics[characteristicIndex].value.splice(valueIndex, 1);
+      } else {
+        this.product.characteristics[characteristicIndex].value[0] = '';
+      }
     }
   },
   created: function(){
@@ -1003,14 +1010,14 @@ $(document).mouseup(function(e)
     }
 });
 
-$(document).on('click','.multiple-input__del',function(){
-  if ($(this).parent().parent().find('.multiple-input__item').length > 1){
-    $(this).parent().remove();
-  } else {
-    $(this).parent().find('input').val('');
-  }
-});
-$(document).on('click','.multiple-input__add',function(){
-  $(this).parent().find('.multiple-input__item').eq(0).clone().appendTo($(this).parent().find('.multiple-input'));
-  $(this).parent().find('.multiple-input__item:last-child input').val('');
-});
+// $(document).on('click','.multiple-input__del',function(){
+//   if ($(this).parent().parent().find('.multiple-input__item').length > 1){
+//     $(this).parent().remove();
+//   } else {
+//     $(this).parent().find('input').val('');
+//   }
+// });
+// $(document).on('click','.multiple-input__add',function(){
+//   $(this).parent().find('.multiple-input__item').eq(0).clone().appendTo($(this).parent().find('.multiple-input'));
+//   $(this).parent().find('.multiple-input__item:last-child input').val('');
+// });
