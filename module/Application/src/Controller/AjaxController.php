@@ -523,24 +523,19 @@ class AjaxController extends AbstractActionController
         $return = ["error" => true, "count" => 0];
         $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
-        if (empty($return['productId'] = $productId = $post->product))
+        if (!empty($return['productId'] = $productId = $post->product))
         {
-            return new JsonModel($return);
-        }
-        
-       
             $return['error'] = false;
-            
-                $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-                $basketItemTotal = (int) $basketItem->getTotal();
-                $basketItem->setUserId($userId);
-                $basketItem->setProductId($productId);
-                $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-                $productaddPrice = (int) $productadd->getPrice();
-                $basketItem->setPrice($productaddPrice);
-                $basketItem->setTotal($basketItemTotal + 1);
-                $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-            
+            $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+            $basketItemTotal = (int) $basketItem->getTotal();
+            $basketItem->setUserId($userId);
+            $basketItem->setProductId($productId);
+            $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
+            $productaddPrice = (int) $productadd->getPrice();
+            $basketItem->setPrice($productaddPrice);
+            $basketItem->setTotal($basketItemTotal + 1);
+            $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+        }    
             $where = new Where();
             $where->equalTo('user_id', $userId);
             $where->equalTo('order_id', 0);

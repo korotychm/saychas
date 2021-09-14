@@ -164,6 +164,7 @@ class IndexController extends AbstractActionController
             //'username' => $userInfo['name'],
             //'userphone' => $userInfo['phone'],
             'mainMenu' => $mainMenu,
+            'basketProductsCount' => $this->commonHelperFuncions->basketProductsCount($userId),
         ]);
         return $response;
     }
