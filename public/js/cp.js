@@ -961,5 +961,5 @@ $(document).on('click','.multiple-input__del',function(){
 });
 $(document).on('click','.multiple-input__add',function(){
   $(this).parent().find('.multiple-input__item').eq(0).clone().appendTo($(this).parent().find('.multiple-input'));
-  $(this).parent().find('.multiple-input__item:las-child input').val('');
+  $(this).parent().find('.multiple-input__item:last-child input').val('');
 });
