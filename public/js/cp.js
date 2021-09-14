@@ -339,6 +339,10 @@ const ProductEdit = {
                                 </label>
                             </div>
                       </div>
+                      <div class="product__attribute">
+                          <h2>Описание товара</h2>
+                          <textarea class="textarea" :value="product.description"></textarea>
+                      </div>
                       <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                       <div class="product__additional-attributes">
                         <div v-for="characteristic in characteristics" class="product__attribute product__attribute--short">

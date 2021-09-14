@@ -167,7 +167,12 @@ class ProductController extends AbstractActionController
 
     private function canUpdateProduct($params)
     {
-        return true;
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
+        $result = $this->productManager->updateServerDocument($credentials, []);
+        $res = $result['http_code'] === '200' && $result['data']['result'] === true;
+        return $res;
     }
 
     private function canDeleteProduct($params)
@@ -182,6 +187,7 @@ class ProductController extends AbstractActionController
 //            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
 //            'set' => ['characteristics.$.value' => '0.1345']
 //        ]);
+        
         if ($this->canUpdateProduct($post)) {
             $result = $this->productManager->updateDocument([
                 'where' => ['id' => $post['product_id']],
@@ -194,8 +200,9 @@ class ProductController extends AbstractActionController
                 ],
             ]);
         }
+        exit;
         //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
-        return $result;
+        //return $result;
     }
 
 }

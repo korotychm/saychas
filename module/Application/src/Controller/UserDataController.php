@@ -238,7 +238,7 @@ class UserDataController extends AbstractActionController
 //          }
           /* */
 
-        $deck=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        $deck=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         shuffle($deck);
         $output = array_slice($deck, 0, $length);
         $code = join('', $output);
