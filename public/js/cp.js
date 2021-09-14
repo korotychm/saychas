@@ -527,6 +527,26 @@ const ProductEdit = {
     saveProduct() {
       let requestUrl = '/control-panel/save-product';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let characteristics = this.product.characteristics;
+      for (characteristic of characteristics){
+        delete characteristic.characteristic_name;
+        delete characteristic.real_value;
+        delete characteristic.is_title;
+        delete characteristic.title;
+        delete characteristic.available_values;
+        // Страна
+        if (characteristic.id == '000000001'){
+          characteristic.value = this.selectedCountryId;
+        }
+        // Бренд
+        if (characteristic.id == '000000003'){
+          characteristic.value = this.selectedBrandId;
+        }
+        // Цвет
+        if (characteristic.id == '000000004'){
+          characteristic.value = this.product.color_id;
+        }
+      }
       let request = {
         id : this.product.id,
         brand_id: this.selectedBrandId,
@@ -535,7 +555,7 @@ const ProductEdit = {
         country_id: this.selectedCountryId,
         description: this.product.description,
         title: this.product.title,
-        characteristics: this.product.characteristics,
+        characteristics: characteristics,
         images: this.product.images
       }
       console.log(request);
@@ -1012,15 +1032,3 @@ $(document).mouseup(function(e)
         container.parent().removeClass('active');
     }
 });
-
-// $(document).on('click','.multiple-input__del',function(){
-//   if ($(this).parent().parent().find('.multiple-input__item').length > 1){
-//     $(this).parent().remove();
-//   } else {
-//     $(this).parent().find('input').val('');
-//   }
-// });
-// $(document).on('click','.multiple-input__add',function(){
-//   $(this).parent().find('.multiple-input__item').eq(0).clone().appendTo($(this).parent().find('.multiple-input'));
-//   $(this).parent().find('.multiple-input__item:last-child input').val('');
-// });
