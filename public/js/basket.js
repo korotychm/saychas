@@ -443,7 +443,7 @@ function sendBasketData() {
         success: function (data) {
             //console.log(data)
             //showServicePopupWindow("Формируем заказ...", JSON.stringify(data));
-            showServicePopupWindow("Формируем заказ...", clockTemplate);
+            showServicePopupWindow("Формируем заказ...", clockTemplate, "", true);
             if (data.result == true) {
                 //    location = "/client-orders";
                 //console.log(data);
