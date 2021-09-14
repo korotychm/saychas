@@ -953,10 +953,10 @@ $(document).mouseup(function(e)
 });
 
 $(document).on('click','.multiple-input__del',function(){
-  if ($(this).parent().find('.multiple-input__item').length > 1){
+  if ($(this).parent().parent().find('.multiple-input__item').length > 1){
     $(this).parent().remove();
   } else {
-    $(this).val('');
+    $(this).parent().find('input').val('');
   }
 });
 $(document).on('click','.multiple-input__add',function(){
