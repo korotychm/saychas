@@ -628,6 +628,7 @@ const ProductEdit = {
     deleteValue(characteristicIndex,valueIndex){
       if (this.product.characteristics[characteristicIndex].value.length > 1){
         this.product.characteristics[characteristicIndex].value.splice(valueIndex, 1);
+        console.log(this.product.characteristics[characteristicIndex].value);
       } else {
         this.product.characteristics[characteristicIndex].value[0] = '';
       }
