@@ -167,6 +167,7 @@ class ProductController extends AbstractActionController
 
     private function canUpdateProduct($params)
     {
+        $this->productManager->updateServerDocument($params);
         return true;
     }
 
