@@ -172,7 +172,7 @@ class ProductController extends AbstractActionController
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
         $result = $this->productManager->updateServerDocument($credentials, []);
         $res = $result['http_code'] === '200' && $result['data']['result'] === true;
-        return $res;
+        return true;// $res;
     }
 
     private function canDeleteProduct($params)
@@ -183,24 +183,31 @@ class ProductController extends AbstractActionController
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
+        $product = $post['product'];
+        if($this->canUpdateProduct($product)) {
+//            $this->productManager->updateDocument([
+//                'where' => ['id' => $product['id']],
+//                'set' => 
+//            ]);
+        }
 //        $result = $this->productManager->updateDocument([
 //            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
 //            'set' => ['characteristics.$.value' => '0.1345']
 //        ]);
         
-        if ($this->canUpdateProduct($post)) {
-            $result = $this->productManager->updateDocument([
-                'where' => ['id' => $post['product_id']],
-                'set' => [
-                    'category_id' => $post['category_id'],
-                    'brand_id' => $post['brand_id'],
-                    'color' => $post['color'],
-                    'country' => $post['country'],
-                    'title' => $post['title']
-                ],
-            ]);
-        }
-        exit;
+//        if ($this->canUpdateProduct($post)) {
+//            $result = $this->productManager->updateDocument([
+//                'where' => ['id' => $post['product_id']],
+//                'set' => [
+//                    'category_id' => $post['category_id'],
+//                    'brand_id' => $post['brand_id'],
+//                    'color' => $post['color'],
+//                    'country' => $post['country'],
+//                    'title' => $post['title']
+//                ],
+//            ]);
+//        }
+//        exit;
         //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
         //return $result;
     }
