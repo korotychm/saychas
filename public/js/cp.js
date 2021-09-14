@@ -288,7 +288,7 @@ const ProductEdit = {
                       </div>
                   </div>
                   <div class="product__info">
-                      <div class="product__attribute">
+                      <div class="product__attribute  product__attribute--short">
                           <h2>Страна производства</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
@@ -306,7 +306,7 @@ const ProductEdit = {
                                 </div>
                             </div>
                       </div>
-                      <div class="product__attribute">
+                      <div class="product__attribute product__attribute--short">
                           <h2>Бренд</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
