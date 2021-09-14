@@ -348,6 +348,10 @@ const ProductEdit = {
                             </select>
                             <input v-if="characteristic.type == 1" type="text" class="input" :value="characteristic.value"/>
                             <input v-if="characteristic.type == 2" type="number" class="input input--number" :value="characteristic.value"/>
+                            <label v-if="characteristic.type == 3" class="boolean">
+                              <input type="checkbox" name="" :value="characteristic.value" :checked="characteristic.value">
+                              <span class="boolean__check"></span>
+                            </label>
                         </div>
                       </div>
                       <div class="product__images">
