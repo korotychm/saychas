@@ -306,14 +306,14 @@ class AcquiringController extends AbstractActionController
     {
         $jsonData = file_get_contents('php://input');    
         mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
-        /*$postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
+       $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
         if ($postData["ErrorCode"] == "0"){
             $order = ClientOrder::find(["order_id" => $postData["OrderId"]]); 
             if (!empty($order)){
                     $order->setPaymentInfo($jsonData);
                     $order->persist(["order_id" => $postData["OrderId"]]);
             }        
-       if (!empty($postData["CardId"]) and !empty($postData["OrderId"]) and  !empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))){
+       /*if (!empty($postData["CardId"]) and !empty($postData["OrderId"]) and  !empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))){
                    
                        $postData['user']=$userId = $clientOrder->getUserId();
                        if (!empty($postData["CardId"] and !empty($postData["Pan"]))) {
@@ -321,8 +321,9 @@ class AcquiringController extends AbstractActionController
                             $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time());
                             $userPaycard->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);    
                        }
-            } 
-           $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
+            } */
+        
+        $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
         }
         mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту*/
         $response = new Response();
