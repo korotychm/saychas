@@ -217,7 +217,7 @@ class UserDataController extends AbstractActionController
      * @param int $length
      * @return string
      */
-    private function generateRegistrationCode($phone, $length = 5)
+    private function generateRegistrationCode($phone, $length = 4)
     {
 
         /** @var $phone */
@@ -229,19 +229,19 @@ class UserDataController extends AbstractActionController
 //        $code = 7777; // simulate generation
 //        
 //        /* *///real generation
-          $code ="";
-          $lenght=($lenght<1 and $lenght>9)?$lenght:4;
-          $suffle=[0,1,3,4,5,6,7,8,9];
-          shuffle($suffle);
-          for ($i=0; $i < $length; $i++ ){
-          $code.=$suffle[$i];
-          }
+//          $code ="";
+//          $lenght=($lenght<1 and $lenght>9)?$lenght:4;
+//          $suffle=[0,1,3,4,5,6,7,8,9];
+//          shuffle($suffle);
+//          for ($i=0; $i < $length; $i++ ){
+//          $code.=$suffle[$i];
+//          }
           /* */
 
-//        $deck=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-//        shuffle($deck);
-//        $output = array_slice($deck, 0, $length);
-//        $code = join('', $output);
+        $deck=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        shuffle($deck);
+        $output = array_slice($deck, 0, $length);
+        $code = join('', $output);
 
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code, 'live' => (time() + 60)];
@@ -454,14 +454,14 @@ class UserDataController extends AbstractActionController
         $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
 
         $post = $this->getRequest()->getPost();
-        if ($goStepOne = $post->goStepOne) {
+        if (!empty($goStepOne = $post->goStepOne)) {
             unset($container->userAutTmpSession);
             unset($container->userPhoneIdentity);
         } else {
             //$print_r = $post;
             $return['phone'] = $post->userPhone;
             $return['name'] = $post->userNameInput;
-            $code = $post->userSmsCode;
+            //$post->userSmsCode;
             $container = new Container(Resource::SESSION_NAMESPACE);
             $buttonLable = Resource::BUTTON_LABLE_ENTER;
 
@@ -482,7 +482,7 @@ class UserDataController extends AbstractActionController
                         //$print_r = $userGeodata = $usdat->getGeodata();
                         //exit ($userGeodata);
                     }*/
-                    if ($post->forgetPassHidden) {
+                    if (!empty($post->forgetPassHidden)) {
 
                         // exit (print_r($user));
                         $userAutSession["passforget"] = 1;
@@ -544,7 +544,7 @@ class UserDataController extends AbstractActionController
                                     unset($container->userPhoneIdentity);
                                     return new JsonModel(["reload" => true]);
                                 } else {
-                                    $error["1c"] = $answer['errorDescription'] . "!";
+                                    $error["1c"] = $response['errorDescription'] . "!";
                                 }
                             }
                         }
@@ -565,7 +565,7 @@ class UserDataController extends AbstractActionController
 
                                 // получение магазинов
                                 if (!empty($userGeodata)) {
-                                    $print_r = $this->commonHelperFuncions->updateLegalStores($userGeodata);
+                                    $this->commonHelperFuncions->updateLegalStores($userGeodata);
                                 }
                                 unset($container->userAutSession);
                                 unset($container->userPhoneIdentity);
@@ -631,7 +631,8 @@ class UserDataController extends AbstractActionController
                             ];
 
                             //$print_r =  $user_Id = $container->userIdentity;
-                            $answer = $this->externalCommunicationService->setClientInfo($paramsFor1c);
+                             $response = $this->externalCommunicationService->setClientInfo($paramsFor1c);
+                             $answer =  !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
 
                             if (!$answer["result"]) {
                                 $error["1c"] = $answer['errorDescription'];
