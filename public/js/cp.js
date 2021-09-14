@@ -960,6 +960,5 @@ $(document).on('click','.multiple-input__del',function(){
   }
 });
 $(document).on('click','.multiple-input__add',function(){
-  $(this).parent().find('.multiple-input__item').eq(0).clone().appendTo($(this).parent().find('.multiple-input'));
-  $(this).parent().find('.multiple-input__item:last-of-type').val('');
+  $(this).parent().find('.multiple-input__item').eq(0).clone().appendTo($(this).parent().find('.multiple-input')).val('');
 });
