@@ -109,7 +109,6 @@
   font-size: 16px;
   margin: 5px 0 0 25px;
   color: var(--gray2);
-  white-space: nowrap;
 }
 .auth-reg__input-group__input p.error {
   color: var(--red);
