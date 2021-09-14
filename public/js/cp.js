@@ -629,7 +629,7 @@ const ProductEdit = {
       if (this.product.characteristics[characteristicIndex].value.length > 1){
         this.product.characteristics[characteristicIndex].value.splice(valueIndex, 1);
       } else {
-        vm.$set(this.product.characteristics[characteristicIndex].value, 0, '')
+        Vue.set(this.product.characteristics[characteristicIndex].value, 0, '')
       }
     }
   },
