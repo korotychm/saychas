@@ -606,3 +606,34 @@
       position absolute
       left 0
       bottom -30px
+
+@keyframes top-clip {
+	0%{}
+	50%{transform: translateY(21px);}
+	100%{transform: translateY(21px);}
+}
+
+@keyframes bottom-sand-path {
+	0%{}
+	50%{transform: translateY(0);}
+	100%{transform: translateY(0);}
+}
+
+@keyframes bottom-sand-g {
+	0%{}
+	85%{transform: translateY(0);}
+	100%{transform: translateY(-9px);}
+}
+
+@keyframes hourglass-rotation {
+	50%{transform: rotateZ(0);}
+	100%{transform: rotateZ(180deg);}
+}
+
+.waiting
+  width 500px
+  height 400px
+  margin auto
+  display flex
+  align-items center
+  justify-content center

@@ -722,3 +722,139 @@
   left: 0;
   bottom: -30px;
 }
+.waiting {
+  width: 500px;
+  height: 400px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@-moz-keyframes top-clip {
+  50% {
+    transform: translateY(21px);
+  }
+  100% {
+    transform: translateY(21px);
+  }
+}
+@-webkit-keyframes top-clip {
+  50% {
+    transform: translateY(21px);
+  }
+  100% {
+    transform: translateY(21px);
+  }
+}
+@-o-keyframes top-clip {
+  50% {
+    transform: translateY(21px);
+  }
+  100% {
+    transform: translateY(21px);
+  }
+}
+@keyframes top-clip {
+  50% {
+    transform: translateY(21px);
+  }
+  100% {
+    transform: translateY(21px);
+  }
+}
+@-moz-keyframes bottom-sand-path {
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-webkit-keyframes bottom-sand-path {
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-o-keyframes bottom-sand-path {
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes bottom-sand-path {
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@-moz-keyframes bottom-sand-g {
+  85% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-9px);
+  }
+}
+@-webkit-keyframes bottom-sand-g {
+  85% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-9px);
+  }
+}
+@-o-keyframes bottom-sand-g {
+  85% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-9px);
+  }
+}
+@keyframes bottom-sand-g {
+  85% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-9px);
+  }
+}
+@-moz-keyframes hourglass-rotation {
+  50% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
+}
+@-webkit-keyframes hourglass-rotation {
+  50% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
+}
+@-o-keyframes hourglass-rotation {
+  50% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
+}
+@keyframes hourglass-rotation {
+  50% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
+}
