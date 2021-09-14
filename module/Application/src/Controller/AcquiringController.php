@@ -297,9 +297,6 @@ class AcquiringController extends AbstractActionController
         
     }
     
-    
-    
-    
     /*
      * get post json
      * @return response
