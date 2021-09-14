@@ -525,13 +525,12 @@ const ProductEdit = {
       this.selectedCategoryId = this.product.category_id;
     },
     saveProduct() {
-      let requestUrl = '/control-panel/save-product';
+      let requestUrl = '/control-panel/update-product';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let characteristics = this.product.characteristics;
       for (characteristic of characteristics){
         delete characteristic.characteristic_name;
         delete characteristic.real_value;
-        delete characteristic.is_title;
         delete characteristic.title;
         delete characteristic.available_values;
         // Страна
@@ -559,28 +558,20 @@ const ProductEdit = {
         images: this.product.images
       }
       console.log(request);
-      // axios
-      //   .post(requestUrl,
-      //     Qs.stringify({
-      //       id : this.product.id,
-      //       brand_id: this.selectedBrandId,
-      //       category_id: this.selectedCategoryId,
-      //       color_id: '',
-      //       country_id: this.selectedCountryId,
-      //       description: '',
-      //       title: product.title,
-      //       characteristics: [],
-      //       images: []
-      //     }),{headers})
-      //     .then(response => {
-      //
-      //     })
-      //     .catch(error => {
-      //       if (error.response.status == '403'){
-      //         this.editable = false;
-      //         $('.main__loader').hide();
-      //       }
-      //     });
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            product : request
+          }),{headers})
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              this.editable = false;
+              $('.main__loader').hide();
+            }
+          });
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product';
