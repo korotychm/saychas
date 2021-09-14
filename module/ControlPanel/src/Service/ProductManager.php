@@ -292,10 +292,10 @@ class ProductManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
-    public function updateServerDocument($content)
+    public function updateServerDocument($headers, $content = [])
     {
         $url = $this->config['parameters']['1c_provider_links']['lk_update_product'];
-        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content);
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }
 
