@@ -631,6 +631,9 @@ const ProductEdit = {
       } else {
         Vue.set(this.product.characteristics[characteristicIndex].value, 0, '')
       }
+    },
+    addValue(characteristicIndex){
+      this.product.characteristics[characteristicIndex].value.push('');
     }
   },
   created: function(){
