@@ -520,6 +520,29 @@ const ProductEdit = {
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
     },
+    saveProduct() {
+      let requestUrl = '/control-panel/save-product';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            id : this.product.id,
+            brand_id: this.selectedBrandId,
+            category_id: this.selectedCategoryId,
+            color_id: '',
+            country_id: this.selectedCountryId,
+            description: ''
+          }),{headers})
+          .then(response => {
+
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              this.editable = false;
+              $('.main__loader').hide();
+            }
+          });
+    },
     getProduct() {
       let requestUrl = '/control-panel/edit-product';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };

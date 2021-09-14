@@ -36,6 +36,10 @@ function sendauthformmodal(data = false) {
     return false;
 }
 
+$(document).on('click','#oneMoreSms',function(){
+  sendauthformmodal({"goStepOne": "1"});
+});
+
 $(document).ready(function () {
 
     $("#userAuthModalForm").on("click", "#goStepOne", function () {
