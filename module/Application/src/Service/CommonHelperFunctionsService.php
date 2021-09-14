@@ -10,8 +10,8 @@ use Laminas\Json\Json;
 use Laminas\Session\Container;
 use Application\Resource\Resource;
 use Application\Model\Entity\ProductFavorites;
-/*use Application\Model\Entity\Basket;
-use Application\Model\Entity\ClientOrder;
+use Application\Model\Entity\Basket;
+/*use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\Product;*/
@@ -153,6 +153,10 @@ class CommonHelperFunctionsService
         }
         return  false; 
     }
-
+    
+    public function basketProductsCount($userId)
+    {
+        return Basket::findAll(["where" => ["user_id" => $userId, "order_id" => 0]])->count();
+    }
   
 }
