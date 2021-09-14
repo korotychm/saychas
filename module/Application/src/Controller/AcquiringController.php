@@ -306,7 +306,16 @@ class AcquiringController extends AbstractActionController
     {
         $jsonData = file_get_contents('php://input');    
         mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
-       $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
+       $postData = [];
+        if(!empty($jsonData)){
+           try {
+             $postData = Json::decode($jsonData, Json::TYPE_ARRAY);
+            } catch (\Throwable $ex) {
+                
+                $postData = ["result" => false, 'error' => $ex->getMessage()];
+            }
+         }
+       
         if ($postData["ErrorCode"] == "0"){
             $order = ClientOrder::find(["order_id" => $postData["OrderId"]]); 
             if (!empty($order)){

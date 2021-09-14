@@ -454,6 +454,10 @@ class UserDataController extends AbstractActionController
         $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
 
         $post = $this->getRequest()->getPost();
+        if ($post->recall == '1' ){
+          unset($container->userPhoneIdentity);
+        }   
+        
         if (!empty($goStepOne = $post->goStepOne)) {
             unset($container->userAutTmpSession);
             unset($container->userPhoneIdentity);
@@ -494,9 +498,11 @@ class UserDataController extends AbstractActionController
                         $forgetPassInput = ($post->forgetPassInput == null) ? "" : $post->forgetPassInput;
                         $forgetPassInput2 = $post->forgetPassInput2;
                         $buttonLable = Resource::BUTTON_LABLE_PASS_CHANGE;
+                        
                         $userPhoneIdentity = $container->userPhoneIdentity;
+                        
                         $codeExist = $userPhoneIdentity['code'];
-
+                        
                         if (!$codeExist) {
                             $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                            // if (!$codeSendAnswer['result']) {
@@ -580,7 +586,7 @@ class UserDataController extends AbstractActionController
                     $UserBlock = true;
                     $buttonLable = Resource::BUTTON_LABLE_REGISTER;
                     $userPhoneIdentity = $container->userPhoneIdentity;
-                    $codeExist = $userPhoneIdentity['code'];
+                    $codeExist = (empty($userPhoneIdentity)) ? false : $userPhoneIdentity['code'];
 
                     if (!$codeExist) {
                         //$print_r =
