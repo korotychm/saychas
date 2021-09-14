@@ -799,27 +799,36 @@ class AjaxController extends AbstractActionController
         $columns = ['product_id'];
         $inValue = [];
         $subWhere = new Where();
-
+        $setOr = false;
         foreach ($allCahrs as $found) {
+            if ($setOr) {
+                $subWhere->or;
+            }
+            //subWhere->nest();
             $type = $found->getType();
             $value = $found->getValue();
+            $subWhere->equalTo('characteristic_id', $found->getCharacteristicId());
+            $subWhere->equalTo('product_id', $found->getProductId());
             switch ($type) {
                 case CharacteristicRepository::INTEGER_TYPE:
                     //reset($value);
                     list($min, $max) = explode(';', $value );
                     $subWhere->lessThanOrEqualTo('value', $max)->greaterThanOrEqualTo('value', $min);
-                 break;
+                 //break;
                 case CharacteristicRepository::BOOL_TYPE:
                     $subWhere->equalTo('value', $value);
-                break;
+                //break;
                 default:
                     $inValue[] = $value;//
-                break;
+                //break;
+            
             }
             
+            //$subWhere->unnest();
+            $setOr = true;
         }
-        if (!empty($inValue)) $subWhere->in('value', $inValue);
-        $subQuery = ProductCharacteristic::findAll(["where" => $subWhere, "columns" => $columns])->toArray();
+        //if (!empty($inValue)) $subWhere->in('value', $inValue);
+        $subQuery = ProductCharacteristic::findAll(["where" => $subWhere, "columns" => $columns]);//->toArray();
         exit(print_r($subQuery));
         //$where->in('product_id', $subQuery);
         return $where;
