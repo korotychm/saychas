@@ -347,7 +347,7 @@ const ProductEdit = {
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
                             </select>
                             <div v-if="characteristic.type == 1">
-                              <input v-if="!characteristic.value.isArray()" type="text" class="input" :value="characteristic.value"/>
+                              <input v-if="!characteristic.value.isArray" type="text" class="input" :value="characteristic.value"/>
                             </div>
                             <input v-if="characteristic.type == 2" type="number" class="input input--number" :value="characteristic.value"/>
                             <label v-if="characteristic.type == 3" class="boolean">
