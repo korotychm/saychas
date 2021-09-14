@@ -434,7 +434,7 @@ function checkBasketDataBeforeSend() {
 function sendBasketData() {
     $.ajax({
         beforeSend: function () {
-            showServicePopupWindow("Отправка данных о заказе", "....");
+            showServicePopupWindow("Отправляем заказ...", clockTemplate, "", true);
         },
         url: "/send-basket-data",
         type: 'POST',
