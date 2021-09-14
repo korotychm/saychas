@@ -356,8 +356,8 @@ const ProductEdit = {
                             <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                               <div class="multiple-input">
-                                <div v-for="value in characteristic.value" class="multiple-input__item">
-                                  <input type="text" class="input input--multiple" :value="value" v-model="characteristic.value[]"/>
+                                <div v-for="(value, index) in characteristic.value" class="multiple-input__item">
+                                  <input type="text" class="input input--multiple" v-model="characteristic.value[index]"/>
                                   <div class="multiple-input__del">
                                     <svg
                                     xmlns="http://www.w3.org/2000/svg"
