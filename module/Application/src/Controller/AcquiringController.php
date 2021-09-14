@@ -305,8 +305,8 @@ class AcquiringController extends AbstractActionController
     public function tinkoffCallbackAction()
     {
         $jsonData = file_get_contents('php://input');    
-        //mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
-        $postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
+        mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
+        /*$postData = (!empty($jsonData))?Json::decode($jsonData, Json::TYPE_ARRAY):[];
         if ($postData["ErrorCode"] == "0"){
             $order = ClientOrder::find(["order_id" => $postData["OrderId"]]); 
             if (!empty($order)){
@@ -324,7 +324,7 @@ class AcquiringController extends AbstractActionController
             } 
            $postData['answer_1с']=$this->externalCommunication->sendOrderPaymentInfo($postData);
         }
-        mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту
+        mail("d.sizov@saychas.ru", "tinkoff.log", print_r($postData, true)); // лог на почту*/
         $response = new Response();
         $response->setStatusCode(Response::STATUS_CODE_200)->setContent('OK');
         return $response;
