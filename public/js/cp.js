@@ -347,6 +347,21 @@ const ProductEdit = {
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
                             </select>
                             <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" :value="characteristic.value"/>
+                            <div class="multiple-input">
+                              <div v-for="value in characteristic.value" class="multiple-input__item">
+                                <input type="text" class="input input--multiple" :value="characteristic.value"/>
+                                <div class="multiple-input__del">
+                                  <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                                  width="19px" height="17px">
+                                  <path fill-rule="evenodd"  fill="currentColor"
+                                  d="M18.230,4.736 L17.308,4.736 L15.96,16.370 C15.9,16.757 14.713,17.2 14.325,17.2 L4.674,17.2 C4.286,17.2 3.990,16.757 3.901,16.362 L1.691,4.736 L0.768,4.736 C0.338,4.736 0.1,4.406 0.1,3.983 C0.1,3.561 0.338,3.231 0.768,3.231 L6.361,3.231 L6.361,2.67 C6.361,0.927 7.306,0.0 8.467,0.0 L10.476,0.0 C11.637,0.0 12.582,0.927 12.582,2.67 L12.582,3.231 L18.175,3.231 C18.590,3.231 18.998,3.603 18.998,3.983 C18.998,4.406 18.661,4.736 18.230,4.736 ZM11.48,2.67 C11.48,1.787 10.791,1.560 10.476,1.560 L8.467,1.560 C8.152,1.560 7.895,1.787 7.895,2.67 L7.895,3.231 L11.48,3.231 L11.48,2.67 ZM3.272,4.736 L5.313,15.496 L13.629,15.496 L15.728,4.736 L3.272,4.736 ZM11.424,13.59 L11.368,13.59 C11.172,13.59 10.981,12.974 10.844,12.826 C10.704,12.674 10.636,12.473 10.656,12.275 L10.936,7.501 C10.977,7.97 11.291,6.785 11.665,6.785 C11.688,6.785 11.712,6.786 11.735,6.788 L11.747,6.790 L11.759,6.790 C11.955,6.790 12.146,6.875 12.283,7.23 C12.423,7.175 12.491,7.376 12.471,7.574 L12.192,12.348 C12.191,12.766 11.869,13.59 11.424,13.59 ZM7.562,13.59 L7.519,13.59 C7.123,13.59 6.793,12.749 6.751,12.338 L6.473,7.584 C6.427,7.132 6.811,6.828 7.208,6.788 C7.232,6.786 7.255,6.785 7.278,6.785 C7.652,6.785 7.966,7.97 8.8,7.511 L8.286,12.265 C8.312,12.521 8.202,12.696 8.105,12.798 C7.970,12.941 7.773,13.36 7.562,13.59 Z"/>
+                                  </svg>
+                                </div>
+                              </div>
+                              <button class="btn btn--secondary multiple-input__add">Добавить значение</button>
+                            </div>
                             <input v-if="characteristic.type == 2" type="number" class="input input--number" :value="characteristic.value"/>
                             <label v-if="characteristic.type == 3" class="boolean">
                               <input type="checkbox" name="" :value="characteristic.value" :checked="characteristic.value">
