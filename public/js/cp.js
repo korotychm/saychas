@@ -298,7 +298,7 @@ const ProductEdit = {
                                     <div v-if="(countrySearch && filteredCountries.length)">
                                       <label v-for="country in filteredCountries">
                                         <input type="radio" name="suggest" :checked="(country.id == selectedCountryId)" />
-                                        <span class="search-select__suggestion" @click="selectBrand(country.id, country.title)">
+                                        <span class="search-select__suggestion" @click="selectCountry(country.id, country.title)">
                                           <span>{{ country.title }}</span>
                                         </span>
                                       </label>
@@ -615,6 +615,11 @@ const ProductEdit = {
       this.selectedBrandId = id;
       this.brandSearch = value;
       this.selectedBrandName = value;
+    },
+    selectCountry(id,value) {
+      this.selectedCountryId = id;
+      this.countrySearch = value;
+      this.selectedCountryName = value;
     }
   },
   created: function(){
