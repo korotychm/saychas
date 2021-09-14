@@ -530,7 +530,7 @@ const ProductEdit = {
         color_id: '',
         country_id: this.selectedCountryId,
         description: '',
-        title: product.title,
+        title: this.product.title,
         characteristics: [],
         images: []
       }
