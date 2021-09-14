@@ -341,7 +341,7 @@ const ProductEdit = {
                       </div>
                       <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                       <div class="product__additional-attributes">
-                        <div v-for="characteristic in characteristics" class="product__attribute">
+                        <div v-for="characteristic in characteristics" class="product__attribute product__attribute--short">
                             <h2>{{ characteristic.characteristic_name }}</h2>
                             <select v-if="characteristic.type == 4" class="select" :value="characteristic.value">
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
