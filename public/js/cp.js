@@ -350,7 +350,7 @@ const ProductEdit = {
                       <div v-for="(characteristic,index) in product.characteristics">
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
                             <h2>{{ characteristic.characteristic_name }}</h2>
-                            <select v-if="characteristic.type == 4" class="select" :value="characteristic.value">
+                            <select v-if="characteristic.type == 4" class="select" v-model="characteristic.value">
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
                             </select>
                             <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" :value="characteristic.value"/>
@@ -535,7 +535,7 @@ const ProductEdit = {
         country_id: this.selectedCountryId,
         description: this.product.description,
         title: this.product.title,
-        characteristics: [],
+        characteristics: this.product.characteristics,
         images: this.product.images
       }
       console.log(request);
