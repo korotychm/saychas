@@ -5,6 +5,7 @@ $(document).on('click', '.user-modal-open', function () {
 function sendauthformmodal(data = false) {
     if (!data)
         data = $("#userAuthModalForm").serialize();
+        console.log(data);
     $.ajax({
         beforeSend: function () {
             $("#user-modal-cover").stop().fadeIn();
