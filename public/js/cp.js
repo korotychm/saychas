@@ -625,7 +625,7 @@ const ProductEdit = {
       this.countrySearch = value;
       this.selectedCountryName = value;
     },
-    delValue(characteristicIndex,valueIndex){
+    deleteValue(characteristicIndex,valueIndex){
       if (this.product.characteristics[characteristicIndex].value.length > 1){
         this.product.characteristics[characteristicIndex].value.splice(valueIndex, 1);
       } else {
