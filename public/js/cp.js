@@ -332,7 +332,7 @@ const ProductEdit = {
                           <h2>Цвет</h2>
                             <div class="product__colors">
                                 <label v-for="color in product.colors" class="color-checkbox">
-                                  <input type="radio" :value="color.id" name="color" :checked="product.color_id == color.id" v-model="selectedColorId">
+                                  <input type="radio" :value="color.id" name="color" :checked="product.color_id == color.id" v-model="product.color_id">
                                   <span class="color-checkbox__check">
                                     <span class="color-checkbox__check-color" :style="{'backgroundColor' : color.value}"></span>
                                   </span>
@@ -453,7 +453,6 @@ const ProductEdit = {
       countrySearch: '',
       selectedCountryId: '',
       selectedCountryName: '',
-      selectedColorId: '',
       product: {}
     }
   },
@@ -528,7 +527,7 @@ const ProductEdit = {
         id : this.product.id,
         brand_id: this.selectedBrandId,
         category_id: this.selectedCategoryId,
-        color_id: '',
+        color_id: this.product.color_id,
         country_id: this.selectedCountryId,
         description: this.product.description,
         title: this.product.title,
