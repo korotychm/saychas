@@ -5,6 +5,7 @@ $(document).on('click', '.user-modal-open', function () {
 function sendauthformmodal(data = false) {
     if (!data)
         data = $("#userAuthModalForm").serialize();
+        console.log(data);
     $.ajax({
         beforeSend: function () {
             $("#user-modal-cover").stop().fadeIn();
@@ -21,6 +22,7 @@ function sendauthformmodal(data = false) {
             }
             $("#user-modal-cover").stop().hide();
             $("#userAuthModalForm").html(data);
+            $(".phoneinput").mask("+7 (999) 999-99-99");
             return false;
         },
         error: function (xhr, ajaxOptions, thrownError) {
