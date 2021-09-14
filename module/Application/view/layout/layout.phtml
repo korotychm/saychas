@@ -105,7 +105,7 @@
                     </div>
                     <div class="header__icons" id="profileblock">
                         <?= $this->partial("/application/index/partials/main-layout/top-user-profile-block", ["userLegal" => $this->userLegal, "username" => $this->username]) ?>
-                        <?= $this->partial("/application/index/partials/main-layout/top-basket-block", ["addressLegal" => $this->addressLegal]) ?>
+                        <?= $this->partial("/application/index/partials/main-layout/top-basket-block", ["addressLegal" => $this->addressLegal, 'count' => $this->basketProductsCount]) ?>
                     </div>
                 </div>
                 <?= $this->partial("/application/common/quick-menu", ["menu" => $this->mainMenu]) ?>
