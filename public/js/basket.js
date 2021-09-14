@@ -378,7 +378,7 @@ function waitingOrderStatusVerification(orderId, idInterval = false) {
         success: function (data) {
             if (data.order_status == 0) {
                 //showServicePopupWindow("Готовим заказ к оплате", "<b>Текущий статус: " + data.order_status + "</b><hr>" + date + "<pre>" + JSON.stringify(data, true, 2) + "</pre>", "", true);
-                showServicePopupWindow("Готовим заказ к оплате", ``, "", true);
+                showServicePopupWindow("Готовим заказ к оплате", clockTemplate, "", true);
             } else {
                 //showServicePopupWindow("Заказ полностью сформирован", "переходим на страницу оплаты", '<button class="changed-products__btn formsendbutton" onclick="orderPayTinkoff(\'' + orderId +'\')">Оплатить заказ</div>');
                 if (idInterval != false) {
