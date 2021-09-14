@@ -68,6 +68,7 @@ return [
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
+                ['actions' => ['updateProduct', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
@@ -219,6 +220,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'edit-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'update-product' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-product',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'update-product',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -483,7 +495,8 @@ return [
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             /** ProductManager; Edit product */
-            'lk_edit_product' => ' http://SRV02:8000/SC/hs/site/lk_edit_product',
+            //'lk_edit_product' => ' http://SRV02:8000/SC/hs/site/lk_edit_product',
+            'lk_update_product' => ' http://SRV02:8000/SC/hs/site/lk_update_product',
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             /** StoreManager link alias */
