@@ -724,7 +724,7 @@
 }
 .waiting {
   width: 500px;
-  height: 400px;
+  height: 200px;
   margin: auto;
   display: flex;
   align-items: center;
