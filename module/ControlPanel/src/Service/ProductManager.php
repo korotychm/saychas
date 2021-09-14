@@ -291,6 +291,11 @@ class ProductManager extends ListManager implements LoadableInterface
         //print_r($updateResult);
         return $updateResult;
     }
+    
+    public function updateProduct($params)
+    {
+        $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content);
+    }
 
     public function findTest()
     {
