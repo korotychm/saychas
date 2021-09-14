@@ -128,6 +128,7 @@ return [
                                 'action' => 'show-list',
                             ],
                             'repository' => \ControlPanel\Service\StoreManager::class,
+                            'is_test' => 'false',
                         ],
                         // 'may_terminate' => true,
                     ],
@@ -140,6 +141,7 @@ return [
                                 'action' => 'show-list-from-cache',
                             ],
                             'repository' => \ControlPanel\Service\StoreManager::class,
+                            'is_test' => 'false',
                         ],
                         // 'may_terminate' => true,
                     ],
@@ -162,6 +164,8 @@ return [
                                 'action' => 'show-list',
                             ],
                             'repository' => \ControlPanel\Service\ProductManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
                         ],
                         // 'may_terminate' => true,
                     ],
@@ -174,9 +178,40 @@ return [
                                 'action' => 'show-list-from-cache',
                             ],
                             'repository' => \ControlPanel\Service\ProductManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'test-show-products' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/test-show-products',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
+                            ],
+                            'repository' => \ControlPanel\Service\ProductManager::class,
+                            'is_test' => 'true',
+                            'prefix' => 'test_',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'test-show-products-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/test-show-products-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\ProductManager::class,
+                            'is_test' => 'true',
+                            'prefix' => 'test_',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'edit-product' => [
                         'type' => Literal::class,
                         'options' => [
