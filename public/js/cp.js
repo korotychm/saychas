@@ -430,7 +430,7 @@ const ProductEdit = {
                           </svg>
                           <span>Вернуться</span>
                         </router-link>
-                        <button class="btn btn--primary">Сохранить изменения</button>
+                        <button class="btn btn--primary" @click="saveProduct">Сохранить изменения</button>
                       </div>
                   </div>
                 </div>
