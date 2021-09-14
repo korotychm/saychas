@@ -326,7 +326,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2>Название товара</h2>
-                          <input class="input" type="text" :value="product.title" />
+                          <input class="input" type="text" v-model="product.title" />
                       </div>
                       <div class="product__attribute">
                           <h2>Цвет</h2>
@@ -341,7 +341,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2>Описание товара</h2>
-                          <textarea class="textarea" :value="product.description"></textarea>
+                          <textarea class="textarea" v-model="product.description"></textarea>
                       </div>
                       <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                       <div class="product__additional-attributes">
@@ -523,25 +523,40 @@ const ProductEdit = {
     saveProduct() {
       let requestUrl = '/control-panel/save-product';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      axios
-        .post(requestUrl,
-          Qs.stringify({
-            id : this.product.id,
-            brand_id: this.selectedBrandId,
-            category_id: this.selectedCategoryId,
-            color_id: '',
-            country_id: this.selectedCountryId,
-            description: ''
-          }),{headers})
-          .then(response => {
-
-          })
-          .catch(error => {
-            if (error.response.status == '403'){
-              this.editable = false;
-              $('.main__loader').hide();
-            }
-          });
+      let request = {
+        id : this.product.id,
+        brand_id: this.selectedBrandId,
+        category_id: this.selectedCategoryId,
+        color_id: '',
+        country_id: this.selectedCountryId,
+        description: '',
+        title: product.title,
+        characteristics: [],
+        images: []
+      }
+      console.log(request);
+      // axios
+      //   .post(requestUrl,
+      //     Qs.stringify({
+      //       id : this.product.id,
+      //       brand_id: this.selectedBrandId,
+      //       category_id: this.selectedCategoryId,
+      //       color_id: '',
+      //       country_id: this.selectedCountryId,
+      //       description: '',
+      //       title: product.title,
+      //       characteristics: [],
+      //       images: []
+      //     }),{headers})
+      //     .then(response => {
+      //
+      //     })
+      //     .catch(error => {
+      //       if (error.response.status == '403'){
+      //         this.editable = false;
+      //         $('.main__loader').hide();
+      //       }
+      //     });
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product';
