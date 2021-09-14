@@ -353,7 +353,7 @@ const ProductEdit = {
                             <select v-if="characteristic.type == 4" class="select" v-model="characteristic.value">
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
                             </select>
-                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" :value="characteristic.value"/>
+                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                               <div class="multiple-input">
                                 <div v-for="value in characteristic.value" class="multiple-input__item">
@@ -371,9 +371,9 @@ const ProductEdit = {
                               </div>
                               <button class="btn btn--secondary multiple-input__add">Добавить значение</button>
                             </div>
-                            <input v-if="characteristic.type == 2" type="number" class="input input--number" :value="characteristic.value"/>
+                            <input v-if="characteristic.type == 2" type="number" class="input input--number" v-model="characteristic.value"/>
                             <label v-if="characteristic.type == 3" class="boolean">
-                              <input type="checkbox" name="" :value="characteristic.value" :checked="characteristic.value">
+                              <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
                               <span class="boolean__check"></span>
                             </label>
                         </div>
