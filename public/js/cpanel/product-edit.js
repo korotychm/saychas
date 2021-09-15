@@ -9,8 +9,8 @@ const ProductEdit = {
                               <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
                               <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
                               <div v-if="(categorySearch && filteredCategories.length)">
-                                <label v-for="category in filteredCategories">
-                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" @change="saveProduct(true)" />
+                                <label v-for="category in filteredCategories" @click="saveProduct(true)">
+                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
                                   <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
                                     <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
                                     <span class="search-select__suggestion-category">{{category.name}}</span>
