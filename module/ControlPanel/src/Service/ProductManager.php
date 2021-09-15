@@ -332,6 +332,69 @@ class ProductManager extends ListManager implements LoadableInterface
         return $product;//->characteristics;
     }
     
+    public function findProduct2($product)
+    {
+//        $product = $this->find(['id' => $productId]);
+//        $provider = Provider::find(['id' => $product['provider_id']]);
+//        $product['provider_name'] = $provider->getTitle();
+//        $product['provider_description'] = $provider->getDescription();
+//        $b = Brand::find(['id' => $product['brand_id']]);
+//        $product['brand_name'] = (null == $b) ? '' : $b->getTitle();
+        $product['brands'] = Brand::findAll([])->toArray();
+        $product['colors'] = Color::findAll([])->toArray();
+        $product['countries'] = Country::findAll([])->toArray();
+        
+        foreach($product->characteristics as &$c) {
+            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
+            switch ($c['type']) {
+                case Resource::HEADER:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::STRING:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::INTEGER:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::BOOLEAN:
+                    $c['real_value'] = $c['value'];
+                    break;
+                case Resource::CHAR_VALUE_REF:
+                    $entity = CharacteristicValue::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['available_values'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::PROVIDER_REF:
+                    $entity = Provider::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+//                    $c['available_providers'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::BRAND_REF:
+                    $entity = Brand::find(['id' => $c['value']]);
+                    $c['title'] = $c['real_value'] = $entity->getTitle();
+//                    $c['available_brands'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::COLOR_REF:
+                    $entity = Color::find(['id' => $c['value']]);
+                    $c['title'] = $entity->getTitle();
+                    $c['real_value'] = $entity->getValue();
+//                    $c['available_colors'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                case Resource::COUNTRY_REF:
+                    $entity = Country::find(['id' => $c['value']]);
+                    $c['title'] = $entity->getTitle();
+                    $c['real_value'] = $entity->getCode();
+//                    $c['available_countries'] = $this->getAvailableCharacteristicValues($c);
+                    break;
+                default:
+                    throw new \Exception('Characteristic of the given type does not exist');
+                    break;
+            }
+        }
+        return $product;//->characteristics;
+    }
+
     public function updateDocument($params)
     {
         $collection = $this->db->{$this->collectionName};
