@@ -11,15 +11,6 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-                // ->prependStylesheet($this->basePath('assets/control-panel/css/index.css'))
-                // ->prependStylesheet($this->basePath('css/cpanel.css'))
-                // ->prependStylesheet($this->basePath('css/style.css'))
-                // ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-                // ->prependStylesheet($this->basePath('css/bs.css'))
-                // ->prependStylesheet($this->basePath('css/treeview.css'))
-                // ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
-                // ->prependStylesheet($this->basePath('css/nouislider.css'))
-                // ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
                 ->prependStylesheet($this->basePath('css/cpanel.min.css?' . time()))
         ?>
 
@@ -30,17 +21,6 @@
 
         <?=
                 $this->inlineScript()
-                // //->prependFile($this->basePath('/js/services.js'))
-                // ->prependFile($this->basePath('assets/js/control-panel/index.js'))
-                // ->prependFile($this->basePath('/js/calendar.js'))
-                // ->prependFile($this->basePath('/js/cpanel.js'))
-                // ->prependFile($this->basePath('/js/nouislider.min.js'))
-                // ->prependFile($this->basePath('/js/nivo.slider.js'))
-                // ->prependFile($this->basePath('js/jquery.treeview.js'))
-                // ->prependFile($this->basePath('js/saychas_z.js?' . time()))
-                // ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
-                // ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
-                // ->prependFile($this->basePath('js/jquery.treeview.async.js'))
                 ->prependFile($this->basePath('js/jquery.js'))
         ?>
     </head>
@@ -165,7 +145,20 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
         <script src="//unpkg.com/vue-router/dist/vue-router.js"></script>
-        <script src="/js/cpanel.min.js"></script>
-        <script src="/js/cp.js"></script>
+        <script src="/js/cpanel/cpanel.min.js"></script>
+        <script src="/js/cpanel/errors.js"></script>
+        <script src="/js/cpanel/orders.js"></script>
+        <script src="/js/cpanel/analytics.js"></script>
+        <script src="/js/cpanel/products.js"></script>
+        <script src="/js/cpanel/product-edit.js"></script>
+        <script src="/js/cpanel/stores.js"></script>
+        <script src="/js/cpanel/store-edit.js"></script>
+        <script src="/js/cpanel/price-list.js"></script>
+        <script src="/js/cpanel/testimonials.js"></script>
+        <script src="/js/cpanel/instructions.js"></script>
+        <script src="/js/cpanel/documents.js"></script>
+        <script src="/js/cpanel/support.js"></script>
+        <script src="/js/cpanel/api-integration.js"></script>
+        <script src="/js/cpanel/settings.js"></script>
     </body>
 </html>
