@@ -50,6 +50,24 @@ const routes = [
     component: ProductAdd
   },
   {
+    name: 'product-add-file',
+    path: '/product-add-file',
+    meta: {
+      h1: 'Добавление товаров',
+      back_route: '/products'
+    },
+    component: ProductAddFile
+  },
+  {
+    name: 'product-add-api',
+    path: '/product-add-api',
+    meta: {
+      h1: 'Загрузка товаров по API',
+      back_route: '/products'
+    },
+    component: ProductAddApi
+  },
+  {
     name: 'store-edit',
     path: '/stores/:id',
     meta: {
