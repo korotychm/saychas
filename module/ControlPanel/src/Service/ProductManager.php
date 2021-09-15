@@ -340,11 +340,12 @@ class ProductManager extends ListManager implements LoadableInterface
 //        $product['provider_description'] = $provider->getDescription();
 //        $b = Brand::find(['id' => $product['brand_id']]);
 //        $product['brand_name'] = (null == $b) ? '' : $b->getTitle();
-        $product['brands'] = Brand::findAll([])->toArray();
-        $product['colors'] = Color::findAll([])->toArray();
-        $product['countries'] = Country::findAll([])->toArray();
+
+//        $product['brands'] = Brand::findAll([])->toArray();
+//        $product['colors'] = Color::findAll([])->toArray();
+//        $product['countries'] = Country::findAll([])->toArray();
         
-        foreach($product->characteristics as &$c) {
+        foreach($product['characteristics'] as &$c) {
             $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
             $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
             switch ($c['type']) {
@@ -362,29 +363,29 @@ class ProductManager extends ListManager implements LoadableInterface
                     break;
                 case Resource::CHAR_VALUE_REF:
                     $entity = CharacteristicValue::find(['id' => $c['value']]);
-                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();
                     $c['available_values'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::PROVIDER_REF:
                     $entity = Provider::find(['id' => $c['value']]);
-                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();
 //                    $c['available_providers'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::BRAND_REF:
                     $entity = Brand::find(['id' => $c['value']]);
-                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();
 //                    $c['available_brands'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::COLOR_REF:
                     $entity = Color::find(['id' => $c['value']]);
-                    $c['title'] = $entity->getTitle();
-                    $c['real_value'] = $entity->getValue();
+                    $c['title'] =  null == $entity ? '' : $entity->getTitle();
+                    $c['real_value'] =  null == $entity ? '' : $entity->getValue();
 //                    $c['available_colors'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::COUNTRY_REF:
                     $entity = Country::find(['id' => $c['value']]);
-                    $c['title'] = $entity->getTitle();
-                    $c['real_value'] = $entity->getCode();
+                    $c['title'] = null == $entity ? '' : $entity->getTitle();
+                    $c['real_value'] =  null == $entity ? '' : $entity->getCode();
 //                    $c['available_countries'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 default:
