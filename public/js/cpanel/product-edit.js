@@ -275,7 +275,7 @@ const ProductEdit = {
         brand_id: this.selectedBrandId,
         category_id: this.selectedCategoryId,
         color_id: this.product.color_id,
-        provider_id: this.product.provider_id
+        provider_id: this.product.provider_id,
         country_id: this.selectedCountryId,
         description: this.product.description,
         title: this.product.title,
