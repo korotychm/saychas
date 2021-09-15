@@ -248,8 +248,9 @@ const ProductEdit = {
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
     },
-    saveProduct() {
+    saveProduct(categoryChange = false) {
       let requestUrl = '/control-panel/update-product';
+      if (categoryChange) requestUrl = '/control-panel/request-category-characteristics';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let characteristics = this.product.characteristics;
       for (characteristic of characteristics){
@@ -348,9 +349,12 @@ const ProductEdit = {
       }
     },
     selectCategory(id,value) {
-      this.selectedCategoryId = id;
-      this.categorySearch = value;
-      this.selectedCategoryName = value;
+      if (id != this.selectedCategoryId){
+        this.selectedCategoryId = id;
+        this.categorySearch = value;
+        this.selectedCategoryName = value;
+        this.saveProduct(true);
+      }
     },
     selectBrand(id,value) {
       this.selectedBrandId = id;

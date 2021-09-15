@@ -2,7 +2,7 @@ const StoreEdit = {
   template: `<div class="cp-container store">
                 <div v-if="editable">
                   <div class="store__fields">
-                    <div class="product__attribute  product__attribute--short">
+                    <div class="product__attribute product__attribute--short">
                       <h2>Название магазина</h2>
                       <input type="text" class="input" />
                     </div>
@@ -27,14 +27,15 @@ const StoreEdit = {
                           <option value="2">Временно не работает</option>
                           <option value="2">Закрыт</option>
                         </select>
-                        <p>Статус устанавливает глобальный режим работы магазина.<br> Для изменения работы в определенные дни - восользуйтесь полями ниже.</p>
+                        <p>Статус устанавливает глобальный режим работы магазина.</p>
+                        <p>Для изменения работы в определенные дни - восользуйтесь полями ниже.</p>
                       </div>
                     </div>
                     <div class="store__timetable">
                       <div class="store__timetable-inputs">
                         <div class="store__timetable-main active">
-                          <div class="product__attribute">
-                            <h2>Рабочие дни</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -44,8 +45,8 @@ const StoreEdit = {
                               </div>
                             </div>
                           </div>
-                          <div class="product__attribute">
-                            <h2>Суббота</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Суббота <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -55,8 +56,8 @@ const StoreEdit = {
                               </div>
                             </div>
                           </div>
-                          <div class="product__attribute">
-                            <h2>Воскресенье</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -66,8 +67,8 @@ const StoreEdit = {
                               </div>
                             </div>
                           </div>
-                          <div class="product__attribute">
-                            <h2>Праздничные дни</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -79,7 +80,14 @@ const StoreEdit = {
                           </div>
                         </div>
                       </div>
+                      <div class="store__calendar">
+                        <v-calendar></v-calendar>
+                        <v-date-picker v-model='selectedDate' />
+                      </div>
                     </div>
+                    <p>Если магазин работает круглосуточно - проставьте с 00:00 до 00:00</p>
+                    <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
+                    <p>Для изменения работы в определенную дату - выберите её на календаре.</p>
                   </div>
                   <div class="product__save-back">
                     <router-link :to="$route.meta.back_route" class="btn btn--secondary">
@@ -97,8 +105,13 @@ const StoreEdit = {
             `,
   data: function () {
     return {
-      editable: true
+      editable: true,
+      selectedDate: null
     }
   },
 
 }
+
+$(document).on('click','.store__timetable-trigger', function(){
+  $(this).parent().parent().toggleClass('closed');
+});
