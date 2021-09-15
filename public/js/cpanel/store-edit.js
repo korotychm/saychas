@@ -19,7 +19,7 @@ const StoreEdit = {
                     </div>
                   </div>
                   <div class="store__fields">
-                    <div class="product__attribute">
+                    <div class="product__attribute product__attribute--short">
                       <h2>Статус работы</h2>
                       <div>
                         <select class="select" value="1">
