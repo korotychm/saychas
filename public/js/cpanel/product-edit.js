@@ -254,7 +254,7 @@ const ProductEdit = {
         requestUrl = '/control-panel/request-category-characteristics';
       }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      let chars = [...this.product.characteristics];
+      let chars = JSON.parse(JSON.stringify(this.product.characteristics));
       for (characteristic of chars){
         delete characteristic.characteristic_name;
         delete characteristic.real_value;
