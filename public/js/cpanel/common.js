@@ -41,6 +41,15 @@ const routes = [
     component: ProductEdit
   },
   {
+    name: 'product-add',
+    path: '/product-add',
+    meta: {
+      h1: 'Добавление товара',
+      back_route: '/products'
+    },
+    component: ProductAdd
+  },
+  {
     name: 'store-edit',
     path: '/stores/:id',
     meta: {
