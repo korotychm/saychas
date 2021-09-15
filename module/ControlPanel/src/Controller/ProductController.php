@@ -165,14 +165,14 @@ class ProductController extends AbstractActionController
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
 
-    private function canUpdateProduct($params)
+    private function canUpdateProduct($product)
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
-        $result = $this->productManager->updateServerDocument($credentials, []);
+        $result = $this->productManager->updateServerDocument($credentials, $product);
         $res = $result['http_code'] === '200' && $result['data']['result'] === true;
-        return true;// $res;
+        return $res;
     }
 
     private function canDeleteProduct($params)
@@ -185,6 +185,9 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $product = $post['product'];
         if($this->canUpdateProduct($product)) {
+//            $this->productManager->fillUpProductHeader($product);
+            $result = $this->productManager->replaceProduct($product);
+
 //            $this->productManager->updateDocument([
 //                'where' => ['id' => $product['id']],
 //                'set' => 

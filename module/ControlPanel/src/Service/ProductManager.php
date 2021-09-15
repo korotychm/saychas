@@ -217,6 +217,52 @@ class ProductManager extends ListManager implements LoadableInterface
         return $result;
     }
     
+    private function array_insert_after($key, array &$array, $new_key, $new_value) {
+      if (array_key_exists($key, $array)) {
+        $new = array();
+        foreach ($array as $k => $value) {
+          $new[$k] = $value;
+          if ($k === $key) {
+            $new[$new_key] = $new_value;
+          }
+        }
+        $array = $new;
+        return $new;
+      }
+      return false;
+    }
+
+    
+    private function fillUpProductHeader(&$product) : void
+    {
+        $provider = Provider::find(['id' => $product['provider_id']]);
+        //$product['provider_name'] = (null == $provider) ? '' : $provider->getTitle();
+        $this->array_insert_after('provider_id', $product, 'provider_name', ( (null == $provider) ? '' : $provider->getTitle() ) );
+        $brand = Brand::find(['id' => $product['brand_id']]);
+        //$product['brand_name'] = (null == $brand) ? '' : $brand->getTitle();
+        $this->array_insert_after('brand_id', $product, 'brand_name', ( (null == $brand) ? '' : $brand->getTitle() ) );
+        $country = Country::find(['id' => $product['country_id']]);
+        //$product['country_name'] = (null == $country) ? '' : $country->getTitle();
+        $this->array_insert_after('country_id', $product, 'country_name', ( (null == $country) ? '' : $country->getTitle() ) );
+        $color = Color::find(['id' => $product['color_id']]);
+        //$product['color_name'] = (null == $color) ? '' : $color->getTitle();
+        $this->array_insert_after('color_id', $product, 'color_name', ( (null == $color) ? '' : $color->getTitle() ) );
+        $category = $this->categoryRepo->findCategory(['id' => $product['category_id']]);
+        //$product['category_name'] = (null == $category) ? '' : $category->getTitle();
+        $this->array_insert_after('category_id', $product, 'category_name', ( (null == $category) ? '' : $category->getTitle() ) );
+    }
+    
+    public function replaceProduct($product)
+    {
+        $this->fillUpProductHeader($product);
+        $collection = $this->db->{$this->collectionName};
+        $updateResult = $collection->replaceOne(
+            ['id' => $product['id']],
+            $product
+        );
+        return ['matched_count' => $updateResult->getMatchedCount(), 'modified_count' => $updateResult->getModifiedCount()];
+    }
+    
     public function findProduct(string $productId)
     {
         $product = $this->find(['id' => $productId]);
@@ -273,7 +319,7 @@ class ProductManager extends ListManager implements LoadableInterface
 //                    $c['available_countries'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 default:
-                    throw new Exception('Characteristic of the given type does not exist');
+                    throw new \Exception('Characteristic of the given type does not exist');
                     break;
             }
         }
