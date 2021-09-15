@@ -248,7 +248,7 @@ const ProductEdit = {
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
     },
-    saveProduct(categoryChange = false) {
+    saveProduct(categoryChange = false, oldCategory = null) {
       let requestUrl = '/control-panel/update-product';
       if (categoryChange) requestUrl = '/control-panel/request-category-characteristics';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -271,10 +271,12 @@ const ProductEdit = {
           characteristic.value = this.product.color_id;
         }
       }
+      let category_in_request = this.selectedCategoryId;
+      if (oldCategory) category_in_request = oldCategory;
       let request = {
         id : this.product.id,
         brand_id: this.selectedBrandId,
-        category_id: this.selectedCategoryId,
+        category_id: category_in_request,
         color_id: this.product.color_id,
         provider_id: this.product.provider_id,
         country_id: this.selectedCountryId,
@@ -288,7 +290,10 @@ const ProductEdit = {
       axios
         .post(requestUrl,
           Qs.stringify({
-            product : request
+            data: {
+              new_category_id: this.selectedCategoryId,
+              product : request
+            }
           }),{headers})
           .then(response => {
             console.log(response);
@@ -350,10 +355,11 @@ const ProductEdit = {
     },
     selectCategory(id,value) {
       if (id != this.selectedCategoryId){
+        let oldCategory = this.selectedCategoryId;
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        this.saveProduct(true);
+        this.saveProduct(true, oldCategory);
       }
     },
     selectBrand(id,value) {
