@@ -194,15 +194,6 @@ const ProductEdit = {
     }
   },
   computed: {
-    // characteristics(){
-    //   if (!this.product.characteristics) return false;
-    //   let characteristics = this.product.characteristics;
-    //   characteristics = characteristics.filter((characteristic) => {
-    //     return (characteristic.type != 0 && characteristic.id != "000000001" && characteristic.id != "000000002" && characteristic.id != "000000003" && characteristic.id != "000000004")
-    //   })
-    //   console.log(characteristics);
-    //   return characteristics;
-    // },
     filteredCategories(){
       if (this.categorySearch.length < 3) return false;
       let categories = this.categoriesFlat;
@@ -284,6 +275,7 @@ const ProductEdit = {
         brand_id: this.selectedBrandId,
         category_id: this.selectedCategoryId,
         color_id: this.product.color_id,
+        provider_id: this.product.provider_id
         country_id: this.selectedCountryId,
         description: this.product.description,
         title: this.product.title,
