@@ -81,7 +81,8 @@ const StoreEdit = {
                         </div>
                       </div>
                       <div class="store__calendar">
-                        
+                        <v-calendar></v-calendar>
+                        <v-date-picker v-model='selectedDate' />
                       </div>
                     </div>
                     <p>Если магазин работает круглосуточно - проставьте с 00:00 до 00:00</p>
@@ -104,7 +105,8 @@ const StoreEdit = {
             `,
   data: function () {
     return {
-      editable: true
+      editable: true,
+      selectedDate: null
     }
   },
 
