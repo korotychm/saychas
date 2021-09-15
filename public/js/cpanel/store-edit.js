@@ -27,14 +27,15 @@ const StoreEdit = {
                           <option value="2">Временно не работает</option>
                           <option value="2">Закрыт</option>
                         </select>
-                        <p>Статус устанавливает глобальный режим работы магазина.<br> Для изменения работы в определенные дни - восользуйтесь полями ниже.</p>
+                        <p>Статус устанавливает глобальный режим работы магазина.</p>
+                        <p>Для изменения работы в определенные дни - восользуйтесь полями ниже.</p>
                       </div>
                     </div>
                     <div class="store__timetable">
                       <div class="store__timetable-inputs">
                         <div class="store__timetable-main active">
-                          <div class="product__attribute">
-                            <h2>Рабочие дни</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -44,8 +45,8 @@ const StoreEdit = {
                               </div>
                             </div>
                           </div>
-                          <div class="product__attribute">
-                            <h2>Суббота</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Суббота <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -55,8 +56,8 @@ const StoreEdit = {
                               </div>
                             </div>
                           </div>
-                          <div class="product__attribute">
-                            <h2>Воскресенье</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -66,8 +67,8 @@ const StoreEdit = {
                               </div>
                             </div>
                           </div>
-                          <div class="product__attribute">
-                            <h2>Праздничные дни</h2>
+                          <div class="store__timetable-item product__attribute">
+                            <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
                                 <input type="text" class="timeinput" />
@@ -105,3 +106,7 @@ const StoreEdit = {
   },
 
 }
+
+$(document).on('click','.store__timetable-trigger', function(){
+  $(this).parent().parent().toggleClass('active');
+});
