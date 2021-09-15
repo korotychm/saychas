@@ -178,7 +178,7 @@ class ProductController extends AbstractActionController
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
         $result = $this->productManager->updateServerDocument($credentials, $product);
-        $res = $result['http_code'] === '200' && $result['data']['result'] === true;
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
     }
 
@@ -192,7 +192,7 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $product = $post['data']['product'];
         $result = ['matched_count' => 0, 'modified_count' => 0];
-        if(true || $this->canUpdateProduct($product)) {
+        if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
         }
         return $result;
@@ -206,7 +206,9 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $data = $post['data'];
         
-        $result = $this->productManager->requestCategoryCharacteristics($credentials, $data);
+        $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
+        
+        return new JsonModel(['answer' => $answer]);
     }
 
 }

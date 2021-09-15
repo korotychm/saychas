@@ -371,13 +371,15 @@ class ProductManager extends ListManager implements LoadableInterface
         /** Lookup product from cache using $newCategoryId */
         /** load it from cache if found */
         
-        $product = $this->find(['id' => $productId, 'provider_id' => $providerId, 'category_id' => $newCategoryId]);
+        //$product = $this->find(['id' => $productId, 'provider_id' => $providerId, 'category_id' => $newCategoryId]);
         
-        if(true || null == $product) {
-            $product = $this->buildProduct($headers, $newCategoryId /* $data */);
-        }
+//        if(true || null == $product) {
+//            $product = $this->buildProduct($headers, $newCategoryId /* $data */);
+//        }
 
         /** Save current document with specified productId and categoryId */
+        
+        return $this->buildProduct($headers, $newCategoryId);
         
     }
 
