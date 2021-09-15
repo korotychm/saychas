@@ -80,7 +80,9 @@ const StoreEdit = {
                           </div>
                         </div>
                       </div>
-                      123
+                      <div class="store__calendar">
+                        <Calendar :min-date="new Date()"></Calendar>
+                      </div>
                     </div>
                     <p>Если магазин работает круглосуточно - проставьте с 00:00 до 00:00</p>
                     <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
