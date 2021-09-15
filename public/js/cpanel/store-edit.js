@@ -108,5 +108,5 @@ const StoreEdit = {
 }
 
 $(document).on('click','.store__timetable-trigger', function(){
-  $(this).parent().parent().toggleClass('active');
+  $(this).parent().parent().toggleClass('closed');
 });
