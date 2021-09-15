@@ -504,6 +504,7 @@ return [
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
+            'lk_get_info_by_category' => 'http://SRV02:8000/SC/hs/site/lk_get_info_by_category',
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             /** ProductManager; Edit product */

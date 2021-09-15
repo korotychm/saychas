@@ -256,11 +256,17 @@ class ProductManager extends ListManager implements LoadableInterface
     {
         $this->fillUpProductHeader($product);
         $collection = $this->db->{$this->collectionName};
-        $updateResult = $collection->replaceOne(
-            ['id' => $product['id']],
-            $product
-        );
-        return ['matched_count' => $updateResult->getMatchedCount(), 'modified_count' => $updateResult->getModifiedCount()];
+        $collection->deleteMany([
+            'id' => $product['id'],
+            'provider_id' => $product['provider_id'],
+        ]);
+        $updateResult = $collection->insertOne($product);
+//        $updateResult = $collection->replaceOne(
+//            ['id' => $product['id']],
+//            $product
+//        );
+//        return ['matched_count' => $updateResult->getMatchedCount(), 'modified_count' => $updateResult->getModifiedCount()];
+        return $updateResult;
     }
     
     public function findProduct(string $productId)
@@ -345,12 +351,34 @@ class ProductManager extends ListManager implements LoadableInterface
         return $result;
     }
     
-    public function requestCategoryCharacteristics($headers, $product)
+    private function buildProduct($headers, $categoryId)
     {
-        $productId = $product['id'];
-        $categoryId = $product['category_id'];
+        //$product = $data['product'];
+
+        $url = $this->config['parameters']['1c_provider_links']['lk_get_info_by_category'];
+        $product = $this->curlRequestManager->sendCurlRequestWithCredentials($url, ['category_id' => $categoryId], $headers);
+        
+        return $product;
+    }
+    
+    public function requestCategoryCharacteristics($headers, $data)
+    {
+        $productId = $data['product']['id'];
+        $providerId = $data['product']['provider_id'];
+        $categoryId = $data['product']['category_id'];
+        $newCategoryId = $data['new_category_id'];
+        
+        /** Lookup product from cache using $newCategoryId */
+        /** load it from cache if found */
+        
+        $product = $this->find(['id' => $productId, 'provider_id' => $providerId, 'category_id' => $newCategoryId]);
+        
+        if(true || null == $product) {
+            $product = $this->buildProduct($headers, $newCategoryId /* $data */);
+        }
+
         /** Save current document with specified productId and categoryId */
-        //$result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content)
+        
     }
 
     public function findTest()

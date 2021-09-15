@@ -192,7 +192,7 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $product = $post['data']['product'];
         $result = ['matched_count' => 0, 'modified_count' => 0];
-        if($this->canUpdateProduct($product)) {
+        if(true || $this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
         }
         return $result;
@@ -204,9 +204,9 @@ class ProductController extends AbstractActionController
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/*, 'is_test: true'*/];
         
         $post = $this->getRequest()->getPost()->toArray();
-        $product = $post['data']['product'];
+        $data = $post['data'];
         
-        $result = $this->productManager->requestCategoryCharacteristics($credentials, $product);
+        $result = $this->productManager->requestCategoryCharacteristics($credentials, $data);
     }
 
 }
