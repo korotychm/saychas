@@ -10,7 +10,7 @@ const ProductEdit = {
                               <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
                               <div v-if="(categorySearch && filteredCategories.length)">
                                 <label v-for="category in filteredCategories">
-                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
+                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" @change="saveProduct(true)" />
                                   <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
                                     <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
                                     <span class="search-select__suggestion-category">{{category.name}}</span>
@@ -248,8 +248,9 @@ const ProductEdit = {
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
     },
-    saveProduct() {
+    saveProduct(categoryChange = false) {
       let requestUrl = '/control-panel/update-product';
+      if (categoryChange) requestUrl = '/control-panel/request-category-characteristics';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let characteristics = this.product.characteristics;
       for (characteristic of characteristics){
