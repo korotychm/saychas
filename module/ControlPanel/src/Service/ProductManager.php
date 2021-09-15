@@ -217,6 +217,58 @@ class ProductManager extends ListManager implements LoadableInterface
         return $result;
     }
     
+    private function array_insert_after($key, array &$array, $new_key, $new_value) {
+      if (array_key_exists($key, $array)) {
+        $new = array();
+        foreach ($array as $k => $value) {
+          $new[$k] = $value;
+          if ($k === $key) {
+            $new[$new_key] = $new_value;
+          }
+        }
+        $array = $new;
+        return $new;
+      }
+      return false;
+    }
+
+    
+    private function fillUpProductHeader(&$product) : void
+    {
+        $provider = Provider::find(['id' => $product['provider_id']]);
+        //$product['provider_name'] = (null == $provider) ? '' : $provider->getTitle();
+        $this->array_insert_after('provider_id', $product, 'provider_name', ( (null == $provider) ? '' : $provider->getTitle() ) );
+        $brand = Brand::find(['id' => $product['brand_id']]);
+        //$product['brand_name'] = (null == $brand) ? '' : $brand->getTitle();
+        $this->array_insert_after('brand_id', $product, 'brand_name', ( (null == $brand) ? '' : $brand->getTitle() ) );
+        $country = Country::find(['id' => $product['country_id']]);
+        //$product['country_name'] = (null == $country) ? '' : $country->getTitle();
+        $this->array_insert_after('country_id', $product, 'country_name', ( (null == $country) ? '' : $country->getTitle() ) );
+        $color = Color::find(['id' => $product['color_id']]);
+        //$product['color_name'] = (null == $color) ? '' : $color->getTitle();
+        $this->array_insert_after('color_id', $product, 'color_name', ( (null == $color) ? '' : $color->getTitle() ) );
+        $category = $this->categoryRepo->findCategory(['id' => $product['category_id']]);
+        //$product['category_name'] = (null == $category) ? '' : $category->getTitle();
+        $this->array_insert_after('category_id', $product, 'category_name', ( (null == $category) ? '' : $category->getTitle() ) );
+    }
+    
+    public function replaceProduct($product)
+    {
+        $this->fillUpProductHeader($product);
+        $collection = $this->db->{$this->collectionName};
+        $collection->deleteMany([
+            'id' => $product['id'],
+            'provider_id' => $product['provider_id'],
+        ]);
+        $updateResult = $collection->insertOne($product);
+//        $updateResult = $collection->replaceOne(
+//            ['id' => $product['id']],
+//            $product
+//        );
+//        return ['matched_count' => $updateResult->getMatchedCount(), 'modified_count' => $updateResult->getModifiedCount()];
+        return $updateResult;
+    }
+    
     public function findProduct(string $productId)
     {
         $product = $this->find(['id' => $productId]);
@@ -273,7 +325,7 @@ class ProductManager extends ListManager implements LoadableInterface
 //                    $c['available_countries'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 default:
-                    throw new Exception('Characteristic of the given type does not exist');
+                    throw new \Exception('Characteristic of the given type does not exist');
                     break;
             }
         }
@@ -297,6 +349,38 @@ class ProductManager extends ListManager implements LoadableInterface
         $url = $this->config['parameters']['1c_provider_links']['lk_update_product'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
+    }
+    
+    private function buildProduct($headers, $categoryId)
+    {
+        //$product = $data['product'];
+
+        $url = $this->config['parameters']['1c_provider_links']['lk_get_info_by_category'];
+        $product = $this->curlRequestManager->sendCurlRequestWithCredentials($url, ['category_id' => $categoryId], $headers);
+        
+        return $product;
+    }
+    
+    public function requestCategoryCharacteristics($headers, $data)
+    {
+        $productId = $data['product']['id'];
+        $providerId = $data['product']['provider_id'];
+        $categoryId = $data['product']['category_id'];
+        $newCategoryId = $data['new_category_id'];
+        
+        /** Lookup product from cache using $newCategoryId */
+        /** load it from cache if found */
+        
+        //$product = $this->find(['id' => $productId, 'provider_id' => $providerId, 'category_id' => $newCategoryId]);
+        
+//        if(true || null == $product) {
+//            $product = $this->buildProduct($headers, $newCategoryId /* $data */);
+//        }
+
+        /** Save current document with specified productId and categoryId */
+        
+        return $this->buildProduct($headers, $newCategoryId);
+        
     }
 
     public function findTest()

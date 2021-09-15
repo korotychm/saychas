@@ -69,6 +69,7 @@ return [
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
+                ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
@@ -231,6 +232,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'update-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'request-category-characteristics' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/request-category-characteristics',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'request-category-characteristics',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -492,6 +504,7 @@ return [
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
+            'lk_get_info_by_category' => 'http://SRV02:8000/SC/hs/site/lk_get_info_by_category',
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             /** ProductManager; Edit product */
