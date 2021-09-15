@@ -286,7 +286,7 @@ const ProductEdit = {
         country_id: this.selectedCountryId,
         description: this.product.description,
         title: this.product.title,
-        characteristics: characteristics,
+        characteristics: chars,
         images: this.product.images,
         vendor_code: this.product.vendor_code
       }
