@@ -42,10 +42,10 @@ const routes = [
   },
   {
     name: 'product-add',
-    path: '/products/:id',
+    path: '/product-add',
     meta: {
       h1: 'Добавление товара',
-      back_route: '/product-add'
+      back_route: '/products'
     },
     component: ProductAdd
   },
