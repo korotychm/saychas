@@ -24,7 +24,7 @@ const Products = {
             </select>
           </div>
           <div class="filter__btn">
-              <router-link :to="/product-add" class="btn btn--primary">+ Добавить товары</router-link>
+              <router-link to="/product-add" class="btn btn--primary">+ Добавить товары</router-link>
           </div>
         </div>
 
