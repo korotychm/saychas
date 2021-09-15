@@ -353,7 +353,7 @@ const ProductEdit = {
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        saveProduct(true);
+        this.saveProduct(true);
       }
     },
     selectBrand(id,value) {
