@@ -167,7 +167,7 @@ const ProductEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary" @click="saveProduct">Сохранить изменения</button>
+                      <button class="btn btn--primary" @click="saveProduct(false)">Сохранить изменения</button>
                     </div>
                   </div>
                 </div>
@@ -250,7 +250,9 @@ const ProductEdit = {
     },
     saveProduct(categoryChange = false, oldCategory = null) {
       let requestUrl = '/control-panel/update-product';
-      if (categoryChange) requestUrl = '/control-panel/request-category-characteristics';
+      if (categoryChange) {
+        requestUrl = '/control-panel/request-category-characteristics';
+      }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let characteristics = this.product.characteristics;
       for (characteristic of characteristics){
@@ -272,7 +274,9 @@ const ProductEdit = {
         }
       }
       let category_in_request = this.selectedCategoryId;
-      if (oldCategory) category_in_request = oldCategory;
+      if (oldCategory) {
+        category_in_request = oldCategory;
+      }
       let request = {
         id : this.product.id,
         brand_id: this.selectedBrandId,
