@@ -81,7 +81,6 @@ const StoreEdit = {
                         </div>
                       </div>
                       <div class="store__calendar">
-                        <v-calendar></v-calendar>
                         <v-date-picker v-model='selectedDate' />
                       </div>
                     </div>
