@@ -1,7 +1,7 @@
 const StoreEdit = {
   template: `<div class="cp-container store">
                 <div v-if="editable">
-                  <div class="product__main-attributes">
+                  <div class="store__fields">
                     <div class="product__attribute  product__attribute--short">
                       <h2>Название магазина</h2>
                       <input type="text" class="input" />
