@@ -37,10 +37,10 @@ const StoreEdit = {
                             <h2>Рабочие дни</h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                             </div>
                           </div>
@@ -48,10 +48,10 @@ const StoreEdit = {
                             <h2>Суббота</h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                             </div>
                           </div>
@@ -59,10 +59,10 @@ const StoreEdit = {
                             <h2>Воскресенье</h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                             </div>
                           </div>
@@ -70,10 +70,10 @@ const StoreEdit = {
                             <h2>Праздничные дни</h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                               <div>
-                                <input type="text" class="input timeinput" />
+                                <input type="text" class="timeinput" />
                               </div>
                             </div>
                           </div>
