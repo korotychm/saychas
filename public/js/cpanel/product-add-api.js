@@ -8,7 +8,7 @@ const ProductAddApi = {
                       <router-link to="/product-add-file" class="btn btn--secondary">Массой товаров</router-link>
                   </div>
                   <div class="filter__btn">
-                      <a class="btn btn--secondary">Загрузка по API</a>
+                      <a class="btn btn--primary">Загрузка по API</a>
                   </div>
                 </div>
                 <div class="cp-container product"></div>
