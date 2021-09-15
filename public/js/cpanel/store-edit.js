@@ -12,8 +12,10 @@ const StoreEdit = {
                     </div>
                     <div class="product__attribute">
                       <h2>Комментарий</h2>
-                      <input type="text" class="input" />
-                      <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
+                      <div>
+                        <input type="text" class="input" />
+                        <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
+                      </div>
                     </div>
                   </div>
                 </div>
