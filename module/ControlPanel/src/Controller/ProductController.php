@@ -165,7 +165,14 @@ class ProductController extends AbstractActionController
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
 
-    private function canUpdateProduct($product)
+    /**
+     * Check to see if product is saved on 1c.
+     * If so we can update local database collection (products).
+     * 
+     * @param array $product
+     * @return bool
+     */
+    private function canUpdateProduct(array $product) : bool
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
@@ -183,16 +190,43 @@ class ProductController extends AbstractActionController
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $product = $post['product'];
+        $product = $post['data']['product'];
+        $result = ['matched_count' => 0, 'modified_count' => 0];
         if($this->canUpdateProduct($product)) {
-//            $this->productManager->fillUpProductHeader($product);
             $result = $this->productManager->replaceProduct($product);
+        }
+        return $result;
+    }
+    
+    public function requestCategoryCharacteristicsAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/*, 'is_test: true'*/];
+        
+        $post = $this->getRequest()->getPost()->toArray();
+        $product = $post['data']['product'];
+        
+        $result = $this->productManager->requestCategoryCharacteristics($credentials, $product);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 //            $this->productManager->updateDocument([
 //                'where' => ['id' => $product['id']],
 //                'set' => 
 //            ]);
-        }
+
 //        $result = $this->productManager->updateDocument([
 //            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
 //            'set' => ['characteristics.$.value' => '0.1345']
@@ -213,6 +247,3 @@ class ProductController extends AbstractActionController
 //        exit;
         //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
         //return $result;
-    }
-
-}

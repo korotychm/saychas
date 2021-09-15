@@ -69,6 +69,7 @@ return [
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
+                ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
@@ -231,6 +232,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'update-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'request-category-characteristics' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/request-category-characteristics',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'request-category-characteristics',
                             ],
                         ],
                         // 'may_terminate' => true,

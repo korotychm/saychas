@@ -344,6 +344,14 @@ class ProductManager extends ListManager implements LoadableInterface
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }
+    
+    public function requestCategoryCharacteristics($headers, $product)
+    {
+        $productId = $product['id'];
+        $categoryId = $product['category_id'];
+        /** Save current document with specified productId and categoryId */
+        //$result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content)
+    }
 
     public function findTest()
     {
