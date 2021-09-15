@@ -280,7 +280,8 @@ const ProductEdit = {
         description: this.product.description,
         title: this.product.title,
         characteristics: characteristics,
-        images: this.product.images
+        images: this.product.images,
+        vendor_code: this.product.vendor_code
       }
       console.log(request);
       axios
