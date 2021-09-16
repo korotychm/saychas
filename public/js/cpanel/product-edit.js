@@ -250,7 +250,6 @@ const ProductEdit = {
       this.selectedCategoryId = this.product.category_id;
     },
     saveProduct(categoryChange = false, oldCategory = null) {
-      debugger;
       let requestUrl = '/control-panel/update-product';
       if (categoryChange) {
         requestUrl = '/control-panel/request-category-characteristics';
