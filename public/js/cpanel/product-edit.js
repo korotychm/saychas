@@ -309,7 +309,8 @@ const ProductEdit = {
               new_category_id: this.selectedCategoryId,
               product : request
             }
-          },{
+          },
+          {
             headers
           })
           .then(response => {
