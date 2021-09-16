@@ -253,6 +253,7 @@ const ProductEdit = {
       if (categoryChange) {
         requestUrl = '/control-panel/request-category-characteristics';
       }
+      console.log(requestUrl);
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let chars = JSON.parse(JSON.stringify(this.product.characteristics));
       for (characteristic of chars){
