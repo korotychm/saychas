@@ -307,7 +307,7 @@ const ProductEdit = {
               product : request
             }
           }),{
-            arrayformat: 'brackets',
+            arrayFormat: 'brackets',
             headers
           })
           .then(response => {
