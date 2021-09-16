@@ -291,7 +291,6 @@ const ProductEdit = {
         images: this.product.images,
         vendor_code: this.product.vendor_code
       }
-      console.log(request);
       axios
         .post(requestUrl,
           Qs.stringify({
@@ -390,13 +389,14 @@ const ProductEdit = {
       }
     },
     selectCategory(id,value) {
-      if (id != this.selectedCategoryId){
-        let oldCategory = this.selectedCategoryId;
-        this.selectedCategoryId = id;
-        this.categorySearch = value;
-        this.selectedCategoryName = value;
-        this.saveProduct(true, oldCategory);
-      }
+      console.log(id,this.selectedCategoryId);
+      // if (id != this.selectedCategoryId){
+      //   let oldCategory = this.selectedCategoryId;
+      //   this.selectedCategoryId = id;
+      //   this.categorySearch = value;
+      //   this.selectedCategoryName = value;
+      //   this.saveProduct(true, oldCategory);
+      // }
     },
     selectBrand(id,value) {
       this.selectedBrandId = id;
