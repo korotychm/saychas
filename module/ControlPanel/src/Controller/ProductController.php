@@ -198,7 +198,7 @@ class ProductController extends AbstractActionController
         if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
         }
-        return new JsonModel(['result' => $result]);
+        return new JsonModel(['result' => true]);
     }
 
     public function requestCategoryCharacteristicsAction()
