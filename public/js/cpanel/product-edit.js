@@ -329,7 +329,7 @@ const ProductEdit = {
               }
             } else {
               if (response.data.result){
-                router.replace('/orders');
+                router.replace('/products');
               }
             }
           })
