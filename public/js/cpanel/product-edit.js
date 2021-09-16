@@ -327,6 +327,7 @@ const ProductEdit = {
             }
           })
           .catch(error => {
+            console.log(error);
             if (error.response.status == '403'){
               this.editable = false;
               $('.main__loader').hide();
