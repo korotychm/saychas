@@ -296,26 +296,19 @@ const ProductEdit = {
       console.log(Qs.parse(Qs.stringify({
         data: {
           new_category_id: this.selectedCategoryId,
-          product : request
+          product : JSON.stringify(request)
         }
       },{
         arrayFormat: 'brackets',
         encode: false
       })));
-      let jsonRequest = {
-        new_category_id: this.selectedCategoryId,
-        product : JSON.stringify(request)
-      };
       axios
         .post(requestUrl,
           Qs.stringify({
             data: {
               new_category_id: this.selectedCategoryId,
-              product : request
+              product : JSON.stringify(request)
             }
-          },{
-            arrayFormat: 'brackets',
-            encode: false
           }),
           {
             headers
