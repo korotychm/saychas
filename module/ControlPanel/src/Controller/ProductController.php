@@ -190,7 +190,9 @@ class ProductController extends AbstractActionController
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
+        echo '<pre>';
         print_r(json_decode($post['data']['product'],true));
+        echo '</pre>';
         exit;
         $product = $post['data']['product'];
         // echo '<pre>';
