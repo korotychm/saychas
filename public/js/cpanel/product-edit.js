@@ -168,6 +168,7 @@ const ProductEdit = {
                         <span>Вернуться</span>
                       </router-link>
                       <button class="btn btn--primary" @click="saveProduct(false)">Сохранить изменения</button>
+                      <button class="btn btn--primary" id="testbtn">Тест сохранения ajax</button>
                     </div>
                   </div>
                 </div>
@@ -291,11 +292,15 @@ const ProductEdit = {
         images: this.product.images,
         vendor_code: this.product.vendor_code
       }
+      console.log(request);
       console.log(Qs.parse(Qs.stringify({
         data: {
           new_category_id: this.selectedCategoryId,
           product : JSON.stringify(request)
         }
+      },{
+        arrayFormat: 'brackets',
+        encode: false
       })));
       axios
         .post(requestUrl,
@@ -331,11 +336,6 @@ const ProductEdit = {
                 this.product.color_id = product.color_id;
               } else {
                 delete this.product.color_id;
-              }
-            } else {
-              console.log(response);
-              if (response.data.result){
-                //router.replace('/products');
               }
             }
           })
@@ -445,4 +445,112 @@ $(document).on('focusout','.search-select__input',function(){
   setTimeout(function() {
     el.css('pointer-events','none');
   }, 300);
+});
+
+
+var request = {
+  data: {
+    product: {
+      id: '000000000001',
+      brand_id: "",
+      category_id: "000001968",
+      characteristics: [
+        {
+          id: "000000001",
+          index: 2,
+          is_title: false,
+          mandatory: false,
+          type: 8,
+          value: "704"
+        },
+        {
+          id: "000000398",
+          index: 3,
+          is_title: false,
+          mandatory: false,
+          type: 2,
+          value: 0
+        },
+        {
+          id: "000000639",
+          index: 4,
+          is_title: false,
+          mandatory: false,
+          type: 4,
+          value: ""
+        },
+        {
+          id: "000000640",
+          index: 5,
+          is_title: false,
+          mandatory: false,
+          type: 4,
+          value: ""
+        },
+        {
+          id: "000000641",
+          index: 6,
+          is_title: false,
+          mandatory: false,
+          type: 1,
+          value: ""
+        },
+        {
+          id: "000000642",
+          index: 7,
+          is_title: false,
+          mandatory: false,
+          type: 3,
+          value: false
+        },
+        {
+          id: "000000086",
+          index: 9,
+          is_title: false,
+          mandatory: false,
+          type: 1,
+          value: ""
+        },
+        {
+          id: "000000099",
+          index: 10,
+          is_title: false,
+          mandatory: false,
+          type: 2,
+          value: 0
+        },
+        {
+          id: "000000065",
+          index: 11,
+          is_title: false,
+          mandatory: false,
+          type: 1,
+          value: ""
+        }
+      ],
+      color_id: "",
+      country_id: "704",
+      description: "Текст описания 11",
+      images: ["373d7514-1f75-4da6-b098-d776833bdefd.jpg","de5506f3-0091-4bda-8b60-390d1fd22f83.jpg"],
+      provider_id: "00003",
+      title: "Смартфон vivo Y31, голубой океан",
+      vendor_code: "PL_08/17"
+    }
+  }
+}
+
+
+$(document).on('click','#testbtn',function(){
+  $.ajax({
+  	url: '/control-panel/update-product',
+  	type: 'POST',
+  	dataType: 'html',
+  	data: request,
+  	success: function(data){
+  		console.log('После сохранения получили: ',data);
+  	},
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log('После сохранения ошибка: ', textStatus, errorThrown);
+    }
+  });
 });
