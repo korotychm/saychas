@@ -34,7 +34,7 @@ class ProductController extends AbstractActionController
 
     /** @var ProductManager */
     protected $productManager;
-    
+
     /** @var RbacManager */
     protected $rbacManager;
 
@@ -148,27 +148,27 @@ class ProductController extends AbstractActionController
     public function editProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        
+
         $access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
-        
+
         if(!$access) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
-        
+
 //        $post = $this->getRequest()->getPost()->toArray();
-        
+
         $product = $this->productManager->findProduct($post['product_id']);
 
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
-        
+
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
 
     /**
      * Check to see if product is saved on 1c.
      * If so we can update local database collection (products).
-     * 
+     *
      * @param array $product
      * @return bool
      */
@@ -191,26 +191,28 @@ class ProductController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
         $product = $post['data']['product'];
+        print_r($product);
+        exit;
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
         }
         return new JsonModel(['result' => $result]);
     }
-    
+
     public function requestCategoryCharacteristicsAction()
     {
         $identity = $this->authService->getIdentity();
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/*, 'is_test: true'*/];
-        
+
         $post = $this->getRequest()->getPost()->toArray();
         $data = $post['data'];
-        
+
         $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
-        
+
         $product = $this->productManager->findProduct2($answer['data']['product']);
         $answer['data']['product'] = $product;
-        
+
         return new JsonModel(['answer' => $answer]);
     }
 
@@ -229,14 +231,14 @@ class ProductController extends AbstractActionController
 
 //            $this->productManager->updateDocument([
 //                'where' => ['id' => $product['id']],
-//                'set' => 
+//                'set' =>
 //            ]);
 
 //        $result = $this->productManager->updateDocument([
 //            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
 //            'set' => ['characteristics.$.value' => '0.1345']
 //        ]);
-        
+
 //        if ($this->canUpdateProduct($post)) {
 //            $result = $this->productManager->updateDocument([
 //                'where' => ['id' => $post['product_id']],
