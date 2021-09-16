@@ -77,6 +77,15 @@ const routes = [
     component: StoreEdit
   },
   {
+    name: 'store-add',
+    path: '/store-add',
+    meta: {
+      h1: 'Добавление магазина',
+      back_route: '/stores'
+    },
+    component: StoreAdd
+  },
+  {
     name: 'api',
     path: '/api-integration',
     meta: {
