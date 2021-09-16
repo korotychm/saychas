@@ -32,6 +32,14 @@ const routes = [
     component: Stores
   },
   {
+    name: 'stores-map',
+    path: '/stores-map',
+    meta: {
+      h1: 'Магазины на карте'
+    },
+    component: StoresMap
+  },
+  {
     name: 'product-edit',
     path: '/products/:id',
     meta: {
