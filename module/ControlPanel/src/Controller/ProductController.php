@@ -191,6 +191,10 @@ class ProductController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
         $product = $post['data']['product'];
+        echo '<pre>';
+        print_r($product);
+        echo '</pre>';
+        exit;
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
