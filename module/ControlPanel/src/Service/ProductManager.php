@@ -299,34 +299,33 @@ class ProductManager extends ListManager implements LoadableInterface
                     break;
                 case Resource::CHAR_VALUE_REF:
                     $entity = CharacteristicValue::find(['id' => $c['value']]);
-                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
                     $c['available_values'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::PROVIDER_REF:
                     $entity = Provider::find(['id' => $c['value']]);
-                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
 //                    $c['available_providers'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::BRAND_REF:
                     $entity = Brand::find(['id' => $c['value']]);
-                    $c['title'] = $c['real_value'] = $entity->getTitle();
+                    $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
 //                    $c['available_brands'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::COLOR_REF:
                     $entity = Color::find(['id' => $c['value']]);
-                    $c['title'] = $entity->getTitle();
-                    $c['real_value'] = $entity->getValue();
+                    $c['title'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
+                    $c['real_value'] =  null == $entity ? '' : $entity->getValue();// $entity->getValue();
 //                    $c['available_colors'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::COUNTRY_REF:
                     $entity = Country::find(['id' => $c['value']]);
-                    $c['title'] = $entity->getTitle();
-                    $c['real_value'] = $entity->getCode();
+                    $c['title'] =  null == $entity ? '' : $entity->getTitle(); // $entity->getTitle();
+                    $c['real_value'] =  null == $entity ? '' : $entity->getCode(); // $entity->getCode();
 //                    $c['available_countries'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 default:
                     throw new \Exception('Characteristic of the given type does not exist');
-                    break;
             }
         }
         return $product;//->characteristics;
