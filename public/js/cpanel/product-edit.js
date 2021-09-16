@@ -389,14 +389,14 @@ const ProductEdit = {
       }
     },
     selectCategory(id,value) {
-      console.log(id,this.selectedCategoryId);
-      // if (id != this.selectedCategoryId){
-      //   let oldCategory = this.selectedCategoryId;
-      //   this.selectedCategoryId = id;
-      //   this.categorySearch = value;
-      //   this.selectedCategoryName = value;
-      //   this.saveProduct(true, oldCategory);
-      // }
+      if (id != this.selectedCategoryId){
+        let oldCategory = this.selectedCategoryId;
+        this.selectedCategoryId = id;
+        this.categorySearch = value;
+        this.selectedCategoryName = value;
+        console.log(oldCategory);
+        this.saveProduct(true, oldCategory);
+      }
     },
     selectBrand(id,value) {
       this.selectedBrandId = id;
