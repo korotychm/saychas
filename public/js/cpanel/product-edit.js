@@ -306,7 +306,10 @@ const ProductEdit = {
               new_category_id: this.selectedCategoryId,
               product : request
             }
-          }),{headers})
+          }),{
+            arrayformat: 'brackets',
+            headers
+          })
           .then(response => {
             let product = response.data.answer.data.product;
             console.log(product);
