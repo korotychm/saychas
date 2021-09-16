@@ -299,7 +299,8 @@ const ProductEdit = {
           product : request
         }
       },{
-        arrayFormat: 'brackets'
+        arrayFormat: 'comma',
+        encode: false
       })));
       axios
         .post(requestUrl,
@@ -309,7 +310,8 @@ const ProductEdit = {
               product : request
             }
           },{
-            arrayFormat: 'brackets'
+            arrayFormat: 'comma',
+            encode: false
           }),{
             headers
           })
