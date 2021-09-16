@@ -300,14 +300,20 @@ const ProductEdit = {
         }
       })));
       axios
-        .post(requestUrl,'',{
+        .post(requestUrl,
+          Qs.stringify({
+            data: {
+              new_category_id: this.selectedCategoryId,
+              product : request
+            }
+          }),{
             arrayFormat: 'brackets',
             headers
           })
           .then(response => {
-            let product = response.data.answer.data.product;
             console.log(product);
             if (categoryChange) {
+              let product = response.data.answer.data.product;
               this.product.characteristics = product.characteristics;
               if (product.brand_id !== undefined){
                 this.product.brand_id = product.brand_id;
