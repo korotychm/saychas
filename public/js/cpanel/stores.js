@@ -17,7 +17,6 @@ const Stores = {
           </select>
         </div>
         <div class="filter__btn">
-          <a class="btn btn--primary" href="">+ Добавить магазин</a>
           <router-link to="/store-add" class="btn btn--primary">+ Добавить магазин</router-link>
         </div>
       </div>
