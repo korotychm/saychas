@@ -304,7 +304,7 @@ const ProductEdit = {
       })));
       let jsonRequest = {
         new_category_id: this.selectedCategoryId,
-        product : JSON.Stringify(request)
+        product : JSON.stringify(request)
       };
       axios
         .post(requestUrl,
