@@ -327,8 +327,9 @@ const ProductEdit = {
                 delete this.product.color_id;
               }
             } else {
+              console.log(response);
               if (response.data.result){
-                router.replace('/products');
+                //router.replace('/products');
               }
             }
           })
@@ -394,7 +395,6 @@ const ProductEdit = {
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        console.log(oldCategory);
         this.saveProduct(true, oldCategory);
       }
     },
