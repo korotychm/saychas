@@ -304,15 +304,12 @@ const ProductEdit = {
       })));
       axios
         .post(requestUrl,
-          Qs.stringify({
+          {
             data: {
               new_category_id: this.selectedCategoryId,
               product : request
             }
           },{
-            arrayFormat: 'comma',
-            encode: false
-          }),{
             headers
           })
           .then(response => {
