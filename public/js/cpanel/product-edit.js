@@ -527,7 +527,7 @@ var request = {
 $(document).on('click','#testbtn',function(){
   $.ajax({
   	url: '/control-panel/update-product',
-  	method: 'post',
+  	type: 'POST',
   	dataType: 'html',
   	data: request,
   	success: function(data){
