@@ -302,13 +302,14 @@ const ProductEdit = {
         arrayFormat: 'comma',
         encode: false
       })));
+      let jsonRequest = {
+        new_category_id: this.selectedCategoryId,
+        product : JSON.Stringify(request)
+      };
       axios
         .post(requestUrl,
           {
-            data: {
-              new_category_id: this.selectedCategoryId,
-              product : request
-            }
+            data: jsonRequest
           },
           {
             headers
