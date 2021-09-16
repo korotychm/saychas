@@ -213,10 +213,9 @@ class ProductController extends AbstractActionController
 
         $post = $this->getRequest()->getPost()->toArray();
         $data = $post['data'];
-
+        $data['product'] = json_decode($data['product'], true);
         $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
 
-        $answer['data']['product'] = json_decode($answer['data']['product'],true);
         $product = $this->productManager->findProduct2($answer['data']['product']);
         $answer['data']['product'] = $product;
 
