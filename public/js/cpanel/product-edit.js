@@ -328,7 +328,9 @@ const ProductEdit = {
                 delete this.product.color_id;
               }
             } else {
-              console.log(response);
+              if (response.data.result){
+                router.replace('/products');
+              }
             }
           })
           .catch(error => {
