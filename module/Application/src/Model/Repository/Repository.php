@@ -116,6 +116,8 @@ abstract class Repository implements RepositoryInterface
         }
 
         $stmt = $sql->prepareStatementForSqlObject($select);
+        $res = $sql->buildSqlString($select);
+        
         $result = $stmt->execute();
 
         if (!$result instanceof ResultInterface || !$result->isQueryResult()) {

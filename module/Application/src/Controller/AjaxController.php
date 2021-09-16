@@ -210,6 +210,7 @@ class AjaxController extends AbstractActionController
 
     private function getBasketProductMap($userId, $orderId = 0)
     {
+        $products = [];
         $where = new Where();
         $where->equalTo('user_id', $userId);
         if ($orderId == 0) {
@@ -238,14 +239,12 @@ class AjaxController extends AbstractActionController
     public function getUserOrderPageAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
-        $userId = $container->userIdentity;
+        $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
-        if (!$return['order_id'] = /* "000000629"/* */ $post->orderId /**/) {
+        if (!empty($return['order_id'] = $post->orderId)) {
             return new JsonModel($return);
         }
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        $return['userId'] = $container->userIdentity;
         $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
         if (empty($order)) {
             return new JsonModel($return);
@@ -270,7 +269,6 @@ class AjaxController extends AbstractActionController
             return new JsonModel($productMap);
         }
         $return["productsMap"] = $productMap['products'];
-
         $return["result"] = true;
 
         /* $where = new Where();
@@ -319,8 +317,8 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
         $userPhone = (empty($user)) ? false : $user->getPhone();
-        $userPhone = StringHelper::phoneFromNum($user->getPhone());
-        if ($userPhone) {
+        //$userPhone = StringHelper::phoneFromNum($user->getPhone());
+        if (empty($userPhone)) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
@@ -409,7 +407,7 @@ class AjaxController extends AbstractActionController
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
-            return; 
+            return;
         }
         if (empty($productId = $this->getRequest()->getPost()->productId)) {
             return new JsonModel(['result' => false, "description" => " product undefinded "]);
@@ -493,7 +491,7 @@ class AjaxController extends AbstractActionController
         $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
         if (!empty($return['productId'] = $productId = $post->product)) {
-        //$return['error'] = false;
+            //$return['error'] = false;
             $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
             $basketItemTotal = (int) $basketItem->getTotal();
             $basketItem->setUserId($userId);
@@ -734,38 +732,38 @@ class AjaxController extends AbstractActionController
      * @param array $characteristics
      * @return bool
      */
-    private function matchProduct(HandbookRelatedProduct /* \Application\Model\Entity\Product */ $product, array $characteristics): bool
-    {
-        $flags = [];
-        foreach ($characteristics as $key => $value) {
-            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
-            if (null == $found) {
-                $flags[$key] = false;
-                continue;
-            }
-            $type = $found->getType();
-            switch ($type) {
-                case CharacteristicRepository::INTEGER_TYPE:
-                    //reset($value);
-                    list($left, $right) = explode(';', current($value));
-                    //list($left, $right) = explode(';', $value[0]);
-                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
-                    break;
-                case CharacteristicRepository::BOOL_TYPE:
-                    $flags[$key] = ($found->getValue() == $value);
-                    break;
-                default:
-                    $flags[$key] = in_array($found->getValue(), $value);
-                    break;
-            }
-        }
-        foreach ($flags as $f) {
-            if (!$f) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    private function matchProduct(HandbookRelatedProduct /* \Application\Model\Entity\Product */ $product, array $characteristics): bool
+//    {
+//        $flags = [];
+//        foreach ($characteristics as $key => $value) {
+//            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
+//            if (null == $found) {
+//                $flags[$key] = false;
+//                continue;
+//            }
+//            $type = $found->getType();
+//            switch ($type) {
+//                case CharacteristicRepository::INTEGER_TYPE:
+//                    //reset($value);
+//                    list($left, $right) = explode(';', current($value));
+//                    //list($left, $right) = explode(';', $value[0]);
+//                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
+//                    break;
+//                case CharacteristicRepository::BOOL_TYPE:
+//                    $flags[$key] = ($found->getValue() == $value);
+//                    break;
+//                default:
+//                    $flags[$key] = in_array($found->getValue(), $value);
+//                    break;
+//            }
+//        }
+//        foreach ($flags as $f) {
+//            if (!$f) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     /**
      * Return where clause to filter products by price and category
@@ -782,59 +780,66 @@ class AjaxController extends AbstractActionController
         $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
         $where->in('category_id', $categoryTree);
         $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
-        $charsId = array_keys($characteristics);
-        //exit(print_r($charsId));
-        return $this->subQueryWhere($charsId, $where);
+        //$charsId = array_keys($characteristics);
+        return $this->filterWhere($characteristics, $where);
     }
 
-    private function subQueryWhere($charsId, $where): Where
+     /**
+     * Return where clause for query
+     *
+     * @param array $characteristics, object Where
+     * @return object Where
+     */
+    
+    
+    private function filterWhere($characteristics, $where): Where
     {
-        $allCahrs = ProductCharacteristic::findAll(['where' => ['characteristic_id' => $charsId]]);//->toArray();
-        //exit(print_r($allCahrs));
-        if ($allCahrs->count() < 1) {
+        if (empty($characteristics)) {
             return $where;
         }
-        $columns = ['product_id'];
-        $inValue = [];
-        $subWhere = new Where();
-        $setOr = false;
-        //$subWhere->nest();
-        foreach ($allCahrs as $found) {
-            if ($setOr) {
-                $subWhere->or;
+        $inChars = array_keys($characteristics);
+        $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
+        $groupChars = [0];
+        while (list($key, $value) = each($characteristics)) {
+            if (empty($value) or empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {
+                continue;
             }
-            $nest = $subWhere->nest();
+            $filterWhere = new Where();
             $type = $found->getType();
-            $value = $found->getValue();
-            $nest->equalTo('characteristic_id', $found->getCharacteristicId());
-            //$subWhere->equalTo('product_id', $found->getProductId());
-            switch ($type) {
-                case CharacteristicRepository::INTEGER_TYPE:
-                    //reset($value);
-                    list($min, $max) = explode(';', $value );
-                    $nest->lessThanOrEqualTo('value', $max)->greaterThanOrEqualTo('value', $min);
-                break;
-                case CharacteristicRepository::BOOL_TYPE:
-                    $subWhere->equalTo('value', $value);
-                break;
-                default:
-                    $inValue[] = $value;//
-                break;
-            
+            $charId = $found->getCharacteristicId();
+            $filterWhere->equalTo('characteristic_id', $found->getCharacteristicId($charId));
+            if ($type == CharacteristicRepository::INTEGER_TYPE) {
+                reset($value);
+                list($min, $max) = explode(';', current($value));
+                $filterWhere->between('value', $min * 1, $max * 1);
+            } elseif ($type == CharacteristicRepository::BOOL_TYPE) {
+                $filterWhere->equalTo('value', $value);
+            } else {
+                $filterWhere->in('value', $value);
+                $groupChars[] = $key;
             }
-            $nest->unnest();  // null!
-            
-            $subWhere->or;
-            
-            //$setOr = true;
+            $legalProducts = array_intersect($legalProducts, $this->getFiltredProductsId($filterWhere));
         }
-       // $subWhere->unnest();
-        if (!empty($inValue)) $subWhere->or->in('value', $inValue);
-        $subQuery = ProductCharacteristic::findAll(["where" => $subWhere, "columns" => $columns])->toArray();
-        //exit(print_r($subQuery));
-        $where->in('product_id', $subQuery);
-        exit(print_r($where));
+        $subWhere = new Where();
+        $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
+
+        $nest = $where->nest();
+        $nest->in('product_id', $legalProducts);
+        //if (!empty( $productsFiltred)){
+        $nest->or->notIn('product_id', $productsFiltred);
+        //}
+        $nest->unnest();
         return $where;
+    }
+
+    private function getFiltredProductsId($where)
+    {
+        $products = ProductCharacteristic::findAll(["where" => $where, "columns" => ['product_id'], "group" => "product_id"])->toArray();
+        $filtredProducts = [];
+        foreach ($products as $p) {
+            $filtredProducts[] = $p["product_id"];
+        }
+        return $filtredProducts;
     }
 
     /**
@@ -871,28 +876,30 @@ class AjaxController extends AbstractActionController
      * @param array $params
      * @return HandbookRelatedProduct[]
      */
-    private function getProducts($params)
-    {
-        $this->prepareCharacteristics($params['characteristics']);
-        if (empty($params['priceRange'])) {
-            $params['priceRange'] = '0;' . PHP_INT_MAX;
-        }
-        unset($params['offset']);
-        unset($params['limit']);
-        $params['where'] = $this->getWhere($params);
-        //$params['order'] = ['price ASC'];
-        $products = $this->handBookRelatedProductRepository->findAll($params);
-
-        $filteredProducts = [];
-        //foreach ($products as $product) {
-          //  $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
-            //$matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
-            //if ($matchResult && !isset($filteredProducts[$product->getId()])) {
-              //  $filteredProducts[$product->getId()] = $product;
-            //}
-        //}
-        return $filteredProducts;
-    }
+//    private function getProducts($params)
+//    {
+//        $this->prepareCharacteristics($params['characteristics']);
+//        if (empty($params['priceRange'])) {
+//            $params['priceRange'] = '0;' . PHP_INT_MAX;
+//        }
+//        unset($params['offset']);
+//        unset($params['limit']);
+//        $params['where'] = $this->getWhere($params);
+//        //$params['order'] = ['price ASC'];
+//        //$filteredProducts = [];
+//        $products = $this->handBookRelatedProductRepository->findAll($params);
+//        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
+//        return $filteredProducts;
+//
+//        //foreach ($products as $product) {
+//        //  $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+//        //$matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
+//        //if ($matchResult && !isset($filteredProducts[$product->getId()])) {
+//        //  $filteredProducts[$product->getId()] = $product;
+//        //}
+//        //}
+//        //return $filteredProducts;
+//    }
 
     private function getProductCards($params)
     {
@@ -902,53 +909,58 @@ class AjaxController extends AbstractActionController
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
         unset($params['offset'], $params['limit']);
-        $container = new Container(Resource::SESSION_NAMESPACE);
+        //$container = new Container(Resource::SESSION_NAMESPACE);
         //$return['legalStores'] =
-        $legalStores = $container->legalStore;
+        //$legalStores = $container->legalStore;
 
         $params['where'] = $this->getWhere($params);
+        //$products = $this->handBookRelatedProductRepository->findAll($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = [];
-        $store = [];
-        $available = false;
-
-        foreach ($products as $product) {
-            $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
-            $matchResult = $this->matchProduct($product, /* $params['characteristics'] */ $characteristics);
-            if ($matchResult && !isset($filteredProducts[$product->getId()])) {
-
-                $provider = $product->getProvider();
-                $strs = $provider->getStores();
-                $product->getProvider();
-                $store = [];
-                $available = false;
-                foreach ($strs as $s) {
-                    if (!empty($legalStores[$s->getId()])) {
-                        $available = true;
-                        $store[] = $s->getId();
-                    }
-                }
-                $oldPrice = 0;
-                $price = $product->getPrice();
-                $discont = $product->getDiscount();
-                if ($discont > 0) {
-                    $oldPrice = $price;
-                    $price = $oldPrice - ($oldPrice * $discont / 100);
-                }
-                $filteredProducts[$product->getId()] = [
-                    "reserve" => $product->receiveRest($store),
-                    "price" => $price,
-                    "title" => $product->getTitle(),
-                    'available' => $available,
-                    'oldprice' => $oldPrice,
-                    //'stores' => $productStores,
-                    "discount" => $product->getDiscount(),
-                    "image" => $product->receiveFirstImageObject()->getHttpUrl(),
-                    'isFav' => $this->commonHelperFuncions->isInFavorites($product->getId(), $this->identity()),
-                ];
-            }
-        }
+        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;
+      
+        
+        /* $filteredProducts = [];
+          $store = [];
+          $available = false;
+
+          foreach ($products as $product) {
+          $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+          $matchResult = $this->matchProduct($product, $characteristics);
+          if ($matchResult && !isset($filteredProducts[$product->getId()])) {
+
+          $provider = $product->getProvider();
+          $strs = $provider->getStores();
+          $product->getProvider();
+          $store = [];
+          $available = false;
+          foreach ($strs as $s) {
+          if (!empty($legalStores[$s->getId()])) {
+          $available = true;
+          $store[] = $s->getId();
+          }
+          }
+          $oldPrice = 0;
+          $price = $product->getPrice();
+          $discont = $product->getDiscount();
+          if ($discont > 0) {
+          $oldPrice = $price;
+          $price = $oldPrice - ($oldPrice * $discont / 100);
+          }
+          $filteredProducts[$product->getId()] = [
+          "reserve" => $product->receiveRest($store),
+          "price" => $price,
+          "title" => $product->getTitle(),
+          'available' => $available,
+          'oldprice' => $oldPrice,
+          //'stores' => $productStores,
+          "discount" => $product->getDiscount(),
+          "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+          'isFav' => $this->commonHelperFuncions->isInFavorites($product->getId(), $this->identity()),
+          ];
+          }
+          }
+          return $filteredProducts; */
     }
 
     private function prepareCharacteristics(&$characteristics)
@@ -957,9 +969,11 @@ class AjaxController extends AbstractActionController
             return;
         }
         foreach ($characteristics as $key => &$value) {
-            foreach ($value as &$v) {
-                if (empty($v)) {
-                    $v = '0;' . PHP_INT_MAX;
+            if ($value) {
+                foreach ($value as &$v) {
+                    if (empty($v)) {
+                        $v = '0;' . PHP_INT_MAX;
+                    }
                 }
             }
         }
