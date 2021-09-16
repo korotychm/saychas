@@ -23,7 +23,11 @@ const StoresMap = {
           </div>
         </div>
       </div>
-      <div class="cp-container stores-map"></div>
+      <div class="cp-container stores-map">
+        <div v-for="store in stores">
+          <span>{{ store.geox }}</span> : <span>{{ store.geoy }}</span>
+        </div>
+      </div>
       <div class="pagination">
         <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
       </div>
@@ -33,7 +37,7 @@ const StoresMap = {
     return {
       htmlContent: '',
       page_no: 1,
-      rows_per_page: 2,
+      rows_per_page: 500,
       stores: {},
       pages: 1,
       filters: {},
