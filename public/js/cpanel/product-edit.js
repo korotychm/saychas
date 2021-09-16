@@ -327,6 +327,8 @@ const ProductEdit = {
               } else {
                 delete this.product.color_id;
               }
+            } else {
+              console.log(response);
             }
           })
           .catch(error => {
