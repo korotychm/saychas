@@ -300,13 +300,7 @@ const ProductEdit = {
         }
       })));
       axios
-        .post(requestUrl,
-          Qs.stringify({
-            data: {
-              new_category_id: this.selectedCategoryId,
-              product : request
-            }
-          }),{
+        .post(requestUrl,'',{
             arrayFormat: 'brackets',
             headers
           })
