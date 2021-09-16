@@ -300,9 +300,22 @@ const ProductEdit = {
             }
           }),{headers})
           .then(response => {
-            console.log(response.product);
+            let product = response.data.answer.data.product;
+            console.log(product);
             if (categoryChange) {
-              this.product.characteristics = response.data.answer.data.product.characteristics;
+              this.product.characteristics = product.characteristics;
+              if (product.brand_id){
+                this.product.brand_id = product.brand_id;
+                this.product.brand_name = product.brand_name;
+              } else {
+                this.product.brand_id = false;
+                this.product.brand_name = false;
+              }
+              if (product.color_id){
+                this.product.color_id = product.color_id;
+              } else {
+                this.product.color_id = false;
+              }
             }
           })
           .catch(error => {
