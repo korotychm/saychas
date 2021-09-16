@@ -3,7 +3,7 @@ const Stores = {
     <div v-if="htmlContent" v-html="htmlContent"></div>
     <div v-else>
       <div class="filter">
-        <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between; width: 100%">
           <div style="display: flex;">
             <div class="filter__btn">
               <a class="btn btn--primary">Списком</a>
