@@ -311,9 +311,9 @@ const ProductEdit = {
             headers
           })
           .then(response => {
-            console.log(product);
             if (categoryChange) {
               let product = response.data.answer.data.product;
+              console.log(product);
               this.product.characteristics = product.characteristics;
               if (product.brand_id !== undefined){
                 this.product.brand_id = product.brand_id;
