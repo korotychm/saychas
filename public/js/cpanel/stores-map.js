@@ -28,9 +28,6 @@ const StoresMap = {
           <span>{{ store.geox }}</span> : <span>{{ store.geoy }}</span>
         </div>
       </div>
-      <div class="pagination">
-        <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
-      </div>
     </div>
   </div>`,
   data: function () {
