@@ -22,7 +22,7 @@ const ProductEdit = {
                   </div>
                   <div class="product__info">
                     <div class="product__main-attributes">
-                      <div class="product__attribute  product__attribute--short">
+                      <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
                           <h2>Страна производства</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
@@ -40,7 +40,7 @@ const ProductEdit = {
                                 </div>
                             </div>
                       </div>
-                      <div class="product__attribute product__attribute--short">
+                      <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
                           <h2>Бренд</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
@@ -62,7 +62,7 @@ const ProductEdit = {
                           <h2>Название товара</h2>
                           <input class="input" type="text" v-model="product.title" />
                       </div>
-                      <div class="product__attribute">
+                      <div v-if="(product.color_id !== undefined)" class="product__attribute">
                           <h2>Цвет</h2>
                             <div class="product__colors">
                                 <label v-for="color in product.colors" class="color-checkbox">
@@ -304,17 +304,24 @@ const ProductEdit = {
             console.log(product);
             if (categoryChange) {
               this.product.characteristics = product.characteristics;
-              if (product.brand_id){
+              if (product.brand_id !== undefined){
                 this.product.brand_id = product.brand_id;
                 this.product.brand_name = product.brand_name;
               } else {
-                this.product.brand_id = false;
-                this.product.brand_name = false;
+                delete this.product.brand_id;
+                delete this.product.brand_name;
               }
-              if (product.color_id){
+              if (product.country_id !== undefined){
+                this.product.country_id = product.country_id;
+                this.product.country_name = product.country_name;
+              } else {
+                delete this.product.country_id;
+                delete this.product.country_name;
+              }
+              if (product.color_id !== undefined){
                 this.product.color_id = product.color_id;
               } else {
-                this.product.color_id = false;
+                delete this.product.color_id;
               }
             }
           })
