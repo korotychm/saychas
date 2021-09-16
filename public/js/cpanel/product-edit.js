@@ -168,7 +168,6 @@ const ProductEdit = {
                         <span>Вернуться</span>
                       </router-link>
                       <button class="btn btn--primary" @click="saveProduct(false)">Сохранить изменения</button>
-                      <button class="btn btn--primary" id="testbtn">Тест сохранения ajax</button>
                     </div>
                   </div>
                 </div>
@@ -327,6 +326,10 @@ const ProductEdit = {
                 this.product.color_id = product.color_id;
               } else {
                 delete this.product.color_id;
+              }
+            } else {
+              if (response.data.result){
+                router.replace('/orders');
               }
             }
           })
