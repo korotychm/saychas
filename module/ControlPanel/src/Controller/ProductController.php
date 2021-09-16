@@ -195,9 +195,9 @@ class ProductController extends AbstractActionController
         // print_r($product);
         // echo '</pre>';
         $result = ['matched_count' => 0, 'modified_count' => 0];
-        if($this->canUpdateProduct($product)) {
-            $result = $this->productManager->replaceProduct($product);
-        }
+        // if($this->canUpdateProduct($product)) {
+        //     $result = $this->productManager->replaceProduct($product);
+        // }
         $this->getResponse()->setStatusCode(200);
         return new JsonModel(['result' => true]);
     }
