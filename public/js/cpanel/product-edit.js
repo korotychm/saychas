@@ -299,7 +299,7 @@ const ProductEdit = {
           product : request
         }
       },{
-        arrayFormat: 'comma',
+        arrayFormat: 'brackets',
         encode: false
       })));
       let jsonRequest = {
@@ -308,9 +308,15 @@ const ProductEdit = {
       };
       axios
         .post(requestUrl,
-          {
-            data: jsonRequest
-          },
+          Qs.stringify({
+            data: {
+              new_category_id: this.selectedCategoryId,
+              product : request
+            }
+          },{
+            arrayFormat: 'brackets',
+            encode: false
+          }),
           {
             headers
           })
