@@ -298,6 +298,8 @@ const ProductEdit = {
           new_category_id: this.selectedCategoryId,
           product : request
         }
+      },{
+        arrayFormat: 'brackets'
       })));
       axios
         .post(requestUrl,
@@ -306,8 +308,9 @@ const ProductEdit = {
               new_category_id: this.selectedCategoryId,
               product : request
             }
+          },{
+            arrayFormat: 'brackets'
           }),{
-            arrayFormat: 'brackets',
             headers
           })
           .then(response => {
