@@ -198,6 +198,7 @@ class ProductController extends AbstractActionController
         if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
         }
+        $this->getResponse()->setStatusCode(200);
         return new JsonModel(['result' => true]);
     }
 
