@@ -517,7 +517,6 @@ var request = {
   color_id: "",
   country_id: "704",
   description: "Текст описания 11",
-  id: "000000000001",
   images: ["373d7514-1f75-4da6-b098-d776833bdefd.jpg","de5506f3-0091-4bda-8b60-390d1fd22f83.jpg"],
   provider_id: "00003",
   title: "Смартфон vivo Y31, голубой океан",
