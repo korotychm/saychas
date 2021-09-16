@@ -293,12 +293,12 @@ const ProductEdit = {
         vendor_code: this.product.vendor_code
       }
       console.log(request);
-      console.log(Qs.stringify({
+      console.log(Qs.parse(Qs.stringify({
         data: {
           new_category_id: this.selectedCategoryId,
           product : request
         }
-      }));
+      })));
       axios
         .post(requestUrl,
           Qs.stringify({
