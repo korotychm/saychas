@@ -300,7 +300,10 @@ const ProductEdit = {
             }
           }),{headers})
           .then(response => {
-            console.log(response);
+            console.log(response.product);
+            if (categoryChange) {
+              this.product.characteristics = response.data.answer.data.product.characteristics;
+            }
           })
           .catch(error => {
             if (error.response.status == '403'){
