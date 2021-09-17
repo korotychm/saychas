@@ -347,15 +347,10 @@ const ProductAdd = {
     },
     selectCategory(id,value) {
       if (id != this.selectedCategoryId){
-        let oldCategory = this.selectedCategoryId;
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        if (oldCategory) {
-          //this.saveProduct(true, oldCategory);
-        } else {
-          this.getCharacteristics(id);
-        }
+        this.getCharacteristics(id);
       }
     },
     selectBrand(id,value) {
@@ -392,8 +387,12 @@ const ProductAdd = {
               location.reload();
             } else {
               console.log(response);
-              this.product = response.data.answer.data.product;
-              this.product.images = [];
+              if (this.product.characteristics.length){
+                this.product.characteristics = response.data.answer.data.product.characteristics;
+              } else {
+                this.product = response.data.answer.data.product;
+                this.product.images = [];
+              }
             }
           })
           .catch(error => {
