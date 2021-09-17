@@ -26,8 +26,8 @@ const StoresMap = {
       <div class="cp-container stores-map">
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
-            <div v-for="store in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :hint-content="'<h3>' + store.title + '</h3><p>' + store.address + '</p><a>Редактировать</a>'"></ymap-marker>
+            <div v-for="(store, idx) in stores">
+              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]"></ymap-marker>
             </div>
           </yandex-map>
         </div>
@@ -39,7 +39,7 @@ const StoresMap = {
       htmlContent: '',
       page_no: 1,
       rows_per_page: 500,
-      stores: {},
+      stores: [],
       pages: 1,
       filters: {},
       selectedFilters: {
@@ -57,6 +57,16 @@ const StoresMap = {
       coords: [55.753215,37.622504],
       controls: ['fullscreenControl','zoomControl']
     }
+  },
+  computed: {
+    // balloonTemplate(idx) {
+    //   console.log('Индекс',idx);
+    //   return `
+    //     <h3>${this.stores[idx].title}</h3>
+    //     <p>${this.stores[idx].address}</p>
+    //     <router-link to="/stores/${this.stores[idx].id}">Редактировать</router-link>
+    //   `
+    // }
   },
   methods: {
     getStores() {

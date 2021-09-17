@@ -248,7 +248,7 @@ const ProductEdit = {
       checkProductImagesSlider();
     },
     uploadFile() {
-      var uploadData = new FormData();
+      var data = new FormData();
       var imagefile = document.querySelector('#photo-upload');
       console.log(imagefile.files[0]);
       data.append('file', imagefile.files[0]);
