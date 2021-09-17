@@ -3,7 +3,7 @@ $(document).ready(function(){
     var cats = new Vue({
       el: '#cats',
       data: {
-        catalogTree: JSON.parse(catalogTree),
+        catalogTree: JSON.parse(categoryTree),
         currentCat: 0
       },
       created() {
