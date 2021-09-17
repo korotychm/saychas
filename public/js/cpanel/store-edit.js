@@ -105,10 +105,42 @@ const StoreEdit = {
   data: function () {
     return {
       editable: true,
-      selectedDate: null
+      selectedDate: null,
+      store: {}
     }
   },
-
+  methods: {
+    getStore() {
+      let requestUrl = '/control-panel/edit-store';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            store_id : this.$route.params.id
+          }),{headers})
+          .then(response => {
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              this.store = response.data.store;
+              console.log(this.store);
+            }
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              this.editable = false;
+              $('.main__loader').hide();
+            }
+          });
+    }
+  },
+  created: function(){
+    $('.main__loader').show();
+    this.getStore();
+  },
+  updated: function(){
+    $('.main__loader').hide();
+  }
 }
 
 $(document).on('click','.store__timetable-trigger', function(){
