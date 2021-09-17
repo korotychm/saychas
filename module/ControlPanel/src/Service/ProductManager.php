@@ -269,6 +269,15 @@ class ProductManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
+    public function getHandbooks()
+    {
+        return [
+            'brands' => Brand::findAll([])->toArray(),
+            'colors' =>  Color::findAll([])->toArray(),
+            'countries' => Country::findAll([])->toArray(),
+        ];
+    }
+    
     public function findProduct(string $productId)
     {
         $product = $this->find(['id' => $productId]);
