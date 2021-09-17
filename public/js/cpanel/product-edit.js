@@ -120,7 +120,7 @@ const ProductEdit = {
                                     <div class="product__images-list product__images-list--slider">
                                         <div class="product__images-track" data-shift="0" data-viewed="5">
                                             <div v-if="product.images">
-                                              <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : index == 0 }">
+                                              <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : (image == currentImg) }" @click="CurrentImg = image">
                                                 <img :src="imgPath + image" />
                                               </div>
                                             </div>
@@ -128,7 +128,7 @@ const ProductEdit = {
                                     </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                 </div>
                                 <div class="product__images-selected">
-                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="product.images ? (imgPath + product.images[0]) : ''" />
+                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? (imgPath + currentImg) : ''" />
                                 </div>
                                 <div class="product__images-controls">
                                     <input type="file" id="photo-upload" style="display:none;" @change="uploadFile"/>
@@ -191,7 +191,8 @@ const ProductEdit = {
       countrySearch: '',
       selectedCountryId: '',
       selectedCountryName: '',
-      product: {}
+      product: {},
+      currentImg()
     }
   },
   computed: {
@@ -222,8 +223,26 @@ const ProductEdit = {
   },
   methods: {
     uploadFile() {
-      this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
-      checkProductImagesSlider();
+      const data = new FormData();
+      var imagefile = document.querySelector('#photo-upload');
+      console.log(imagefile.files[0]);
+      data.append('file', imagefile.files[0]);
+      data.append('product_id', this.product.id);
+      data.append('provider_id', this.product.provider_id);
+      console.log(data);
+      axios.post('http://192.168.1.222:8080/upload', data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+      })
+      .then(response => {
+        console.log(response)
+        this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
+        checkProductImagesSlider();
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
     },
     flatCategories() {
       let categoriesFlat = [];
@@ -368,6 +387,9 @@ const ProductEdit = {
               this.selectedCountryId = this.product.country_id;
               this.selectedCountryName = this.product.country_name;
               this.countries = this.product.countries;
+              if (this.product.images.length){
+                this.currentImg = this.product.images[0];
+              }
               this.flatCategories();
               console.log(this.product);
             }
@@ -490,9 +512,7 @@ function checkProductImagesSlider(){
     $('.product__images-control--down').removeClass('disabled');
   }
 }
-$(document).ready(function(){
-  checkProductImagesSlider();
-});
+
 $(document).on('click','.product__images-arrow',function(){
   let track = $(this).parent().find('.product__images-track'),
       shift = +track.data('shift') + +$(this).data('shift'),
@@ -511,14 +531,6 @@ $(document).on('click','.product__images-arrow',function(){
       } else {
         $('.product__images-arrow--down').removeClass('disabled');
       }
-});
-
-$(document).on('click','.product__images-nav .product-small-img',function(){
-  $('.product__images-nav .product-small-img').removeClass('active');
-  $(this).addClass('active');
-  let imgSrc = $(this).find('img').attr('src');
-  $('.product__images-selected img').attr('src', imgSrc);
-  checkProductImagesSlider();
 });
 
 $(document).on('click','.product__images-control--del',function(){
