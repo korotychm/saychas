@@ -105,6 +105,7 @@ const ProductAdd = {
         }
       }
       iterateArray(this.categories, false);
+      this.categoriesFlat = categoriesFlat;
     },
     getCategories() {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
