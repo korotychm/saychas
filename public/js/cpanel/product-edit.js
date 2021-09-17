@@ -225,6 +225,22 @@ const ProductEdit = {
     }
   },
   methods: {
+    delFile(){
+      var data = new FormData();
+      data.append('file_name', currentImg);
+      axios.post('/control-panel/delete-product-image', data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+      })
+      .then(response => {
+        console.log(response)
+        checkProductImagesSlider();
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    },
     moveImg(shift) {
       var currentIndex = this.product.images.indexOf(this.currentImg);
       var images = [...this.product.images];
@@ -236,13 +252,13 @@ const ProductEdit = {
       var uploadData = new FormData();
       var imagefile = document.querySelector('#photo-upload');
       console.log(imagefile.files[0]);
-      uploadData.append('file', imagefile.files[0]);
-      uploadData.append('product_id', this.product.id);
-      uploadData.append('provider_id', this.product.provider_id);
-      for (var key of uploadData.entries()) {
+      data.append('file', imagefile.files[0]);
+      data.append('product_id', this.product.id);
+      data.append('provider_id', this.product.provider_id);
+      for (var key of data.entries()) {
         console.log(key[0] + ', ' + key[1]);
       }
-      axios.post('/control-panel/upload-product-image', uploadData, {
+      axios.post('/control-panel/upload-product-image', data, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
@@ -556,7 +572,7 @@ $(document).on('click','.product__images-control--del',function(){
     next = current.index() + 1
   }
   $('.product__images-nav .product-small-img').eq(next).trigger('click');
-  current.remove();
+  //current.remove();
   if (shift){
     if ($('.product__images-arrow--up').hasClass('disabled')){
       $('.product__images-arrow--down').trigger('click');
