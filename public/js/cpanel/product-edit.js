@@ -230,7 +230,7 @@ const ProductEdit = {
       data.append('product_id', this.product.id);
       data.append('provider_id', this.product.provider_id);
       console.log(data);
-      axios.post('http://192.168.1.222:8080/upload', data, {
+      axios.post('/control-panel/upload-product-image', data, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
