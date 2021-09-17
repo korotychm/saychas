@@ -392,6 +392,8 @@ const ProductAdd = {
               } else {
                 this.product = response.data.answer.data.product;
                 this.product.images = [];
+                this.countries = this.product.countries;
+                this.brands = this.product.brands;
               }
             }
           })
