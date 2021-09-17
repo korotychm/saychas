@@ -78,8 +78,8 @@
                             </label>
                             <nav class="cats" id="cats">
                               <div class="cats__left">
-                                <div v-for="(category, idx) in categoryTree" class="cats__item">
-                                  <a :href="'/catalog/' + category.id" class="cats__parent" :class="{active: (idx == currentCat)}" @mouseover="currentCat = idx">{{ category.title }}</a>
+                                <div v-for="(category, idx) in categoryTree" class="cats__item" :class="{active: (idx == currentCat)}">
+                                  <a :href="'/catalog/' + category.id" class="cats__parent" @mouseover="currentCat = idx">{{ category.title }}</a>
                                 </div>
                               </div>
                               <div class="cats__right">
