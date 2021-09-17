@@ -51,7 +51,8 @@ const StoresMap = {
         apiKey: '',
         lang: 'ru_RU',
         coordorder: 'latlong',
-        version: '2.1'
+        version: '2.1',
+        coords: [55.657123,37.739375]
       }
     }
   },
