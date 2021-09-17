@@ -77,10 +77,10 @@ return [
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
-//            \ControlPanel\Controller\StoreController::class => [
-//                ['actions' => ['showStores',], 'allow' => '+analyst'],
-//                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
-//            ],
+            \ControlPanel\Controller\StoreController::class => [
+                ['actions' => ['editStore',], 'allow' => '+developer'],
+                //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
+            ],
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',], 'allow' => '+analyst'],
                 ['actions' => ['showListFromCache', ], 'allow' => '+developer'],
@@ -236,6 +236,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'add-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'edit-store' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/edit-store',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\StoreController::class,
+                                'action' => 'edit-store',
                             ],
                         ],
                         // 'may_terminate' => true,

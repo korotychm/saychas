@@ -272,7 +272,7 @@ class ProductController extends AbstractActionController
         $data = ['new_category_id' => $categoryId];
         $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
         
-        return $answer;
+        return new JsonModel(['answer' => $answer]);
     }
 
 
