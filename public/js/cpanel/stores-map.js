@@ -25,9 +25,9 @@ const StoresMap = {
       </div>
       <div class="cp-container stores-map">
         <div style="height: 600px">
-          <yandex-map :settings="settings" :coords="coords" zoom="10" :control="controls">
+          <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
             <div v-for="store in stores">
-              <ymap-marker marker-type="Placemark" :coords="[store.geox,store.geoy]"></ymap-marker>
+              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]"></ymap-marker>
             </div>
           </yandex-map>
         </div>
