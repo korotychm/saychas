@@ -186,6 +186,12 @@ class ProductController extends AbstractActionController
     {
         return true;
     }
+    
+    public function uploadProductImageAction()
+    {
+        echo 'banzaii';
+        exit;
+    }
 
     public function updateProductAction()
     {
