@@ -65,7 +65,7 @@ const StoresMap = {
         <div class="stores-map__baloon">
           <h3>${this.stores[idx].title}</h3>
           <p>${this.stores[idx].address}</p>
-          <router-link to="/stores/${this.stores[idx].id}">Редактировать</router-link>
+          <a href="/control-panel#/stores/${this.stores[idx].id}">Редактировать</a>
         </div>
       `
     },
