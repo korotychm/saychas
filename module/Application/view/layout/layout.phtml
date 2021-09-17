@@ -66,13 +66,15 @@
 
                     <ul id="tree" class="tree treeview" style=""><h3><?= Application\Resource\Resource::THE_CATALOG ?></h3>
                         <?php // $this->catalogCategoties ?>
-                        <?= '<pre>'.print_r($this->categoryTree).'</div>' ?>
+                        <?= '<pre>'.json_encode($this->categoryTree).'</div>' ?>
                     </ul>
 
                 </div >
             </div >
             <!---->
         </div>
+
+
 
         <header class="header">
             <?= $this->partial("/application/index/partials/main-layout/header-menu", ["menu" => []]) ?>
