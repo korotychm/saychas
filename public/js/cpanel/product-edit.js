@@ -226,7 +226,7 @@ const ProductEdit = {
       var currentIndex = this.product.images.indexOf(this.currentImg);
       var replacedIndex = currentIndex + shift;
       let tmp = this.product.images[currentIndex];
-      console.log(currentIndex,replacedIndex);
+      console.log(currentIndex,replacedIndex,tmp);
       this.product.images[currentIndex] = this.product.images[replacedIndex];
       this.product.images[replacedIndex] = tmp;
       console.log(this.product.images);
