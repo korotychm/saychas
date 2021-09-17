@@ -138,13 +138,13 @@ const ProductEdit = {
                                         </svg>
                                         <span>добавить фото</span>
                                     </label>
-                                    <div class="product__images-control product__images-control--up"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
+                                    <div class="product__images-control product__images-control--up" @click="moveImg(-1)"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M10.532,0.431 L17.567,7.436 C18.149,8.16 18.149,8.957 17.567,9.537 C16.984,10.118 16.39,10.118 15.456,9.537 L8.422,2.532 C7.839,1.952 7.839,1.11 8.422,0.431 C9.5,0.149 9.949,0.149 10.532,0.431 Z" />
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M2.574,9.537 L9.608,2.532 C10.191,1.952 10.191,1.11 9.608,0.431 C9.25,0.149 8.80,0.149 7.498,0.431 L0.463,7.436 C0.118,8.16 0.118,8.957 0.463,9.537 C1.46,10.118 1.991,10.118 2.574,9.537 Z" />
                                         </svg>
                                         <span>поднять вверх</span>
                                     </div>
-                                    <div class="product__images-control product__images-control--down"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
+                                    <div class="product__images-control product__images-control--down" @click="moveImg(1)"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M10.532,0.431 L17.567,7.436 C18.149,8.16 18.149,8.957 17.567,9.537 C16.984,10.118 16.39,10.118 15.456,9.537 L8.422,2.532 C7.839,1.952 7.839,1.11 8.422,0.431 C9.5,0.149 9.949,0.149 10.532,0.431 Z" />
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M2.574,9.537 L9.608,2.532 C10.191,1.952 10.191,1.11 9.608,0.431 C9.25,0.149 8.80,0.149 7.498,0.431 L0.463,7.436 C0.118,8.16 0.118,8.957 0.463,9.537 C1.46,10.118 1.991,10.118 2.574,9.537 Z" />
                                         </svg>
@@ -222,6 +222,14 @@ const ProductEdit = {
     }
   },
   methods: {
+    moveImg(shift) {
+      var currentIndex = this.product.images.indexOf(this.currentImg);
+      var replacedIndex = currentIndex + shift;
+      let tmp = this.product.images[currentIndex];
+      this.product.images[currentIndex] = this.product.images[replacedIndex];
+      this.product.images[replacedIndex] = tmp;
+      checkProductImagesSlider();
+    },
     uploadFile() {
       var uploadData = new FormData();
       var imagefile = document.querySelector('#photo-upload');
@@ -239,8 +247,8 @@ const ProductEdit = {
       })
       .then(response => {
         console.log(response)
-        this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
-        checkProductImagesSlider();
+        // this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
+        // checkProductImagesSlider();
       })
       .catch(error => {
         console.log(error.response)
@@ -555,18 +563,4 @@ $(document).on('click','.product__images-control--del',function(){
     }
   }
   checkProductImagesSlider();
-});
-
-$(document).on('click','.product__images-control--up, .product__images-control--down',function(){
-    var firstEl,
-        secondEl;
-		if ($(this).hasClass('product__images-control--down')) {
-			firstEl = $('.product__images-nav .product-small-img.active').next(),
-      secondEl = $('.product__images-nav .product-small-img.active');
-		} else {
-      firstEl = $('.product__images-nav .product-small-img.active'),
-      secondEl = $('.product__images-nav .product-small-img.active').prev();
-		}
-    $(secondEl).insertAfter($(firstEl));
-    checkProductImagesSlider();
 });
