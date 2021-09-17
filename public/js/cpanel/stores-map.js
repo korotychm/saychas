@@ -64,7 +64,7 @@ const StoresMap = {
       return `
         <h3>Test</h3>
       `
-    }
+    },
     getStores() {
       let requestUrl = '/control-panel/show-stores';
       if (this.filtersCreated) {
