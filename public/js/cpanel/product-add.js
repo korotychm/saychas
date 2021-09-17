@@ -254,7 +254,13 @@ const ProductAdd = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/add-product';
       axios
-        .post(requestUrl,{},{headers})
+        .post(requestUrl,
+          Qs.stringify({
+            data: {}
+          }),
+          {
+            headers
+          })
           .then(response => {
             if (response.data.data === true) {
               location.reload();
