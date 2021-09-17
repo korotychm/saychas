@@ -71,6 +71,8 @@ return [
                 ['actions' => ['addProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
                 ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
+                ['actions' => ['categoryTree', ], 'allow' => '+developer'],
+                
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristicsOnly', ], 'allow' => '+developer'],
@@ -273,6 +275,18 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'category-tree' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/category-tree',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'category-tree',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     
                     'request-category-characteristics' => [
                         'type' => Literal::class,
