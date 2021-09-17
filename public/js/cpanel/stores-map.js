@@ -26,7 +26,7 @@ const StoresMap = {
       <div class="cp-container stores-map">
         <div v-for="store in stores">
           <span>{{ store.geox }}</span> : <span>{{ store.geoy }}</span>
-          <yandex-map :settings="settings">
+          <yandex-map :settings="settings" :coords="coords">
               <!--Markers-->
           </yandex-map>
         </div>
@@ -51,9 +51,9 @@ const StoresMap = {
         apiKey: '',
         lang: 'ru_RU',
         coordorder: 'latlong',
-        version: '2.1',
-        coords: [55.657123,37.739375]
-      }
+        version: '2.1'
+      },
+      coords: [55.657123,37.739375]
     }
   },
   methods: {
