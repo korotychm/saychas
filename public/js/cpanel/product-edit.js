@@ -223,14 +223,14 @@ const ProductEdit = {
   },
   methods: {
     uploadFile() {
-      var data = new FormData();
+      var uploadData = new FormData();
       var imagefile = document.querySelector('#photo-upload');
       console.log(imagefile.files[0]);
-      data.append('file', imagefile.files[0]);
-      data.append('product_id', this.product.id);
-      data.append('provider_id', this.product.provider_id);
-      console.log(data);
-      axios.post('/control-panel/upload-product-image', data, {
+      uploadData.append('file', imagefile.files[0]);
+      uploadData.append('product_id', this.product.id);
+      uploadData.append('provider_id', this.product.provider_id);
+      console.log(uploadData);
+      axios.post('/control-panel/upload-product-image', uploadData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
