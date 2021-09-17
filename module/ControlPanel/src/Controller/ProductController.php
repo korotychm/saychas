@@ -214,6 +214,17 @@ class ProductController extends AbstractActionController
         }
         return new JsonModel(['image_file_name' => $newFileName]);
     }
+    
+    public function deleteProductImageAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $fileName = $post['file_name'];
+        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
+        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
+        $fileName = $uploadsDir.'/'.$fileName;
+        return new JsonModel(['result' => unlink($fileName)]);
+    }
 
     public function updateProductAction()
     {
