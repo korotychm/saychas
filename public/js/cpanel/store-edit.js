@@ -122,8 +122,8 @@ const StoreEdit = {
             if (response.data.data === true) {
               location.reload();
             } else {
+              console.log(response);
               this.store = response.data;
-              console.log(this.store);
             }
           })
           .catch(error => {
