@@ -222,7 +222,7 @@ const ProductEdit = {
   },
   methods: {
     uploadFile() {
-      this.products.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
+      this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
       checkProductImagesSlider();
     },
     flatCategories() {
