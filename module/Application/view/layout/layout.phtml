@@ -89,7 +89,7 @@
                                       <li>
                                         <a :href="'/catalog/' + categoryChild.id">{{ categoryChild.title }}</a>
                                       </li>
-                                      <li v-for="categoryChildChild in categoryChild.children.slice(0, 6)">
+                                      <li v-for="categoryChildChild in categoryChild.children">
                                         <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
                                       </li>
                                       <li>
