@@ -39,7 +39,7 @@ const StoresMap = {
       htmlContent: '',
       page_no: 1,
       rows_per_page: 500,
-      stores: {},
+      stores: [],
       pages: 1,
       filters: {},
       selectedFilters: {
