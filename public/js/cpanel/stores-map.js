@@ -66,7 +66,7 @@ const StoresMap = {
         <router-link to="/stores/${this.stores[index].id}">Редактировать</router-link>
       `
     }
-  }
+  },
   methods: {
     getStores() {
       let requestUrl = '/control-panel/show-stores';
