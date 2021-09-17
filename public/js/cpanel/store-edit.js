@@ -124,6 +124,7 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               console.log(this.store);
+              $('.main__loader').hide();
             }
           })
           .catch(error => {
@@ -137,9 +138,6 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
-  },
-  updated: function(){
-    $('.main__loader').hide();
   }
 }
 
