@@ -192,7 +192,7 @@ const ProductEdit = {
       selectedCountryId: '',
       selectedCountryName: '',
       product: {},
-      currentImg()
+      currentImg : ''
     }
   },
   computed: {
