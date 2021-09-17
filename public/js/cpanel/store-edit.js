@@ -23,7 +23,7 @@ const StoreEdit = {
                       <div class="product__attribute product__attribute--short">
                         <h2>Статус работы</h2>
                         <div>
-                          <select class="select" v-model="status_id">
+                          <select class="select" v-model="store.status_id">
                             <option value="0">Работает по графику</option>
                             <option value="1">Временно не работает</option>
                             <option value="2">Закрыт</option>
@@ -72,10 +72,10 @@ const StoreEdit = {
                               <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.holyday_from" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.holiday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.holyday_to" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.holiday_to" />
                                 </div>
                               </div>
                             </div>
