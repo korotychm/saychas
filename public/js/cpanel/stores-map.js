@@ -60,7 +60,7 @@ const StoresMap = {
   },
   computed: {
     balloonTemplate() {
-      console.log('Индекс',idx);
+      //console.log('Индекс',idx);
       return `
         <h3>Test</h3>
 
