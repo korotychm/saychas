@@ -229,7 +229,9 @@ const ProductEdit = {
       uploadData.append('file', imagefile.files[0]);
       uploadData.append('product_id', this.product.id);
       uploadData.append('provider_id', this.product.provider_id);
-      console.log(uploadData);
+      for (var key of uploadData.entries()) {
+        console.log(key[0] + ', ' + key[1]);
+      }
       axios.post('/control-panel/upload-product-image', uploadData, {
             headers: {
               'Content-Type': 'multipart/form-data'
