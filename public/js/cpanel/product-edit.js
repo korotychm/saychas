@@ -195,7 +195,8 @@ const ProductEdit = {
       selectedCountryId: '',
       selectedCountryName: '',
       product: {},
-      currentImg : ''
+      currentImg : '',
+      deleteImages: []
     }
   },
   computed: {
@@ -234,23 +235,10 @@ const ProductEdit = {
       } else {
         next = currentIndex + 1
       }
-      var data = new FormData();
-      data.append('file_name', currentImg);
-      axios.post('/control-panel/delete-product-image', data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-      })
-      .then(response => {
-        console.log(response)
-        this.currentImg = images[next];
-        images.splice(currentIndex, 1);
-        this.product.images = images;
-        checkProductImagesSlider();
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
+      this.deleteImages.push(images[currentIndex]);
+      this.currentImg = images[next];
+      images.splice(currentIndex, 1);
+      this.product.images = images;
     },
     moveImg(shift) {
       var currentIndex = this.product.images.indexOf(this.currentImg);
@@ -352,7 +340,8 @@ const ProductEdit = {
         title: this.product.title,
         characteristics: chars,
         images: this.product.images,
-        vendor_code: this.product.vendor_code
+        vendor_code: this.product.vendor_code,
+        del_images: this.deleteImages
       }
       console.log(request);
       axios
