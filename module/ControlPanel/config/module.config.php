@@ -70,6 +70,7 @@ return [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
                 ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
+                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
@@ -248,6 +249,18 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'delete-product-image' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/delete-product-image',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'delete-product-image',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'request-category-characteristics' => [
                         'type' => Literal::class,
                         'options' => [
