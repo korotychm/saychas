@@ -26,8 +26,8 @@ const StoresMap = {
       <div class="cp-container stores-map">
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
-            <div v-for="store in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :baloon="{header: store.title, body: store.address, footer: 'Редактировать'}"></ymap-marker>
+            <div v-for="(store, index) in stores">
+              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(index)"></ymap-marker>
             </div>
           </yandex-map>
         </div>
@@ -58,6 +58,15 @@ const StoresMap = {
       controls: ['fullscreenControl','zoomControl']
     }
   },
+  computed: {
+    balloonTemplate(index) {
+      return `
+        <h3>${this.stores[index].title}</h3>
+        <p>${this.stores[index].address}</p>
+        <router-link to="/stores/${this.stores[index].id}">Редактировать</router-link>
+      `
+    }
+  }
   methods: {
     getStores() {
       let requestUrl = '/control-panel/show-stores';
