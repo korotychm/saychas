@@ -268,7 +268,7 @@ class ProductController extends AbstractActionController
 
         $post = $this->getRequest()->getPost()->toArray();
         
-        $categoryId = $post['category_id'];
+        $categoryId = $post['data']['category_id'];
         $data = ['new_category_id' => $categoryId];
         $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
         
