@@ -10,6 +10,8 @@ const StoreEdit = {
                       <div class="product__attribute">
                         <h2>Адрес</h2>
                         <input type="text" class="input" v-model="store.address" />
+                        <input type="hidden" class="input" v-model="store.geox" />
+                        <input type="hidden" class="input" v-model="store.geoy" />
                       </div>
                       <div class="product__attribute">
                         <h2>Комментарий</h2>

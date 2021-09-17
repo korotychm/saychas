@@ -31,6 +31,68 @@ const ProductAdd = {
                           </div>
                       </div>
                   </div>
+                  <div v-if="product.category_id" class="product__info">
+                    <div class="product__main-attributes">
+                      <div class="product__attribute  product__attribute--short">
+                          <h2>Артикул</h2>
+                          <input class="input" type="text" v-model="product.vendor_code" />
+                      </div>
+                      <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
+                          <h2>Страна производства</h2>
+                            <div class="search-select">
+                                <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
+                                <div class="search-select__suggestions">
+                                    <div v-if="!countrySearch" class="search-select__empty">Начните вводить название страны для поиска</div>
+                                    <div v-if="(countrySearch && !filteredCountries.length)" class="search-select__empty">Ничего не найдено</div>
+                                    <div v-if="(countrySearch && filteredCountries.length)">
+                                      <label v-for="country in filteredCountries">
+                                        <input type="radio" name="suggest" :checked="(country.id == selectedCountryId)" />
+                                        <span class="search-select__suggestion" @click="selectCountry(country.id, country.title)">
+                                          <span>{{ country.title }}</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                      <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
+                          <h2>Бренд</h2>
+                            <div class="search-select">
+                                <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
+                                <div class="search-select__suggestions">
+                                    <div v-if="!brandSearch" class="search-select__empty">Начните вводить название бренда для поиска</div>
+                                    <div v-if="(brandSearch && !filteredBrands.length)" class="search-select__empty">Ничего не найдено</div>
+                                    <div v-if="(brandSearch && filteredBrands.length)">
+                                      <label v-for="brand in filteredBrands">
+                                        <input type="radio" name="suggest" :checked="(brand.id == selectedBrandId)" />
+                                        <span class="search-select__suggestion" @click="selectBrand(brand.id, brand.title)">
+                                          <span>{{ brand.title }}</span>
+                                        </span>
+                                      </label>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                      <div class="product__attribute">
+                          <h2>Название товара</h2>
+                          <input class="input" type="text" v-model="product.title" />
+                      </div>
+                      <div v-if="(product.color_id !== undefined)" class="product__attribute">
+                          <h2>Цвет</h2>
+                            <div class="product__colors">
+                                <label v-for="color in product.colors" class="color-checkbox">
+                                  <input type="radio" :value="color.id" name="color" :checked="product.color_id == color.id" v-model="product.color_id">
+                                  <span class="color-checkbox__check">
+                                    <span class="color-checkbox__check-color" :style="{'backgroundColor' : color.value}"></span>
+                                  </span>
+                                </label>
+                            </div>
+                      </div>
+                      <div class="product__attribute">
+                          <h2>Описание товара</h2>
+                          <textarea class="textarea" v-model="product.description"></textarea>
+                      </div>
+                    </div>
                 </div>
             </div>`,
   data: function () {
