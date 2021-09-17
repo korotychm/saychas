@@ -215,20 +215,21 @@ class ProductController extends AbstractActionController
         return new JsonModel(['image_file_name' => $newFileName]);
     }
     
-    public function deleteProductImageAction()
-    {
-        $post = $this->getRequest()->getPost()->toArray();
-        $fileName = $post['file_name'];
-        $baseUrl = $this->config['parameters']['image_path']['base_url'];
-        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
-        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
-        $fileName = $uploadsDir.'/'.$fileName;
-        return new JsonModel(['result' => unlink($fileName)]);
-    }
+//    public function deleteProductImageAction()
+//    {
+//        $post = $this->getRequest()->getPost()->toArray();
+//        $fileName = $post['file_name'];
+//        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+//        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
+//        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
+//        $fileName = $uploadsDir.'/'.$fileName;
+//        return new JsonModel(['result' => unlink($fileName)]);
+//    }
 
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
+        $deletedImages = $post['del_images'];
         // echo '<pre>';
         // print_r(json_decode($post['data']['product'],true));
         // echo '</pre>';
@@ -240,6 +241,9 @@ class ProductController extends AbstractActionController
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
+            foreach($deletedImages as $image) {
+                $this->productManager->deleteProductImage($image);
+            }
         }
         $this->getResponse()->setStatusCode(200);
         return new JsonModel(['result' => true]);
