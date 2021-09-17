@@ -69,6 +69,7 @@ return [
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
+                ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
@@ -232,6 +233,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'update-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'upload-product-image' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/upload-product-image',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'upload-product-image',
                             ],
                         ],
                         // 'may_terminate' => true,

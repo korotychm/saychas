@@ -1316,6 +1316,7 @@ return [
                 'brand' => 'brand',
                 'product' => 'product',
                 'provider' => 'provider',
+                'cpanel_product' => 'cpanel_product'
             ],
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',

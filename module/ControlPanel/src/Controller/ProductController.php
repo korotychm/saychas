@@ -186,6 +186,29 @@ class ProductController extends AbstractActionController
     {
         return true;
     }
+    
+    public function uploadProductImageAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $productId = $post['product_id'];
+        $providerId = $post['provider_id'];
+        
+        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
+        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
+        $error = $_FILES['file']['error'];
+        if(UPLOAD_ERR_OK == $error) {
+            //$fileName = basename($_FILES['file']['name']);
+            $uuid = uniqid("{$providerId}_{$productId}_",true);
+            list($type, $ext) = explode('/', $_FILES['file']['type']);
+            //$newFileName = "{$providerId}_{$productId}_$uuid.$ext";
+            $newFileName = "$uuid.$ext";
+            $tmpName = $_FILES['file']['tmp_name'];
+            //move_uploaded_file($tmpName, "$uploadsDir/$fileName");
+            move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
+        }
+        return new JsonModel(['image_file_name' => $newFileName]);
+    }
 
     public function updateProductAction()
     {
