@@ -187,7 +187,7 @@ const ProductAdd = {
                                       </svg>
                                       <span>Вернуться</span>
                                     </router-link>
-                                    <button class="btn btn--primary" @click="saveProduct(false)">Сохранить изменения</button>
+                                    <button class="btn btn--primary" @click="addProduct">Сохранить изменения</button>
                                   </div>
                                 </div>
                               </div>
@@ -400,6 +400,70 @@ const ProductAdd = {
           .catch(error => {
             if (error.response.status == '403'){
               location.reload();
+            }
+          });
+    },
+    addProduct() {
+      let requestUrl = '/control-panel/update-product'; // Добавить урл для добавления товара
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let chars = JSON.parse(JSON.stringify(this.product.characteristics));
+      for (characteristic of chars){
+        delete characteristic.characteristic_name;
+        delete characteristic.real_value;
+        delete characteristic.title;
+        delete characteristic.available_values;
+        // Страна
+        if (characteristic.id == '000000001'){
+          characteristic.value = this.selectedCountryId;
+        }
+        // Бренд
+        if (characteristic.id == '000000003'){
+          characteristic.value = this.selectedBrandId;
+        }
+        // Цвет
+        if (characteristic.id == '000000004'){
+          characteristic.value = this.product.color_id;
+        }
+      }
+      let category_in_request = this.selectedCategoryId;
+      if (oldCategory) {
+        category_in_request = oldCategory;
+      }
+      let request = {
+        id : this.product.id,
+        brand_id: this.selectedBrandId,
+        category_id: category_in_request,
+        color_id: this.product.color_id,
+        provider_id: this.product.provider_id,
+        country_id: this.selectedCountryId,
+        description: this.product.description,
+        title: this.product.title,
+        characteristics: chars,
+        images: this.product.images,
+        vendor_code: this.product.vendor_code,
+        del_images: this.deleteImages
+      }
+      console.log(request);
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            data: {
+              product : JSON.stringify(request)
+            }
+          }),
+          {
+            headers
+          })
+          .then(response => {
+              if (response.data.result){
+                router.replace('/products');
+              }
+          })
+          .catch(error => {
+            console.log(error);
+            if (error.response.status == '403'){
+              this.editable = false;
+              $('.main__loader').hide();
             }
           });
     }
