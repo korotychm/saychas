@@ -4,16 +4,16 @@ const StoreEdit = {
                   <div class="store__fields">
                     <div class="product__attribute product__attribute--short">
                       <h2>Название магазина</h2>
-                      <input type="text" class="input" />
+                      <input type="text" class="input" v-model="store.title" />
                     </div>
                     <div class="product__attribute">
                       <h2>Адрес</h2>
-                      <input type="text" class="input" />
+                      <input type="text" class="input" v-model="store.address" />
                     </div>
                     <div class="product__attribute">
                       <h2>Комментарий</h2>
                       <div>
-                        <input type="text" class="input" />
+                        <input type="text" class="input" v-model="store.description" />
                         <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
                       </div>
                     </div>
@@ -22,9 +22,9 @@ const StoreEdit = {
                     <div class="product__attribute product__attribute--short">
                       <h2>Статус работы</h2>
                       <div>
-                        <select class="select" value="1">
-                          <option value="1">Работает по графику</option>
-                          <option value="2">Временно не работает</option>
+                        <select class="select" v-model="status_id">
+                          <option value="0">Работает по графику</option>
+                          <option value="1">Временно не работает</option>
                           <option value="2">Закрыт</option>
                         </select>
                         <p>Статус устанавливает глобальный режим работы магазина.</p>
@@ -38,10 +38,10 @@ const StoreEdit = {
                             <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.working_day_from" />
                               </div>
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.working_day_to" />
                               </div>
                             </div>
                           </div>
@@ -49,10 +49,10 @@ const StoreEdit = {
                             <h2>Суббота <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.saturday_from" />
                               </div>
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.saturday_to" />
                               </div>
                             </div>
                           </div>
@@ -60,10 +60,10 @@ const StoreEdit = {
                             <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.sunday_from"/>
                               </div>
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.sunday_to" />
                               </div>
                             </div>
                           </div>
@@ -71,10 +71,10 @@ const StoreEdit = {
                             <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
                             <div class="input-group">
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.holyday_from" />
                               </div>
                               <div>
-                                <input type="text" class="timeinput" />
+                                <input type="text" class="timeinput" v-model="store.operating_mode.holyday_to" />
                               </div>
                             </div>
                           </div>

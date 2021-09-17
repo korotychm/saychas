@@ -154,6 +154,7 @@ const ProductAdd = {
               location.reload();
             } else {
               console.log(response);
+              this.product = response.data.answer.data.product
             }
           })
           .catch(error => {
