@@ -22,6 +22,10 @@ const ProductEdit = {
                   </div>
                   <div class="product__info">
                     <div class="product__main-attributes">
+                      <div class="product__attribute  product__attribute--short">
+                          <h2>Артикул</h2>
+                          <input class="input" type="text" v-model="product.vendor_code" />
+                      </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
                           <h2>Страна производства</h2>
                             <div class="search-select">
