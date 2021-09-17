@@ -153,7 +153,7 @@ const ProductEdit = {
                                         </svg>
                                         <span>опустить вниз</span>
                                     </div>
-                                    <div class="product__images-control product__images-control--del"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
+                                    <div @click="delImg" class="product__images-control product__images-control--del"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M3.317,1.196 L12.803,10.681 C13.388,11.267 13.388,12.217 12.803,12.803 C12.217,13.389 11.267,13.389 10.681,12.803 L1.196,3.317 C0.610,2.732 0.610,1.782 1.196,1.196 C1.782,0.610 2.732,0.610 3.317,1.196 Z" />
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M12.803,1.196 C13.389,1.782 13.389,2.732 12.803,3.317 L3.317,12.803 C2.732,13.388 1.782,13.388 1.196,12.803 C0.610,12.217 0.610,11.267 1.196,10.681 L10.681,1.196 C11.267,0.610 12.217,0.610 12.803,1.196 Z" />
                                         </svg>
@@ -225,7 +225,15 @@ const ProductEdit = {
     }
   },
   methods: {
-    delFile(){
+    delImg(){
+      var currentIndex = this.product.images.indexOf(this.currentImg);
+      var images = [...this.product.images];
+      var shift = (!(currentIndex == 0));
+      if ((currentIndex + 1) == images.length){
+        next = currentIndex- 1;
+      } else {
+        next = currentIndex + 1
+      }
       var data = new FormData();
       data.append('file_name', currentImg);
       axios.post('/control-panel/delete-product-image', data, {
@@ -235,6 +243,9 @@ const ProductEdit = {
       })
       .then(response => {
         console.log(response)
+        this.currentImg = images[next];
+        images.splice(currentIndex, 1);
+        this.product.images = images;
         checkProductImagesSlider();
       })
       .catch(error => {
@@ -559,26 +570,4 @@ $(document).on('click','.product__images-arrow',function(){
       } else {
         $('.product__images-arrow--down').removeClass('disabled');
       }
-});
-
-$(document).on('click','.product__images-control--del',function(){
-  let current = $('.product__images-nav .product-small-img.active'),
-      next = 0,
-      shift = (!($('.product__images-nav .product-small-img.active').index() == 0));
-
-  if ((current.index() + 1) == $('.product__images-nav .product-small-img').length){
-    next = current.index() - 1;
-  } else {
-    next = current.index() + 1
-  }
-  $('.product__images-nav .product-small-img').eq(next).trigger('click');
-  //current.remove();
-  if (shift){
-    if ($('.product__images-arrow--up').hasClass('disabled')){
-      $('.product__images-arrow--down').trigger('click');
-    } else {
-      $('.product__images-arrow--up').trigger('click');
-    }
-  }
-  checkProductImagesSlider();
 });
