@@ -164,6 +164,13 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
+    
+    public function addProductAction()
+    {
+        $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+
+        return new JsonModel(['category_tree' => $categoryTree]);
+    }
 
     /**
      * Check to see if product is saved on 1c.
@@ -215,38 +222,27 @@ class ProductController extends AbstractActionController
         return new JsonModel(['image_file_name' => $newFileName]);
     }
     
-//    public function deleteProductImageAction()
-//    {
-//        $post = $this->getRequest()->getPost()->toArray();
-//        $fileName = $post['file_name'];
-//        $baseUrl = $this->config['parameters']['image_path']['base_url'];
-//        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
-//        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
-//        $fileName = $uploadsDir.'/'.$fileName;
-//        return new JsonModel(['result' => unlink($fileName)]);
-//    }
-
+    /**
+     * Update product
+     * Send product data to 1c first and
+     * update locally if canUpdateProduct returns true 
+     * 
+     * @return JsonModel
+     */
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $deletedImages = $post['del_images'];
-        // echo '<pre>';
-        // print_r(json_decode($post['data']['product'],true));
-        // echo '</pre>';
-        // exit;
         $product = json_decode($post['data']['product'],true);
-        // echo '<pre>';
-        // print_r($product);
-        // echo '</pre>';
+        $deletedImages = $product['del_images'];
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
             foreach($deletedImages as $image) {
                 $this->productManager->deleteProductImage($image);
             }
+            return new JsonModel(['result' => true]);
         }
-        $this->getResponse()->setStatusCode(200);
-        return new JsonModel(['result' => true]);
+        return new JsonModel(['result' => false]);
     }
 
     public function requestCategoryCharacteristicsAction()

@@ -68,6 +68,7 @@ return [
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
+                ['actions' => ['addProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
                 ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
@@ -223,6 +224,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'edit-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'add-product' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/add-product',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'add-product',
                             ],
                         ],
                         // 'may_terminate' => true,
