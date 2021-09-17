@@ -249,8 +249,8 @@ const ProductEdit = {
       })
       .then(response => {
         console.log(response)
-        // this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
-        // checkProductImagesSlider();
+        this.product.images.push(resonse.data.image_file_name);
+        checkProductImagesSlider();
       })
       .catch(error => {
         console.log(error.response)
