@@ -82,6 +82,23 @@
                                   <a :href="'/catalog/' + category.id" class="cats__parent" :class="{active: (idx == currentCat)}" @mouseover="currentCat = idx">{{ category.title }}</a>
                                 </div>
                               </div>
+                              <div class="cats__right">
+                                <div v-for="(category, idx) in categoryTree">
+                                  <div v-show="idx == category.id" class="cats__children">
+                                    <ul v-for="categoryChild in category.children">
+                                      <li>
+                                        <a :href="'/catalog/' + categoryChild.id">{{ categoryChild.title }}</a>
+                                      </li>
+                                      <li v-for="categoryChildChild in categoryChild.children.slice(0, 6)">
+                                        <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
+                                      </li>
+                                      <li>
+                                        <a :href="'/catalog/' + categoryChild.id">Все товары</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
                             </nav>
                         </div>
                         <div class="header__logo">
