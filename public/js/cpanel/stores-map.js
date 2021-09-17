@@ -62,7 +62,11 @@ const StoresMap = {
     balloonTemplate(idx) {
       console.log('Индекс',idx);
       return `
-        <h3>Test</h3>
+        <div class="stores-map__baloon">
+          <h3>${this.stores[idx].title}</h3>
+          <p>${this.stores[idx].address}</p>
+          <router-link to="/stores/${this.stores[idx].id}">Редактировать</router-link>
+        </div>
       `
     },
     getStores() {
