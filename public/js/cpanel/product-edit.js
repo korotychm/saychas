@@ -224,8 +224,9 @@ const ProductEdit = {
   methods: {
     moveImg(shift) {
       var currentIndex = this.product.images.indexOf(this.currentImg);
-      console.log(this.product.images);
-      [this.product.images[currentIndex], this.product.images[currentIndex + shift]] = [this.product.images[currentIndex + shift], this.product.images[currentIndex]];
+      var images = [...this.product.images];
+      [images[currentIndex],images[currentIndex + shift]] = [images[currentIndex + shift], images[currentIndex]];
+      this.product.images = images;
       console.log(this.product.images);
       checkProductImagesSlider();
     },
