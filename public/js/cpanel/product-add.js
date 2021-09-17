@@ -144,7 +144,11 @@ const ProductAdd = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/request-category-characteristics-only';
       axios
-        .post(requestUrl,'',{headers})
+        .post(requestUrl,Qs.stringify({
+          data: {
+            category_id: this.selectedCategoryId
+          }
+        }),{headers})
           .then(response => {
             if (response.data.data === true) {
               location.reload();
