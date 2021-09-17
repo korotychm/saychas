@@ -54,7 +54,7 @@ const StoresMap = {
         coordorder: 'latlong',
         version: '2.1'
       },
-      coords: [55.5815245,36.8251409]
+      coords: [55.753215,37.622504]
     }
   },
   methods: {
