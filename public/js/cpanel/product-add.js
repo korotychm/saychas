@@ -391,8 +391,8 @@ const ProductAdd = {
               location.reload();
             } else {
               console.log(response);
-              this.product = response.data.answer.data.product
-              this.product.images = []
+              this.product = response.data.answer.data.product;
+              this.product.images = [];
             }
           })
           .catch(error => {
@@ -406,7 +406,8 @@ const ProductAdd = {
     $('.main__loader').show();
     this.getCategories();
   },
-  mounted: function(){
+  updated: function(){
+    checkProductImagesSlider();
     $('.main__loader').hide();
   }
 }
