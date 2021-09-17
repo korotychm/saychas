@@ -27,7 +27,7 @@ const StoresMap = {
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
             <div v-for="store in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords=`[store.geox,store.geoy]" :hint-content=`'<h3>' + store.title + '</h3><p>' + store.address + '</p><router-link to="/stores/' + store.id + '">Редактировать</router-link>'`></ymap-marker>
+              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :hint-content=`'<h3>' + store.title + '</h3><p>' + store.address + '</p><router-link to="/stores/' + store.id + '">Редактировать</router-link>'`></ymap-marker>
             </div>
           </yandex-map>
         </div>
