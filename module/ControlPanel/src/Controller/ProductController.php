@@ -187,6 +187,11 @@ class ProductController extends AbstractActionController
         return true;
     }
     
+    /**
+     * Upload product image action
+     * 
+     * @return JsonModel
+     */
     public function uploadProductImageAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
