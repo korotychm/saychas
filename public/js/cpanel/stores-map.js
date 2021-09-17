@@ -27,7 +27,7 @@ const StoresMap = {
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
             <div v-for="(store, idx) in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)"></ymap-marker>
+              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)" :icon="markerIcon"></ymap-marker>
             </div>
           </yandex-map>
         </div>
@@ -55,7 +55,13 @@ const StoresMap = {
         version: '2.1'
       },
       coords: [55.753215,37.622504],
-      controls: ['fullscreenControl','zoomControl']
+      controls: ['fullscreenControl','zoomControl'],
+      markerIcon: {
+        layout: 'default#image',
+        imageHref: '/img/icons/map-marker.svg',
+        imageSize: [34, 42],
+        imageOffset: [-17, -21]
+      }
     }
   },
   methods: {
