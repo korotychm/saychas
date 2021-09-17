@@ -376,7 +376,7 @@ const ProductAdd = {
     },
     addValue(characteristicIndex){
       this.product.characteristics[characteristicIndex].value.push('');
-    }
+    },
     getCharacteristics(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/request-category-characteristics-only';
