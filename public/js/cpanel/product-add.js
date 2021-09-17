@@ -82,52 +82,6 @@ const ProductAdd = {
     }
   },
   methods: {
-    delImg(){
-      var currentIndex = this.product.images.indexOf(this.currentImg);
-      var images = [...this.product.images];
-      var shift = (!(currentIndex == 0));
-      if ((currentIndex + 1) == images.length){
-        next = currentIndex- 1;
-      } else {
-        next = currentIndex + 1
-      }
-      this.deleteImages.push(images[currentIndex]);
-      this.currentImg = images[next];
-      images.splice(currentIndex, 1);
-      this.product.images = images;
-    },
-    moveImg(shift) {
-      var currentIndex = this.product.images.indexOf(this.currentImg);
-      var images = [...this.product.images];
-      [images[currentIndex],images[currentIndex + shift]] = [images[currentIndex + shift], images[currentIndex]];
-      this.product.images = images;
-      checkProductImagesSlider();
-    },
-    uploadFile() {
-      var data = new FormData();
-      var imagefile = document.querySelector('#photo-upload');
-      console.log(imagefile.files[0]);
-      data.append('file', imagefile.files[0]);
-      data.append('product_id', this.product.id);
-      data.append('provider_id', this.product.provider_id);
-      for (var key of data.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-      }
-      axios.post('/control-panel/upload-product-image', data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-      })
-      .then(response => {
-        console.log(response)
-        this.product.images.push(response.data.image_file_name);
-        this.currentImg = response.data.image_file_name;
-        checkProductImagesSlider();
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
-    },
     flatCategories() {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
@@ -156,111 +110,11 @@ const ProductAdd = {
       this.selectedCategoryName = this.categorySearch;
       this.selectedCategoryId = this.product.category_id;
     },
-    saveProduct(categoryChange = false, oldCategory = null) {
-      let requestUrl = '/control-panel/update-product';
-      if (categoryChange) {
-        requestUrl = '/control-panel/request-category-characteristics';
-      }
-      console.log(requestUrl);
-      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      let chars = JSON.parse(JSON.stringify(this.product.characteristics));
-      for (characteristic of chars){
-        delete characteristic.characteristic_name;
-        delete characteristic.real_value;
-        delete characteristic.title;
-        delete characteristic.available_values;
-        // Страна
-        if (characteristic.id == '000000001'){
-          characteristic.value = this.selectedCountryId;
-        }
-        // Бренд
-        if (characteristic.id == '000000003'){
-          characteristic.value = this.selectedBrandId;
-        }
-        // Цвет
-        if (characteristic.id == '000000004'){
-          characteristic.value = this.product.color_id;
-        }
-      }
-      let category_in_request = this.selectedCategoryId;
-      if (oldCategory) {
-        category_in_request = oldCategory;
-      }
-      let request = {
-        id : this.product.id,
-        brand_id: this.selectedBrandId,
-        category_id: category_in_request,
-        color_id: this.product.color_id,
-        provider_id: this.product.provider_id,
-        country_id: this.selectedCountryId,
-        description: this.product.description,
-        title: this.product.title,
-        characteristics: chars,
-        images: this.product.images,
-        vendor_code: this.product.vendor_code,
-        del_images: this.deleteImages
-      }
-      console.log(request);
-      axios
-        .post(requestUrl,
-          Qs.stringify({
-            data: {
-              new_category_id: this.selectedCategoryId,
-              product : JSON.stringify(request)
-            }
-          }),
-          {
-            headers
-          })
-          .then(response => {
-            if (categoryChange) {
-              let product = response.data.answer.data.product;
-              console.log(product);
-              this.product.characteristics = product.characteristics;
-              if (product.brand_id !== undefined){
-                this.product.brand_id = product.brand_id;
-                this.product.brand_name = product.brand_name;
-              } else {
-                delete this.product.brand_id;
-                delete this.product.brand_name;
-              }
-              if (product.country_id !== undefined){
-                this.product.country_id = product.country_id;
-                this.product.country_name = product.country_name;
-              } else {
-                delete this.product.country_id;
-                delete this.product.country_name;
-              }
-              if (product.color_id !== undefined){
-                this.product.color_id = product.color_id;
-              } else {
-                delete this.product.color_id;
-              }
-            } else {
-              if (response.data.result){
-                router.replace('/products');
-              }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            if (error.response.status == '403'){
-              this.editable = false;
-              $('.main__loader').hide();
-            }
-          });
-    },
     getCategories() {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/add-product';
       axios
-        .post(requestUrl,
-          Qs.stringify({
-            data: {}
-          }),
-          {
-            headers
-          })
+        .post(requestUrl,'',{headers})
           .then(response => {
             if (response.data.data === true) {
               location.reload();
@@ -269,21 +123,11 @@ const ProductAdd = {
               console.log(this.categories);
               this.flatCategories();
             }
-          })
+          });
     },
     checkCategory() {
       if (!this.categorySearch){
         this.categorySearch = this.selectedCategoryName;
-      }
-    },
-    checkBrand() {
-      if (!this.brandSearch){
-        this.brandSearch = this.brandName;
-      }
-    },
-    checkCountry() {
-      if (!this.countrySearch){
-        this.countrySearch = this.countryName;
       }
     },
     selectCategory(id,value) {
@@ -303,7 +147,7 @@ const ProductAdd = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/request-category-characteristics-only';
       axios
-        .post(requestUrl,{},{headers})
+        .post(requestUrl,'',{headers})
           .then(response => {
             if (response.data.data === true) {
               location.reload();
@@ -316,26 +160,6 @@ const ProductAdd = {
               location.reload();
             }
           });
-    },
-    selectBrand(id,value) {
-      this.selectedBrandId = id;
-      this.brandSearch = value;
-      this.selectedBrandName = value;
-    },
-    selectCountry(id,value) {
-      this.selectedCountryId = id;
-      this.countrySearch = value;
-      this.selectedCountryName = value;
-    },
-    deleteValue(characteristicIndex,valueIndex){
-      if (this.product.characteristics[characteristicIndex].value.length > 1){
-        this.product.characteristics[characteristicIndex].value.splice(valueIndex, 1);
-      } else {
-        Vue.set(this.product.characteristics[characteristicIndex].value, 0, '')
-      }
-    },
-    addValue(characteristicIndex){
-      this.product.characteristics[characteristicIndex].value.push('');
     }
   },
   created: function(){
