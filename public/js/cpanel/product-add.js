@@ -326,6 +326,7 @@ const ProductAdd = {
               this.categories = response.data.category_tree;
               console.log(this.categories);
               this.flatCategories();
+              $('.main__loader').hide();
             }
           });
     },
