@@ -316,6 +316,7 @@ const ProductAdd = {
             } else {
               console.log(response);
               this.product = response.data.answer.data.product
+              this.product.images = []
             }
           })
           .catch(error => {
