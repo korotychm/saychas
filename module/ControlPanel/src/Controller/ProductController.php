@@ -151,7 +151,7 @@ class ProductController extends AbstractActionController
 
         $access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
 
-        if(!$access) {
+        if (!$access) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
@@ -164,14 +164,14 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
-    
+
     public function addProductAction()
     {
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
 
         return new JsonModel(['category_tree' => $categoryTree]);
     }
-    
+
     /**
      * Check to see if product is saved on 1c.
      * If so we can update local database collection (products).
@@ -179,11 +179,11 @@ class ProductController extends AbstractActionController
      * @param array $product
      * @return bool
      */
-    private function canUpdateProduct(array $product) : bool
+    private function canUpdateProduct(array $product): bool
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
         $result = $this->productManager->updateServerDocument($credentials, $product);
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
@@ -193,10 +193,10 @@ class ProductController extends AbstractActionController
     {
         return true;
     }
-    
+
     /**
      * Upload product image action
-     * 
+     *
      * @return JsonModel
      */
     public function uploadProductImageAction()
@@ -204,14 +204,14 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $productId = $post['product_id'];
         $providerId = $post['provider_id'];
-        
+
         $baseUrl = $this->config['parameters']['image_path']['base_url'];
         $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
-        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
+        $uploadsDir = 'public' . $baseUrl . '/' . $uploads;
         $error = $_FILES['file']['error'];
-        if(UPLOAD_ERR_OK == $error) {
+        if (UPLOAD_ERR_OK == $error) {
             //$fileName = basename($_FILES['file']['name']);
-            $uuid = uniqid("{$providerId}_{$productId}_",true);
+            $uuid = uniqid("{$providerId}_{$productId}_", true);
             list($type, $ext) = explode('/', $_FILES['file']['type']);
             //$newFileName = "{$providerId}_{$productId}_$uuid.$ext";
             $newFileName = "$uuid.$ext";
@@ -221,23 +221,23 @@ class ProductController extends AbstractActionController
         }
         return new JsonModel(['image_file_name' => $newFileName]);
     }
-    
+
     /**
      * Update product
      * Send product data to 1c first and
-     * update locally if canUpdateProduct returns true 
-     * 
+     * update locally if canUpdateProduct returns true
+     *
      * @return JsonModel
      */
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $product = json_decode($post['data']['product'],true);
+        $product = json_decode($post['data']['product'], true);
         $deletedImages = $product['del_images'];
         $result = ['matched_count' => 0, 'modified_count' => 0];
-        if($this->canUpdateProduct($product)) {
+        if ($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
-            foreach($deletedImages as $image) {
+            foreach ($deletedImages as $image) {
                 $this->productManager->deleteProductImage($image);
             }
             return new JsonModel(['result' => true]);
@@ -248,7 +248,7 @@ class ProductController extends AbstractActionController
     public function requestCategoryCharacteristicsAction()
     {
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/*, 'is_test: true'*/];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/* , 'is_test: true' */];
 
         $post = $this->getRequest()->getPost()->toArray();
         $data = $post['data'];
@@ -260,34 +260,22 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['answer' => $answer]);
     }
-    
+
     public function requestCategoryCharacteristicsOnlyAction()
     {
         $identity = $this->authService->getIdentity();
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/*, 'is_test: true'*/];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/* , 'is_test: true' */];
 
         $post = $this->getRequest()->getPost()->toArray();
-        
+
         $categoryId = $post['data']['category_id'];
         $data = ['new_category_id' => $categoryId];
         $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
-        
+
         return new JsonModel(['answer' => $answer]);
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
 
 //            $this->productManager->updateDocument([
 //                'where' => ['id' => $product['id']],
