@@ -228,6 +228,7 @@ const ProductEdit = {
       let tmp = this.product.images[currentIndex];
       this.product.images[currentIndex] = this.product.images[replacedIndex];
       this.product.images[replacedIndex] = tmp;
+      console.log(this.product.images);
       checkProductImagesSlider();
     },
     uploadFile() {
