@@ -120,7 +120,7 @@ const ProductEdit = {
                                     <div class="product__images-list product__images-list--slider">
                                         <div class="product__images-track" data-shift="0" data-viewed="5">
                                             <div v-if="product.images">
-                                              <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : index == 0 }">
+                                              <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : (image == currentImg) }" @click="currentImg = image">
                                                 <img :src="imgPath + image" />
                                               </div>
                                             </div>
@@ -128,15 +128,16 @@ const ProductEdit = {
                                     </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                 </div>
                                 <div class="product__images-selected">
-                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="product.images ? (imgPath + product.images[0]) : ''" />
+                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? (imgPath + currentImg) : ''" />
                                 </div>
                                 <div class="product__images-controls">
-                                    <div class="product__images-control product__images-control--add"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
+                                    <input type="file" id="photo-upload" style="display:none;" @change="uploadFile"/>
+                                    <label for="photo-upload" class="product__images-control product__images-control--add"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M1.499,5.999 L13.499,5.999 C14.328,5.999 14.999,6.671 14.999,7.499 C14.999,8.328 14.328,8.999 13.499,8.999 L1.499,8.999 C0.671,8.999 0.0,8.328 0.0,7.499 C0.0,6.671 0.671,5.999 1.499,5.999 Z" />
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M7.499,0.0 C8.328,0.0 8.999,0.671 8.999,1.499 L8.999,13.499 C8.999,14.328 8.328,14.999 7.499,14.999 C6.671,14.999 5.999,14.328 5.999,13.499 L5.999,1.499 C5.999,0.671 6.671,0.0 7.499,0.0 Z" />
                                         </svg>
                                         <span>добавить фото</span>
-                                    </div>
+                                    </label>
                                     <div class="product__images-control product__images-control--up"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="19px" height="10px">
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M10.532,0.431 L17.567,7.436 C18.149,8.16 18.149,8.957 17.567,9.537 C16.984,10.118 16.39,10.118 15.456,9.537 L8.422,2.532 C7.839,1.952 7.839,1.11 8.422,0.431 C9.5,0.149 9.949,0.149 10.532,0.431 Z" />
                                             <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M2.574,9.537 L9.608,2.532 C10.191,1.952 10.191,1.11 9.608,0.431 C9.25,0.149 8.80,0.149 7.498,0.431 L0.463,7.436 C0.118,8.16 0.118,8.957 0.463,9.537 C1.46,10.118 1.991,10.118 2.574,9.537 Z" />
@@ -190,7 +191,8 @@ const ProductEdit = {
       countrySearch: '',
       selectedCountryId: '',
       selectedCountryName: '',
-      product: {}
+      product: {},
+      currentImg : ''
     }
   },
   computed: {
@@ -220,6 +222,28 @@ const ProductEdit = {
     }
   },
   methods: {
+    uploadFile() {
+      const data = new FormData();
+      var imagefile = document.querySelector('#photo-upload');
+      console.log(imagefile.files[0]);
+      data.append('file', imagefile.files[0]);
+      data.append('product_id', this.product.id);
+      data.append('provider_id', this.product.provider_id);
+      console.log(data);
+      axios.post('/control-panel/upload-product-image', data, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+      })
+      .then(response => {
+        console.log(response)
+        this.product.images.push('373d7514-1f75-4da6-b098-d776833bdefd.jpg');
+        checkProductImagesSlider();
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    },
     flatCategories() {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
@@ -363,6 +387,9 @@ const ProductEdit = {
               this.selectedCountryId = this.product.country_id;
               this.selectedCountryName = this.product.country_name;
               this.countries = this.product.countries;
+              if (this.product.images.length){
+                this.currentImg = this.product.images[0];
+              }
               this.flatCategories();
               console.log(this.product);
             }
@@ -442,109 +469,102 @@ $(document).on('focusout','.search-select__input',function(){
 });
 
 
-var request = {
-  data: {
-    product: {
-      id: '000000000001',
-      brand_id: "",
-      category_id: "000001968",
-      characteristics: [
-        {
-          id: "000000001",
-          index: 2,
-          is_title: false,
-          mandatory: false,
-          type: 8,
-          value: "704"
-        },
-        {
-          id: "000000398",
-          index: 3,
-          is_title: false,
-          mandatory: false,
-          type: 2,
-          value: 0
-        },
-        {
-          id: "000000639",
-          index: 4,
-          is_title: false,
-          mandatory: false,
-          type: 4,
-          value: ""
-        },
-        {
-          id: "000000640",
-          index: 5,
-          is_title: false,
-          mandatory: false,
-          type: 4,
-          value: ""
-        },
-        {
-          id: "000000641",
-          index: 6,
-          is_title: false,
-          mandatory: false,
-          type: 1,
-          value: ""
-        },
-        {
-          id: "000000642",
-          index: 7,
-          is_title: false,
-          mandatory: false,
-          type: 3,
-          value: false
-        },
-        {
-          id: "000000086",
-          index: 9,
-          is_title: false,
-          mandatory: false,
-          type: 1,
-          value: ""
-        },
-        {
-          id: "000000099",
-          index: 10,
-          is_title: false,
-          mandatory: false,
-          type: 2,
-          value: 0
-        },
-        {
-          id: "000000065",
-          index: 11,
-          is_title: false,
-          mandatory: false,
-          type: 1,
-          value: ""
-        }
-      ],
-      color_id: "",
-      country_id: "704",
-      description: "Текст описания 11",
-      images: ["373d7514-1f75-4da6-b098-d776833bdefd.jpg","de5506f3-0091-4bda-8b60-390d1fd22f83.jpg"],
-      provider_id: "00003",
-      title: "Смартфон vivo Y31, голубой океан",
-      vendor_code: "PL_08/17"
-    }
+function checkProductImagesSlider(){
+  if ($('.product__images-nav .product-small-img').length){
+    $('.product__images-empty').hide();
+    $('.product__images-selected img').show();
+  } else {
+    $('.product__images-empty').show();
+    $('.product__images-selected img').hide();
+  }
+  if ($('.product__images-nav .product-small-img').length < 6){
+    $('.product__images-arrow').hide();
+    $('.product__images-list').removeClass('product__images-list--slider');
+    $('.product__images-track').css('transform','none');
+    $('.product__images-track').data('shift','0');
+  } else {
+    $('.product__images-arrow').show();
+    $('.product__images-list').addClass('product__images-list--slider');
+  }
+  if ($('.product__images-nav .product-small-img').length == 8){
+    $('.product__images-control--add').addClass('disabled');
+  } else {
+    $('.product__images-control--add').removeClass('disabled');
+  }
+  if ($('.product__images-nav .product-small-img').length < 2){
+    $('.product__images-control--up, .product__images-control--down').addClass('disabled');
+  } else {
+    $('.product__images-control--up, .product__images-control--down').removeClass('disabled');
+  }
+  if ($('.product__images-nav .product-small-img').length < 1){
+    $('.product__images-control--del').addClass('disabled');
+  } else {
+    $('.product__images-control--del').removeClass('disabled');
+  }
+  if ($('.product__images-nav .product-small-img.active').index() < 1){
+    $('.product__images-control--up').addClass('disabled');
+  } else {
+    $('.product__images-control--up').removeClass('disabled');
+  }
+  if ($('.product__images-nav .product-small-img.active').index() == ($('.product__images-nav .product-small-img').length - 1)){
+    $('.product__images-control--down').addClass('disabled');
+  } else {
+    $('.product__images-control--down').removeClass('disabled');
   }
 }
 
+$(document).on('click','.product__images-arrow',function(){
+  let track = $(this).parent().find('.product__images-track'),
+      shift = +track.data('shift') + +$(this).data('shift'),
+      slidesCount = track.find('.product-small-img').length,
+      maxShift = slidesCount - track.data('viewed');
+      track.data('shift',shift);
+      track.css('transform', 'translateY(' + (shift * -80) + 'px)');
+      console.log(shift,slidesCount,maxShift);
+      if (shift == 0){
+        $('.product__images-arrow--up').addClass('disabled');
+      } else {
+        $('.product__images-arrow--up').removeClass('disabled');
+      }
+      if (shift == maxShift) {
+        $('.product__images-arrow--down').addClass('disabled');
+      } else {
+        $('.product__images-arrow--down').removeClass('disabled');
+      }
+});
 
-$(document).on('click','#testbtn',function(){
-  $.ajax({
-  	url: '/control-panel/update-product',
-  	type: 'POST',
-  	dataType: 'html',
-  	data: request,
-  	success: function(data){
-  		console.log('После сохранения получили: ',data);
-  	},
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.log('После сохранения ошибка: ', textStatus, errorThrown);
+$(document).on('click','.product__images-control--del',function(){
+  let current = $('.product__images-nav .product-small-img.active'),
+      next = 0,
+      shift = (!($('.product__images-nav .product-small-img.active').index() == 0));
+
+  if ((current.index() + 1) == $('.product__images-nav .product-small-img').length){
+    next = current.index() - 1;
+  } else {
+    next = current.index() + 1
+  }
+  $('.product__images-nav .product-small-img').eq(next).trigger('click');
+  current.remove();
+  if (shift){
+    if ($('.product__images-arrow--up').hasClass('disabled')){
+      $('.product__images-arrow--down').trigger('click');
+    } else {
+      $('.product__images-arrow--up').trigger('click');
     }
-  });
+  }
+  checkProductImagesSlider();
+});
+
+$(document).on('click','.product__images-control--up, .product__images-control--down',function(){
+    var firstEl,
+        secondEl;
+		if ($(this).hasClass('product__images-control--down')) {
+			firstEl = $('.product__images-nav .product-small-img.active').next(),
+      secondEl = $('.product__images-nav .product-small-img.active');
+		} else {
+      firstEl = $('.product__images-nav .product-small-img.active'),
+      secondEl = $('.product__images-nav .product-small-img.active').prev();
+		}
+    $(secondEl).insertAfter($(firstEl));
+    checkProductImagesSlider();
 });
