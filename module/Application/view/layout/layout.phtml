@@ -31,6 +31,9 @@
                 ->prependStylesheet($this->basePath('css/temp.css?' . time()))
                 ->prependStylesheet($this->basePath('css/style.min.css?' . time()))
         ?>
+        <script>
+          var categoryTree = <?=json_encode($this->categoryTree)?>;
+        </script>
         <!-- Scripts -->
         <?= $this->headScript() ?>
 
@@ -58,24 +61,6 @@
         </div>
         <div id="overcoverblack" class='overcoverblack none' ></div>
 
-        <div id="lefmobiletpanel">
-            <div id="lefmobiletpanelclose" ></div>
-            <div id="lefmobiletpanelcontent"  class="blokc" ><div class=logo ></div>
-
-                <div class='iblokok' id=supermenuinside>
-
-                    <ul id="tree" class="tree treeview" style=""><h3><?= Application\Resource\Resource::THE_CATALOG ?></h3>
-                        <?php // $this->catalogCategoties ?>
-                        <?= '<pre>'.json_encode($this->categoryTree).'</div>' ?>
-                    </ul>
-
-                </div >
-            </div >
-            <!---->
-        </div>
-
-
-
         <header class="header">
             <?= $this->partial("/application/index/partials/main-layout/header-menu", ["menu" => []]) ?>
             <div class="container">
@@ -83,7 +68,7 @@
                     <div class="header__mid-left">
                         <div class="header__catalog">
                             <input type="checkbox" id="burger" />
-                            <label class="header__burger catalogshow catalogbutton" for="burger" id="catalogbutton">
+                            <label class="header__burger catalogshow catalogbutton" for="burger">
                                 <span class="header__burger-icon">
                                     <span></span>
                                     <span></span>
@@ -91,6 +76,9 @@
                                 </span>
                                 <span><?= Application\Resource\Resource::THE_CATALOG ?></span>
                             </label>
+                            <nav class="cats" id="cats">
+                                
+                            </nav>
                         </div>
                         <div class="header__logo">
                             <a href="/">
@@ -128,6 +116,5 @@
         </div>
 
         <?= $this->partial("/application/index/partials/main-layout/footer", ["content" => [] /* $this->footer */]) ?>
-
     </body>
 </html>

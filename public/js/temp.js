@@ -1,3 +1,19 @@
+$(document).ready(function(){
+  if ($('#cats').length){
+    var cats = new Vue({
+      el: '#cats',
+      data: {
+        catalogTree: JSON.parse(catalogTree),
+        currentCat: 0
+      },
+      created() {
+        console.log(this.catalogTree);
+      }
+    });
+  }
+});
+
+
 function addProductToFavorites (productId, callback) {
      $.ajax({
             url: "/ajax/add-to-favorites",
@@ -33,28 +49,28 @@ function addProductToFavorites (productId, callback) {
                 return false;
             }
         });
-  } 
+  }
 
 
 $(document).ready(function () {
-    
+
     // Самовывоз из магазина
 $(document).on('click', '.panel__to-wishlist',function(){
-//$('.panel__to-wishlist').click(function(){    
+//$('.panel__to-wishlist').click(function(){
     var callback = $(this);
     if (callback.hasClass("remove")){
-        removeProductFromFavorites(callback.attr("rel"), callback);        
+        removeProductFromFavorites(callback.attr("rel"), callback);
     }
     else {
-        addProductToFavorites(callback.attr("rel"), callback);        
-        
+        addProductToFavorites(callback.attr("rel"), callback);
+
     }
-    
+
 });
 
 
-    
-    
+
+
 
   $("#tree").delay(500).slideDown("slow");
 
@@ -73,9 +89,9 @@ $(document).on('click', '.panel__to-wishlist',function(){
       $("#lefmobiletpanel").animate({left: "0"}, 500);
 
   });
-  
-  
-  
+
+
+
 
   $("#lefmobiletpanelclose").click(function () {
       leftpanelclose();
