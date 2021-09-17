@@ -387,7 +387,7 @@ const ProductAdd = {
               location.reload();
             } else {
               console.log(response);
-              if (this.product.characteristics.length){
+              if (this.product.characteristics){
                 this.product.characteristics = response.data.answer.data.product.characteristics;
               } else {
                 this.product = response.data.answer.data.product;
