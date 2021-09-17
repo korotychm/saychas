@@ -409,20 +409,12 @@
   font-size: 20px;
   transition: 0.3s;
 }
-@media (hover) {
-  .cats__parent:hover {
-    background: rgba(255,255,255,0.2);
-  }
-}
 .cats__item.active .cats__parent {
   background: #fff !important;
   color: var(--black);
   text-shadow: 0px 0px 1px var(--black);
 }
 .cats__children {
-  position: absolute;
-  top: 0;
-  left: 0;
   column-count: 3;
   column-gap: 60px;
   padding: 40px 50px;
