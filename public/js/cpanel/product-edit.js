@@ -249,7 +249,7 @@ const ProductEdit = {
       })
       .then(response => {
         console.log(response)
-        this.product.images.push(resonse.data.image_file_name);
+        this.product.images.push(response.data.image_file_name);
         checkProductImagesSlider();
       })
       .catch(error => {
