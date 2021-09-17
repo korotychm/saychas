@@ -143,6 +143,7 @@ const ProductAdd = {
     getCharacteristics(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/request-category-characteristics-only';
+      console.log(this.selectedCategoryId);
       axios
         .post(requestUrl,Qs.stringify({
           data: {
