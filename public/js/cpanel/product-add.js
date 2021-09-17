@@ -271,9 +271,15 @@ const ProductAdd = {
           })
           .catch(error => {
             if (error.response.status == '403'){
-              this.editable = false;
-              $('.main__loader').hide();
+              this.htmlContent = error403template;
             }
+            if (error.response.status == '404'){
+              this.htmlContent = error404template;
+            }
+            if (error.response.status == '500'){
+              this.htmlContent = error500template;
+            }
+            $('.main__loader').hide();
           });
     },
     checkCategory() {
