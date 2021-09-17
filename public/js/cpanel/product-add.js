@@ -266,6 +266,7 @@ const ProductAdd = {
               location.reload();
             } else {
               this.categories = response.data.category_tree;
+              console.log(this.categories);
               this.flatCategories();
             }
           })
