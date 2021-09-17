@@ -77,7 +77,11 @@
                                 <span><?= Application\Resource\Resource::THE_CATALOG ?></span>
                             </label>
                             <nav class="cats" id="cats">
-                                
+                              <div class="cats__left">
+                                <div v-for="(category, idx) in categoryTree" class="cats__item">
+                                  <a :href="'/catalog/' + category.id" class="cats__parent" :class="{active: (idx == currentCat)}" @mouseover="currentCat = idx">{{ category.title }}</a>
+                                </div>
+                              </div>
                             </nav>
                         </div>
                         <div class="header__logo">
