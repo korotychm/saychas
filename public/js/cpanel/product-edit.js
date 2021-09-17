@@ -224,11 +224,7 @@ const ProductEdit = {
   methods: {
     moveImg(shift) {
       var currentIndex = this.product.images.indexOf(this.currentImg);
-      var replacedIndex = currentIndex + shift;
-      let tmp = this.product.images[currentIndex];
-      console.log(currentIndex,replacedIndex,tmp);
-      this.product.images[currentIndex] = this.product.images[replacedIndex];
-      this.product.images[replacedIndex] = tmp;
+      [this.product.images[currentIndex], this.product.images[currentIndex + shift]] = [this.product.images[currentIndex + shift], this.product.images[currentIndex]];
       console.log(this.product.images);
       checkProductImagesSlider();
     },
