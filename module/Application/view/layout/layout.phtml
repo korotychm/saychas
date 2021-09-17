@@ -84,7 +84,7 @@
                               </div>
                               <div class="cats__right">
                                 <div v-for="(category, idx) in categoryTree">
-                                  <div v-show="idx == category.id" class="cats__children">
+                                  <div v-show="idx == currentCat" class="cats__children">
                                     <ul v-for="categoryChild in category.children">
                                       <li>
                                         <a :href="'/catalog/' + categoryChild.id">{{ categoryChild.title }}</a>
