@@ -3,11 +3,11 @@ $(document).ready(function(){
     var cats = new Vue({
       el: '#cats',
       data: {
-        catalogTree: JSON.parse(categoryTree),
+        //catalogTree: JSON.parse(categoryTree),
         currentCat: 0
       },
       created() {
-        console.log(this.catalogTree);
+        console.log(categoryTree);
       }
     });
   }
