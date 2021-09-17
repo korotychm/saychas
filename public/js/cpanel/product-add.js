@@ -291,8 +291,30 @@ const ProductAdd = {
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        //this.saveProduct(true, oldCategory);
+        if (oldCategory) {
+          //this.saveProduct(true, oldCategory);
+        } else {
+          this.getCharacteristics(id);
+        }
       }
+    },
+    getCharacteristics(id) {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let requestUrl = '/control-panel/request-category-characteristics-only';
+      axios
+        .post(requestUrl,{},{headers})
+          .then(response => {
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              console.log(response);
+            }
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              location.reload();
+            }
+          });
     },
     selectBrand(id,value) {
       this.selectedBrandId = id;
