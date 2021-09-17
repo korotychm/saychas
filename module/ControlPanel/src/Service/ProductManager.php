@@ -426,9 +426,9 @@ class ProductManager extends ListManager implements LoadableInterface
     
     public function requestCategoryCharacteristics($headers, $data)
     {
-        $productId = $data['product']['id'];
-        $providerId = $data['product']['provider_id'];
-        $categoryId = $data['product']['category_id'];
+//        $productId = $data['product']['id'];
+//        $providerId = $data['product']['provider_id'];
+//        $categoryId = $data['product']['category_id'];
         $newCategoryId = $data['new_category_id'];
         
         /** Lookup product from cache using $newCategoryId */

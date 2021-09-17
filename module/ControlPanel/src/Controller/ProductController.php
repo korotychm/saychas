@@ -171,7 +171,7 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['category_tree' => $categoryTree]);
     }
-
+    
     /**
      * Check to see if product is saved on 1c.
      * If so we can update local database collection (products).
@@ -260,6 +260,21 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['answer' => $answer]);
     }
+    
+    public function requestCategoryCharacteristicsOnlyAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/*, 'is_test: true'*/];
+
+        $post = $this->getRequest()->getPost()->toArray();
+        
+        $categoryId = $post['category_id'];
+        $data = ['new_category_id' => $categoryId];
+        $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
+        
+        return $answer;
+    }
+
 
 }
 
