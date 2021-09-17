@@ -105,10 +105,6 @@ const ProductAdd = {
         }
       }
       iterateArray(this.categories, false);
-      this.categoriesFlat = categoriesFlat;
-      this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id).name;
-      this.selectedCategoryName = this.categorySearch;
-      this.selectedCategoryId = this.product.category_id;
     },
     getCategories() {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
