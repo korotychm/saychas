@@ -171,6 +171,13 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['category_tree' => $categoryTree]);
     }
+    
+    public function categoryTreeAction()
+    {
+        $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+        //$json = json_encode($categoryTree, true);
+        return new JsonModel(['category_tree' => $categoryTree]);
+    }
 
     /**
      * Check to see if product is saved on 1c.
