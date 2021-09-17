@@ -89,9 +89,11 @@
                                       <li>
                                         <a :href="'/catalog/' + categoryChild.id">{{ categoryChild.title }}</a>
                                       </li>
-                                      <li v-for="categoryChildChild in categoryChild.children">
-                                        <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
-                                      </li>
+                                      <div v-if="categoryChild.children">
+                                        <li v-for="categoryChildChild in categoryChild.children.slice(0, 5)">
+                                          <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
+                                        </li>
+                                      </div>
                                       <li>
                                         <a :href="'/catalog/' + categoryChild.id">Все товары</a>
                                       </li>
