@@ -445,6 +445,16 @@ class ProductManager extends ListManager implements LoadableInterface
         return $this->buildProduct($headers, $newCategoryId);
         
     }
+    
+    public function deleteProductImage($fileName)
+    {
+        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
+        $uploadsDir = 'public'.$baseUrl.'/'.$uploads;
+        $fileName = $uploadsDir.'/'.$fileName;
+        return ['result' => unlink($fileName)];
+    }
+    
 
     public function findTest()
     {

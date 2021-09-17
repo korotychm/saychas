@@ -68,9 +68,10 @@ return [
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
+                ['actions' => ['addProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
                 ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
-                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
+//                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
@@ -227,6 +228,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'add-product' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/add-product',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'add-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'update-product' => [
                         'type' => Literal::class,
                         'options' => [
@@ -245,17 +257,6 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'upload-product-image',
-                            ],
-                        ],
-                        // 'may_terminate' => true,
-                    ],
-                    'delete-product-image' => [
-                        'type' => Literal::class,
-                        'options' => [
-                            'route' => '/delete-product-image',
-                            'defaults' => [
-                                'controller' => \ControlPanel\Controller\ProductController::class,
-                                'action' => 'delete-product-image',
                             ],
                         ],
                         // 'may_terminate' => true,
