@@ -26,8 +26,8 @@ const StoresMap = {
       <div class="cp-container stores-map">
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
-            <div v-for="(store, index) in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(index)"></ymap-marker>
+            <div v-for="(store, idx) in stores">
+              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)"></ymap-marker>
             </div>
           </yandex-map>
         </div>
@@ -59,8 +59,8 @@ const StoresMap = {
     }
   },
   computed: {
-    balloonTemplate(index) {
-      console.log('Индекс',index);
+    balloonTemplate(idx) {
+      console.log('Индекс',idx);
       return `
         <h3>${this.stores[index].title}</h3>
         <p>${this.stores[index].address}</p>
