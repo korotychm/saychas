@@ -109,6 +109,7 @@ return [
             ],
             \ControlPanel\Controller\StoreController::class => [
                 ['actions' => ['editStore',], 'allow' => '+developer'],
+                ['actions' => ['updateStore',], 'allow' => '+developer'],
                 ['actions' => ['saveNewlyAddedStore',], 'allow' => '+developer'],
                 
                 //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
@@ -302,6 +303,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\StoreController::class,
                                 'action' => 'edit-store',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'update-store' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-store',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\StoreController::class,
+                                'action' => 'update-store',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -630,6 +642,7 @@ return [
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             'lk_add_store' => 'http://SRV02:8000/SC/hs/site/lk_add_store',
+            'lk_update_store' => 'http://SRV02:8000/SC/hs/site/lk_update_store',
             /** StoreManager link alias */
             \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SC/hs/site/lk_store_info',
         ],
