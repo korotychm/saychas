@@ -157,7 +157,7 @@ $("#store-address").suggestions({
     type: "ADDRESS",
     onSelect: function (suggestion) {
         $("#store-address-error").hide();
-        //console.log(suggestion.data);
+        console.log(suggestion.data);
         if (!suggestion.data.house)
         {
             $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();

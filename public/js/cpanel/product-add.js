@@ -404,7 +404,7 @@ const ProductAdd = {
           });
     },
     addProduct() {
-      let requestUrl = '/control-panel/update-product'; // Добавить урл для добавления товара
+      let requestUrl = '/control-panel/save-newly-added-product'; // Добавить урл для добавления товара
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let chars = JSON.parse(JSON.stringify(this.product.characteristics));
       for (characteristic of chars){
