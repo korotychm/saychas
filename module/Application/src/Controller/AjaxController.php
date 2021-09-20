@@ -822,13 +822,8 @@ class AjaxController extends AbstractActionController
         }
         $subWhere = new Where();
         $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
-
         $nest = $where->nest();
-        $nest->in('product_id', $legalProducts);
-        //if (!empty( $productsFiltred)){
-        $nest->or->notIn('product_id', $productsFiltred);
-        //}
-        $nest->unnest();
+        $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltred)->unnest();
         return $where;
     }
 
@@ -914,7 +909,6 @@ class AjaxController extends AbstractActionController
         //$legalStores = $container->legalStore;
 
         $params['where'] = $this->getWhere($params);
-        //$products = $this->handBookRelatedProductRepository->findAll($params);
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;

@@ -12,19 +12,20 @@
         <?php endif; ?>
       <?php else:?>
         <div class="auth-reg__input-group__value"><?= $user['phone'] ?></div>
-        <input type='hidden' name='userPhone' value="<?= $user['phone'] ?>"/>
+        <!-- input type='hidden' name='userPhone' value="<?= $user['phone'] ?>"/ -->
       <?php endif;  ?>
   </div>
-  <?php if ($passBlock) : ?>
+  <?php if (false and $passBlock) : ?>
     <div class="auth-reg__input-group">
-        <div class="auth-reg__input-group__label">Пароль:</div>
+        <div class="auth-reg__input-group__label">Код:</div>
         <div class="auth-reg__input-group__input">
-          <input name='userPass' type="password" class="<?= ($error['password']) ? 'error' : '' ?>" id='userPass' required />
+          <input name='userPass' type="text" class="<?= ($error['password']) ? 'error' : '' ?>" id='userPass' required />
           <?php if ($error["password"]):?>
             <p class="error"><?= $error["password"] ?></p>
           <?php endif; ?>
-          <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="<?=($user['passforget'])?"1":"0"?>" >
-          <a id="forgetPass">Забыли пароль?</a>
+        <p>Сейчас мы вам позвоним, в течении минуты. Последние четыре цифры телефона входящего звонка - это и есть код.</p>     
+          <!-- input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="<?=($user['passforget'])?"1":"0"?>" -->
+          <!-- a id="forgetPass">Забыли пароль?</a -->
         </div>
     </div>
   <?php endif; ?>

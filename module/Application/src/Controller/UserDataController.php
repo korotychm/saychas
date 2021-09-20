@@ -443,7 +443,7 @@ class UserDataController extends AbstractActionController
      *
      * @return JsonModel
      */
-    public function userAuthModalAction()
+    public function userAuthModalAction2()
     {
 
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -688,5 +688,74 @@ class UserDataController extends AbstractActionController
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
     }
+    
+    public function userAuthModalAction()
+    {
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $container->userAutSession["test"] = "texttext";
+        exit (print_r($container->userAutSession ) );
+//        $userAutSession = ($container->userAutSession)?$container->userAutSession:[];
+        //if (!empty($userAutSession)) {exit (print_r($return["user"]));}
+        //$CodeBlock = $passForgetBlock =  
+        //$registerPossible = false;
+        //$error=[];
+        $return['title'] = $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
+        $return['buttonLable'] =  $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
+        
+        $post = $this->getRequest()->getPost();
+        if ($post->recall == '1' ){
+          unset($container->userPhoneIdentity);
+          return $this->userModalView($return);
+        }   
+        
+        if (!empty($goStepOne = $post->goStepOne)) { 
+            unset($container->userAutTmpSession);
+            unset($container->userPhoneIdentity);
+            return $this->userModalView($return);
+        }
+        
+        $return['sengingPhoneFormated'] = $return['phone'] =  (!empty($post->userPhone)) ? $post->userPhone :  $container->userAutSession['phone'];
+        $return['sengingPhone'] = $sendingPhone = ($return['phone'])?StringHelper::phoneToNum($return['phone']):"";
+        $return['name'] = $post->userNameInput;
+        if (empty($return['sengingPhone']) or strlen($return['sengingPhone']) < 11 ) {
+                $return['error']['phone'] = Resource::ERROR_INPUT_PHONE_MESSAGE;
+                return $this->userModalView($return);
+        } 
+        $return['user']['phone'] = $container->userAutSession['phone'] = $return['sengingPhoneFormated'];
+        $return['stepOne'] = true ;
+        
+        if (empty($container->userAutSession['smscode'])) {
+             $return['CodeBlock'] = true;
+             $codeSendAnswer = $this->sendSms($return['sengingPhone']);
+             $container->userPhoneIdentity['code'];
+             if (!$codeSendAnswer['result']) {
+                $return ['error']['sms'] =  (!$codeSendAnswer['result'])?(Resource::ERROR_SEND_SMS_MESSAGE." ".print_r($codeSendAnswer, true) ):"";
+                return $this->userModalView($return);
+             } 
+          $container->userAutSession['smscode'] = $container->userPhoneIdentity['code'];
+          //exit(print_r($container->userAutSession ));
+          return $this->userModalView($return);
+        }    
+        //$return['user']['smscode'] = $container->userPhoneIdentity['code'];
+        return $this->userModalView($return);
+    }
+    
+    
+    private function userModalView($return)
+    {
+        
+       $container = new Container(Resource::SESSION_NAMESPACE);
+       $return["user"] = $container->userAutSession;
+        
+        //exit (print_r($return));
+        
+        $view = new ViewModel($return);
+        $view->setTemplate('application/common/auth-form-in-modal');
+        return $view->setTerminal(true);
+    }
+    
+    
+    
+    
 
 }
