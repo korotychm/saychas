@@ -132,20 +132,23 @@ const StoreEdit = {
     }
   },
   watch: {
-    store.operating_mode: function(items) {
-      for (item in items){
-        let hours = item.split(':')[0],
-            minutes = item.split(':')[1];
-        console.log(hours, minutes);
-        if (+hours > 23){
-          hours = '23';
+        'store.operating_mode': {
+            handler: function (items) {
+              for (item in items){
+                let hours = item.split(':')[0],
+                    minutes = item.split(':')[1];
+                console.log(hours, minutes);
+                if (+hours > 23){
+                  hours = '23';
+                }
+                if (+minutes > 59){
+                  minutes = '59';
+                }
+                item = hours + ':' + minutes;
+              }
+            },
+            deep: true
         }
-        if (+minutes > 59){
-          minutes = '59';
-        }
-        item = hours + ':' + minutes;
-      }
-    }
   },
   methods: {
     dayOff(day) {
