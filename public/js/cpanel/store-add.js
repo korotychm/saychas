@@ -191,6 +191,7 @@ const StoreAdd = {
       let requestUrl = '/control-panel/save-newly-added-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       request.contact_phone = request.contact_phone.replace([' ','(',')','+'],'');
+      delete request.dadata;
       console.log(request);
       axios
         .post(requestUrl,
