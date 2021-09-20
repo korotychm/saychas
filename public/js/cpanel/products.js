@@ -59,7 +59,7 @@ const Products = {
       return {
         htmlContent: '',
         page_no: 1,
-        rows_per_page: 2,
+        rows_per_page: 10,
         products: {},
         pages: 1,
         filters: {},

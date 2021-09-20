@@ -52,7 +52,7 @@ const Stores = {
     return {
       htmlContent: '',
       page_no: 1,
-      rows_per_page: 2,
+      rows_per_page: 10,
       stores: {},
       pages: 1,
       filters: {},
