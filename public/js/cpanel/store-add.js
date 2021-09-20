@@ -186,11 +186,11 @@ const StoreAdd = {
       }
     },
     addStore(){
-      console.log(this.store);
       let request = JSON.parse(JSON.stringify(this.store));
       request.address = this.store.dadata;
       let requestUrl = '/control-panel/save-newly-added-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      console.log(request);
       axios
         .post(requestUrl,
           Qs.stringify({
