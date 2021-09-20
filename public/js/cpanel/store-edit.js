@@ -41,7 +41,7 @@ const StoreEdit = {
                       <div class="store__timetable">
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
-                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
                               <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -52,7 +52,7 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}">
                               <h2>Суббота <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -63,7 +63,7 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}">
                               <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -74,7 +74,7 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}">
                               <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
