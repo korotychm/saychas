@@ -131,7 +131,7 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               console.log(this.store);
-              setTimeout(StoreDaData, 200);
+              //setTimeout(StoreDaData, 200);
             }
           })
           .catch(error => {
