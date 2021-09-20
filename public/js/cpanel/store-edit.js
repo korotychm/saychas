@@ -128,6 +128,7 @@ const StoreEdit = {
         this.store.operating_mode[type + 'from'] = '00:00';
         this.store.operating_mode[type + 'to'] = '00:00';
       }
+      console.log(this.store.operating_mode[type + '_from']);
     },
     saveStore(){
       console.log(this.store);
