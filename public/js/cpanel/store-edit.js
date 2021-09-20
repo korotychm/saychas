@@ -133,8 +133,8 @@ const StoreEdit = {
   },
   watch: {
         'store.operating_mode': {
-            handler: function (items) {
-              for (item in items){
+            handler: function () {
+              for (item in this.store.operating_mode){
                 let hours = item.split(':')[0],
                     minutes = item.split(':')[1];
                 console.log(hours, minutes);
