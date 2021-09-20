@@ -150,7 +150,7 @@ class ClientOrderRepository extends Repository
     
     private function cancelOrder($clientOrder)
     {
-        mail('user@localhost', 'clientOrder = ', print_r($clientOrder->getPaymentInfo(), true));
+        //mail('user@localhost', 'clientOrder = ', print_r($clientOrder->getPaymentInfo(), true));
         //$this->acquiringService->addCustomerTinkoff($args);
         try {
             $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
