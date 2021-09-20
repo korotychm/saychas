@@ -146,6 +146,10 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
+  },
+  updated: function(){
+    console.log('updated');
+    StoreDaData();
   }
 }
 
