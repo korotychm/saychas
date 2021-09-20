@@ -179,7 +179,6 @@ $(document).on('click','.store__timetable-trigger', function(){
     $(this).parent().parent().find('.timeinput').eq(0).val('00:00').dispatchEvent(new Event('input'));
     $(this).parent().parent().find('.timeinput').eq(1).val('23:59').dispatchEvent(new Event('input'));
   } else {
-    $(this).parent().parent().find('.timeinput').eq(0).val('00:00').dispatchEvent(new Event('input'));
-    $(this).parent().parent().find('.timeinput').eq(1).val('00:00').dispatchEvent(new Event('input'));
+    $(this).parent().parent().find('.timeinput').val('00:00').dispatchEvent(new Event('input'));
   }
 });
