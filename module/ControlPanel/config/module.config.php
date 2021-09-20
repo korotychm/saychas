@@ -61,11 +61,38 @@ return [
             \ControlPanel\Controller\IndexController::class => [
                 ['actions' => ['index'/*, 'showStores'*/, 'showOneStore', 'showProducts', 'profile', //  'userManagement',
                     /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
-                ['actions' => ['actionAndDiscount',], 'allow' => '+analyst'],
+                ['actions' => ['actionAndDiscount',], 'allow' => '+developer'],
                 ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
 //                ['actions' => ['showStores',], 'allow' => '+analyst'],
 //                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
+//            \ControlPanel\Controller\ProductController::class => [
+//                ['actions' => ['editProduct', ], 'allow' => '+administrator'],
+//                ['actions' => ['addProduct', ], 'allow' => '+administrator'],
+//                ['actions' => ['updateProduct', ], 'allow' => '+administrator'],
+//                ['actions' => ['uploadProductImage', ], 'allow' => '+administrator'],
+//                ['actions' => ['categoryTree', ], 'allow' => '+administrator'],
+//                ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+administrator'],
+//                
+////                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
+//                ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
+//                ['actions' => ['requestCategoryCharacteristicsOnly', ], 'allow' => '+administrator'],
+////                ['actions' => ['showProducts', ], 'allow' => '+developer'],
+////                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
+//            ],
+//            \ControlPanel\Controller\StoreController::class => [
+//                ['actions' => ['editStore',], 'allow' => '+administrator'],
+//                //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
+//            ],
+//            \ControlPanel\Controller\ListController::class => [
+//                ['actions' => ['showList',], 'allow' => '+administrator'],
+//                ['actions' => ['showListFromCache', ], 'allow' => '+administrator'],
+//            ],
+//            \ControlPanel\Controller\ApiController::class => [
+//                ['actions' => ['index',], 'allow' => '+administrator'],
+//            ],
+//        ]
+
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
                 ['actions' => ['addProduct', ], 'allow' => '+developer'],
@@ -82,6 +109,8 @@ return [
             ],
             \ControlPanel\Controller\StoreController::class => [
                 ['actions' => ['editStore',], 'allow' => '+developer'],
+                ['actions' => ['saveNewlyAddedStore',], 'allow' => '+developer'],
+                
                 //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
             \ControlPanel\Controller\ListController::class => [
@@ -254,6 +283,18 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'save-newly-added-store'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/save-newly-added-store',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\StoreController::class,
+                                'action' => 'save-newly-added-store',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'edit-store' => [
                         'type' => Literal::class,
                         'options' => [
@@ -588,6 +629,7 @@ return [
             'lk_add_product' => 'http://SRV02:8000/SC/hs/site/lk_add_product',
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
+            'lk_add_store' => 'http://SRV02:8000/SC/hs/site/lk_add_store',
             /** StoreManager link alias */
             \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SC/hs/site/lk_store_info',
         ],

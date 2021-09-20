@@ -162,6 +162,9 @@ trait Loadable
         
         $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
 
+        if(null == $answer['data']) {
+            $answer['data'] = [];
+        }
         $this->insertManyInto(/*$this->collectionName*/ /*self::COLLECTION_NAME,*/ $answer['data']);
 
         $this->collectionSize = $this->countCollection();

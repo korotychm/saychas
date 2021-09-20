@@ -101,6 +101,18 @@ class StoreManager extends ListManager implements LoadableInterface
         return $result;
     }
     
+    public function replaceStore($store)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $collection->deleteMany([
+            'id' => $store['id'],
+            'provider_id' => $store['provider_id'],
+        ]);
+        $updateResult = $collection->insertOne($store);
+        return $updateResult;
+    }
+    
+    
 }
 
 //    protected $mclient;

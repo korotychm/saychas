@@ -107,7 +107,29 @@ class StoreController extends AbstractActionController
         }
         return new JsonModel(['result' => false]);
     }
+    
+    private function canAddStore(array &$store): bool
+    {
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->storeManager->addServerDocument($credentials, $store);
+        $store = $result['data']['data'];
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        return $res;
+    }    
 
+    public function saveNewlyAddedStoreAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $store = json_decode($post['data']['store'], true);
+        if ($this->canAddStore($store)) {
+            $result = $this->storeManager->replaceStore($store);
+            return new JsonModel(['result' => true, 'data' => $store]);
+        }
+        return new JsonModel(['result' => false]);
+    }
+    
     /**
      * Show stores action
      * 
