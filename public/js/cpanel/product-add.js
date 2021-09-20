@@ -426,13 +426,10 @@ const ProductAdd = {
         }
       }
       let category_in_request = this.selectedCategoryId;
-      if (oldCategory) {
-        category_in_request = oldCategory;
-      }
       let request = {
         id : this.product.id,
         brand_id: this.selectedBrandId,
-        category_id: category_in_request,
+        category_id: this.selectedCategoryId,
         color_id: this.product.color_id,
         provider_id: this.product.provider_id,
         country_id: this.selectedCountryId,
