@@ -133,9 +133,9 @@ const StoreEdit = {
                   return false;
               }
               var dataString = JSON.stringify(suggestion);
-              $('#geox').val(suggestion.data.geo_lat);
-              $('#geoy').val(suggestion.data.geo_lon);
-              $('#dadata').val(dataString);
+              $('#geox').val(suggestion.data.geo_lat).change();
+              $('#geoy').val(suggestion.data.geo_lon).change();
+              $('#dadata').val(dataString).change();
           }
       });
     },
