@@ -418,7 +418,7 @@
   column-count: 3;
   column-gap: 60px;
   padding: 40px 50px;
-  max-height: 1490px;
+  max-height: 740px;
   overflow-y: auto;
   direction: rtl;
 }
