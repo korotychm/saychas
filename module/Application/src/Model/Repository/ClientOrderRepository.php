@@ -150,15 +150,20 @@ class ClientOrderRepository extends Repository
     
     private function cancelOrder($clientOrder)
     {
+        //mail('user@localhost', 'clientOrder = ', print_r($clientOrder->getPaymentInfo(), true));
         //$this->acquiringService->addCustomerTinkoff($args);
-        $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
-        //$deliveryInfo = Json::decode( $clientOrder->getDeliveryInfo(), Json::TYPE_ARRAY);
-        //mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
-       if (!empty($paymentInfo["PaymentId"])){
-                $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
-                $tinkoffData = $this->acquiringService->cancelTinkoff($args);
-          //      mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
-                return true;
+        try {
+            $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
+            //$deliveryInfo = Json::decode( $clientOrder->getDeliveryInfo(), Json::TYPE_ARRAY);
+            //mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
+            if (!empty($paymentInfo["PaymentId"])){
+                    $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
+                    $tinkoffData = $this->acquiringService->cancelTinkoff($args);
+              //      mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
+                    return true;
+            }
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         return false;
     }

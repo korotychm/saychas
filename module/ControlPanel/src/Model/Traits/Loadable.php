@@ -85,7 +85,10 @@ trait Loadable
     protected function insertManyInto(/*$collectionName,*/ array $documents)
     {
         $collection = $this->db->{$this->collectionName};
-        return $collection->insertMany($documents);
+        if(count($documents) > 0) {
+            return $collection->insertMany($documents);
+        }
+        return [];
     }
 
     /**

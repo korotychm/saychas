@@ -261,7 +261,7 @@ class ProductManager extends ListManager implements LoadableInterface
         ]);
         $updateResult = $collection->insertOne($product);
 //        $updateResult = $collection->replaceOne(
-//            ['id' => $product['id']],
+//            ['id' => $product['id']],f
 //            $product
 //        );
 //        return ['matched_count' => $updateResult->getMatchedCount(), 'modified_count' => $updateResult->getModifiedCount()];
@@ -440,6 +440,13 @@ class ProductManager extends ListManager implements LoadableInterface
         return $result;
     }
     
+    public function addServerDocument($headers, $content = [])
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_add_product'];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+        return $result;
+    }
+
     private function buildProduct($headers, $categoryId)
     {
         //$product = $data['product'];

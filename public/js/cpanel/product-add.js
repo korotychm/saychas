@@ -404,7 +404,7 @@ const ProductAdd = {
           });
     },
     addProduct() {
-      let requestUrl = '/control-panel/update-product'; // Добавить урл для добавления товара
+      let requestUrl = '/control-panel/save-newly-added-product'; // Добавить урл для добавления товара
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let chars = JSON.parse(JSON.stringify(this.product.characteristics));
       for (characteristic of chars){
@@ -426,13 +426,10 @@ const ProductAdd = {
         }
       }
       let category_in_request = this.selectedCategoryId;
-      if (oldCategory) {
-        category_in_request = oldCategory;
-      }
       let request = {
         id : this.product.id,
         brand_id: this.selectedBrandId,
-        category_id: category_in_request,
+        category_id: this.selectedCategoryId,
         color_id: this.product.color_id,
         provider_id: this.product.provider_id,
         country_id: this.selectedCountryId,
@@ -455,6 +452,7 @@ const ProductAdd = {
             headers
           })
           .then(response => {
+              console.log(response.data);
               if (response.data.result){
                 router.replace('/products');
               }
