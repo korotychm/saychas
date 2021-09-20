@@ -131,7 +131,8 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               console.log(this.store);
-              //setTimeout(StoreDaData, 200);
+              setTimeout(StoreDaData, 200);
+              $('.main__loader').hide();
             }
           })
           .catch(error => {
