@@ -169,7 +169,7 @@ const StoreEdit = {
       request.address = this.store.dadata;
       let requestUrl = '/control-panel/update-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      request.contact_phone = request.contact_phone.replace([' ','(',')','+'],'');
+      request.contact_phone = request.contact_phone.replace(' ','').replace('+','').replace('(','').replace(')','');
       delete request.dadata;
       console.log(request);
       axios
