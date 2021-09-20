@@ -131,8 +131,7 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               console.log(this.store);
-              $('.main__loader').hide();
-              StoreDaData();
+              setTimeout(StoreDaData(),300);
             }
           })
           .catch(error => {
@@ -146,10 +145,6 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
-  },
-  updated: function(){
-    console.log('updated');
-    StoreDaData();
   }
 }
 
