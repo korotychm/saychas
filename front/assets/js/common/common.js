@@ -23,6 +23,8 @@ $(document).ready(function () {
     window.onbeforeunload = function () {
         $(".overcover").stop().fadeIn();
     };
+
+    $('.select').niceSelect();
 });
 
 $(document).on('click', '.popup__close', function () {
