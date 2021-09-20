@@ -129,10 +129,12 @@ const StoreEdit = {
                   return false;
               }
               var dataString = JSON.stringify(suggestion);
-              this.store.geox = suggestion.geo_lat;
-              this.store.geoy = suggestion.geo_lon;
-              this.store.dadata = dataString;
-              console.log(this.store.geox,this.store.geoy,this.store.address,this.store.dadata);
+              console.log(this.suggestion);
+              console.log(this.store);
+              // this.store.geox = suggestion.geo_lat;
+              // this.store.geoy = suggestion.geo_lon;
+              // this.store.dadata = dataString;
+              // console.log(this.store.geox,this.store.geoy,this.store.address,this.store.dadata);
           }
       });
     },
