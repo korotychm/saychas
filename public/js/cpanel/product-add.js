@@ -452,6 +452,7 @@ const ProductAdd = {
             headers
           })
           .then(response => {
+              console.log(response.data);
               if (response.data.result){
                 router.replace('/products');
               }
