@@ -114,9 +114,7 @@ const StoreEdit = {
     return {
       editable: true,
       selectedDate: null,
-      store: {
-        dadata: ''
-      }
+      store: {}
     }
   },
   methods: {
@@ -154,6 +152,7 @@ const StoreEdit = {
               location.reload();
             } else {
               this.store = response.data.store;
+              this.store.dadata = '';
               console.log(this.store);
               setTimeout(() => {
                 this.storeDaData()
