@@ -10,9 +10,10 @@ const StoreEdit = {
                       <div class="product__attribute">
                         <h2>Адрес</h2>
                         <div>
-                          <input type="text" class="input" v-model="store.address" id="store-address" />
-                          <input type="hidden" class="input" v-model="store.geox" />
-                          <input type="hidden" class="input" v-model="store.geoy" />
+                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
+                          <input type="hidden" class="input" v-model="store.geox" id="geox" />
+                          <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
+                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" />
                           <p class="error" id="store-address-error"></p>
                         </div>
                       </div>
@@ -21,6 +22,18 @@ const StoreEdit = {
                         <div>
                           <input type="text" class="input" v-model="store.description" />
                           <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
+                        </div>
+                      </div>
+                      <div class="product__attribute">
+                        <h2>Контактное лицо</h2>
+                        <div>
+                          <input type="text" v-model="store.contact_name" class="input" />
+                        </div>
+                      </div>
+                      <div class="product__attribute product__attribute--short">
+                        <h2>Телефон</h2>
+                        <div>
+                          <input type="text" v-model="store.contact_phone" class="input phoneinput" />
                         </div>
                       </div>
                     </div>
@@ -40,8 +53,8 @@ const StoreEdit = {
                       <div class="store__timetable">
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
+                              <h2>Рабочие дни <span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.working_day_from" />
@@ -51,8 +64,8 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Суббота <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}">
+                              <h2>Суббота <span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.saturday_from" />
@@ -62,8 +75,8 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}">
+                              <h2>Воскресенье <span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.sunday_from"/>
@@ -73,8 +86,8 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}">
+                              <h2>Праздничные дни <span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.holiday_from" />
@@ -90,7 +103,7 @@ const StoreEdit = {
                           <v-date-picker v-model='selectedDate' />
                         </div>
                       </div>
-                      <p>Если магазин работает круглосуточно - проставьте с 00:00 до 00:00</p>
+                      <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
                       <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
                       <p>Для изменения работы в определенную дату - выберите её на календаре.</p>
                     </div>
@@ -102,7 +115,7 @@ const StoreEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary">Сохранить изменения</button>
+                      <button class="btn btn--primary" @click="saveStore">Сохранить изменения</button>
                     </div>
                   </div>
                 </div>
@@ -113,10 +126,85 @@ const StoreEdit = {
     return {
       editable: true,
       selectedDate: null,
-      store: {}
+      store: {
+        operating_mode: {}
+      }
     }
   },
+  // watch: {
+  //       'store.operating_mode': {
+  //           handler: function () {
+  //             for (item in this.store.operating_mode){
+  //               let hours = this.store.operating_mode[item].split(':')[0],
+  //                   minutes = this.store.operating_mode[item].split(':')[1],
+  //                   change = false
+  //               console.log(hours, minutes);
+  //               if (+hours > 23){
+  //                 hours = '23';
+  //                 change = true;
+  //               }
+  //               if (+minutes > 59){
+  //                 minutes = '59';
+  //                 change = true;
+  //               }
+  //               if (change){
+  //                 this.store.operating_mode[item] = hours + ':' + minutes;
+  //               }
+  //             }
+  //           },
+  //           deep: true
+  //       }
+  // },
   methods: {
+    dayOff(day) {
+      if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
+        this.store.operating_mode[day + '_to'] = '23:59';
+      } else {
+        this.store.operating_mode[day + '_from'] = '00:00';
+        this.store.operating_mode[day + '_to'] = '00:00';
+      }
+    },
+    saveStore(){
+      console.log(this.store);
+      let request = JSON.parse(JSON.stringify(this.store));
+      request.address = this.store.dadata;
+      let requestUrl = '/control-panel/update-store';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            data : {
+              store: request
+            }
+          }),{headers})
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              this.editable = false;
+              $('.main__loader').hide();
+            }
+          });
+    },
+    storeDaData(){
+      $("#store-address").suggestions({
+          token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+          type: "ADDRESS",
+          onSelect: function (suggestion) {
+              $("#store-address-error").hide();
+              if (!suggestion.data.house)
+              {
+                  $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
+                  return false;
+              }
+              var dataString = JSON.stringify(suggestion);
+              $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
+              $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
+              $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
+          }
+      });
+    },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -130,7 +218,13 @@ const StoreEdit = {
               location.reload();
             } else {
               this.store = response.data.store;
+              this.store.dadata = '';
               console.log(this.store);
+              setTimeout(() => {
+                this.storeDaData();
+                $('.phoneinput').mask('+7 (999) 999-99-99');
+                $('.timeinput').mask('99:99');
+              }, 200);
               $('.main__loader').hide();
             }
           })
@@ -147,26 +241,3 @@ const StoreEdit = {
     this.getStore();
   }
 }
-
-$(document).on('click','.store__timetable-trigger', function(){
-  $(this).parent().parent().toggleClass('closed');
-});
-
-$("#store-address").suggestions({
-    token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-    type: "ADDRESS",
-    onSelect: function (suggestion) {
-        $("#store-address-error").hide();
-        console.log(suggestion.data);
-        if (!suggestion.data.house)
-        {
-            $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
-            return false;
-        }
-        var dataString = JSON.stringify(suggestion);
-        console.log(dataString);
-        //$("#geodatadadata").val(dataString);
-        // getLegalStores(dataString, '#useradesserror');
-        // addUserAddrees(dataString, $("#useraddress").val());
-    }
-});
