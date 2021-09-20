@@ -183,6 +183,7 @@ class AcquiringController extends AbstractActionController
         }
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
+            $tinkoffAnswer['answer'] = (!empty($tinkoffAnswer['answer'])) ? $tinkoffAnswer['answer'] : Json::encode([]);
             $order->setPaymentInfo($tinkoffAnswer['answer']);
             $order->persist(["order_id" => $orderId, "status" => 1]);
             return new JsonModel(["result" => true, 'param' => $param, "answer" => $tinkoffAnswer['answer']]);

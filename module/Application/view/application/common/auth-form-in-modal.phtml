@@ -15,7 +15,7 @@
         <!-- input type='hidden' name='userPhone' value="<?= $user['phone'] ?>"/ -->
       <?php endif;  ?>
   </div>
-  <?php if (false and $passBlock) : ?>
+  <?php /*if (false and $passBlock) : ?>
     <div class="auth-reg__input-group">
         <div class="auth-reg__input-group__label">Код:</div>
         <div class="auth-reg__input-group__input">
@@ -28,11 +28,11 @@
           <!-- a id="forgetPass">Забыли пароль?</a -->
         </div>
     </div>
-  <?php endif; ?>
+  <?php endif; */ ?>
   <?php if ($CodeBlock) :
-      if ($user['smscode']) :?>
+     /* if (false and $user['smscode']) :?>
         <input type="hidden"  name='userSmsCode'  value="<?=$user['smscode']?>" />
-      <?php  else:  ?>
+      <?php  else:  */?>
         <div class="auth-reg__input-group">
             <div class="auth-reg__input-group__label">Код:</div>
             <div class="auth-reg__input-group__input">
@@ -50,9 +50,9 @@
                   <input type="hidden"  name="recall"  value="0"   id="recall" >
             </div>
         </div>
-      <?php endif; ?>
+      <?php //endif; ?>
   <?php endif; ?>
-  <?php if ($passForgetBlock): ?>
+  <?php /*if ($passForgetBlock): ?>
     <div class="auth-reg__input-group">
         <div class="auth-reg__input-group__label">Новый пароль:</div>
         <div class="auth-reg__input-group__input">
@@ -74,9 +74,10 @@
           <input type="hidden" id="forgetPassHidden" name="forgetPassHidden"  value="1" >
         </div>
     </div>
-  <?php endif; ?>
+  <?php endif; */?>
   <?php if ($UserBlock) : ?>
     <div class="auth-reg__input-group">
+        <input type="hidden" name ="userblok_post" value="1" >
         <div class="auth-reg__input-group__label">Ваше имя:</div>
         <div class="auth-reg__input-group__input auth-reg__input-group__input--large">
           <input name='userName' type="text" class="<?= ($error['username']) ? 'error' : '' ?>" id='userName' value="<?= $user["username"] ?>" required />
@@ -100,6 +101,6 @@
   <?php elseif ($stepOne): ?>
     <a class="auth-reg__back" id="goStepOne">← Вернуться</a>
   <?php endif; ?>
-  <input type="submit" value='<?= $buttonLable ?>' id='userAuthButton<?= $buttonIdPrefix ?>' class="userformsendbutton btn btn--primary">
+  <input type="submit" value='<?= $buttonLable ?>' id='userAuthButton' class="userformsendbutton btn btn--primary">
   <p class="error1c"><?= $error["1c"]?></p>
 </div>

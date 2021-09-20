@@ -31,7 +31,6 @@ use Laminas\Db\Sql\Sql;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 
-
 //use Laminas\Session\SessionManager;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\ServiceManager\ServiceManager;
@@ -153,7 +152,6 @@ class UserDataController extends AbstractActionController
         }
         $this->getResponse()->setStatusCode(301);
         return $this->redirect()->toRoute('home');
-
     }
 
     /**
@@ -209,10 +207,10 @@ class UserDataController extends AbstractActionController
 //        $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code, 'live' => (time() + 60)];
 //        return $code;
 //    }
-    
+
     /**
      * Generate registration code
-     * 
+     *
      * @param string $phone
      * @param int $length
      * @return string
@@ -225,18 +223,17 @@ class UserDataController extends AbstractActionController
         // Generate new code and store it in session
         //$container = $this->sessionContainer;// new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
         //$container = new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
-
 //        $code = 7777; // simulate generation
-//        
+//
 //        /* *///real generation
-          $code ="";
-          $lenght=($lenght<1 and $lenght>9)?$lenght:4;
-          $suffle=[0,1,3,4,5,6,7,8,9];
-          shuffle($suffle);
-          for ($i=0; $i < $length; $i++ ){
-          $code.=$suffle[$i];
-          }
-          /* */
+        $code = "";
+        $lenght = ($lenght < 1 and $lenght > 9) ? $lenght : 4;
+        $digits = [1, 3, 4, 5, 6, 7, 8, 9];
+        shuffle($digits);
+        for ($i = 0; $i < $length; $i++) {
+            $code .= $digits[$i];
+        }
+        /* */
 
 //        $deck=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 //        shuffle($deck);
@@ -283,7 +280,7 @@ class UserDataController extends AbstractActionController
 
         return new JsonModel($answer);
     }
-    
+
     /**
      * Get final bill for client order and confirm payment
      *
@@ -291,22 +288,20 @@ class UserDataController extends AbstractActionController
      */
     public function getOrderBillAction()
     {
-        //$post[] = $this->getRequest()->getPost()->toArray(); 
-        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);  
+        //$post[] = $this->getRequest()->getPost()->toArray();
+        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);
         $orderId = $post["OrderId"];
         $order = ClientOrder::find(['order_id' => $orderId]);
         $userId = $order->getUserId();
         $user = User::find(["id" => $userId]);
-        $post["User"] =
-        $userInfo = $this->commonHelperFuncions->getUserInfo();        
+        $post["User"] = $userInfo = $this->commonHelperFuncions->getUserInfo();
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $answer = ['result' => true, 'description' => 'ok'];
         return new JsonModel($answer);
-        
     }
-    
+
     /**
      * Send Basket Data Action
      *
@@ -317,28 +312,28 @@ class UserDataController extends AbstractActionController
         $content = $this->getRequest()->getPost()->toArray();
         //return new JsonModel($content);
         $userId = $this->identity();
-        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params'])))?Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY):[];
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         //return new JsonModel(["result"=>false, "description" => $content['delivery_price']]);
 
         $orderset = $this->externalCommunicationService->sendBasketData($content, $param);
         //return new JsonModel(["deliveries" => $orderset["deliveries"]]);
         //exit (Json::encode();
-        if (!$orderset['response']['result']){
-            return new JsonModel(["result"=>false, "description" => $orderset['response']['errorDescription']]);
+        if (!$orderset['response']['result']) {
+            return new JsonModel(["result" => false, "description" => $orderset['response']['errorDescription']]);
         }
         //return new JsonModel($orderset['response']);
         $orderId = $orderset['response']['order_id'];
         //return new JsonModel(["result"=>false, "orderId"=> $orderId ]);
-        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
+        $order = ClientOrder::findFirstOrDefault(['order_id' => $orderId]);
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
-        if (!$orderCreate['result']){
-            return new JsonModel(["result"=>false, "description" => $orderCreate['description']]);
+        if (!$orderCreate['result']) {
+            return new JsonModel(["result" => false, "description" => $orderCreate['description']]);
         }
-        $basketSet = \Application\Model\Entity\Basket::findAll(['where' => ['product_id'=>$orderCreate['products'], 'user_id' => $userId, 'order_id' => 0] ]);
+        $basketSet = \Application\Model\Entity\Basket::findAll(['where' => ['product_id' => $orderCreate['products'], 'user_id' => $userId, 'order_id' => 0]]);
         // $sql="update `basket` set `order_id` = '$orderId' where `user_id` = '$user_id' and  `order_id`=0 and `product_id` in (".join(",",$$orderSet['products']).")";
-        foreach($basketSet as $basket) {
+        foreach ($basketSet as $basket) {
             $basket->setOrderId($orderId);
-            $basket->persist([ 'product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0 ]);
+            $basket->persist(['product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0]);
 //            $sql = new Sql($this->db);
 //            $sqlObj = $sql->update('basket');
 //            $sqlObj->set(['order_id' => $orderId]);
@@ -346,7 +341,7 @@ class UserDataController extends AbstractActionController
 //            $stmt = $sql->prepareStatementForSqlObject($sqlObj);
 //            $stmt->execute();
         }
-        return new JsonModel(["result"=>true, "orderId"=> $orderId ]);
+        return new JsonModel(["result" => true, "orderId" => $orderId]);
     }
 
     /**
@@ -447,17 +442,17 @@ class UserDataController extends AbstractActionController
     {
 
         $container = new Container(Resource::SESSION_NAMESPACE);
-        $userAutSession = ($container->userAutSession)?$container->userAutSession:[];
-        $CodeBlock = $passForgetBlock =  $registerPossible = false;
-        $error=[];
+        $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
+        $CodeBlock = $passForgetBlock = $registerPossible = false;
+        $error = [];
         $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
 
         $post = $this->getRequest()->getPost();
-        if ($post->recall == '1' ){
-          unset($container->userPhoneIdentity);
-        }   
-        
+        if ($post->recall == '1') {
+            unset($container->userPhoneIdentity);
+        }
+
         if (!empty($goStepOne = $post->goStepOne)) {
             unset($container->userAutTmpSession);
             unset($container->userPhoneIdentity);
@@ -482,10 +477,10 @@ class UserDataController extends AbstractActionController
 
                     $userData = $user->getUserData();
                     $usdat = $userData->current();
-                    /*if (null != $usdat) {
-                        //$print_r = $userGeodata = $usdat->getGeodata();
-                        //exit ($userGeodata);
-                    }*/
+                    /* if (null != $usdat) {
+                      //$print_r = $userGeodata = $usdat->getGeodata();
+                      //exit ($userGeodata);
+                      } */
                     if (!empty($post->forgetPassHidden)) {
 
                         // exit (print_r($user));
@@ -498,15 +493,15 @@ class UserDataController extends AbstractActionController
                         $forgetPassInput = ($post->forgetPassInput == null) ? "" : $post->forgetPassInput;
                         $forgetPassInput2 = $post->forgetPassInput2;
                         $buttonLable = Resource::BUTTON_LABLE_PASS_CHANGE;
-                        
+
                         $userPhoneIdentity = $container->userPhoneIdentity;
-                        
+
                         $codeExist = $userPhoneIdentity['code'];
-                        
+
                         if (!$codeExist) {
                             $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
-                           // if (!$codeSendAnswer['result']) {
-                                $error['sms'] =  (!$codeSendAnswer['result'])?(Resource::ERROR_SEND_SMS_MESSAGE.print_r($codeSendAnswer, true) ):"";
+                            // if (!$codeSendAnswer['result']) {
+                            $error['sms'] = (!$codeSendAnswer['result']) ? (Resource::ERROR_SEND_SMS_MESSAGE . print_r($codeSendAnswer, true) ) : "";
                             //} else {}
                         } else {
 
@@ -543,7 +538,7 @@ class UserDataController extends AbstractActionController
 
                                     // получение магазинов
                                     if (!empty($userGeodata)) {
-                                         $this->commonHelperFuncions->updateLegalStores($userGeodata);
+                                        $this->commonHelperFuncions->updateLegalStores($userGeodata);
                                     }
 
                                     unset($container->userAutSession);
@@ -592,7 +587,7 @@ class UserDataController extends AbstractActionController
                         //$print_r =
                         $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
                         if (!$codeSendAnswer['result']) {
-                            $error['sms'] = Resource::ERROR_SEND_SMS_MESSAGE.print_r($codeSendAnswer, true);
+                            $error['sms'] = Resource::ERROR_SEND_SMS_MESSAGE . print_r($codeSendAnswer, true);
                         } else {
                             //  $print_r = $codeExist;
                         }
@@ -637,14 +632,14 @@ class UserDataController extends AbstractActionController
                             ];
 
                             //$print_r =  $user_Id = $container->userIdentity;
-                             $response = $this->externalCommunicationService->setClientInfo($paramsFor1c);
-                             $answer =  !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
+                            $response = $this->externalCommunicationService->setClientInfo($paramsFor1c);
+                            $answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
 
                             if (!$answer["result"]) {
                                 $error["1c"] = $answer['errorDescription'];
                             } else {
 
-                                $error["1c"] = $answer['id'] ;
+                                $error["1c"] = $answer['id'];
                                 $userId = $container->userIdentity;
                                 //$print_r =
                                 $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
@@ -655,8 +650,8 @@ class UserDataController extends AbstractActionController
                                 //$print_r =
                                 $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
                                 $this->userRepository->persist($newUser, ['id' => $userId]);
-                                 if (!empty($userGeodata)) {
-                                         $this->commonHelperFuncions->updateLegalStores($userGeodata);
+                                if (!empty($userGeodata)) {
+                                    $this->commonHelperFuncions->updateLegalStores($userGeodata);
                                 }
                                 unset($container->userAutSession);
                                 unset($container->userPhoneIdentity);
@@ -669,14 +664,14 @@ class UserDataController extends AbstractActionController
             }
         }
         $container->userAutTmpSession = $userAutSession;
-        $sendingPhone = ($return['phone'])?StringHelper::phoneToNum($return['phone']):"";
+        $sendingPhone = ($return['phone']) ? StringHelper::phoneToNum($return['phone']) : "";
         $view = new ViewModel([
-           //'reloadPage' => $reloadPage,
-           // 'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
+            //'reloadPage' => $reloadPage,
+            // 'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
             'title' => $title,
             'buttonLable' => $buttonLable,
             'error' => $error,
-            'sengingPhoneFormated' => $return['phone'],
+            'sendingPhoneFormated' => $return['phone'],
             'sendingPhone' => $sendingPhone,
             'passBlock' => $passBlock,
             'UserBlock' => $UserBlock,
@@ -688,74 +683,163 @@ class UserDataController extends AbstractActionController
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
     }
-    
+
     public function userAuthModalAction()
     {
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        $container->userAutSession["test"] = "texttext";
-        exit (print_r($container->userAutSession ) );
-//        $userAutSession = ($container->userAutSession)?$container->userAutSession:[];
+        $container = new Container (Resource::SESSION_NAMESPACE);
+        //$container->userAutSession["test"] = "texttext";
+        
+        //exit ()
+        $userAutSession = (!empty($container->userAutSession)) ? $container->userAutSession : [];
+        //exit (print_r($userAutSession));
         //if (!empty($userAutSession)) {exit (print_r($return["user"]));}
-        //$CodeBlock = $passForgetBlock =  
+        //$CodeBlock = $passForgetBlock =
         //$registerPossible = false;
         //$error=[];
         $return['title'] = $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
-        $return['buttonLable'] =  $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
-        
+        $return['buttonLable'] = $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
+
         $post = $this->getRequest()->getPost();
-        if ($post->recall == '1' ){
+
+        /* if ($post->recall == '1' ){
           unset($container->userPhoneIdentity);
           return $this->userModalView($return);
-        }   
+          } */
+
+        if (!empty($goStepOne = $post->goStepOne)) {
+            unset($container->userAutSession);
+            // unset($container->userPhoneIdentity);
+            return $this->userModalView($return);
+        }
+
+        $return['sendingPhoneFormated'] = $return['phone'] = (!empty($post->userPhone)) ? $post->userPhone : $userAutSession['phone'];
+        $return['sendingPhone'] = ($return['phone']) ? StringHelper::phoneToNum($return['phone']) : "";
+
+        if (!$userAutSession['phone']  and (empty($return['sendingPhone']) or strlen($return['sendingPhone']) < 11)) {
+            $return['error']['phone'] = Resource::ERROR_INPUT_PHONE_MESSAGE;
+            return $this->userModalView($return);
+        }
+        $user = $this->userRepository->findFirstOrDefault(["phone" => $return['sendingPhone']]);
+        $userId = $user->getUserId();
         
-        if (!empty($goStepOne = $post->goStepOne)) { 
-            unset($container->userAutTmpSession);
-            unset($container->userPhoneIdentity);
+        //exit ($userId."/".$return['sendingPhone']);
+        
+        $return['title'] =  (!empty($userId)) ? $title = Resource::USER_LABLE_HELLO . $user->getName() : Resource::MESSAGE_REGISTER_TITLE;
+        
+        $userAutSession['phone'] = $return['sendingPhoneFormated'];
+        $container->userAutSession = $userAutSession;
+        $return['stepOne'] = $return['CodeBlock'] = true;
+
+        if (empty($userAutSession['smscode'])) {
+            return $this->userModalSendSms($return);
+        }
+        
+        if (!empty($post->userSmsCode) and $userAutSession['smscode'] != $post->userSmsCode) {
+            if(!empty($post->userSmsCode)) {
+                $return['error']['sms'] = Resource::ERROR_SEND_SMS_CODE_MESSAGE;
+            }
             return $this->userModalView($return);
         }
         
-        $return['sengingPhoneFormated'] = $return['phone'] =  (!empty($post->userPhone)) ? $post->userPhone :  $container->userAutSession['phone'];
-        $return['sengingPhone'] = $sendingPhone = ($return['phone'])?StringHelper::phoneToNum($return['phone']):"";
-        $return['name'] = $post->userNameInput;
-        if (empty($return['sengingPhone']) or strlen($return['sengingPhone']) < 11 ) {
-                $return['error']['phone'] = Resource::ERROR_INPUT_PHONE_MESSAGE;
-                return $this->userModalView($return);
-        } 
-        $return['user']['phone'] = $container->userAutSession['phone'] = $return['sengingPhoneFormated'];
-        $return['stepOne'] = true ;
-        
-        if (empty($container->userAutSession['smscode'])) {
-             $return['CodeBlock'] = true;
-             $codeSendAnswer = $this->sendSms($return['sengingPhone']);
-             $container->userPhoneIdentity['code'];
-             if (!$codeSendAnswer['result']) {
-                $return ['error']['sms'] =  (!$codeSendAnswer['result'])?(Resource::ERROR_SEND_SMS_MESSAGE." ".print_r($codeSendAnswer, true) ):"";
-                return $this->userModalView($return);
-             } 
-          $container->userAutSession['smscode'] = $container->userPhoneIdentity['code'];
-          //exit(print_r($container->userAutSession ));
-          return $this->userModalView($return);
-        }    
+        //exit  (print_r($user));
+        return (!empty($userId)) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
+
         //$return['user']['smscode'] = $container->userPhoneIdentity['code'];
-        return $this->userModalView($return);
+        //return $this->userModalView($return);
+    }
+
+    private function userModalAuthorisation($user)
+    {
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $container->userIdentity = $user->getId();
+        $this->userModalUpdateGeo($user); 
+        unset($container->userAutSession, $container->userPhoneIdentity);
+        return new JsonModel(["reload" => true]);
+    }
+
+    private function userModalRegistration($return, $user,  $post)
+    {
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
+       
+        $return['CodeBlock'] = false;
+        $return['UserBlock'] = true;
+        
+        if ($post->userblok_post != "1") {
+            return $this->userModalView($return);
+        }
+        
+        $userAutSession['username'] = null == $post->userName ? '' : $post->userName;
+        $userAutSession['usermail'] = null == $post->userName ? '' : $post->userMail;
+        $container->userAutSession = $userAutSession;
+        
+        if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3 ) {
+            $return['error']['username'] = Resource::ERROR_SEND_USERNAME_MESSAGE;
+            return $this->userModalView($return);
+        }
+        
+        if (!$this->testEmail($userAutSession['usermail'])) {
+            $return['error']['usermail'] = Resource::ERROR_SEND_EMAIL_MESSAGE;
+            return $this->userModalView($return);
+        }
+        $params = ['name' => $userAutSession['username'], 'phone' => $return['sendingPhone'], 'email' => $userAutSession['usermail'],];
+       // exit (print_r($params));
+        $response = $this->externalCommunicationService->setClientInfo($params);
+        $answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
+        if (!$answer["result"]) {
+            $return["error"]["1c"] = $answer['errorDescription'];
+            return $this->userModalView($return);
+        }
+        
+        $userId = $container->userIdentity;
+        $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
+        $newUser->setId($userId)->setName($userAutSession['username'])->setEmail($userAutSession['usermail'])->setUserId($answer['id'])->setPhone($return['sendingPhone']);
+        $newUser->persist(['id' => $userId]);
+        $this->userModalUpdateGeo($user); 
+        
+        unset($container->userAutSession);
+        unset($container->userPhoneIdentity);
+        return new JsonModel(["reload" => true]);
     }
     
+    private function userModalUpdateGeo ($user)
+    {
+        $userdata = $user->getUserData();
+        $userGeodata = ($userdata->count() > 0 ) ? $userdata->current()->getGeodata() : null; 
+        if (!empty($userGeodata)) {
+            $this->commonHelperFuncions->updateLegalStores($userGeodata);
+        }
+    }
     
+
+    private function userModalSendSms($return)
+    {
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
+        $codeSendAnswer = $this->sendSms($return['sendingPhone']);
+        //$container->userPhoneIdentity['code'];
+        if (!$codeSendAnswer['result']) {
+            $return ['error']['sms'] = (!$codeSendAnswer['result']) ? (Resource::ERROR_SEND_SMS_MESSAGE . ":<br> " . $codeSendAnswer['errorDescription'] ) : "";
+            return $this->userModalView($return);
+        }
+
+        $userAutSession['smscode'] = $container->userPhoneIdentity['code'];
+        $container->userAutSession = $userAutSession;
+        //exit(print_r($container->userAutSession ));
+        return $this->userModalView($return);
+    }
+
     private function userModalView($return)
     {
-        
-       $container = new Container(Resource::SESSION_NAMESPACE);
-       $return["user"] = $container->userAutSession;
-        
-        //exit (print_r($return));
-        
+
+        $container = new Container(Resource::SESSION_NAMESPACE);
+        $return["user"] = $container->userAutSession;
+
+        // exit (print_r($return));
+
         $view = new ViewModel($return);
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
     }
-    
-    
-    
-    
 
 }
