@@ -35,6 +35,7 @@ $(document).ready(function(){
   $(".open-user-address-form").click(function () {
       $("#searchpanel").stop().animate({top: "0px"});
       $("#uadress").hide();
+      $('#useraddress').focus();
   });
 
   $("#address").click(function () {
