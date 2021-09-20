@@ -131,30 +131,30 @@ const StoreEdit = {
       }
     }
   },
-  watch: {
-        'store.operating_mode': {
-            handler: function () {
-              for (item in this.store.operating_mode){
-                let hours = this.store.operating_mode[item].split(':')[0],
-                    minutes = this.store.operating_mode[item].split(':')[1],
-                    change = false
-                console.log(hours, minutes);
-                if (+hours > 23){
-                  hours = '23';
-                  change = true;
-                }
-                if (+minutes > 59){
-                  minutes = '59';
-                  change = true;
-                }
-                if (change){
-                  this.store.operating_mode[item] = hours + ':' + minutes;
-                }
-              }
-            },
-            deep: true
-        }
-  },
+  // watch: {
+  //       'store.operating_mode': {
+  //           handler: function () {
+  //             for (item in this.store.operating_mode){
+  //               let hours = this.store.operating_mode[item].split(':')[0],
+  //                   minutes = this.store.operating_mode[item].split(':')[1],
+  //                   change = false
+  //               console.log(hours, minutes);
+  //               if (+hours > 23){
+  //                 hours = '23';
+  //                 change = true;
+  //               }
+  //               if (+minutes > 59){
+  //                 minutes = '59';
+  //                 change = true;
+  //               }
+  //               if (change){
+  //                 this.store.operating_mode[item] = hours + ':' + minutes;
+  //               }
+  //             }
+  //           },
+  //           deep: true
+  //       }
+  // },
   methods: {
     dayOff(day) {
       if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
