@@ -190,7 +190,7 @@ const StoreAdd = {
       request.address = this.store.dadata;
       let requestUrl = '/control-panel/save-newly-added-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      request.contact_phone = request.contact_phone.replace(' ','').replace('+','').replace('(','').replace(')','').replace('-','');
+      request.contact_phone = request.contact_phone.replace(/ /g,'').replace(/+/g,'').replace(/(/g,'').replace(/)/g,'').replace(/-/g,'');
       delete request.dadata;
       console.log(request);
       axios
