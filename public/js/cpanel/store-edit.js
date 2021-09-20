@@ -175,7 +175,8 @@ const StoreEdit = {
               this.store.dadata = '';
               console.log(this.store);
               setTimeout(() => {
-                this.storeDaData()
+                this.storeDaData();
+                $('.phoneinput').mask('+7 (999) 999-99-99');
               }, 200);
               $('.main__loader').hide();
             }
