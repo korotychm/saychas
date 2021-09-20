@@ -129,14 +129,14 @@ const StoreEdit = {
                   return false;
               }
               var dataString = JSON.stringify(suggestion);
-              console.log(this.suggestion);
+              console.log(suggestion);
               console.log(this.store);
               // this.store.geox = suggestion.geo_lat;
               // this.store.geoy = suggestion.geo_lon;
               // this.store.dadata = dataString;
               // console.log(this.store.geox,this.store.geoy,this.store.address,this.store.dadata);
           }
-      });
+      }).bind(this);
     },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
