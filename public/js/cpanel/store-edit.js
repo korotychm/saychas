@@ -131,6 +131,7 @@ const StoreEdit = {
   },
   methods: {
     checkTime(day, type) {
+      console.log(day,type);
       let hours = this.store.operating_mode[day + '_' + type].split(':')[0],
           minutes = this.store.operating_mode[day + '_' + type].split(':')[1];
       if (+hours > 23){
