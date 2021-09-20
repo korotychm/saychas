@@ -440,6 +440,7 @@ const ProductAdd = {
         vendor_code: this.product.vendor_code,
         del_images: this.deleteImages
       }
+      delete request.dadata;
       console.log(request);
       axios
         .post(requestUrl,

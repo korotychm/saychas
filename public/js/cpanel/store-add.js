@@ -33,7 +33,7 @@ const StoreAdd = {
                       <div class="product__attribute product__attribute--short">
                         <h2>Телефон</h2>
                         <div>
-                          <masked-input v-model="store.contact_phone" mask="+7 (999) 999-99-99" class="input" />
+                          <the-mask v-model="store.contact_phone" :mask="['+7 (###) ###-##-##']" class="input" />
                         </div>
                       </div>
                     </div>
