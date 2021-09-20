@@ -117,6 +117,25 @@ const StoreEdit = {
     }
   },
   methods: {
+    StoreDaData(){
+      $("#store-address").suggestions({
+          token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+          type: "ADDRESS",
+          onSelect: function (suggestion) {
+              $("#store-address-error").hide();
+              if (!suggestion.data.house)
+              {
+                  $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
+                  return false;
+              }
+              var dataString = JSON.stringify(suggestion);
+              this.store.geox = suggestion.geo_lat;
+              this.store.geoy = suggestion.geo_lon;
+              this.store.dadata = dataString;
+              console.log(this.store.geox,this.store.geoy,this.store.address,this.store.dadata);
+          }
+      });
+    },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -131,7 +150,9 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               console.log(this.store);
-              setTimeout(StoreDaData, 200);
+              setTimeout(() => {
+                 this.StoreDaData
+              }, 200);
               $('.main__loader').hide();
             }
           })
@@ -152,25 +173,3 @@ const StoreEdit = {
 $(document).on('click','.store__timetable-trigger', function(){
   $(this).parent().parent().toggleClass('closed');
 });
-
-
-function StoreDaData() {
-  $("#store-address").suggestions({
-      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-      type: "ADDRESS",
-      onSelect: function (suggestion) {
-          $("#store-address-error").hide();
-          console.log(suggestion.data);
-          if (!suggestion.data.house)
-          {
-              $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
-              return false;
-          }
-          var dataString = JSON.stringify(suggestion);
-          console.log(dataString);
-          //$("#geodatadadata").val(dataString);
-          // getLegalStores(dataString, '#useradesserror');
-          // addUserAddrees(dataString, $("#useraddress").val());
-      }
-  });
-}
