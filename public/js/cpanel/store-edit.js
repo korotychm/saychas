@@ -121,12 +121,11 @@ const StoreEdit = {
     dayOff(type) {
       let from = this.store.operating_mode[type + '_from'],
           to = this.store.operating_mode[type + 'to'];
-      console.log(this.store.operating_mode[type + '_from']);
-      console.log(this.store.operating_mode[type + '_to']);
-      if ((from == '00:00') && (to == '00:00')){
+      if (from == '00:00' && to == '00:00'){
         this.store.operating_mode[type + '_to'] = '23:59';
         console.log(this.store.operating_mode[type + '_to']);
       } else {
+        console.log('else');
         this.store.operating_mode[type + '_from'] = '00:00';
         this.store.operating_mode[type + '_to'] = '00:00';
       }
