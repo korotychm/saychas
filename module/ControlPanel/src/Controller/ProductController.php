@@ -34,7 +34,7 @@ class ProductController extends AbstractActionController
 
     /** @var ProductManager */
     protected $productManager;
-    
+
     /** @var RbacManager */
     protected $rbacManager;
 
@@ -148,30 +148,51 @@ class ProductController extends AbstractActionController
     public function editProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        
+
         $access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
-        
-        if(!$access) {
+
+        if (!$access) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
-        
+
 //        $post = $this->getRequest()->getPost()->toArray();
-        
+
         $product = $this->productManager->findProduct($post['product_id']);
 
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
-        
+
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
 
-    private function canUpdateProduct($params)
+    public function addProductAction()
+    {
+        $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+
+        return new JsonModel(['category_tree' => $categoryTree]);
+    }
+    
+    public function categoryTreeAction()
+    {
+        $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+        //$json = json_encode($categoryTree, true);
+        return new JsonModel(['category_tree' => $categoryTree]);
+    }
+
+    /**
+     * Check to see if product is saved on 1c.
+     * If so we can update local database collection (products).
+     *
+     * @param array $product
+     * @return bool
+     */
+    private function canUpdateProduct(array $product): bool
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
-        $result = $this->productManager->updateServerDocument($credentials, []);
-        $res = $result['http_code'] === '200' && $result['data']['result'] === true;
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->productManager->updateServerDocument($credentials, $product);
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
     }
 
@@ -180,29 +201,123 @@ class ProductController extends AbstractActionController
         return true;
     }
 
+    /**
+     * Upload product image action
+     *
+     * @return JsonModel
+     */
+    public function uploadProductImageAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $productId = $post['product_id'];
+        $providerId = $post['provider_id'];
+
+        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+        $uploads = $this->config['parameters']['image_path']['subpath']['cpanel_product'];
+        $uploadsDir = 'public' . $baseUrl . '/' . $uploads;
+        $error = $_FILES['file']['error'];
+        if (UPLOAD_ERR_OK == $error) {
+            //$fileName = basename($_FILES['file']['name']);
+            $uuid = uniqid("{$providerId}_{$productId}_", true);
+            list($type, $ext) = explode('/', $_FILES['file']['type']);
+            //$newFileName = "{$providerId}_{$productId}_$uuid.$ext";
+            $newFileName = "$uuid.$ext";
+            $tmpName = $_FILES['file']['tmp_name'];
+            //move_uploaded_file($tmpName, "$uploadsDir/$fileName");
+            move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
+        }
+        return new JsonModel(['image_file_name' => $newFileName]);
+    }
+
+    /**
+     * Update product
+     * Send product data to 1c first and
+     * update locally if canUpdateProduct returns true
+     *
+     * @return JsonModel
+     */
     public function updateProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
+        $product = json_decode($post['data']['product'], true);
+        $deletedImages = $product['del_images'];
+        $result = ['matched_count' => 0, 'modified_count' => 0];
+        if ($this->canUpdateProduct($product)) {
+            $result = $this->productManager->replaceProduct($product);
+            foreach ($deletedImages as $image) {
+                $this->productManager->deleteProductImage($image);
+            }
+            return new JsonModel(['result' => true]);
+        }
+        return new JsonModel(['result' => false]);
+    }
+    
+    public function saveNewlyAddedProductAction()
+    {
+        print_r('banzaii');
+        exit;
+    }
+
+    public function requestCategoryCharacteristicsAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/* , 'is_test: true' */];
+
+        $post = $this->getRequest()->getPost()->toArray();
+        $data = $post['data'];
+        $data['product'] = json_decode($data['product'], true);
+        $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
+
+        $product = $this->productManager->findProduct2($answer['data']['product']);
+        $answer['data']['product'] = $product;
+
+        return new JsonModel(['answer' => $answer]);
+    }
+
+    public function requestCategoryCharacteristicsOnlyAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'/* , 'is_test: true' */];
+
+        $post = $this->getRequest()->getPost()->toArray();
+
+        $categoryId = $post['data']['category_id'];
+        $data = ['new_category_id' => $categoryId];
+        $answer = $this->productManager->requestCategoryCharacteristics($credentials, $data);
+        $product = $this->productManager->findProduct2($answer['data']['product']);
+        $handbook = $this->productManager->getHandbooks();
+        $product['brands'] = $handbook['brands'];
+        $product['colors'] = $handbook['colors'];
+        $product['countries'] = $handbook['countries'];
+        $answer['data']['product'] = $product;
+
+        return new JsonModel(['answer' => $answer]);
+    }
+
+}
+
+//            $this->productManager->updateDocument([
+//                'where' => ['id' => $product['id']],
+//                'set' =>
+//            ]);
+
 //        $result = $this->productManager->updateDocument([
 //            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
 //            'set' => ['characteristics.$.value' => '0.1345']
 //        ]);
-        
-        if ($this->canUpdateProduct($post)) {
-            $result = $this->productManager->updateDocument([
-                'where' => ['id' => $post['product_id']],
-                'set' => [
-                    'category_id' => $post['category_id'],
-                    'brand_id' => $post['brand_id'],
-                    'color' => $post['color'],
-                    'country' => $post['country'],
-                    'title' => $post['title']
-                ],
-            ]);
-        }
-        exit;
+
+//        if ($this->canUpdateProduct($post)) {
+//            $result = $this->productManager->updateDocument([
+//                'where' => ['id' => $post['product_id']],
+//                'set' => [
+//                    'category_id' => $post['category_id'],
+//                    'brand_id' => $post['brand_id'],
+//                    'color' => $post['color'],
+//                    'country' => $post['country'],
+//                    'title' => $post['title']
+//                ],
+//            ]);
+//        }
+//        exit;
         //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
         //return $result;
-    }
-
-}

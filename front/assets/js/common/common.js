@@ -12,7 +12,7 @@ $.fn.setCursorPosition = function(pos) {
 
 $(document).ready(function () {
     showBasket(0);
-    $(".overcover").delay(500).fadeOut("slow");
+    $(".overcover").fadeOut();
     $(".phoneinput").mask("+7 (999) 999-99-99");
 
     $(document).on('click','.phoneinput',function(){
@@ -23,6 +23,8 @@ $(document).ready(function () {
     window.onbeforeunload = function () {
         $(".overcover").stop().fadeIn();
     };
+
+    $('.select').niceSelect();
 });
 
 $(document).on('click', '.popup__close', function () {

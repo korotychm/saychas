@@ -68,14 +68,22 @@ return [
             ],
             \ControlPanel\Controller\ProductController::class => [
                 ['actions' => ['editProduct', ], 'allow' => '+developer'],
+                ['actions' => ['addProduct', ], 'allow' => '+developer'],
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
+                ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
+                ['actions' => ['categoryTree', ], 'allow' => '+developer'],
+                ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+developer'],
+                
+//                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
+                ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
+                ['actions' => ['requestCategoryCharacteristicsOnly', ], 'allow' => '+developer'],
 //                ['actions' => ['showProducts', ], 'allow' => '+developer'],
 //                ['actions' => ['showProductsFromCache', ], 'allow' => '+developer'],
             ],
-//            \ControlPanel\Controller\StoreController::class => [
-//                ['actions' => ['showStores',], 'allow' => '+analyst'],
-//                ['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
-//            ],
+            \ControlPanel\Controller\StoreController::class => [
+                ['actions' => ['editStore',], 'allow' => '+developer'],
+                //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
+            ],
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',], 'allow' => '+analyst'],
                 ['actions' => ['showListFromCache', ], 'allow' => '+developer'],
@@ -224,6 +232,39 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'add-product' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/add-product',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'add-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'save-newly-added-product'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/save-newly-added-product',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'save-newly-added-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'edit-store' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/edit-store',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\StoreController::class,
+                                'action' => 'edit-store',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'update-product' => [
                         'type' => Literal::class,
                         'options' => [
@@ -231,6 +272,52 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'update-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'upload-product-image' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/upload-product-image',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'upload-product-image',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'category-tree' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/category-tree',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'category-tree',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
+                    
+                    'request-category-characteristics' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/request-category-characteristics',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'request-category-characteristics',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'request-category-characteristics-only' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/request-category-characteristics-only',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'request-category-characteristics-only',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -492,11 +579,13 @@ return [
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
+            'lk_get_info_by_category' => 'http://SRV02:8000/SC/hs/site/lk_get_info_by_category',
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             /** ProductManager; Edit product */
             //'lk_edit_product' => 'http://SRV02:8000/SC/hs/site/lk_edit_product',
             'lk_update_product' => 'http://SRV02:8000/SC/hs/site/lk_update_product',
+            'lk_add_product' => 'http://SRV02:8000/SC/hs/site/lk_add_product',
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             /** StoreManager link alias */

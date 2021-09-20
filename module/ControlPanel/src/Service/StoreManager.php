@@ -94,6 +94,13 @@ class StoreManager extends ListManager implements LoadableInterface
         return $cursor;
     }
 
+    public function updateServerDocument($headers, $content = [])
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_store'];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+        return $result;
+    }
+    
 }
 
 //    protected $mclient;
