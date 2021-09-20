@@ -42,7 +42,7 @@ const StoreEdit = {
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
-                              <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
+                              <h2>Рабочие дни <span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.working_day_from" />
@@ -53,7 +53,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}">
-                              <h2>Суббота <span class="store__timetable-trigger"></span></h2>
+                              <h2>Суббота <span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.saturday_from" />
@@ -64,7 +64,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}">
-                              <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
+                              <h2>Воскресенье <span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.sunday_from"/>
@@ -75,7 +75,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}">
-                              <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
+                              <h2>Праздничные дни <span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" v-model="store.operating_mode.holiday_from" />
@@ -118,6 +118,16 @@ const StoreEdit = {
     }
   },
   methods: {
+    dayOff(type) {
+      let from = this.store.operating_mode[type + '_from'],
+          to = this.store.operating_mode[type + 'to']
+      if (from == '00:00' && to == '00:00'){
+        this.store.operating_mode[type + 'to'] = '23:59';
+      } else {
+        this.store.operating_mode[type + 'from'] = '00:00';
+        this.store.operating_mode[type + 'to'] = '00:00';
+      }
+    },
     saveStore(){
       console.log(this.store);
     },
@@ -173,12 +183,3 @@ const StoreEdit = {
     this.getStore();
   }
 }
-
-$(document).on('click','.store__timetable-trigger', function(){
-  if ($(this).parent().parent().hasClass('closed')){
-    $(this).parent().parent().find('.timeinput').eq(0).val('00:00').dispatchEvent(new Event('input'));
-    $(this).parent().parent().find('.timeinput').eq(1).val('23:59').dispatchEvent(new Event('input'));
-  } else {
-    $(this).parent().parent().find('.timeinput').val('00:00').dispatchEvent(new Event('input'));
-  }
-});
