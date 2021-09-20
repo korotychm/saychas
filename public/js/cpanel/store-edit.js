@@ -27,13 +27,13 @@ const StoreEdit = {
                       <div class="product__attribute">
                         <h2>Контактное лицо</h2>
                         <div>
-                          <input type="text" class="input" />
+                          <input type="text" v-model="store.contact_name" class="input" />
                         </div>
                       </div>
                       <div class="product__attribute product__attribute--short">
                         <h2>Телефон</h2>
                         <div>
-                          <input type="text" class="input phoneinput" />
+                          <input type="text" v-model="store.contact_phone" class="input phoneinput" />
                         </div>
                       </div>
                     </div>
@@ -166,6 +166,26 @@ const StoreEdit = {
     },
     saveStore(){
       console.log(this.store);
+      let request = JSON.parse(JSON.stringify(this.store));
+      request.address = this.store.dadata;
+      let requestUrl = '/control-panel/update-store';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            data : {
+              store: request
+            }
+          }),{headers})
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              this.editable = false;
+              $('.main__loader').hide();
+            }
+          });
     },
     storeDaData(){
       $("#store-address").suggestions({
