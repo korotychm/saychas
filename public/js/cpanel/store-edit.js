@@ -57,10 +57,10 @@ const StoreEdit = {
                               <h2>Рабочие дни <span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('working_day','from')" v-model="store.operating_mode.working_day_from" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.working_day_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('working_day','to')" v-model="store.operating_mode.working_day_to" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.working_day_to" />
                                 </div>
                               </div>
                             </div>
@@ -68,10 +68,10 @@ const StoreEdit = {
                               <h2>Суббота <span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('saturday','from')" v-model="store.operating_mode.saturday_from" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.saturday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('saturday','to')" v-model="store.operating_mode.saturday_to" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.saturday_to" />
                                 </div>
                               </div>
                             </div>
@@ -79,10 +79,10 @@ const StoreEdit = {
                               <h2>Воскресенье <span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('sunday','from')" v-model="store.operating_mode.sunday_from"/>
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.sunday_from"/>
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('sunday','to')" v-model="store.operating_mode.sunday_to" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.sunday_to" />
                                 </div>
                               </div>
                             </div>
@@ -90,10 +90,10 @@ const StoreEdit = {
                               <h2>Праздничные дни <span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('holiday','from')" v-model="store.operating_mode.holiday_from" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.holiday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" @focusout="checkTime('holiday','to')" v-model="store.operating_mode.holiday_to" />
+                                  <input type="text" class="timeinput" v-model="store.operating_mode.holiday_to" />
                                 </div>
                               </div>
                             </div>
@@ -126,22 +126,28 @@ const StoreEdit = {
     return {
       editable: true,
       selectedDate: null,
-      store: {}
+      store: {
+        operating_mode: {}
+      }
+    }
+  },
+  watch: {
+    operating_mode: function(items) {
+      for (item in items){
+        let hours = item.split(':')[0],
+            minutes = item.split(':')[1];
+        console.log(hours, minutes);
+        if (+hours > 23){
+          hours = '23';
+        }
+        if (+minutes > 59){
+          minutes = '59';
+        }
+        item = hours + ':' + minutes;
+      }
     }
   },
   methods: {
-    checkTime(day, type) {
-      let hours = this.store.operating_mode[day + '_' + type].split(':')[0],
-          minutes = this.store.operating_mode[day + '_' + type].split(':')[1];
-      console.log(hours, minutes);
-      if (+hours > 23){
-        hours = '23';
-      }
-      if (+minutes > 59){
-        minutes = '59';
-      }
-      this.store.operating_mode[day + '_' + type] = hours + ':' + minutes;
-    },
     dayOff(day) {
       if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
         this.store.operating_mode[day + '_to'] = '23:59';
