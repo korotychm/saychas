@@ -132,6 +132,7 @@ const StoreEdit = {
               this.store = response.data.store;
               console.log(this.store);
               $('.main__loader').hide();
+              StoreDaData();
             }
           })
           .catch(error => {
@@ -145,9 +146,6 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
-  },
-  mounted: function(){
-    StoreDaData();
   }
 }
 
