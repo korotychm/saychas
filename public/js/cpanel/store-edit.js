@@ -145,6 +145,9 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
+  },
+  mounted: function(){
+    StoreDaData();
   }
 }
 
@@ -153,21 +156,23 @@ $(document).on('click','.store__timetable-trigger', function(){
 });
 
 
-$("#store-address").suggestions({
-    token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-    type: "ADDRESS",
-    onSelect: function (suggestion) {
-        $("#store-address-error").hide();
-        console.log(suggestion.data);
-        if (!suggestion.data.house)
-        {
-            $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
-            return false;
-        }
-        var dataString = JSON.stringify(suggestion);
-        console.log(dataString);
-        //$("#geodatadadata").val(dataString);
-        // getLegalStores(dataString, '#useradesserror');
-        // addUserAddrees(dataString, $("#useraddress").val());
-    }
-});
+function StoreDaData() {
+  $("#store-address").suggestions({
+      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+      type: "ADDRESS",
+      onSelect: function (suggestion) {
+          $("#store-address-error").hide();
+          console.log(suggestion.data);
+          if (!suggestion.data.house)
+          {
+              $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
+              return false;
+          }
+          var dataString = JSON.stringify(suggestion);
+          console.log(dataString);
+          //$("#geodatadadata").val(dataString);
+          // getLegalStores(dataString, '#useradesserror');
+          // addUserAddrees(dataString, $("#useraddress").val());
+      }
+  });
+}
