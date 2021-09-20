@@ -122,13 +122,12 @@ const StoreEdit = {
       let from = this.store.operating_mode[type + '_from'],
           to = this.store.operating_mode[type + 'to'];
       if (from == '00:00' && to == '00:00'){
-        this.store.operating_mode[type + 'to'] = '23:59';
+        this.store.operating_mode[type + '_to'] = '23:59';
       } else {
         console.log(type);
-        this.store.operating_mode[type + 'from'] = '00:00';
-        this.store.operating_mode[type + 'to'] = '00:00';
+        this.store.operating_mode[type + '_from'] = '00:00';
+        this.store.operating_mode[type + '_to'] = '00:00';
       }
-      console.log(this.store.operating_mode[type + '_from']);
     },
     saveStore(){
       console.log(this.store);
