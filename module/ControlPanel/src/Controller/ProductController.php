@@ -251,6 +251,12 @@ class ProductController extends AbstractActionController
         }
         return new JsonModel(['result' => false]);
     }
+    
+    public function saveNewlyAddedProductAction()
+    {
+        print_r('banzaii');
+        exit;
+    }
 
     public function requestCategoryCharacteristicsAction()
     {

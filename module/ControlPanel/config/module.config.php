@@ -72,6 +72,7 @@ return [
                 ['actions' => ['updateProduct', ], 'allow' => '+developer'],
                 ['actions' => ['uploadProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['categoryTree', ], 'allow' => '+developer'],
+                ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+developer'],
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+developer'],
@@ -238,6 +239,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'add-product',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'save-newly-added-product'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/save-newly-added-product',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'save-newly-added-product',
                             ],
                         ],
                         // 'may_terminate' => true,
