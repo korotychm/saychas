@@ -103,7 +103,7 @@ const StoreEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary">Сохранить изменения</button>
+                      <button class="btn btn--primary" @click="console.log(store)">Сохранить изменения</button>
                     </div>
                   </div>
                 </div>
@@ -132,11 +132,9 @@ const StoreEdit = {
                   return false;
               }
               var dataString = JSON.stringify(suggestion);
-              console.log(suggestion);
-              console.log(this.store);
-              $('#geox').val(suggestion.geo_lat);
-              $('#geoy').val(suggestion.geo_lon);
-              $('#dadata').val(suggestion.dataString);
+              $('#geox').val(suggestion.data.geo_lat);
+              $('#geoy').val(suggestion.data.geo_lon);
+              $('#dadata').val(dataString);
           }
       });
     },
