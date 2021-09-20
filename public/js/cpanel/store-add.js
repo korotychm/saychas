@@ -33,7 +33,7 @@ const StoreAdd = {
                       <div class="product__attribute product__attribute--short">
                         <h2>Телефон</h2>
                         <div>
-                          <input v-model="store.contact_phone" v-mask="'+7 (###) ###-##-##'" class="input" type="text" />
+                          <input v-model="store.contact_phone" v-mask="'+7 (###) ###-##-##'" class="input" type="text" placeholder="+7 (999) 859-22-00" />
                         </div>
                       </div>
                     </div>
@@ -57,10 +57,10 @@ const StoreAdd = {
                               <h2>Рабочие дни <span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input v-model="store.operating_mode.working_day_from" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.working_day_from" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                                 <div>
-                                  <input v-model="store.operating_mode.working_day_to" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.working_day_to" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                               </div>
                             </div>
@@ -68,10 +68,10 @@ const StoreAdd = {
                               <h2>Суббота <span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input v-model="store.operating_mode.saturday_from" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.saturday_from" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                                 <div>
-                                  <input v-model="store.operating_mode.saturday_to" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.saturday_to" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                               </div>
                             </div>
@@ -79,10 +79,10 @@ const StoreAdd = {
                               <h2>Воскресенье <span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input v-model="store.operating_mode.sunday_from" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.sunday_from" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                                 <div>
-                                  <input v-model="store.operating_mode.sunday_to" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.sunday_to" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                               </div>
                             </div>
@@ -90,10 +90,10 @@ const StoreAdd = {
                               <h2>Праздничные дни <span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input v-model="store.operating_mode.holiday_from" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.holiday_from" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                                 <div>
-                                  <input v-model="store.operating_mode.holiday_to" v-mask="'##:##'" class="timeinput" type="text" />
+                                  <input v-model="store.operating_mode.holiday_to" v-mask="'##:##'" class="timeinput" placeholder="00:00" type="text" />
                                 </div>
                               </div>
                             </div>
