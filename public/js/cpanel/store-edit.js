@@ -41,7 +41,7 @@ const StoreEdit = {
                       <div class="store__timetable">
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
-                            <div class="store__timetable-item product__attribute">
+                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}>
                               <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -52,7 +52,7 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
+                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}>
                               <h2>Суббота <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -63,7 +63,7 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
+                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}>
                               <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -74,7 +74,7 @@ const StoreEdit = {
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
+                            <div class="store__timetable-item product__attribute" :class={closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}>
                               <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
                               <div class="input-group">
                                 <div>
@@ -91,7 +91,7 @@ const StoreEdit = {
                           <v-date-picker v-model='selectedDate' />
                         </div>
                       </div>
-                      <p>Если магазин работает круглосуточно - проставьте с 00:00 до 00:00</p>
+                      <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
                       <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
                       <p>Для изменения работы в определенную дату - выберите её на календаре.</p>
                     </div>
@@ -175,5 +175,11 @@ const StoreEdit = {
 }
 
 $(document).on('click','.store__timetable-trigger', function(){
-  $(this).parent().parent().toggleClass('closed');
+  if ($(this).parent().parent().hasClass('closed')){
+    $(this).parent().parent().find('.timeinput').eq(0).val('00:00').dispatchEvent(new Event('input'));
+    $(this).parent().parent().find('.timeinput').eq(1).val('23:59').dispatchEvent(new Event('input'));
+  } else {
+    $(this).parent().parent().find('.timeinput').eq(0).val('00:00').dispatchEvent(new Event('input'));
+    $(this).parent().parent().find('.timeinput').eq(1).val('00:00').dispatchEvent(new Event('input'));
+  }
 });
