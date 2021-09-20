@@ -280,7 +280,8 @@ class ProductManager extends ListManager implements LoadableInterface
     
     public function findProduct(string $productId)
     {
-        $product = $this->find(['id' => $productId]);
+        $product = (array) $this->find(['id' => $productId]);
+        $characteristics = (array) $product['characteristics'];
 //        $provider = Provider::find(['id' => $product['provider_id']]);
 //        $product['provider_name'] = $provider->getTitle();
 //        $product['provider_description'] = $provider->getDescription();
@@ -290,7 +291,8 @@ class ProductManager extends ListManager implements LoadableInterface
         $product['colors'] = Color::findAll([])->toArray();
         $product['countries'] = Country::findAll([])->toArray();
         
-        foreach($product->characteristics as &$c) {
+        //foreach($product->characteristics as &$c) {
+        foreach($characteristics as &$c) {
             $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
             $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
             switch ($c['type']) {
@@ -307,27 +309,42 @@ class ProductManager extends ListManager implements LoadableInterface
                     $c['real_value'] = $c['value'];
                     break;
                 case Resource::CHAR_VALUE_REF:
+                    if(is_object($c['value'])) {
+                        $c['value'] = (array) $c['value'];
+                    }
                     $entity = CharacteristicValue::find(['id' => $c['value']]);
                     $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
                     $c['available_values'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::PROVIDER_REF:
+                    if(is_object($c['value'])) {
+                        $c['value'] = (array) $c['value'];
+                    }
                     $entity = Provider::find(['id' => $c['value']]);
                     $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
 //                    $c['available_providers'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::BRAND_REF:
+                    if(is_object($c['value'])) {
+                        $c['value'] = (array) $c['value'];
+                    }
                     $entity = Brand::find(['id' => $c['value']]);
                     $c['title'] = $c['real_value'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
 //                    $c['available_brands'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::COLOR_REF:
+                    if(is_object($c['value'])) {
+                        $c['value'] = (array) $c['value'];
+                    }
                     $entity = Color::find(['id' => $c['value']]);
                     $c['title'] =  null == $entity ? '' : $entity->getTitle();// $entity->getTitle();
                     $c['real_value'] =  null == $entity ? '' : $entity->getValue();// $entity->getValue();
 //                    $c['available_colors'] = $this->getAvailableCharacteristicValues($c);
                     break;
                 case Resource::COUNTRY_REF:
+                    if(is_object($c['value'])) {
+                        $c['value'] = (array) $c['value'];
+                    }
                     $entity = Country::find(['id' => $c['value']]);
                     $c['title'] =  null == $entity ? '' : $entity->getTitle(); // $entity->getTitle();
                     $c['real_value'] =  null == $entity ? '' : $entity->getCode(); // $entity->getCode();
@@ -337,6 +354,7 @@ class ProductManager extends ListManager implements LoadableInterface
                     throw new \Exception('Characteristic of the given type does not exist');
             }
         }
+        $product['characteristics'] = $characteristics;
         return $product;//->characteristics;
     }
     

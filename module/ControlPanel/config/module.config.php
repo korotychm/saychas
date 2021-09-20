@@ -573,6 +573,7 @@ return [
             /** ProductManager; Edit product */
             //'lk_edit_product' => 'http://SRV02:8000/SC/hs/site/lk_edit_product',
             'lk_update_product' => 'http://SRV02:8000/SC/hs/site/lk_update_product',
+            'lk_add_product' => 'http://SRV02:8000/SC/hs/site/lk_add_product',
             /** StoreManager links */
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             /** StoreManager link alias */
