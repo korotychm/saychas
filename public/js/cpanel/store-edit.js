@@ -9,9 +9,12 @@ const StoreEdit = {
                       </div>
                       <div class="product__attribute">
                         <h2>Адрес</h2>
-                        <input type="text" class="input" v-model="store.address" />
-                        <input type="hidden" class="input" v-model="store.geox" />
-                        <input type="hidden" class="input" v-model="store.geoy" />
+                        <div>
+                          <input type="text" class="input" v-model="store.address" id="store-address" />
+                          <input type="hidden" class="input" v-model="store.geox" />
+                          <input type="hidden" class="input" v-model="store.geoy" />
+                          <p class="error" id="store-address-error"></p>
+                        </div>
                       </div>
                       <div class="product__attribute">
                         <h2>Комментарий</h2>
@@ -147,4 +150,23 @@ const StoreEdit = {
 
 $(document).on('click','.store__timetable-trigger', function(){
   $(this).parent().parent().toggleClass('closed');
+});
+
+$("#store-address").suggestions({
+    token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+    type: "ADDRESS",
+    onSelect: function (suggestion) {
+        $("#store-address-error").hide();
+        console.log(suggestion.data);
+        if (!suggestion.data.house)
+        {
+            $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
+            return false;
+        }
+        var dataString = JSON.stringify(suggestion);
+        console.log(dataString);
+        //$("#geodatadadata").val(dataString);
+        // getLegalStores(dataString, '#useradesserror');
+        // addUserAddrees(dataString, $("#useraddress").val());
+    }
 });
