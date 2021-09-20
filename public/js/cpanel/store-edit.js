@@ -125,7 +125,7 @@ const StoreEdit = {
         this.store.operating_mode[type + '_to'] = '23:59';
         console.log(this.store.operating_mode[type + '_to']);
       } else {
-        console.log('else');
+        console.log('else',this.store.operating_mode[type + '_from'],this.store.operating_mode[type + '_to']);
         this.store.operating_mode[type + '_from'] = '00:00';
         this.store.operating_mode[type + '_to'] = '00:00';
       }
