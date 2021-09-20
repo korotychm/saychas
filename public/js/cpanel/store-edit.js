@@ -135,8 +135,8 @@ const StoreEdit = {
         'store.operating_mode': {
             handler: function () {
               for (item in this.store.operating_mode){
-                let hours = item.split(':')[0],
-                    minutes = item.split(':')[1];
+                let hours = store.operating_mode[item].split(':')[0],
+                    minutes = store.operating_mode[item].split(':')[1];
                 console.log(hours, minutes);
                 if (+hours > 23){
                   hours = '23';
@@ -144,7 +144,7 @@ const StoreEdit = {
                 if (+minutes > 59){
                   minutes = '59';
                 }
-                item = hours + ':' + minutes;
+                store.operating_mode[item] = hours + ':' + minutes;
               }
             },
             deep: true
