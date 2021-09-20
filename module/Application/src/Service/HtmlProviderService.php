@@ -259,6 +259,7 @@ class HtmlProviderService {
             }
             $productImages[] = $product->getHttpUrl();
             $vendor = $product->getVendorCode();
+            $productId = $product->getId();
             $return["brand"]["title"] = $product->getBrandTitle();
             $return["brand"]["id"] = $product->getBrandId();
             $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]]);
@@ -297,7 +298,7 @@ class HtmlProviderService {
         //$productImages = ;
         $return['images'] = array_unique($productImages);
         $return['categoryId'] = $categoryId;
-        $return['appendParams'] = ['vendorCode' => $vendor, 'rest' => $return['rest'], 'test' => "test",];
+        $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
         //exit(print_r($return));
         return $return;
     }

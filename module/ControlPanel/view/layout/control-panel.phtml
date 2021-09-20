@@ -11,15 +11,6 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-                // ->prependStylesheet($this->basePath('assets/control-panel/css/index.css'))
-                // ->prependStylesheet($this->basePath('css/cpanel.css'))
-                // ->prependStylesheet($this->basePath('css/style.css'))
-                // ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-                // ->prependStylesheet($this->basePath('css/bs.css'))
-                // ->prependStylesheet($this->basePath('css/treeview.css'))
-                // ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
-                // ->prependStylesheet($this->basePath('css/nouislider.css'))
-                // ->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
                 ->prependStylesheet($this->basePath('css/cpanel.min.css?' . time()))
         ?>
 
@@ -30,17 +21,6 @@
 
         <?=
                 $this->inlineScript()
-                // //->prependFile($this->basePath('/js/services.js'))
-                // ->prependFile($this->basePath('assets/js/control-panel/index.js'))
-                // ->prependFile($this->basePath('/js/calendar.js'))
-                // ->prependFile($this->basePath('/js/cpanel.js'))
-                // ->prependFile($this->basePath('/js/nouislider.min.js'))
-                // ->prependFile($this->basePath('/js/nivo.slider.js'))
-                // ->prependFile($this->basePath('js/jquery.treeview.js'))
-                // ->prependFile($this->basePath('js/saychas_z.js?' . time()))
-                // ->prependFile($this->basePath('js/jquery.maskedinput.min.js'))
-                // ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
-                // ->prependFile($this->basePath('js/jquery.treeview.async.js'))
                 ->prependFile($this->basePath('js/jquery.js'))
         ?>
     </head>
@@ -63,13 +43,13 @@
                   </svg>
                   <span>Аналитика</span>
                 </router-link>
-                <router-link to="/products" class="sidebar__link" :class="{ active: ($route.name == 'products' || $route.name == 'product-edit') || $route.name == 'product-new' }">
+                <router-link to="/products" class="sidebar__link" :class="{ active: ($route.name == 'products' || $route.name == 'product-edit' || $route.name == 'product-add' || $route.name == 'product-add-file' || $route.name == 'product-add-api') }">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="18px">
                           <path fill-rule="evenodd" fill="currentColor" d="M0.840,17.999 C0.377,17.999 0.0,17.619 0.0,17.152 L0.0,5.641 C0.0,5.174 0.377,4.794 0.840,4.794 L4.281,4.794 L4.281,4.191 C4.281,3.90 4.559,2.104 5.84,1.340 C5.662,0.500 6.565,0.1 7.499,0.1 C8.433,0.1 9.336,0.500 9.914,1.340 C10.439,2.104 10.717,3.90 10.717,4.191 L10.717,4.794 L14.158,4.794 C14.622,4.794 14.999,5.174 14.999,5.641 L14.999,17.152 C14.999,17.619 14.622,17.999 14.158,17.999 L14.158,17.999 L0.840,17.999 ZM1.682,16.304 L13.319,16.304 L13.319,6.489 L10.718,6.489 L10.718,7.537 C10.722,7.787 10.644,7.999 10.495,8.152 C10.342,8.308 10.117,8.398 9.877,8.398 C9.638,8.398 9.413,8.308 9.260,8.152 C9.110,7.999 9.33,7.787 9.36,7.538 L9.36,6.489 L5.963,6.489 L5.963,7.537 C5.967,7.787 5.890,7.999 5.740,8.152 C5.587,8.308 5.362,8.398 5.123,8.398 C4.883,8.398 4.658,8.308 4.505,8.152 C4.356,7.999 4.278,7.787 4.282,7.538 L4.282,6.489 L1.682,6.489 L1.682,16.304 ZM7.499,1.693 C7.71,1.693 6.762,1.876 6.467,2.306 C6.147,2.771 5.963,3.458 5.963,4.191 L5.963,4.794 L9.36,4.794 L9.36,4.191 C9.36,3.458 8.853,2.771 8.533,2.306 C8.237,1.876 7.928,1.693 7.499,1.693 L7.499,1.693 Z" />
                   </svg>
                   <span>Товары</span>
                 </router-link>
-                <router-link to="/stores" class="sidebar__link" :class="{ active: ($route.name == 'stores') }">
+                <router-link to="/stores" class="sidebar__link" :class="{ active: ($route.name == 'stores' || $route.name == 'stores-map' || $route.name == 'store-add' || $route.name == 'store-edit') }">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="20px">
                           <path fill-rule="evenodd" fill="currentColor" d="M7.499,20.0 C6.214,20.0 3.290,16.130 3.261,16.91 C1.773,14.83 0.0,11.3 0.0,7.732 C0.0,3.468 3.364,0.0 7.499,0.0 C11.635,0.0 14.999,3.468 14.999,7.732 C14.999,10.985 13.196,14.76 11.683,16.95 C11.66,16.920 8.545,20.0 7.499,20.0 ZM7.499,1.856 C4.357,1.856 1.800,4.492 1.800,7.732 C1.800,12.501 6.334,17.64 7.480,17.995 C9.75,16.692 13.198,12.34 13.198,7.732 C13.198,4.492 10.642,1.856 7.499,1.856 ZM7.499,11.306 C5.588,11.306 4.33,9.702 4.33,7.732 C4.33,5.761 5.588,4.157 7.499,4.157 C9.411,4.157 10.966,5.761 10.966,7.732 C10.966,9.702 9.411,11.306 7.499,11.306 ZM7.499,6.14 C6.581,6.14 5.833,6.784 5.833,7.732 C5.833,8.679 6.581,9.449 7.499,9.449 C8.418,9.449 9.165,8.679 9.165,7.732 C9.165,6.784 8.418,6.14 7.499,6.14 Z" />
                   </svg>
@@ -159,13 +139,34 @@
         </main>
       </div>
         <script>
-          var productImgPath = "<?= $this->imagePath('product').'/' ?>";
+          var productImgPath = "<?= $this->imagePath('cpanel_product').'/' ?>";
         </script>
         <script src="//cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
         <script src="//unpkg.com/vue-router/dist/vue-router.js"></script>
-        <script src="/js/cpanel.min.js"></script>
-        <script src="/js/cp.js"></script>
+        <script src='//unpkg.com/v-calendar'></script>
+        <script src='//unpkg.com/vue-yandex-maps@0.10.12/dist/vue-yandex-maps.min.js'></script>
+        <script src="/js/cpanel/cpanel.min.js"></script>
+        <script src="/js/cpanel/errors.js"></script>
+        <script src="/js/cpanel/orders.js"></script>
+        <script src="/js/cpanel/analytics.js"></script>
+        <script src="/js/cpanel/products.js"></script>
+        <script src="/js/cpanel/product-edit.js"></script>
+        <script src="/js/cpanel/product-add.js"></script>
+        <script src="/js/cpanel/product-add-file.js"></script>
+        <script src="/js/cpanel/product-add-api.js"></script>
+        <script src="/js/cpanel/stores.js"></script>
+        <script src="/js/cpanel/stores-map.js"></script>
+        <script src="/js/cpanel/store-edit.js"></script>
+        <script src="/js/cpanel/store-add.js"></script>
+        <script src="/js/cpanel/price-list.js"></script>
+        <script src="/js/cpanel/testimonials.js"></script>
+        <script src="/js/cpanel/instructions.js"></script>
+        <script src="/js/cpanel/documents.js"></script>
+        <script src="/js/cpanel/support.js"></script>
+        <script src="/js/cpanel/api-integration.js"></script>
+        <script src="/js/cpanel/settings.js"></script>
+        <script src="/js/cpanel/common.js"></script>
     </body>
 </html>
