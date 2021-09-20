@@ -103,7 +103,7 @@ const StoreEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary" @click="console.log(store)">Сохранить изменения</button>
+                      <button class="btn btn--primary" @click="saveStore">Сохранить изменения</button>
                     </div>
                   </div>
                 </div>
@@ -120,7 +120,10 @@ const StoreEdit = {
     }
   },
   methods: {
-    StoreDaData(){
+    saveStore(){
+      console.log(this.store);
+    },
+    storeDaData(){
       $("#store-address").suggestions({
           token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
           type: "ADDRESS",
@@ -153,7 +156,7 @@ const StoreEdit = {
               this.store = response.data.store;
               console.log(this.store);
               setTimeout(() => {
-                this.StoreDaData()
+                this.storeDaData()
               }, 200);
               $('.main__loader').hide();
             }
