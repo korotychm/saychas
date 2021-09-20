@@ -24,6 +24,18 @@ const StoreEdit = {
                           <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
                         </div>
                       </div>
+                      <div class="product__attribute">
+                        <h2>Контактное лицо</h2>
+                        <div>
+                          <input type="text" class="input" />
+                        </div>
+                      </div>
+                      <div class="product__attribute">
+                        <h2>Телефон</h2>
+                        <div>
+                          <input type="text" class="input phoneinput" />
+                        </div>
+                      </div>
                     </div>
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
