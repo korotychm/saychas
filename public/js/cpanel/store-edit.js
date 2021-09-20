@@ -10,7 +10,7 @@ const StoreEdit = {
                       <div class="product__attribute">
                         <h2>Адрес</h2>
                         <div>
-                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" />
+                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
                           <input type="hidden" class="input" v-model="store.geox" />
                           <input type="hidden" class="input" v-model="store.geoy" />
                           <p class="error" id="store-address-error"></p>
@@ -151,6 +151,7 @@ const StoreEdit = {
 $(document).on('click','.store__timetable-trigger', function(){
   $(this).parent().parent().toggleClass('closed');
 });
+
 
 $("#store-address").suggestions({
     token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
