@@ -30,7 +30,7 @@ const StoreEdit = {
                           <input type="text" class="input" />
                         </div>
                       </div>
-                      <div class="product__attribute">
+                      <div class="product__attribute product__attribute--short">
                         <h2>Телефон</h2>
                         <div>
                           <input type="text" class="input phoneinput" />
