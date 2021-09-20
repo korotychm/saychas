@@ -190,6 +190,7 @@ const StoreAdd = {
       request.address = this.store.dadata;
       let requestUrl = '/control-panel/save-newly-added-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      request.contact_phone = request.contact_phone.replace([' ','(',')','+'],'');
       console.log(request);
       axios
         .post(requestUrl,
