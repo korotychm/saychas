@@ -196,6 +196,17 @@ class ProductController extends AbstractActionController
         return $res;
     }
 
+    private function canAddProduct(array &$product): bool
+    {
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->productManager->addServerDocument($credentials, $product);
+        $product = $result['data']['data'];
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        return $res;
+    }
+
     private function canDeleteProduct($params)
     {
         return true;
@@ -252,10 +263,24 @@ class ProductController extends AbstractActionController
         return new JsonModel(['result' => false]);
     }
     
+//      "vendor_code": "test 13",
+//  "category_id": "000000006",
+//  "description": "Текст описания 11",
+//  "title": "Смартфон vivo Y31, голубой океан",
+//  "characteristics": [
     public function saveNewlyAddedProductAction()
     {
-        print_r('banzaii');
-        exit;
+        $post = $this->getRequest()->getPost()->toArray();
+        $product = json_decode($post['data']['product'], true);
+        unset($product['brand_id']);
+        unset($product['color_id']);
+        unset($product['country_id']);
+        unset($product['del_images']);
+        if ($this->canAddProduct($product)) {
+            $result = $this->productManager->replaceProduct($product);
+            return new JsonModel(['result' => true, 'data' => $product]);
+        }
+        return new JsonModel(['result' => false]);
     }
 
     public function requestCategoryCharacteristicsAction()
