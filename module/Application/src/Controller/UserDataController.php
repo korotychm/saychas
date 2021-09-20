@@ -434,11 +434,9 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * @author plusweb
-     *
      * @return JsonModel
      */
-    public function userAuthModalAction2()
+    /*public function userAuthModalAction2()
     {
 
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -480,7 +478,7 @@ class UserDataController extends AbstractActionController
                     /* if (null != $usdat) {
                       //$print_r = $userGeodata = $usdat->getGeodata();
                       //exit ($userGeodata);
-                      } */
+                      } 
                     if (!empty($post->forgetPassHidden)) {
 
                         // exit (print_r($user));
@@ -573,7 +571,7 @@ class UserDataController extends AbstractActionController
                                 return new JsonModel(["reload" => true]);
                             }
                         }
-                    } /**/
+                    } /
                 } else {
                     //exit (print_r($user));
                     $title = Resource::MESSAGE_REGISTER_TITLE;
@@ -620,7 +618,7 @@ class UserDataController extends AbstractActionController
                             $registerPossible = false;
                             unset($userAutSession['usermail']);
                             $error['usermail'] = Resource::ERROR_SEND_EMAIL_MESSAGE;
-                        }/* */
+                        }
                         if ($registerPossible) {
 
                             //$error["1c"] = "!!!";
@@ -682,23 +680,14 @@ class UserDataController extends AbstractActionController
         ]);
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
-    }
+    } /**/
 
     public function userAuthModalAction()
     {
         $container = new Container (Resource::SESSION_NAMESPACE);
-        //$container->userAutSession["test"] = "texttext";
-        
-        //exit ()
         $userAutSession = (!empty($container->userAutSession)) ? $container->userAutSession : [];
-        //exit (print_r($userAutSession));
-        //if (!empty($userAutSession)) {exit (print_r($return["user"]));}
-        //$CodeBlock = $passForgetBlock =
-        //$registerPossible = false;
-        //$error=[];
         $return['title'] = $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $return['buttonLable'] = $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
-
         $post = $this->getRequest()->getPost();
 
         /* if ($post->recall == '1' ){
@@ -721,11 +710,7 @@ class UserDataController extends AbstractActionController
         }
         $user = $this->userRepository->findFirstOrDefault(["phone" => $return['sendingPhone']]);
         $userId = $user->getUserId();
-        
-        //exit ($userId."/".$return['sendingPhone']);
-        
         $return['title'] =  (!empty($userId)) ? $title = Resource::USER_LABLE_HELLO . $user->getName() : Resource::MESSAGE_REGISTER_TITLE;
-        
         $userAutSession['phone'] = $return['sendingPhoneFormated'];
         $container->userAutSession = $userAutSession;
         $return['stepOne'] = $return['CodeBlock'] = true;
@@ -740,12 +725,8 @@ class UserDataController extends AbstractActionController
             }
             return $this->userModalView($return);
         }
-        
-        //exit  (print_r($user));
         return (!empty($userId)) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
 
-        //$return['user']['smscode'] = $container->userPhoneIdentity['code'];
-        //return $this->userModalView($return);
     }
 
     private function userModalAuthorisation($user)
@@ -782,8 +763,8 @@ class UserDataController extends AbstractActionController
             $return['error']['usermail'] = Resource::ERROR_SEND_EMAIL_MESSAGE;
             return $this->userModalView($return);
         }
+       
         $params = ['name' => $userAutSession['username'], 'phone' => $return['sendingPhone'], 'email' => $userAutSession['usermail'],];
-       // exit (print_r($params));
         $response = $this->externalCommunicationService->setClientInfo($params);
         $answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
         if (!$answer["result"]) {
@@ -797,8 +778,7 @@ class UserDataController extends AbstractActionController
         $newUser->persist(['id' => $userId]);
         $this->userModalUpdateGeo($user); 
         
-        unset($container->userAutSession);
-        unset($container->userPhoneIdentity);
+        unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
     }
     
@@ -811,7 +791,6 @@ class UserDataController extends AbstractActionController
         }
     }
     
-
     private function userModalSendSms($return)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -822,7 +801,6 @@ class UserDataController extends AbstractActionController
             $return ['error']['sms'] = (!$codeSendAnswer['result']) ? (Resource::ERROR_SEND_SMS_MESSAGE . ":<br> " . $codeSendAnswer['errorDescription'] ) : "";
             return $this->userModalView($return);
         }
-
         $userAutSession['smscode'] = $container->userPhoneIdentity['code'];
         $container->userAutSession = $userAutSession;
         //exit(print_r($container->userAutSession ));
@@ -831,12 +809,8 @@ class UserDataController extends AbstractActionController
 
     private function userModalView($return)
     {
-
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return["user"] = $container->userAutSession;
-
-        // exit (print_r($return));
-
         $view = new ViewModel($return);
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
