@@ -151,8 +151,7 @@ const StoreEdit = {
               this.store = response.data.store;
               console.log(this.store);
               setTimeout(() => {
-                console.log('timeout');
-                this.StoreDaData
+                this.StoreDaData()
               }, 200);
               $('.main__loader').hide();
             }
