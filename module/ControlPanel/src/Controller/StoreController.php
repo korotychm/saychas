@@ -122,7 +122,7 @@ class StoreController extends AbstractActionController
     public function saveNewlyAddedStoreAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $store = json_decode($post['data']['store'], true);
+        $store = $post['data']['store'];
         if ($this->canAddStore($store)) {
             $result = $this->storeManager->replaceStore($store);
             return new JsonModel(['result' => true, 'data' => $store]);
