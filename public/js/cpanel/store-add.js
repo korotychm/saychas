@@ -1,7 +1,7 @@
 const StoreAdd = {
   template: `<div class="cp-container store">
                 <div v-if="editable">
-                  <div v-if="store.id">
+                  <div>
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
                         <h2>Название магазина</h2>
