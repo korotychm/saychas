@@ -11,8 +11,9 @@ const StoreEdit = {
                         <h2>Адрес</h2>
                         <div>
                           <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
-                          <input type="hidden" class="input" v-model="store.geox" />
-                          <input type="hidden" class="input" v-model="store.geoy" />
+                          <input type="hidden" class="input" v-model="store.geox" id="geox" />
+                          <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
+                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" />
                           <p class="error" id="store-address-error"></p>
                         </div>
                       </div>
@@ -113,7 +114,9 @@ const StoreEdit = {
     return {
       editable: true,
       selectedDate: null,
-      store: {}
+      store: {
+        dadata: ''
+      }
     }
   },
   methods: {
@@ -131,12 +134,11 @@ const StoreEdit = {
               var dataString = JSON.stringify(suggestion);
               console.log(suggestion);
               console.log(this.store);
-              // this.store.geox = suggestion.geo_lat;
-              // this.store.geoy = suggestion.geo_lon;
-              // this.store.dadata = dataString;
-              // console.log(this.store.geox,this.store.geoy,this.store.address,this.store.dadata);
+              $('#geox').val(suggestion.geo_lat);
+              $('#geoy').val(suggestion.geo_lon);
+              $('#dadata').val(suggestion.dataString);
           }
-      }).bind(this);
+      });
     },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
