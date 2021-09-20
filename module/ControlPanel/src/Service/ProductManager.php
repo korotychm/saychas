@@ -232,7 +232,6 @@ class ProductManager extends ListManager implements LoadableInterface
       return false;
     }
 
-    
     private function fillUpProductHeader(&$product) : void
     {
         $provider = Provider::find(['id' => $product['provider_id']]);
