@@ -33,7 +33,7 @@ const StoreAdd = {
                       <div class="product__attribute product__attribute--short">
                         <h2>Телефон</h2>
                         <div>
-                          <input type="text" v-model="store.contact_phone" class="input phoneinput" />
+                          <masked-input v-model="store.contact_phone" mask="+7 (999) 999-99-99" class="input" />
                         </div>
                       </div>
                     </div>
@@ -234,8 +234,8 @@ const StoreAdd = {
   mounted: function(){
     setTimeout(() => {
       this.storeDaData();
-      //$('.phoneinput').mask('+7 (999) 999-99-99');
-      $('.timeinput').mask('99:99');
+      // $('.phoneinput').mask('+7 (999) 999-99-99');
+      // $('.timeinput').mask('99:99');
     }, 200);
     $('.main__loader').hide();
   }
