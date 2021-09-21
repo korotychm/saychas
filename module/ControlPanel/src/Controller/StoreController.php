@@ -40,6 +40,9 @@ class StoreController extends AbstractActionController
 
     /** @var Config */
     protected $config;
+    
+    /** @var RbacManager */
+    protected $rbacManager;    
 
     /**
      * Constructor
@@ -57,6 +60,7 @@ class StoreController extends AbstractActionController
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
         $this->storeManager = $this->container->get(\ControlPanel\Service\StoreManager::class);
         $this->config = $container->get('Config');
+        $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
     }
 
     /**
@@ -80,6 +84,19 @@ class StoreController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
 
+        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\StoreManager::class, 'where' => ['id' => $post['store_id']] ]);
+
+        if (!$access) {
+            $this->getResponse()->setStatusCode(403);
+            return;
+        }
+//        $identity = $this->authService->getIdentity();
+//        
+//        $access = $this->rbacManager->isGranted(null, 'administrator', ['provider_id' => $post['provider_id']]);
+//        if (!$access) {
+//            $this->getResponse()->setStatusCode(403);
+//            return;
+//        }
 //        $post['store_id'] = '000000004';
         $store = $this->storeManager->find(['id' => $post['store_id'] ]);
 

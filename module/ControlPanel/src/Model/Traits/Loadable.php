@@ -4,6 +4,8 @@
 
 namespace ControlPanel\Model\Traits;
 
+use ControlPanel\Helper\ArrayHelper;
+
 /**
  * Description of Collection
  *
@@ -64,16 +66,16 @@ trait Loadable
         return $deleteResult;
     }
     
-    private function extractCredentials(array $credentials) : array
-    {
-        $result = [];
-        foreach ($credentials as $c) {
-            list($key, $value) = explode(':', $c);
-            $result[trim($key)] = trim($value);
-        }
-        
-        return $result;
-    }
+//    private function extractCredentials(array $credentials) : array
+//    {
+//        $result = [];
+//        foreach ($credentials as $c) {
+//            list($key, $value) = explode(':', $c);
+//            $result[trim($key)] = trim($value);
+//        }
+//        
+//        return $result;
+//    }
 
     /**
      * Insert array of documents into collection
@@ -158,7 +160,8 @@ trait Loadable
 
         //$this->dropCollection(self::COLLECTION_NAME);
         
-        $cred = $this->extractCredentials($credentials);
+        //$cred = $this->extractCredentials($credentials);
+        $cred = ArrayHelper::extractCredentials($credentials);
         
         $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
 

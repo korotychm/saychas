@@ -6,6 +6,7 @@ namespace ControlPanel\Service;
 
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use ControlPanel\Helper\ArrayHelper;
 
 /**
  * Description of CurlRequestManager
@@ -49,6 +50,8 @@ class CurlRequestManager
 
     public function sendCurlRequestWithCredentials($url, $content, $curlHeaders = [])
     {
+        $headers = ArrayHelper::extractCredentials($curlHeaders);
+        //$content = array_merge(['credentials' => $headers], $content);
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);
         if(count($curlHeaders) > 0) {
@@ -57,7 +60,8 @@ class CurlRequestManager
         //curl_setopt($curl, CURLOPT_HTTPHEADER, ['BOM_required: false', 'charset_response: UTF-8']);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($content));
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($content));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array_merge(['credentials' => $headers], $content)));
 
         //curl_setopt($curl, CURLOPT_USERPWD, $login.":".$pass);
         curl_setopt($curl, CURLOPT_SSLVERSION, 3);
