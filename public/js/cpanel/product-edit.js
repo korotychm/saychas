@@ -87,7 +87,7 @@ const ProductEdit = {
                       <div v-for="(characteristic,index) in product.characteristics">
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
                             <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
-                            <div class="custom-select custom-select--radio">
+                            <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
                               <div class="custom-select__label"></div>
                               <div class="custom-select__dropdown">
                                 <label v-for="val in characteristic.available_values" class="custom-select__option">
@@ -585,6 +585,7 @@ $(document).on('click','.product__images-arrow',function(){
 
 
 function setCustomSelectLabels(el) {
+  console.log('select');
   let textValue = el.find('input:checked').parent().find('span').text();
   el.find('.custom-select__label').text(textValue);
 }
