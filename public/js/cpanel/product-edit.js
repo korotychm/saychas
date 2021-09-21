@@ -608,5 +608,5 @@ $(document).on('change','.custom-select--radio input',function(){
 });
 
 $(document).on('click','.custom-select__label',function(){
-  $(this).parent().parent().toggleClass('active');
+  $(this).parent().toggleClass('active');
 });
