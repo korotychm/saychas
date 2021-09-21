@@ -238,7 +238,7 @@ const ProductEdit = {
   },
   methods: {
     checkRequired(){
-      console.log((this.selectedCategoryName,this.product.vendor_code,this.product.country_name,this.product.brand_name,this.product.title,this.product.color_id,this.product.description))
+      console.log(this.selectedCategoryName,this.product.vendor_code,this.product.country_name,this.product.brand_name,this.product.title,this.product.color_id,this.product.description)
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.product.country_name || !this.product.brand_name || !this.product.title || !this.product.color_id  || !this.product.description){
         return true;
       }
@@ -587,7 +587,6 @@ $(document).on('click','.product__images-arrow',function(){
 
 
 function setCustomSelectLabels(el) {
-  console.log('select');
   let textValue = el.find('input:checked').parent().find('span').text();
   el.find('.custom-select__label').text(textValue);
 }
