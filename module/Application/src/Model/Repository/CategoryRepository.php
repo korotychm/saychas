@@ -131,27 +131,21 @@ class CategoryRepository implements CategoryRepositoryInterface
         $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         return $tree;
     }
-    private function categoriesHasProduct (){
-        
+    private function categoriesHasProduct ()
+    {
         $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT `category_id` FROM `product` WHERE 1 group by `category_id`)";
         $result = $this->db->query($query)->execute();
         if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             throw new \Exception('no legal categories');
         }
-
-        $resultSet = new HydratingResultSet(
-                $this->hydrator,
-                $this->prototype
-        );
+        $resultSet = new HydratingResultSet($this->hydrator, $this->prototype);
         $res = $resultSet->initialize($result);//->toArray();
         foreach ($res as $row) {
             $return[$row->getId()] = true;
         }
-        //exit (print_r($return));
         return (empty($return)) ? [] : $return;
     }
-    
-    
+        
     /**
      * Return a string that contains html ul list
      *
