@@ -15,7 +15,7 @@ const StoresMap = {
               <div class="custom-select custom-select--radio">
                 <div class="custom-select__label input">Все статусы</div>
                 <div class="custom-select__dropdown">
-                  <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                  <label class="custom-select__option">
                     <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
                     <span>Все статусы</span>
                   </label>
