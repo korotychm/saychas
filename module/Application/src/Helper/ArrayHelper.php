@@ -38,6 +38,41 @@ class ArrayHelper
      * @param type $parentId
      * @return type
      */
+    public static function filterTree(array $elements, $parentId = 0, $categoriesHasProduct = [])
+    {
+
+        $branch = [];
+        if ($elements[$parentId]) {
+            foreach ($elements[$parentId] as $element) {
+                //exit (print_r($element['id']));
+                $isHasProduct = self::isHasProduct($elements, $element['id'], $categoriesHasProduct);
+                if (!empty($categoriesHasProduct[$element['id']]) or $isHasProduct) {
+                    $children = self::filterTree($elements, $element['id'], $categoriesHasProduct);
+                    $element['children'] = $children;
+                    $branch[] = $element;
+                }
+            }
+            
+        }
+        return $branch;
+    }
+
+    private function isHasProduct(array $elements, $parentId, array $categoriesHasProduct, $return = false)
+    {
+        if ($return) {
+            return true;
+        }
+        if (!$return and!empty($elements[$parentId])) {
+            foreach ($elements[$parentId] as $element) {
+                if (!empty($categoriesHasProduct[$element['id']])) {
+                   return true;
+                }
+            $return = self::isHasProduct($elements, $element['id'], $categoriesHasProduct, $return);
+            }
+        }
+        return $return;
+    }
+
     public static function buildTree(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
     {
         $branch = [];
