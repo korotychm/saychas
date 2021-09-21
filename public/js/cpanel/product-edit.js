@@ -27,7 +27,7 @@ const ProductEdit = {
                           <input class="input" type="text" v-model="product.vendor_code" />
                       </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
-                          <h2 :class="{'input-error' : (!product.country_name && errors)}">Страна производства</h2>
+                          <h2 :class="{'input-error' : (!product.country_name && errors)}">Страна производства <span class="required">*</span></h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                 <div class="search-select__suggestions">
@@ -313,7 +313,7 @@ const ProductEdit = {
     },
     saveProduct(categoryChange = false, oldCategory = null) {
       this.errors = this.checkRequired();
-      if (!errors){
+      if (!this.errors){
         let requestUrl = '/control-panel/update-product';
         if (categoryChange) {
           requestUrl = '/control-panel/request-category-characteristics';
