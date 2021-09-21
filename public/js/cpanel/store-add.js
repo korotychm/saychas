@@ -203,7 +203,9 @@ const StoreAdd = {
               }
             }),{headers})
             .then(response => {
-              console.log(response.data)
+              if (response.data.result){
+                router.replace('/stores');
+              }
             })
             .catch(error => {
               if (error.response.status == '403'){
