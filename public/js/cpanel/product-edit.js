@@ -87,7 +87,7 @@ const ProductEdit = {
                             <div class="custom-select__label input"></div>
                             <div class="custom-select__dropdown">
                               <label class="custom-select__option">
-                                <input type="radio" :checked="(product.vat === '')" value="" name="vat_select" v-model="product.vat" />
+                                <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
                                 <span>Без НДС</span>
                               </label>
                               <label class="custom-select__option">
