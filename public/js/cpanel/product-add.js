@@ -503,6 +503,7 @@ const ProductAdd = {
   },
   updated: function(){
     checkProductImagesSlider();
+    setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
