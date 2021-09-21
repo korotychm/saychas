@@ -4,11 +4,11 @@ const StoreEdit = {
                   <div v-if="store.id">
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
-                        <h2>Название магазина <span class="required">*</span></h2>
+                        <h2>Название магазина <span class="required"> *</span></h2>
                         <input type="text" class="input" v-model="store.title" />
                       </div>
                       <div class="product__attribute">
-                        <h2>Адрес <span class="required">*</span></h2>
+                        <h2>Адрес <span class="required"> *</span></h2>
                         <div>
                           <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
                           <input type="hidden" class="input" v-model="store.geox" id="geox" />
@@ -25,13 +25,13 @@ const StoreEdit = {
                         </div>
                       </div>
                       <div class="product__attribute">
-                        <h2>Контактное лицо <span class="required">*</span></h2>
+                        <h2>Контактное лицо <span class="required"> *</span></h2>
                         <div>
                           <input type="text" v-model="store.contact_name" class="input" />
                         </div>
                       </div>
                       <div class="product__attribute product__attribute--short">
-                        <h2>Телефон <span class="required">*</span></h2>
+                        <h2>Телефон <span class="required"> *</span></h2>
                         <div>
                           <input v-model="store.contact_phone" v-mask="'+7 (###) ###-##-##'" class="input" type="text" placeholder="+7 (999) 999-99-99" />
                         </div>
@@ -39,7 +39,7 @@ const StoreEdit = {
                     </div>
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
-                        <h2>Статус работы <span class="required">*</span></h2>
+                        <h2>Статус работы <span class="required"> *</span></h2>
                         <div>
                           <div class="custom-select custom-select--radio">
                             <div class="custom-select__label input"></div>
@@ -66,7 +66,7 @@ const StoreEdit = {
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
-                              <h2>Рабочие дни  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
+                              <h2>Рабочие дни  <span class="required"> *</span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.working_day_from" />
@@ -77,7 +77,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}">
-                              <h2>Суббота  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
+                              <h2>Суббота  <span class="required"> *</span><span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.saturday_from" />
@@ -88,7 +88,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}">
-                              <h2>Воскресенье  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
+                              <h2>Воскресенье  <span class="required"> *</span><span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.sunday_from"/>
@@ -99,7 +99,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}">
-                              <h2>Праздничные дни  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
+                              <h2>Праздничные дни  <span class="required"> *</span><span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.holiday_from" />
