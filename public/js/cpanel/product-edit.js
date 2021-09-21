@@ -603,5 +603,10 @@ function setAllCustomSelects() {
 
 $(document).on('change','.custom-select--radio input',function(){
   let el = $(this).parent().parent().parent();
+  el.removeClass('active');
   setCustomSelectLabels(el);
+});
+
+$(document).on('click','.custom-select__label',function(){
+  $(this).parent().parent().toggleClass('active');
 });
