@@ -193,7 +193,7 @@ const StoreEdit = {
               }
             });
       } else {
-        showServicePopupWindow('Невозможно сохранить магазин', 'Пожалуйста, заполните все необходимые поля (отмечены *)');
+        showServicePopupWindow('Невозможно сохранить магазин', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
       }
     },
     storeDaData(){
