@@ -242,7 +242,6 @@ const ProductEdit = {
       console.log(this.product.characteristics[index].value, this.product.characteristics[index].available_values[idx].id);
     },
     checkRequired(){
-      console.log(this.selectedCategoryName,this.product.vendor_code,this.selectedCountryName,this.selectedBrandName,this.product.title,this.product.color_id,this.product.description)
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description){
         return true;
       }
@@ -325,13 +324,11 @@ const ProductEdit = {
     },
     saveProduct(categoryChange = false, oldCategory = null) {
       this.errors = this.checkRequired();
-      console.log(this.errors);
       if (!this.errors){
         let requestUrl = '/control-panel/update-product';
         if (categoryChange) {
           requestUrl = '/control-panel/request-category-characteristics';
         }
-        console.log(requestUrl);
         const headers = { 'X-Requested-With': 'XMLHttpRequest' };
         let chars = JSON.parse(JSON.stringify(this.product.characteristics));
         for (characteristic of chars){
