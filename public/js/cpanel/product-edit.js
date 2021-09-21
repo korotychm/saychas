@@ -319,6 +319,7 @@ const ProductEdit = {
     },
     saveProduct(categoryChange = false, oldCategory = null) {
       this.errors = this.checkRequired();
+      console.log(this.errors);
       if (!this.errors){
         let requestUrl = '/control-panel/update-product';
         if (categoryChange) {
