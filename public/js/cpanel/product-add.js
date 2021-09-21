@@ -458,6 +458,7 @@ const ProductAdd = {
       let category_in_request = this.selectedCategoryId;
       let request = {
         id : this.product.id,
+        vat : this.product.vat,
         brand_id: this.selectedBrandId,
         category_id: this.selectedCategoryId,
         color_id: this.product.color_id,
