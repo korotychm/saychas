@@ -46,8 +46,8 @@ CREATE TABLE `role_hierarchy` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `role_hierarchy` (`parent_role_id`, `child_role_id`, `terminal`)
--- VALUES(0,1,1),(0,2,1),(0,3,1),(0,4,1),(0,5,1),(0,6,1);
-VALUES(0,1,1),(0,2,1),(2,3,1),(3,4,1),(0,5,1),(0,6,1);
+VALUES(0,1,1),(0,2,1),(0,3,1),(0,4,1),(0,5,1),(0,6,1);
+-- VALUES(0,1,1),(0,2,1),(2,3,1),(3,4,1),(0,5,1),(0,6,1);
 
 CREATE TABLE `permission` (
 	`id`	int(11) NOT NULL auto_increment,

@@ -25,7 +25,7 @@ class RbacAssertionManagerFactory
         $userManager = $container->get(\ControlPanel\Service\UserManager::class);
         $productManager = $container->get(\ControlPanel\Service\ProductManager::class);
 
-        return new RbacAssertionManager($authService, $userManager, $productManager);
+        return new RbacAssertionManager($container, $authService, $userManager, $productManager);
     }
 
 }

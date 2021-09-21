@@ -20,16 +20,19 @@ class RbacAssertionManager
     
     private $userManager;
     
-    private $productManager;
+    // private $productManager;
+    
+    private $container;
 
     /**
      * Constructs the service.
      */
-    public function __construct($authService, $userManager, $productManager)
+    public function __construct($container, $authService, $userManager/*, $productManager*/)
     {
         $this->authService = $authService;
         $this->userManager = $userManager;
-        $this->productManager = $productManager;
+        //$this->productManager = $productManager;
+        $this->container = $container;
     }
 
     /**
@@ -48,8 +51,12 @@ class RbacAssertionManager
          * Remove comments below and modify the code to conduct additional verification
          */
         $identity = $this->authService->getIdentity();
-        $product = $this->productManager->find(['id' => $params['product_id']]);
-        if(null != $product && ($product['provider_id'] == $identity['provider_id']) ) {
+        //$product = $this->productManager->find(['id' => $params['product_id']]);
+        $managerName = $params['manager'];
+        // $product = $this->$manager->find(['id' => $params['product_id']]);
+        $manager = $this->container->get($managerName);
+        $document = $manager->find($params['where']);
+        if(null != $document && ($document['provider_id'] != $identity['provider_id']) ) {
             return true;
         }
 //        $currentUser = $this->userManager->findOne(['provider_id' => $identity['provider_id'], 'login' => $identity['login'],]);

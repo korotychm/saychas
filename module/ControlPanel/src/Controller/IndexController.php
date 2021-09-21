@@ -108,10 +108,11 @@ class IndexController extends AbstractActionController
     {
         //$roleRepository = $this->entityManager->getRepository(\ControlPanel\Model\Entity\Role::class);
 //        $this->rbacManager->init(true);
-        $currentUser = $this->currentUser();
+        //$currentUser = $this->currentUser();
         //$access = $this->access('analyst');
-        $access = $this->rbacManager->isGranted(null, 'analyst'/*, ['banzaii' => 'vonzaii']*/);
-        return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
+        //$access = $this->rbacManager->isGranted(null, 'analyst'/*, ['banzaii' => 'vonzaii']*/);
+        //return new ViewModel(['access' => $access, 'permissionName' => 'developer', 'currentUser' => $currentUser]);
+        return new ViewModel();
     }
 
     /**
