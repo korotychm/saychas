@@ -233,9 +233,9 @@ const ProductEdit = {
   methods: {
     checkRequired(){
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.product.country_name || !this.product.brand_name || !this.product.title || !this.product.color_id  || !this.product.description){
-        return false;
+        return true;
       }
-      return true;
+      return false;
     },
     delImg(){
       var currentIndex = this.product.images.indexOf(this.currentImg);
@@ -395,7 +395,7 @@ const ProductEdit = {
                 }
               } else {
                 if (response.data.result){
-                  router.replace('/products');
+                  //router.replace('/products');
                 }
               }
             })
