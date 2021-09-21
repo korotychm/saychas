@@ -87,9 +87,15 @@ const ProductEdit = {
                       <div v-for="(characteristic,index) in product.characteristics">
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
                             <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
-                            <select v-if="characteristic.type == 4" class="select" v-model="characteristic.value">
-                              <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
-                            </select>
+                            <div class="custom-select custom-select--radio">
+                              <div class="custom-select__label"></div>
+                              <div class="custom-select__dropdown">
+                                <label v-for="val in characteristic.available_values" class="custom-select__option">
+                                  <input type="radio" :checked="(val.id == characteristic.value)" :name="'option'.characteristic.id" v-model="characteristic.value" />
+                                  <span>{{val.title}}</span>
+                                </label>
+                              </div>
+                            </div>
                             <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                               <div class="multiple-input">
@@ -495,6 +501,7 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
+    setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
@@ -574,4 +581,31 @@ $(document).on('click','.product__images-arrow',function(){
       } else {
         $('.product__images-arrow--down').removeClass('disabled');
       }
+});
+
+
+<div class="custom-select custom-select--radio">
+  <div class="custom-select__label"></div>
+  <div class="custom-select__dropdown">
+    <label v-for="val in characteristic.available_values" class="custom-select__option">
+      <input type="radio" :checked="(val.id == characteristic.value)" :name="'option'.characteristic.id" v-model="characteristic.value" />
+      <span>{{val.title}}</span>
+    </label>
+  </div>
+</div>
+
+function setCustomSelectLabels(el) {
+  let textValue = el.find('input:checked').parent().find('span').text();
+  el.find('.custom-select__label').text(textValue);
+}
+
+function setAllCustomSelects() {
+  $('.custom-select--radio').each(function(){
+    setCustomSelectLabels($(this));
+  });
+}
+
+$(document).on('change','.custom-select--radio input',function(){
+  let el = $(this).parent().parent().parent();
+  setCustomSelectLabels(el);
 });
