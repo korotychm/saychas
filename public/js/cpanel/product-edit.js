@@ -587,7 +587,7 @@ $(document).on('click','.product__images-arrow',function(){
 
 
 function setCustomSelectLabels(el) {
-  let textValue = el.find('input:checked').parent().find('span').text();
+  let textValue = el.find('input:checked + span').text();
   el.find('.custom-select__label').text(textValue);
 }
 
