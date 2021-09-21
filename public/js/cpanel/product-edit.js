@@ -86,7 +86,7 @@ const ProductEdit = {
                     <div class="product__additional-attributes">
                       <div v-for="(characteristic,index) in product.characteristics">
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
-                            <h2>{{ characteristic.characteristic_name }}</h2>
+                            <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
                             <select v-if="characteristic.type == 4" class="select" v-model="characteristic.value">
                               <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
                             </select>
@@ -121,7 +121,7 @@ const ProductEdit = {
                     </div>
                     <div class="product__images">
                         <div class="product__attribute">
-                            <h2>Фото товара <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
+                            <h2>Фото товара <span class="required">*</span><p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
                             <div class="product__images-wrap">
                                 <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                     <div class="product__images-list product__images-list--slider">
