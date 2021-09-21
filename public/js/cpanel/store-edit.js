@@ -236,8 +236,6 @@ const StoreEdit = {
               console.log(this.store);
               setTimeout(() => {
                 this.storeDaData();
-                $('.phoneinput').mask('+7 (999) 999-99-99');
-                setAllCustomSelects();
               }, 200);
               $('.main__loader').hide();
             }
@@ -253,5 +251,8 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
+  },
+  updated: function(){
+    setAllCustomSelects();
   }
 }
