@@ -170,10 +170,12 @@ class UserDataController extends AbstractActionController
 
     private function testPassw($pass)
     {
-        if (!$pass or!trim($pass))
+        if (!$pass or!trim($pass)){
             return false;
-        if (strlen($pass) < 6)
+        }
+        if (strlen($pass) < 6){
             return false;
+        }
 
         //$validator = new \Laminas\Validator\Regex(['pattern' => '/^(?=.*\d)(?=.*[a-Z])[0-9a-Z]{6,}$/']);
         $validator = new \Laminas\Validator\Regex(['pattern' => '/^[a-zA-Z0-9]*$/']);
@@ -292,8 +294,8 @@ class UserDataController extends AbstractActionController
         $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);
         $orderId = $post["OrderId"];
         $order = ClientOrder::find(['order_id' => $orderId]);
-        $userId = $order->getUserId();
-        $user = User::find(["id" => $userId]);
+//        $userId = $order->getUserId();
+//        $user = User::find(["id" => $userId]);
         $post["User"] = $userInfo = $this->commonHelperFuncions->getUserInfo();
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
         $response = $this->getResponse();
@@ -433,256 +435,7 @@ class UserDataController extends AbstractActionController
         return new JsonModel($answer);
     }
 
-    /**
-     * @return JsonModel
-     */
-    /*public function userAuthModalAction2()
-    {
-
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
-        $CodeBlock = $passForgetBlock = $registerPossible = false;
-        $error = [];
-        $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
-        $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
-
-        $post = $this->getRequest()->getPost();
-        if ($post->recall == '1') {
-            unset($container->userPhoneIdentity);
-        }
-
-        if (!empty($goStepOne = $post->goStepOne)) {
-            unset($container->userAutTmpSession);
-            unset($container->userPhoneIdentity);
-        } else {
-            //$print_r = $post;
-            $return['phone'] = $post->userPhone;
-            $return['name'] = $post->userNameInput;
-            //$post->userSmsCode;
-            $container = new Container(Resource::SESSION_NAMESPACE);
-            $buttonLable = Resource::BUTTON_LABLE_ENTER;
-
-            if (!$return['phone']) {
-                $error["phone"] = Resource::ERROR_INPUT_PHONE_MESSAGE;
-            } else {
-
-                $userAutSession["phone"] = $return['phone'];
-                $stepOne = true;
-                $user = $this->userRepository->findFirstOrDefault(["phone" => StringHelper::phoneToNum($return['phone'])]);
-                $userSuperId = $user->getUserId();
-
-                if ($user and $userSuperId and $userId = $user->getId()) {
-
-                    $userData = $user->getUserData();
-                    $usdat = $userData->current();
-                    /* if (null != $usdat) {
-                      //$print_r = $userGeodata = $usdat->getGeodata();
-                      //exit ($userGeodata);
-                      } 
-                    if (!empty($post->forgetPassHidden)) {
-
-                        // exit (print_r($user));
-                        $userAutSession["passforget"] = 1;
-                        $title = Resource::MESSAGE_PASSFORGOT_TITLE;
-                        $CodeBlock = true;
-                        $passForgetBlock = true;
-                        $registerPossible = true;
-                        $userSmsCode = $post->userSmsCode;
-                        $forgetPassInput = ($post->forgetPassInput == null) ? "" : $post->forgetPassInput;
-                        $forgetPassInput2 = $post->forgetPassInput2;
-                        $buttonLable = Resource::BUTTON_LABLE_PASS_CHANGE;
-
-                        $userPhoneIdentity = $container->userPhoneIdentity;
-
-                        $codeExist = $userPhoneIdentity['code'];
-
-                        if (!$codeExist) {
-                            $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
-                            // if (!$codeSendAnswer['result']) {
-                            $error['sms'] = (!$codeSendAnswer['result']) ? (Resource::ERROR_SEND_SMS_MESSAGE . print_r($codeSendAnswer, true) ) : "";
-                            //} else {}
-                        } else {
-
-                            if ($userSmsCode and ($userSmsCode != $codeExist)) {
-                                $registerPossible = false;
-                                unset($userAutSession['smscode']);
-                                $error['smscode'] = Resource::ERROR_SEND_SMS_CODE_MESSAGE;
-                            } else {
-                                $userAutSession['smscode'] = $userSmsCode;
-                            }
-                            //if (isset($post->forgetPassInput)) {
-                            if (!$forgetPassInput or!$this->testPassw($forgetPassInput)) {
-                                $registerPossible = false;
-                                unset($userAutSession['newpassword']);
-                                if (isset($post->forgetPassInput)) {
-                                    $error['newpassword'] = Resource::ERROR_PASS_VALIDATION_MESSAGE;
-                                }
-                            } else {
-                                $userAutSession['newpassword'] = $forgetPassInput;
-                            }
-                            //}
-                            if ($forgetPassInput and ($forgetPassInput != $forgetPassInput2)) {
-                                $registerPossible = false;
-                                //unset($userAutSession['newpassword2']);
-                                $error['newpassword2'] = Resource::ERROR_PASS_SECOND_MESSAGE;
-                            } else {
-                                $userAutSession['newpassword2'] = $forgetPassInput2;
-                            }
-                            if ($registerPossible) {
-                                $req = ["id" => $userSuperId, "password" => $forgetPassInput];
-                                $response = $this->externalCommunicationService->sendCredentials($req);
-                                if ($response['result']) {
-                                    $container->userIdentity = $userId;
-
-                                    // получение магазинов
-                                    if (!empty($userGeodata)) {
-                                        $this->commonHelperFuncions->updateLegalStores($userGeodata);
-                                    }
-
-                                    unset($container->userAutSession);
-                                    unset($container->userPhoneIdentity);
-                                    return new JsonModel(["reload" => true]);
-                                } else {
-                                    $error["1c"] = $response['errorDescription'] . "!";
-                                }
-                            }
-                        }
-                    } else {
-                        $passBlock = true;
-                        $title = Resource::USER_LABLE_HELLO . $user->getName();
-
-                        if (!empty($post->userPass)) {
-                            //$print_r =
-                            $response = $this->externalCommunicationService->clientLogin([
-                                "phone" => StringHelper::phoneToNum($return['phone']),
-                                "password" => $post->userPass,
-                            ]);
-                            if (!$response["result"]) {
-                                $error["password"] = $response["errorDescription"];
-                            } else {
-                                $container->userIdentity = $userId;
-
-                                // получение магазинов
-                                if (!empty($userGeodata)) {
-                                    $this->commonHelperFuncions->updateLegalStores($userGeodata);
-                                }
-                                unset($container->userAutSession);
-                                unset($container->userPhoneIdentity);
-                                return new JsonModel(["reload" => true]);
-                            }
-                        }
-                    } /
-                } else {
-                    //exit (print_r($user));
-                    $title = Resource::MESSAGE_REGISTER_TITLE;
-                    $CodeBlock = true;
-                    $UserBlock = true;
-                    $buttonLable = Resource::BUTTON_LABLE_REGISTER;
-                    $userPhoneIdentity = $container->userPhoneIdentity;
-                    $codeExist = (empty($userPhoneIdentity)) ? false : $userPhoneIdentity['code'];
-
-                    if (!$codeExist) {
-                        //$print_r =
-                        $codeSendAnswer = $this->sendSms(StringHelper::phoneToNum($return['phone']));
-                        if (!$codeSendAnswer['result']) {
-                            $error['sms'] = Resource::ERROR_SEND_SMS_MESSAGE . print_r($codeSendAnswer, true);
-                        } else {
-                            //  $print_r = $codeExist;
-                        }
-                    } else {
-
-                        $registerPossible = true;
-                        $userSmsCode = $post->userSmsCode;
-                        $userName = null == $post->userName ? '' : $post->userName;
-                        $userMail = $post->userMail;
-
-                        if (!$userSmsCode or $userSmsCode != $codeExist) {
-                            $registerPossible = false;
-                            unset($userAutSession['smscode']);
-                            $error['smscode'] = Resource::ERROR_SEND_SMS_CODE_MESSAGE;
-                        } else {
-                            $userAutSession['smscode'] = $userSmsCode;
-                        }
-
-                        if (strlen($userName) > 1) {
-                            $userAutSession['username'] = $userName;
-                        } else {
-                            $registerPossible = false;
-                            unset($userAutSession['username']);
-                            $error['username'] = Resource::ERROR_SEND_USERNAME_MESSAGE;
-                        }
-
-                        if ($this->testEmail($userMail)) {
-                            $userAutSession['usermail'] = $userMail;
-                        } else {
-                            $registerPossible = false;
-                            unset($userAutSession['usermail']);
-                            $error['usermail'] = Resource::ERROR_SEND_EMAIL_MESSAGE;
-                        }
-                        if ($registerPossible) {
-
-                            //$error["1c"] = "!!!";
-                            //$print_r =
-                            $paramsFor1c = [
-                                'name' => $userName,
-                                'phone' => StringHelper::phoneToNum($return['phone']),
-                                'email' => $userMail,
-                            ];
-
-                            //$print_r =  $user_Id = $container->userIdentity;
-                            $response = $this->externalCommunicationService->setClientInfo($paramsFor1c);
-                            $answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
-
-                            if (!$answer["result"]) {
-                                $error["1c"] = $answer['errorDescription'];
-                            } else {
-
-                                $error["1c"] = $answer['id'];
-                                $userId = $container->userIdentity;
-                                //$print_r =
-                                $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
-                                $newUser->setId($container->userIdentity);
-                                $newUser->setName($userName);
-                                $newUser->setEmail($userMail);
-                                $newUser->setUserId($answer['id']);
-                                //$print_r =
-                                $newUser->setPhone(StringHelper::phoneToNum($return['phone']));
-                                $this->userRepository->persist($newUser, ['id' => $userId]);
-                                if (!empty($userGeodata)) {
-                                    $this->commonHelperFuncions->updateLegalStores($userGeodata);
-                                }
-                                unset($container->userAutSession);
-                                unset($container->userPhoneIdentity);
-
-                                return new JsonModel(["reload" => true]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $container->userAutTmpSession = $userAutSession;
-        $sendingPhone = ($return['phone']) ? StringHelper::phoneToNum($return['phone']) : "";
-        $view = new ViewModel([
-            //'reloadPage' => $reloadPage,
-            // 'printr' => "<pre>" . print_r($print_r, true) . "</pre>",
-            'title' => $title,
-            'buttonLable' => $buttonLable,
-            'error' => $error,
-            'sendingPhoneFormated' => $return['phone'],
-            'sendingPhone' => $sendingPhone,
-            'passBlock' => $passBlock,
-            'UserBlock' => $UserBlock,
-            'CodeBlock' => $CodeBlock,
-            'stepOne' => $stepOne,
-            'user' => $userAutSession,
-            'passForgetBlock' => $passForgetBlock,
-        ]);
-        $view->setTemplate('application/common/auth-form-in-modal');
-        return $view->setTerminal(true);
-    } /**/
-
-    public function userAuthModalAction()
+     public function userAuthModalAction()
     {
         $container = new Container (Resource::SESSION_NAMESPACE);
         $userAutSession = (!empty($container->userAutSession)) ? $container->userAutSession : [];
