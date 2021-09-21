@@ -2,7 +2,7 @@ const ProductEdit = {
   template: `<div class="cp-container product">
                 <div v-if="editable">
                   <div class="product__category">
-                      <h2>Категория</h2>
+                      <h2 :class="{'input-error' : (!selectedCategoryName && errors)}">Категория <span class="required">*</span></h2>
                       <div class="search-select">
                           <input class="input search-select__input" type="text" value="selectedCategoryName" v-model="categorySearch" @focusout="checkCategory()" />
                           <div class="search-select__suggestions">
@@ -23,11 +23,11 @@ const ProductEdit = {
                   <div class="product__info">
                     <div class="product__main-attributes">
                       <div class="product__attribute  product__attribute--short">
-                          <h2>Артикул</h2>
+                          <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
                           <input class="input" type="text" v-model="product.vendor_code" />
                       </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
-                          <h2>Страна производства</h2>
+                          <h2 :class="{'input-error' : (!product.country_name && errors)}">Страна производства</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                 <div class="search-select__suggestions">
@@ -45,7 +45,7 @@ const ProductEdit = {
                             </div>
                       </div>
                       <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
-                          <h2>Бренд</h2>
+                          <h2 :class="{'input-error' : (!product.brand_name && errors)}">Бренд <span class="required">*</span></h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
                                 <div class="search-select__suggestions">
@@ -63,11 +63,11 @@ const ProductEdit = {
                             </div>
                       </div>
                       <div class="product__attribute">
-                          <h2>Название товара</h2>
+                          <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
                           <input class="input" type="text" v-model="product.title" />
                       </div>
                       <div v-if="(product.color_id !== undefined)" class="product__attribute">
-                          <h2>Цвет</h2>
+                          <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
                             <div class="product__colors">
                                 <label v-for="color in product.colors" class="color-checkbox">
                                   <input type="radio" :value="color.id" name="color" :checked="product.color_id == color.id" v-model="product.color_id">
@@ -78,7 +78,7 @@ const ProductEdit = {
                             </div>
                       </div>
                       <div class="product__attribute">
-                          <h2>Описание товара</h2>
+                          <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                           <textarea class="textarea" v-model="product.description"></textarea>
                       </div>
                     </div>
@@ -121,7 +121,7 @@ const ProductEdit = {
                     </div>
                     <div class="product__images">
                         <div class="product__attribute">
-                            <h2>Фото товара <span>Рекомендуемый размер <br>фото — 1000х1000 px. </span><span>Вы можете загрузить до 8 фотографий.</span></h2>
+                            <h2>Фото товара <p>Рекомендуемый размер <br>фото — 1000х1000 px. </span><span>Вы можете загрузить до 8 фотографий.</p></h2>
                             <div class="product__images-wrap">
                                 <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                     <div class="product__images-list product__images-list--slider">
@@ -200,7 +200,8 @@ const ProductEdit = {
       selectedCountryName: '',
       product: {},
       currentImg : '',
-      deleteImages: []
+      deleteImages: [],
+      errors: false
     }
   },
   computed: {
@@ -230,6 +231,12 @@ const ProductEdit = {
     }
   },
   methods: {
+    checkRequired(){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.product.country_name || !this.product.brand_name || !this.product.title || !this.product.color_id  || !this.product.description){
+        return false;
+      }
+      return true;
+    },
     delImg(){
       var currentIndex = this.product.images.indexOf(this.currentImg);
       var images = [...this.product.images];
@@ -305,98 +312,101 @@ const ProductEdit = {
       this.selectedCategoryId = this.product.category_id;
     },
     saveProduct(categoryChange = false, oldCategory = null) {
-      let requestUrl = '/control-panel/update-product';
-      if (categoryChange) {
-        requestUrl = '/control-panel/request-category-characteristics';
-      }
-      console.log(requestUrl);
-      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      let chars = JSON.parse(JSON.stringify(this.product.characteristics));
-      for (characteristic of chars){
-        delete characteristic.characteristic_name;
-        delete characteristic.real_value;
-        delete characteristic.title;
-        delete characteristic.available_values;
-        // Страна
-        if (characteristic.id == '000000001'){
-          characteristic.value = this.selectedCountryId;
+      this.errors = this.checkRequired();
+      if (!errors){
+        let requestUrl = '/control-panel/update-product';
+        if (categoryChange) {
+          requestUrl = '/control-panel/request-category-characteristics';
         }
-        // Бренд
-        if (characteristic.id == '000000003'){
-          characteristic.value = this.selectedBrandId;
+        console.log(requestUrl);
+        const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+        let chars = JSON.parse(JSON.stringify(this.product.characteristics));
+        for (characteristic of chars){
+          delete characteristic.characteristic_name;
+          delete characteristic.real_value;
+          delete characteristic.title;
+          delete characteristic.available_values;
+          // Страна
+          if (characteristic.id == '000000001'){
+            characteristic.value = this.selectedCountryId;
+          }
+          // Бренд
+          if (characteristic.id == '000000003'){
+            characteristic.value = this.selectedBrandId;
+          }
+          // Цвет
+          if (characteristic.id == '000000004'){
+            characteristic.value = this.product.color_id;
+          }
         }
-        // Цвет
-        if (characteristic.id == '000000004'){
-          characteristic.value = this.product.color_id;
+        let category_in_request = this.selectedCategoryId;
+        if (oldCategory) {
+          category_in_request = oldCategory;
         }
-      }
-      let category_in_request = this.selectedCategoryId;
-      if (oldCategory) {
-        category_in_request = oldCategory;
-      }
-      let request = {
-        id : this.product.id,
-        brand_id: this.selectedBrandId,
-        category_id: category_in_request,
-        color_id: this.product.color_id,
-        provider_id: this.product.provider_id,
-        country_id: this.selectedCountryId,
-        description: this.product.description,
-        title: this.product.title,
-        characteristics: chars,
-        images: this.product.images,
-        vendor_code: this.product.vendor_code,
-        del_images: this.deleteImages
-      }
-      console.log(request);
-      axios
-        .post(requestUrl,
-          Qs.stringify({
-            data: {
-              new_category_id: this.selectedCategoryId,
-              product : JSON.stringify(request)
-            }
-          }),
-          {
-            headers
-          })
-          .then(response => {
-            if (categoryChange) {
-              let product = response.data.answer.data.product;
-              console.log(product);
-              this.product.characteristics = product.characteristics;
-              if (product.brand_id !== undefined){
-                this.product.brand_id = product.brand_id;
-                this.product.brand_name = product.brand_name;
+        let request = {
+          id : this.product.id,
+          brand_id: this.selectedBrandId,
+          category_id: category_in_request,
+          color_id: this.product.color_id,
+          provider_id: this.product.provider_id,
+          country_id: this.selectedCountryId,
+          description: this.product.description,
+          title: this.product.title,
+          characteristics: chars,
+          images: this.product.images,
+          vendor_code: this.product.vendor_code,
+          del_images: this.deleteImages
+        }
+        console.log(request);
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              data: {
+                new_category_id: this.selectedCategoryId,
+                product : JSON.stringify(request)
+              }
+            }),
+            {
+              headers
+            })
+            .then(response => {
+              if (categoryChange) {
+                let product = response.data.answer.data.product;
+                console.log(product);
+                this.product.characteristics = product.characteristics;
+                if (product.brand_id !== undefined){
+                  this.product.brand_id = product.brand_id;
+                  this.product.brand_name = product.brand_name;
+                } else {
+                  delete this.product.brand_id;
+                  delete this.product.brand_name;
+                }
+                if (product.country_id !== undefined){
+                  this.product.country_id = product.country_id;
+                  this.product.country_name = product.country_name;
+                } else {
+                  delete this.product.country_id;
+                  delete this.product.country_name;
+                }
+                if (product.color_id !== undefined){
+                  this.product.color_id = product.color_id;
+                } else {
+                  delete this.product.color_id;
+                }
               } else {
-                delete this.product.brand_id;
-                delete this.product.brand_name;
+                if (response.data.result){
+                  router.replace('/products');
+                }
               }
-              if (product.country_id !== undefined){
-                this.product.country_id = product.country_id;
-                this.product.country_name = product.country_name;
-              } else {
-                delete this.product.country_id;
-                delete this.product.country_name;
+            })
+            .catch(error => {
+              console.log(error);
+              if (error.response.status == '403'){
+                this.editable = false;
+                $('.main__loader').hide();
               }
-              if (product.color_id !== undefined){
-                this.product.color_id = product.color_id;
-              } else {
-                delete this.product.color_id;
-              }
-            } else {
-              if (response.data.result){
-                router.replace('/products');
-              }
-            }
-          })
-          .catch(error => {
-            console.log(error);
-            if (error.response.status == '403'){
-              this.editable = false;
-              $('.main__loader').hide();
-            }
-          });
+            });
+      }
     },
     getProduct() {
       let requestUrl = '/control-panel/edit-product';
