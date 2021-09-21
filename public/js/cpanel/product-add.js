@@ -422,7 +422,8 @@ const ProductAdd = {
                 this.product.images = [];
                 this.countries = this.product.countries;
                 this.brands = this.product.brands;
-                this.product.vat = '';
+                this.product.vat = "";
+                console.log('Продукт',this.product);
               }
             }
           })
