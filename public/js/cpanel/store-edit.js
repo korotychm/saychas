@@ -157,7 +157,7 @@ const StoreEdit = {
       if (!this.store.title || !this.store.address || !this.store.contact_name || !this.store.contact_phone){
         return true;
       }
-      for (item in store.operating_mode){
+      for (item in this.store.operating_mode){
         if (!store.operating_mode[item]){
           return true;
         }
