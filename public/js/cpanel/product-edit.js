@@ -88,7 +88,7 @@ const ProductEdit = {
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
                             <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
                             <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
-                              <div class="custom-select__label"></div>
+                              <div class="custom-select__label input"></div>
                               <div class="custom-select__dropdown">
                                 <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
                                   <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" @click="checkSelect(index,idx)" />
