@@ -317,7 +317,7 @@ const ProductEdit = {
           }
         }
       }
-      iterateArray(this.categories, false);
+      //iterateArray(this.categories, false);
       this.categoriesFlat = categoriesFlat;
       this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id).name;
       this.selectedCategoryName = this.categorySearch;
