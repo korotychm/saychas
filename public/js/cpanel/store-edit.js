@@ -66,7 +66,7 @@ const StoreEdit = {
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
-                              <h2 :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.working_day_from" />
@@ -77,7 +77,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}">
-                              <h2 :class="{'input-error' : ((!store.operating_mode.saturday_from || !store.operating_mode.saturday_to) && errors)}">Суббота  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.saturday_from || !store.operating_mode.saturday_to) && errors)}">Суббота <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.saturday_from" />
@@ -88,7 +88,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}">
-                              <h2 :class="{'input-error' : ((!store.operating_mode.sunday_from || !store.operating_mode.sunday_to) && errors)}">Воскресенье  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.sunday_from || !store.operating_mode.sunday_to) && errors)}">Воскресенье <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.sunday_from"/>
@@ -99,7 +99,7 @@ const StoreEdit = {
                               </div>
                             </div>
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}">
-                              <h2 :class="{'input-error' : ((!store.operating_mode.holiday_from || !store.operating_mode.holiday_to) && errors)}">Праздничные дни  <span class="required">*</span><span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.holiday_from || !store.operating_mode.holiday_to) && errors)}">Праздничные дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
                                   <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.holiday_from" />
