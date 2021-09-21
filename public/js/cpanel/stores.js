@@ -80,6 +80,7 @@ const Stores = {
         requestUrl = '/control-panel/show-stores-from-cache';
       }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      console.log(this.selectedFilters);
       axios
         .post(requestUrl,
           Qs.stringify({
