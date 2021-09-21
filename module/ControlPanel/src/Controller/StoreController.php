@@ -91,7 +91,7 @@ class StoreController extends AbstractActionController
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
-        $result = $this->storeManager->updateServerDocument($credentials, $product);
+        $result = $this->storeManager->updateServerDocument($credentials, $store);
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
     }
@@ -99,7 +99,9 @@ class StoreController extends AbstractActionController
     public function updateStoreAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $store = json_decode($post['data']['store'], true);
+        $store = $post['data']['store'];
+        $store['address'] = json_decode($store['address'], true);
+        unset($store['_id']);
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if ($this->canUpdateStore($store)) {
             $result = $this->storeManager->replaceStore($store);
@@ -123,6 +125,7 @@ class StoreController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
         $store = $post['data']['store'];
+        $store['address'] = json_decode($store['address'], true);
         if ($this->canAddStore($store)) {
             $result = $this->storeManager->replaceStore($store);
             return new JsonModel(['result' => true, 'data' => $store]);
