@@ -27,7 +27,7 @@ const ProductEdit = {
                           <input class="input" type="text" v-model="product.vendor_code" />
                       </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
-                          <h2 :class="{'input-error' : (!product.selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
+                          <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                 <div class="search-select__suggestions">
@@ -45,7 +45,7 @@ const ProductEdit = {
                             </div>
                       </div>
                       <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
-                          <h2 :class="{'input-error' : (!product.selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
+                          <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
                                 <div class="search-select__suggestions">
