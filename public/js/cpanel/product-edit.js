@@ -295,6 +295,7 @@ const ProductEdit = {
       })
     },
     flatCategories() {
+      console.log(this.categories);
       let categoriesFlat = [];
       function iterateArray(array, parent) {
         for (category of array){
