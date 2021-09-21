@@ -154,7 +154,7 @@ const StoreEdit = {
       }
     },
     checkRequired(){
-      if (!this.store.title || !this.store.address || !this.store.contact_name || !this.store.contact_phone || (this.store.status_id === "")){
+      if (!this.store.title || !this.store.address || !this.store.contact_name || !this.store.contact_phone){
         return true;
       }
       for (item in store.operating_mode){
