@@ -158,7 +158,7 @@ const StoreEdit = {
         return true;
       }
       for (item in this.store.operating_mode){
-        if (!store.operating_mode[item]){
+        if (!this.store.operating_mode[item]){
           return true;
         }
       }
