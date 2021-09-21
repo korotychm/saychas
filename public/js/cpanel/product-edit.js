@@ -238,6 +238,7 @@ const ProductEdit = {
   },
   methods: {
     checkSelect(index,idx){
+      console.log(index,idx);
       console.log(this.product.characteristics[index].value, this.product.characteristics[index].available_values[idx].id);
     },
     checkRequired(){
