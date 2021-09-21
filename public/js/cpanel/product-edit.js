@@ -434,7 +434,7 @@ const ProductEdit = {
                 }
               } else {
                 if (response.data.result){
-                  //router.replace('/products');
+                  router.replace('/products');
                 }
               }
             })
@@ -445,6 +445,8 @@ const ProductEdit = {
                 $('.main__loader').hide();
               }
             });
+      } else {
+        showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
       }
     },
     getProduct() {

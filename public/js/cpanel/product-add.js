@@ -93,6 +93,34 @@ const ProductAdd = {
                                         <h2>Описание товара</h2>
                                         <textarea class="textarea" v-model="product.description"></textarea>
                                     </div>
+                                    <div class="product__attribute">
+                                        <h2>Ставка НДС <span class="required">*</span></h2>
+                                        <div class="custom-select custom-select--radio">
+                                          <div class="custom-select__label input"></div>
+                                          <div class="custom-select__dropdown">
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '')" value="" name="vat_select" v-model="product.vat" />
+                                              <span>Без НДС</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
+                                              <span>0%</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
+                                              <span>10%</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
+                                              <span>18%</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
+                                              <span>20%</span>
+                                            </label>
+                                          </div>
+                                        </div>
+                                    </div>
                                   </div>
                                   <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                                   <div class="product__additional-attributes">
