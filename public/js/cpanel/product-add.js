@@ -199,7 +199,7 @@ const ProductAdd = {
                                             <button class="btn btn--secondary multiple-input__add" @click="addValue(index)">Добавить значение</button>
                                           </div>
                                           <!-- Тип 2 - число (обычный)-->
-                                          <input v-if="characteristic.type == 2" type="number" min="0" class="input input--number" v-model="characteristic.value" :class="'integer':!characteristic.fractional_part"/>
+                                          <input v-if="characteristic.type == 2" type="number" min="0" class="input input--number" v-model="characteristic.value" :class="{'integer':!characteristic.fractional_part}"/>
                                           <!-- Тип 3 - булево -->
                                           <label v-if="characteristic.type == 3" class="boolean">
                                             <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
