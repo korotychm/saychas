@@ -16,6 +16,7 @@ class Resource
     const THE_CATALOG_OF_PRODUCTS = "Каталог товаров ";
     const THE_ALL_PRODUCTS = "Все товары ";
     const THE_CATEGORY = "Категории ";
+    const THE_BRANDS = "Торговые марки ";
     const THE_CATEGORY_OF_PRODUCTS = "Категории товаров ";
 
     /*

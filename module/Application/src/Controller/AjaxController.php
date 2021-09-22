@@ -1051,7 +1051,10 @@ class AjaxController extends AbstractActionController
 //        $post->categoryId;
 //        
         $products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId ]);
+        //000010/000000006
+        //$products = $this->getProductsBrand(['brand_id' => '000010', 'category_id' => '' ]);
         return new JsonModel($products);
+        //return new JsonModel($post);
     }
 
     

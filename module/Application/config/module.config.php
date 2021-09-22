@@ -840,6 +840,17 @@ return [
                     ],
                 ],
             ],
+            'ajax-get-products-brand' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-brand',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getProductsBrand',
+                    ],
+                ],
+            ],
+            
             'ajax-fltr-json' => [
                 'type'    => Literal::class,
                 'options' => [

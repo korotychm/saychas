@@ -568,12 +568,18 @@ class IndexController extends AbstractActionController
             $view = new ViewModel();
             return $view->setTemplate('error/404.phtml');
         }
-        $title = $brand->getTitle();
+        $brandTitle = $brand->getTitle();
         $categories = $this->getBrandCategories($brand_id); //$this->getBrandCategories($brand_id);
-        //exit (print_r($cat));
+        //if (empty($category_id)) {
+            $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        //}
         
-        $breadCrumbs[]=[null, $title];
+        
+        $breadCrumbs[]=[null, $brandTitle];
         foreach ($categories as $category) {
+            if ($category->getId() == $category_id) {
+                $categoryTitle =  $category->getTitle();
+            }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
         /*$categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
@@ -584,7 +590,7 @@ class IndexController extends AbstractActionController
             'breadCrumbs' => $breadCrumbs,
             'id' => $brand_id,
             'category_id' => $category_id,
-            "title" => $title."/".$brand_id."/".$category_id,
+            "title" => $categoryTitle."  ".$brandTitle,
         ];
         return new ViewModel($vwm);
     }

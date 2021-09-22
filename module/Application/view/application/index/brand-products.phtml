@@ -1,10 +1,10 @@
 <?php
-$this->headTitle(Application\Resource\Resource::THE_CATEGORY, 'PREPEND');
+//$this->headTitle(Application\Resource\Resource::THE_BRANDS, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
-$this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
+$this->inlineScript()->prependFile($this->basePath('/js/brands.js'));
 ?><section class="catalog">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1>
+      <h1 class="h1"><?= $this->title ?></h1>
       <select class="select catalog__sort">
           <option selected="selected" value="">Сначала свежие</option>
           <option value="">Сначала популярные</option>
@@ -18,7 +18,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
       <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "category_id" => $this->category_id]) ?>
     </aside>
     <div class="catalog__content">
-        <div id="brandcontent"></div>
+        <pre id="brandcontent"></pre>
     </div>
   </div>
 </section>
