@@ -39,9 +39,9 @@ const Stores = {
           <div class="td">Статус</div>
         </div>
         <div class="tbody">
-            <div v-for="store in stores" class="tr">
+            <router-link :to="'/stores/' + store.id" v-for="store in stores" class="tr">
                 <div class="td">
-                    <router-link :to="'/stores/' + store.id">{{ store.title }}</router-link>
+                  {{ store.title }}
                 </div>
                 <div class="td">
                     <div>{{ store.address }}</div>
@@ -49,7 +49,7 @@ const Stores = {
                 <div class="td stores__status">
                   <span :class="'stores__status-circle stores__status-circle--' + store.status_id"></span> {{ store.status_name }}
                 </div>
-            </div>
+            </router-link>
         </div>
       </div>
       <div class="pagination">
