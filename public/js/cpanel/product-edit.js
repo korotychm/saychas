@@ -132,7 +132,7 @@ const ProductEdit = {
                                 </label>
                               </div>
                             </div>
-                            <div class="custom-select custom-select--checkbox" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
+                            <div class="custom-select custom-select--checkboxes" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
                               <div class="custom-select__label input">Добавить</div>
                               <div class="custom-select__dropdown">
                                 <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
