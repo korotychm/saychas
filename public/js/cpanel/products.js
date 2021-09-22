@@ -54,18 +54,18 @@ const Products = {
             <div class="td">Бренд</div>
           </div>
           <div class="tbody">
-              <div v-for="product in products" class="tr">
+              <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
                   <div class="td products__img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                   </div>
                   <div class="td">
-                    <router-link :to="'/products/' + product.id">{{ product.title }}</router-link>
+                    {{ product.title }}
                   </div>
                   <div class="td products__category">
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td">{{ product.brand_name }}</div>
-              </div>
+              </router-link>
           </div>
         </div>
         <div class="pagination">
