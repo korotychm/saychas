@@ -40,6 +40,15 @@ const routes = [
     component: StoresMap
   },
   {
+    name: 'inventory',
+    path: '/inventory',
+    meta: {
+      h1: 'Товарные остатки',
+      back_route: '/products'
+    },
+    component: Inventory
+  },
+  {
     name: 'product-edit',
     path: '/products/:id',
     meta: {
