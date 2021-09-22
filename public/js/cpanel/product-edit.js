@@ -136,7 +136,7 @@ const ProductEdit = {
                               <div class="custom-select__label input">Добавить</div>
                               <div class="custom-select__dropdown">
                                 <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
-                                  <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value[]" />
+                                  <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
                                   <span>{{val.title}}</span>
                                 </label>
                               </div>
