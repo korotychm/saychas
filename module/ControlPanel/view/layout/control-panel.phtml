@@ -139,6 +139,15 @@
           <router-view></router-view>
         </main>
       </div>
+      <div class="popup" id="ServiceModalWindow">
+          <div class="popup__inner">
+              <div class="popup__close"></div>
+              <div class="popup__content">
+                <div class="popup__heading"></div>
+                <div id='ServiceModalWraper'></div>
+              </div>
+          </div>
+      </div>
         <script>
           var productImgPath = "<?= $this->imagePath('cpanel_product').'/' ?>";
         </script>
@@ -148,6 +157,7 @@
         <script src="//unpkg.com/vue-router/dist/vue-router.js"></script>
         <script src='//unpkg.com/v-calendar'></script>
         <script src='//unpkg.com/vue-yandex-maps@0.10.12/dist/vue-yandex-maps.min.js'></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/vue-the-mask/0.11.1/vue-the-mask.min.js"></script>
         <script src='/js/dadata/jquery.suggestions.js'></script>
         <script src="/js/cpanel/cpanel.min.js"></script>
         <script src="/js/cpanel/errors.js"></script>

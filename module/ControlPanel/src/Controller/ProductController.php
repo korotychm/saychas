@@ -149,7 +149,8 @@ class ProductController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
 
-        $access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
+        //$access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
+        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\ProductManager::class, 'where' => ['id' => $post['product_id']] ]);
 
         if (!$access) {
             $this->getResponse()->setStatusCode(403);

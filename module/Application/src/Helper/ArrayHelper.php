@@ -75,8 +75,8 @@ class ArrayHelper
      * Build tree out of a flat array
      * @author Kraskov
      * @param array $elements
-     * @param type $parentId
-     * @return type
+     * @param mixed $parentId
+     * @return array
      */
     public static function buildTree(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
     {

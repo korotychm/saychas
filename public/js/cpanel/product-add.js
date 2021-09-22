@@ -14,7 +14,7 @@ const ProductAdd = {
                 <div class="cp-container product">
                               <div v-if="editable">
                                 <div class="product__category">
-                                    <h2>Категория</h2>
+                                    <h2 :class="{'input-error' : (!selectedCategoryName && errors)}">Категория <span class="required">*</span></h2>
                                     <div class="search-select">
                                         <input class="input search-select__input" type="text" value="selectedCategoryName" v-model="categorySearch" @focusout="checkCategory()" />
                                         <div class="search-select__suggestions">
@@ -35,11 +35,11 @@ const ProductAdd = {
                                 <div v-if="product.category_id" class="product__info">
                                   <div class="product__main-attributes">
                                     <div class="product__attribute  product__attribute--short">
-                                        <h2>Артикул</h2>
+                                        <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
                                         <input class="input" type="text" v-model="product.vendor_code" />
                                     </div>
                                     <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
-                                        <h2>Страна производства</h2>
+                                        <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                               <div class="search-select__suggestions">
@@ -57,7 +57,7 @@ const ProductAdd = {
                                           </div>
                                     </div>
                                     <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
-                                        <h2>Бренд</h2>
+                                        <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
                                               <div class="search-select__suggestions">
@@ -75,11 +75,11 @@ const ProductAdd = {
                                           </div>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2>Название товара</h2>
+                                        <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
                                         <input class="input" type="text" v-model="product.title" />
                                     </div>
                                     <div v-if="(product.color_id !== undefined)" class="product__attribute">
-                                        <h2>Цвет</h2>
+                                        <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
                                           <div class="product__colors">
                                               <label v-for="color in product.colors" class="color-checkbox">
                                                 <input type="radio" :value="color.id" name="color" :checked="product.color_id == color.id" v-model="product.color_id">
@@ -90,18 +90,52 @@ const ProductAdd = {
                                           </div>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2>Описание товара</h2>
+                                        <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                                         <textarea class="textarea" v-model="product.description"></textarea>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2>Ставка НДС <span class="required">*</span></h2>
+                                        <div class="custom-select custom-select--radio">
+                                          <div class="custom-select__label input"></div>
+                                          <div class="custom-select__dropdown">
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
+                                              <span>Без НДС</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
+                                              <span>0%</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
+                                              <span>10%</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
+                                              <span>18%</span>
+                                            </label>
+                                            <label class="custom-select__option">
+                                              <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
+                                              <span>20%</span>
+                                            </label>
+                                          </div>
+                                        </div>
                                     </div>
                                   </div>
                                   <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                                   <div class="product__additional-attributes">
                                     <div v-for="(characteristic,index) in product.characteristics">
                                       <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
-                                          <h2>{{ characteristic.characteristic_name }}</h2>
-                                          <select v-if="characteristic.type == 4" class="select" v-model="characteristic.value">
-                                            <option v-for="val in characteristic.available_values" :selected="(val.id == characteristic.value)" :value="val.id">{{val.title}}</option>
-                                          </select>
+                                          <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span><span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span></h2>
+                                          <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
+                                            <div class="custom-select__label input"></div>
+                                            <div class="custom-select__dropdown">
+                                              <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                                <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                <span>{{val.title}}</span>
+                                              </label>
+                                            </div>
+                                          </div>
                                           <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
                                           <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                                             <div class="multiple-input">
@@ -213,7 +247,8 @@ const ProductAdd = {
       selectedCountryName: '',
       product: {},
       currentImg : '',
-      deleteImages: []
+      deleteImages: [],
+      errors: false
     }
   },
   computed: {
@@ -243,6 +278,12 @@ const ProductAdd = {
     }
   },
   methods: {
+    checkRequired(){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description){
+        return true;
+      }
+      return false;
+    },
     delImg(){
       var currentIndex = this.product.images.indexOf(this.currentImg);
       var images = [...this.product.images];
@@ -394,6 +435,9 @@ const ProductAdd = {
                 this.product.images = [];
                 this.countries = this.product.countries;
                 this.brands = this.product.brands;
+                this.product.vat = "Без НДС";
+                this.product.brand_id = ""; //Временно до разбора что обязательно в шапке
+                console.log('Продукт',this.product);
               }
             }
           })
@@ -404,66 +448,73 @@ const ProductAdd = {
           });
     },
     addProduct() {
-      let requestUrl = '/control-panel/save-newly-added-product'; // Добавить урл для добавления товара
-      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      let chars = JSON.parse(JSON.stringify(this.product.characteristics));
-      for (characteristic of chars){
-        delete characteristic.characteristic_name;
-        delete characteristic.real_value;
-        delete characteristic.title;
-        delete characteristic.available_values;
-        // Страна
-        if (characteristic.id == '000000001'){
-          characteristic.value = this.selectedCountryId;
+      this.errors = this.checkRequired();
+      if (!this.errors){
+        let requestUrl = '/control-panel/save-newly-added-product'; // Добавить урл для добавления товара
+        const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+        let chars = JSON.parse(JSON.stringify(this.product.characteristics));
+        for (characteristic of chars){
+          delete characteristic.characteristic_name;
+          delete characteristic.real_value;
+          delete characteristic.title;
+          delete characteristic.available_values;
+          // Страна
+          if (characteristic.id == '000000001'){
+            characteristic.value = this.selectedCountryId;
+          }
+          // Бренд
+          if (characteristic.id == '000000003'){
+            characteristic.value = this.selectedBrandId;
+          }
+          // Цвет
+          if (characteristic.id == '000000004'){
+            characteristic.value = this.product.color_id;
+          }
         }
-        // Бренд
-        if (characteristic.id == '000000003'){
-          characteristic.value = this.selectedBrandId;
+        let category_in_request = this.selectedCategoryId;
+        let request = {
+          id : this.product.id,
+          vat : this.product.vat,
+          brand_id: this.selectedBrandId,
+          category_id: this.selectedCategoryId,
+          color_id: this.product.color_id,
+          provider_id: this.product.provider_id,
+          country_id: this.selectedCountryId,
+          description: this.product.description,
+          title: this.product.title,
+          characteristics: chars,
+          images: this.product.images,
+          vendor_code: this.product.vendor_code,
+          del_images: this.deleteImages
         }
-        // Цвет
-        if (characteristic.id == '000000004'){
-          characteristic.value = this.product.color_id;
-        }
-      }
-      let category_in_request = this.selectedCategoryId;
-      let request = {
-        id : this.product.id,
-        brand_id: this.selectedBrandId,
-        category_id: this.selectedCategoryId,
-        color_id: this.product.color_id,
-        provider_id: this.product.provider_id,
-        country_id: this.selectedCountryId,
-        description: this.product.description,
-        title: this.product.title,
-        characteristics: chars,
-        images: this.product.images,
-        vendor_code: this.product.vendor_code,
-        del_images: this.deleteImages
-      }
-      console.log(request);
-      axios
-        .post(requestUrl,
-          Qs.stringify({
-            data: {
-              product : JSON.stringify(request)
-            }
-          }),
-          {
-            headers
-          })
-          .then(response => {
-              console.log(response.data);
-              if (response.data.result){
-                router.replace('/products');
+        delete request.dadata;
+        console.log(request);
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              data: {
+                product : JSON.stringify(request)
               }
-          })
-          .catch(error => {
-            console.log(error);
-            if (error.response.status == '403'){
-              this.editable = false;
-              $('.main__loader').hide();
-            }
-          });
+            }),
+            {
+              headers
+            })
+            .then(response => {
+                console.log(response.data);
+                if (response.data.result){
+                  router.replace('/products');
+                }
+            })
+            .catch(error => {
+              console.log(error);
+              if (error.response.status == '403'){
+                this.editable = false;
+                $('.main__loader').hide();
+              }
+            });
+      } else {
+        showServicePopupWindow('Невозможно добавить товар', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
+      }
     }
   },
   created: function(){
@@ -472,6 +523,7 @@ const ProductAdd = {
   },
   updated: function(){
     checkProductImagesSlider();
+    setAllCustomSelects();
     $('.main__loader').hide();
   }
 }

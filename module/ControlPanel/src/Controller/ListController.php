@@ -97,7 +97,12 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
+        $utf8 = mb_convert_encoding($identity['login'], "UTF-8", "Windows-1251 (CP1251)");
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
+//        $credentials[] = "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8";
+//        $credentials[] = "Accept-Charset: utf-8, *;q=0.1"; // windows-1251
+//        $credentials[] = "Accept-Encoding: deflate, identity, *;q=0";
+        
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
@@ -134,7 +139,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
             'provider_id' => $identity['provider_id'],
         ];
         foreach ($post['filters'] as $key => $value) {
-            if (!empty($value)) {
+            if ('' !== $value) {
                 $where[$key] = $value;
             }
         }

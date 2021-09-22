@@ -4,15 +4,16 @@ const StoreEdit = {
                   <div v-if="store.id">
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
-                        <h2>Название магазина</h2>
+                        <h2 :class="{'input-error' : (!store.title && errors)}">Название магазина <span class="required">*</span></h2>
                         <input type="text" class="input" v-model="store.title" />
                       </div>
                       <div class="product__attribute">
-                        <h2>Адрес</h2>
+                        <h2 :class="{'input-error' : (!store.address && errors)}">Адрес <span class="required">*</span></h2>
                         <div>
-                          <input type="text" class="input" v-model="store.address" id="store-address" />
-                          <input type="hidden" class="input" v-model="store.geox" />
-                          <input type="hidden" class="input" v-model="store.geoy" />
+                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
+                          <input type="hidden" class="input" v-model="store.geox" id="geox" />
+                          <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
+                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" />
                           <p class="error" id="store-address-error"></p>
                         </div>
                       </div>
@@ -23,16 +24,40 @@ const StoreEdit = {
                           <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
                         </div>
                       </div>
+                      <div class="product__attribute">
+                        <h2 :class="{'input-error' : (!store.contact_name && errors)}">Контактное лицо <span class="required">*</span></h2>
+                        <div>
+                          <input type="text" v-model="store.contact_name" class="input" />
+                        </div>
+                      </div>
+                      <div class="product__attribute product__attribute--short">
+                        <h2 :class="{'input-error' : (!store.contact_phone && errors)}">Телефон <span class="required">*</span></h2>
+                        <div>
+                          <input v-model="store.contact_phone" v-mask="'+7 (###) ###-##-##'" class="input" type="text" placeholder="+7 (999) 999-99-99" />
+                        </div>
+                      </div>
                     </div>
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
-                        <h2>Статус работы</h2>
+                        <h2>Статус работы <span class="required">*</span></h2>
                         <div>
-                          <select class="select" v-model="store.status_id">
-                            <option value="0">Работает по графику</option>
-                            <option value="1">Временно не работает</option>
-                            <option value="2">Закрыт</option>
-                          </select>
+                          <div class="custom-select custom-select--radio">
+                            <div class="custom-select__label input"></div>
+                            <div class="custom-select__dropdown">
+                              <label class="custom-select__option">
+                                <input type="radio" :checked="store.status_id == 0" value="0" name="status" v-model="store.status_id" />
+                                <span>Работает по графику</span>
+                              </label>
+                              <label class="custom-select__option">
+                                <input type="radio" :checked="store.status_id == 1" value="1" name="status" v-model="store.status_id" />
+                                <span>Временно не работает</span>
+                              </label>
+                              <label class="custom-select__option">
+                                <input type="radio" :checked="store.status_id == 2" value="2" name="status" v-model="store.status_id" />
+                                <span>Закрыт</span>
+                              </label>
+                            </div>
+                          </div>
                           <p>Статус устанавливает глобальный режим работы магазина.</p>
                           <p>Для изменения работы в определенные дни - восользуйтесь полями ниже.</p>
                         </div>
@@ -40,47 +65,47 @@ const StoreEdit = {
                       <div class="store__timetable">
                         <div class="store__timetable-inputs">
                           <div class="store__timetable-main active">
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Рабочие дни <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.working_day_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.working_day_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.working_day_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.working_day_to" />
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Суббота <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.saturday_from == '00:00' && store.operating_mode.saturday_to == '00:00')}">
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.saturday_from || !store.operating_mode.saturday_to) && errors)}">Суббота <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.saturday_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.saturday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.saturday_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.saturday_to" />
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Воскресенье <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.sunday_from == '00:00' && store.operating_mode.sunday_to == '00:00')}">
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.sunday_from || !store.operating_mode.sunday_to) && errors)}">Воскресенье <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.sunday_from"/>
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.sunday_from"/>
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.sunday_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.sunday_to" />
                                 </div>
                               </div>
                             </div>
-                            <div class="store__timetable-item product__attribute">
-                              <h2>Праздничные дни <span class="store__timetable-trigger"></span></h2>
+                            <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.holiday_from == '00:00' && store.operating_mode.holiday_to == '00:00')}">
+                              <h2><span :class="{'input-error' : ((!store.operating_mode.holiday_from || !store.operating_mode.holiday_to) && errors)}">Праздничные дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.holiday_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.holiday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" v-model="store.operating_mode.holiday_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.holiday_to" />
                                 </div>
                               </div>
                             </div>
@@ -90,7 +115,7 @@ const StoreEdit = {
                           <v-date-picker v-model='selectedDate' />
                         </div>
                       </div>
-                      <p>Если магазин работает круглосуточно - проставьте с 00:00 до 00:00</p>
+                      <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
                       <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
                       <p>Для изменения работы в определенную дату - выберите её на календаре.</p>
                     </div>
@@ -102,7 +127,7 @@ const StoreEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary">Сохранить изменения</button>
+                      <button class="btn btn--primary" @click="saveStore">Сохранить изменения</button>
                     </div>
                   </div>
                 </div>
@@ -111,12 +136,84 @@ const StoreEdit = {
             `,
   data: function () {
     return {
+      errors: false,
       editable: true,
       selectedDate: null,
-      store: {}
+      store: {
+        operating_mode: {}
+      }
     }
   },
   methods: {
+    dayOff(day) {
+      if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
+        this.store.operating_mode[day + '_to'] = '23:59';
+      } else {
+        this.store.operating_mode[day + '_from'] = '00:00';
+        this.store.operating_mode[day + '_to'] = '00:00';
+      }
+    },
+    checkRequired(){
+      if (!this.store.title || !this.store.address || !this.store.contact_name || !this.store.contact_phone){
+        return true;
+      }
+      for (item in this.store.operating_mode){
+        if (!this.store.operating_mode[item]){
+          return true;
+        }
+      }
+      return false;
+    },
+    saveStore(){
+      this.errors = this.checkRequired();
+      if (!this.errors){
+        let request = JSON.parse(JSON.stringify(this.store));
+        request.address = this.store.dadata;
+        let requestUrl = '/control-panel/update-store';
+        const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+        request.contact_phone = request.contact_phone.replace(/ /g,'').replace(/\+/g,'').replace(/\(/g,'').replace(/\)/g,'').replace(/-/g,'');
+        delete request.dadata;
+        console.log(request);
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              data : {
+                store: request
+              }
+            }),{headers})
+            .then(response => {
+              if (response.data.result){
+                router.replace('/stores');
+              }
+            })
+            .catch(error => {
+              if (error.response.status == '403'){
+                this.editable = false;
+                $('.main__loader').hide();
+              }
+            });
+      } else {
+        showServicePopupWindow('Невозможно сохранить магазин', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
+      }
+    },
+    storeDaData(){
+      $("#store-address").suggestions({
+          token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+          type: "ADDRESS",
+          onSelect: function (suggestion) {
+              $("#store-address-error").hide();
+              if (!suggestion.data.house)
+              {
+                  $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
+                  return false;
+              }
+              var dataString = JSON.stringify(suggestion);
+              $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
+              $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
+              $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
+          }
+      });
+    },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -130,7 +227,11 @@ const StoreEdit = {
               location.reload();
             } else {
               this.store = response.data.store;
+              this.store.dadata = '';
               console.log(this.store);
+              setTimeout(() => {
+                this.storeDaData();
+              }, 200);
               $('.main__loader').hide();
             }
           })
@@ -145,28 +246,8 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
+  },
+  updated: function(){
+    setAllCustomSelects();
   }
 }
-
-$(document).on('click','.store__timetable-trigger', function(){
-  $(this).parent().parent().toggleClass('closed');
-});
-
-$("#store-address").suggestions({
-    token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-    type: "ADDRESS",
-    onSelect: function (suggestion) {
-        $("#store-address-error").hide();
-        console.log(suggestion.data);
-        if (!suggestion.data.house)
-        {
-            $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
-            return false;
-        }
-        var dataString = JSON.stringify(suggestion);
-        console.log(dataString);
-        //$("#geodatadadata").val(dataString);
-        // getLegalStores(dataString, '#useradesserror');
-        // addUserAddrees(dataString, $("#useraddress").val());
-    }
-});

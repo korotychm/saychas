@@ -12,16 +12,34 @@ const Products = {
             </button>
           </form>
           <div class="filter__select">
-            <select class="select select--white" v-model="selectedFilters.category_id" value="" @change="loadPage()">
-              <option value="" selected >Все категории</option>
-              <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
-            </select>
+            <div class="custom-select custom-select--radio">
+              <div class="custom-select__label input">Все категории</div>
+              <div class="custom-select__dropdown">
+                <label class="custom-select__option">
+                  <input type="radio" checked="checked" value="" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                  <span>Все категории</span>
+                </label>
+                <label v-for="category in filters.categories" class="custom-select__option">
+                  <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                  <span>{{category[1]}}</span>
+                </label>
+              </div>
+            </div>
           </div>
           <div class="filter__select">
-            <select class="select select--white" v-model="selectedFilters.brand_id" value="" @change="loadPage()">
-              <option value="" selected >Все бренды</option>
-              <option v-for="brand in filters.brands" :value="brand[0]">{{ brand[1] }}</option>
-            </select>
+            <div class="custom-select custom-select--radio">
+              <div class="custom-select__label input">Все бренды</div>
+              <div class="custom-select__dropdown">
+                <label class="custom-select__option">
+                  <input type="radio" checked="checked" value="" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
+                  <span>Все бренды</span>
+                </label>
+                <label v-for="brand in filters.brands" class="custom-select__option">
+                  <input type="radio" :checked="(brand[0] === selectedFilters.brand_id)" :value="brand[0]" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
+                  <span>{{brand[1]}}</span>
+                </label>
+              </div>
+            </div>
           </div>
           <div class="filter__btn">
               <router-link to="/product-add" class="btn btn--primary">+ Добавить товары</router-link>
@@ -36,18 +54,18 @@ const Products = {
             <div class="td">Бренд</div>
           </div>
           <div class="tbody">
-              <div v-for="product in products" class="tr">
+              <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
                   <div class="td products__img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                   </div>
                   <div class="td">
-                    <router-link :to="'/products/' + product.id">{{ product.title }}</router-link>
+                    {{ product.title }}
                   </div>
                   <div class="td products__category">
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td">{{ product.brand_name }}</div>
-              </div>
+              </router-link>
           </div>
         </div>
         <div class="pagination">
@@ -59,7 +77,7 @@ const Products = {
       return {
         htmlContent: '',
         page_no: 1,
-        rows_per_page: 2,
+        rows_per_page: 10,
         products: {},
         pages: 1,
         filters: {},
