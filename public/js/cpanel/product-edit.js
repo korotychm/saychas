@@ -140,11 +140,11 @@ const ProductEdit = {
                                   <span>{{val.title}}</span>
                                 </label>
                               </div>
-                              <div class="custom-select__selected">
+                              <div v-if="characteristic.value.length" class="custom-select__selected">
                                 <div v-for="val in characteristic.available_values">
-                                  <div v-if="(characteristic.value.includes(val.id))">
+                                  <div v-if="(characteristic.value.includes(val.id))" class="custom-select__selected-item">
                                     {{val.title}}
-                                    <label :for="characteristic.id + '-' + val.id" class="custom-select__del">
+                                    <label :for="characteristic.id + '-' + val.id" class="custom-select__selected-del">
                                       <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       xmlns:xlink="http://www.w3.org/1999/xlink"
