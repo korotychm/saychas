@@ -21,7 +21,7 @@ const Products = {
                 </label>
                 <label v-for="category in filters.categories" class="custom-select__option">
                   <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
-                  <span>{{status[1]}}</span>
+                  <span>{{category[1]}}</span>
                 </label>
               </div>
             </div>
