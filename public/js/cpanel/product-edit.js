@@ -122,6 +122,10 @@ const ProductEdit = {
                             <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
                               <div class="custom-select__label input"></div>
                               <div class="custom-select__dropdown">
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(characteristic.value == "")" :value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                  <span>Не выбрано</span>
+                                </label>
                                 <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
                                   <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
                                   <span>{{val.title}}</span>
