@@ -61,7 +61,7 @@ const PriceList = {
           <div class="tbody">
               <div v-for="product in products" class="tr pricelist__item">
                   <div class="td pricelist__img">
-                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
+                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
                   <div class="td pricelist__title">
                     <a>{{ product.title }}</a>
