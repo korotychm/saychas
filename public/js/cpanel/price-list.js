@@ -149,7 +149,7 @@ const PriceList = {
   }
 }
 
-$(document).on('click','.pricelist__title',function(){
+$(document).on('click','.pricelist__item',function(){
   $('.pricelist__item').removeClass('active');
   $(this).parent().addClass('active');
 });
