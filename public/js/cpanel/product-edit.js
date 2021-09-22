@@ -24,7 +24,7 @@ const ProductEdit = {
                     <div class="product__main-attributes">
                       <div class="product__attribute  product__attribute--short">
                           <h2>Код товара</h2>
-                          <h2>{{ product.id }}</h2>
+                          <div class="product__code"><b>{{ product.id }}</b></div>
                       </div>
                       <div class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
