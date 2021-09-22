@@ -127,8 +127,10 @@ const ProductAdd = {
                                     <div v-for="(characteristic,index) in product.characteristics">
                                       <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
                                           <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
+                                          <!-- Тип 4 - справочник (обычный ) -->
                                           <div class="custom-select custom-select--radio" v-if="(characteristic.type == 4 && !Array.isArray(characteristic.value))">
                                             <div class="custom-select__label input"></div>
+                                            <!-- выпадающий список -->
                                             <div class="custom-select__dropdown">
                                               <label class="custom-select__option">
                                                 <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
@@ -139,15 +141,20 @@ const ProductAdd = {
                                                 <span>{{val.title}}</span>
                                               </label>
                                             </div>
+                                            <!-- /выпадающий список -->
                                           </div>
+                                          <!-- Тип 4 - справочник (мульти) -->
                                           <div class="custom-select custom-select--checkboxes" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
                                             <div class="custom-select__label input">Добавить</div>
+                                            <!-- выпадающий список -->
                                             <div class="custom-select__dropdown">
                                               <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
                                                 <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
                                                 <span>{{val.title}}</span>
                                               </label>
                                             </div>
+                                            <!-- /выпадающий список -->
+                                            <!-- выбранные значения -->
                                             <div v-if="characteristic.value.length" class="custom-select__selected">
                                               <div v-for="val in characteristic.available_values">
                                                 <div v-if="(characteristic.value.includes(val.id))" class="custom-select__selected-item">
@@ -164,8 +171,13 @@ const ProductAdd = {
                                                 </div>
                                               </div>
                                             </div>
+                                            <!-- /выбранные значения -->
                                           </div>
-                                          <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
+                                          <!-- Тип 1 - текст (обычный) -->
+                                          <div>
+                                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
+                                          </div>
+                                          <!-- Тип 1 - текст (мульти)-->
                                           <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                                             <div class="multiple-input">
                                               <div v-if="!characteristic.value.length" class="multiple-input__item">
@@ -186,7 +198,9 @@ const ProductAdd = {
                                             </div>
                                             <button class="btn btn--secondary multiple-input__add" @click="addValue(index)">Добавить значение</button>
                                           </div>
-                                          <input v-if="characteristic.type == 2" type="number" class="input input--number" v-model="characteristic.value"/>
+                                          <!-- Тип 2 - число (обычный)-->
+                                          <input v-if="characteristic.type == 2" type="number" min="0" class="input input--number" v-model="characteristic.value" :class="'integer':!characteristic.fractional_part"/>
+                                          <!-- Тип 3 - булево -->
                                           <label v-if="characteristic.type == 3" class="boolean">
                                             <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
                                             <span class="boolean__check"></span>
