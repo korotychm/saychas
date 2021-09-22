@@ -58,7 +58,7 @@ const Products = {
                   <div class="td products__img product-small-img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                   </div>
-                  <div class="td">
+                  <div class="td td--hover">
                     {{ product.title }}
                   </div>
                   <div class="td products__category">
