@@ -290,6 +290,18 @@ return [
                     ],
                 ],
             ],
+            
+            'brand' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/brand/:brand_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'brandProducts',
+                    ],
+                ],
+            ],
+            
             'basket' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -1229,6 +1241,7 @@ return [
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
 
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
+            \Application\Model\Entity\Category::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Entity\ProductFavorites::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,

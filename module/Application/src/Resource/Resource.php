@@ -10,12 +10,13 @@ class Resource
      * common
      */
 
-    const FOR_EXAMPLE_TEXT = "Например:";
-    const THE_BASKET = "Корзина";
-    const THE_CATALOG = "Каталог";
-    const THE_CATALOG_OF_PRODUCTS = "Каталог товаров";
-    const THE_CATEGORY = "Категории";
-    const THE_CATEGORY_OF_PRODUCTS = "Категории товаров";
+    const FOR_EXAMPLE_TEXT = "Например: ";
+    const THE_BASKET = "Корзина ";
+    const THE_CATALOG = "Каталог ";
+    const THE_CATALOG_OF_PRODUCTS = "Каталог товаров ";
+    const THE_ALL_PRODUCTS = "Все товары ";
+    const THE_CATEGORY = "Категории ";
+    const THE_CATEGORY_OF_PRODUCTS = "Категории товаров ";
 
     /*
      *  user

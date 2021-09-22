@@ -342,7 +342,7 @@ class AjaxController extends AbstractActionController
             $this->getResponse()->setStatusCode(403);
             return;
         }
-        $userPhone = StringHelper::phoneFromNum($user->getPhone());
+        //$userPhone = StringHelper::phoneFromNum($user->getPhone());
         $return['reload'] = true; // $post->reload;
         $return['dataId'] = $post->dataId;
         $userData = UserData::findAll(['where' => ['user_id' => $userId, 'id' => $return['dataId']]])->current();
@@ -849,6 +849,18 @@ class AjaxController extends AbstractActionController
         $where->in('category_id', $params);
         return $where;
     }
+    
+     private function getWhereBrand($params): Where
+    {
+        $where = new Where();
+        $where->equalTo('brand_id', $params['brand_id']);
+        if (!empty($params['category_id'])){
+            $where->equalTo('category_id', $params['category_id']);
+        }    
+        return $where;
+    }
+
+    
 
     /**
      * Return filtered HandbookRelatedProduct filtered products
@@ -864,6 +876,22 @@ class AjaxController extends AbstractActionController
         $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;
     }
+    
+    /**
+     * Return filtered HandbookRelatedProduct filtered products
+     *
+     * @param array $params
+     * @return HandbookRelatedProduct[]
+     */
+    private function getProductsBrand($params)
+    {
+
+        $params['where'] = $this->getWhereBrand($params);
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
+        return $filteredProducts;
+    }
+    
 
     /**
      * Return filtered HandbookRelatedProduct filtered products
@@ -1015,6 +1043,18 @@ class AjaxController extends AbstractActionController
         $products = $this->getProductsCategories($param);
         return new JsonModel($products);
     }
+    
+    public function getProductsBrandAction()
+    {
+        $post = $this->getRequest()->getPost();
+//        $post->brandId;
+//        $post->categoryId;
+//        
+        $products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId ]);
+        return new JsonModel($products);
+    }
+
+    
 
     public function getFiltredProductForCategoryJsonAction()
     {

@@ -16,6 +16,7 @@ use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
+//use Application\Model\Repository\Repository;
 //use Laminas\Db\TableGateway\TableGateway;
 use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Sql;
@@ -24,7 +25,7 @@ use Application\Helper\ArrayHelper;
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
 
-class CategoryRepository implements CategoryRepositoryInterface
+class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInterface
 {
 
     /**
@@ -187,7 +188,7 @@ class CategoryRepository implements CategoryRepositoryInterface
      * Reads all data from category table
      * @return HydratingResultSet
      */
-    public function readAll()
+    public function readAll($param)
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName)->columns(['*']);
@@ -213,13 +214,72 @@ class CategoryRepository implements CategoryRepositoryInterface
      * @param array $params
      * @return array
      */
-    public function findAll($params)
+//    public function findAll($params)
+//    {
+//        $data = $this->readAll();
+//        return ArrayHelper::buildTree($data->toArray(), $params['id']);
+//    }
+////
+    
+     public function findAll($params)
     {
-        $data = $this->readAll();
-        return ArrayHelper::buildTree($data->toArray(), $params['id']);
-    }
+        $sql = new Sql($this->db);
+        $select = $sql->select($this->tableName);
+        if (isset($params['columns'])) {
+            $select->columns($params['columns']);
+        }
+        if (isset($params['order'])) {
+            $select->order($params['order']);
+        }
+        if (isset($params['limit'])) {
+            $select->limit($params['limit']);
+        }
+        if (isset($params['offset'])) {
+            $select->offset($params['offset']);
+        }
+        
+        if (isset($params['group'])) {
+            $select->group($params['group']);
+        }
+        
+        if (isset($params['having'])) {
+            $select->having($params['having']);
+        }
+        
+        if (isset($params['where'])) {
+            $select->where($params['where']);
+        }
+        if (isset($params['sequence'])) {
+            $select->where(['id' => $params['sequence']]);
+        }
+        if (isset($params['joins'])) {
+            $joins = $params['joins']->getJoins();
+            foreach($joins as $join) {
+                $select->join($join['name'], $join['on'], $join['columns'], $join['type'] );
+            }
+        }
 
-    /**
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $res = $sql->buildSqlString($select);
+        
+        $result = $stmt->execute();
+
+        if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
+            return [];
+        }
+
+        $resultSet = new HydratingResultSet(
+                $this->hydrator,
+                $this->prototype
+        );
+        $resultSet->initialize($result);
+        return $resultSet;
+    }
+    
+    
+    
+    
+   /**
      * Return array of category ids
      *
      * @param int $i

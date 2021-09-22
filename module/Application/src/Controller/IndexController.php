@@ -34,6 +34,8 @@ use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\UserPaycard;
+use Application\Model\Entity\Brand;
+use Application\Model\Entity\Category;
 //use Application\Model\Entity\ProductHistory;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
@@ -129,6 +131,8 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(UserPaycard::class);
         $this->entityManager->initRepository(ProductHistory::class);
         $this->entityManager->initRepository(ProductFavorites::class);
+        $this->entityManager->initRepository(Brand::class);
+        //$this->entityManager->initRepository(Category::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -552,6 +556,60 @@ class IndexController extends AbstractActionController
         ];
         return new ViewModel($vwm);
     }
+    
+    public function brandProductsAction()
+    {
+        
+        $brand_id = $this->params()->fromRoute('brand_id', '');
+        $category_id = $this->params()->fromRoute('category_id', '');
+        if (empty($brand = Brand::find(["id"=> $brand_id ]))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
+        $title = $brand->getTitle();
+        $categories = $this->getBrandCategories($brand_id); //$this->getBrandCategories($brand_id);
+        //exit (print_r($cat));
+        
+        $breadCrumbs[]=[null, $title];
+        foreach ($categories as $category) {
+            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        /*$categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
+        $category = $categories[$category_id];
+        $title = $category["title"];*/
+        $vwm = [
+            "content" => "",
+            'breadCrumbs' => $breadCrumbs,
+            'id' => $brand_id,
+            'category_id' => $category_id,
+            "title" => $title."/".$brand_id."/".$category_id,
+        ];
+        return new ViewModel($vwm);
+    }
+    private function getBrandCategories($brand_id)
+    {
+        //$return = [];
+        $param['where'] = ["brand_id" => $brand_id];
+        $param['columns'] = ["category_id"];                
+        $param['group'] = ["category_id"];                
+        
+        $brandProductsCategories = $this->productRepository->findAll(["where" => ["brand_id" => $brand_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        foreach ($brandProductsCategories as $category){
+            $categoriesArray[] = $category->getCategoryId();
+        }
+      // exit (print_r($categoriesArray));
+        $brandCategories = $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
+       //  exit (print_r($brandCategories));
+        return $brandCategories;
+        //return $return  ;
+            
+    }
+    
+    
+    
+    
 
     public function userAction($category_id = false)
     {

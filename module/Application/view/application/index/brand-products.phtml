@@ -1,0 +1,24 @@
+<?php
+$this->headTitle(Application\Resource\Resource::THE_CATEGORY, 'PREPEND');
+$this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
+?><section class="catalog">
+  <div class="page-heading">
+      <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1>
+      <select class="select catalog__sort">
+          <option selected="selected" value="">Сначала свежие</option>
+          <option value="">Сначала популярные</option>
+          <option value="">Сначала дешевые</option>
+          <option value="">Сначала дорогие</option>
+      </select>
+  </div>
+  <div class="catalog__wrap" id="catalog-wrap">
+    <aside class="catalog__sidebar">
+        
+      <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "category_id" => $this->category_id]) ?>
+    </aside>
+    <div class="catalog__content">
+        <div id="brandcontent"></div>
+    </div>
+  </div>
+</section>
