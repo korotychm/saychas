@@ -55,7 +55,7 @@ const Products = {
           </div>
           <div class="tbody">
               <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
-                  <div class="td products__img">
+                  <div class="td products__img product-small-img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
                   </div>
                   <div class="td">
