@@ -666,5 +666,6 @@ $(document).on('change','.custom-select--radio input',function(){
 });
 
 $(document).on('click','.custom-select__label',function(){
+  $('.custom-select__label').not(this).parent().removeClass('active');
   $(this).parent().toggleClass('active');
 });
