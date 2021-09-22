@@ -114,7 +114,7 @@ const ProductEdit = {
                     <div class="product__additional-attributes">
                       <div v-for="(characteristic,index) in product.characteristics">
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
-                            <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span> <span v-if="characteristic.mandatory" class="required">*</span></h2>
+                            <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span><span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span></h2>
                             <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
                               <div class="custom-select__label input"></div>
                               <div class="custom-select__dropdown">
