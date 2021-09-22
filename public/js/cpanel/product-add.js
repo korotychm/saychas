@@ -171,7 +171,7 @@ const ProductAdd = {
                                   </div>
                                   <div class="product__images">
                                       <div class="product__attribute">
-                                          <h2><tag :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></tag> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
+                                          <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
                                           <div class="product__images-wrap">
                                               <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                                   <div class="product__images-list product__images-list--slider">
