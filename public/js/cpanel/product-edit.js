@@ -23,6 +23,10 @@ const ProductEdit = {
                   <div class="product__info">
                     <div class="product__main-attributes">
                       <div class="product__attribute  product__attribute--short">
+                          <h2>Код товара</h2>
+                          <h2>{{ product.id }}</h2>
+                      </div>
+                      <div class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
                           <input class="input" type="text" v-model="product.vendor_code" />
                       </div>
@@ -155,7 +159,7 @@ const ProductEdit = {
                     </div>
                     <div class="product__images">
                         <div class="product__attribute">
-                            <h2>Фото товара <span class="required">*</span><p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
+                            <h2 :class="{'input-error' : (!product.images.length && errors)}>Фото товара <span class="required">*</span><p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
                             <div class="product__images-wrap">
                                 <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                     <div class="product__images-list product__images-list--slider">
@@ -266,7 +270,7 @@ const ProductEdit = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
