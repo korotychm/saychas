@@ -139,9 +139,9 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
             'provider_id' => $identity['provider_id'],
         ];
         foreach ($post['filters'] as $key => $value) {
-//            if (!empty($value)) {
+            if ('' !== $value) {
                 $where[$key] = $value;
-//            }
+            }
         }
         if (!empty($post['search'])) {
             $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
