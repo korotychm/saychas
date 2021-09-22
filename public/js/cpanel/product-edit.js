@@ -183,8 +183,8 @@ const ProductEdit = {
                               <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
                               <span class="boolean__check"></span>
                             </label>
+                            <span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span>
                         </div>
-                        <span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span>
                       </div>
                     </div>
                     <div v-if="product.images" class="product__images">
