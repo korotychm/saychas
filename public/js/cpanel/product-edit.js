@@ -351,100 +351,100 @@ const ProductEdit = {
       this.selectedCategoryId = this.product.category_id;
     },
     saveProduct(categoryChange = false, oldCategory = null) {
-      this.errors = this.checkRequired();
-      if (!this.errors){
         let requestUrl = '/control-panel/update-product';
         if (categoryChange) {
           requestUrl = '/control-panel/request-category-characteristics';
         }
-        const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-        let chars = JSON.parse(JSON.stringify(this.product.characteristics));
-        for (characteristic of chars){
-          delete characteristic.characteristic_name;
-          delete characteristic.real_value;
-          delete characteristic.title;
-          delete characteristic.available_values;
-          // Страна
-          if (characteristic.id == '000000001'){
-            characteristic.value = this.selectedCountryId;
+        this.errors = this.checkRequired();
+        if (!this.errors || categoryChange){
+          const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+          let chars = JSON.parse(JSON.stringify(this.product.characteristics));
+          for (characteristic of chars){
+            delete characteristic.characteristic_name;
+            delete characteristic.real_value;
+            delete characteristic.title;
+            delete characteristic.available_values;
+            // Страна
+            if (characteristic.id == '000000001'){
+              characteristic.value = this.selectedCountryId;
+            }
+            // Бренд
+            if (characteristic.id == '000000003'){
+              characteristic.value = this.selectedBrandId;
+            }
+            // Цвет
+            if (characteristic.id == '000000004'){
+              characteristic.value = this.product.color_id;
+            }
           }
-          // Бренд
-          if (characteristic.id == '000000003'){
-            characteristic.value = this.selectedBrandId;
+          let category_in_request = this.selectedCategoryId;
+          if (oldCategory) {
+            category_in_request = oldCategory;
           }
-          // Цвет
-          if (characteristic.id == '000000004'){
-            characteristic.value = this.product.color_id;
+          let request = {
+            id : this.product.id,
+            vat: this.product.vat,
+            brand_id: this.selectedBrandId,
+            category_id: category_in_request,
+            color_id: this.product.color_id,
+            provider_id: this.product.provider_id,
+            country_id: this.selectedCountryId,
+            description: this.product.description,
+            title: this.product.title,
+            characteristics: chars,
+            images: this.product.images,
+            vendor_code: this.product.vendor_code,
+            del_images: this.deleteImages
           }
-        }
-        let category_in_request = this.selectedCategoryId;
-        if (oldCategory) {
-          category_in_request = oldCategory;
-        }
-        let request = {
-          id : this.product.id,
-          vat: this.product.vat,
-          brand_id: this.selectedBrandId,
-          category_id: category_in_request,
-          color_id: this.product.color_id,
-          provider_id: this.product.provider_id,
-          country_id: this.selectedCountryId,
-          description: this.product.description,
-          title: this.product.title,
-          characteristics: chars,
-          images: this.product.images,
-          vendor_code: this.product.vendor_code,
-          del_images: this.deleteImages
-        }
-        console.log(request);
-        axios
-          .post(requestUrl,
-            Qs.stringify({
-              data: {
-                new_category_id: this.selectedCategoryId,
-                product : JSON.stringify(request)
-              }
-            }),
-            {
-              headers
-            })
-            .then(response => {
-              if (categoryChange) {
-                let product = response.data.answer.data.product;
-                console.log(product);
-                this.product.characteristics = product.characteristics;
-                if (product.brand_id !== undefined){
-                  this.product.brand_id = product.brand_id;
-                  this.product.brand_name = product.brand_name;
+          console.log(request);
+          axios
+            .post(requestUrl,
+              Qs.stringify({
+                data: {
+                  new_category_id: this.selectedCategoryId,
+                  product : JSON.stringify(request)
+                }
+              }),
+              {
+                headers
+              })
+              .then(response => {
+                if (categoryChange) {
+                  let product = response.data.answer.data.product;
+                  console.log(product);
+                  this.product.characteristics = product.characteristics;
+                  if (product.brand_id !== undefined){
+                    this.product.brand_id = product.brand_id;
+                    this.product.brand_name = product.brand_name;
+                  } else {
+                    delete this.product.brand_id;
+                    delete this.product.brand_name;
+                  }
+                  if (product.country_id !== undefined){
+                    this.product.country_id = product.country_id;
+                    this.product.country_name = product.country_name;
+                  } else {
+                    delete this.product.country_id;
+                    delete this.product.country_name;
+                  }
+                  if (product.color_id !== undefined){
+                    this.product.color_id = product.color_id;
+                  } else {
+                    delete this.product.color_id;
+                  }
                 } else {
-                  delete this.product.brand_id;
-                  delete this.product.brand_name;
+                  if (response.data.result){
+                    router.replace('/products');
+                  }
                 }
-                if (product.country_id !== undefined){
-                  this.product.country_id = product.country_id;
-                  this.product.country_name = product.country_name;
-                } else {
-                  delete this.product.country_id;
-                  delete this.product.country_name;
+              })
+              .catch(error => {
+                console.log(error);
+                if (error.response.status == '403'){
+                  this.editable = false;
+                  $('.main__loader').hide();
                 }
-                if (product.color_id !== undefined){
-                  this.product.color_id = product.color_id;
-                } else {
-                  delete this.product.color_id;
-                }
-              } else {
-                if (response.data.result){
-                  router.replace('/products');
-                }
-              }
-            })
-            .catch(error => {
-              console.log(error);
-              if (error.response.status == '403'){
-                this.editable = false;
-                $('.main__loader').hide();
-              }
-            });
+              });
       } else {
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
       }
