@@ -169,7 +169,7 @@ const ProductAdd = {
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="product__images">
+                                  <div v-if="product.images" class="product__images">
                                       <div class="product__attribute">
                                           <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
                                           <div class="product__images-wrap">
