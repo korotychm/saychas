@@ -463,7 +463,7 @@ const ProductEdit = {
                   }
                 } else {
                   if (response.data.result){
-                    router.replace('/products');
+                    //router.replace('/products');
                   }
                 }
               })
