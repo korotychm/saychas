@@ -107,7 +107,28 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
         return $this->categories;
     }
+    
     public function categoryTree($echo = '', $i = 0, $idActive): array
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select();
+        $select->from($this->tableName);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSet = new HydratingResultSet(
+                $this->hydrator,
+                new Category('', 0, 0)
+        );
+        $resultSet->initialize($result);
+        
+        $results = $resultSet->toArray();
+        
+        $tree = ArrayHelper::buildTree($results, $i);
+        return $tree;
+    }    
+    
+    public function categoryTree1($echo = '', $i = 0, $idActive): array
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
@@ -131,6 +152,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         return $tree;
     }
+    
     private function categoriesHasProduct ()
     {
         $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT `category_id` FROM `product` WHERE 1 group by `category_id`)";
