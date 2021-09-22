@@ -144,7 +144,7 @@ const ProductEdit = {
                                 <div v-for="val in characteristic.available_values">
                                   <div v-if="(characteristic.value.includes(val.id))" class="custom-select__selected-item">
                                     {{val.title}}
-                                    <label :for="characteristic.id + '-' + val.id" class="custom-select__selected-del" @click="checkSelect">
+                                    <label :for="characteristic.id + '-' + val.id" class="custom-select__selected-del">
                                       <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -298,9 +298,9 @@ const ProductEdit = {
     }
   },
   methods: {
-    checkSelect(){
-      console.log(this.product.characteristics[16]);
-    },
+    // checkSelect(){
+    //   console.log(this.product.characteristics[16]);
+    // },
     checkRequired(){
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description || !this.product.images.length){
         return true;
@@ -335,9 +335,6 @@ const ProductEdit = {
       data.append('file', imagefile.files[0]);
       data.append('product_id', this.product.id);
       data.append('provider_id', this.product.provider_id);
-      for (var key of data.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-      }
       axios.post('/control-panel/upload-product-image', data, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -466,7 +463,7 @@ const ProductEdit = {
                   }
                 } else {
                   if (response.data.result){
-                    //router.replace('/products');
+                    router.replace('/products');
                   }
                 }
               })

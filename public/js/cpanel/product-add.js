@@ -341,9 +341,6 @@ const ProductAdd = {
       data.append('file', imagefile.files[0]);
       data.append('product_id', this.product.id);
       data.append('provider_id', this.product.provider_id);
-      for (var key of data.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-      }
       axios.post('/control-panel/upload-product-image', data, {
             headers: {
               'Content-Type': 'multipart/form-data'
