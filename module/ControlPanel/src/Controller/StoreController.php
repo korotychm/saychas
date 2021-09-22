@@ -40,6 +40,9 @@ class StoreController extends AbstractActionController
 
     /** @var Config */
     protected $config;
+    
+    /** @var RbacManager */
+    protected $rbacManager;    
 
     /**
      * Constructor
@@ -57,6 +60,7 @@ class StoreController extends AbstractActionController
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
         $this->storeManager = $this->container->get(\ControlPanel\Service\StoreManager::class);
         $this->config = $container->get('Config');
+        $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
     }
 
     /**
@@ -80,6 +84,19 @@ class StoreController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
 
+        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\StoreManager::class, 'where' => ['id' => $post['store_id']] ]);
+
+        if (!$access) {
+            $this->getResponse()->setStatusCode(403);
+            return;
+        }
+//        $identity = $this->authService->getIdentity();
+//        
+//        $access = $this->rbacManager->isGranted(null, 'administrator', ['provider_id' => $post['provider_id']]);
+//        if (!$access) {
+//            $this->getResponse()->setStatusCode(403);
+//            return;
+//        }
 //        $post['store_id'] = '000000004';
         $store = $this->storeManager->find(['id' => $post['store_id'] ]);
 
@@ -91,7 +108,7 @@ class StoreController extends AbstractActionController
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
-        $result = $this->storeManager->updateServerDocument($credentials, $product);
+        $result = $this->storeManager->updateServerDocument($credentials, $store);
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
     }
@@ -99,7 +116,9 @@ class StoreController extends AbstractActionController
     public function updateStoreAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $store = json_decode($post['data']['store'], true);
+        $store = $post['data']['store'];
+        $store['address'] = json_decode($store['address'], true);
+        unset($store['_id']);
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if ($this->canUpdateStore($store)) {
             $result = $this->storeManager->replaceStore($store);
@@ -107,7 +126,30 @@ class StoreController extends AbstractActionController
         }
         return new JsonModel(['result' => false]);
     }
+    
+    private function canAddStore(array &$store): bool
+    {
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->storeManager->addServerDocument($credentials, $store);
+        $store = $result['data']['data'];
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        return $res;
+    }    
 
+    public function saveNewlyAddedStoreAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $store = $post['data']['store'];
+        $store['address'] = json_decode($store['address'], true);
+        if ($this->canAddStore($store)) {
+            $result = $this->storeManager->replaceStore($store);
+            return new JsonModel(['result' => true, 'data' => $store]);
+        }
+        return new JsonModel(['result' => false]);
+    }
+    
     /**
      * Show stores action
      * 

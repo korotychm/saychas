@@ -12,10 +12,19 @@ const Stores = {
               <router-link to="/stores-map" class="btn btn--secondary">На карте</router-link>
             </div>
             <div class="filter__select">
-              <select class="select select--white" v-model="selectedFilters.status_id" value="" @change="loadPage()">
-                <option value="" selected >Все статусы</option>
-                <option v-for="status in filters.statuses" :value="status[0]">{{ status[1] }}</option>
-              </select>
+              <div class="custom-select custom-select--radio">
+                <div class="custom-select__label input">Все статусы</div>
+                <div class="custom-select__dropdown">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                    <span>Все статусы</span>
+                  </label>
+                  <label v-for="status in filters.statuses" class="custom-select__option">
+                    <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                    <span>{{status[1]}}</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="filter__btn">
@@ -30,9 +39,9 @@ const Stores = {
           <div class="td">Статус</div>
         </div>
         <div class="tbody">
-            <div v-for="store in stores" class="tr">
+            <router-link :to="'/stores/' + store.id" v-for="store in stores" class="tr">
                 <div class="td">
-                    <router-link :to="'/stores/' + store.id">{{ store.title }}</router-link>
+                  {{ store.title }}
                 </div>
                 <div class="td">
                     <div>{{ store.address }}</div>
@@ -40,7 +49,7 @@ const Stores = {
                 <div class="td stores__status">
                   <span :class="'stores__status-circle stores__status-circle--' + store.status_id"></span> {{ store.status_name }}
                 </div>
-            </div>
+            </router-link>
         </div>
       </div>
       <div class="pagination">
@@ -52,7 +61,7 @@ const Stores = {
     return {
       htmlContent: '',
       page_no: 1,
-      rows_per_page: 2,
+      rows_per_page: 10,
       stores: {},
       pages: 1,
       filters: {},

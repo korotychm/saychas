@@ -184,8 +184,7 @@ class RbacManager
                 //Otherwise we need to conduct additional verification
                 foreach ($this->assertionManagers as $assertionManager) {
                     if (!$assertionManager->assert($this->rbac, $permission, $params)) {
-                        //return true;
-                        return false;
+                        return true;
                     }
                 }
             }

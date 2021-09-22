@@ -12,10 +12,19 @@ const StoresMap = {
               <a class="btn btn--primary">На карте</a>
             </div>
             <div class="filter__select">
-              <select class="select select--white" v-model="selectedFilters.status_id" value="" @change="loadPage()">
-                <option value="" selected >Все статусы</option>
-                <option v-for="status in filters.statuses" :value="status[0]">{{ status[1] }}</option>
-              </select>
+              <div class="custom-select custom-select--radio">
+                <div class="custom-select__label input">Все статусы</div>
+                <div class="custom-select__dropdown">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                    <span>Все статусы</span>
+                  </label>
+                  <label v-for="status in filters.statuses" class="custom-select__option">
+                    <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                    <span>{{status[1]}}</span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="filter__btn">

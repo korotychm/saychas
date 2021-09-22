@@ -4,6 +4,8 @@
 
 namespace ControlPanel\Model\Traits;
 
+use ControlPanel\Helper\ArrayHelper;
+
 /**
  * Description of Collection
  *
@@ -64,16 +66,16 @@ trait Loadable
         return $deleteResult;
     }
     
-    private function extractCredentials(array $credentials) : array
-    {
-        $result = [];
-        foreach ($credentials as $c) {
-            list($key, $value) = explode(':', $c);
-            $result[trim($key)] = trim($value);
-        }
-        
-        return $result;
-    }
+//    private function extractCredentials(array $credentials) : array
+//    {
+//        $result = [];
+//        foreach ($credentials as $c) {
+//            list($key, $value) = explode(':', $c);
+//            $result[trim($key)] = trim($value);
+//        }
+//        
+//        return $result;
+//    }
 
     /**
      * Insert array of documents into collection
@@ -158,10 +160,14 @@ trait Loadable
 
         //$this->dropCollection(self::COLLECTION_NAME);
         
-        $cred = $this->extractCredentials($credentials);
+        //$cred = $this->extractCredentials($credentials);
+        $cred = ArrayHelper::extractCredentials($credentials);
         
         $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
 
+        if(null == $answer['data']) {
+            $answer['data'] = [];
+        }
         $this->insertManyInto(/*$this->collectionName*/ /*self::COLLECTION_NAME,*/ $answer['data']);
 
         $this->collectionSize = $this->countCollection();
@@ -187,6 +193,7 @@ trait Loadable
 
             $cursor = $collection->find(
             $params['where'],
+//            ['provider_id' => '00007', 'status_id' => 1],
             [
                 'skip' => $limits['min'] - 1,
                 'limit' => $this->pageSize,
