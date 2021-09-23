@@ -204,7 +204,7 @@ const StoreEdit = {
       let highlighted = '<style>';
       for (item in this.store.modified_mode){
         if (highlighted != '<style>'){
-          highlighted + = ', ';
+          highlighted += ', ';
         }
         let date = this.store.modified_mode[item].date,
             dateDay = date.split('.')[0],
