@@ -150,7 +150,9 @@ const StoreEdit = {
     store: {
       deep: true,
       handler() {
-        console.log('time has changed!');
+        for (item in this.store.operating_mode){
+          console.log(this.store.operating_mode[item]);
+        }
       }
     }
   },
