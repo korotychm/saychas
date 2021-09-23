@@ -71,10 +71,10 @@ const StoreEdit = {
                               <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.working_day_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.working_day_from" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.working_day_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.working_day_to" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" />
                                 </div>
                               </div>
                             </div>
@@ -158,10 +158,10 @@ const StoreEdit = {
   },
   methods: {
     checkTime(item){
-      let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      if (!regex.test(this.store.operating_mode[item])){
-        this.store.operating_mode[item] = '';
-      }
+      // let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+      // if (!regex.test(this.store.operating_mode[item])){
+      //   this.store.operating_mode[item] = '';
+      // }
     },
     dayOff(day) {
       if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
