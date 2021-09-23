@@ -156,8 +156,10 @@ const StoreEdit = {
       }
     },
     selectedDate() {
-      console.log(this.selectedDate);
-      setTimeout(() => this.selectedDate = null, 2000);
+      if (this.selectedDate){
+        console.log(this.selectedDate);
+        setTimeout(() => this.selectedDate = null, 2000);
+      }
     }
   },
   methods: {
