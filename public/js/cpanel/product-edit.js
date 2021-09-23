@@ -663,11 +663,9 @@ function setCustomSelectLabels(el) {
 }
 
 function setAllCustomSelects() {
-  setTimeout(function(){
-    $('.custom-select--radio').each(function(){
-      setCustomSelectLabels($(this));
-    });
-  }, 300);
+  $('.custom-select--radio').each(function(){
+    setCustomSelectLabels($(this));
+  });
 }
 
 $(document).on('change','.custom-select--radio input',function(){
