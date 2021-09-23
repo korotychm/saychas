@@ -184,7 +184,7 @@ const StoreEdit = {
   computed: {
     humanDate(){
       return this.selectedDate.toLocaleString("ru-RU",{
-        weekday: 'numeric',
+        day: 'numeric',
         month: 'long',
         year: 'numeric'
       });
