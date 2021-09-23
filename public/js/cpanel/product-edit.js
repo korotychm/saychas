@@ -668,7 +668,7 @@ function setAllCustomSelects() {
 }
 
 $(document).on('change','.custom-select--radio input',function(){
-  let el = $(this).parent().parent().parent();
+  let el = $(this).parent().parent().parent().parent();
   el.removeClass('active');
   setCustomSelectLabels(el);
 });
