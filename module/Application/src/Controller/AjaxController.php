@@ -40,6 +40,7 @@ use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
 use Application\Model\Entity\ProductCharacteristic;
+use Application\Model\Entity\StockBalance;
 //use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -119,6 +120,8 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(ProductHistory::class);
         $this->entityManager->initRepository(ProductCharacteristic::class);
+        $this->entityManager->initRepository(StockBalance::class);
+        
     }
 
     public function ajaxGetBasketJsonAction()
@@ -830,6 +833,10 @@ class AjaxController extends AbstractActionController
     private function getFiltredProductsId($where)
     {
         $products = ProductCharacteristic::findAll(["where" => $where, "columns" => ['product_id'], "group" => "product_id"])->toArray();
+        return $this->extractProdictsId($products);
+    }
+    private function extractProdictsId ($products)
+    {
         $filtredProducts = [];
         foreach ($products as $p) {
             $filtredProducts[] = $p["product_id"];
@@ -850,10 +857,21 @@ class AjaxController extends AbstractActionController
         return $where;
     }
     
-     private function getWhereBrand($params): Where
+    private function getWhereBrand($params): Where
     {
         $where = new Where();
         $where->equalTo('brand_id', $params['brand_id']);
+        if (!empty($params['category_id'])){
+            $where->equalTo('category_id', $params['category_id']);
+        }    
+        return $where;
+    }
+    private function getWhereStore($params): Where
+    {        
+        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"]);
+        $products = $this->extractProdictsId($storeProducts);
+        $where = new Where();
+        $where->in('product_id',$products );
         if (!empty($params['category_id'])){
             $where->equalTo('category_id', $params['category_id']);
         }    
@@ -870,27 +888,31 @@ class AjaxController extends AbstractActionController
      */
     private function getProductsCategories($params)
     {
-
         $params['where'] = $this->getWhereCategories($params);
-        $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
-        return $filteredProducts;
+        return $this->getProducts($param);
     }
-    
-    /**
-     * Return filtered HandbookRelatedProduct filtered products
-     *
-     * @param array $params
-     * @return HandbookRelatedProduct[]
-     */
+
     private function getProductsBrand($params)
     {
-
         $params['where'] = $this->getWhereBrand($params);
+        return $this->getProducts($param);
+    }
+    
+    private function getProductsStore($params)
+    {
+        $params['where'] = $this->getWhereStore($params);
+        return $this->getProducts($param);
+    }
+    
+    private function getProducts ($param)
+    {
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;
-    }
+        
+    }        
+            
+    
     
 
     /**
@@ -1059,9 +1081,9 @@ class AjaxController extends AbstractActionController
     public function getProductsStoreAction()
     {
         $post = $this->getRequest()->getPost();
-        //$products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId ]);
-        //return new JsonModel($products);
-        return new JsonModel($post);
+        $products = $this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId ]);
+        return new JsonModel($products);
+        //return new JsonModel($post);
     }
 
 

@@ -123,13 +123,17 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $resultSet->initialize($result);
         
         $results = $resultSet->toArray();
+        
+        /**/// !-- plusweb
         $categoriesHasProduct = $this->categoriesHasProduct();
         $newTree = [];
         foreach ($results as $value) {
             $newTree[$value['parent_id']][] = $value;
         }
-       
         $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        /**/// plusweb --!
+        
+        //$tree = ArrayHelper::buildTree($result, $i); // !-- alex --!
         return $tree;
     }
     private function categoriesHasProduct ()

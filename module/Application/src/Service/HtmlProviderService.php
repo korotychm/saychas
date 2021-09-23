@@ -208,8 +208,8 @@ class HtmlProviderService {
     }
 
     private function valueParce($v = [], $chType) {
-        $bool = ["нет", "да"];
-        if (!$v or!is_array($v))
+        $bool = [Resource::NO, Resource::YES];
+        if (!$v or !is_array($v))
             return $v;
         foreach ($v as $val) {
             if (!$val)

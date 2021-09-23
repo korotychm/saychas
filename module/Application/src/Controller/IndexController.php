@@ -16,6 +16,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+//use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
@@ -588,7 +589,7 @@ class IndexController extends AbstractActionController
         $category = $categories[$category_id];
         $title = $category["title"];*/
         //$vwm = ['breadCrumbs' => $breadCrumbs,'id' => $brand_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,];
-        return new ViewModel($vwm);
+        return new ViewModel(['breadCrumbs' => $breadCrumbs,'id' => $brand_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,]);
     }
     public function storeProductsAction()
     {
@@ -620,7 +621,7 @@ class IndexController extends AbstractActionController
         $title = $category["title"];*/
         $vwm = [
             'breadCrumbs' => $breadCrumbs,
-            'id' => $brand_id,
+            'id' => $store_id,
             'category_id' => $category_id,
             "title" => $categoryTitle."  ".$brandTitle,
         ];

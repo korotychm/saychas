@@ -1,18 +1,18 @@
 function getProdeuctCategory(){
-    var brandId = $("#baseId").val(); 
+    var storeId = $("#baseId").val(); 
     var categoryId = $("#categoryId").val(); 
     
     //$("#quick-menu-item-" + categoryId ).addClass("active");
     $.ajax({
             beforeSend : function (){
                 },
-            url: "/ajax-get-products-brand",
+            url: "/ajax-get-products-store",
             type: 'POST',
             cache: false,
-            data: {"brandId": brandId, "categoryId": categoryId },
+            data: {"storeId": storeId, "categoryId": categoryId },
             success: function (data) {
              //showAjaxErrorPopupWindow ("id", categoryId );
-             $("#brandcontent").html(JSON.stringify(data,true,2));
+             $("#storecontent").html(JSON.stringify(data,true,2));
               return false;
             },
             error: function (xhr, ajaxOptions, thrownError) {
