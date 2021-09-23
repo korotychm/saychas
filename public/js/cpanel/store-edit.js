@@ -184,7 +184,8 @@ const StoreEdit = {
     },
     selectedDate() {
       if (this.selectedDate){
-        if (this.checkModifiedDate() != -1){
+        let index = checkModifiedDate();
+        if (index != -1){
           this.modified_date.time_from = this.store.modified_mode[index].time_from;
           this.modified_date.time_to = this.store.modified_mode[index].time_to;
         } else {
