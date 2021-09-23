@@ -106,13 +106,13 @@ const StoresMap = {
             if (response.data.data === true) {
               location.reload();
             } else {
-              console.log(response.data);
               this.pages = response.data.data.limits.total;
               this.stores = response.data.data.body;
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
               }
+              console.log(this.stores);
             }
           })
           .catch(error => {
