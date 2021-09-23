@@ -72,7 +72,6 @@ class IndexController extends AbstractActionController
         $this->productManager = $this->container->get(\ControlPanel\Service\ProductManager::class);
         $this->storeManager = $this->container->get(\ControlPanel\Service\StoreManager::class);
         $this->config = $container->get('Config');
-        $this->rbacManager->init(true);
     }
 
     public function onDispatch(MvcEvent $e)
