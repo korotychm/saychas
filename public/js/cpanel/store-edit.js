@@ -183,7 +183,11 @@ const StoreEdit = {
   },
   computed: {
     humanDate(){
-      return this.selectedDate.toLocaleString();
+      return this.selectedDate.toLocaleString("ru-RU",{
+        weekday: 'long',
+        month: 'long',
+        year: 'numberic'
+      });
     }
   },
   methods: {
