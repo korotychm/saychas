@@ -67,10 +67,10 @@ const StoreEdit = {
                       <div class="store__timetable">
 
                         <div class="store__timetable-inputs">
-                          <div v-if="humanDate" class="store__timetable-additional">
+                          <div v-if="selectedDate" class="store__timetable-additional">
 
                             <div class="store__timetable-item product__attribute">
-                              <h2>{{ modified_date.date }} <span class="store__timetable-trigger"></span></h2>
+                              <h2>{{ humanDate }} <span class="store__timetable-trigger"></span></h2>
                                 <div class="input-group">
                                   <div>
                                     <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="modified_date.time_from" />
@@ -184,14 +184,7 @@ const StoreEdit = {
     },
     selectedDate() {
       if (this.selectedDate){
-        let localedDate = this.selectedDate.toLocaleString("ru-RU",{
-          day: 'numeric',
-          month: 'numeric',
-          year: 'numeric'
-        });
-        this.modified_date.date = localedDate;
-        let index = (this.store.modified_mode.findIndex(x => x.date === localedDate));
-        if (index != -1){
+        if (checkModifiedDate() != -1){
           this.modified_date.time_from = this.store.modified_mode[index].time_from;
           this.modified_date.time_to = this.store.modified_mode[index].time_to;
         } else {
@@ -200,6 +193,15 @@ const StoreEdit = {
         }
       }
     }
+  },
+  checkModifiedDate() {
+    let localedDate = this.selectedDate.toLocaleString("ru-RU",{
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric'
+    });
+    this.modified_date.date = localedDate;
+    return (this.store.modified_mode.findIndex(x => x.date === localedDate));
   },
   computed: {
     humanDate(){
@@ -215,9 +217,21 @@ const StoreEdit = {
   },
   methods: {
     delDate(){
+      let index = checkModifiedDate();
+      if (index != -1){
+        this.store.modified_mode.splice(index, 1);
+      }
+      console.log(this.store.modified_mode);
       this.selectedDate = null;
     },
     saveDate(){
+      let index = checkModifiedDate();
+      if (index != -1){
+        this.store.modified_mode[index] == this.modified_date;
+      } else {
+        this.store.modified_mode.push(this.modified_date);
+      }
+      console.log(this.store.modified_mode);
       this.selectedDate = null;
     },
     modifiedDaysHighlight() {
