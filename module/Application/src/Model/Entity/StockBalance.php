@@ -15,7 +15,7 @@ use Application\Model\Traits\Searchable;
  * @ORM\Table(name="stock_balance", uniqueConstraints={@ORM\UniqueConstraint(name="product_id", columns={"product_id", "store_id"})})
  * @ORM\Entity
  */
-class StockBalance
+class StockBalance extends Entity
 {
 
      /**
