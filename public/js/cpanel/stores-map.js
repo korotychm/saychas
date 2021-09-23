@@ -37,9 +37,7 @@ const StoresMap = {
       <div class="cp-container stores-map">
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
-            <div v-for="(store, idx) in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)" :icon="markerIcon(store.status_id)"></ymap-marker>
-            </div>
+            <ymap-marker v-for="(store, idx) in stores" :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)" :icon="markerIcon(store.status_id)"></ymap-marker>
           </yandex-map>
         </div>
       </div>
