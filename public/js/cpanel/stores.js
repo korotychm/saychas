@@ -11,7 +11,7 @@ const Stores = {
             <div class="filter__btn">
               <router-link to="/stores-map" class="btn btn--secondary">На карте</router-link>
             </div>
-            <div class="filter__select">
+            <div class="filter__select  filter__select--status">
               <div class="custom-select custom-select--radio">
                 <div class="custom-select__label input">Все статусы</div>
                 <div class="custom-select__dropdown">
