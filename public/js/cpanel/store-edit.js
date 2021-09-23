@@ -229,14 +229,11 @@ const StoreEdit = {
     },
     saveDate(){
       let index = this.checkModifiedDate();
-      let modifiedClone = JSON.parse(JSON.stringify(this.store.modified_mode));
-      console.log(this.modified_date);
       if (index != -1){
-        modifiedClone[index] == this.modified_date;
+        this.store.modified_mode[index] = this.modified_date;
       } else {
-        modifiedClone.push(this.modified_date);
+        this.store.modified_mode.push(this.modified_date);
       }
-      this.store.modified_mode = modifiedClone;
       console.log(this.store.modified_mode);
       this.selectedDate = null;
       this.modifiedDaysHighlight();
