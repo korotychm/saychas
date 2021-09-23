@@ -198,14 +198,13 @@ const StoreEdit = {
       this.selectedDate = null;
     },
     modifiedDaysHighlight() {
-      $('.vc-day').removeClass('modified_date');
+      $('.vc-day').removeClass('modified-date');
       for (item in this.store.modified_mode){
         let date = this.store.modified_mode[item].date,
             dateDay = date.split('.')[0],
             dateMonth = date.split('.')[1],
             dateYear = date.split('.')[2];
-        console.log('.id-' + dateYear + '-' + dateMonth + '-' + dateDay);
-        $('.id-' + dateYear + '-' + dateMonth + '-' + dateDay).addClass('modified_date');
+        $('.id-' + dateYear + '-' + dateMonth + '-' + dateDay).addClass('modified-date');
       }
     },
     checkTime(item){
