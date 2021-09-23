@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\StockBalanceRepository;
+use Application\Model\Traits\Searchable;
+
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,6 +17,16 @@ namespace Application\Model\Entity;
  */
 class StockBalance
 {
+
+     /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var StockBalanceRepository
+     */
+    public static StockBalanceRepository $repository;
 
     /**
      * @var int
