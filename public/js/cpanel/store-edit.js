@@ -197,6 +197,16 @@ const StoreEdit = {
     saveDate(){
       this.selectedDate = null;
     },
+    modifiedDaysHighlight() {
+      $('.vc-day').removeClass('modified_date');
+      for (item in this.store.modified_mode){
+        let date = this.store.modified_mode[item].date,
+            dateDay = date.split('.')[0],
+            dateMonth = date.split('.')[1],
+            dateYear = date.split('.')[2];
+        $('.id-' + dateYear + '-' + dateMonth + '-' + dateDay).addClass('modified_date');
+      }
+    },
     checkTime(item){
       let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
       if (!regex.test(this.store.operating_mode[item])){
@@ -289,6 +299,7 @@ const StoreEdit = {
               console.log(this.store);
               setTimeout(() => {
                 this.storeDaData();
+                this.modifiedDaysHighlight();
               }, 200);
               $('.main__loader').hide();
             }
