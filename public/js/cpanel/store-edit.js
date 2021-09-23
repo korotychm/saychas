@@ -71,10 +71,10 @@ const StoreEdit = {
                               <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.working_day_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.working_day_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.working_day_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.working_day_to" />
                                 </div>
                               </div>
                             </div>
@@ -82,10 +82,10 @@ const StoreEdit = {
                               <h2><span :class="{'input-error' : ((!store.operating_mode.saturday_from || !store.operating_mode.saturday_to) && errors)}">Суббота <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('saturday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.saturday_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.saturday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.saturday_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.saturday_to" />
                                 </div>
                               </div>
                             </div>
@@ -93,10 +93,10 @@ const StoreEdit = {
                               <h2><span :class="{'input-error' : ((!store.operating_mode.sunday_from || !store.operating_mode.sunday_to) && errors)}">Воскресенье <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('sunday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.sunday_from"/>
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.sunday_from"/>
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.sunday_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.sunday_to" />
                                 </div>
                               </div>
                             </div>
@@ -104,10 +104,10 @@ const StoreEdit = {
                               <h2><span :class="{'input-error' : ((!store.operating_mode.holiday_from || !store.operating_mode.holiday_to) && errors)}">Праздничные дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('holiday')"></span></h2>
                               <div class="input-group">
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.holiday_from" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.holiday_from" />
                                 </div>
                                 <div>
-                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="store.operating_mode.holiday_to" />
+                                  <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="store.operating_mode.holiday_to" />
                                 </div>
                               </div>
                             </div>
@@ -143,6 +143,16 @@ const StoreEdit = {
       selectedDate: null,
       store: {
         operating_mode: {}
+      }
+    }
+  },
+  watch: {
+    store: {
+      deep: true,
+      handler() {
+        for (item in this.store.operating_mode){
+          console.log(this.store.operating_mode[item]);
+        }
       }
     }
   },
