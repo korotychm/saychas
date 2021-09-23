@@ -134,7 +134,7 @@ const StoreEdit = {
                           </div>
                         </div>
                         <div class="store__calendar">
-                          <v-date-picker v-model='selectedDate' @click="modifiedDaysHighlight()" />
+                          <v-date-picker v-model='selectedDate' :min-date='new Date()' @update:page="modifiedDaysHighlight" />
                         </div>
                       </div>
                       <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
@@ -198,7 +198,6 @@ const StoreEdit = {
       this.selectedDate = null;
     },
     modifiedDaysHighlight() {
-      console.log('check');
       $('.vc-day').removeClass('modified-date');
       for (item in this.store.modified_mode){
         let date = this.store.modified_mode[item].date,
