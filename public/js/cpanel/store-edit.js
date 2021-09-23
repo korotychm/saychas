@@ -183,7 +183,7 @@ const StoreEdit = {
       }
     },
     selectedDate() {
-      if (this.selectedDate !== null){
+      if (this.selectedDate){
         let localedDate = this.selectedDate.toLocaleString("ru-RU",{
           day: 'numeric',
           month: 'numeric',
@@ -200,11 +200,14 @@ const StoreEdit = {
   },
   computed: {
     humanDate(){
-      return this.selectedDate.toLocaleString("ru-RU",{
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
+      if (this.selectedDate){
+        return this.selectedDate.toLocaleString("ru-RU",{
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+      return '';
     }
   },
   methods: {
