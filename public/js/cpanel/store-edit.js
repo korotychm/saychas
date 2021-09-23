@@ -230,6 +230,7 @@ const StoreEdit = {
     saveDate(){
       let index = this.checkModifiedDate();
       let modifiedClone = JSON.parse(JSON.stringify(this.store.modified_mode));
+      console.log(this.modified_date);
       if (index != -1){
         modifiedClone[index] == this.modified_date;
       } else {
