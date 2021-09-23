@@ -154,6 +154,9 @@ const StoreEdit = {
           this.checkTime(item);
         }
       }
+    },
+    selectedDate() {
+      console.log(this.selectedDate);
     }
   },
   methods: {

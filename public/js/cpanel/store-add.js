@@ -167,7 +167,23 @@ const StoreAdd = {
       }
     }
   },
+  watch: {
+    store: {
+      deep: true,
+      handler() {
+        for (item in this.store.operating_mode){
+          this.checkTime(item);
+        }
+      }
+    }
+  },
   methods: {
+    checkTime(item){
+      let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+      if (!regex.test(this.store.operating_mode[item])){
+        this.store.operating_mode[item] = '';
+      }
+    },
     dayOff(day) {
       if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
         this.store.operating_mode[day + '_to'] = '23:59';
