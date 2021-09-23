@@ -183,7 +183,7 @@ const StoreEdit = {
       }
     },
     selectedDate() {
-      if (this.selectedDate){
+      if (this.selectedDate !== null){
         let localedDate = this.selectedDate.toLocaleString("ru-RU",{
           day: 'numeric',
           month: 'numeric',
