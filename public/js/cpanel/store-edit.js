@@ -186,7 +186,7 @@ const StoreEdit = {
       return this.selectedDate.toLocaleString("ru-RU",{
         weekday: 'long',
         month: 'long',
-        year: 'numberic'
+        year: 'numeric'
       });
     }
   },
