@@ -32,14 +32,16 @@ const Products = {
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все бренды</div>
               <div class="custom-select__dropdown">
-                <label class="custom-select__option">
-                  <input type="radio" checked="checked" value="" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
-                  <span>Все бренды</span>
-                </label>
-                <label v-for="brand in filters.brands" class="custom-select__option">
-                  <input type="radio" :checked="(brand[0] === selectedFilters.brand_id)" :value="brand[0]" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
-                  <span>{{brand[1]}}</span>
-                </label>
+                <div class="custom-select__dropdown-inner">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
+                    <span>Все бренды</span>
+                  </label>
+                  <label v-for="brand in filters.brands" class="custom-select__option">
+                    <input type="radio" :checked="(brand[0] === selectedFilters.brand_id)" :value="brand[0]" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
+                    <span>{{brand[1]}}</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
