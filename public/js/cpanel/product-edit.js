@@ -574,7 +574,9 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
-    setAllCustomSelects();
+    setTimeout(function() {
+      setAllCustomSelects();
+    }, 200);
     $('.main__loader').hide();
   }
 }
@@ -588,7 +590,7 @@ $(document).on('focusout','.search-select__input',function(){
   el.removeClass('active')
   setTimeout(function() {
     el.css('pointer-events','none');
-  }, 300);
+  }, 500);
 });
 
 
