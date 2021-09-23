@@ -391,8 +391,9 @@ const ProductEdit = {
         let requestUrl = '/control-panel/update-product';
         if (categoryChange) {
           requestUrl = '/control-panel/request-category-characteristics';
+        } else {
+          this.errors = this.checkRequired();
         }
-        this.errors = this.checkRequired();
         if (!this.errors || categoryChange){
           const headers = { 'X-Requested-With': 'XMLHttpRequest' };
           let chars = JSON.parse(JSON.stringify(this.product.characteristics));
