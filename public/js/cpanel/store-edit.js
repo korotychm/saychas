@@ -146,6 +146,14 @@ const StoreEdit = {
       }
     }
   },
+  watch: {
+    store.operating_mode: {
+      deep: true,
+      handler() {
+        console.log('time has changed!');
+      }
+    }
+  },
   methods: {
     dayOff(day) {
       if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
@@ -253,23 +261,3 @@ const StoreEdit = {
     setAllCustomSelects();
   }
 }
-
-$(document).on('change','.timeinput',function(){
-  let val = $(this).val(),
-      hours = val.split(';')[0],
-      minutes = val.split(';')[1],
-      change = false
-
-  if (+hours > 23){
-    hours = 23;
-    change = true;
-  }
-  if (+minutes > 59){
-    hours = 59;
-    change = true;
-  }
-  val = hours + ':' + minutes;
-  if (change){
-    $(this).val(val).change();
-  }
-});
