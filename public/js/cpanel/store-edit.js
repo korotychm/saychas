@@ -198,6 +198,7 @@ const StoreEdit = {
       this.selectedDate = null;
     },
     modifiedDaysHighlight() {
+      console.log('check');
       $('.vc-day').removeClass('modified-date');
       for (item in this.store.modified_mode){
         let date = this.store.modified_mode[item].date,
