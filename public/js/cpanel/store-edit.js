@@ -134,7 +134,7 @@ const StoreEdit = {
                           </div>
                         </div>
                         <div class="store__calendar">
-                          <v-date-picker :attributes='calendarAttributes' v-model='selectedDate' :min-date='new Date()' @update:from-page="modifiedDaysHighlight" @update:to-page="modifiedDaysHighlight" />
+                          <v-date-picker v-model='selectedDate' :min-date='new Date()' @update:from-page="modifiedDaysHighlight" @update:to-page="modifiedDaysHighlight" />
                         </div>
                         <div v-html="highlightedStyles"></div>
                       </div>
@@ -163,14 +163,6 @@ const StoreEdit = {
       editable: true,
       selectedDate: null,
       highlightedStyles: '',
-      calendarAttributes: [
-        {
-          dates: [
-            new Date(2021, 9, 28),
-            new Date(2021, 9, 29)
-          ]
-        }
-      ],
       store: {
         operating_mode: {}
       }
@@ -211,14 +203,22 @@ const StoreEdit = {
       //$('.vc-day').removeClass('modified-date');
       let highlighted = '<style>';
       for (item in this.store.modified_mode){
+        if (highlighted != '<style>'){
+          highlighted + = ', ';
+        }
         let date = this.store.modified_mode[item].date,
             dateDay = date.split('.')[0],
             dateMonth = date.split('.')[1],
             dateYear = date.split('.')[2],
             className = '.id-' + dateYear + '-' + dateMonth + '-' + dateDay;
-        highlighted += (className + '{background: var(--red) !important };');
+        highlighted += className + ' .vc-day-content';
         //$('.id-' + dateYear + '-' + dateMonth + '-' + dateDay).addClass('modified-date');
       }
+      highlighted += `{
+        background: var(--red) !important;
+        font-weight: bold !important;
+        color #fff: !important;
+      }`;
       highlighted += '</style>';
       this.highlightedStyles = highlighted;
     },
