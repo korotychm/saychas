@@ -134,7 +134,7 @@ const StoreEdit = {
                           </div>
                         </div>
                         <div class="store__calendar">
-                          <v-date-picker v-model='selectedDate' />
+                          <v-date-picker v-model='selectedDate' @click="modifiedDaysHighlight()" />
                         </div>
                       </div>
                       <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
