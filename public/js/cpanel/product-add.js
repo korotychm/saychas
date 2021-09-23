@@ -98,26 +98,28 @@ const ProductAdd = {
                                         <div class="custom-select custom-select--radio">
                                           <div class="custom-select__label input"></div>
                                           <div class="custom-select__dropdown">
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
-                                              <span>Без НДС</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
-                                              <span>0%</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
-                                              <span>10%</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
-                                              <span>18%</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
-                                              <span>20%</span>
-                                            </label>
+                                            <div class="custom-select__dropdown-inner">
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
+                                                <span>Без НДС</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
+                                                <span>0%</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
+                                                <span>10%</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
+                                                <span>18%</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
+                                                <span>20%</span>
+                                              </label>
+                                            </div>
                                           </div>
                                         </div>
                                     </div>
@@ -132,14 +134,16 @@ const ProductAdd = {
                                             <div class="custom-select__label input"></div>
                                             <!-- выпадающий список -->
                                             <div class="custom-select__dropdown">
-                                              <label class="custom-select__option">
-                                                <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
-                                                <span>Не выбрано</span>
-                                              </label>
-                                              <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
-                                                <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
-                                                <span>{{val.title}}</span>
-                                              </label>
+                                              <div class="custom-select__dropdown-inner">
+                                                <label class="custom-select__option">
+                                                  <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <span>Не выбрано</span>
+                                                </label>
+                                                <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                                  <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <span>{{val.title}}</span>
+                                                </label>
+                                              </div>
                                             </div>
                                             <!-- /выпадающий список -->
                                           </div>
@@ -148,10 +152,12 @@ const ProductAdd = {
                                             <div class="custom-select__label input">Добавить</div>
                                             <!-- выпадающий список -->
                                             <div class="custom-select__dropdown">
-                                              <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
-                                                <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
-                                                <span>{{val.title}}</span>
-                                              </label>
+                                              <div class="custom-select__dropdown-inner">
+                                                <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                                  <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <span>{{val.title}}</span>
+                                                </label>
+                                              </div>
                                             </div>
                                             <!-- /выпадающий список -->
                                             <!-- выбранные значения -->

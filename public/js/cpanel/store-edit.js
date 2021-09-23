@@ -44,18 +44,20 @@ const StoreEdit = {
                           <div class="custom-select custom-select--radio">
                             <div class="custom-select__label input"></div>
                             <div class="custom-select__dropdown">
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="store.status_id == 0" value="0" name="status" v-model="store.status_id" />
-                                <span>Работает по графику</span>
-                              </label>
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="store.status_id == 1" value="1" name="status" v-model="store.status_id" />
-                                <span>Временно не работает</span>
-                              </label>
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="store.status_id == 2" value="2" name="status" v-model="store.status_id" />
-                                <span>Закрыт</span>
-                              </label>
+                              <div class="custom-select__dropdown-inner">
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="store.status_id == 0" value="0" name="status" v-model="store.status_id" />
+                                  <span>Работает по графику</span>
+                                </label>
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="store.status_id == 1" value="1" name="status" v-model="store.status_id" />
+                                  <span>Временно не работает</span>
+                                </label>
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="store.status_id == 2" value="2" name="status" v-model="store.status_id" />
+                                  <span>Закрыт</span>
+                                </label>
+                              </div>
                             </div>
                           </div>
                           <p>Статус устанавливает глобальный режим работы магазина.</p>

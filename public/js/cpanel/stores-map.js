@@ -15,14 +15,16 @@ const StoresMap = {
               <div class="custom-select custom-select--radio">
                 <div class="custom-select__label input">Все статусы</div>
                 <div class="custom-select__dropdown">
-                  <label class="custom-select__option">
-                    <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
-                    <span>Все статусы</span>
-                  </label>
-                  <label v-for="status in filters.statuses" class="custom-select__option">
-                    <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
-                    <span>{{status[1]}}</span>
-                  </label>
+                  <div class="custom-select__dropdown-inner">
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <span>Все статусы</span>
+                    </label>
+                    <label v-for="status in filters.statuses" class="custom-select__option">
+                      <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <span>{{status[1]}}</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>

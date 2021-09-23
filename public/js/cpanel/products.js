@@ -15,14 +15,16 @@ const Products = {
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
-                <label class="custom-select__option">
-                  <input type="radio" checked="checked" value="" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
-                  <span>Все категории</span>
-                </label>
-                <label v-for="category in filters.categories" class="custom-select__option">
-                  <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
-                  <span>{{category[1]}}</span>
-                </label>
+                <div class="custom-select__dropdown-inner">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <span>Все категории</span>
+                  </label>
+                  <label v-for="category in filters.categories" class="custom-select__option">
+                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <span>{{category[1]}}</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
