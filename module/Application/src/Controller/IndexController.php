@@ -37,6 +37,7 @@ use Application\Model\Entity\Delivery;
 use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\Brand;
 use Application\Model\Entity\Store;
+use Application\Model\Entity\StockBalance;
 //use Application\Model\Entity\Category;
 //use Application\Model\Entity\ProductHistory;
 use Laminas\Json\Json;
@@ -49,6 +50,7 @@ use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
@@ -135,6 +137,7 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(Store::class);
+        $this->entityManager->initRepository(StockBalance::class);
         //$this->entityManager->initRepository(Category::class);
     }
 
@@ -552,17 +555,11 @@ class IndexController extends AbstractActionController
         }
         $categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
         $category = $categories[$category_id];
-        $title = $category["title"];
-        $vwm = [
-            "content" => "",
-            "title" => $title,
-        ];
-        return new ViewModel($vwm);
+        return new ViewModel(["title" => $category["title"],]);
     }
     
     public function brandProductsAction()
     {
-        
         $brand_id = $this->params()->fromRoute('brand_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($brand = Brand::find(["id"=> $brand_id ]))){
@@ -572,12 +569,8 @@ class IndexController extends AbstractActionController
             return $view->setTemplate('error/404.phtml');
         }
         $brandTitle = $brand->getTitle();
-        $categories = $this->getBrandCategories($brand_id); //$this->getBrandCategories($brand_id);
-        //if (empty($category_id)) {
-            $categoryTitle = Resource::THE_ALL_PRODUCTS; 
-        //}
-        
-        
+        $categories = $this->getBrandCategories($brand_id); 
+           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
         $breadCrumbs[]=[null, $brandTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
@@ -585,30 +578,22 @@ class IndexController extends AbstractActionController
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
-        /*$categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
-        $category = $categories[$category_id];
-        $title = $category["title"];*/
-        //$vwm = ['breadCrumbs' => $breadCrumbs,'id' => $brand_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,];
         return new ViewModel(['breadCrumbs' => $breadCrumbs,'id' => $brand_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,]);
     }
+    
     public function storeProductsAction()
-    {
-        
+    {        
         $store_id = $this->params()->fromRoute('store_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
-        if (empty($brand = Store::find(["id"=> $store_id ]))){
+        if (empty($store = Store::find(["id"=> $store_id ]))){
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_404);
             $view = new ViewModel();
             return $view->setTemplate('error/404.phtml');
         }
-        $brandTitle = $brand->getTitle();
-        $categories = $this->getBrandCategories($brand_id); //$this->getBrandCategories($brand_id);
-        //if (empty($category_id)) {
-            $categoryTitle = Resource::THE_ALL_PRODUCTS; 
-        //}
-        
-        
+        $brandTitle = $store->getTitle();
+        $categories = $this->getStoreCategories($store_id); //$this->getBrandCategories($brand_id);
+        $categoryTitle = Resource::THE_ALL_PRODUCTS; 
         $breadCrumbs[]=[null, $brandTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
@@ -616,37 +601,30 @@ class IndexController extends AbstractActionController
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
-        /*$categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
-        $category = $categories[$category_id];
-        $title = $category["title"];*/
-        $vwm = [
-            'breadCrumbs' => $breadCrumbs,
-            'id' => $store_id,
-            'category_id' => $category_id,
-            "title" => $categoryTitle."  ".$brandTitle,
-        ];
-        return new ViewModel($vwm);
+        return new ViewModel( ['breadCrumbs' => $breadCrumbs,'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,]);
     }
     
+    
+    private function getStoreCategories($store_id)
+    {
+        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
+        $products = ArrayHelper::extractProdictsId($storeProducts);
+        $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        foreach ($storeProductsCategories as $category){
+            $categoriesArray[] = $category->getCategoryId();
+        }
+       return $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
+            
+    }
     
     
     private function getBrandCategories($brand_id)
     {
-        //$return = [];
-        $param['where'] = ["brand_id" => $brand_id];
-        $param['columns'] = ["category_id"];                
-        $param['group'] = ["category_id"];                
-        
         $brandProductsCategories = $this->productRepository->findAll(["where" => ["brand_id" => $brand_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
         foreach ($brandProductsCategories as $category){
             $categoriesArray[] = $category->getCategoryId();
         }
-      // exit (print_r($categoriesArray));
-        $brandCategories = $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
-       //  exit (print_r($brandCategories));
-        return $brandCategories;
-        //return $return  ;
-            
+        return  $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
     }
     
     
@@ -662,7 +640,7 @@ class IndexController extends AbstractActionController
 
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);
-        $userData = $user->getUserData();
+        //$userData = 
         $phone = $user->getPhone();
         $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
         $paycards =($userPaycards->count())?$userPaycards:null;
@@ -676,7 +654,7 @@ class IndexController extends AbstractActionController
         $title = ($user->getName()) ? $user->getName() : "Войти на сайт";
         return new ViewModel([
             "user" => $user,
-            "userData" => $userData,
+            "userData" => $user->getUserData(),
             "userPhone" => $userPhone,
             "title" => $title, //."/$category_id",
             "id" => "userid: " . $userId,

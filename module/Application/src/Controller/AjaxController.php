@@ -54,7 +54,7 @@ use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 //use Throwable;
-//use Application\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController
@@ -833,16 +833,17 @@ class AjaxController extends AbstractActionController
     private function getFiltredProductsId($where)
     {
         $products = ProductCharacteristic::findAll(["where" => $where, "columns" => ['product_id'], "group" => "product_id"])->toArray();
-        return $this->extractProdictsId($products);
+        //return $this->extractProdictsId($products);
+        return ArrayHelper::extractProdictsId($products);
     }
-    private function extractProdictsId ($products)
-    {
-        $filtredProducts = [];
-        foreach ($products as $p) {
-            $filtredProducts[] = $p["product_id"];
-        }
-        return $filtredProducts;
-    }
+//    private function extractProdictsId ($products)
+//    {
+//        $filtredProducts = [];
+//        foreach ($products as $p) {
+//            $filtredProducts[] = $p["product_id"];
+//        }
+//        return $filtredProducts;
+//    }
 
     /**
      * Return where clause for query
@@ -868,8 +869,9 @@ class AjaxController extends AbstractActionController
     }
     private function getWhereStore($params): Where
     {        
-        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"]);
-        $products = $this->extractProdictsId($storeProducts);
+        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
+        $products =  ArrayHelper::extractProdictsId($storeProducts);
+        //        $this->extractProdictsId($storeProducts);
         $where = new Where();
         $where->in('product_id',$products );
         if (!empty($params['category_id'])){

@@ -144,5 +144,15 @@ class ArrayHelper
 
         return $allParentIds;
     }
+    
+    public static function extractProdictsId ($products)
+    {
+        $filtredProducts = [];
+        foreach ($products as $p) {
+            $filtredProducts[] = $p["product_id"];
+        }
+        return $filtredProducts;
+    }
+
 
 }
