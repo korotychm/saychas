@@ -184,7 +184,7 @@ const StoreEdit = {
     },
     selectedDate() {
       if (this.selectedDate){
-        if (checkModifiedDate() != -1){
+        if (this.checkModifiedDate() != -1){
           this.modified_date.time_from = this.store.modified_mode[index].time_from;
           this.modified_date.time_to = this.store.modified_mode[index].time_to;
         } else {
@@ -217,7 +217,7 @@ const StoreEdit = {
   },
   methods: {
     delDate(){
-      let index = checkModifiedDate();
+      let index = this.checkModifiedDate();
       if (index != -1){
         this.store.modified_mode.splice(index, 1);
       }
@@ -225,7 +225,7 @@ const StoreEdit = {
       this.selectedDate = null;
     },
     saveDate(){
-      let index = checkModifiedDate();
+      let index = this.checkModifiedDate();
       if (index != -1){
         this.store.modified_mode[index] == this.modified_date;
       } else {
