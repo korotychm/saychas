@@ -217,7 +217,7 @@ const StoreEdit = {
       highlighted += `{
         background: var(--red) !important;
         font-weight: bold !important;
-        color #fff: !important;
+        color: #fff: !important;
       }`;
       highlighted += '</style>';
       this.highlightedStyles = highlighted;
