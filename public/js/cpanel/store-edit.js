@@ -253,3 +253,23 @@ const StoreEdit = {
     setAllCustomSelects();
   }
 }
+
+$(document).on('change','.timeinput',function(){
+  let val = $(this).val(),
+      hours = val.split(';')[0],
+      minutes = val.split(';')[1],
+      change = false
+
+  if (+hours > 23){
+    hours = 23;
+    change = true;
+  }
+  if (+minutes > 59){
+    hours = 59;
+    change = true;
+  }
+  val = hours + ':' + minutes;
+  if (change){
+    $(this).val(val).change();
+  }
+});
