@@ -194,15 +194,6 @@ const StoreEdit = {
       }
     }
   },
-  checkModifiedDate() {
-    let localedDate = this.selectedDate.toLocaleString("ru-RU",{
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric'
-    });
-    this.modified_date.date = localedDate;
-    return (this.store.modified_mode.findIndex(x => x.date === localedDate));
-  },
   computed: {
     humanDate(){
       if (this.selectedDate){
@@ -216,6 +207,15 @@ const StoreEdit = {
     }
   },
   methods: {
+    checkModifiedDate() {
+      let localedDate = this.selectedDate.toLocaleString("ru-RU",{
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      });
+      this.modified_date.date = localedDate;
+      return (this.store.modified_mode.findIndex(x => x.date === localedDate));
+    },
     delDate(){
       let index = this.checkModifiedDate();
       if (index != -1){
