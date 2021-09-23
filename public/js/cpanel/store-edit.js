@@ -184,7 +184,6 @@ const StoreEdit = {
     },
     selectedDate() {
       if (this.selectedDate){
-        this.modified_date.date = localedDate;
         let index = this.checkModifiedDate();
         console.log(index);
         if (index != -1){
@@ -216,6 +215,7 @@ const StoreEdit = {
         month: 'numeric',
         year: 'numeric'
       });
+      this.modified_date.date = localedDate;
       return (this.store.modified_mode.findIndex(x => x.date === localedDate));
     },
     delDate(){
