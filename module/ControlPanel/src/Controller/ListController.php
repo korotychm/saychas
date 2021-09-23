@@ -137,7 +137,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
             'provider_id' => $identity['provider_id'],
         ];
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
-        $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
+        $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1], ]);
 
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
     }
@@ -168,7 +168,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         if (!empty($post['search'])) {
             $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
         }
-        $cursor = $manager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        $cursor = $manager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where, 'sort' => ['id' => -1],]);
         return new JsonModel(['data' => $cursor,]);
     }
 
