@@ -35,7 +35,8 @@ use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\Brand;
-use Application\Model\Entity\Category;
+use Application\Model\Entity\Store;
+//use Application\Model\Entity\Category;
 //use Application\Model\Entity\ProductHistory;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
@@ -132,6 +133,7 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(ProductHistory::class);
         $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(Brand::class);
+        $this->entityManager->initRepository(Store::class);
         //$this->entityManager->initRepository(Category::class);
     }
 
@@ -193,59 +195,59 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl('/my-login');
     }
 
-    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
-    {
-        $flags = [];
-        foreach ($characteristics as $key => $value) {
-            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
-            if (null == $found) {
-                $flags[$key] = false;
-                continue;
-            }
-            $type = $found->getType();
-            switch ($type) {
-                case CharacteristicRepository::INTEGER_TYPE:
-                    list($left, $right) = explode(';', $value[0]);
-                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
-                    break;
-                case CharacteristicRepository::BOOL_TYPE:
-                    $flags[$key] = ($found->getValue() == $value);
-                    break;
-                default:
-                    $flags[$key] = in_array($found->getValue(), $value);
-                    break;
-            }
-        }
-        foreach ($flags as $f) {
-            if (!$f) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function getProducts($params)
-    {
-        $where = new \Laminas\Db\Sql\Where();
-        list($low, $high) = explode(';', $params['priceRange']);
-        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-        $where->equalTo('category_id', $params['category_id']);
-        //$where->in('category_id', $params['category_id']);
-
-        unset($params['offset']);
-        unset($params['limit']);
-        $params['where'] = $where;
-
-        $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = [];
-        foreach ($products as $product) {
-            $matchResult = $this->matchProduct($product, $params['characteristics']);
-            if ($matchResult) {
-                $filteredProducts[] = $product;
-            }
-        }
-        return $filteredProducts;
-    }
+//    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
+//    {
+//        $flags = [];
+//        foreach ($characteristics as $key => $value) {
+//            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
+//            if (null == $found) {
+//                $flags[$key] = false;
+//                continue;
+//            }
+//            $type = $found->getType();
+//            switch ($type) {
+//                case CharacteristicRepository::INTEGER_TYPE:
+//                    list($left, $right) = explode(';', $value[0]);
+//                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
+//                    break;
+//                case CharacteristicRepository::BOOL_TYPE:
+//                    $flags[$key] = ($found->getValue() == $value);
+//                    break;
+//                default:
+//                    $flags[$key] = in_array($found->getValue(), $value);
+//                    break;
+//            }
+//        }
+//        foreach ($flags as $f) {
+//            if (!$f) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//
+//    private function getProducts($params)
+//    {
+//        $where = new \Laminas\Db\Sql\Where();
+//        list($low, $high) = explode(';', $params['priceRange']);
+//        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+//        $where->equalTo('category_id', $params['category_id']);
+//        //$where->in('category_id', $params['category_id']);
+//
+//        unset($params['offset']);
+//        unset($params['limit']);
+//        $params['where'] = $where;
+//
+//        $products = $this->handBookRelatedProductRepository->findAll($params);
+//        $filteredProducts = [];
+//        foreach ($products as $product) {
+//            $matchResult = $this->matchProduct($product, $params['characteristics']);
+//            if ($matchResult) {
+//                $filteredProducts[] = $product;
+//            }
+//        }
+//        return $filteredProducts;
+//    }
 
     public function clientOrdersAction()
     {
@@ -534,9 +536,9 @@ class IndexController extends AbstractActionController
         } else {
             $breadCrumbs = [];
         }
-        $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
-        $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
+        //$categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
+        //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
+        //$filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
         return new ViewModel([ "catalog" => $categories,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
@@ -585,8 +587,38 @@ class IndexController extends AbstractActionController
         /*$categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
         $category = $categories[$category_id];
         $title = $category["title"];*/
+        //$vwm = ['breadCrumbs' => $breadCrumbs,'id' => $brand_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,];
+        return new ViewModel($vwm);
+    }
+    public function storeProductsAction()
+    {
+        
+        $store_id = $this->params()->fromRoute('store_id', '');
+        $category_id = $this->params()->fromRoute('category_id', '');
+        if (empty($brand = Store::find(["id"=> $store_id ]))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
+        $brandTitle = $brand->getTitle();
+        $categories = $this->getBrandCategories($brand_id); //$this->getBrandCategories($brand_id);
+        //if (empty($category_id)) {
+            $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        //}
+        
+        
+        $breadCrumbs[]=[null, $brandTitle];
+        foreach ($categories as $category) {
+            if ($category->getId() == $category_id) {
+                $categoryTitle =  $category->getTitle();
+            }
+            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        /*$categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
+        $category = $categories[$category_id];
+        $title = $category["title"];*/
         $vwm = [
-            "content" => "",
             'breadCrumbs' => $breadCrumbs,
             'id' => $brand_id,
             'category_id' => $category_id,
@@ -594,6 +626,9 @@ class IndexController extends AbstractActionController
         ];
         return new ViewModel($vwm);
     }
+    
+    
+    
     private function getBrandCategories($brand_id)
     {
         //$return = [];

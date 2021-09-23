@@ -302,6 +302,17 @@ return [
                 ],
             ],
             
+            'store' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/store/:store_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'storeProducts',
+                    ],
+                ],
+            ],
+            
             'basket' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -847,6 +858,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'getProductsBrand',
+                    ],
+                ],
+            ],
+            'ajax-get-products-store' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-store',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getProductsStore',
                     ],
                 ],
             ],

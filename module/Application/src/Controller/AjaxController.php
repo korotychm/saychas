@@ -1056,6 +1056,14 @@ class AjaxController extends AbstractActionController
         return new JsonModel($products);
         //return new JsonModel($post);
     }
+    public function getProductsStoreAction()
+    {
+        $post = $this->getRequest()->getPost();
+        //$products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId ]);
+        //return new JsonModel($products);
+        return new JsonModel($post);
+    }
+
 
     
 
