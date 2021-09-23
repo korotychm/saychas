@@ -134,7 +134,7 @@ const StoreEdit = {
                           </div>
                         </div>
                         <div class="store__calendar">
-                          <v-date-picker v-model='selectedDate' :min-date='new Date()' @update:page="modifiedDaysHighlight" />
+                          <v-date-picker v-model='selectedDate' :min-date='new Date()' :from-page.sync="modifiedDaysHighlight" @update:frompage="modifiedDaysHighlight" @update:page="modifiedDaysHighlight" />
                         </div>
                       </div>
                       <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
