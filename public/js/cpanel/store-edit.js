@@ -136,15 +136,7 @@ const StoreEdit = {
                         <div class="store__calendar">
                           <v-date-picker :attributes='calendarAttributes' v-model='selectedDate' :min-date='new Date()' @update:from-page="modifiedDaysHighlight" @update:to-page="modifiedDaysHighlight" />
                         </div>
-                        <div v-for="item in highlighted">
-                          <style>
-                            {{ item }} : {
-                              background: var(--red) !important;
-                              color: #fff !important;
-                              font-weight: bold !important;
-                            }
-                          </style>
-                        </div>
+                        <div v-html="highlitedStyles"></div>
                       </div>
                       <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
                       <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
@@ -170,7 +162,7 @@ const StoreEdit = {
       errors: false,
       editable: true,
       selectedDate: null,
-      highlighted: [],
+      highlightedStyles: '',
       calendarAttributes: [
         {
           dates: [
@@ -217,17 +209,18 @@ const StoreEdit = {
     },
     modifiedDaysHighlight() {
       //$('.vc-day').removeClass('modified-date');
-      let highlighted = [];
+      let highlighted = '<style>';
       for (item in this.store.modified_mode){
         let date = this.store.modified_mode[item].date,
             dateDay = date.split('.')[0],
             dateMonth = date.split('.')[1],
             dateYear = date.split('.')[2],
             className = '.id-' + dateYear + '-' + dateMonth + '-' + dateDay;
-        highlighted.push(className);
+        highlighted += (className + '{background: var(--red) !important };');
         //$('.id-' + dateYear + '-' + dateMonth + '-' + dateDay).addClass('modified-date');
       }
-      this.highlighted = highlighted;
+      highlighted += '</style>';
+      this.highlightedStyles = highlighted;
     },
     checkTime(item){
       let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
