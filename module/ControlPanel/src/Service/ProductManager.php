@@ -292,7 +292,8 @@ class ProductManager extends ListManager implements LoadableInterface
         
         //foreach($product->characteristics as &$c) {
         foreach($characteristics as &$c) {
-            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            //$charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['parent_category_id'], $c['id'])]);
             $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
             switch ($c['type']) {
                 case Resource::HEADER:
@@ -371,7 +372,8 @@ class ProductManager extends ListManager implements LoadableInterface
 //        $product['countries'] = Country::findAll([])->toArray();
         
         foreach($product['characteristics'] as &$c) {
-            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            //$charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['category_id'], $c['id'])]);
+            $charact = Characteristic::find(['id' => $this->fullCharacteristicId($product['parent_category_id'], $c['id'])]);
             $c['characteristic_name'] = (null == $charact) ? '' : $charact->getTitle();
             switch ($c['type']) {
                 case Resource::HEADER:

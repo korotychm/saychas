@@ -89,7 +89,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $result = $this->getManagerInfo($routeMatch);
         $manager = $result['manager'];
         $managerName = $result['manager_name'];
-        
+
         $post = $this->getRequest()->getPost()->toArray();
         //$post['is_test'] = true;
 //        $is_test = 'false';
@@ -116,15 +116,11 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
 //            if (!$access) {
 //                $this->getResponse()->setStatusCode(403);
 //                return;
-//            }            
+//            }
 //        }
 
-//        $utf8 = mb_convert_encoding($identity['login'], "UTF-8", "Windows-1251 (CP1251)");
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
-//        $credentials[] = "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8";
-//        $credentials[] = "Accept-Charset: utf-8, *;q=0.1"; // windows-1251
-//        $credentials[] = "Accept-Encoding: deflate, identity, *;q=0";
-        
+
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
@@ -173,3 +169,20 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        $utf8 = mb_convert_encoding($identity['login'], "UTF-8", "Windows-1251 (CP1251)");
+//        $credentials[] = "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8";
+//        $credentials[] = "Accept-Charset: utf-8, *;q=0.1"; // windows-1251
+//        $credentials[] = "Accept-Encoding: deflate, identity, *;q=0";
