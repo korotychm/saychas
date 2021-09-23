@@ -224,6 +224,7 @@ const StoreEdit = {
       }
       console.log(this.store.modified_mode);
       this.selectedDate = null;
+      this.modifiedDaysHighlight();
     },
     saveDate(){
       let index = this.checkModifiedDate();
@@ -234,6 +235,7 @@ const StoreEdit = {
       }
       console.log(this.store.modified_mode);
       this.selectedDate = null;
+      this.modifiedDaysHighlight();
     },
     modifiedDaysHighlight() {
       //$('.vc-day').removeClass('modified-date');
