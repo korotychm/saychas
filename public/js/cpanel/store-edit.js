@@ -81,7 +81,7 @@ const StoreEdit = {
                                 </div>
                             </div>
                             <div class="store__timetable-additional-btns">
-                              <div class="btn btn--secondary" @click="delDate">Установить стандартный режим</div>
+                              <div class="btn btn--secondary" @click="delDate">Сбросить</div>
                               <div class="btn btn--primary" @click="saveDate">Сохранить</div>
                             </div>
 
