@@ -215,7 +215,7 @@ const StoreEdit = {
         month: 'numeric',
         year: 'numeric'
       });
-      console.log(this.selectedDate,localedDate);
+      console.log(this.store.modified_mode);
       this.modified_date.date = localedDate;
       return (this.store.modified_mode.findIndex(x => x.date === localedDate));
     },
