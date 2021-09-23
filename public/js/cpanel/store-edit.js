@@ -65,8 +65,28 @@ const StoreEdit = {
                         </div>
                       </div>
                       <div class="store__timetable">
+
                         <div class="store__timetable-inputs">
-                          <div class="store__timetable-main active">
+                          <div v-if="selectedDate" class="store__timetable-additional">
+
+                            <div class="store__timetable-item product__attribute">
+                              <h2>Выбранная дата <span class="store__timetable-trigger"></span></h2>
+                                <div class="input-group">
+                                  <div>
+                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" />
+                                  </div>
+                                  <div>
+                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" />
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="store__timetable-additional-btns">
+                              <div class="btn btn--secondary" @click="delDate">Удалить</div>
+                              <div class="btn btn--primary" @click="saveDate">Сохранить</div>
+                            </div>
+
+                          </div>
+                          <div v-else class="store__timetable-main">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
                               <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
@@ -163,6 +183,12 @@ const StoreEdit = {
     }
   },
   methods: {
+    delDate(){
+      this.selectedDate = null;
+    },
+    saveDate(){
+      this.selectedDate = null;
+    },
     checkTime(item){
       let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
       if (!regex.test(this.store.operating_mode[item])){
