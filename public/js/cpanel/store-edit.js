@@ -136,13 +136,15 @@ const StoreEdit = {
                         <div class="store__calendar">
                           <v-date-picker :attributes='calendarAttributes' v-model='selectedDate' :min-date='new Date()' @update:from-page="modifiedDaysHighlight" @update:to-page="modifiedDaysHighlight" />
                         </div>
-                        <style v-for="item in highlighted">
-                          {{ item }} : {
-                            background: var(--red) !important;
-                            color: #fff !important;
-                            font-weight: bold !important;
-                          }
-                        </style>
+                        <div v-for="item in highlighted">
+                          <style>
+                            {{ item }} : {
+                              background: var(--red) !important;
+                              color: #fff !important;
+                              font-weight: bold !important;
+                            }
+                          </style>
+                        </div>
                       </div>
                       <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
                       <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
