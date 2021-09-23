@@ -231,7 +231,7 @@ const StoreEdit = {
     saveDate(){
       let index = this.checkModifiedDate();
       if (index != -1){
-        this.store.modified_mode[index] = this.modified_date;
+        this.store.modified_mode[index] = JSON.parse(JSON.stringify(this.modified_date));
       } else {
         this.store.modified_mode.push(this.modified_date);
       }
