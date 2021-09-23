@@ -147,7 +147,7 @@ const StoreEdit = {
     }
   },
   watch: {
-    store.operating_mode: {
+    store: {
       deep: true,
       handler() {
         console.log('time has changed!');
