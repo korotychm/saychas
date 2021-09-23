@@ -157,6 +157,7 @@ const StoreEdit = {
     },
     selectedDate() {
       console.log(this.selectedDate);
+      setTimeout(() => this.selectedDate = null, 2000);
     }
   },
   methods: {
