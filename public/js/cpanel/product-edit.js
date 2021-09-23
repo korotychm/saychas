@@ -574,9 +574,7 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
-    setTimeout(function() {
-      setAllCustomSelects();
-    }, 200);
+    setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
@@ -665,9 +663,11 @@ function setCustomSelectLabels(el) {
 }
 
 function setAllCustomSelects() {
-  $('.custom-select--radio').each(function(){
-    setCustomSelectLabels($(this));
-  });
+  setTimeout(function(){
+    $('.custom-select--radio').each(function(){
+      setCustomSelectLabels($(this));
+    });
+  }, 300);
 }
 
 $(document).on('change','.custom-select--radio input',function(){
