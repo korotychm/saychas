@@ -70,7 +70,7 @@ const StoreEdit = {
                           <div v-if="selectedDate" class="store__timetable-additional">
 
                             <div class="store__timetable-item product__attribute">
-                              <h2>Выбранная дата <span class="store__timetable-trigger"></span></h2>
+                              <h2>{{ humanDate }} <span class="store__timetable-trigger"></span></h2>
                                 <div class="input-group">
                                   <div>
                                     <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" />
@@ -179,6 +179,11 @@ const StoreEdit = {
       if (this.selectedDate){
         console.log(this.selectedDate);
       }
+    }
+  },
+  computed: {
+    humanDate(){
+      return this.selectedDate.toLocaleString();
     }
   },
   methods: {
