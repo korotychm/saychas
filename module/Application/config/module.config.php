@@ -18,6 +18,7 @@ use Application\Controller\Factory\IndexControllerFactory;
 use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
+use Application\Controller\Factory\ProductCardsControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Application\Controller\Factory\FtpControllerFactory;
 use Application\Controller\Factory\AcquiringControllerFactory;
@@ -846,7 +847,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-fltr',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'setFilterForCategory',
                     ],
                 ],
@@ -856,7 +857,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-products-categories',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getProductCategories',
                     ],
                 ],
@@ -866,7 +867,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-products-brand',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getProductsBrand',
                     ],
                 ],
@@ -876,11 +877,22 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-products-store',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getProductsStore',
                     ],
                 ],
             ],
+             'ajax-get-products-provider' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-provider',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsProvider',
+                    ],
+                ],
+            ],
+            
             
             'ajax-fltr-json' => [
                 'type'    => Literal::class,
@@ -1171,6 +1183,7 @@ return [
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
             Controller\FtpController::class => FtpControllerFactory::class,
             Controller\AcquiringController::class => AcquiringControllerFactory::class,
+            Controller\ProductCardsController::class => ProductCardsControllerFactory::class,
         ],
     ],
     'laminas-cli' => [

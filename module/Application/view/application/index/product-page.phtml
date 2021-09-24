@@ -27,7 +27,9 @@ $this->headTitle($this->title, 'PREPEND');
                    "price_formated" => $this->price_formated,
                    "id" => $this->id,
                    "brand" => $this->brand,
-                   "image_path" => $this->imagePath('brand'),
+                   "provider" => $this->provider,
+                   "image_path_brand" => $this->imagePath('brand'),
+                    "image_path_provider" => $this->imagePath('provider'),
                     "isFav" => $this->isFav,
                 ])
         ?>

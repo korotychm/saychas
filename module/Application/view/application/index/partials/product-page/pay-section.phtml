@@ -56,10 +56,18 @@
             <span><?= ($isFav) ? Resource::REMOVE_FROM_FAVORITES : Resource::ADD_TO_FAVORITES?></span>
         </div>
     </div>
-    <div class="product-card__store">
+<?php if ($brand['id']):?><div class="product-card__store">
        <div class="product-card__store-logo">
-            <img src="<?=$image_path.'/'.$brand['image']?>" />
+            <img src="<?=$image_path_brand.'/'.$brand['image']?>" />
        </div>
-        <a href="/brand/<?=$brand['id']?>">Все товары магазина →</a>
+        <a href="/brand/<?=$brand['id']?>">Все товары <?=$brand['title']?> →</a>
     </div>
+<?php endIf; ?>    
+<?php if ($provider['id']):?><div class="product-card__store">
+       <div class="product-card__store-logo">
+            <img src="<?=$image_path_provider.'/'.$provider['image']?>" />
+       </div>
+        <a href="/seller/<?=$provider['id']?>">Все товары постащика →</a>
+    </div>
+<?php endIf; ?>    
 </div>

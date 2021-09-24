@@ -260,10 +260,21 @@ class HtmlProviderService {
             $productImages[] = $product->getHttpUrl();
             $vendor = $product->getVendorCode();
             $productId = $product->getId();
+            
             $return["brand"]["title"] = $product->getBrandTitle();
             $return["brand"]["id"] = $product->getBrandId();
-            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]]);
-            $return["brand"]["image"] = $brandobject->getImage();
+            $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
+            
+            
+            $return["provider"]["id"] = $product->getProviderId();
+            //exit($return["provider"]["id"]);
+            $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
+                    
+            $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
+            $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
+            
+            
+            
             $description = $product->getDescription();
             if (!empty($description)) {
                 $return['description']["text"] = StringHelper::eolFormating($description);

@@ -495,30 +495,36 @@ class IndexController extends AbstractActionController
             return $view->setTemplate('error/404.phtml');
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        $categoryId = $productPage['categoryId'];
+        //$categoryId = $productPage['categoryId'];
         $breadCrumbs = [];
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($categoryId))) {
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) {
             $breadCrumbs = array_reverse($matherCategories);
         }
+        $productPage['breadCrumbs'] = $breadCrumbs;
+        $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
-        $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm = [
-            'id' => $product_id,
-            'title' => $productPage['title'],
-            'images' => $productPage['images'],
-            'category' => $categoryTitle,
-            'characteristics' => $productPage["characteristics"],
-            'product' => $productPage['card'],
-            'description' => $productPage['description'],
-            'append' => $productPage['appendParams'],
-            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
-            'price' => $productPage['price'],
-            'brand' => $productPage['brand'],
-            'price_formated' => $productPage['price_formated'],
-            'breadCrumbs' => $breadCrumbs,
-        ];
-        return new ViewModel($vwm);
+        $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
+        $productPage['id'] = $product_id;
+       
+//        
+//        $vwm = [
+//            'id' => $product_id,
+//            'title' => $productPage['title'],
+//            'images' => $productPage['images'],
+//            'category' => $productPage['category'],
+//            'characteristics' => $productPage["characteristics"],
+//            'product' => $productPage['card'],
+//            'description' => $productPage['description'],
+//            'append' => $productPage['appendParams'],
+//            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
+//            'price' => $productPage['price'],
+//            'provider' => $productPage['provider'],
+//            'brand' => $productPage['brand'],
+//            'price_formated' => $productPage['price_formated'],
+//            'breadCrumbs' => $breadCrumbs,
+//        ];
+        return new ViewModel($productPage);
     }
 
     public function catalogAction()
@@ -578,7 +584,30 @@ class IndexController extends AbstractActionController
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
-        return new ViewModel(['breadCrumbs' => $breadCrumbs,'id' => $brand_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,]);
+        return new ViewModel(['breadCrumbs' => $breadCrumbs,'logo' => $brand->getImage() , 'id' => $brand_id,'category_id' => $category_id,"title" =>  $brandTitle, 'category_title' => $categoryTitle,]);
+    }
+    
+    public function providerProductsAction()
+    {
+        $provider_id = $this->params()->fromRoute('provider_id', '');
+        $category_id = $this->params()->fromRoute('category_id', '');
+        if (empty($provider = Provider::find(["id"=> $provider_id ]))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
+        $providerTitle = $provider->getTitle();
+        $categories = $this->getProviderCategories($provider_id); 
+           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        $breadCrumbs[]=[null, $providerTitle];
+        foreach ($categories as $category) {
+            if ($category->getId() == $category_id) {
+                $categoryTitle =  $category->getTitle();
+            }
+            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage() , 'id' => $provider_id,'category_id' => $category_id,"title" => $providerTitle, 'category_title' => $categoryTitle,]);
     }
     
     public function storeProductsAction()
@@ -591,17 +620,17 @@ class IndexController extends AbstractActionController
             $view = new ViewModel();
             return $view->setTemplate('error/404.phtml');
         }
-        $brandTitle = $store->getTitle();
+        $storeTitle = $store->getTitle();
         $categories = $this->getStoreCategories($store_id); //$this->getBrandCategories($brand_id);
         $categoryTitle = Resource::THE_ALL_PRODUCTS; 
-        $breadCrumbs[]=[null, $brandTitle];
+        $breadCrumbs[]=[null, $storeTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
                 $categoryTitle =  $category->getTitle();
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
-        return new ViewModel( ['breadCrumbs' => $breadCrumbs,'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $categoryTitle."  ".$brandTitle,]);
+        return new ViewModel( ['breadCrumbs' => $breadCrumbs,'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $storeTitle, 'category_title' => $categoryTitle,]);
     }
     
     
@@ -621,6 +650,15 @@ class IndexController extends AbstractActionController
     private function getBrandCategories($brand_id)
     {
         $brandProductsCategories = $this->productRepository->findAll(["where" => ["brand_id" => $brand_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        foreach ($brandProductsCategories as $category){
+            $categoriesArray[] = $category->getCategoryId();
+        }
+        return  $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
+    }
+    
+    private function getProviderCategories($provider_id)
+    {
+        $brandProductsCategories = $this->productRepository->findAll(["where" => ["provider_id" => $provider_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
         foreach ($brandProductsCategories as $category){
             $categoriesArray[] = $category->getCategoryId();
         }

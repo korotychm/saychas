@@ -719,13 +719,13 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function unsetFilterForCategoКyAction()
-    {
-        $post = $this->getRequest()->getPost();
-        $category_id = $post->category_id;
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        unset($container->filtrForCategory[$category_id]);
-    }
+//    public function unsetFilterForCategoКyAction()
+//    {
+//        $post = $this->getRequest()->getPost();
+//        $category_id = $post->category_id;
+//        $container = new Container(Resource::SESSION_NAMESPACE);
+//        unset($container->filtrForCategory[$category_id]);
+//    }
 
     /**
      * Return true if given product matches
@@ -867,6 +867,17 @@ class AjaxController extends AbstractActionController
         }    
         return $where;
     }
+    
+    private function getWhereProvider($params): Where
+    {
+        $where = new Where();
+        $where->equalTo('provider_id', $params['provider_id']);
+        if (!empty($params['category_id'])){
+            $where->equalTo('category_id', $params['category_id']);
+        }    
+        return $where;
+    }
+    
     private function getWhereStore($params): Where
     {        
         $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
@@ -891,22 +902,28 @@ class AjaxController extends AbstractActionController
     private function getProductsCategories($params)
     {
         $params['where'] = $this->getWhereCategories($params);
-        return $this->getProducts($param);
+        return $this->getProducts($params);
     }
 
     private function getProductsBrand($params)
     {
         $params['where'] = $this->getWhereBrand($params);
-        return $this->getProducts($param);
+        return $this->getProducts($params);
     }
     
     private function getProductsStore($params)
     {
         $params['where'] = $this->getWhereStore($params);
-        return $this->getProducts($param);
+        return $this->getProducts($params);
     }
     
-    private function getProducts ($param)
+    private function getProductsProvider($params)
+    {
+        $params['where'] = $this->getWhereProvider($params);
+        return $this->getProducts($params);
+    }
+    
+    private function getProducts ($params)
     {
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
@@ -1071,23 +1088,33 @@ class AjaxController extends AbstractActionController
     public function getProductsBrandAction()
     {
         $post = $this->getRequest()->getPost();
-//        $post->brandId;
-//        $post->categoryId;
-//        
+        if (empty($post->brandId)){
+            return new JsonModel([]);
+        }
         $products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId ]);
-        //000010/000000006
-        //$products = $this->getProductsBrand(['brand_id' => '000010', 'category_id' => '' ]);
         return new JsonModel($products);
-        //return new JsonModel($post);
     }
+
     public function getProductsStoreAction()
     {
         $post = $this->getRequest()->getPost();
+        if (empty($post->storeId)){
+            return new JsonModel([]);
+        }
         $products = $this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId ]);
         return new JsonModel($products);
         //return new JsonModel($post);
     }
 
+    public function getProductsProviderAction()
+    {
+        $post = $this->getRequest()->getPost();
+        if (empty($post->providerId)){
+            return new JsonModel([]);
+        }
+        $products = $this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId ]);
+        return new JsonModel($products);
+    }
 
     
 
