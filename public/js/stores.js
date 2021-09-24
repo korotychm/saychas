@@ -32,10 +32,10 @@
 
 $(document).ready(function(){
 
-  if ($('#category-page').length){
+  if ($('#store-page').length){
 
     var categoryPage = new Vue({
-      el: '#category-page',
+      el: '#store-page',
       data: {
         products: [],
         length: 0,
