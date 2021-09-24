@@ -95,6 +95,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function findAllCategories($echo = '', $i = 0, $idActive, $forceCreate = false): string
     {
+        return '';
         if ($forceCreate) {
             $this->cache->removeItem('category_container');
         }
