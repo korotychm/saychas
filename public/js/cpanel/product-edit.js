@@ -498,7 +498,7 @@ const ProductEdit = {
                   this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
                 } else {
                   if (response.data.result){
-                    router.replace('/products');
+                    //router.replace('/products');
                   }
                 }
               })
