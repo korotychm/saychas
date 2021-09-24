@@ -36,7 +36,8 @@ $(document).ready(function(){
       el: '#category-page',
       data: {
         category_id: '',
-        products: []
+        products: [],
+        length: 0
       },
       created() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
@@ -48,6 +49,7 @@ $(document).ready(function(){
             .then(response => {
               console.log(response);
               this.products = response.data;
+              this.length = this.products.length;
               console.log('Products', this.products);
             });
       }

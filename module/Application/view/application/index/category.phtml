@@ -5,7 +5,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
 ?>
 <section class="catalog" id="category-page">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?> <span v-if="products"> товаров</span></h1>
+      <h1 class="h1"><?= $this->title ?> <span v-if="length">{{ length }} товаров</span></h1>
       <div class="catalog__sort">
         <div class="custom-select custom-select--radio">
           <div class="custom-select__label input">Сначала свежие</div>
