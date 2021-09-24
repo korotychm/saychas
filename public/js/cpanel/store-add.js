@@ -278,6 +278,7 @@ const StoreAdd = {
         this.selectedDate = null;
         this.modifiedDaysHighlight();
       }
+      console.log(this.store.modified_mode);
     },
     modifiedDaysHighlight() {
       let highlighted = '<style>';
