@@ -35,7 +35,7 @@ $(document).ready(function(){
   if ($('#provider-page').length){
 
     var categoryPage = new Vue({
-      el: '#store-page',
+      el: '#provider-page',
       data: {
         products: [],
         length: 0,
