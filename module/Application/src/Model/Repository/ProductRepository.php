@@ -433,14 +433,16 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
         $this->productImages->replace($products); // $products - products that have non empty array of images
 
-        foreach ($products as $p) {
-            try {
-                /** returns array of successfully downloaded images */
-                $this->fetchImages($p->images);
-            } catch (\Exception $e) {
-                return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-            }
-        }
+        /** We shall delete the following comment later on */
+//        foreach ($products as $p) {
+//            try {
+//                /** returns array of successfully downloaded images */
+//                $this->fetchImages($p->images);
+//            } catch (\Exception $e) {
+//                return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+//            }
+//        }
+        /** End of comment to be deleted */
 
         /** $result->data - products */
         foreach ($result->data as $product) {
