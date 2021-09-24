@@ -193,6 +193,15 @@ const ProductEdit = {
                               <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
                               <span class="boolean__check"></span>
                             </label>
+                            <!-- Тип 7 - цвет -->
+                            <div class="product__colors" v-if="characteristic.type == 7">
+                                <label v-for="color in product.colors" class="color-checkbox">
+                                  <input type="radio" :value="color.id" name="color" :checked="characteristic.value == color.id" v-model="characteristic.value">
+                                  <span class="color-checkbox__check">
+                                    <span class="color-checkbox__check-color" :style="{'backgroundColor' : color.value}"></span>
+                                  </span>
+                                </label>
+                            </div>
                             <span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span>
                         </div>
                       </div>
