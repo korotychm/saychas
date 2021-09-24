@@ -70,7 +70,7 @@ const StoreEdit = {
                           <div v-if="selectedDate" class="store__timetable-additional">
 
                             <div class="store__timetable-item product__attribute"  :class="{closed : (modified_date.time_from == '00:00' && modified_date.time_to == '00:00')}">
-                              <h2>{{ humanDate }} <span class="store__timetable-trigger" @click="modified_date.time_from = '00:00'; modified_date.time_to = '00:00'"></span></h2>
+                              <h2>{{ humanDate }} <span class="store__timetable-trigger" @click="dayOff('mod')"></span></h2>
                                 <div class="input-group">
                                   <div>
                                     <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="modified_date.time_from" />
@@ -273,11 +273,20 @@ const StoreEdit = {
       }
     },
     dayOff(day) {
-      if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
-        this.store.operating_mode[day + '_to'] = '23:59';
+      if (day == mod){
+        if (this.modified_date.time_from == '00:00' && this.modified_date.time_to == '00:00'){
+          this.modified_date.time_to = '23:59';
+        } else {
+          this.modified_date.time_from = '00:00';
+          this.modified_date.time_to = '00:00';
+        }
       } else {
-        this.store.operating_mode[day + '_from'] = '00:00';
-        this.store.operating_mode[day + '_to'] = '00:00';
+        if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
+          this.store.operating_mode[day + '_to'] = '23:59';
+        } else {
+          this.store.operating_mode[day + '_from'] = '00:00';
+          this.store.operating_mode[day + '_to'] = '00:00';
+        }
       }
     },
     checkRequired(){
