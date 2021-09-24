@@ -91,7 +91,7 @@ const StoreEdit = {
                               <div class="btn btn--secondary" @click="delDate">Сбросить</div>
                               <div class="btn btn--primary" @click="saveDate">Сохранить</div>
                             </div>
-
+                            <p v-if="modified_date.time_from == '' && modified_date.time_to == '' && modified_date.error" class="input-error">Время работы не может быть пустым</p>
                           </div>
                           <div v-else class="store__timetable-main">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
@@ -173,7 +173,8 @@ const StoreEdit = {
       modified_date: {
         date: '',
         time_from: '',
-        time_to: ''
+        time_to: '',
+        error: false
       },
       store: {
         operating_mode: {}
@@ -197,6 +198,7 @@ const StoreEdit = {
     },
     selectedDate() {
       if (this.selectedDate){
+        this.modified_date.error = false;
         let index = this.checkModifiedDate();
         if (index != -1){
           this.modified_date.time_from = this.store.modified_mode[index].time_from;
@@ -240,6 +242,10 @@ const StoreEdit = {
       this.modifiedDaysHighlight();
     },
     saveDate(){
+      this.modified_date.error = false;
+      if (this.modified_date.time_from == '' || this.modified_date.time_to == '){
+        this.modified_date.error = true;
+      }
       let index = this.checkModifiedDate();
       if (index != -1){
         this.store.modified_mode[index] = JSON.parse(JSON.stringify(this.modified_date));
