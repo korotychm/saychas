@@ -444,9 +444,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //        }
         /** End of comment to be deleted */
 
-        //if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
-            mail('user@localhost', 'product->characteristics', print_r($result->data, true));
-        //}
         /** $result->data - products */
         foreach ($result->data as $product) {
 
@@ -456,6 +453,11 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 //$jsonCharacteristics = Json::encode($product->characteristics);
             
                 $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+                
+                if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
+                    mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
+                }
+                
 
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {
