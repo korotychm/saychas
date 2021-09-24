@@ -71,7 +71,32 @@ const PriceList = {
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
                   </div>
-                  
+                  <div class="td class="pricelist__discount"">{{ product.discount }}%</div>
+                  <div class="td">
+                    <div v-if="product.old_price != product.price" class="pricelist__oldprice">{{ product.old_price.toLocaleString() }} ₽</div>
+                    <div class="pricelist__price">{{ product.price.toLocaleString() }} ₽</div>
+                  </div>
+                  <div class="pricelist__popup">
+                    <div class="pricelist__popup-category">Техника для дома</div>
+                    <div class="pricelist__popup-inputs">
+                      <div class="pricelist__popup-input-group">
+                        <div class="pricelist__popup-sale">
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="calculatePrice(index)" />
+                        </div>
+                        <div class="pricelist__popup-price">
+                          <input type="number" min="0" v-model.lazy="product.old_price" @change="calculatePrice(index)" />
+                        </div>
+                      </div>
+                      <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
+                    </div>
+                    <div class="pricelist__popup-right">
+                      <div class="pricelist__popup-total">
+                        <p>Итого<br> с учетом скидки</p>
+                        <h3>{{ product.price.toLocaleString() }} ₽</h3>
+                      </div>
+                      <button class="btn btn--primary">Применить</button>
+                    </div>
+                  </div>
               </div>
           </div>
         </div>
