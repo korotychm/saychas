@@ -451,9 +451,14 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
-                //$jsonCharacteristics = Json::encode($product->characteristics);
+                
+                try {
+                    $jsonCharacteristics = Json::encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+                }catch(LaminasJsonRuntimeException $e){
+                    return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+                }
             
-                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+//                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
                 
 //                if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
 //                    mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
