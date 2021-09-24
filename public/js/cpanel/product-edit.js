@@ -289,6 +289,7 @@ const ProductEdit = {
       product: {},
       currentImg : '',
       deleteImages: [],
+      cloneImages: [],
       errors: false,
       showBrand: -1,
       showColor: -1
@@ -340,6 +341,11 @@ const ProductEdit = {
       this.currentImg = images[next];
       images.splice(currentIndex, 1);
       this.product.images = images;
+      // удаляем из clone
+      currentIndex = this.cloneImages.indexOf(this.currentImg);
+      if (currentIndex != -1){
+        this.cloneImages.splice(currentIndex, 1);
+      }
     },
     moveImg(shift) {
       var currentIndex = this.product.images.indexOf(this.currentImg);
@@ -449,7 +455,8 @@ const ProductEdit = {
             characteristics: chars,
             images: cloneImages,
             vendor_code: this.product.vendor_code,
-            del_images: this.deleteImages
+            del_images: this.deleteImages,
+            clone_images: this.cloneImages
           }
           console.log(request);
           axios
@@ -507,6 +514,10 @@ const ProductEdit = {
       }
     },
     addImagesPath() {
+
+      if (this.product.moderated) {
+        this.cloneImages = JSON.parse(JSON.stringify(this.product.images));
+      }
       for (image in this.product.images) {
         let currentImgPath = this.imgPath;
         if (this.product.moderated) {
