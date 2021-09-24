@@ -105,20 +105,6 @@ const PriceList = {
         </div>
       </div>
     </div>`,
-  // watch: {
-  //     products: {
-  //       deep: true,
-  //       handler() {
-  //         for (product of this.products){
-  //           if (product.discount){
-  //             product.price = product.old_price * product.discount / 100;
-  //           } else {
-  //             product.price = product.old_price;
-  //           }
-  //         }
-  //       }
-  //     }
-  //   },
   methods: {
     calculatePrice(index){
       let product = this.products[index];
@@ -135,42 +121,6 @@ const PriceList = {
         if (!product.old_price){
           product.old_price = product.price;
         }
-      }
-    },
-    saveProduct(index) {
-      let requestUrl = '/control-panel/update-product';
-      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      let request = JSON.parse(JSON.stringify(this.products[index]));
-      request.price = request.price * 100;
-      request.old_price = request.old_price * 100;
-      if (request.price == request.old_price){
-        request.old_price = 0;
-      }
-      console.log(request);
-      if (!request.price){
-        showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
-      } else {
-        axios
-          .post(requestUrl,
-            Qs.stringify({
-              data: {
-                product : JSON.stringify(request)
-              }
-            }),
-            {
-              headers
-            })
-            .then(response => {
-              if (response.data.result){
-                $('.pricelist__item').removeClass('active');
-              }
-            })
-            .catch(error => {
-              console.log(error);
-              if (error.response.status == '403'){
-                location.reload();
-              }
-            });
       }
     },
     getProducts() {
