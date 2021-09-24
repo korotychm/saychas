@@ -62,6 +62,15 @@ const PriceList = {
           </div>
           <div class="tbody" v-if="products">
               <div v-for="(product, index) in products" class="tr pricelist__item">
+                  <div class="td pricelist__img product-small-img">
+                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/img/ui/nophoto.jpg'" />
+                  </div>
+                  <div class="td td--hover pricelist__title">
+                    <a>{{ product.title }}</a>
+                  </div>
+                  <div class="td pricelist__category">
+                      <div>{{ product.category_name }}</div>
+                  </div>
                   
               </div>
           </div>
