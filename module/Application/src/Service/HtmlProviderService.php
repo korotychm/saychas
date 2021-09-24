@@ -254,6 +254,9 @@ class HtmlProviderService {
             /** Alex has added the below code */
             $parentCategoryId = $product->getParentCategoryId();
             $categoryId = $product->getCategoryId();
+            if(!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
+                $categoryId = $parentCategoryId;
+            }
             $return['category_id'] = $categoryId;
             /** End of Alex's code */
             
