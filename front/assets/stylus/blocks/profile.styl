@@ -2,6 +2,15 @@
   display grid
   grid-template-columns minmax(0,4fr) minmax(0,12fr)
   grid-gap 30px
+  .panel
+    &--history
+      position static !important
+    &__delivery
+      margin-bottom 25px
+    &__zip
+    &__bonuses
+    &__table
+      display none
 
 .profile-nav
   a
@@ -16,16 +25,6 @@
         color var(--red)
     &.active
       color var(--red)
-
-.panel
-  &--history
-    position static !important
-  &__delivery
-    margin-bottom 25px
-  &__zip
-  &__bonuses
-  &__table
-    display none
 
 .orders-history
   display grid
