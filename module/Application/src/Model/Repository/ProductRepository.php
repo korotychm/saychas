@@ -451,12 +451,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $prodChs = [];
             if (count($product->characteristics) > 0) {
                 //$jsonCharacteristics = Json::encode($product->characteristics);
-                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
-
                 if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
                     mail('user@localhost', 'product->characteristics', print_r($product->characteristics, true));
                 }
             
+                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {
 
