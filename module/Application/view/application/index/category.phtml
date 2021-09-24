@@ -41,7 +41,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
               <a class="product__img" :href="'/product/' + name">
                 <img :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
               </a>
-              <a class="product__title" href="#">{{ product.title }}</a>
+              <a class="product__title" :href="'/product/' + name">{{ product.title }}</a>
               <div class="product__reviews">
                   <div class="product__reviews-grade">
                       <svg

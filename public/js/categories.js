@@ -49,7 +49,7 @@ $(document).ready(function(){
             .then(response => {
               console.log(response);
               this.products = response.data;
-              this.length = this.products.length;
+              this.length = Object.keys(this.products).length
               console.log('Products', this.products);
             });
       }
