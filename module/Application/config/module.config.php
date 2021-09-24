@@ -312,6 +312,16 @@ return [
                     ],
                 ],
             ],
+            'provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/seller/:provider_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'providerProducts',
+                    ],
+                ],
+            ],
             
             'basket' => [
                 'type'    => Segment::class,
