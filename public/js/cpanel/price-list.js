@@ -132,6 +132,9 @@ const PriceList = {
       for (product of this.products){
         product.price = product.price / 100;
         product.old_price = product.old_price / 100;
+        if (!product.old_price){
+          product.old_price = product.price;
+        }
       }
     },
     getProducts() {
