@@ -243,7 +243,7 @@ const StoreEdit = {
     },
     saveDate(){
       this.modified_date.error = false;
-      if (this.modified_date.time_from == '' || this.modified_date.time_to == '){
+      if (this.modified_date.time_from == '' || this.modified_date.time_to == ''){
         this.modified_date.error = true;
       }
       let index = this.checkModifiedDate();
