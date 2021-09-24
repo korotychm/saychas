@@ -203,6 +203,18 @@
   order: 3;
   flex-shrink: 0;
 }
+.product-card__table-th > div,
+.product-card__table-val > div {
+  display: flex;
+  align-items: center;
+}
+.product-card__table-th > div .cirkul,
+.product-card__table-val > div .cirkul {
+  width: 16px !important;
+  height: 16px !important;
+  border-radius: 50%;
+  margin-right: 5px;
+}
 .product-card__table-th {
   padding-left: 0;
   padding-right: 7px;
