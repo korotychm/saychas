@@ -508,6 +508,7 @@ const ProductEdit = {
         if (this.product.moderated){
           currentImgPath = imgPathModerated;
         }
+        console.log(this.product.images[image]);
         this.product.images[image] = currentImgPath + this.product.images[image];
       }
     },
