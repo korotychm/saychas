@@ -526,7 +526,7 @@ const ProductEdit = {
             } else {
               this.categories = response.data.category_tree;
               this.product = response.data.product;
-              this.addImagesPath();
+              //this.addImagesPath();
               this.brandSearch = this.product.brand_name;
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
