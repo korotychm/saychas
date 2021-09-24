@@ -4,7 +4,7 @@ $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/brands.js'));
 ?><section class="catalog">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?></h1>
+      <h1 class="h1"><?=$this->category_title ?> <?= $this->title ?></h1>
         <span class="product-card__store-logo">
             <img src="/images/brand/<?=$this->logo?>"  />
         </span>  

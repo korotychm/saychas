@@ -4,7 +4,7 @@ $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/stores.js'));
 ?><section class="catalog">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?></h1>
+      <h1 class="h1"><?= $this->title ?>. <?=$this->category_title ?></h1>
 
     <?= $this->partial("/application/common/range-filter-select", ['data' => $this->data])?>
   </div>
