@@ -504,7 +504,11 @@ const ProductEdit = {
     },
     addImagesPath() {
       for (image in this.product.images) {
-        this.product.images[image] = ((this.product.moderated) ? imgPathModerated : imgPath) + this.product.images[image];
+        let currentImgPath = imgPath;
+        if (this.product.moderated){
+          currentImgPath = imgPathModerated;
+        }
+        this.product.images[image] = currentImgPath + this.product.images[image];
       }
     },
     getProduct() {
