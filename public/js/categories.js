@@ -46,6 +46,7 @@ $(document).ready(function(){
                 categoryId : this.category_id
               }))
             .then(response => {
+              console.log(response);
               this.products = response.data;
               console.log('Products', this.products);
             });
