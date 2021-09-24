@@ -123,7 +123,7 @@ const PriceList = {
     calculatePrice(index){
       let product = this.products[index];
       if (+product.discount > 0){
-        product.price = product.old_price * product.discount / 100;
+        product.price = product.old_price * (100 - product.discount) / 100;
       } else {
         product.price = product.old_price;
       }
