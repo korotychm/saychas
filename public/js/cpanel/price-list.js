@@ -123,6 +123,42 @@ const PriceList = {
         }
       }
     },
+    saveProduct(index) {
+      let requestUrl = '/control-panel/update-product';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let request = JSON.parse(JSON.stringify(this.products[index]));
+      request.price = request.price * 100;
+      request.old_price = request.old_price * 100;
+      if (request.price == request.old_price){
+        request.old_price = 0;
+      }
+      console.log(request);
+      if (!request.price){
+        showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
+      } else {
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              data: {
+                product : JSON.stringify(request)
+              }
+            }),
+            {
+              headers
+            })
+            .then(response => {
+              if (response.data.result){
+                $('.pricelist__item').removeClass('active');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              if (error.response.status == '403'){
+                location.reload();
+              }
+            });
+      }
+    },
     getProducts() {
       let requestUrl = '/control-panel/show-products';
       if (this.filtersCreated) {
