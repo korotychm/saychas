@@ -66,6 +66,33 @@ const StoreAdd = {
                       </div>
                       <div class="store__timetable">
                         <div class="store__timetable-inputs">
+                          <div v-if="selectedDate" class="store__timetable-additional">
+
+                            <div class="store__timetable-item product__attribute"  :class="{closed : (modified_date.time_from == '00:00' && modified_date.time_to == '00:00')}">
+                              <h2>{{ humanDate }} <span class="store__timetable-trigger" @click="dayOff('mod')"></span></h2>
+                                <div class="input-group">
+                                  <div>
+                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="modified_date.time_from" />
+                                  </div>
+                                  <div>
+                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="modified_date.time_to" />
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="store__timetable-additional-btns">
+                              <div class="btn btn--secondary" @click="selectedDate = null">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8px" height="13px">
+                                    <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M0.903,4.974 L4.974,0.903 C5.560,0.317 6.510,0.317 7.96,0.903 C7.681,1.489 7.681,2.439 7.96,3.25 L3.25,7.96 C2.439,7.681 1.489,7.681 0.903,7.96 C0.318,6.510 0.318,5.560 0.903,4.974 Z" />
+                                    <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M7.96,9.974 L3.25,5.903 C2.439,5.317 1.489,5.317 0.903,5.903 C0.318,6.489 0.318,7.439 0.903,8.25 L4.974,12.96 C5.560,12.681 6.510,12.681 7.96,12.96 C7.681,11.510 7.681,10.560 7.96,9.974 Z" />
+                                </svg>
+                                <span>Вернуться</span>
+                              </div>
+                              <div class="btn btn--secondary" @click="delDate">Сбросить</div>
+                              <div class="btn btn--primary" @click="saveDate">Сохранить</div>
+                            </div>
+                            <p v-if="(modified_date.time_from == '' || modified_date.time_to == '') && modified_date.error" class="input-error">Время работы должно быть заполнено</p>
+                          </div>
+
                           <div class="store__timetable-main active">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
                               <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
@@ -141,6 +168,13 @@ const StoreAdd = {
       errors: false,
       editable: true,
       selectedDate: null,
+      highlightedStyles: '',
+      modified_date: {
+        date: '',
+        time_from: '',
+        time_to: '',
+        error: false
+      },
       store: {
         address: '',
         contact_name: '',
@@ -160,6 +194,7 @@ const StoreAdd = {
           working_day_from: '',
           working_day_to: ''
         },
+        modified_mode: [],
         provider_id: '',
         status_id: 0,
         status_name: 'Работает',
@@ -175,21 +210,122 @@ const StoreAdd = {
           this.checkTime(item);
         }
       }
+    },
+    modified_date: {
+      deep: true,
+      handler() {
+        this.checkTime();
+      }
+    },
+    selectedDate() {
+      if (this.selectedDate){
+        this.modified_date.error = false;
+        let index = this.checkModifiedDate();
+        if (index != -1){
+          this.modified_date.time_from = this.store.modified_mode[index].time_from;
+          this.modified_date.time_to = this.store.modified_mode[index].time_to;
+        } else {
+          this.modified_date.time_from = '';
+          this.modified_date.time_to = '';
+        }
+      }
+    }
+  },
+  computed: {
+    humanDate(){
+      if (this.selectedDate){
+        return this.selectedDate.toLocaleString("ru-RU",{
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+      return '';
     }
   },
   methods: {
-    checkTime(item){
+    checkModifiedDate() {
+      let localedDate = this.selectedDate.toLocaleString("ru-RU",{
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      });
+      this.modified_date.date = localedDate;
+      return (this.store.modified_mode.findIndex(x => x.date === localedDate));
+    },
+    delDate(){
+      let index = this.checkModifiedDate();
+      if (index != -1){
+        this.store.modified_mode.splice(index, 1);
+      }
+      console.log(this.store.modified_mode);
+      this.selectedDate = null;
+      this.modifiedDaysHighlight();
+    },
+    saveDate(){
+      this.modified_date.error = false;
+      if (this.modified_date.time_from == '' || this.modified_date.time_to == ''){
+        this.modified_date.error = true;
+      }
+      if (!this.modified_date.error){
+        let index = this.checkModifiedDate();
+        if (index != -1){
+          this.store.modified_mode[index] = JSON.parse(JSON.stringify(this.modified_date));
+        } else {
+          this.store.modified_mode.push(this.modified_date);
+        }
+        this.selectedDate = null;
+        this.modifiedDaysHighlight();
+      }
+    },
+    modifiedDaysHighlight() {
+      let highlighted = '<style>';
+      for (item in this.store.modified_mode){
+        if (highlighted != '<style>'){
+          highlighted += ', ';
+        }
+        let date = this.store.modified_mode[item].date,
+            dateDay = date.split('.')[0],
+            dateMonth = date.split('.')[1],
+            dateYear = date.split('.')[2],
+            className = '.id-' + dateYear + '-' + dateMonth + '-' + dateDay;
+        highlighted += className + ' .vc-day-content';
+      }
+      highlighted += `{
+        background: var(--red) !important;
+        font-weight: bold !important;
+        color: #fff !important;
+      }`;
+      highlighted += '</style>';
+      this.highlightedStyles = highlighted;
+    },
+    checkTime(item = false){
       let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      if (!regex.test(this.store.operating_mode[item])){
+      if (item && !regex.test(this.store.operating_mode[item])){
         this.store.operating_mode[item] = '';
+      }
+      if (!item  && !regex.test(this.modified_date.time_from)) {
+        this.modified_date.time_from = '';
+      }
+      if (!item  && !regex.test(this.modified_date.time_to)) {
+        this.modified_date.time_to = '';
       }
     },
     dayOff(day) {
-      if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
-        this.store.operating_mode[day + '_to'] = '23:59';
+      if (day == 'mod'){
+        if (this.modified_date.time_from == '00:00' && this.modified_date.time_to == '00:00'){
+          this.modified_date.time_to = '23:59';
+        } else {
+          this.modified_date.time_from = '00:00';
+          this.modified_date.time_to = '00:00';
+        }
       } else {
-        this.store.operating_mode[day + '_from'] = '00:00';
-        this.store.operating_mode[day + '_to'] = '00:00';
+        if (this.store.operating_mode[day + '_from'] == '00:00' && this.store.operating_mode[day + '_to'] == '00:00'){
+          this.store.operating_mode[day + '_to'] = '23:59';
+        } else {
+          this.store.operating_mode[day + '_from'] = '00:00';
+          this.store.operating_mode[day + '_to'] = '00:00';
+        }
       }
     },
     checkRequired(){
