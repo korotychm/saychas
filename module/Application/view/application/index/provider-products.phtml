@@ -10,13 +10,13 @@ $this->inlineScript()->prependFile($this->basePath('/js/providers.js'));
         </span>
       <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
   </div>
-  <div class="catalog__wrap" id="provider-page">
+  <div class="catalog__wrap">
 
    <aside class="catalog__sidebar">
     <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", [ "url" => "seller", "breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "category_id" => $this->category_id]) ?>
    </aside>
 
-    <div class="catalog__content">
+    <div class="catalog__content" id="provider-page">
       <section class="section">
         <div class="products-grid products-grid--3">
           <div v-for="(product, name) in products" :key="name" class="product">
