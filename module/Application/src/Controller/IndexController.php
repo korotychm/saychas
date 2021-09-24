@@ -16,6 +16,7 @@ use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
+//use Application\Model\RepositoryInterface\StoreRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\RepositoryInterface\ColorRepositoryInterface;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
@@ -34,6 +35,10 @@ use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
 use Application\Model\Entity\UserPaycard;
+use Application\Model\Entity\Brand;
+use Application\Model\Entity\Store;
+use Application\Model\Entity\StockBalance;
+//use Application\Model\Entity\Category;
 //use Application\Model\Entity\ProductHistory;
 use Laminas\Json\Json;
 use Application\Service\HtmlProviderService;
@@ -45,6 +50,7 @@ use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
 use Application\Model\Entity\UserData;
+use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
@@ -129,6 +135,10 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(UserPaycard::class);
         $this->entityManager->initRepository(ProductHistory::class);
         $this->entityManager->initRepository(ProductFavorites::class);
+        $this->entityManager->initRepository(Brand::class);
+        $this->entityManager->initRepository(Store::class);
+        $this->entityManager->initRepository(StockBalance::class);
+        //$this->entityManager->initRepository(Category::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -189,59 +199,59 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl('/my-login');
     }
 
-    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
-    {
-        $flags = [];
-        foreach ($characteristics as $key => $value) {
-            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
-            if (null == $found) {
-                $flags[$key] = false;
-                continue;
-            }
-            $type = $found->getType();
-            switch ($type) {
-                case CharacteristicRepository::INTEGER_TYPE:
-                    list($left, $right) = explode(';', $value[0]);
-                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
-                    break;
-                case CharacteristicRepository::BOOL_TYPE:
-                    $flags[$key] = ($found->getValue() == $value);
-                    break;
-                default:
-                    $flags[$key] = in_array($found->getValue(), $value);
-                    break;
-            }
-        }
-        foreach ($flags as $f) {
-            if (!$f) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private function getProducts($params)
-    {
-        $where = new \Laminas\Db\Sql\Where();
-        list($low, $high) = explode(';', $params['priceRange']);
-        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-        $where->equalTo('category_id', $params['category_id']);
-        //$where->in('category_id', $params['category_id']);
-
-        unset($params['offset']);
-        unset($params['limit']);
-        $params['where'] = $where;
-
-        $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = [];
-        foreach ($products as $product) {
-            $matchResult = $this->matchProduct($product, $params['characteristics']);
-            if ($matchResult) {
-                $filteredProducts[] = $product;
-            }
-        }
-        return $filteredProducts;
-    }
+//    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
+//    {
+//        $flags = [];
+//        foreach ($characteristics as $key => $value) {
+//            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
+//            if (null == $found) {
+//                $flags[$key] = false;
+//                continue;
+//            }
+//            $type = $found->getType();
+//            switch ($type) {
+//                case CharacteristicRepository::INTEGER_TYPE:
+//                    list($left, $right) = explode(';', $value[0]);
+//                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
+//                    break;
+//                case CharacteristicRepository::BOOL_TYPE:
+//                    $flags[$key] = ($found->getValue() == $value);
+//                    break;
+//                default:
+//                    $flags[$key] = in_array($found->getValue(), $value);
+//                    break;
+//            }
+//        }
+//        foreach ($flags as $f) {
+//            if (!$f) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//
+//    private function getProducts($params)
+//    {
+//        $where = new \Laminas\Db\Sql\Where();
+//        list($low, $high) = explode(';', $params['priceRange']);
+//        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+//        $where->equalTo('category_id', $params['category_id']);
+//        //$where->in('category_id', $params['category_id']);
+//
+//        unset($params['offset']);
+//        unset($params['limit']);
+//        $params['where'] = $where;
+//
+//        $products = $this->handBookRelatedProductRepository->findAll($params);
+//        $filteredProducts = [];
+//        foreach ($products as $product) {
+//            $matchResult = $this->matchProduct($product, $params['characteristics']);
+//            if ($matchResult) {
+//                $filteredProducts[] = $product;
+//            }
+//        }
+//        return $filteredProducts;
+//    }
 
     public function clientOrdersAction()
     {
@@ -485,30 +495,36 @@ class IndexController extends AbstractActionController
             return $view->setTemplate('error/404.phtml');
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        $categoryId = $productPage['categoryId'];
+        //$categoryId = $productPage['categoryId'];
         $breadCrumbs = [];
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($categoryId))) {
+        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) {
             $breadCrumbs = array_reverse($matherCategories);
         }
+        $productPage['breadCrumbs'] = $breadCrumbs;
+        $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
         //$bread = $this->htmlProvider->breadCrumbs($breadSource);
-        $categoryTitle = $this->categoryRepository->findCategory(['id' => $categoryId])->getTitle();
-        $vwm = [
-            'id' => $product_id,
-            'title' => $productPage['title'],
-            'images' => $productPage['images'],
-            'category' => $categoryTitle,
-            'characteristics' => $productPage["characteristics"],
-            'product' => $productPage['card'],
-            'description' => $productPage['description'],
-            'append' => $productPage['appendParams'],
-            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
-            'price' => $productPage['price'],
-            'brand' => $productPage['brand'],
-            'price_formated' => $productPage['price_formated'],
-            'breadCrumbs' => $breadCrumbs,
-        ];
-        return new ViewModel($vwm);
+        $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
+        $productPage['id'] = $product_id;
+       
+//        
+//        $vwm = [
+//            'id' => $product_id,
+//            'title' => $productPage['title'],
+//            'images' => $productPage['images'],
+//            'category' => $productPage['category'],
+//            'characteristics' => $productPage["characteristics"],
+//            'product' => $productPage['card'],
+//            'description' => $productPage['description'],
+//            'append' => $productPage['appendParams'],
+//            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
+//            'price' => $productPage['price'],
+//            'provider' => $productPage['provider'],
+//            'brand' => $productPage['brand'],
+//            'price_formated' => $productPage['price_formated'],
+//            'breadCrumbs' => $breadCrumbs,
+//        ];
+        return new ViewModel($productPage);
     }
 
     public function catalogAction()
@@ -530,6 +546,7 @@ class IndexController extends AbstractActionController
         } else {
             $breadCrumbs = [];
         }
+
         /** The below three lines are commented out as they are used in $filterForm only which is also commented out earlier */
         //$categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
@@ -546,13 +563,113 @@ class IndexController extends AbstractActionController
         }
         $categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
         $category = $categories[$category_id];
-        $title = $category["title"];
-        $vwm = [
-            "content" => "",
-            "title" => $title,
-        ];
-        return new ViewModel($vwm);
+        return new ViewModel(["title" => $category["title"],]);
     }
+    
+    public function brandProductsAction()
+    {
+        $brand_id = $this->params()->fromRoute('brand_id', '');
+        $category_id = $this->params()->fromRoute('category_id', '');
+        if (empty($brand = Brand::find(["id"=> $brand_id ]))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
+        $brandTitle = $brand->getTitle();
+        $categories = $this->getBrandCategories($brand_id); 
+           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        $breadCrumbs[]=[null, $brandTitle];
+        foreach ($categories as $category) {
+            if ($category->getId() == $category_id) {
+                $categoryTitle =  $category->getTitle();
+            }
+            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        return new ViewModel(['breadCrumbs' => $breadCrumbs,'logo' => $brand->getImage() , 'id' => $brand_id,'category_id' => $category_id,"title" =>  $brandTitle, 'category_title' => $categoryTitle,]);
+    }
+    
+    public function providerProductsAction()
+    {
+        $provider_id = $this->params()->fromRoute('provider_id', '');
+        $category_id = $this->params()->fromRoute('category_id', '');
+        if (empty($provider = Provider::find(["id"=> $provider_id ]))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
+        $providerTitle = $provider->getTitle();
+        $categories = $this->getProviderCategories($provider_id); 
+           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        $breadCrumbs[]=[null, $providerTitle];
+        foreach ($categories as $category) {
+            if ($category->getId() == $category_id) {
+                $categoryTitle =  $category->getTitle();
+            }
+            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage() , 'id' => $provider_id,'category_id' => $category_id,"title" => $providerTitle, 'category_title' => $categoryTitle,]);
+    }
+    
+    public function storeProductsAction()
+    {        
+        $store_id = $this->params()->fromRoute('store_id', '');
+        $category_id = $this->params()->fromRoute('category_id', '');
+        if (empty($store = Store::find(["id"=> $store_id ]))){
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        }
+        $storeTitle = $store->getTitle();
+        $categories = $this->getStoreCategories($store_id); //$this->getBrandCategories($brand_id);
+        $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        $breadCrumbs[]=[null, $storeTitle];
+        foreach ($categories as $category) {
+            if ($category->getId() == $category_id) {
+                $categoryTitle =  $category->getTitle();
+            }
+            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        return new ViewModel( ['breadCrumbs' => $breadCrumbs,'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $storeTitle, 'category_title' => $categoryTitle,]);
+    }
+    
+    
+    private function getStoreCategories($store_id)
+    {
+        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
+        $products = ArrayHelper::extractProdictsId($storeProducts);
+        $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        foreach ($storeProductsCategories as $category){
+            $categoriesArray[] = $category->getCategoryId();
+        }
+       return $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
+            
+    }
+    
+    
+    private function getBrandCategories($brand_id)
+    {
+        $brandProductsCategories = $this->productRepository->findAll(["where" => ["brand_id" => $brand_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        foreach ($brandProductsCategories as $category){
+            $categoriesArray[] = $category->getCategoryId();
+        }
+        return  $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
+    }
+    
+    private function getProviderCategories($provider_id)
+    {
+        $brandProductsCategories = $this->productRepository->findAll(["where" => ["provider_id" => $provider_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        foreach ($brandProductsCategories as $category){
+            $categoriesArray[] = $category->getCategoryId();
+        }
+        return  $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
+    }
+    
+    
+    
+    
 
     public function userAction($category_id = false)
     {
@@ -563,7 +680,7 @@ class IndexController extends AbstractActionController
 
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);
-        $userData = $user->getUserData();
+        //$userData = 
         $phone = $user->getPhone();
         $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
         $paycards =($userPaycards->count())?$userPaycards:null;
@@ -577,7 +694,7 @@ class IndexController extends AbstractActionController
         $title = ($user->getName()) ? $user->getName() : "Войти на сайт";
         return new ViewModel([
             "user" => $user,
-            "userData" => $userData,
+            "userData" => $user->getUserData(),
             "userPhone" => $userPhone,
             "title" => $title, //."/$category_id",
             "id" => "userid: " . $userId,

@@ -18,6 +18,7 @@ use Application\Controller\Factory\IndexControllerFactory;
 use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
+use Application\Controller\Factory\ProductCardsControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Application\Controller\Factory\FtpControllerFactory;
 use Application\Controller\Factory\AcquiringControllerFactory;
@@ -290,6 +291,39 @@ return [
                     ],
                 ],
             ],
+            
+            'brand' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/brand/:brand_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'brandProducts',
+                    ],
+                ],
+            ],
+            
+            'store' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/store/:store_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'storeProducts',
+                    ],
+                ],
+            ],
+            'provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/seller/:provider_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'providerProducts',
+                    ],
+                ],
+            ],
+            
             'basket' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -813,7 +847,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-fltr',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'setFilterForCategory',
                     ],
                 ],
@@ -823,11 +857,43 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-products-categories',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getProductCategories',
                     ],
                 ],
             ],
+            'ajax-get-products-brand' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-brand',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsBrand',
+                    ],
+                ],
+            ],
+            'ajax-get-products-store' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-store',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsStore',
+                    ],
+                ],
+            ],
+             'ajax-get-products-provider' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-provider',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsProvider',
+                    ],
+                ],
+            ],
+            
+            
             'ajax-fltr-json' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -1117,6 +1183,7 @@ return [
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
             Controller\FtpController::class => FtpControllerFactory::class,
             Controller\AcquiringController::class => AcquiringControllerFactory::class,
+            Controller\ProductCardsController::class => ProductCardsControllerFactory::class,
         ],
     ],
     'laminas-cli' => [
@@ -1179,6 +1246,7 @@ return [
             \Application\Model\Repository\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
+            \Application\Model\Repository\StockBalance::class => \Application\Model\Factory\StockBalanceFactory::class,            
             \Application\Model\Repository\ProviderRelatedStoreRepository::class => \Application\Model\Factory\ProviderRelatedStoreRepositoryFactory::class,
             \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
             \Application\Model\Repository\FilteredProductRepository::class => \Application\Model\Factory\FilteredProductRepositoryFactory::class,
@@ -1224,11 +1292,14 @@ return [
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
             \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Model\Entity\Store::class => \Application\Model\Factory\StoreRepositoryFactory::class,
+            \Application\Model\Entity\StockBalance::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
             \Application\Model\Entity\UserPaycard::class => \Application\Model\Factory\UserPaycardRepositoryFactory::class,
             \Application\Model\Entity\Color::class => \Application\Model\Factory\ColorRepositoryFactory::class,
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
 
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
+            \Application\Model\Entity\Category::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Entity\ProductFavorites::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,

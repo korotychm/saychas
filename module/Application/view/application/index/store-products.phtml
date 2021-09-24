@@ -1,0 +1,22 @@
+<?php
+//$this->headTitle(Application\Resource\Resource::THE_BRANDS, 'PREPEND');
+$this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/stores.js'));
+?><section class="catalog">
+  <div class="page-heading">
+      <h1 class="h1"><?= $this->title ?>. <?=$this->category_title ?></h1>
+
+    <?= $this->partial("/application/common/range-filter-select", ['data' => $this->data])?>
+  </div>
+  <div class="catalog__wrap" id="catalog-wrap">
+    <aside class="catalog__sidebar">
+    <p class="mini">
+            <?=$this->address?>" 
+    </p>          
+      <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", ['url' => 'store', "breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "category_id" => $this->category_id]) ?>
+    </aside>
+    <div class="catalog__content">
+        <pre id="storecontent"></pre>
+    </div>
+  </div>
+</section>

@@ -111,6 +111,9 @@ class CommonHelperFunctionsService
                        $store[] =  $s->getId();
                     }
                 }
+                $image = $product->receiveFirstImageObject();
+                $imageUrl = (!empty($image)) ? $image->getHttpUrl() : $image;
+                        
                 $return[$product->getId()] = [
                     "reserve" => $product->receiveRest($store),
                     "price" => $product->getPrice(),
@@ -118,7 +121,7 @@ class CommonHelperFunctionsService
                     'available' =>  $available,
                     "oldprice" => $oldPrice,
                     "discount" => $product->getDiscount(),
-                    "image" => $product->receiveFirstImageObject()->getHttpUrl(),
+                    "image" => $imageUrl,
                     'isFav' => $this->isInFavorites($product->getId(), $userId ),
                 ];
            // }
