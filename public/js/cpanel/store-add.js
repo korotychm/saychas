@@ -143,6 +143,7 @@ const StoreAdd = {
                         <div class="store__calendar">
                           <v-date-picker v-model='selectedDate' :min-date='new Date()' @update:from-page="modifiedDaysHighlight" @update:to-page="modifiedDaysHighlight" />
                         </div>
+                        <div v-html="highlightedStyles"></div>
                       </div>
                       <p>Если магазин работает круглосуточно - проставьте с 00:00 до 23:59</p>
                       <p>Если магазин не работает, например, по субботам - нажмите крестик напротив.</p>
