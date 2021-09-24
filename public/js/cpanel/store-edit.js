@@ -273,7 +273,7 @@ const StoreEdit = {
       }
     },
     dayOff(day) {
-      if (day == mod){
+      if (day == 'mod'){
         if (this.modified_date.time_from == '00:00' && this.modified_date.time_to == '00:00'){
           this.modified_date.time_to = '23:59';
         } else {
