@@ -73,10 +73,10 @@ const StoreEdit = {
                               <h2>{{ humanDate }} <span class="store__timetable-trigger" @click="dayOff('mod')"></span></h2>
                                 <div class="input-group">
                                   <div>
-                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="modified_date.time_from" />
+                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="modified_date.time_from" />
                                   </div>
                                   <div>
-                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model="modified_date.time_to" />
+                                    <input type="text" class="timeinput" placeholder="00:00" v-mask="'##:##'" v-model.lazy="modified_date.time_to" />
                                   </div>
                                 </div>
                             </div>
