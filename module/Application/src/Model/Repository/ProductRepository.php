@@ -453,7 +453,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             if (count($product->characteristics) > 0) {
                 
                 try {
-                    $jsonCharacteristics = Json::encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+                    $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+//                    $jsonCharacteristics = Json::encode($product->characteristics, JSON_UNESCAPED_UNICODE);
                 }catch(LaminasJsonRuntimeException $e){
                     return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
                 }
