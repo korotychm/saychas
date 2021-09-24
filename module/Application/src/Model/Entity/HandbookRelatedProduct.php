@@ -199,6 +199,11 @@ class HandbookRelatedProduct extends Entity
      * @var string
      */
     protected $category_id;
+    
+    /**
+     * @var string
+     */
+    protected $parent_category_id;
 
     /**
      * @var string
@@ -389,6 +394,29 @@ class HandbookRelatedProduct extends Entity
     public function getCategoryId()
     {
         return $this->category_id;
+    }
+
+    /**
+     * Set parentCategoryId.
+     *
+     * @param string $parentCategoryId
+     * @return Product
+     */
+    public function setParentCategoryId($parentCategoryId)
+    {
+        $this->parent_category_id = $parentCategoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get parentCategoryId.
+     *
+     * @return string
+     */
+    public function getParentCategoryId()
+    {
+        return $this->parent_category_id;
     }
 
     /**
