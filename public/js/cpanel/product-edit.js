@@ -362,7 +362,7 @@ const ProductEdit = {
       })
       .then(response => {
         console.log(response);
-        let newImg = imgPath + response.data.image_file_name;
+        let newImg = this.imgPath + response.data.image_file_name;
         this.product.images.push(newImg);
         this.currentImg = response.data.image_file_name;
         checkProductImagesSlider();
