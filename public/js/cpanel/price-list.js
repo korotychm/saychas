@@ -61,7 +61,7 @@ const PriceList = {
             <div class="td">Стоимость</div>
           </div>
           <div class="tbody">
-              <div v-for="product in products" class="tr pricelist__item">
+              <div v-for="(product, index) in products" class="tr pricelist__item">
                   <div class="td pricelist__img product-small-img">
                     <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
@@ -71,19 +71,20 @@ const PriceList = {
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
                   </div>
-                  <div class="td">0%</div>
+                  <div class="td">{{ product.discount }}%</div>ы
                   <div class="td">
-                    {{ (product.price / 100).toLocaleString() }} ₽
+                    <div v-if="product.old_price" class="pricelist__oldprice">{{ product.old_price.toLocaleString() }} ₽</div>
+                    <div class="pricelist__price">{{ product.price.toLocaleString() }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
                     <div class="pricelist__popup-category">Техника для дома</div>
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" max="99" min="0" value="0" />
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="calculatePrice(index)" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" :value="product.price / 100" />
+                          <input type="number" min="0" v-model.lazy="product.old_price" @change="calculatePrice(index)" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -91,7 +92,7 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3>{{ (product.price / 100).toLocaleString() }} ₽</h3>
+                        <h3>{{ product.price.toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary">Применить</button>
                     </div>
@@ -104,7 +105,35 @@ const PriceList = {
         </div>
       </div>
     </div>`,
+  // watch: {
+  //     products: {
+  //       deep: true,
+  //       handler() {
+  //         for (product of this.products){
+  //           if (product.discount){
+  //             product.price = product.old_price * product.discount / 100;
+  //           } else {
+  //             product.price = product.old_price;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   },
   methods: {
+    calculatePrice(index){
+      let product = this.products[index];
+      if (product.discount){
+        product.price = product.old_price * product.discount / 100;
+      } else {
+        product.price = product.old_price;
+      }
+    },
+    setRubPrice() {
+      for (product of this.products){
+        product.price = product.price / 100;
+        product.old_price = product.old_price / 100;
+      }
+    },
     getProducts() {
       let requestUrl = '/control-panel/show-products';
       if (this.filtersCreated) {
@@ -126,6 +155,7 @@ const PriceList = {
             } else {
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
+              this.setRubPrice();
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
