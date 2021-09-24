@@ -62,41 +62,7 @@ const PriceList = {
           </div>
           <div class="tbody" v-if="products">
               <div v-for="(product, index) in products" class="tr pricelist__item">
-                  <div class="td pricelist__img product-small-img">
-                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/img/ui/nophoto.jpg'" />
-                  </div>
-                  <div class="td td--hover pricelist__title">
-                    <a>{{ product.title }}</a>
-                  </div>
-                  <div class="td pricelist__category">
-                      <div>{{ product.category_name }}</div>
-                  </div>
-                  <div class="td class="pricelist__discount"">{{ product.discount }}%</div>
-                  <div class="td">
-                    <div v-if="product.old_price != product.price" class="pricelist__oldprice">{{ product.old_price.toLocaleString() }} ₽</div>
-                    <div class="pricelist__price">{{ product.price.toLocaleString() }} ₽</div>
-                  </div>
-                  <div class="pricelist__popup">
-                    <div class="pricelist__popup-category">Техника для дома</div>
-                    <div class="pricelist__popup-inputs">
-                      <div class="pricelist__popup-input-group">
-                        <div class="pricelist__popup-sale">
-                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="calculatePrice(index)" />
-                        </div>
-                        <div class="pricelist__popup-price">
-                          <input type="number" min="0" v-model.lazy="product.old_price" @change="calculatePrice(index)" />
-                        </div>
-                      </div>
-                      <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
-                    </div>
-                    <div class="pricelist__popup-right">
-                      <div class="pricelist__popup-total">
-                        <p>Итого<br> с учетом скидки</p>
-                        <h3>{{ product.price.toLocaleString() }} ₽</h3>
-                      </div>
-                      <button class="btn btn--primary">Применить</button>
-                    </div>
-                  </div>
+                  
               </div>
           </div>
         </div>
@@ -114,7 +80,15 @@ const PriceList = {
         product.price = product.old_price;
       }
     },
-    
+    setRubPrice() {
+      for (product of this.products){
+        product.price = product.price / 100;
+        product.old_price = product.old_price / 100;
+        if (!product.old_price){
+          product.old_price = product.price;
+        }
+      }
+    },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-product';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
