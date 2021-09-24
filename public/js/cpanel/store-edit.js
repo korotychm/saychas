@@ -189,6 +189,12 @@ const StoreEdit = {
         }
       }
     },
+    modified_date: {
+      deep: true,
+      handler() {
+        this.checkTime();
+      }
+    },
     selectedDate() {
       if (this.selectedDate){
         let index = this.checkModifiedDate();
@@ -244,7 +250,6 @@ const StoreEdit = {
       this.modifiedDaysHighlight();
     },
     modifiedDaysHighlight() {
-      //$('.vc-day').removeClass('modified-date');
       let highlighted = '<style>';
       for (item in this.store.modified_mode){
         if (highlighted != '<style>'){
@@ -256,7 +261,6 @@ const StoreEdit = {
             dateYear = date.split('.')[2],
             className = '.id-' + dateYear + '-' + dateMonth + '-' + dateDay;
         highlighted += className + ' .vc-day-content';
-        //$('.id-' + dateYear + '-' + dateMonth + '-' + dateDay).addClass('modified-date');
       }
       highlighted += `{
         background: var(--red) !important;
@@ -266,10 +270,16 @@ const StoreEdit = {
       highlighted += '</style>';
       this.highlightedStyles = highlighted;
     },
-    checkTime(item){
+    checkTime(item = false){
       let regex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      if (!regex.test(this.store.operating_mode[item])){
+      if (item && !regex.test(this.store.operating_mode[item])){
         this.store.operating_mode[item] = '';
+      }
+      if (!item  && !regex.test(this.store.modified_mode.time_from)) {
+        this.store.modified_mode.time_from = '';
+      }
+      if (!item  && !regex.test(this.store.modified_mode.time_to)) {
+        this.store.modified_mode.time_to = '';
       }
     },
     dayOff(day) {
