@@ -56,7 +56,7 @@ const ProductAdd = {
                                               </div>
                                           </div>
                                     </div>
-                                    <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
+                                    <div v-if="(product.brand_id !== undefined && showBrand != -1)" class="product__attribute product__attribute--short">
                                         <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
@@ -78,7 +78,7 @@ const ProductAdd = {
                                         <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
                                         <input class="input" type="text" v-model="product.title" />
                                     </div>
-                                    <div v-if="(product.color_id !== undefined)" class="product__attribute">
+                                    <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                                         <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
                                           <div class="product__colors">
                                               <label v-for="color in product.colors" class="color-checkbox">
@@ -301,7 +301,9 @@ const ProductAdd = {
       product: {},
       currentImg : '',
       deleteImages: [],
-      errors: false
+      errors: false,
+      showBrand: -1,
+      showColor: -1
     }
   },
   computed: {
@@ -486,9 +488,11 @@ const ProductAdd = {
                 this.countries = this.product.countries;
                 this.brands = this.product.brands;
                 this.product.vat = "Без НДС";
-                this.product.brand_id = ""; //Временно до разбора что обязательно в шапке
+                this.product.brand_id = "";
                 console.log('Продукт',this.product);
               }
+              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {

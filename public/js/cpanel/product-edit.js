@@ -44,7 +44,7 @@ const ProductEdit = {
                                 </div>
                             </div>
                       </div>
-                      <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
+                      <div v-if="(product.brand_id !== undefined && showBrand != -1)" class="product__attribute product__attribute--short">
                           <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
@@ -66,7 +66,7 @@ const ProductEdit = {
                           <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
                           <input class="input" type="text" v-model="product.title" />
                       </div>
-                      <div v-if="(product.color_id !== undefined)" class="product__attribute">
+                      <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                           <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
                             <div class="product__colors">
                                 <label v-for="color in product.colors" class="color-checkbox">
@@ -288,7 +288,9 @@ const ProductEdit = {
       product: {},
       currentImg : '',
       deleteImages: [],
-      errors: false
+      errors: false,
+      showBrand: -1,
+      showColor: -1
     }
   },
   computed: {
@@ -319,7 +321,7 @@ const ProductEdit = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description || !this.product.images.length){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || showBrand == -1) || !this.product.title || (!this.product.color_id || showColor == -1)  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
@@ -479,6 +481,8 @@ const ProductEdit = {
                   } else {
                     delete this.product.color_id;
                   }
+                  this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
+                  this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
                 } else {
                   if (response.data.result){
                     router.replace('/products');
@@ -521,6 +525,8 @@ const ProductEdit = {
               if (this.product.images.length){
                 this.currentImg = this.product.images[0];
               }
+              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
               console.log(this.product);
             }
