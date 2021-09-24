@@ -93,7 +93,7 @@ const StoreAdd = {
                             <p v-if="(modified_date.time_from == '' || modified_date.time_to == '') && modified_date.error" class="input-error">Время работы должно быть заполнено</p>
                           </div>
 
-                          <div class="store__timetable-main active">
+                          <div v-else class="store__timetable-main active">
                             <div class="store__timetable-item product__attribute" :class="{closed : (store.operating_mode.working_day_from == '00:00' && store.operating_mode.working_day_to == '00:00')}">
                               <h2><span :class="{'input-error' : ((!store.operating_mode.working_day_from || !store.operating_mode.working_day_to) && errors)}">Рабочие дни <span class="required">*</span></span><span class="store__timetable-trigger" @click="dayOff('working_day')"></span></h2>
                               <div class="input-group">
