@@ -60,7 +60,7 @@ const Products = {
           <div class="tbody">
               <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
                   <div class="td products__img product-small-img">
-                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/img/ui/nophoto.jpg'" />
+                    <img :src="(product.images.length) ? (((moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
                   <div class="td td--hover">
                     {{ product.title }}
@@ -86,6 +86,7 @@ const Products = {
         pages: 1,
         filters: {},
         imgPath: productImgPath,
+        imgPathModerated: productImgPathModerated,
         selectedFilters: {
           brand_id: '',
           category_id: ''
