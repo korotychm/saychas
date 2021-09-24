@@ -91,7 +91,7 @@ const StoreEdit = {
                               <div class="btn btn--secondary" @click="delDate">Сбросить</div>
                               <div class="btn btn--primary" @click="saveDate">Сохранить</div>
                             </div>
-                            <p v-if="(modified_date.time_from || '' && modified_date.time_to == '') && modified_date.error" class="input-error">Время работы должно быть заполнено</p>
+                            <p v-if="(modified_date.time_from == '' || modified_date.time_to == '') && modified_date.error" class="input-error">Время работы должно быть заполнено</p>
                           </div>
 
                           <div v-else class="store__timetable-main">
