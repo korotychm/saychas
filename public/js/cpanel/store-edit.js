@@ -246,14 +246,16 @@ const StoreEdit = {
       if (this.modified_date.time_from == '' || this.modified_date.time_to == ''){
         this.modified_date.error = true;
       }
-      let index = this.checkModifiedDate();
-      if (index != -1){
-        this.store.modified_mode[index] = JSON.parse(JSON.stringify(this.modified_date));
-      } else {
-        this.store.modified_mode.push(this.modified_date);
+      if (!this.modified_date.error){
+        let index = this.checkModifiedDate();
+        if (index != -1){
+          this.store.modified_mode[index] = JSON.parse(JSON.stringify(this.modified_date));
+        } else {
+          this.store.modified_mode.push(this.modified_date);
+        }
+        this.selectedDate = null;
+        this.modifiedDaysHighlight();
       }
-      this.selectedDate = null;
-      this.modifiedDaysHighlight();
     },
     modifiedDaysHighlight() {
       let highlighted = '<style>';
