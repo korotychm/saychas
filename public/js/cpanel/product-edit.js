@@ -215,7 +215,7 @@ const ProductEdit = {
                                         <div class="product__images-track" data-shift="0" data-viewed="5">
                                             <div v-if="product.images">
                                               <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : (image == currentImg) }" @click="currentImg = image">
-                                                <img :src="imgPath + image" />
+                                                <img :src="image" />
                                               </div>
                                             </div>
                                         </div>
@@ -271,6 +271,7 @@ const ProductEdit = {
   data: function () {
     return {
       imgPath: productImgPath,
+      imgPathModerated: productImgPathModerated,
       editable: true,
       categories: [],
       categoriesFlat: [],
@@ -360,8 +361,9 @@ const ProductEdit = {
             }
       })
       .then(response => {
-        console.log(response)
-        this.product.images.push(response.data.image_file_name);
+        console.log(response);
+        let newImg = imgPath + response.data.image_file_name;
+        this.product.images.push(newImg);
         this.currentImg = response.data.image_file_name;
         checkProductImagesSlider();
       })
@@ -500,6 +502,11 @@ const ProductEdit = {
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
       }
     },
+    addImagesPath() {
+      for (image in this.product.images) {
+        this.product.images[image] = ((this.product.moderated) ? imgPathModerated : imgPath) + this.product.images[image];
+      }
+    },
     getProduct() {
       let requestUrl = '/control-panel/edit-product';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -514,6 +521,7 @@ const ProductEdit = {
             } else {
               this.categories = response.data.category_tree;
               this.product = response.data.product;
+              this.addImagesPath();
               this.brandSearch = this.product.brand_name;
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
