@@ -61,7 +61,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
               </div>
               <div class="product__price">
                   <div class="product__price-current">{{ (product.price / 100).toLocaleString() }} ₽</div>
-                  <div v-if="product.oldprice" class="product__price-old">{{ (product.oldprice / 100).toLocaleString() }} ₽</div>
+                  <div v-if="product.oldprice && product.oldprice != product.price" class="product__price-old">{{ (product.oldprice / 100).toLocaleString() }} ₽</div>
               </div>
               <div class="product__tocart">
                 <button class="btn btn--primary paybutton" :rel="name">В корзину</button>
