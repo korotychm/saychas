@@ -33,6 +33,11 @@ class Product extends Entity
     /**
      * @var string
      */
+    protected $parent_category_id;
+    
+    /**
+     * @var string
+     */
     protected $title;
 
     /**
@@ -265,6 +270,29 @@ class Product extends Entity
         return $this->category_id;
     }
 
+    /**
+     * Set parentCategoryId.
+     *
+     * @param string $parentCategoryId
+     * @return Product
+     */
+    public function setParentCategoryId($parentCategoryId)
+    {
+        $this->parent_category_id = $parentCategoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get parentCategoryId.
+     *
+     * @return string
+     */
+    public function getParentCategoryId()
+    {
+        return $this->parent_category_id;
+    }
+    
     /**
      * Set title.
      *
