@@ -40,6 +40,7 @@ use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\ProductHistory;
 use Application\Model\Entity\ProductCharacteristic;
+use Application\Model\Entity\StockBalance;
 //use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -53,7 +54,7 @@ use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 //use Throwable;
-//use Application\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController
@@ -119,6 +120,8 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(ProductHistory::class);
         $this->entityManager->initRepository(ProductCharacteristic::class);
+        $this->entityManager->initRepository(StockBalance::class);
+        
     }
 
     public function ajaxGetBasketJsonAction()
@@ -342,7 +345,7 @@ class AjaxController extends AbstractActionController
             $this->getResponse()->setStatusCode(403);
             return;
         }
-        $userPhone = StringHelper::phoneFromNum($user->getPhone());
+        //$userPhone = StringHelper::phoneFromNum($user->getPhone());
         $return['reload'] = true; // $post->reload;
         $return['dataId'] = $post->dataId;
         $userData = UserData::findAll(['where' => ['user_id' => $userId, 'id' => $return['dataId']]])->current();
@@ -716,13 +719,13 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function unsetFilterForCategoКyAction()
-    {
-        $post = $this->getRequest()->getPost();
-        $category_id = $post->category_id;
-        $container = new Container(Resource::SESSION_NAMESPACE);
-        unset($container->filtrForCategory[$category_id]);
-    }
+//    public function unsetFilterForCategoКyAction()
+//    {
+//        $post = $this->getRequest()->getPost();
+//        $category_id = $post->category_id;
+//        $container = new Container(Resource::SESSION_NAMESPACE);
+//        unset($container->filtrForCategory[$category_id]);
+//    }
 
     /**
      * Return true if given product matches
@@ -830,12 +833,17 @@ class AjaxController extends AbstractActionController
     private function getFiltredProductsId($where)
     {
         $products = ProductCharacteristic::findAll(["where" => $where, "columns" => ['product_id'], "group" => "product_id"])->toArray();
-        $filtredProducts = [];
-        foreach ($products as $p) {
-            $filtredProducts[] = $p["product_id"];
-        }
-        return $filtredProducts;
+        //return $this->extractProdictsId($products);
+        return ArrayHelper::extractProdictsId($products);
     }
+//    private function extractProdictsId ($products)
+//    {
+//        $filtredProducts = [];
+//        foreach ($products as $p) {
+//            $filtredProducts[] = $p["product_id"];
+//        }
+//        return $filtredProducts;
+//    }
 
     /**
      * Return where clause for query
@@ -849,6 +857,41 @@ class AjaxController extends AbstractActionController
         $where->in('category_id', $params);
         return $where;
     }
+    
+    private function getWhereBrand($params): Where
+    {
+        $where = new Where();
+        $where->equalTo('brand_id', $params['brand_id']);
+        if (!empty($params['category_id'])){
+            $where->equalTo('category_id', $params['category_id']);
+        }    
+        return $where;
+    }
+    
+    private function getWhereProvider($params): Where
+    {
+        $where = new Where();
+        $where->equalTo('provider_id', $params['provider_id']);
+        if (!empty($params['category_id'])){
+            $where->equalTo('category_id', $params['category_id']);
+        }    
+        return $where;
+    }
+    
+    private function getWhereStore($params): Where
+    {        
+        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
+        $products =  ArrayHelper::extractProdictsId($storeProducts);
+        //        $this->extractProdictsId($storeProducts);
+        $where = new Where();
+        $where->in('product_id',$products );
+        if (!empty($params['category_id'])){
+            $where->equalTo('category_id', $params['category_id']);
+        }    
+        return $where;
+    }
+
+    
 
     /**
      * Return filtered HandbookRelatedProduct filtered products
@@ -858,12 +901,38 @@ class AjaxController extends AbstractActionController
      */
     private function getProductsCategories($params)
     {
-
         $params['where'] = $this->getWhereCategories($params);
+        return $this->getProducts($params);
+    }
+
+    private function getProductsBrand($params)
+    {
+        $params['where'] = $this->getWhereBrand($params);
+        return $this->getProducts($params);
+    }
+    
+    private function getProductsStore($params)
+    {
+        $params['where'] = $this->getWhereStore($params);
+        return $this->getProducts($params);
+    }
+    
+    private function getProductsProvider($params)
+    {
+        $params['where'] = $this->getWhereProvider($params);
+        return $this->getProducts($params);
+    }
+    
+    private function getProducts ($params)
+    {
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;
-    }
+        
+    }        
+            
+    
+    
 
     /**
      * Return filtered HandbookRelatedProduct filtered products
@@ -1015,6 +1084,39 @@ class AjaxController extends AbstractActionController
         $products = $this->getProductsCategories($param);
         return new JsonModel($products);
     }
+    
+    public function getProductsBrandAction()
+    {
+        $post = $this->getRequest()->getPost();
+        if (empty($post->brandId)){
+            return new JsonModel([]);
+        }
+        $products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId ]);
+        return new JsonModel($products);
+    }
+
+    public function getProductsStoreAction()
+    {
+        $post = $this->getRequest()->getPost();
+        if (empty($post->storeId)){
+            return new JsonModel([]);
+        }
+        $products = $this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId ]);
+        return new JsonModel($products);
+        //return new JsonModel($post);
+    }
+
+    public function getProductsProviderAction()
+    {
+        $post = $this->getRequest()->getPost();
+        if (empty($post->providerId)){
+            return new JsonModel([]);
+        }
+        $products = $this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId ]);
+        return new JsonModel($products);
+    }
+
+    
 
     public function getFiltredProductForCategoryJsonAction()
     {

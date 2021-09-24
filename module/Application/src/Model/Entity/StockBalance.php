@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\StockBalanceRepository;
+use Application\Model\Traits\Searchable;
+
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,8 +15,18 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="stock_balance", uniqueConstraints={@ORM\UniqueConstraint(name="product_id", columns={"product_id", "store_id"})})
  * @ORM\Entity
  */
-class StockBalance
+class StockBalance extends Entity
 {
+
+     /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var StockBalanceRepository
+     */
+    public static StockBalanceRepository $repository;
 
     /**
      * @var int

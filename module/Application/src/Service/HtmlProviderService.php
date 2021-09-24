@@ -208,8 +208,8 @@ class HtmlProviderService {
     }
 
     private function valueParce($v = [], $chType) {
-        $bool = ["нет", "да"];
-        if (!$v or!is_array($v))
+        $bool = [Resource::NO, Resource::YES];
+        if (!$v or !is_array($v))
             return $v;
         foreach ($v as $val) {
             if (!$val)
@@ -270,10 +270,21 @@ class HtmlProviderService {
             $productImages[] = $product->getHttpUrl();
             $vendor = $product->getVendorCode();
             $productId = $product->getId();
+            
             $return["brand"]["title"] = $product->getBrandTitle();
             $return["brand"]["id"] = $product->getBrandId();
-            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]]);
-            $return["brand"]["image"] = $brandobject->getImage();
+            $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
+            
+            
+            $return["provider"]["id"] = $product->getProviderId();
+            //exit($return["provider"]["id"]);
+            $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
+                    
+            $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
+            $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
+            
+            
+            
             $description = $product->getDescription();
             if (!empty($description)) {
                 $return['description']["text"] = StringHelper::eolFormating($description);
@@ -652,7 +663,7 @@ class HtmlProviderService {
     }
 
     private function isInFavorites($productId, $userId) {
-        if (!empty($userId)) {
+        if (!empty($userId) && !empty($productId)) {
             if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))) {
                 return true;
             }

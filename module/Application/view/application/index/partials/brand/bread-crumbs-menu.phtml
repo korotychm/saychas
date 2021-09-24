@@ -1,0 +1,20 @@
+<?php if (!empty($breadCrumbs)) :    $j = 0; ?>
+
+  <ul class="catalog__breadcrumbs nomargin ">
+    <?php foreach ($breadCrumbs as $breadCrumb) : ?>
+        <li class="<?= ($j==0) ? 'catalog__sidebar-heading':'' ?><?= (!empty($category_id) && $category_id == $breadCrumb[0]) ? "active" : "" ?>">
+          <a href="/<?=$url?>/<?=$id?><?=( $breadCrumb[0] ) ? "/".$breadCrumb[0] : "" ?>"><?= $breadCrumb[1] ?></a>
+        </li>
+    <?php
+    if (!$j): $j++; endif;
+    endforeach; ?>
+  </ul>
+
+
+
+
+<input type="hidden" id="baseId" value="<?=$id?>">
+<input type="hidden" id="categoryId" value="<?=$category_id?>">
+<style>.catalog__breadcrumbs li {margin-left:0 !important; padding-left:0 !important}
+.catalog__breadcrumbs li.active {color:var(--red)}</style>
+<?php endif; ?>

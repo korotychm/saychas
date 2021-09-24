@@ -6,6 +6,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 <section class="catalog">
   <div class="page-heading">
       <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1>
+
       <div class="catalog__sort">
         <div class="custom-select custom-select--radio">
           <div class="custom-select__label input">Сначала свежие</div>
@@ -31,6 +32,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
           </div>
         </div>
       </div>
+
+   <?= $this->partial("/application/common/range-filter-select", ['data' => $this->data])?>
+
   </div>
   <div class="catalog__wrap" id="catalog-wrap">
     <aside class="catalog__sidebar">
