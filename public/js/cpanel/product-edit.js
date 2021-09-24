@@ -222,7 +222,7 @@ const ProductEdit = {
                                     </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                 </div>
                                 <div class="product__images-selected">
-                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? (imgPath + currentImg) : ''" />
+                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? currentImg : ''" />
                                 </div>
                                 <div class="product__images-controls">
                                     <input type="file" id="photo-upload" style="display:none;" @change="uploadFile"/>
