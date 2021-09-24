@@ -15,7 +15,7 @@
   font-size: 12px;
   border: none;
   -moz-appearance: textfield;
-  border: 1px solid var(--gray);
+  border: 2px solid var(--gray);
   padding: 0 25px 0 55px;
   outline: none !important;
   font-size: 18px;
