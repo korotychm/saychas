@@ -199,6 +199,7 @@ const StoreEdit = {
     },
     selectedDate() {
       if (this.selectedDate){
+        console.log(this.store.modified_mode);
         this.modified_date.error = false;
         let index = this.checkModifiedDate();
         if (index != -1){
