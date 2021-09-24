@@ -72,11 +72,6 @@ const PriceList = {
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td class="pricelist__discount"">{{ product.discount }}%</div>
-                  <div class="td">
-                    <div v-if="product.old_price != product.price" class="pricelist__oldprice">{{ product.old_price.toLocaleString() }} ₽</div>
-                    <div class="pricelist__price">{{ product.price.toLocaleString() }} ₽</div>
-                  </div>
-                  
               </div>
           </div>
         </div>
