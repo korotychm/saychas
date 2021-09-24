@@ -275,11 +275,11 @@ const StoreEdit = {
       if (item && !regex.test(this.store.operating_mode[item])){
         this.store.operating_mode[item] = '';
       }
-      if (!item  && !regex.test(this.store.modified_mode.time_from)) {
-        this.store.modified_mode.time_from = '';
+      if (!item  && !regex.test(this.modified_date.time_from)) {
+        this.modified_date.time_from = '';
       }
-      if (!item  && !regex.test(this.store.modified_mode.time_to)) {
-        this.store.modified_mode.time_to = '';
+      if (!item  && !regex.test(this.modified_date.time_to)) {
+        this.modified_date.time_to = '';
       }
     },
     dayOff(day) {
