@@ -73,6 +73,7 @@
 .catalog__sidebar {
   z-index: 2;
   background: #fff;
+  padding-bottom: 50px;
 }
 .catalog__sidebar-heading {
   font-size: 22px !important;
