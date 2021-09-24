@@ -432,6 +432,10 @@ const ProductEdit = {
           if (oldCategory) {
             category_in_request = oldCategory;
           }
+          let cloneImages = JSON.parse(JSON.stringify(this.product.images));
+          for (image in cloneImages){
+            cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
+          }
           let request = {
             id : this.product.id,
             vat: this.product.vat,
@@ -443,7 +447,7 @@ const ProductEdit = {
             description: this.product.description,
             title: this.product.title,
             characteristics: chars,
-            images: this.product.images,
+            images: cloneImages,
             vendor_code: this.product.vendor_code,
             del_images: this.deleteImages
           }
