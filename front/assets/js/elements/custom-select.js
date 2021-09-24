@@ -23,3 +23,10 @@ $(document).on('click','.custom-select__label',function(){
 $(document).ready(function(){
   setAllCustomSelects();
 });
+
+$(document).click( function(e){
+    if ( $(e.target).closest('.custom-select').length ) {
+        return;
+    }
+    $('.custom-select').removeClass('active');
+});
