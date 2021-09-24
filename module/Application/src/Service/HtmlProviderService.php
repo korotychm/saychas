@@ -653,7 +653,7 @@ class HtmlProviderService {
     }
 
     private function isInFavorites($productId, $userId) {
-        if (!empty($userId)) {
+        if (!empty($userId) && !empty($productId)) {
             if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))) {
                 return true;
             }
