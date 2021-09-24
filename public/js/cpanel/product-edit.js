@@ -504,12 +504,12 @@ const ProductEdit = {
     },
     addImagesPath() {
       for (image in this.product.images) {
-        let currentImgPath = imgPath;
-        if (this.product.moderated){
-          currentImgPath = imgPathModerated;
-        }
+        // let currentImgPath = imgPath;
+        // if (this.product.moderated){
+        //   currentImgPath = imgPathModerated;
+        // }
         console.log(this.product.images[image]);
-        this.product.images[image] = currentImgPath + this.product.images[image];
+        //this.product.images[image] = currentImgPath + this.product.images[image];
       }
     },
     getProduct() {
