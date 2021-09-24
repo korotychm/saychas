@@ -254,6 +254,7 @@ const StoreEdit = {
         } else {
           this.store.modified_mode.push(this.modified_date);
         }
+        console.log(this.store.modified_mode);
         this.selectedDate = null;
         this.modifiedDaysHighlight();
       }
