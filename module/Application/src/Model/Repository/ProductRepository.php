@@ -519,7 +519,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
             if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
-                mail('user@localhost', 'product->id', print_r($jsonCharacteristics));
+                mail('user@localhost', 'product->id', print_r($jsonCharacteristics, true));
             }
 
             try {
