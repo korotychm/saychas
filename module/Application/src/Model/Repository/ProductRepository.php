@@ -444,6 +444,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //        }
         /** End of comment to be deleted */
 
+        $jsonCharacteristics = '';
         /** $result->data - products */
         foreach ($result->data as $product) {
 
@@ -454,9 +455,9 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             
                 $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
                 
-                if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
-                    mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
-                }
+//                if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
+//                    mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
+//                }
                 
 
                 $current = [];
