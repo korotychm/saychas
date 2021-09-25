@@ -345,7 +345,7 @@ class ProductCardsController extends AbstractActionController
     }
 
     /**
-     * Return filtered HandbookRelatedProduct filtered products
+     * Return filtered HandbookRelatedProduct 
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
@@ -357,12 +357,13 @@ class ProductCardsController extends AbstractActionController
         if (empty($params['priceRange'])) {
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
+        unset($params['offset'], $params['limit']);
         $params['where'] = $this->getWhereCatalog($params);
         return $this->getProducts($params);
     }
     
     /**
-     * Return filtered HandbookRelatedProduct filtered products
+     * Return filtered HandbookRelatedProduct 
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
@@ -376,7 +377,7 @@ class ProductCardsController extends AbstractActionController
 
     
     /**
-     * Return filtered HandbookRelatedProduct filtered products
+     * Return filtered HandbookRelatedProduct 
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
@@ -390,7 +391,7 @@ class ProductCardsController extends AbstractActionController
     
     
     /**
-     * Return filtered HandbookRelatedProduct filtered products
+     * Return filtered HandbookRelatedProduct 
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
@@ -404,7 +405,7 @@ class ProductCardsController extends AbstractActionController
     
     
     /**
-     * Return filtered HandbookRelatedProduct filtered products
+     * Return filtered HandbookRelatedProduct 
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
@@ -418,7 +419,7 @@ class ProductCardsController extends AbstractActionController
     
     
     /**
-     * Return filtered HandbookRelatedProduct filtered products
+     * Return filtered HandbookRelatedProduct 
      *
      * @param array $params
      * @return HandbookRelatedProduct[]
