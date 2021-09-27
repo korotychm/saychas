@@ -539,7 +539,7 @@ class IndexController extends AbstractActionController
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
-        $categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        //$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             $breadCrumbs = array_reverse($matherCategories);
@@ -550,7 +550,7 @@ class IndexController extends AbstractActionController
         //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         //$filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-        return new ViewModel([ "catalog" => $categories,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
+        return new ViewModel([ "catalog" => [],"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
 
