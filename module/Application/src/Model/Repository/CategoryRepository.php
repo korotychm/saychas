@@ -120,9 +120,36 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
                 $this->hydrator,
                 new Category('', 0, 0)
         );
-        $resultSet->initialize($result);
+        //$resultSet->initialize($result);
+        $results = $resultSet->initialize($result)->toArray();
         
-        $results = $resultSet->toArray();
+        /*/// !-- plusweb
+        $categoriesHasProduct = $this->categoriesHasProduct();
+        $newTree = [];
+        foreach ($results as $value) {
+            $newTree[$value['parent_id']][] = $value;
+        }
+        $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        /**/// plusweb --!
+        
+        $tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
+        return $tree;
+    }
+    
+    public function categoryFilteredTree(): array
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select();
+        $select->from($this->tableName);
+
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $result = $statement->execute();
+        $resultSet = new HydratingResultSet(
+                $this->hydrator,
+                new Category('', 0, 0)
+        );
+        //$resultSet->initialize($result);
+        $results = $resultSet->initialize($result)->toArray();
         
         /**/// !-- plusweb
         $categoriesHasProduct = $this->categoriesHasProduct();
@@ -133,9 +160,11 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         /**/// plusweb --!
         
-        //$tree = ArrayHelper::buildTree($result, $i); // !-- alex --!
+        //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
         return $tree;
     }
+    
+    
     private function categoriesHasProduct ()
     {
         $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT `category_id` FROM `product` WHERE 1 group by `category_id`)";
@@ -156,37 +185,37 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
      *
      * @return string
      */
-    private function findAllCategories1($echo = '', $i = '0', $idActive = false)
-    {
-        $sql = new Sql($this->db);
-        $select = $sql->select();
-        $select->from($this->tableName);
-        $select->where(['parent_id' => $i]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $results = $statement->execute();
-
-        if ($i) {
-            $echo .= "<ul>";
-        }
-        /** TODO: to be fixed later */
-        foreach ($results as $result) {
-            if (true /*             * || pubtv(id_1C_group) */) { // если в ветке есть хоть один товар, надо функцию сделать тоже такую
-
-                ($idActive == $result['id']) ? $class = "class='open activ activecategoty'" : $class = "";
-                $groupName = stripslashes($result['title']);
-                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
-                $echo .= "<li $class><a href=/catalog/" . $result['id'] . "  >$groupName</a>";
-                $echo = $this->findAllCategories1($echo, $result['id'], $idActive);
-                $echo .= "</li>";
-            }
-        }
-        if ($i) {
-            $echo .= "</ul>";
-        }
-
-        return str_replace("<ul></ul>", "", $echo);
-    }
+//    private function findAllCategories1($echo = '', $i = '0', $idActive = false)
+//    {
+//        $sql = new Sql($this->db);
+//        $select = $sql->select();
+//        $select->from($this->tableName);
+//        $select->where(['parent_id' => $i]);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $results = $statement->execute();
+//
+//        if ($i) {
+//            $echo .= "<ul>";
+//        }
+//        /** TODO: to be fixed later */
+//        foreach ($results as $result) {
+//            if (true /*             * || pubtv(id_1C_group) */) { // если в ветке есть хоть один товар, надо функцию сделать тоже такую
+//
+//                $class = ($idActive == $result['id']) ? "class='open activ activecategoty'" : "";
+//                $groupName = stripslashes($result['title']);
+//                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
+//                $echo .= "<li $class><a href=/catalog/" . $result['id'] . "  >$groupName</a>";
+//                $echo = $this->findAllCategories1($echo, $result['id'], $idActive);
+//                $echo .= "</li>";
+//            }
+//        }
+//        if ($i) {
+//            $echo .= "</ul>";
+//        }
+//
+//        return str_replace("<ul></ul>", "", $echo);
+//    }
 
     /**
      * Reads all data from category table
@@ -264,7 +293,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         }
 
         $stmt = $sql->prepareStatementForSqlObject($select);
-        $res = $sql->buildSqlString($select);
+        //$res = $sql->buildSqlString($select);
         
         $result = $stmt->execute();
 
@@ -410,7 +439,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     }
 
     /**
-     * Delete categories specified by json array of objects
+     * Delete categories specified by JSON array of objects
      * @param $json
      */
     public function delete($json)

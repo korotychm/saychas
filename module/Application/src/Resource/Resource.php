@@ -150,6 +150,9 @@ class Resource
     const BRAND_REF = 6;
     const COLOR_REF = 7;
     const COUNTRY_REF = 8;
+    
+    
+    const DEFAULT_IMAGE = "nophoto.jpeg";
 
 
 }

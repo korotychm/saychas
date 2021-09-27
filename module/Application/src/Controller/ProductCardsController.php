@@ -254,8 +254,9 @@ class ProductCardsController extends AbstractActionController {
         }
         $subWhere = new Where();
         $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
+        $productsFiltredDefault =  empty($productsFiltred) ? [0] : $productsFiltred; 
         $nest = $where->nest();
-        $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltred)->unnest();
+        $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltredDefault)->unnest();
         return $where;
     }
 
