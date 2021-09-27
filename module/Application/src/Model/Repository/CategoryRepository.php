@@ -123,20 +123,21 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         //$resultSet->initialize($result);
         $results = $resultSet->initialize($result)->toArray();
         
-        /*/// !-- plusweb
-        $categoriesHasProduct = $this->categoriesHasProduct();
+        /**//// !-- plusweb
+        //$categoriesHasProduct = $this->categoriesHasProduct();
         $newTree = [];
         foreach ($results as $value) {
             $newTree[$value['parent_id']][] = $value;
         }
-        $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        /*$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         /**/// plusweb --!
         
-        $tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
+        //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
+        $tree = ArrayHelper::buildTree($newTree, $i); // !-- alex --!
         return $tree;
     }
     
-    public function categoryFilteredTree(): array
+    public function categoryFilteredTree($i = 0): array
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
@@ -148,8 +149,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
                 $this->hydrator,
                 new Category('', 0, 0)
         );
-        //$resultSet->initialize($result);
-        $results = $resultSet->initialize($result)->toArray();
+        $resultSet->initialize($result);
+        $results = $resultSet->toArray();
         
         /**/// !-- plusweb
         $categoriesHasProduct = $this->categoriesHasProduct();
@@ -157,7 +158,10 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         foreach ($results as $value) {
             $newTree[$value['parent_id']][] = $value;
         }
-        $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        
+        //$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        $tree = ArrayHelper::buildTree($newTree, $i); // !-- alex --!
+       // exit (print_r($tree));
         /**/// plusweb --!
         
         //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
@@ -308,9 +312,6 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $resultSet->initialize($result);
         return $resultSet;
     }
-    
-    
-    
     
    /**
      * Return array of category ids
