@@ -609,9 +609,8 @@ class AjaxController extends AbstractActionController {
 
     public function previewAction() {
         $this->layout()->setTemplate('layout/preview');
-        $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
-            'menu' => $categories
+            'menu' => '',//$categories
         ]);
     }
 
@@ -1072,15 +1071,15 @@ class AjaxController extends AbstractActionController {
 //        return new JsonModel(["products" => $products]);
 //    }
 
-    public function providerAction() {
-        $id = $this->params()->fromRoute('id', '');
-        $this->layout()->setTemplate('layout/mainpage');
-        $categories = $this->categoryRepository->findAllCategories("", 0, $id);
-        $providers = $this->providerRepository->findAll(['table' => 'provider', 'limit' => 100, 'order' => 'id ASC', 'offset' => 0]);
-        return new ViewModel([
-            "providers" => $providers,
-            "catalog" => $categories,
-        ]);
-    }
+//    public function providerAction() {
+//        //$id = $this->params()->fromRoute('id', '');
+//        $this->layout()->setTemplate('layout/mainpage');
+//        $categories = ""; 
+//        $providers = $this->providerRepository->findAll(['table' => 'provider', 'limit' => 100, 'order' => 'id ASC', 'offset' => 0]);
+//        return new ViewModel([
+//            "providers" => $providers,
+//            "catalog" => $categories,
+//        ]);
+//    }
 
 }

@@ -159,8 +159,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
             $newTree[$value['parent_id']][] = $value;
         }
         
-        //$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
-        $tree = ArrayHelper::buildTree($newTree, $i); // !-- alex --!
+        $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        //$tree = ArrayHelper::buildTree($newTree, $i); // !-- alex --!
        // exit (print_r($tree));
         /**/// plusweb --!
         
