@@ -122,7 +122,6 @@ class ProductManager extends ListManager implements LoadableInterface
                 $accumulator[] = [$c, $category_name, ];
             }
         }
-        mail('user@localhost', 'accumulator', print_r($accumulator, true));
         return $accumulator;
     }
     
