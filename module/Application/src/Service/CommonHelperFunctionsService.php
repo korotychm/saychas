@@ -112,7 +112,7 @@ class CommonHelperFunctionsService
                     }
                 }
                 $image = $product->receiveFirstImageObject();
-                $imageUrl = (!empty($image)) ? $image->getHttpUrl() : $image;
+                $imageUrl = (!empty($image)) ? $image->getHttpUrl() : null; //Resource::DEFAULT_IMAGE;
                         
                 $return[$product->getId()] = [
                     "reserve" => $product->receiveRest($store),

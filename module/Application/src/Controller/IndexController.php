@@ -165,8 +165,13 @@ class IndexController extends AbstractActionController
             //'headerText' => $this->htmlProvider->testHtml(),
             //'footerText' => 'banzaii',
             //'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
-            'categoryTree' => $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', '')),
+
+            //'categoryTree' => $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', '')),
           //  'userAddressHtml' => $userAddressHtml,
+
+            'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
+            //'userAddressHtml' => $userAddressHtml,
+
             'addressLegal' => $addressLegal,
             'addresses' =>  $userAddressArray,
             'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
@@ -552,6 +557,7 @@ class IndexController extends AbstractActionController
         //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         //$filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
+
         return new ViewModel([ "catalog" => '' /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
