@@ -25,7 +25,7 @@ use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
-use Application\Model\Repository\CharacteristicRepository;
+//use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\Entity\HandbookRelatedProduct;
@@ -54,11 +54,10 @@ use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 //use Throwable;
-use Application\Helper\ArrayHelper;
+//use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
-class AjaxController extends AbstractActionController
-{
+class AjaxController extends AbstractActionController {
 
     private $testRepository;
     private $categoryRepository;
@@ -90,8 +89,7 @@ class AjaxController extends AbstractActionController
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
             HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository/* ,
-              SessionContainer $sessionContainer */, CommonHelperFunctionsService $commonHelperFuncions)
-    {
+              SessionContainer $sessionContainer */, CommonHelperFunctionsService $commonHelperFuncions) {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
@@ -121,11 +119,9 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(ProductHistory::class);
         $this->entityManager->initRepository(ProductCharacteristic::class);
         $this->entityManager->initRepository(StockBalance::class);
-        
     }
 
-    public function ajaxGetBasketJsonAction()
-    {
+    public function ajaxGetBasketJsonAction() {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         if (!$return['userId']) {
@@ -148,8 +144,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function delFromBasketAction()
-    {
+    public function delFromBasketAction() {
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
         $return['productId'] = $productId = $post->productId;
@@ -159,8 +154,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function getJsonCategoryFiltersAction()
-    {
+    public function getJsonCategoryFiltersAction() {
         $post = $this->getRequest()->getPost();
         $return['category_id'] = $category_id = $post->categoryId;
         if (!$category_id or empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
@@ -173,8 +167,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function getUserOrderListAction()
-    {
+    public function getUserOrderListAction() {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = true;
@@ -211,8 +204,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    private function getBasketProductMap($userId, $orderId = 0)
-    {
+    private function getBasketProductMap($userId, $orderId = 0) {
         $products = [];
         $where = new Where();
         $where->equalTo('user_id', $userId);
@@ -239,8 +231,7 @@ class AjaxController extends AbstractActionController
         return ["result" => true, "products" => $products];
     }
 
-    public function getUserOrderPageAction()
-    {
+    public function getUserOrderPageAction() {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = false;
@@ -277,8 +268,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function checkOrderStatusAction()
-    {
+    public function checkOrderStatusAction() {
         $post = $this->getRequest()->getPost();
         $return['order_id'] = $orderId = $post->orderId;
         $return['order_status'] = false;
@@ -293,9 +283,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function ajaxUserDeleteAddressAction()
-    {
-
+    public function ajaxUserDeleteAddressAction() {
         $post = $this->getRequest()->getPost();
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
@@ -315,8 +303,7 @@ class AjaxController extends AbstractActionController
     }
 
 //
-    public function ajaxUserSetDefaultAddressAction()
-    {
+    public function ajaxUserSetDefaultAddressAction() {
         //$return["error"] = true;
         $post = $this->getRequest()->getPost();
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -341,8 +328,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function ajaxBasketChangedAction()
-    {
+    public function ajaxBasketChangedAction() {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $whatHappened = $container->whatHappened;
@@ -356,8 +342,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function basketCheckBeforeSendAction()
-    {
+    public function basketCheckBeforeSendAction() {
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userPhone = (empty($user)) ? false : $user->getPhone();
@@ -387,8 +372,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel(['result' => false, "reload" => true, "reloadUrl" => "/"]);
     }
 
-    public function addToFavoritesAction()
-    {
+    public function addToFavoritesAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return;
@@ -401,8 +385,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel(['result' => true, "description" => "product $productId added to favorites", 'lable' => Resource::REMOVE_FROM_FAVORITES]);
     }
 
-    public function removeFromFavoritesAction()
-    {
+    public function removeFromFavoritesAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return; //$this->redirect()->toRoute('home');
@@ -414,8 +397,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel(['result' => true, "description" => "product $productId removed from favorites", 'lable' => Resource::ADD_TO_FAVORITES]);
     }
 
-    public function getClientFavoritesAction()
-    {
+    public function getClientFavoritesAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return; //$this->redirect()->toRoute('home');
@@ -433,8 +415,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($products);
     }
 
-    public function getClientHistoryAction()
-    {
+    public function getClientHistoryAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return; //$this->redirect()->toRoute('home');
@@ -457,16 +438,13 @@ class AjaxController extends AbstractActionController
      *  промежуточный скрипт для http://api4.searchbooster.io
      * @return json
      */
-
-    public function searchBoosterApiAction()
-    {
+    public function searchBoosterApiAction() {
         $json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io" . $_SERVER["REQUEST_URI"]));
         $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
         return new JsonModel($return);
     }
 
-    public function addToBasketAction()
-    {
+    public function addToBasketAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return; //$this->redirect()->toRoute('home');
@@ -507,8 +485,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function calculateBasketItemAction()
-    {
+    public function calculateBasketItemAction() {
         $post = $this->getRequest()->getPost();
         if (!$userId = $this->identity()) {
             return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
@@ -528,8 +505,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function basketOrderMergeAction()
-    {
+    public function basketOrderMergeAction() {
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
@@ -558,8 +534,7 @@ class AjaxController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
-    public function basketPayCardInfoAction()
-    {
+    public function basketPayCardInfoAction() {
         if (!$userId = $this->identity()) {
             return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
         }
@@ -578,8 +553,7 @@ class AjaxController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
-    public function basketPayInfoAction()
-    {
+    public function basketPayInfoAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return;
@@ -631,8 +605,7 @@ class AjaxController extends AbstractActionController
         return $view->setTerminal(true);
     }
 
-    public function previewAction()
-    {
+    public function previewAction() {
         $this->layout()->setTemplate('layout/preview');
         $categories = $this->categoryRepository->findAllCategories();
         return new ViewModel([
@@ -640,8 +613,7 @@ class AjaxController extends AbstractActionController
         ]);
     }
 
-    public function ajaxGetLegalStoreAction()
-    {
+    public function ajaxGetLegalStoreAction() {
         $post = $this->getRequest()->getPost();
         if (!$json = $post->value) {
             return new JsonModel(NULL);
@@ -659,8 +631,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function ajaxAddUserAddressAction()
-    {
+    public function ajaxAddUserAddressAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return;
@@ -687,8 +658,7 @@ class AjaxController extends AbstractActionController
         return new JsonModel($return);
     }
 
-    public function ajaxSetUserAddressAction()
-    {
+    public function ajaxSetUserAddressAction() {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return;
@@ -774,8 +744,8 @@ class AjaxController extends AbstractActionController
 //     * @param array $characteristics, object Where
 //     * @return object Where
 //     */
-//    
-//    
+//
+//
 //    private function filterWhere($characteristics, $where): Where
 //    {
 //        if (empty($characteristics)) {
@@ -838,29 +808,29 @@ class AjaxController extends AbstractActionController
 //        $where->in('category_id', $params);
 //        return $where;
 //    }
-//    
+//
 //    private function getWhereBrand($params): Where
 //    {
 //        $where = new Where();
 //        $where->equalTo('brand_id', $params['brand_id']);
 //        if (!empty($params['category_id'])){
 //            $where->equalTo('category_id', $params['category_id']);
-//        }    
+//        }
 //        return $where;
 //    }
-//    
+//
 //    private function getWhereProvider($params): Where
 //    {
 //        $where = new Where();
 //        $where->equalTo('provider_id', $params['provider_id']);
 //        if (!empty($params['category_id'])){
 //            $where->equalTo('category_id', $params['category_id']);
-//        }    
+//        }
 //        return $where;
 //    }
-//    
+//
 //    private function getWhereStore($params): Where
-//    {        
+//    {
 //        $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
 //        $products =  ArrayHelper::extractProdictsId($storeProducts);
 //        //        $this->extractProdictsId($storeProducts);
@@ -868,11 +838,11 @@ class AjaxController extends AbstractActionController
 //        $where->in('product_id',$products );
 //        if (!empty($params['category_id'])){
 //            $where->equalTo('category_id', $params['category_id']);
-//        }    
+//        }
 //        return $where;
 //    }
 //
-//    
+//
 //
 //    /**
 //     * Return filtered HandbookRelatedProduct filtered products
@@ -891,29 +861,29 @@ class AjaxController extends AbstractActionController
 //        $params['where'] = $this->getWhereBrand($params);
 //        return $this->getProducts($params);
 //    }
-//    
+//
 //    private function getProductsStore($params)
 //    {
 //        $params['where'] = $this->getWhereStore($params);
 //        return $this->getProducts($params);
 //    }
-//    
+//
 //    private function getProductsProvider($params)
 //    {
 //        $params['where'] = $this->getWhereProvider($params);
 //        return $this->getProducts($params);
 //    }
-//    
+//
 //    private function getProducts ($params)
 //    {
 //        $products = $this->handBookRelatedProductRepository->findAll($params);
 //        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
 //        return $filteredProducts;
-//        
-//    }        
-//            
-//    
-//    
+//
+//    }
+//
+//
+//
 
     /**
      * Return filtered HandbookRelatedProduct filtered products
@@ -962,8 +932,8 @@ class AjaxController extends AbstractActionController
 //        $products = $this->handBookRelatedProductRepository->findAll($params);
 //        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
 //        return $filteredProducts;
-//      
-//        
+//
+//
 //        /* $filteredProducts = [];
 //          $store = [];
 //          $available = false;
@@ -1006,7 +976,6 @@ class AjaxController extends AbstractActionController
 //          }
 //          return $filteredProducts; */
 //    }
-
 //    private function prepareCharacteristics(&$characteristics)
 //    {
 //        if (!$characteristics) {
@@ -1022,7 +991,6 @@ class AjaxController extends AbstractActionController
 //            }
 //        }
 //    }
-
 //    private function getProducts1($params)
 //    {
 //        $where = new Where();
@@ -1040,7 +1008,6 @@ class AjaxController extends AbstractActionController
 //        }
 //        return $products;
 //    }
-
 //    public function setFilterForCategoryAction()
 //    {
 //
@@ -1048,7 +1015,6 @@ class AjaxController extends AbstractActionController
 //        $products = $this->getProducts($post);
 //        return (new ViewModel(['products' => $products]))->setTerminal(true);
 //    }
-
 //    public function getProductCategoriesAction()
 //    {
 //        $post = $this->getRequest()->getPost();
@@ -1065,7 +1031,7 @@ class AjaxController extends AbstractActionController
 //        $products = $this->getProductsCategories($param);
 //        return new JsonModel($products);
 //    }
-//    
+//
 //    public function getProductsBrandAction()
 //    {
 //        $post = $this->getRequest()->getPost();
@@ -1096,9 +1062,6 @@ class AjaxController extends AbstractActionController
 //        $products = $this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId ]);
 //        return new JsonModel($products);
 //    }
-
-    
-
 //    public function getFiltredProductForCategoryJsonAction()
 //    {
 //
@@ -1107,8 +1070,7 @@ class AjaxController extends AbstractActionController
 //        return new JsonModel(["products" => $products]);
 //    }
 
-    public function providerAction()
-    {
+    public function providerAction() {
         $id = $this->params()->fromRoute('id', '');
         $this->layout()->setTemplate('layout/mainpage');
         $categories = $this->categoryRepository->findAllCategories("", 0, $id);
