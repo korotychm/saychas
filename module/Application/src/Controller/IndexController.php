@@ -165,7 +165,7 @@ class IndexController extends AbstractActionController
             //'headerText' => $this->htmlProvider->testHtml(),
             //'footerText' => 'banzaii',
             //'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
-            'categoryTree' => $this->categoryFilteredTree(),
+            'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
           //  'userAddressHtml' => $userAddressHtml,
             'addressLegal' => $addressLegal,
             'addresses' =>  $userAddressArray,
