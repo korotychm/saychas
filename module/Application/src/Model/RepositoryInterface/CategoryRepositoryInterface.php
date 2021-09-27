@@ -13,7 +13,7 @@ interface CategoryRepositoryInterface
      * @return string
      */
     
-    public function findAllCategories($echo='', $i=0, $idActive);
+    //public function findAllCategories($echo='', $i=0, $idActive);
     
     /**
      * Return массив всех родительских категорий   id=>title 

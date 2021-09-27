@@ -94,20 +94,20 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         );        
     }
 
-    public function findAllCategories($echo = '', $i = 0, $idActive, $forceCreate = false): string
-    {
-        if ($forceCreate) {
-            $this->cache->removeItem('category_container');
-        }
-
-        $result = false;
-        $this->categories = $this->cache->getItem('category_container', $result);
-        if(!$result) {
-            $this->categories = $this->findAllCategories1($echo = '', $i = 0, $idActive);      
-            $this->cache->setItem('category_container', $this->categories);
-        }
-        return $this->categories;
-    }
+//    public function findAllCategories($echo = '', $i = 0, $idActive, $forceCreate = false): string
+//    {
+//        if ($forceCreate) {
+//            $this->cache->removeItem('category_container');
+//        }
+//
+//        $result = false;
+//        $this->categories = $this->cache->getItem('category_container', $result);
+//        if(!$result) {
+//            $this->categories = $this->findAllCategories1($echo = '', $i = 0, $idActive);      
+//            $this->cache->setItem('category_container', $this->categories);
+//        }
+//        return $this->categories;
+//    }
     
     public function categoryTree($echo = '', $i = 0, $idActive): array
     {
@@ -176,37 +176,37 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
      *
      * @return string
      */
-    private function findAllCategories1($echo = '', $i = '0', $idActive = false)
-    {
-        $sql = new Sql($this->db);
-        $select = $sql->select();
-        $select->from($this->tableName);
-        $select->where(['parent_id' => $i]);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $results = $statement->execute();
-
-        if ($i) {
-            $echo .= "<ul>";
-        }
-        /** TODO: to be fixed later */
-        foreach ($results as $result) {
-            if (true /*             * || pubtv(id_1C_group) */) { // если в ветке есть хоть один товар, надо функцию сделать тоже такую
-
-                ($idActive == $result['id']) ? $class = "class='open activ activecategoty'" : $class = "";
-                $groupName = stripslashes($result['title']);
-                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
-                $echo .= "<li $class><a href=/catalog/" . $result['id'] . "  >$groupName</a>";
-                $echo = $this->findAllCategories1($echo, $result['id'], $idActive);
-                $echo .= "</li>";
-            }
-        }
-        if ($i) {
-            $echo .= "</ul>";
-        }
-
-        return str_replace("<ul></ul>", "", $echo);
-    }
+//    private function findAllCategories1($echo = '', $i = '0', $idActive = false)
+//    {
+//        $sql = new Sql($this->db);
+//        $select = $sql->select();
+//        $select->from($this->tableName);
+//        $select->where(['parent_id' => $i]);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $results = $statement->execute();
+//
+//        if ($i) {
+//            $echo .= "<ul>";
+//        }
+//        /** TODO: to be fixed later */
+//        foreach ($results as $result) {
+//            if (true /*             * || pubtv(id_1C_group) */) { // если в ветке есть хоть один товар, надо функцию сделать тоже такую
+//
+//                ($idActive == $result['id']) ? $class = "class='open activ activecategoty'" : $class = "";
+//                $groupName = stripslashes($result['title']);
+//                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
+//                $echo .= "<li $class><a href=/catalog/" . $result['id'] . "  >$groupName</a>";
+//                $echo = $this->findAllCategories1($echo, $result['id'], $idActive);
+//                $echo .= "</li>";
+//            }
+//        }
+//        if ($i) {
+//            $echo .= "</ul>";
+//        }
+//
+//        return str_replace("<ul></ul>", "", $echo);
+//    }
 
     /**
      * Reads all data from category table
