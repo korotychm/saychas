@@ -251,7 +251,17 @@ class HtmlProviderService {
             $return['rest'] = (int) $rest->getRest();
             $return['product_id'] = $id = $product->getId();
             $return['title'] = $product->getTitle();
-            $return['category_id'] = $categoryId = $product->getCategoryId();
+            /** Alex has added the below code */
+            $parentCategoryId = $product->getParentCategoryId();
+            $categoryId = $product->getCategoryId();
+            if(!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
+                $categoryId = $parentCategoryId;
+            }
+            $return['category_id'] = $categoryId;
+            /** End of Alex's code */
+            
+            // Alex has commented out the below code
+            //$return['category_id'] = $categoryId = $product->getCategoryId();
             $charNew = $product->getParamVariableList();
             $characteristicsArray = [];
             if (!empty($charNew)) {

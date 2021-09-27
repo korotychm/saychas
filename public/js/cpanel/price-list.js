@@ -3,11 +3,12 @@ const PriceList = {
     return {
       htmlContent: '',
       page_no: 1,
-      rows_per_page: 2,
+      rows_per_page: 10,
       products: {},
       pages: 1,
       filters: {},
       imgPath: productImgPath,
+      imgPathModerated: productImgPathModerated,
       selectedFilters: {
         category_id: ''
       },
@@ -28,10 +29,21 @@ const PriceList = {
             </button>
           </form>
           <div class="filter__select">
-            <select class="select select--white" v-model="selectedFilters.category_id" value="" @change="loadPage()">
-              <option value="" selected >Все категории</option>
-              <option v-for="category in filters.categories" :value="category[0]">{{ category[1] }}</option>
-            </select>
+            <div class="custom-select custom-select--radio">
+              <div class="custom-select__label input">Все категории</div>
+              <div class="custom-select__dropdown">
+                <div class="custom-select__dropdown-inner">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <span>Все категории</span>
+                  </label>
+                  <label v-for="category in filters.categories" class="custom-select__option">
+                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <span>{{category[1]}}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="filter__btn">
             <a class="btn btn--secondary" href="#">Скачать список</a>
@@ -49,30 +61,31 @@ const PriceList = {
             <div class="td">Скидка</div>
             <div class="td">Стоимость</div>
           </div>
-          <div class="tbody">
-              <div v-for="product in products" class="tr pricelist__item">
-                  <div class="td pricelist__img">
-                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
+          <div class="tbody" v-if="products.length">
+              <div v-for="(product, index) in products" class="tr pricelist__item">
+                  <div class="td pricelist__img product-small-img">
+                    <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
-                  <div class="td pricelist__title">
+                  <div class="td td--hover pricelist__title">
                     <a>{{ product.title }}</a>
                   </div>
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
                   </div>
-                  <div class="td">0%</div>
+                  <div class="td pricelist__discount">{{ product.discount }}%</div>
                   <div class="td">
-                    {{ (product.price / 100).toLocaleString() }} ₽
+                    <div v-if="product.old_price != product.price" class="pricelist__oldprice">{{ product.old_price.toLocaleString() }} ₽</div>
+                    <div class="pricelist__price">{{ product.price.toLocaleString() }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
                     <div class="pricelist__popup-category">Техника для дома</div>
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" max="99" min="0" value="0" />
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="calculatePrice(index)" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" :value="product.price / 100" />
+                          <input type="number" min="0" v-model.lazy="product.old_price" @change="calculatePrice(index)" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -80,7 +93,7 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3>{{ (product.price / 100).toLocaleString() }} ₽</h3>
+                        <h3>{{ product.price.toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary">Применить</button>
                     </div>
@@ -94,6 +107,61 @@ const PriceList = {
       </div>
     </div>`,
   methods: {
+    calculatePrice(index){
+      let product = this.products[index];
+      if (+product.discount > 0){
+        product.price = product.old_price * (100 - product.discount) / 100;
+      } else {
+        product.price = product.old_price;
+      }
+    },
+    setRubPrice() {
+      if (this.products){
+        for (product of this.products){
+          product.price = product.price / 100;
+          product.old_price = product.old_price / 100;
+          if (!product.old_price){
+            product.old_price = product.price;
+          }
+        }
+      }
+    },
+    saveProduct(index) {
+      let requestUrl = '/control-panel/update-product';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let request = JSON.parse(JSON.stringify(this.products[index]));
+      request.price = request.price * 100;
+      request.old_price = request.old_price * 100;
+      if (request.price == request.old_price){
+        request.old_price = 0;
+      }
+      console.log(request);
+      if (!request.price){
+        showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
+      } else {
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              data: {
+                product : JSON.stringify(request)
+              }
+            }),
+            {
+              headers
+            })
+            .then(response => {
+              if (response.data.result){
+                $('.pricelist__item').removeClass('active');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              if (error.response.status == '403'){
+                location.reload();
+              }
+            });
+      }
+    },
     getProducts() {
       let requestUrl = '/control-panel/show-products';
       if (this.filtersCreated) {
@@ -115,6 +183,7 @@ const PriceList = {
             } else {
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
+              this.setRubPrice();
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
@@ -149,9 +218,9 @@ const PriceList = {
   }
 }
 
-$(document).on('click','.pricelist__title',function(){
+$(document).on('click','.pricelist__item',function(){
   $('.pricelist__item').removeClass('active');
-  $(this).parent().addClass('active');
+  $(this).addClass('active');
 });
 
 $(document).mouseup(function(e)

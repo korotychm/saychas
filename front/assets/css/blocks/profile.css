@@ -3,6 +3,17 @@
   grid-template-columns: minmax(0, 4fr) minmax(0, 12fr);
   grid-gap: 30px;
 }
+.profile-page .panel--history {
+  position: static !important;
+}
+.profile-page .panel__delivery {
+  margin-bottom: 25px;
+}
+.profile-page .panel__zip,
+.profile-page .panel__bonuses,
+.profile-page .panel__table {
+  display: none;
+}
 .profile-nav a {
   text-decoration: none;
   font-size: 20px;
@@ -18,17 +29,6 @@
 }
 .profile-nav a.active {
   color: var(--red);
-}
-.panel--history {
-  position: static !important;
-}
-.panel__delivery {
-  margin-bottom: 25px;
-}
-.panel__zip,
-.panel__bonuses,
-.panel__table {
-  display: none;
 }
 .orders-history {
   display: grid;

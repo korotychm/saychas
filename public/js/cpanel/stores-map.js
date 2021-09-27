@@ -11,18 +11,20 @@ const StoresMap = {
             <div class="filter__btn">
               <a class="btn btn--primary">На карте</a>
             </div>
-            <div class="filter__select">
+            <div class="filter__select filter__select--status">
               <div class="custom-select custom-select--radio">
                 <div class="custom-select__label input">Все статусы</div>
                 <div class="custom-select__dropdown">
-                  <label class="custom-select__option">
-                    <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
-                    <span>Все статусы</span>
-                  </label>
-                  <label v-for="status in filters.statuses" class="custom-select__option">
-                    <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
-                    <span>{{status[1]}}</span>
-                  </label>
+                  <div class="custom-select__dropdown-inner">
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <span>Все статусы</span>
+                    </label>
+                    <label v-for="status in filters.statuses" class="custom-select__option">
+                      <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <span>{{status[1]}}</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -35,9 +37,7 @@ const StoresMap = {
       <div class="cp-container stores-map">
         <div style="height: 600px">
           <yandex-map :settings="settings" :coords="coords" zoom="10" :controls="controls">
-            <div v-for="(store, idx) in stores">
-              <ymap-marker :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)" :icon="markerIcon(store.status_id)"></ymap-marker>
-            </div>
+            <ymap-marker v-for="(store,idx) in stores" :key="store.id" :markerId="store.id" marker-type="Placemark" :coords="[store.geox,store.geoy]" :balloon-template="balloonTemplate(idx)" :icon="markerIcon(store.status_id)"></ymap-marker>
           </yandex-map>
         </div>
       </div>
@@ -77,7 +77,6 @@ const StoresMap = {
       }
     },
     balloonTemplate(idx) {
-      console.log('Индекс',idx);
       return `
         <div class="stores-map__baloon">
           <h3>${this.stores[idx].title}</h3>
@@ -105,13 +104,13 @@ const StoresMap = {
             if (response.data.data === true) {
               location.reload();
             } else {
-              console.log(response.data);
               this.pages = response.data.data.limits.total;
               this.stores = response.data.data.body;
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
               }
+              console.log(this.stores);
             }
           })
           .catch(error => {

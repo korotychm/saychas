@@ -20,7 +20,7 @@ const ProductEdit = {
                           </div>
                       </div>
                   </div>
-                  <div class="product__info">
+                  <div v-if="product.category_id" class="product__info">
                     <div class="product__main-attributes">
                       <div class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
@@ -44,7 +44,7 @@ const ProductEdit = {
                                 </div>
                             </div>
                       </div>
-                      <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
+                      <div v-if="(product.brand_id !== undefined && showBrand != -1)" class="product__attribute product__attribute--short">
                           <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
@@ -66,7 +66,7 @@ const ProductEdit = {
                           <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
                           <input class="input" type="text" v-model="product.title" />
                       </div>
-                      <div v-if="(product.color_id !== undefined)" class="product__attribute">
+                      <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                           <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
                             <div class="product__colors">
                                 <label v-for="color in product.colors" class="color-checkbox">
@@ -81,31 +81,33 @@ const ProductEdit = {
                           <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                           <textarea class="textarea" v-model="product.description"></textarea>
                       </div>
-                      <div class="product__attribute">
+                      <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
                           <div class="custom-select custom-select--radio">
                             <div class="custom-select__label input"></div>
                             <div class="custom-select__dropdown">
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
-                                <span>Без НДС</span>
-                              </label>
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
-                                <span>0%</span>
-                              </label>
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
-                                <span>10%</span>
-                              </label>
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
-                                <span>18%</span>
-                              </label>
-                              <label class="custom-select__option">
-                                <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
-                                <span>20%</span>
-                              </label>
+                              <div class="custom-select__dropdown-inner">
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
+                                  <span>Без НДС</span>
+                                </label>
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
+                                  <span>0%</span>
+                                </label>
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
+                                  <span>10%</span>
+                                </label>
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
+                                  <span>18%</span>
+                                </label>
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
+                                  <span>20%</span>
+                                </label>
+                              </div>
                             </div>
                           </div>
                       </div>
@@ -114,17 +116,56 @@ const ProductEdit = {
                     <div class="product__additional-attributes">
                       <div v-for="(characteristic,index) in product.characteristics">
                         <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
-                            <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span><span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span></h2>
-                            <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
+                            <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
+                            <!-- Тип 4 - справочник (обычный ) -->
+                            <div class="custom-select custom-select--radio" v-if="(characteristic.type == 4 && !Array.isArray(characteristic.value))">
                               <div class="custom-select__label input"></div>
+                              <!-- выпадающий список -->
                               <div class="custom-select__dropdown">
-                                <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
-                                  <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
-                                  <span>{{val.title}}</span>
-                                </label>
+                                <div class="custom-select__dropdown-inner">
+                                  <label class="custom-select__option">
+                                    <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                    <span>Не выбрано</span>
+                                  </label>
+                                  <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                    <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                    <span>{{val.title}}</span>
+                                  </label>
+                                </div>
                               </div>
+                              <!-- /выпадающий список -->
                             </div>
-                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
+                            <!-- Тип 4 - справочник (мульти) -->
+                            <div class="custom-select custom-select--checkboxes" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
+                              <div class="custom-select__label input">Добавить</div>
+                              <!-- выпадающий список -->
+                              <div class="custom-select__dropdown">
+                                <div class="custom-select__dropdown-inner">
+                                  <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                    <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                    <span>{{val.title}}</span>
+                                  </label>
+                                </div>
+                              </div>
+                              <!-- /выпадающий список -->
+                              <!-- выбранные значения -->
+                              <div v-if="characteristic.value.length" class="custom-select__selected">
+                                <div v-for="val in characteristic.available_values">
+                                  <div v-if="(characteristic.value.includes(val.id))" class="custom-select__selected-item">
+                                    {{val.title}}
+                                    <label :for="characteristic.id + '-' + val.id" class="custom-select__selected-del">
+                                      <img src="/img/ui/plus.svg" />
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- /выбранные значения -->
+                            </div>
+                            <!-- Тип 1 - текст (обычный) -->
+                            <div>
+                              <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
+                            </div>
+                            <!-- Тип 1 - текст (мульти)-->
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                               <div class="multiple-input">
                                 <div v-if="!characteristic.value.length" class="multiple-input__item">
@@ -145,31 +186,43 @@ const ProductEdit = {
                               </div>
                               <button class="btn btn--secondary multiple-input__add" @click="addValue(index)">Добавить значение</button>
                             </div>
-                            <input v-if="characteristic.type == 2" type="number" class="input input--number" v-model="characteristic.value"/>
+                            <!-- Тип 2 - число (обычный)-->
+                            <input v-if="characteristic.type == 2" type="number" min="0" class="input input--number" v-model="characteristic.value" :class="{'integer':!characteristic.fractional_part}"/>
+                            <!-- Тип 3 - булево -->
                             <label v-if="characteristic.type == 3" class="boolean">
                               <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
                               <span class="boolean__check"></span>
                             </label>
+                            <!-- Тип 7 - цвет -->
+                            <div class="product__colors" v-if="characteristic.type == 7">
+                                <label v-for="color in product.colors" class="color-checkbox">
+                                  <input type="radio" :value="color.id" name="color" :checked="characteristic.value == color.id" v-model="characteristic.value">
+                                  <span class="color-checkbox__check">
+                                    <span class="color-checkbox__check-color" :style="{'backgroundColor' : color.value}"></span>
+                                  </span>
+                                </label>
+                            </div>
+                            <span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span>
                         </div>
                       </div>
                     </div>
-                    <div class="product__images">
+                    <div v-if="product.images" class="product__images">
                         <div class="product__attribute">
-                            <h2>Фото товара <span class="required">*</span><p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
+                            <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
                             <div class="product__images-wrap">
                                 <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                     <div class="product__images-list product__images-list--slider">
                                         <div class="product__images-track" data-shift="0" data-viewed="5">
                                             <div v-if="product.images">
                                               <div class="product-small-img" v-for="(image, index) in product.images" :class="{ 'active' : (image == currentImg) }" @click="currentImg = image">
-                                                <img :src="imgPath + image" />
+                                                <img :src="image" />
                                               </div>
                                             </div>
                                         </div>
                                     </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                 </div>
                                 <div class="product__images-selected">
-                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? (imgPath + currentImg) : ''" />
+                                    <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? currentImg : ''" />
                                 </div>
                                 <div class="product__images-controls">
                                     <input type="file" id="photo-upload" style="display:none;" @change="uploadFile"/>
@@ -218,6 +271,7 @@ const ProductEdit = {
   data: function () {
     return {
       imgPath: productImgPath,
+      imgPathModerated: productImgPathModerated,
       editable: true,
       categories: [],
       categoriesFlat: [],
@@ -235,7 +289,10 @@ const ProductEdit = {
       product: {},
       currentImg : '',
       deleteImages: [],
-      errors: false
+      cloneImages: [],
+      errors: false,
+      showBrand: -1,
+      showColor: -1
     }
   },
   computed: {
@@ -266,7 +323,7 @@ const ProductEdit = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
@@ -284,6 +341,11 @@ const ProductEdit = {
       this.currentImg = images[next];
       images.splice(currentIndex, 1);
       this.product.images = images;
+      // удаляем из clone
+      currentIndex = this.cloneImages.indexOf(this.currentImg);
+      if (currentIndex != -1){
+        this.cloneImages.splice(currentIndex, 1);
+      }
     },
     moveImg(shift) {
       var currentIndex = this.product.images.indexOf(this.currentImg);
@@ -299,18 +361,16 @@ const ProductEdit = {
       data.append('file', imagefile.files[0]);
       data.append('product_id', this.product.id);
       data.append('provider_id', this.product.provider_id);
-      for (var key of data.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-      }
       axios.post('/control-panel/upload-product-image', data, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
       })
       .then(response => {
-        console.log(response)
-        this.product.images.push(response.data.image_file_name);
-        this.currentImg = response.data.image_file_name;
+        console.log(response);
+        let newImg = this.imgPath + response.data.image_file_name;
+        this.product.images.push(newImg);
+        this.currentImg = this.imgPath + response.data.image_file_name;
         checkProductImagesSlider();
       })
       .catch(error => {
@@ -347,102 +407,124 @@ const ProductEdit = {
       this.selectedCategoryId = this.product.category_id;
     },
     saveProduct(categoryChange = false, oldCategory = null) {
-      this.errors = this.checkRequired();
-      if (!this.errors){
         let requestUrl = '/control-panel/update-product';
         if (categoryChange) {
           requestUrl = '/control-panel/request-category-characteristics';
+        } else {
+          this.errors = this.checkRequired();
         }
-        const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-        let chars = JSON.parse(JSON.stringify(this.product.characteristics));
-        for (characteristic of chars){
-          delete characteristic.characteristic_name;
-          delete characteristic.real_value;
-          delete characteristic.title;
-          delete characteristic.available_values;
-          // Страна
-          if (characteristic.id == '000000001'){
-            characteristic.value = this.selectedCountryId;
+        if (!this.errors || categoryChange){
+          const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+          let chars = JSON.parse(JSON.stringify(this.product.characteristics));
+          for (characteristic of chars){
+            delete characteristic.characteristic_name;
+            delete characteristic.real_value;
+            delete characteristic.title;
+            delete characteristic.available_values;
+            // Страна
+            if (characteristic.id == '000000001'){
+              characteristic.value = this.selectedCountryId;
+            }
+            // Бренд
+            if (characteristic.id == '000000003'){
+              characteristic.value = this.selectedBrandId;
+            }
+            // Цвет
+            if (characteristic.id == '000000004'){
+              characteristic.value = this.product.color_id;
+            }
           }
-          // Бренд
-          if (characteristic.id == '000000003'){
-            characteristic.value = this.selectedBrandId;
+          let category_in_request = this.selectedCategoryId;
+          if (oldCategory) {
+            category_in_request = oldCategory;
           }
-          // Цвет
-          if (characteristic.id == '000000004'){
-            characteristic.value = this.product.color_id;
+          let cloneImages = JSON.parse(JSON.stringify(this.product.images));
+          for (image in cloneImages){
+            cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
           }
-        }
-        let category_in_request = this.selectedCategoryId;
-        if (oldCategory) {
-          category_in_request = oldCategory;
-        }
-        let request = {
-          id : this.product.id,
-          vat: this.product.vat,
-          brand_id: this.selectedBrandId,
-          category_id: category_in_request,
-          color_id: this.product.color_id,
-          provider_id: this.product.provider_id,
-          country_id: this.selectedCountryId,
-          description: this.product.description,
-          title: this.product.title,
-          characteristics: chars,
-          images: this.product.images,
-          vendor_code: this.product.vendor_code,
-          del_images: this.deleteImages
-        }
-        console.log(request);
-        axios
-          .post(requestUrl,
-            Qs.stringify({
-              data: {
-                new_category_id: this.selectedCategoryId,
-                product : JSON.stringify(request)
-              }
-            }),
-            {
-              headers
-            })
-            .then(response => {
-              if (categoryChange) {
-                let product = response.data.answer.data.product;
-                console.log(product);
-                this.product.characteristics = product.characteristics;
-                if (product.brand_id !== undefined){
-                  this.product.brand_id = product.brand_id;
-                  this.product.brand_name = product.brand_name;
+          let request = {
+            id : this.product.id,
+            vat: this.product.vat,
+            brand_id: this.selectedBrandId,
+            category_id: category_in_request,
+            color_id: this.product.color_id,
+            provider_id: this.product.provider_id,
+            country_id: this.selectedCountryId,
+            description: this.product.description,
+            title: this.product.title,
+            characteristics: chars,
+            images: cloneImages,
+            vendor_code: this.product.vendor_code,
+            del_images: this.deleteImages,
+            clone_images: this.cloneImages
+          }
+          console.log(request);
+          axios
+            .post(requestUrl,
+              Qs.stringify({
+                data: {
+                  new_category_id: this.selectedCategoryId,
+                  product : JSON.stringify(request)
+                }
+              }),
+              {
+                headers
+              })
+              .then(response => {
+                if (categoryChange) {
+                  let product = response.data.answer.data.product;
+                  console.log(product);
+                  this.product.characteristics = product.characteristics;
+                  if (product.brand_id !== undefined){
+                    this.product.brand_id = product.brand_id;
+                    this.product.brand_name = product.brand_name;
+                  } else {
+                    delete this.product.brand_id;
+                    delete this.product.brand_name;
+                  }
+                  if (product.country_id !== undefined){
+                    this.product.country_id = product.country_id;
+                    this.product.country_name = product.country_name;
+                  } else {
+                    delete this.product.country_id;
+                    delete this.product.country_name;
+                  }
+                  if (product.color_id !== undefined){
+                    this.product.color_id = product.color_id;
+                  } else {
+                    delete this.product.color_id;
+                  }
+                  this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
+                  this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
                 } else {
-                  delete this.product.brand_id;
-                  delete this.product.brand_name;
+                  if (response.data.result){
+                    router.replace('/products');
+                  }
                 }
-                if (product.country_id !== undefined){
-                  this.product.country_id = product.country_id;
-                  this.product.country_name = product.country_name;
-                } else {
-                  delete this.product.country_id;
-                  delete this.product.country_name;
+              })
+              .catch(error => {
+                console.log(error);
+                if (error.response.status == '403'){
+                  this.editable = false;
+                  $('.main__loader').hide();
                 }
-                if (product.color_id !== undefined){
-                  this.product.color_id = product.color_id;
-                } else {
-                  delete this.product.color_id;
-                }
-              } else {
-                if (response.data.result){
-                  router.replace('/products');
-                }
-              }
-            })
-            .catch(error => {
-              console.log(error);
-              if (error.response.status == '403'){
-                this.editable = false;
-                $('.main__loader').hide();
-              }
-            });
+              });
       } else {
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните все необходимые поля (отмечены <span class="required">*</span>)');
+      }
+    },
+    addImagesPath() {
+
+      if (this.product.moderated) {
+        this.cloneImages = JSON.parse(JSON.stringify(this.product.images));
+      }
+      for (image in this.product.images) {
+        let currentImgPath = this.imgPath;
+        if (this.product.moderated) {
+          currentImgPath = this.imgPathModerated;
+        }
+        console.log(this.product.images[image]);
+        this.product.images[image] = currentImgPath + this.product.images[image];
       }
     },
     getProduct() {
@@ -459,6 +541,7 @@ const ProductEdit = {
             } else {
               this.categories = response.data.category_tree;
               this.product = response.data.product;
+              this.addImagesPath();
               this.brandSearch = this.product.brand_name;
               this.selectedBrandId = this.product.brand_id;
               this.selectedBrandName = this.product.brand_name;
@@ -470,6 +553,8 @@ const ProductEdit = {
               if (this.product.images.length){
                 this.currentImg = this.product.images[0];
               }
+              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
               console.log(this.product);
             }
@@ -546,7 +631,7 @@ $(document).on('focusout','.search-select__input',function(){
   el.removeClass('active')
   setTimeout(function() {
     el.css('pointer-events','none');
-  }, 300);
+  }, 500);
 });
 
 
@@ -627,11 +712,12 @@ function setAllCustomSelects() {
 }
 
 $(document).on('change','.custom-select--radio input',function(){
-  let el = $(this).parent().parent().parent();
+  let el = $(this).parent().parent().parent().parent();
   el.removeClass('active');
   setCustomSelectLabels(el);
 });
 
 $(document).on('click','.custom-select__label',function(){
+  $('.custom-select__label').not(this).parent().removeClass('active');
   $(this).parent().toggleClass('active');
 });

@@ -609,6 +609,7 @@ class AjaxController extends AbstractActionController {
 
     public function previewAction() {
         $this->layout()->setTemplate('layout/preview');
+
         return new ViewModel([
             'menu' => '',//$categories
         ]);
@@ -1069,17 +1070,6 @@ class AjaxController extends AbstractActionController {
 //        $post = $this->getRequest()->getPost()->toArray();
 //        $products = $this->getProductCards($post);
 //        return new JsonModel(["products" => $products]);
-//    }
-
-//    public function providerAction() {
-//        //$id = $this->params()->fromRoute('id', '');
-//        $this->layout()->setTemplate('layout/mainpage');
-//        $categories = ""; 
-//        $providers = $this->providerRepository->findAll(['table' => 'provider', 'limit' => 100, 'order' => 'id ASC', 'offset' => 0]);
-//        return new ViewModel([
-//            "providers" => $providers,
-//            "catalog" => $categories,
-//        ]);
 //    }
 
 }

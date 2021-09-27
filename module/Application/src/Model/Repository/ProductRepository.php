@@ -433,24 +433,34 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
         $this->productImages->replace($products); // $products - products that have non empty array of images
 
-        foreach ($products as $p) {
-            try {
-                /** returns array of successfully downloaded images */
-                $this->fetchImages($p->images);
-            } catch (\Exception $e) {
-                return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-            }
-        }
+        /** We shall delete the following comment later on */
+//        foreach ($products as $p) {
+//            try {
+//                /** returns array of successfully downloaded images */
+//                $this->fetchImages($p->images);
+//            } catch (\Exception $e) {
+//                return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+//            }
+//        }
+        /** End of comment to be deleted */
 
+        $jsonCharacteristics = '';
         /** $result->data - products */
         foreach ($result->data as $product) {
 
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
-                //$jsonCharacteristics = Json::encode($product->characteristics);
-                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
-
+                
+                try {
+                    $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+//                    $jsonCharacteristics = Json::encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+                }catch(LaminasJsonRuntimeException $e){
+                    return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+                }
+            
+//                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
+                
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {
 
@@ -512,10 +522,14 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $this->deleteProductCharacteristics($product->id);
             $this->saveProductCharacteristics($prods);
 
-            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `parent_category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+                    $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
+
+            //if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
+                //mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
+            //}
 
             try {
 //                print_r($sql);

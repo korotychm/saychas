@@ -165,9 +165,14 @@ class IndexController extends AbstractActionController
             //'headerText' => $this->htmlProvider->testHtml(),
             //'footerText' => 'banzaii',
             //'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
+
+            //'categoryTree' => $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', '')),
+          //  'userAddressHtml' => $userAddressHtml,
+
             'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
             //'categoryTree' => $this->categoryRepository->categoryTree("",0,0),
             //'userAddressHtml' => $userAddressHtml,
+
             'addressLegal' => $addressLegal,
             'addresses' =>  $userAddressArray,
             'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
@@ -547,11 +552,14 @@ class IndexController extends AbstractActionController
         } else {
             $breadCrumbs = [];
         }
+
+        /** The below three lines are commented out as they are used in $filterForm only which is also commented out earlier */
         //$categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         //$filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-        return new ViewModel([ "catalog" => [],"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
+
+        return new ViewModel([ "catalog" => '' /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
 

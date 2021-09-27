@@ -11,18 +11,20 @@ const Stores = {
             <div class="filter__btn">
               <router-link to="/stores-map" class="btn btn--secondary">На карте</router-link>
             </div>
-            <div class="filter__select">
+            <div class="filter__select  filter__select--status">
               <div class="custom-select custom-select--radio">
                 <div class="custom-select__label input">Все статусы</div>
                 <div class="custom-select__dropdown">
-                  <label class="custom-select__option">
-                    <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
-                    <span>Все статусы</span>
-                  </label>
-                  <label v-for="status in filters.statuses" class="custom-select__option">
-                    <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
-                    <span>{{status[1]}}</span>
-                  </label>
+                  <div class="custom-select__dropdown-inner">
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <span>Все статусы</span>
+                    </label>
+                    <label v-for="status in filters.statuses" class="custom-select__option">
+                      <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="status_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <span>{{status[1]}}</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -40,7 +42,7 @@ const Stores = {
         </div>
         <div class="tbody">
             <router-link :to="'/stores/' + store.id" v-for="store in stores" class="tr">
-                <div class="td">
+                <div class="td td--hover">
                   {{ store.title }}
                 </div>
                 <div class="td">

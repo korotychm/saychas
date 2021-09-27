@@ -15,14 +15,16 @@ const Products = {
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
-                <label class="custom-select__option">
-                  <input type="radio" checked="checked" value="" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
-                  <span>Все категории</span>
-                </label>
-                <label v-for="category in filters.categories" class="custom-select__option">
-                  <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
-                  <span>{{category[1]}}</span>
-                </label>
+                <div class="custom-select__dropdown-inner">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <span>Все категории</span>
+                  </label>
+                  <label v-for="category in filters.categories" class="custom-select__option">
+                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <span>{{category[1]}}</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -30,14 +32,16 @@ const Products = {
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все бренды</div>
               <div class="custom-select__dropdown">
-                <label class="custom-select__option">
-                  <input type="radio" checked="checked" value="" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
-                  <span>Все бренды</span>
-                </label>
-                <label v-for="brand in filters.brands" class="custom-select__option">
-                  <input type="radio" :checked="(brand[0] === selectedFilters.brand_id)" :value="brand[0]" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
-                  <span>{{brand[1]}}</span>
-                </label>
+                <div class="custom-select__dropdown-inner">
+                  <label class="custom-select__option">
+                    <input type="radio" checked="checked" value="" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
+                    <span>Все бренды</span>
+                  </label>
+                  <label v-for="brand in filters.brands" class="custom-select__option">
+                    <input type="radio" :checked="(brand[0] === selectedFilters.brand_id)" :value="brand[0]" name="brand_filter" v-model="selectedFilters.brand_id" @change="loadPage()" />
+                    <span>{{brand[1]}}</span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -55,10 +59,10 @@ const Products = {
           </div>
           <div class="tbody">
               <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
-                  <div class="td products__img">
-                    <img :src="(product.images.length) ? (imgPath + product.images[0]) : '/images/products/nophoto.jpg'" />
+                  <div class="td products__img product-small-img">
+                    <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
-                  <div class="td">
+                  <div class="td td--hover">
                     {{ product.title }}
                   </div>
                   <div class="td products__category">
@@ -82,6 +86,7 @@ const Products = {
         pages: 1,
         filters: {},
         imgPath: productImgPath,
+        imgPathModerated: productImgPathModerated,
         selectedFilters: {
           brand_id: '',
           category_id: ''
@@ -116,6 +121,7 @@ const Products = {
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
               }
+              console.log(response.data);
               console.log(this.products);
             }
           })

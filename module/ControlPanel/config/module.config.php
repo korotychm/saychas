@@ -83,13 +83,15 @@ return [
             ],
             \ControlPanel\Controller\StoreController::class => [
                 ['actions' => ['editStore',], 'allow' => '+administrator'],
-                ['actions' => ['updateStore',], 'allow' => '+developer'],
-                ['actions' => ['saveNewlyAddedStore',], 'allow' => '+developer'],
+                ['actions' => ['updateStore',], 'allow' => '+administrator'],
+                ['actions' => ['saveNewlyAddedStore',], 'allow' => '+administrator'],
                 //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',], 'allow' => '+administrator'],
                 ['actions' => ['showListFromCache', ], 'allow' => '+administrator'],
+//                ['actions' => ['showList',], 'allow' => '+brand.manager'],
+//                ['actions' => ['showListFromCache', ], 'allow' => '+brand.manager'],
             ],
             \ControlPanel\Controller\ApiController::class => [
                 ['actions' => ['index',], 'allow' => '+administrator'],

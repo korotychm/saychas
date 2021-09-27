@@ -30,6 +30,9 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
     /** @var laminas.entity.manager */
     protected $entityManager;
 
+    /** @var RbacManager */
+    protected $rbacManager;
+
     /** @var UserManager */
     protected $userManager;
 
@@ -53,6 +56,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $this->authService = $this->container->get('my_auth_service');
         $this->entityManager = $entityManager;
         $this->userManager = $this->container->get(\ControlPanel\Service\UserManager::class);
+        $this->rbacManager = $this->container->get(\ControlPanel\Service\RbacManager::class);
         $this->config = $container->get('Config');
     }
 
@@ -97,12 +101,26 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         $useCache = $post['use_cache'];
 
         $identity = $this->authService->getIdentity();
-        $utf8 = mb_convert_encoding($identity['login'], "UTF-8", "Windows-1251 (CP1251)");
+
+//        if(null == $identity) {
+//            return new JsonModel(['data' => [], 'http_code' => '403']);
+//        }
+//
+//        $user = $this->userManager->findOne(['provider_id' => $identity['provider_id'], 'login' => $identity['login'],]);
+//
+//        $this->rbacManager->init(true);
+//        foreach($user['roles'] as $role) {
+//            // We need find all permissions for this $role
+//            // meanwhile we use administrator permission
+//            $access = $this->rbacManager->isGranted($user, 'administrator');
+//            if (!$access) {
+//                $this->getResponse()->setStatusCode(403);
+//                return;
+//            }
+//        }
+
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
-//        $credentials[] = "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8";
-//        $credentials[] = "Accept-Charset: utf-8, *;q=0.1"; // windows-1251
-//        $credentials[] = "Accept-Encoding: deflate, identity, *;q=0";
-        
+
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
         $answer['http_code'] = '200';
@@ -115,7 +133,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
             'provider_id' => $identity['provider_id'],
         ];
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
-        $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
+        $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1], ]);
 
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
     }
@@ -146,8 +164,25 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
         if (!empty($post['search'])) {
             $where = array_merge($where, ['title' => ['$regex' => $post['search'], '$options' => 'i'],]);
         }
-        $cursor = $manager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
+        $cursor = $manager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where, 'sort' => ['id' => -1],]);
         return new JsonModel(['data' => $cursor,]);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        $utf8 = mb_convert_encoding($identity['login'], "UTF-8", "Windows-1251 (CP1251)");
+//        $credentials[] = "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8";
+//        $credentials[] = "Accept-Charset: utf-8, *;q=0.1"; // windows-1251
+//        $credentials[] = "Accept-Encoding: deflate, identity, *;q=0";

@@ -56,7 +56,7 @@ const ProductAdd = {
                                               </div>
                                           </div>
                                     </div>
-                                    <div v-if="(product.brand_id !== undefined)" class="product__attribute product__attribute--short">
+                                    <div v-if="(product.brand_id !== undefined && showBrand != -1)" class="product__attribute product__attribute--short">
                                         <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
@@ -78,7 +78,7 @@ const ProductAdd = {
                                         <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
                                         <input class="input" type="text" v-model="product.title" />
                                     </div>
-                                    <div v-if="(product.color_id !== undefined)" class="product__attribute">
+                                    <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                                         <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
                                           <div class="product__colors">
                                               <label v-for="color in product.colors" class="color-checkbox">
@@ -93,31 +93,33 @@ const ProductAdd = {
                                         <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                                         <textarea class="textarea" v-model="product.description"></textarea>
                                     </div>
-                                    <div class="product__attribute">
+                                    <div class="product__attribute product__attribute--short">
                                         <h2>Ставка НДС <span class="required">*</span></h2>
                                         <div class="custom-select custom-select--radio">
                                           <div class="custom-select__label input"></div>
                                           <div class="custom-select__dropdown">
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
-                                              <span>Без НДС</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
-                                              <span>0%</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
-                                              <span>10%</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
-                                              <span>18%</span>
-                                            </label>
-                                            <label class="custom-select__option">
-                                              <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
-                                              <span>20%</span>
-                                            </label>
+                                            <div class="custom-select__dropdown-inner">
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === 'Без НДС')" value="Без НДС" name="vat_select" v-model="product.vat" />
+                                                <span>Без НДС</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '0')" value="0" name="vat_select" v-model="product.vat" />
+                                                <span>0%</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '10')" value="10" name="vat_select" v-model="product.vat" />
+                                                <span>10%</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '18')" value="18" name="vat_select" v-model="product.vat" />
+                                                <span>18%</span>
+                                              </label>
+                                              <label class="custom-select__option">
+                                                <input type="radio" :checked="(product.vat === '20')" value="20" name="vat_select" v-model="product.vat" />
+                                                <span>20%</span>
+                                              </label>
+                                            </div>
                                           </div>
                                         </div>
                                     </div>
@@ -126,17 +128,56 @@ const ProductAdd = {
                                   <div class="product__additional-attributes">
                                     <div v-for="(characteristic,index) in product.characteristics">
                                       <div v-if="characteristic.type != 0 && characteristic.id != '000000001' && characteristic.id != '000000002' && characteristic.id != '000000003' && characteristic.id != '000000004'" class="product__attribute product__attribute--short">
-                                          <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span><span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span></h2>
-                                          <div class="custom-select custom-select--radio" v-if="characteristic.type == 4">
+                                          <h2>{{ characteristic.characteristic_name }} <span v-if="characteristic.mandatory" class="required">*</span></h2>
+                                          <!-- Тип 4 - справочник (обычный ) -->
+                                          <div class="custom-select custom-select--radio" v-if="(characteristic.type == 4 && !Array.isArray(characteristic.value))">
                                             <div class="custom-select__label input"></div>
+                                            <!-- выпадающий список -->
                                             <div class="custom-select__dropdown">
-                                              <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
-                                                <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
-                                                <span>{{val.title}}</span>
-                                              </label>
+                                              <div class="custom-select__dropdown-inner">
+                                                <label class="custom-select__option">
+                                                  <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <span>Не выбрано</span>
+                                                </label>
+                                                <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                                  <input type="radio" :checked="(val.id === characteristic.value)" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <span>{{val.title}}</span>
+                                                </label>
+                                              </div>
                                             </div>
+                                            <!-- /выпадающий список -->
                                           </div>
-                                          <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value"/>
+                                          <!-- Тип 4 - справочник (мульти) -->
+                                          <div class="custom-select custom-select--checkboxes" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
+                                            <div class="custom-select__label input">Добавить</div>
+                                            <!-- выпадающий список -->
+                                            <div class="custom-select__dropdown">
+                                              <div class="custom-select__dropdown-inner">
+                                                <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
+                                                  <input :id="characteristic.id + '-' + val.id" type="checkbox" :checked="(characteristic.value.includes(val.id))" :value="val.id" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <span>{{val.title}}</span>
+                                                </label>
+                                              </div>
+                                            </div>
+                                            <!-- /выпадающий список -->
+                                            <!-- выбранные значения -->
+                                            <div v-if="characteristic.value.length" class="custom-select__selected">
+                                              <div v-for="val in characteristic.available_values">
+                                                <div v-if="(characteristic.value.includes(val.id))" class="custom-select__selected-item">
+                                                  {{val.title}}
+                                                  <label :for="characteristic.id + '-' + val.id" class="custom-select__selected-del">
+                                                    <img src="/img/ui/plus.svg" />
+                                                  </label>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <!-- /выбранные значения -->
+                                          </div>
+                                          <!-- Тип 1 - текст (обычный) -->
+                                          <div>
+                                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
+                                          </div>
+                                          <!-- Тип 1 - текст (мульти)-->
                                           <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
                                             <div class="multiple-input">
                                               <div v-if="!characteristic.value.length" class="multiple-input__item">
@@ -157,17 +198,29 @@ const ProductAdd = {
                                             </div>
                                             <button class="btn btn--secondary multiple-input__add" @click="addValue(index)">Добавить значение</button>
                                           </div>
-                                          <input v-if="characteristic.type == 2" type="number" class="input input--number" v-model="characteristic.value"/>
+                                          <!-- Тип 2 - число (обычный)-->
+                                          <input v-if="characteristic.type == 2" type="number" min="0" class="input input--number" v-model="characteristic.value" :class="{'integer':!characteristic.fractional_part}"/>
+                                          <!-- Тип 3 - булево -->
                                           <label v-if="characteristic.type == 3" class="boolean">
                                             <input type="checkbox" v-model="characteristic.value" :checked="characteristic.value">
                                             <span class="boolean__check"></span>
                                           </label>
+                                          <!-- Тип 7 - цвет -->
+                                          <div class="product__colors" v-if="characteristic.type == 7">
+                                              <label v-for="color in product.colors" class="color-checkbox">
+                                                <input type="radio" :value="color.id" name="color" :checked="characteristic.value == color.id" v-model="characteristic.value">
+                                                <span class="color-checkbox__check">
+                                                  <span class="color-checkbox__check-color" :style="{'backgroundColor' : color.value}"></span>
+                                                </span>
+                                              </label>
+                                          </div>
+                                          <span v-if="characteristic.unit" class="unit"> ({{ characteristic.unit }})</span>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="product__images">
+                                  <div v-if="product.images" class="product__images">
                                       <div class="product__attribute">
-                                          <h2>Фото товара <span>Рекомендуемый размер <br>фото — 1000х1000 px. </span><span>Вы можете загрузить до 8 фотографий.</span></h2>
+                                          <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
                                           <div class="product__images-wrap">
                                               <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                                   <div class="product__images-list product__images-list--slider">
@@ -248,7 +301,9 @@ const ProductAdd = {
       product: {},
       currentImg : '',
       deleteImages: [],
-      errors: false
+      errors: false,
+      showBrand: -1,
+      showColor: -1
     }
   },
   computed: {
@@ -279,7 +334,7 @@ const ProductAdd = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.selectedBrandName || !this.product.title || !this.product.color_id  || !this.product.description){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
@@ -312,9 +367,6 @@ const ProductAdd = {
       data.append('file', imagefile.files[0]);
       data.append('product_id', this.product.id);
       data.append('provider_id', this.product.provider_id);
-      for (var key of data.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-      }
       axios.post('/control-panel/upload-product-image', data, {
             headers: {
               'Content-Type': 'multipart/form-data'
@@ -436,9 +488,11 @@ const ProductAdd = {
                 this.countries = this.product.countries;
                 this.brands = this.product.brands;
                 this.product.vat = "Без НДС";
-                this.product.brand_id = ""; //Временно до разбора что обязательно в шапке
+                this.product.brand_id = "";
                 console.log('Продукт',this.product);
               }
+              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {

@@ -197,6 +197,7 @@ trait Loadable
             [
                 'skip' => $limits['min'] - 1,
                 'limit' => $this->pageSize,
+                'sort' => $params['sort'],
                 'projection' => $params['columns'],
             ]);
             $result['body'] = $cursor->toArray();

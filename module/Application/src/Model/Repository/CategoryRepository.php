@@ -94,20 +94,21 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         );        
     }
 
-    public function findAllCategories($echo = '', $i = 0, $idActive, $forceCreate = false): string
-    {
-        if ($forceCreate) {
-            $this->cache->removeItem('category_container');
-        }
-
-        $result = false;
-        $this->categories = $this->cache->getItem('category_container', $result);
-        if(!$result) {
-            $this->categories = $this->findAllCategories1($echo = '', $i = 0, $idActive);      
-            $this->cache->setItem('category_container', $this->categories);
-        }
-        return $this->categories;
-    }
+//    public function findAllCategories($echo = '', $i = 0, $idActive, $forceCreate = false): string
+//    {
+//        if ($forceCreate) {
+//            $this->cache->removeItem('category_container');
+//        }
+//
+//        $result = false;
+//        $this->categories = $this->cache->getItem('category_container', $result);
+//        if(!$result) {
+//            $this->categories = $this->findAllCategories1($echo = '', $i = 0, $idActive);      
+//            $this->cache->setItem('category_container', $this->categories);
+//        }
+//        return $this->categories;
+//    }
+    
     public function categoryTree($echo = '', $i = 0, $idActive): array
     {
         $sql = new Sql($this->db);
@@ -129,11 +130,11 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         foreach ($results as $value) {
             $newTree[$value['parent_id']][] = $value;
         }
-        $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        //$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         /**/// plusweb --!
         
         //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
-        //$tree = ArrayHelper::buildTree($newTree, $i); // !-- alex new--!
+        $tree = ArrayHelper::buildTree($newTree, $i); // !-- alex new--!
         return $tree;
     }
     
@@ -152,6 +153,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $resultSet->initialize($result);
         $results = $resultSet->toArray();
         
+
         /**/// !-- plusweb
         $categoriesHasProduct = $this->categoriesHasProduct();
         $newTree = [];
@@ -167,7 +169,6 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
         return $tree;
     }
-    
     
     private function categoriesHasProduct ()
     {
@@ -206,6 +207,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
 //        foreach ($results as $result) {
 //            if (true /*             * || pubtv(id_1C_group) */) { // если в ветке есть хоть один товар, надо функцию сделать тоже такую
 //
+//                ($idActive == $result['id']) ? $class = "class='open activ activecategoty'" : $class = "";
 //                $class = ($idActive == $result['id']) ? "class='open activ activecategoty'" : "";
 //                $groupName = stripslashes($result['title']);
 //                //$echo.="<li><a href=#/catalog/".$result['id_1C_group']."  >$groupName</a>";
