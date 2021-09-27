@@ -129,11 +129,11 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         foreach ($results as $value) {
             $newTree[$value['parent_id']][] = $value;
         }
-        /*$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+        $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         /**/// plusweb --!
         
         //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
-        $tree = ArrayHelper::buildTree($newTree, $i); // !-- alex --!
+        //$tree = ArrayHelper::buildTree($newTree, $i); // !-- alex new--!
         return $tree;
     }
     

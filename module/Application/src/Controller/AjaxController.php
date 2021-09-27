@@ -87,7 +87,9 @@ class AjaxController extends AbstractActionController {
             ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository, BrandRepositoryInterface $brandRepository,
             CharacteristicRepositoryInterface $characteristicRepository, PriceRepositoryInterface $priceRepository, StockBalanceRepositoryInterface $stockBalanceRepository,
             HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config,
-            HtmlProviderService $htmlProvider, UserRepository $userRepository, AuthenticationService $authService,
+            HtmlProviderService $htmlProvider, 
+            UserRepository $userRepository, 
+            AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository/* ,
               SessionContainer $sessionContainer */, CommonHelperFunctionsService $commonHelperFuncions) {
         $this->testRepository = $testRepository;

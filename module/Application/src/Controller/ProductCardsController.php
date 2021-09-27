@@ -10,127 +10,47 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
-//use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
-use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
-use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
-use Application\Model\RepositoryInterface\StoreRepositoryInterface;
-use Application\Model\RepositoryInterface\ProductRepositoryInterface;
-use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Application\Model\RepositoryInterface\BrandRepositoryInterface;
-use Application\Model\RepositoryInterface\BasketRepositoryInterface;
-//use Application\Model\Entity\Basket;
-//use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Setting;
-//use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\Repository\CharacteristicRepository;
-use Application\Model\RepositoryInterface\PriceRepositoryInterface;
-use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
-use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
-use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
-use Application\Service\HtmlProviderService;
 use Application\Service\CommonHelperFunctionsService;
-//use Application\Model\Entity\User;
-//use Application\Model\Entity\UserData;
-//use Application\Model\Entity\UserPaycard;
-//use Application\Model\Entity\ProductFavorites;
-//use Application\Model\Entity\ProductHistory;
 use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\Entity\StockBalance;
-//use Application\Model\Entity\Provider;
-use Application\Model\Repository\UserRepository;
-//use Application\Adapter\Auth\UserAuthAdapter;
-//use RuntimeException;
 use Laminas\Authentication\AuthenticationService;
-//use Application\Resource\Resource;
 use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Laminas\Http\Response;
-//use Laminas\Session\Container; // as SessionContainer;
-//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
-//use Throwable;
 use Application\Helper\ArrayHelper;
 
 //use Application\Helper\StringHelper;
 
 class ProductCardsController extends AbstractActionController {
 
-    private $testRepository;
     private $categoryRepository;
-    private $providerRepository;
-    private $storeRepository;
-    private $productRepository;
-    private $filteredProductRepository;
-    private $brandRepository;
     private $characteristicRepository;
-    private $priceRepository;
-    private $stockBalanceRepository;
     private $handBookRelatedProductRepository;
-    private $productCharacteristicRepository;
     private $entityManager;
     private $config;
-    private $htmlProvider;
-    private $userRepository;
     private $authService;
-    private $basketRepository;
-    private $productImageRepository;
     private $commonHelperFuncions;
 
-    //private $sessionContainer;
-
     public function __construct(
-            TestRepositoryInterface $testRepository,
-            CategoryRepositoryInterface $categoryRepository,
-            ProviderRepositoryInterface $providerRepository,
-            StoreRepositoryInterface $storeRepository,
-            ProductRepositoryInterface $productRepository,
-            FilteredProductRepositoryInterface $filteredProductRepository,
-            BrandRepositoryInterface $brandRepository,
-            CharacteristicRepositoryInterface $characteristicRepository,
-            PriceRepositoryInterface $priceRepository,
-            StockBalanceRepositoryInterface $stockBalanceRepository,
-            HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager,
-            $config,
-            HtmlProviderService $htmlProvider,
-            UserRepository $userRepository,
-            AuthenticationService $authService,
-            ProductCharacteristicRepositoryInterface $productCharacteristicRepository,
-            BasketRepositoryInterface $basketRepository,
-            ProductImageRepositoryInterface $productImageRepository,
-            //SessionContainer $sessionContainer ,
-            CommonHelperFunctionsService $commonHelperFuncions) {
-        $this->testRepository = $testRepository;
+      CategoryRepositoryInterface $categoryRepository, CharacteristicRepositoryInterface $characteristicRepository, HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager,$config, AuthenticationService $authService,CommonHelperFunctionsService $commonHelperFuncions ) 
+      {
         $this->categoryRepository = $categoryRepository;
-        $this->providerRepository = $providerRepository;
-        $this->storeRepository = $storeRepository;
-        $this->productRepository = $productRepository;
-        $this->filteredProductRepository = $filteredProductRepository;
-        $this->brandRepository = $brandRepository;
         $this->characteristicRepository = $characteristicRepository;
-        $this->priceRepository = $priceRepository;
-        $this->stockBalanceRepository = $stockBalanceRepository;
         $this->handBookRelatedProductRepository = $handBookProduct;
-        $this->productCharacteristicRepository = $productCharacteristicRepository;
         $this->entityManager = $entityManager;
         $this->config = $config;
-        $this->htmlProvider = $htmlProvider;
-        $this->userRepository = $userRepository;
         $this->authService = $authService;
-        $this->basketRepository = $basketRepository;
-        $this->productImageRepository = $productImageRepository;
         $this->commonHelperFuncions = $commonHelperFuncions;
-//        $this->sessionContainer = $sessionContainer;
-//        $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(ProductCharacteristic::class);
         $this->entityManager->initRepository(StockBalance::class);
-    }
+      }
 
     /**
      * return JSON product cards
