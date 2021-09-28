@@ -189,7 +189,7 @@ const StoreEdit = {
         for (item in this.store.operating_mode){
           this.checkTime(item);
         }
-        checkPhone();
+        this.checkPhone();
       }
     },
     modified_date: {
