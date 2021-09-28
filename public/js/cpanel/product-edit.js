@@ -81,6 +81,37 @@ const ProductEdit = {
                           <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                           <textarea class="textarea" v-model="product.description"></textarea>
                       </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.weight && errors)}">Вес с упаковкой <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.weight" />
+                          <span class="unit">(г)</span>
+                      </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : ((!product.length || !product.width || !product.height) && errors)}">Размер упаковки <span class="required">*</span></h2>
+                          <div class="product__size-inputs">
+                            <div class="product__size-inputs__item">
+                              <div class="input__wrap">
+                                <input class="input input--number" type="number" v-model="product.length" />
+                                <span class="input__label">Длина</span>
+                              </div>
+                              <span class="unit">(см)</span>
+                            </div>
+                            <div class="product__size-inputs__item">
+                              <div class="input__wrap">
+                                <input class="input input--number" type="number" v-model="product.width" />
+                                <span class="input__label">Ширина</span>
+                              </div>
+                              <span class="unit">(см)</span>
+                            </div>
+                            <div class="product__size-inputs__item">
+                              <div class="input__wrap">
+                                <input class="input input--number" type="number" v-model="product.height" />
+                                <span class="input__label">Высота</span>
+                              </div>
+                              <span class="unit">(см)</span>
+                            </div>
+                          </div>
+                      </div>
                       <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
                           <div class="custom-select custom-select--radio">
@@ -108,32 +139,6 @@ const ProductEdit = {
                                   <span>20%</span>
                                 </label>
                               </div>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="product__attribute">
-                          <h2 :class="{'input-error' : ((!product.length || !product.width || !product.height) && errors)}">Размер упаковки <span class="required">*</span></h2>
-                          <div class="product__size-inputs">
-                            <div class="product__size-inputs__item">
-                              <div class="input__wrap">
-                                <input class="input" type="text" v-model="product.length" />
-                                <span class="input__label">Длина</span>
-                              </div>
-                              <span class="unit">(см)</span>
-                            </div>
-                            <div class="product__size-inputs__item">
-                              <div class="input__wrap">
-                                <input class="input" type="text" v-model="product.width" />
-                                <span class="input__label">Ширина</span>
-                              </div>
-                              <span class="unit">(см)</span>
-                            </div>
-                            <div class="product__size-inputs__item">
-                              <div class="input__wrap">
-                                <input class="input" type="text" v-model="product.height" />
-                                <span class="input__label">Высота</span>
-                              </div>
-                              <span class="unit">(см)</span>
                             </div>
                           </div>
                       </div>
