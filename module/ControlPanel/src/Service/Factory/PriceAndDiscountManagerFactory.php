@@ -9,6 +9,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use ControlPanel\Service\CurlRequestManager;
 //use Application\Service\ExternalCommunicationService;
 use ControlPanel\Service\PriceAndDiscountManager;
+use Application\Model\Repository\CategoryRepository;
 
 /**
  * Description of PriceAndDiscountManagerFactory
@@ -29,8 +30,10 @@ class PriceAndDiscountManagerFactory implements FactoryInterface
         $mclient = new \MongoDB\Client(
             'mongodb://saychas_cache:saychas_cache@localhost/saychas_cache'
         );
+        $categoryRepo = $container->get(CategoryRepository::class);
+        $entityManager = $container->get('laminas.entity.manager');
 
-        return new PriceAndDiscountManager($config, $curlRequestManager, $mclient);
+        return new PriceAndDiscountManager($config, $curlRequestManager, $mclient, $entityManager, $categoryRepo);
     }
 
 }
