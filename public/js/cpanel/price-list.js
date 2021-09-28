@@ -1,21 +1,4 @@
 const PriceList = {
-  data: function () {
-    return {
-      htmlContent: '',
-      page_no: 1,
-      rows_per_page: 10,
-      products: {},
-      pages: 1,
-      filters: {},
-      imgPath: productImgPath,
-      imgPathModerated: productImgPathModerated,
-      selectedFilters: {
-        category_id: ''
-      },
-      search: '',
-      filtersCreated: false
-    }
-  },
   template:
     `<div>
       <div v-if="htmlContent" v-html="htmlContent"></div>
@@ -46,10 +29,10 @@ const PriceList = {
             </div>
           </div>
           <div class="filter__btn">
-            <a class="btn btn--secondary" href="#">Скачать список</a>
+            <a class="btn btn--secondary disabled" href="#">Скачать список</a>
           </div>
           <div class="filter__btn">
-            <a class="btn btn--primary">Загрузить список</a>
+            <a class="btn btn--primary disabled">Загрузить список</a>
           </div>
         </div>
 
@@ -64,28 +47,29 @@ const PriceList = {
           <div class="tbody" v-if="products.length">
               <div v-for="(product, index) in products" class="tr pricelist__item">
                   <div class="td pricelist__img product-small-img">
-                    <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
+                    <img :src="(product.image) ? (((product.moderated) ? imgPathModerated : imgPath) + product.image) : '/img/ui/nophoto.jpg'" />
                   </div>
                   <div class="td td--hover pricelist__title">
-                    <a>{{ product.title }}</a>
+                    <a>{{ product.product_name }}</a>
                   </div>
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td pricelist__discount">{{ product.discount }}%</div>
                   <div class="td">
-                    <div v-if="product.old_price != product.price" class="pricelist__oldprice">{{ product.old_price.toLocaleString() }} ₽</div>
-                    <div class="pricelist__price">{{ product.price.toLocaleString() }} ₽</div>
+                    <div v-if="+product.discount > 0" class="pricelist__oldprice">{{ product.price }} ₽</div>
+                    <div v-if="+product.discount > 0" class="pricelist__price">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</div>
+                    <div v-else class="pricelist__price">{{ product.price }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
                     <div class="pricelist__popup-category">Техника для дома</div>
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="calculatePrice(index)" />
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" v-model.lazy="product.old_price" @change="calculatePrice(index)" />
+                          <input type="number" min="0" v-model.lazy="product.price" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -93,7 +77,8 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3>{{ product.price.toLocaleString() }} ₽</h3>
+                        <h3 v-if="product.discount">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</h3>
+                        <h3 v-else> {{ product.price.toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
@@ -106,24 +91,27 @@ const PriceList = {
         </div>
       </div>
     </div>`,
-  methods: {
-    calculatePrice(index){
-      let product = this.products[index];
-      if (+product.discount > 0){
-        product.price = product.old_price * (100 - product.discount) / 100;
-      } else {
-        product.price = product.old_price;
+  data: function () {
+      return {
+        htmlContent: '',
+        page_no: 1,
+        rows_per_page: 10,
+        products: {},
+        pages: 1,
+        filters: {},
+        imgPath: productImgPath,
+        imgPathModerated: productImgPathModerated,
+        selectedFilters: {
+          category_id: ''
+        },
+        search: '',
+        filtersCreated: false
       }
-    },
+  },
+  methods: {
     setRubPrice() {
-      if (this.products){
-        for (product of this.products){
-          product.price = product.price / 100;
-          product.old_price = product.old_price / 100;
-          if (!product.old_price){
-            product.old_price = product.price;
-          }
-        }
+      for (product of this.products) {
+        product.price = product.price / 100;
       }
     },
     saveProduct(index) {
@@ -131,10 +119,6 @@ const PriceList = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let request = JSON.parse(JSON.stringify(this.products[index]));
       request.price = request.price * 100;
-      request.old_price = request.old_price * 100;
-      if (request.price == request.old_price){
-        request.old_price = 0;
-      }
       console.log('Запрос на сохранение цены', request);
       if (!request.price){
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
@@ -185,12 +169,13 @@ const PriceList = {
               console.log('Response from show-price-and-discount',response.data);
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
+              console.log('Получено',this.products);
               this.setRubPrice();
+              console.log('Обработано',this.products);
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
               }
-              console.log(this.products);
             }
           })
           .catch(error => {

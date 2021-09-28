@@ -5,9 +5,9 @@ const ProductAdd = {
                       <a class="btn btn--primary">По одному товару</a>
                   </div>
                   <div class="filter__btn">
-                      <router-link to="/product-add-file" class="btn btn--secondary">Массой товаров</router-link>
+                      <router-link to="/product-add-file" class="btn btn--secondary disabled">Массой товаров</router-link>
                   </div>
-                  <div class="filter__btn">
+                  <div class="filter__btn" style="display: none;">
                       <router-link to="/product-add-api" class="btn btn--secondary">Загрузка по API</router-link>
                   </div>
                 </div>
@@ -57,7 +57,7 @@ const ProductAdd = {
                                           </div>
                                     </div>
                                     <div v-if="(product.brand_id !== undefined && showBrand != -1)" class="product__attribute product__attribute--short">
-                                        <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
+                                        <h2>Бренд</h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
                                               <div class="search-select__suggestions">
@@ -79,7 +79,7 @@ const ProductAdd = {
                                         <input class="input" type="text" v-model="product.title" />
                                     </div>
                                     <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
-                                        <h2 :class="{'input-error' : (!product.color_id && errors)}">Цвет <span class="required">*</span></h2>
+                                        <h2>Цвет</h2>
                                           <div class="product__colors">
                                               <label v-for="color in product.colors" class="color-checkbox">
                                                 <input type="radio" :value="color.id" name="color" :checked="product.color_id == color.id" v-model="product.color_id">
@@ -94,22 +94,22 @@ const ProductAdd = {
                                         <textarea class="textarea" v-model="product.description"></textarea>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2 :class="{'input-error' : (!product.weight && errors)}">Вес с упаковкой <span class="required">*</span></h2>
+                                        <h2>Вес с упаковкой</h2>
                                         <input class="input input--number" type="number" v-model="product.weight" />
                                         <span class="unit">(г)</span>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2 :class="{'input-error' : (!product.length && errors)}">Длина упаковки <span class="required">*</span></h2>
+                                        <h2>Длина упаковки</h2>
                                         <input class="input input--number" type="number" v-model="product.length" />
                                         <span class="unit">(см)</span>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2 :class="{'input-error' : (!product.width && errors)}">Ширина упаковки <span class="required">*</span></h2>
+                                        <h2>Ширина упаковки</h2>
                                         <input class="input input--number" type="number" v-model="product.width" />
                                         <span class="unit">(см)</span>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2 :class="{'input-error' : (!product.width && errors)}">Высота упаковки <span class="required">*</span></h2>
+                                        <h2>Высота упаковки</h2>
                                         <input class="input input--number" type="number" v-model="product.height" />
                                         <span class="unit">(см)</span>
                                     </div>
@@ -354,7 +354,7 @@ const ProductAdd = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  && this.showBrand != -1) || !this.product.title || (!this.product.color_id && this.showColor != -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
@@ -502,8 +502,6 @@ const ProductAdd = {
               console.log(response);
               if (this.product.characteristics){
                 this.product.characteristics = response.data.answer.data.product.characteristics;
-                this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
-                this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               } else {
                 this.product = response.data.answer.data.product;
                 this.product.images = [];
@@ -517,6 +515,8 @@ const ProductAdd = {
                 this.product.weight = 0;
                 console.log('Продукт',this.product);
               }
+              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {

@@ -101,7 +101,6 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
         }
         
         $cursor['filters']['categories'] = $this->findCategories($params);
-        $cursor['body']['images'] = [];
         return $cursor;
     }
 
@@ -112,12 +111,12 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
         return $result;
     }
     
-    public function addServerDocument($headers, $content = [])
-    {
-        $url = $this->config['parameters']['1c_provider_links']['lk_add_price_and_discount'];
-        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
-        return $result;
-    }
+//    public function addServerDocument($headers, $content = [])
+//    {
+//        $url = $this->config['parameters']['1c_provider_links']['lk_add_price_and_discount'];
+//        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+//        return $result;
+//    }
     
     public function replacePriceAndDiscount($priceAndDiscount)
     {

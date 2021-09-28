@@ -709,6 +709,7 @@ return [
             \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             /** PriceAndDiscountManager */
             'lk_price_info' => 'http://SRV02:8000/SC/hs/site/lk_price_info',
+            'lk_update_price' => 'http://SRV02:8000/SC/hs/site//lk_update_price',
             /** PriceAndDiscountManager link alias */
             \ControlPanel\Service\PriceAndDiscountManager::class => 'http://SRV02:8000/SC/hs/site/lk_price_info',
         ],
