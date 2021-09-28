@@ -111,6 +111,32 @@ const ProductEdit = {
                             </div>
                           </div>
                       </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : ((!product.length || !product.width || !product.height) && errors)}">Размер упаковки <span class="required">*</span></h2>
+                          <div class="product__size-inputs">
+                            <div class="product__size-inputs__item">
+                              <div class="input__wrap">
+                                <input class="input" type="text" v-model="product.length" />
+                                <span class="input__label">Длина</span>
+                              </div>
+                              <span class="unit">(см)</span>
+                            </div>
+                            <div class="product__size-inputs__item">
+                              <div class="input__wrap">
+                                <input class="input" type="text" v-model="product.width" />
+                                <span class="input__label">Ширина</span>
+                              </div>
+                              <span class="unit">(см)</span>
+                            </div>
+                            <div class="product__size-inputs__item">
+                              <div class="input__wrap">
+                                <input class="input" type="text" v-model="product.height" />
+                                <span class="input__label">Высота</span>
+                              </div>
+                              <span class="unit">(см)</span>
+                            </div>
+                          </div>
+                      </div>
                     </div>
                     <input class="product__additional-attributes-trigger" type="checkbox" id="additional-attributes" /><label for="additional-attributes"><span>Раскрыть дополнительные поля</span></label>
                     <div class="product__additional-attributes">
