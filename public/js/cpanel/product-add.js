@@ -254,7 +254,7 @@ const ProductAdd = {
                                                   </div><button class="product__images-arrow product__images-arrow--down" data-shift="1"></button>
                                               </div>
                                               <div class="product__images-selected">
-                                                  <div class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</div><img :src="currentImg ? (imgPath + currentImg) : ''" />
+                                                  <label for="photo-upload" class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</label><img :src="currentImg ? (imgPath + currentImg) : ''" />
                                               </div>
                                               <div class="product__images-controls">
                                                   <input type="file" id="photo-upload" style="display:none;" @change="uploadFile"/>
@@ -328,7 +328,7 @@ const ProductAdd = {
   },
   computed: {
     filteredCategories(){
-      if (this.categorySearch.length < 3) return false;
+      if (this.categorySearch == '') return false;
       let categories = this.categoriesFlat;
       categories = categories.filter((category) => {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
@@ -336,7 +336,7 @@ const ProductAdd = {
       return categories;
     },
     filteredBrands(){
-      if (this.brandSearch.length < 2) return false;
+      if (this.brandSearch.length == '') return false;
       let brands = this.brands;
       brands = brands.filter((brand) => {
         return (brand.title.toLowerCase().includes(this.brandSearch.toLowerCase()))
@@ -344,7 +344,7 @@ const ProductAdd = {
       return brands;
     },
     filteredCountries(){
-      if (this.countrySearch.length < 2) return false;
+      if (this.countrySearch == '') return false;
       let countries = this.countries;
       countries = countries.filter((country) => {
         return (country.title.toLowerCase().includes(this.countrySearch.toLowerCase()))
