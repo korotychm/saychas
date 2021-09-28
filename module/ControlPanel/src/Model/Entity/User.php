@@ -20,6 +20,8 @@ class User
 
     /** @var string */
     protected string $login;
+    
+    protected bool $offer;
 
     /** @var string */
     protected string $password;
@@ -71,6 +73,17 @@ class User
     public function getLogin()
     {
         return $this->login;
+    }
+    
+    public function setOffer($offer)
+    {
+        $this->offer = $offer;
+        return $this;
+    }
+    
+    public function getOffer()
+    {
+        return $this->offer;
     }
 
     /**
@@ -145,5 +158,5 @@ class User
     {
         return explode(',', $this->roles);
     }
-
+    
 }
