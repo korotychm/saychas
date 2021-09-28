@@ -57,7 +57,7 @@ const ProductAdd = {
                                           </div>
                                     </div>
                                     <div v-if="(product.brand_id !== undefined && showBrand != -1)" class="product__attribute product__attribute--short">
-                                        <h2 :class="{'input-error' : (!selectedBrandName && errors)}">Бренд <span class="required">*</span></h2>
+                                        <h2>Бренд</h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.brand_name" v-model="brandSearch" @focusout="checkBrand()" />
                                               <div class="search-select__suggestions">
