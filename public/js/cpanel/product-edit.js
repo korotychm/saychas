@@ -514,8 +514,14 @@ const ProductEdit = {
                   } else {
                     delete this.product.color_id;
                   }
-                  this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
-                  this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
+                  if (product.characteristics){
+                    this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
+                    this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
+                  } else {
+                    this.showBrand = -1;
+                    this.showColor = -1;
+                  }
+
                 } else {
                   if (response.data.result){
                     router.replace('/products');
