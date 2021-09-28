@@ -123,6 +123,7 @@ const Inventory = {
     }
   },
   mounted: function(){
+    this.getStores();
     $('.main__loader').hide();
   }
 }
