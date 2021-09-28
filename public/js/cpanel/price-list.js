@@ -150,6 +150,7 @@ const PriceList = {
               headers
             })
             .then(response => {
+              console.log(response.data);
               if (response.data.result){
                 $('.pricelist__item').removeClass('active');
               }
