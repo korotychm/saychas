@@ -135,7 +135,7 @@ const PriceList = {
       if (request.price == request.old_price){
         request.old_price = 0;
       }
-      console.log(request);
+      console.log('Запрос на сохранение цены', request);
       if (!request.price){
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
       } else {
@@ -150,7 +150,7 @@ const PriceList = {
               headers
             })
             .then(response => {
-              console.log(response.data);
+              console.log('Ответ на сохранение цены', response.data);
               if (response.data.result){
                 $('.pricelist__item').removeClass('active');
               }
