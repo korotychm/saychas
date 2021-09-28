@@ -110,10 +110,8 @@ const PriceList = {
   },
   methods: {
     setRubPrice() {
-      if (this.products){
-        for (product of this.products){
-          product.price = product.price / 100;
-        }
+      for (product of this.products){
+        product.price = product.price / 100;
       }
     },
     saveProduct(index) {
