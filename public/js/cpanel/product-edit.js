@@ -455,17 +455,20 @@ const ProductEdit = {
                 characteristic.value = this.product.color_id;
               }
             }
-            let category_in_request = this.selectedCategoryId;
-            if (oldCategory) {
-              category_in_request = oldCategory;
-            }
-            let cloneImages = JSON.parse(JSON.stringify(this.product.images));
-            for (image in cloneImages){
-              cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
-            }
           } else {
             let chars = {};
           }
+          
+          let category_in_request = this.selectedCategoryId;
+          if (oldCategory) {
+            category_in_request = oldCategory;
+          }
+          let cloneImages = JSON.parse(JSON.stringify(this.product.images));
+          for (image in cloneImages){
+            cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
+          }
+
+
           let request = {
             id : this.product.id,
             vat: this.product.vat,
