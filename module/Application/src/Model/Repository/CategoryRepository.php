@@ -344,7 +344,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     public function findCategoryTree($i = '0', $echo=[])
     {
         $tree = $this->getAllCategoriesAsTree ();
-        $return = $this->findCategoryTreeFromArray($tree, $i);
+        $return = $this->findCategoryTreeFromArray($tree, $i, $echo);
        // exit ("<pre>".print_r($return, true));
         return $return;
         
