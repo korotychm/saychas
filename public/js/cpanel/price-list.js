@@ -83,10 +83,10 @@ const PriceList = {
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="calculatePrice(index)" />
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" v-model.lazy="product.price" @change="calculatePrice(index)" />
+                          <input type="number" min="0" v-model.lazy="product.price" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -109,22 +109,10 @@ const PriceList = {
       </div>
     </div>`,
   methods: {
-    calculatePrice(index){
-      let product = this.products[index];
-      if (+product.discount > 0){
-        product.price = product.old_price * (100 - product.discount) / 100;
-      } else {
-        product.price = product.old_price;
-      }
-    },
     setRubPrice() {
       if (this.products){
         for (product of this.products){
           product.price = product.price / 100;
-          product.old_price = product.old_price / 100;
-          if (!product.old_price){
-            product.old_price = product.price;
-          }
         }
       }
     },
@@ -133,10 +121,6 @@ const PriceList = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let request = JSON.parse(JSON.stringify(this.products[index]));
       request.price = request.price * 100;
-      request.old_price = request.old_price * 100;
-      if (request.price == request.old_price){
-        request.old_price = 0;
-      }
       console.log('Запрос на сохранение цены', request);
       if (!request.price){
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
