@@ -316,6 +316,7 @@ const StoreAdd = {
       }
     },
     checkPhone(){
+      console.log('phone check');
       let phone = this.contact_phone.replace(/ /g,'').replace(/\+/g,'').replace(/\(/g,'').replace(/\)/g,'').replace(/-/g,'');
       if (phone.length != 11){
         this.contact_phone = '';
