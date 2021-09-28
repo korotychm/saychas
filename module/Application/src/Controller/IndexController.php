@@ -25,11 +25,11 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 //use Application\Service\CommonHelperFunctionsService;
-use Application\Model\Entity\ProductCharacteristic;
+//use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\Repository\UserRepository;
-use Application\Model\Repository\CharacteristicRepository;
-use Application\Model\Entity\HandbookRelatedProduct;
+//use Application\Model\Repository\CharacteristicRepository;
+//use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
@@ -45,11 +45,11 @@ use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\Resource;
 use Laminas\Session\Container; // as SessionContainer;
-use Laminas\Session\SessionManager;
+//use Laminas\Session\SessionManager;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
+//use Application\Model\Entity\UserData;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 use Application\Model\Entity\ProductFavorites;
@@ -89,7 +89,7 @@ class IndexController extends AbstractActionController
     private $productCharacteristicRepository;
     private $colorRepository;
     private $basketRepository;
-    private $productHistoryRepository;
+    //private $productHistoryRepository;
     //private $sessionContainer;
     private $sessionManager;
 
@@ -444,7 +444,7 @@ class IndexController extends AbstractActionController
             "countprducts" => $content["countproducts"],
             "legalUser" => $legalUser,
             // "legalAddress" => $legalAddress,
-            'textdefault' => \Application\Resource\Resource::BASKET_SAYCHAS_do . ", ",
+            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
             "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
             "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
         ]);

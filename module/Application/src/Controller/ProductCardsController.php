@@ -189,7 +189,7 @@ class ProductCardsController extends AbstractActionController {
      */
     private function getFiltredProductsId($where) {
         $products = ProductCharacteristic::findAll(["where" => $where, "columns" => ['product_id'], "group" => "product_id"])->toArray();
-        return ArrayHelper::extractProdictsId($products);
+        return ArrayHelper::extractId($products);
     }
 
     /**
