@@ -343,7 +343,7 @@ const ProductEdit = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName && this.showBrand != -1) || !this.product.title || (!this.product.color_id && this.showColor != -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
         return true;
       }
       return false;

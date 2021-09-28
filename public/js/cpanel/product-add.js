@@ -354,7 +354,7 @@ const ProductAdd = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  && this.showBrand != -1) || !this.product.title || (!this.product.color_id && this.showColor != -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
         return true;
       }
       return false;
@@ -502,6 +502,8 @@ const ProductAdd = {
               console.log(response);
               if (this.product.characteristics){
                 this.product.characteristics = response.data.answer.data.product.characteristics;
+                this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+                this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               } else {
                 this.product = response.data.answer.data.product;
                 this.product.images = [];
@@ -515,8 +517,6 @@ const ProductAdd = {
                 this.product.weight = 0;
                 console.log('Продукт',this.product);
               }
-              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
-              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {
