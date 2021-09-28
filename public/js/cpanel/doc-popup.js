@@ -11,7 +11,7 @@ $('#accept-doc-form').submit(function(e){
           $('.popup--doc').fadeOut();
           setTimeout(function(){
             $('.popup--doc').remove();
-          },500);
+          }, 1500);
         }
     });
   }
