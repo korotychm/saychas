@@ -164,7 +164,7 @@ const PriceList = {
       }
     },
     getProducts() {
-      let requestUrl = '/control-panel/lk_price_info';
+      let requestUrl = '/control-panel/show-price-and-discount';
       // if (this.filtersCreated) {
       //   requestUrl = '/control-panel/show-products-from-cache';
       // }
