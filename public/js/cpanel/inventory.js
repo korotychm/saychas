@@ -49,7 +49,9 @@ const Inventory = {
           Qs.stringify({
             page_no : 1,
             rows_per_page : 10000,
-            filters: {},
+            filters: {
+              status_id: ''
+            },
             search: '',
             use_cache: false
           }),{headers})
