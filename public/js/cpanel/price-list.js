@@ -165,9 +165,9 @@ const PriceList = {
     },
     getProducts() {
       let requestUrl = '/control-panel/show-price-and-discount';
-      // if (this.filtersCreated) {
-      //   requestUrl = '/control-panel/show-products-from-cache';
-      // }
+      if (this.filtersCreated) {
+       requestUrl = '/control-panel/show-price-and-discount-from-cache';
+      }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' }
       axios
         .post(requestUrl,
