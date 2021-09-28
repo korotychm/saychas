@@ -93,9 +93,33 @@ const ProductAdd = {
                                         <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                                         <textarea class="textarea" v-model="product.description"></textarea>
                                     </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
+                                        <textarea class="textarea" v-model="product.description"></textarea>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.weight && errors)}">Вес с упаковкой <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.weight" />
+                                        <span class="unit">(г)</span>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.length && errors)}">Длина упаковки <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.length" />
+                                        <span class="unit">(см)</span>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.width && errors)}">Ширина упаковки <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.width" />
+                                        <span class="unit">(см)</span>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.width && errors)}">Высота упаковки <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.height" />
+                                        <span class="unit">(см)</span>
+                                    </div>
                                     <div class="product__attribute product__attribute--short">
                                         <h2>Ставка НДС <span class="required">*</span></h2>
-                                        <div class="custom-select custom-select--radio">
+                                        <div class="custom-select custom-select--radio" style="width: 253px;">
                                           <div class="custom-select__label input"></div>
                                           <div class="custom-select__dropdown">
                                             <div class="custom-select__dropdown-inner">
