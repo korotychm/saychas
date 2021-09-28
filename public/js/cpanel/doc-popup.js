@@ -10,9 +10,6 @@ $('#accept-doc-form').submit(function(e){
         success: function (data) {
           console.log(data);
           $('.popup--doc').fadeOut();
-          setTimeout(function(){
-            $('.popup--doc').remove();
-          }, 1500);
         }
     });
   } else {
