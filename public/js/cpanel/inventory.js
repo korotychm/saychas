@@ -24,7 +24,7 @@ const Inventory = {
               </svg>
             </button>
           </form>
-          <div v-if="products" class="filter__select">
+          <div v-if="products && filters.categories" class="filter__select">
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
