@@ -3,11 +3,12 @@ $('#accept-doc-form').submit(function(e){
   if ($('#accept-doc').prop('checked')) {
     var msg = $('#accept-doc-form').serialize();
     $.ajax({
-        url: "/",
+        url: "/control-panel/confirm-offer",
         type: 'POST',
         cache: false,
         data: msg,
         success: function (data) {
+          console.log(data);
           $('.popup--doc').fadeOut();
           setTimeout(function(){
             $('.popup--doc').remove();
