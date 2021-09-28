@@ -550,6 +550,13 @@ const ProductAdd = {
           }
         }
         let category_in_request = this.selectedCategoryId;
+        if (this.showColor){
+          this.product.color_id = '';
+        }
+        if (this.showBrand){
+          this.product.brand_id = '';
+          this.selectedBrandId = '';
+        }
         let request = {
           id : this.product.id,
           vat : this.product.vat,
