@@ -31,8 +31,8 @@ const PriceList = {
           <div class="filter__btn">
             <a class="btn btn--secondary disabled" href="#">Скачать список</a>
           </div>
-          <div class="filter__btn disabled">
-            <a class="btn btn--primary">Загрузить список</a>
+          <div class="filter__btn">
+            <a class="btn btn--primary disabled">Загрузить список</a>
           </div>
         </div>
 
