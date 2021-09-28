@@ -316,12 +316,10 @@ const StoreAdd = {
       }
     },
     checkPhone(){
-      console.log('phone check', this.contact_phone);
-
-      // let phone = this.contact_phone.replace(/ /g,'').replace(/\+/g,'').replace(/\(/g,'').replace(/\)/g,'').replace(/-/g,'');
-      // if (phone.length != 11){
-      //   this.contact_phone = '';
-      // }
+      let phone = this.store.contact_phone.replace(/ /g,'').replace(/\+/g,'').replace(/\(/g,'').replace(/\)/g,'').replace(/-/g,'');
+      if (phone.length != 11){
+        this.store.contact_phone = '';
+      }
     },
     dayOff(day) {
       if (day == 'mod'){
