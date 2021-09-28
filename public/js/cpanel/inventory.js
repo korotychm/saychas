@@ -12,7 +12,7 @@ const Inventory = {
                 <div class="custom-select__dropdown-inner">
                   <label v-for="store in stores" class="custom-select__option">
                     <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="category_filter" v-model="selectedFilters.store_id" @change="loadPage()" />
-                    <span>{{category[1]}}</span>
+                    <span>{{store.title}}</span>
                   </label>
                 </div>
               </div>
