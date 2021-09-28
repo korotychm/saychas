@@ -9,7 +9,7 @@ $('#accept-doc-form').submit(function(e){
         data: msg,
         success: function (data) {
           console.log(data);
-          $('.popup--doc').fadeOut();
+          $('.popup--doc').remove();
         }
     });
   } else {
