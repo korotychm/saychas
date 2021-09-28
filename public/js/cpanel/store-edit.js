@@ -33,7 +33,7 @@ const StoreEdit = {
                       <div class="product__attribute product__attribute--short">
                         <h2 :class="{'input-error' : (!store.contact_phone && errors)}">Телефон <span class="required">*</span></h2>
                         <div>
-                          <input v-model="store.contact_phone" v-mask="'+7 (###) ###-##-##'" class="input" type="text" placeholder="+7 (999) 999-99-99" />
+                          <input v-model.lazy="store.contact_phone" v-mask="'+7 (###) ###-##-##'" class="input" type="text" placeholder="+7 (999) 999-99-99" />
                         </div>
                       </div>
                     </div>
@@ -189,6 +189,7 @@ const StoreEdit = {
         for (item in this.store.operating_mode){
           this.checkTime(item);
         }
+        this.checkPhone();
       }
     },
     modified_date: {
@@ -292,6 +293,12 @@ const StoreEdit = {
       }
       if (!item  && !regex.test(this.modified_date.time_to)) {
         this.modified_date.time_to = '';
+      }
+    },
+    checkPhone(){
+      let phone = this.store.contact_phone.replace(/ /g,'').replace(/\+/g,'').replace(/\(/g,'').replace(/\)/g,'').replace(/-/g,'');
+      if (phone.length != 11){
+        this.store.contact_phone = '';
       }
     },
     dayOff(day) {

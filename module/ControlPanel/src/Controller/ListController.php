@@ -13,7 +13,8 @@ use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 use ControlPanel\Controller\AbstractControlPanelActionController;
 
-class ListController extends AbstractControlPanelActionController // AbstractActionController
+/** AbstractActionController */
+class ListController extends AbstractControlPanelActionController
 {
 
     private const ROWS_PER_PAGE = 2;
@@ -119,7 +120,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
 //            }
 //        }
 
-        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: '.$isTest/*, 'is_test: true'*/];
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
 
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
@@ -133,7 +134,7 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
             'provider_id' => $identity['provider_id'],
         ];
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
-        $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1], ]);
+        $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1],]);
 
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
     }
@@ -169,18 +170,6 @@ class ListController extends AbstractControlPanelActionController // AbstractAct
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 //        $utf8 = mb_convert_encoding($identity['login'], "UTF-8", "Windows-1251 (CP1251)");
 //        $credentials[] = "Accept-Language: ru-RU,ru;q=0.9,en;q=0.8";

@@ -40,9 +40,9 @@ class StoreController extends AbstractActionController
 
     /** @var Config */
     protected $config;
-    
+
     /** @var RbacManager */
-    protected $rbacManager;    
+    protected $rbacManager;
 
     /**
      * Constructor
@@ -79,30 +79,30 @@ class StoreController extends AbstractActionController
 //        }
         return $response;
     }
-    
+
     public function editStoreAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
 
-        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\StoreManager::class, 'where' => ['id' => $post['store_id']] ]);
+        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\StoreManager::class, 'where' => ['id' => $post['store_id']]]);
 
         if (!$access) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
 //        $identity = $this->authService->getIdentity();
-//        
+//
 //        $access = $this->rbacManager->isGranted(null, 'administrator', ['provider_id' => $post['provider_id']]);
 //        if (!$access) {
 //            $this->getResponse()->setStatusCode(403);
 //            return;
 //        }
 //        $post['store_id'] = '000000004';
-        $store = $this->storeManager->find(['id' => $post['store_id'] ]);
+        $store = $this->storeManager->find(['id' => $post['store_id']]);
 
         return new JsonModel(['store' => $store]);
     }
-    
+
     private function canUpdateStore(array $store): bool
     {
         $identity = $this->authService->getIdentity();
@@ -126,7 +126,7 @@ class StoreController extends AbstractActionController
         }
         return new JsonModel(['result' => false]);
     }
-    
+
     private function canAddStore(array &$store): bool
     {
         $identity = $this->authService->getIdentity();
@@ -136,7 +136,7 @@ class StoreController extends AbstractActionController
         $store = $result['data']['data'];
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
-    }    
+    }
 
     public function saveNewlyAddedStoreAction()
     {
@@ -149,10 +149,10 @@ class StoreController extends AbstractActionController
         }
         return new JsonModel(['result' => false]);
     }
-    
+
     /**
      * Show stores action
-     * 
+     *
      * @return JsonModel
      */
 //    public function showStores1Action()
@@ -186,22 +186,22 @@ class StoreController extends AbstractActionController
      */
 //    public function showStoresAction()
 //    {
-//        
+//
 //        $routeMatch = $this->getEvent()->getRouteMatch();
 //
 //        $routeName = $routeMatch->getMatchedRouteName();
-//        
+//
 //        list($leftName, $rightName) = explode('/', $routeName);
 //
 //        //$params = $routeMatch->getParams();
 //
 //        $config = $this->container->get('Config');
-//        
+//
 //        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
 //
 //        $manager = $this->container->get($managerName);
-//    
-//        
+//
+//
 //        $post = $this->getRequest()->getPost()->toArray();
 //        $useCache = $post['use_cache'];
 //
@@ -226,31 +226,31 @@ class StoreController extends AbstractActionController
 //        return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
 //
 //    }
-        
+
     /**
      * Show stores from cache action
-     * 
+     *
      * @return JsonModel
      */
     /**
      * Temporarily comment out this function
-     */    
+     */
 //    public function showStoresFromCacheAction()
 //    {
 //        $routeMatch = $this->getEvent()->getRouteMatch();
 //
 //        $routeName = $routeMatch->getMatchedRouteName();
-//        
+//
 //        list($leftName, $rightName) = explode('/', $routeName);
 //
 //        //$params = $routeMatch->getParams();
 //
 //        $config = $this->container->get('Config');
-//        
+//
 //        $managerName = $config['router']['routes'][$leftName]['child_routes'][$rightName]['options']['repository'];
 //
 //        $manager = $this->container->get($managerName);
-//        
+//
 //        $post = $this->getRequest()->getPost()->toArray();
 //        $identity = $this->authService->getIdentity();
 //        $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::STORES_PER_PAGE);
@@ -268,7 +268,6 @@ class StoreController extends AbstractActionController
 //        $cursor = $manager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
 //        return new JsonModel(['data' => $cursor,]);
 //    }
-
 //    public function showStores1FromCacheAction()
 //    {
 //        $this->assertLoggedIn();
@@ -289,7 +288,7 @@ class StoreController extends AbstractActionController
 //        $cursor = $this->storeManager->findDocuments(['pageNo' => $post['page_no'], 'where' => $where]);
 //        return new JsonModel(['data' => $cursor,]);
 //    }
-    
+
     /**
      * Signal ajax script
      * if provider is not logged in
@@ -300,5 +299,4 @@ class StoreController extends AbstractActionController
 //            return new JsonModel(['data' => false]);
 //        }
 //    }
-
 }
