@@ -164,10 +164,10 @@ const PriceList = {
       }
     },
     getProducts() {
-      let requestUrl = '/control-panel/show-products';
-      if (this.filtersCreated) {
-        requestUrl = '/control-panel/show-products-from-cache';
-      }
+      let requestUrl = '/control-panel/lk_price_info';
+      // if (this.filtersCreated) {
+      //   requestUrl = '/control-panel/show-products-from-cache';
+      // }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' }
       axios
         .post(requestUrl,
