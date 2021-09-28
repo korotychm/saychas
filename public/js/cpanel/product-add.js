@@ -502,8 +502,6 @@ const ProductAdd = {
               console.log(response);
               if (this.product.characteristics){
                 this.product.characteristics = response.data.answer.data.product.characteristics;
-                this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
-                this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               } else {
                 this.product = response.data.answer.data.product;
                 this.product.images = [];
@@ -517,6 +515,8 @@ const ProductAdd = {
                 this.product.weight = 0;
                 console.log('Продукт',this.product);
               }
+              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {
