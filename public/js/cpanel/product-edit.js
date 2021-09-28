@@ -483,7 +483,11 @@ const ProductEdit = {
             images: cloneImages,
             vendor_code: this.product.vendor_code,
             del_images: this.deleteImages,
-            clone_images: this.cloneImages
+            clone_images: this.cloneImages,
+            width: this.product.width,
+            height: this.product.height,
+            length: this.product.length,
+            weight: this.product.weight
           }
           console.log(request);
           axios
