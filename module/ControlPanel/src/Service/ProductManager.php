@@ -442,6 +442,22 @@ class ProductManager extends ListManager implements LoadableInterface
         return $result;
     }
     
+    public function updateServerPriceAndDiscount($headers, $content = [])
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_product'];
+        $url = '';
+        $answer = [
+            'date_created' => $content['date_created'],
+            'provider_id' => $content['provider_id'],
+            'product_id' => $content['id'],
+            'price' => max( (int) $content['price'], (int) $content['old_price']),
+            'discount' => (int) $content['discount'],
+        ];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $answer, $headers);
+        
+        return $result;
+    }
+    
     public function addServerDocument($headers, $content = [])
     {
         $url = $this->config['parameters']['1c_provider_links']['lk_add_product'];

@@ -74,6 +74,7 @@ return [
                 ['actions' => ['uploadProductImage', ], 'allow' => '+administrator'],
                 ['actions' => ['categoryTree', ], 'allow' => '+administrator'],
                 ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+administrator'],
+                ['actions' => ['updatePriceAndDiscount', ], 'allow' => '+administrator'],
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
@@ -228,6 +229,34 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-price-and-discount' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-price-and-discount',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
+                            ],
+                            'repository' => \ControlPanel\Service\PriceAndDiscountManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-price-and-discount-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-price-and-discount-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\PriceAndDiscountManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'test-show-products' => [
                         'type' => Literal::class,
                         'options' => [
@@ -346,6 +375,18 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'update-price-and-discount' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-price-and-discount',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'update-price-and-discount',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'category-tree' => [
                         'type' => Literal::class,
                         'options' => [
@@ -626,6 +667,8 @@ return [
             \ControlPanel\Service\ProductManager::class => \ControlPanel\Service\Factory\ProductManagerFactory::class,
             /** Store Manager */
             \ControlPanel\Service\StoreManager::class => \ControlPanel\Service\Factory\StoreManagerFactory::class,
+            /** Price and Discount Manager */
+            \ControlPanel\Service\PriceAndDiscountManager::class => \ControlPanel\Service\Factory\PriceAndDiscountManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
             /** Auth Adapter */
@@ -664,6 +707,10 @@ return [
             'lk_update_store' => 'http://SRV02:8000/SC/hs/site/lk_update_store',
             /** StoreManager link alias */
             \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SC/hs/site/lk_store_info',
+            /** PriceAndDiscountManager */
+            'lk_price_info' => 'http://SRV02:8000/SC/hs/site/lk_price_info',
+            /** PriceAndDiscountManager link alias */
+            \ControlPanel\Service\PriceAndDiscountManager::class => 'http://SRV02:8000/SC/hs/site/lk_price_info',
         ],
         'store_statuses' => [
             [ '0', 'Работает' ],

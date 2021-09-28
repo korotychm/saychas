@@ -195,7 +195,7 @@ trait Loadable
             $params['where'],
 //            ['provider_id' => '00007', 'status_id' => 1],
             [
-                'skip' => $limits['min'] - 1,
+                'skip' => 0 >= $limits['min'] ? 0 : $limits['min'] - 1,
                 'limit' => $this->pageSize,
                 'sort' => $params['sort'],
                 'projection' => $params['columns'],
