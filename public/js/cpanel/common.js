@@ -168,6 +168,6 @@ const router = new VueRouter({
 const cp = new Vue({
   router,
   mounted: function(){
-    if(!this.$route.name) router.replace('/orders');
+    if(!this.$route.name) router.replace('/stores');
   }
 }).$mount('#cp')
