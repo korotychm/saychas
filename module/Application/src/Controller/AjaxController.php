@@ -54,7 +54,7 @@ use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\Db\Sql\Where;
 //use Throwable;
-//use Application\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
 class AjaxController extends AbstractActionController {
@@ -152,7 +152,8 @@ class AjaxController extends AbstractActionController {
         $return['productId'] = $productId = $post->productId;
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-        $basketItem = Basket::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
+        //$basketItem = 
+                Basket::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
         return new JsonModel($return);
     }
 
@@ -162,8 +163,16 @@ class AjaxController extends AbstractActionController {
         if (!$category_id or empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             return new JsonModel($return);
         }
+        //return new JsonModel($matherCategories); 
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        $return["rangeprice"] = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
+        $products = $this->productRepository->findAll(['where' => ['category_id' => $categoryTree],  'columns' => ['id'], "group" => ['id']])->toArray();   
+        $productsId = ArrayHelper::extractId($products, 'id');
+//        foreach ($products as $product){
+//            $productsId[]=$product['id'];
+//        }
+        $return["rangeprice"] = $this->priceRepository->findMinMaxPrice($productsId);
+//        return new JsonModel($min);
+//        $return["rangeprice"]= $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
         $filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
         $return["filters"] = $this->htmlProvider->getCategoryFilterJson($filters, $category_id);
         return new JsonModel($return);

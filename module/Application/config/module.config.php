@@ -231,7 +231,7 @@ return [
             'get-search-booster-api' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/get-search-booster-api[/:id1][/:id2][/:id3]',
+                    'route'    => '/get-search-booster-api[/:id1][/:id2][/:id3][/:id4][/:id6]',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'searchBoosterApi',

@@ -160,11 +160,19 @@ class ArrayHelper
         return $allParentIds;
     }
     
-    public static function extractProdictsId ($products)
+//    public static function extractProdictsId ($products, $key = "product_id")
+//    {
+//        $filtredProducts = [];
+//        foreach ($products as $p) {
+//            $filtredProducts[] = $p[$key];
+//        }
+//        return $filtredProducts;
+//    }
+    public static function extractId ($products, $key = "product_id")
     {
         $filtredProducts = [];
         foreach ($products as $p) {
-            $filtredProducts[] = $p["product_id"];
+            $filtredProducts[] = $p[$key];
         }
         return $filtredProducts;
     }

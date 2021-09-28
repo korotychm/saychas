@@ -519,13 +519,15 @@ class IndexController extends AbstractActionController
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+        
         $category_id = $this->params()->fromRoute('id', '');
        
         if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
-        //$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        //$this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory2([$category_id]);        
+//$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
         //$matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             $breadCrumbs = array_reverse($matherCategories);
@@ -619,7 +621,7 @@ class IndexController extends AbstractActionController
     private function getStoreCategories($store_id)
     {
         $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
-        $products = ArrayHelper::extractProdictsId($storeProducts);
+        $products = ArrayHelper::extractId($storeProducts);
         $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
         foreach ($storeProductsCategories as $category){
             $categoriesArray[] = $category->getCategoryId();
