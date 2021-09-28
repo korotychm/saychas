@@ -110,9 +110,10 @@ const PriceList = {
   },
   methods: {
     setRubPrice() {
-      for (product of this.products){
-        product.price = product.price / 100;
-      }
+      console.log('123');
+      // for (product of this.products){
+      //   product.price = product.price / 100;
+      // }
     },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-price-and-discount';
