@@ -16,9 +16,9 @@ use Laminas\Session\Container;
 
 class IndexController extends AbstractActionController
 {
-    
+
     //private const PRODUCTS_PER_PAGE = 2;
-    
+
     private const STORES_PER_PAGE = 2;
 
     /** @var ContainerInterface */
@@ -33,16 +33,22 @@ class IndexController extends AbstractActionController
     /** @var RbacManager */
     protected $rbacManager;
 
+    /** @var laminas.entity.manager */
     protected $entityManager;
 
+    /** @var UserManager */
     protected $userManager;
 
+    /** @var ProductManager */
     protected $productManager;
 
+    /** @var StoreManager */
     protected $storeManager;
 
+    /** @var AuthService */
     protected $authService;
 
+    /** Config */
     protected $config;
 
     /** @var array */
@@ -59,7 +65,7 @@ class IndexController extends AbstractActionController
      * @param ContainerInterface $container
      * @param Laminas\Session\Container $sessionContainer
      */
-    public function __construct($container, $sessionContainer, $entityManager/*, $userManager*/)
+    public function __construct($container, $sessionContainer, $entityManager/* , $userManager */)
     {
         $this->container = $container;
         $this->sessionContainer = $sessionContainer;
@@ -92,7 +98,7 @@ class IndexController extends AbstractActionController
         ]);
 
         $hasIdentity = $this->authService->hasIdentity();
-        if(!$hasIdentity) {
+        if (!$hasIdentity) {
             $this->redirect()->toUrl('/control-panel/login?returnUrl=/control-panel');
         }
         return $response;
@@ -165,7 +171,7 @@ class IndexController extends AbstractActionController
     public function calendarDetailsAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        return (new ViewModel(['day'=>$post['day'], 'month'=>$post['month'], 'year'=>$post['year']]))->setTerminal(true);
+        return (new ViewModel(['day' => $post['day'], 'month' => $post['month'], 'year' => $post['year']]))->setTerminal(true);
     }
 
 //{
@@ -178,24 +184,12 @@ class IndexController extends AbstractActionController
     public function confirmOfferAction()
     {
         $identity = $this->authService->getIdentity();
-        $credentials = ['credentials' => ['partner_id' => $identity['provider_id'], 'login' => $identity['login']] ];
+        $credentials = ['credentials' => ['partner_id' => $identity['provider_id'], 'login' => $identity['login']]];
         $answer = $this->userManager->confirmOffer($credentials);
         return new JsonModel(['show_popup' => $answer['result']]);
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 //$cursor = $this->productManager->findAll(['pageNo' => 1, 'filter' => $filter]);
 
@@ -240,11 +234,11 @@ class IndexController extends AbstractActionController
 //     */
 //    public function showProductsAction()
 //    {
-//        
+//
 //        //$pageNo = $this->params()->fromRoute('page_no', '1');
 //        $post = $this->getRequest()->getPost()->toArray();
 //        $pageNo = $post['page_no'];
-//        
+//
 //        $this->assertLoggedIn();
 //        $identity = $this->authService->getIdentity();
 //        $credentials = ['partner_id: '.$identity['provider_id'], 'login: '.$identity['login']];
@@ -256,17 +250,17 @@ class IndexController extends AbstractActionController
 //        ];
 //        $cursor = $this->productManager->findDocuments(['pageNo' => $pageNo, 'where' => $where]);
 //        //$this->productManager->findTest();
-//        
+//
 //        // json_encode($cursor, JSON_UNESCAPED_UNICODE)
 //        $view = new ViewModel(['products' => $cursor, 'http_code' => $answer['http_code']]);
 //        return $view->setTerminal(true);
 //    }
-//    
+//
 //    private function canUpdateProduct($params)
 //    {
 //        return true;
 //    }
-//    
+//
 //    private function canDeleteProduct($params)
 //    {
 //        return true;
