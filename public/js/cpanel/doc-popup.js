@@ -14,5 +14,7 @@ $('#accept-doc-form').submit(function(e){
           }, 1500);
         }
     });
+  } else {
+    $('.doc-to-accept__btns .checkbox__value').addClass('.checkbox__value--error');
   }
 })
