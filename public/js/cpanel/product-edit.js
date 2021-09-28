@@ -87,30 +87,19 @@ const ProductEdit = {
                           <span class="unit">(г)</span>
                       </div>
                       <div class="product__attribute">
-                          <h2 :class="{'input-error' : ((!product.length || !product.width || !product.height) && errors)}">Размер упаковки <span class="required">*</span></h2>
-                          <div class="product__size-inputs">
-                            <div class="product__size-inputs__item">
-                              <div class="input__wrap">
-                                <input class="input input--number" type="number" v-model="product.length" />
-                                <span class="input__label">Длина</span>
-                              </div>
-                              <span class="unit">(см)</span>
-                            </div>
-                            <div class="product__size-inputs__item">
-                              <div class="input__wrap">
-                                <input class="input input--number" type="number" v-model="product.width" />
-                                <span class="input__label">Ширина</span>
-                              </div>
-                              <span class="unit">(см)</span>
-                            </div>
-                            <div class="product__size-inputs__item">
-                              <div class="input__wrap">
-                                <input class="input input--number" type="number" v-model="product.height" />
-                                <span class="input__label">Высота</span>
-                              </div>
-                              <span class="unit">(см)</span>
-                            </div>
-                          </div>
+                          <h2 :class="{'input-error' : (!product.length && errors)}">Длина упаковки <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.length" />
+                          <span class="unit">(см)</span>
+                      </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.width && errors)}">Ширина упаковки <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.width" />
+                          <span class="unit">(см)</span>
+                      </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.width && errors)}">Высота упаковки <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.height" />
+                          <span class="unit">(см)</span>
                       </div>
                       <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
