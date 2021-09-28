@@ -95,7 +95,7 @@ const PriceList = {
                         <p>Итого<br> с учетом скидки</p>
                         <h3>{{ product.price.toLocaleString() }} ₽</h3>
                       </div>
-                      <button class="btn btn--primary">Применить</button>
+                      <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
                   </div>
               </div>
