@@ -501,7 +501,6 @@ class IndexController extends AbstractActionController
             return $view->setTemplate('error/404.phtml');
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        //$categoryId = $productPage['categoryId'];
         $breadCrumbs = [];
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) {
             $breadCrumbs = array_reverse($matherCategories);
@@ -509,27 +508,8 @@ class IndexController extends AbstractActionController
         $productPage['breadCrumbs'] = $breadCrumbs;
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
-        //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
         $productPage['id'] = $product_id;
-       
-//        
-//        $vwm = [
-//            'id' => $product_id,
-//            'title' => $productPage['title'],
-//            'images' => $productPage['images'],
-//            'category' => $productPage['category'],
-//            'characteristics' => $productPage["characteristics"],
-//            'product' => $productPage['card'],
-//            'description' => $productPage['description'],
-//            'append' => $productPage['appendParams'],
-//            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
-//            'price' => $productPage['price'],
-//            'provider' => $productPage['provider'],
-//            'brand' => $productPage['brand'],
-//            'price_formated' => $productPage['price_formated'],
-//            'breadCrumbs' => $breadCrumbs,
-//        ];
         return new ViewModel($productPage);
     }
 
@@ -546,19 +526,12 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toRoute('home');
         }
         //$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
+        //$matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             $breadCrumbs = array_reverse($matherCategories);
         } else {
             $breadCrumbs = [];
         }
-
-        /** The below three lines are commented out as they are used in $filterForm only which is also commented out earlier */
-        //$categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
-        //$filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
-        //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-
         return new ViewModel([ "catalog" => '' /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
@@ -678,7 +651,7 @@ class IndexController extends AbstractActionController
     
     
 
-    public function userAction($category_id = false)
+    public function userAction(/*$category_id = false*/)
     {
         $container = new Container();
         if($container->signedUp != true) {
@@ -694,7 +667,6 @@ class IndexController extends AbstractActionController
         $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
         
         if (!$phone) {
-            
             return $this->unauthorizedLocation();
         }
         $userPhone = StringHelper::phoneFromNum($phone);
