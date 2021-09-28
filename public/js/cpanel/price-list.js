@@ -127,7 +127,7 @@ const PriceList = {
       }
     },
     saveProduct(index) {
-      let requestUrl = '/control-panel/update-product';
+      let requestUrl = '/control-panel/update-price-and-discount';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let request = JSON.parse(JSON.stringify(this.products[index]));
       request.price = request.price * 100;

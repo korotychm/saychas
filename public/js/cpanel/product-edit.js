@@ -103,7 +103,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
-                          <div class="custom-select custom-select--radio">
+                          <div class="custom-select custom-select--radio" style="width: 253px;">
                             <div class="custom-select__label input"></div>
                             <div class="custom-select__dropdown">
                               <div class="custom-select__dropdown-inner">
