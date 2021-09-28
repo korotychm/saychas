@@ -94,10 +94,6 @@ const ProductAdd = {
                                         <textarea class="textarea" v-model="product.description"></textarea>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
-                                        <textarea class="textarea" v-model="product.description"></textarea>
-                                    </div>
-                                    <div class="product__attribute">
                                         <h2 :class="{'input-error' : (!product.weight && errors)}">Вес с упаковкой <span class="required">*</span></h2>
                                         <input class="input input--number" type="number" v-model="product.weight" />
                                         <span class="unit">(г)</span>
