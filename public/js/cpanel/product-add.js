@@ -334,7 +334,7 @@ const ProductAdd = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
         return true;
       }
       return false;
@@ -489,6 +489,10 @@ const ProductAdd = {
                 this.brands = this.product.brands;
                 this.product.vat = "Без НДС";
                 this.product.brand_id = "";
+                this.product.width = 0;
+                this.product.height = 0;
+                this.product.length = 0;
+                this.product.weight = 0;
                 console.log('Продукт',this.product);
               }
               this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
@@ -539,7 +543,11 @@ const ProductAdd = {
           characteristics: chars,
           images: this.product.images,
           vendor_code: this.product.vendor_code,
-          del_images: this.deleteImages
+          del_images: this.deleteImages,
+          width: this.product.width,
+          height: this.product.height,
+          length: this.product.length,
+          weight: this.product.weight
         }
         delete request.dadata;
         console.log(request);
