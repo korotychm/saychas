@@ -25,11 +25,11 @@ use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 //use Application\Service\CommonHelperFunctionsService;
-use Application\Model\Entity\ProductCharacteristic;
+//use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\Repository\UserRepository;
-use Application\Model\Repository\CharacteristicRepository;
-use Application\Model\Entity\HandbookRelatedProduct;
+//use Application\Model\Repository\CharacteristicRepository;
+//use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
@@ -45,11 +45,11 @@ use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
 use Application\Resource\Resource;
 use Laminas\Session\Container; // as SessionContainer;
-use Laminas\Session\SessionManager;
+//use Laminas\Session\SessionManager;
 use Application\Adapter\Auth\UserAuthAdapter;
 use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
+//use Application\Model\Entity\UserData;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 use Application\Model\Entity\ProductFavorites;
@@ -89,7 +89,7 @@ class IndexController extends AbstractActionController
     private $productCharacteristicRepository;
     private $colorRepository;
     private $basketRepository;
-    private $productHistoryRepository;
+    //private $productHistoryRepository;
     //private $sessionContainer;
     private $sessionManager;
 
@@ -170,6 +170,7 @@ class IndexController extends AbstractActionController
           //  'userAddressHtml' => $userAddressHtml,
 
             'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
+            //'categoryTree' => $this->categoryRepository->categoryTree("",0,0),
             //'userAddressHtml' => $userAddressHtml,
 
             'addressLegal' => $addressLegal,
@@ -443,7 +444,7 @@ class IndexController extends AbstractActionController
             "countprducts" => $content["countproducts"],
             "legalUser" => $legalUser,
             // "legalAddress" => $legalAddress,
-            'textdefault' => \Application\Resource\Resource::BASKET_SAYCHAS_do . ", ",
+            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
             "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
             "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
         ]);
@@ -500,7 +501,6 @@ class IndexController extends AbstractActionController
             return $view->setTemplate('error/404.phtml');
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        //$categoryId = $productPage['categoryId'];
         $breadCrumbs = [];
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) {
             $breadCrumbs = array_reverse($matherCategories);
@@ -508,27 +508,8 @@ class IndexController extends AbstractActionController
         $productPage['breadCrumbs'] = $breadCrumbs;
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
-        //$bread = $this->htmlProvider->breadCrumbs($breadSource);
         $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
         $productPage['id'] = $product_id;
-       
-//        
-//        $vwm = [
-//            'id' => $product_id,
-//            'title' => $productPage['title'],
-//            'images' => $productPage['images'],
-//            'category' => $productPage['category'],
-//            'characteristics' => $productPage["characteristics"],
-//            'product' => $productPage['card'],
-//            'description' => $productPage['description'],
-//            'append' => $productPage['appendParams'],
-//            'isFav' => $this->commonHelperFuncions->isInFavorites($product_id, $userId ),
-//            'price' => $productPage['price'],
-//            'provider' => $productPage['provider'],
-//            'brand' => $productPage['brand'],
-//            'price_formated' => $productPage['price_formated'],
-//            'breadCrumbs' => $breadCrumbs,
-//        ];
         return new ViewModel($productPage);
     }
 
@@ -538,26 +519,21 @@ class IndexController extends AbstractActionController
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+        
         $category_id = $this->params()->fromRoute('id', '');
        
         if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
-        //$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        $matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
+        //$this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory2([$category_id]);        
+//$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
+        //$matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             $breadCrumbs = array_reverse($matherCategories);
         } else {
             $breadCrumbs = [];
         }
-
-        /** The below three lines are commented out as they are used in $filterForm only which is also commented out earlier */
-        //$categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
-        //$minMax = $this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory($categoryTree);
-        //$filters = $this->productCharacteristicRepository->getCategoryFilter($matherCategories);
-        //$filterForm = $this->htmlProvider->getCategoryFilterHtml($filters, $category_id, $minMax);
-
         return new ViewModel([ "catalog" => '' /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
@@ -645,7 +621,7 @@ class IndexController extends AbstractActionController
     private function getStoreCategories($store_id)
     {
         $storeProducts = StockBalance::findAll([ "where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
-        $products = ArrayHelper::extractProdictsId($storeProducts);
+        $products = ArrayHelper::extractId($storeProducts);
         $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
         foreach ($storeProductsCategories as $category){
             $categoriesArray[] = $category->getCategoryId();
@@ -677,7 +653,7 @@ class IndexController extends AbstractActionController
     
     
 
-    public function userAction($category_id = false)
+    public function userAction(/*$category_id = false*/)
     {
         $container = new Container();
         if($container->signedUp != true) {
@@ -693,7 +669,6 @@ class IndexController extends AbstractActionController
         $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
         
         if (!$phone) {
-            
             return $this->unauthorizedLocation();
         }
         $userPhone = StringHelper::phoneFromNum($phone);

@@ -152,7 +152,7 @@ class ProductCardsController extends AbstractActionController {
     private function filterWhere($characteristics, $where): Where {
         $inChars = array_keys($characteristics);
         $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
-        $groupChars = [0];
+        //$groupChars = [0];
         while (list($key, $value) = each($characteristics)) {
             if (empty($value) or empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {
                 continue;
@@ -168,15 +168,16 @@ class ProductCardsController extends AbstractActionController {
                 $filterWhere->equalTo('value', $value);
             } else {
                 $filterWhere->in('value', $value);
-                $groupChars[] = $key;
+                //$groupChars[] = $key;
             }
+            $groupChars[] = $key;
             $legalProducts = array_intersect($legalProducts, $this->getFiltredProductsId($filterWhere));
         }
         $subWhere = new Where();
         $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
-        $productsFiltredDefault =  empty($productsFiltred) ? [0] : $productsFiltred; 
+        //$productsFiltredDefault =  empty($productsFiltred) ? [0] : $productsFiltred; 
         $nest = $where->nest();
-        $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltredDefault)->unnest();
+        $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltred)->unnest();
         return $where;
     }
 
@@ -188,7 +189,7 @@ class ProductCardsController extends AbstractActionController {
      */
     private function getFiltredProductsId($where) {
         $products = ProductCharacteristic::findAll(["where" => $where, "columns" => ['product_id'], "group" => "product_id"])->toArray();
-        return ArrayHelper::extractProdictsId($products);
+        return ArrayHelper::extractId($products);
     }
 
     /**

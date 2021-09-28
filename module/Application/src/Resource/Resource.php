@@ -55,6 +55,7 @@ class Resource
     const PRODUCT_SUCCESS_MESSAGE = "Объект product &nbsp;получен";
     const SESSION_NAMESPACE = "session_namespace";
     const CODE_CONFIRMATION_SESSION_NAMESPACE = "code_confirmation_session_namespace";
+    const CATEGORY_TREE_CACHE_NAMESPACE = "category_tree_array";
     const BASKET_SAYCHAS_title = "сейчас за час";
     const BASKET_SAYCHAS3_title = "сейчас за три часа";
     const BASKET_SAYCHAS_do = "в течение часа";

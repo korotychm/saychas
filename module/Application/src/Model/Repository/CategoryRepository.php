@@ -21,6 +21,7 @@ use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Sql;
 use Application\Helper\ArrayHelper;
+use Application\Resource\Resource;
 
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
@@ -111,27 +112,31 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     
     public function categoryTree($echo = '', $i = 0, $idActive): array
     {
-        $sql = new Sql($this->db);
-        $select = $sql->select();
-        $select->from($this->tableName);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
-        $resultSet = new HydratingResultSet(
-                $this->hydrator,
-                new Category('', 0, 0)
-        );
-        //$resultSet->initialize($result);
-        $results = $resultSet->initialize($result)->toArray();
         
-        /**//// !-- plusweb
-        //$categoriesHasProduct = $this->categoriesHasProduct();
-        $newTree = [];
-        foreach ($results as $value) {
-            $newTree[$value['parent_id']][] = $value;
-        }
-        //$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
-        /**/// plusweb --!
+        //$this->cache->removeItem(Resource::CATEGORY_TREE_CACHE_NAMESPACE);
+        
+//        $sql = new Sql($this->db);
+//        $select = $sql->select();
+//        $select->from($this->tableName);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $result = $statement->execute();
+//        $resultSet = new HydratingResultSet(
+//                $this->hydrator,
+//                new Category('', 0, 0)
+//        );
+//        //$resultSet->initialize($result);
+//        $results = $resultSet->initialize($result)->toArray();
+//        
+//        /**//// !-- plusweb
+//        //$categoriesHasProduct = $this->categoriesHasProduct();
+//        $newTree = [];
+//        foreach ($results as $value) {
+//            $newTree[$value['parent_id']][] = $value;
+//        }
+//        //$tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
+//        /**/// plusweb --!
+        $newTree = $this->getAllCategoriesAsTree();
         
         //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
         $tree = ArrayHelper::buildTree($newTree, $i); // !-- alex new--!
@@ -140,33 +145,27 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     
     public function categoryFilteredTree($i = 0): array
     {
-        $sql = new Sql($this->db);
-        $select = $sql->select();
-        $select->from($this->tableName);
-
-        $statement = $sql->prepareStatementForSqlObject($select);
-        $result = $statement->execute();
-        $resultSet = new HydratingResultSet(
-                $this->hydrator,
-                new Category('', 0, 0)
-        );
-        $resultSet->initialize($result);
-        $results = $resultSet->toArray();
-        
-
-        /**/// !-- plusweb
+//        $sql = new Sql($this->db);
+//        $select = $sql->select();
+//        $select->from($this->tableName);
+//
+//        $statement = $sql->prepareStatementForSqlObject($select);
+//        $result = $statement->execute();
+//        $resultSet = new HydratingResultSet(
+//                $this->hydrator,
+//                new Category('', 0, 0)
+//        );
+//        $resultSet->initialize($result);
+//        $results = $resultSet->toArray();
         $categoriesHasProduct = $this->categoriesHasProduct();
-        $newTree = [];
-        foreach ($results as $value) {
-            $newTree[$value['parent_id']][] = $value;
-        }
+//        $newTree = [];
+//        foreach ($results as $value) {
+//            $newTree[$value['parent_id']][] = $value;
+//        }
+        $newTree = $this->getAllCategoriesAsTree();
         
         $tree = ArrayHelper::filterTree($newTree, $i, $categoriesHasProduct);
         //$tree = ArrayHelper::buildTree($newTree, $i); // !-- alex --!
-       // exit (print_r($tree));
-        /**/// plusweb --!
-        
-        //$tree = ArrayHelper::buildTree($results, $i); // !-- alex --!
         return $tree;
     }
     
@@ -322,7 +321,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
      * @param array $echo
      * @return array
      */
-    public function findCategoryTree($i = '0', $echo = [])
+    public function findCategoryTree1($i = '0', $echo = [])
     {
         $sql = new Sql($this->db);
         $select = $sql->select();
@@ -341,6 +340,45 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         }
         return $echo;
     }
+    
+    public function findCategoryTree($i = '0', $echo=[])
+    {
+        $tree = $this->getAllCategoriesAsTree ();
+        $return = $this->findCategoryTreeFromArray($tree, $i, $echo);
+       // exit ("<pre>".print_r($return, true));
+        return $return;
+        
+    }
+    public function getAllCategoriesAsTree ()
+    {   
+
+        $tree = $this->cache->getItem( Resource::CATEGORY_TREE_CACHE_NAMESPACE, $success);
+        if($success) {
+            return $tree;
+        }
+        $tree=[];
+        $sql = new Sql($this->db);
+        $select = $sql->select()->from($this->tableName); //->columns(['*']
+        $statement = $sql->prepareStatementForSqlObject($select);
+        $results = $statement->execute();//-toArray();
+        foreach ($results as $result) {
+            $tree[$result['parent_id']][] = $result;
+        }
+        $this->cache->setItem(Resource::CATEGORY_TREE_CACHE_NAMESPACE, $tree);
+        return $tree;
+    }        
+    
+    public function findCategoryTreeFromArray ($tree, $i=0, $echo=[])
+    {
+        if (!empty($tree[$i])){
+            foreach ($tree[$i] as $branch){
+                //exit (print_r($value));
+                $echo[]=$branch['id'];
+                $echo = $this->findCategoryTreeFromArray ($tree, $branch['id'], $echo);
+            }
+        }
+        return $echo;
+    }    
 
     /**
      * Return array of arrays [category id, category title]
@@ -414,6 +452,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
      */
     public function replace($content)
     {
+        $this->cache->removeItem(Resource::CATEGORY_TREE_CACHE_NAMESPACE);
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
@@ -447,6 +486,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
      */
     public function delete($json)
     {
+       $this->cache->removeItem(Resource::CATEGORY_TREE_CACHE_NAMESPACE);
         try {
             $result = Json::decode($json, Json::TYPE_ARRAY);
         } catch (LaminasJsonRuntimeException $e) {
