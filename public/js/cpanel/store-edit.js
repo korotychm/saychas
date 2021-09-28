@@ -189,6 +189,7 @@ const StoreEdit = {
         for (item in this.store.operating_mode){
           this.checkTime(item);
         }
+        checkPhone();
       }
     },
     modified_date: {
@@ -292,6 +293,12 @@ const StoreEdit = {
       }
       if (!item  && !regex.test(this.modified_date.time_to)) {
         this.modified_date.time_to = '';
+      }
+    },
+    checkPhone(){
+      let phone = this.store.contact_phone.replace(/ /g,'').replace(/\+/g,'').replace(/\(/g,'').replace(/\)/g,'').replace(/-/g,'');
+      if (phone.length != 11){
+        this.store.contact_phone = '';
       }
     },
     dayOff(day) {
