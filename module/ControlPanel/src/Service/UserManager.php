@@ -185,7 +185,7 @@ class UserManager
     
     public function confirmOffer($content)
     {
-        $url = $this->config['parameters']['1c_provider_links']['lk_get_all_users'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_confirm_offer'];
         $answer = $this->curlRequestManager->sendCurlRequest($url, $content);
         
         return $answer;

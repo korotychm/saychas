@@ -168,6 +168,21 @@ class IndexController extends AbstractActionController
         return (new ViewModel(['day'=>$post['day'], 'month'=>$post['month'], 'year'=>$post['year']]))->setTerminal(true);
     }
 
+//{
+//    "credentials": {
+//        "partner_id": "00003",
+//        "login": "admin"
+//    }
+//}
+
+    public function confirmOfferAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $credentials = ['credentials' => ['partner_id' => $identity['provider_id'], 'login' => $identity['login']] ];
+        $answer = $this->userManager->confirmOffer($credentials);
+        return new JsonModel(['show_popup' => $answer['result']]);
+    }
+
 }
 
 

@@ -59,7 +59,7 @@ return [
             
             
             \ControlPanel\Controller\IndexController::class => [
-                ['actions' => ['index'/*, 'showStores'*/, 'showOneStore', 'showProducts', 'profile', //  'userManagement',
+                ['actions' => ['index'/*, 'showStores'*/, 'confirmOffer', 'showOneStore', 'showProducts', 'profile', //  'userManagement',
                     /*'actionAndDiscount', 'accountManagement', 'respondingToReviews', 'calendarDetails',*/ ], 'allow' => '*'],
 //                ['actions' => ['actionAndDiscount',], 'allow' => '+developer'],
 //                ['actions' => ['userManagement',], 'allow' => '@Banzaii'],
@@ -553,7 +553,7 @@ return [
                         'options' => [
                             'route' => '/confirm-offer',
                             'defaults' => [
-                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'controller' => \ControlPanel\Controller\IndexController::class,
                                 'action' => 'confirm-offer',
                             ],
                         ],
@@ -647,6 +647,8 @@ return [
             'lk_update_user' => 'http://SRV02:8000/SC/hs/site/lk_update_user',
             /** Get all users */
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
+            /** Confirm offer */
+            'lk_confirm_offer' => 'http://SRV02:8000/SC/hs/site/lk_confirm_offer',
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             'lk_get_info_by_category' => 'http://SRV02:8000/SC/hs/site/lk_get_info_by_category',
