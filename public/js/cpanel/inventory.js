@@ -93,7 +93,6 @@ const Inventory = {
         page_no: 1,
         rows_per_page: 10,
         stores: {},
-        products: {},
         pages: 1,
         filters: {},
         selectedFilters: {
