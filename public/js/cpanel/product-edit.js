@@ -446,11 +446,11 @@ const ProductEdit = {
               characteristic.value = this.selectedCountryId;
             }
             // Бренд
-            if (characteristic.id == '000000003'){
+            if (characteristic.id == '000000003' && this.showBrand != -1){
               characteristic.value = this.selectedBrandId;
             }
             // Цвет
-            if (characteristic.id == '000000004'){
+            if (characteristic.id == '000000004' && this.showColor != -1){
               characteristic.value = this.product.color_id;
             }
           }
@@ -461,6 +461,13 @@ const ProductEdit = {
           let cloneImages = JSON.parse(JSON.stringify(this.product.images));
           for (image in cloneImages){
             cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
+          }
+          if (this.showBrand == -1){
+            this.selectedBrandId = '';
+            this.product.brand_id = '';
+          }
+          if (this.showColor == -1){
+            this.product.color_id = '';
           }
           let request = {
             id : this.product.id,
@@ -524,7 +531,7 @@ const ProductEdit = {
 
                 } else {
                   if (response.data.result){
-                    router.replace('/products');
+                    //router.replace('/products');
                   }
                 }
               })
