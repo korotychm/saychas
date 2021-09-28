@@ -170,7 +170,7 @@ const PriceList = {
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
               console.log('Получено',this.products);
-              // this.setRubPrice();
+              this.setRubPrice();
               console.log('Обработано',this.products);
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
