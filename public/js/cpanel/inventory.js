@@ -65,7 +65,7 @@ const Inventory = {
               </router-link>
           </div>
         </div>
-        <div class="pagination">
+        <div v-if="products" class="pagination">
           <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
         </div>
       </div>
