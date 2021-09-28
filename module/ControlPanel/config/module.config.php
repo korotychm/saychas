@@ -548,6 +548,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'confirm-offer' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/confirm-offer',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\AuthController::class,
+                                'action' => 'confirm-offer',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                 ],
             ],
 //            'control-panel' => [

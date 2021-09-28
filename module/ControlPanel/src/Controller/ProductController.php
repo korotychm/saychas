@@ -162,6 +162,8 @@ class ProductController extends AbstractActionController
         $product = $this->productManager->findProduct($post['product_id']);
 
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+        
+        mail('user@localhost', 'accumulator', print_r($categoryTree, true));
 
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
     }
