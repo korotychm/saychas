@@ -182,7 +182,7 @@ const PriceList = {
             if (response.data.data === true) {
               location.reload();
             } else {
-              console.log(response.data);
+              console.log('Response from show-price-and-discount',response.data);
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
               this.setRubPrice();
