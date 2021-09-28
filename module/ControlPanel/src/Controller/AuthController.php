@@ -163,11 +163,11 @@ class AuthController extends AbstractActionController
         return (new ViewModel())->setTerminal(true);
     }
     
-    public function confirmOfferAction()
-    {
-        $identity = $this->authManager->getIdentity();
-        $this->userManager->confirmOffer([]);
-        return new JsonModel(['show_popup' => true]);
-    }
+//    public function confirmOfferAction()
+//    {
+//        $identity = $this->authManager->getIdentity();
+//        $this->userManager->confirmOffer([]);
+//        return new JsonModel(['show_popup' => true]);
+//    }
 
 }

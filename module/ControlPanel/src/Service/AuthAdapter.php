@@ -77,6 +77,7 @@ class AuthAdapter implements AdapterInterface
         // Great! The password hash matches. Return user identity (email) to be
         // saved in session for later use.
         $this->content['user_id'] = $result['user_id'];
+        $this->content['offer'] = $result['offer'];
         $this->content['roles'] = explode(',', $result['roles']);
         return new Result(
                 Result::SUCCESS,
