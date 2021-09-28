@@ -1,21 +1,4 @@
 const PriceList = {
-  data: function () {
-    return {
-      htmlContent: '',
-      page_no: 1,
-      rows_per_page: 10,
-      products: {},
-      pages: 1,
-      filters: {},
-      imgPath: productImgPath,
-      imgPathModerated: productImgPathModerated,
-      selectedFilters: {
-        category_id: ''
-      },
-      search: '',
-      filtersCreated: false
-    }
-  },
   template:
     `<div>
       <div v-if="htmlContent" v-html="htmlContent"></div>
@@ -108,6 +91,23 @@ const PriceList = {
         </div>
       </div>
     </div>`,
+  data: function () {
+      return {
+        htmlContent: '',
+        page_no: 1,
+        rows_per_page: 10,
+        products: {},
+        pages: 1,
+        filters: {},
+        imgPath: productImgPath,
+        imgPathModerated: productImgPathModerated,
+        selectedFilters: {
+          category_id: ''
+        },
+        search: '',
+        filtersCreated: false
+      }
+  },
   methods: {
     setRubPrice() {
       if (this.products){
