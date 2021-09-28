@@ -93,9 +93,29 @@ const ProductAdd = {
                                         <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                                         <textarea class="textarea" v-model="product.description"></textarea>
                                     </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.weight && errors)}">Вес с упаковкой <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.weight" />
+                                        <span class="unit">(г)</span>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.length && errors)}">Длина упаковки <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.length" />
+                                        <span class="unit">(см)</span>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.width && errors)}">Ширина упаковки <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.width" />
+                                        <span class="unit">(см)</span>
+                                    </div>
+                                    <div class="product__attribute">
+                                        <h2 :class="{'input-error' : (!product.width && errors)}">Высота упаковки <span class="required">*</span></h2>
+                                        <input class="input input--number" type="number" v-model="product.height" />
+                                        <span class="unit">(см)</span>
+                                    </div>
                                     <div class="product__attribute product__attribute--short">
                                         <h2>Ставка НДС <span class="required">*</span></h2>
-                                        <div class="custom-select custom-select--radio">
+                                        <div class="custom-select custom-select--radio" style="width: 253px;">
                                           <div class="custom-select__label input"></div>
                                           <div class="custom-select__dropdown">
                                             <div class="custom-select__dropdown-inner">
@@ -334,7 +354,7 @@ const ProductAdd = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  && this.showBrand != -1) || !this.product.title || (!this.product.color_id && this.showColor != -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
         return true;
       }
       return false;
@@ -482,6 +502,8 @@ const ProductAdd = {
               console.log(response);
               if (this.product.characteristics){
                 this.product.characteristics = response.data.answer.data.product.characteristics;
+                this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+                this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               } else {
                 this.product = response.data.answer.data.product;
                 this.product.images = [];
@@ -489,10 +511,12 @@ const ProductAdd = {
                 this.brands = this.product.brands;
                 this.product.vat = "Без НДС";
                 this.product.brand_id = "";
+                this.product.width = 0;
+                this.product.height = 0;
+                this.product.length = 0;
+                this.product.weight = 0;
                 console.log('Продукт',this.product);
               }
-              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
-              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {
@@ -526,6 +550,13 @@ const ProductAdd = {
           }
         }
         let category_in_request = this.selectedCategoryId;
+        if (this.showColor){
+          this.product.color_id = '';
+        }
+        if (this.showBrand){
+          this.product.brand_id = '';
+          this.selectedBrandId = '';
+        }
         let request = {
           id : this.product.id,
           vat : this.product.vat,
@@ -539,7 +570,11 @@ const ProductAdd = {
           characteristics: chars,
           images: this.product.images,
           vendor_code: this.product.vendor_code,
-          del_images: this.deleteImages
+          del_images: this.deleteImages,
+          width: this.product.width,
+          height: this.product.height,
+          length: this.product.length,
+          weight: this.product.weight
         }
         delete request.dadata;
         console.log(request);

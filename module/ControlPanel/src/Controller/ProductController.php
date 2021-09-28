@@ -266,6 +266,33 @@ class ProductController extends AbstractActionController
         return new JsonModel(['result' => false]);
     }
     
+//        ДанныеДля1С.Вставить("КодТовара", Неопределено);//обязательный - строка
+//	ДанныеДля1С.Вставить("Дата",      Неопределено);//обязательный - строка
+//	ДанныеДля1С.Вставить("Цена",      Неопределено);//обязательный - строка/число
+//	ДанныеДля1С.Вставить("Скидка",    Неопределено);//обязательный - строка/число
+        
+    public function updatePriceAndDiscountAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $product = json_decode($post['data']['product'], true);
+        if (true || $this->canUpdatePriceAndDiscount($product)) {
+            unset($product['_id']);
+            $result = $this->productManager->replaceProduct($product);
+            return new JsonModel(['result' => true]);
+        }
+        return new JsonModel(['result' => false]);
+    }
+
+    private function canUpdatePriceAndDiscount(array $product): bool
+    {
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->productManager->updateServerPriceAndDiscount($credentials, $product);
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        return $res;
+    }
+    
 //      "vendor_code": "test 13",
 //  "category_id": "000000006",
 //  "description": "Текст описания 11",

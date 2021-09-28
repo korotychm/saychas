@@ -95,7 +95,7 @@ const PriceList = {
                         <p>Итого<br> с учетом скидки</p>
                         <h3>{{ product.price.toLocaleString() }} ₽</h3>
                       </div>
-                      <button class="btn btn--primary">Применить</button>
+                      <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
                   </div>
               </div>
@@ -127,7 +127,7 @@ const PriceList = {
       }
     },
     saveProduct(index) {
-      let requestUrl = '/control-panel/update-product';
+      let requestUrl = '/control-panel/update-price-and-discount';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let request = JSON.parse(JSON.stringify(this.products[index]));
       request.price = request.price * 100;
@@ -135,7 +135,7 @@ const PriceList = {
       if (request.price == request.old_price){
         request.old_price = 0;
       }
-      console.log(request);
+      console.log('Запрос на сохранение цены', request);
       if (!request.price){
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните цену товара');
       } else {
@@ -150,6 +150,7 @@ const PriceList = {
               headers
             })
             .then(response => {
+              console.log('Ответ на сохранение цены', response.data);
               if (response.data.result){
                 $('.pricelist__item').removeClass('active');
               }
@@ -163,9 +164,9 @@ const PriceList = {
       }
     },
     getProducts() {
-      let requestUrl = '/control-panel/show-products';
+      let requestUrl = '/control-panel/show-price-and-discount';
       if (this.filtersCreated) {
-        requestUrl = '/control-panel/show-products-from-cache';
+       requestUrl = '/control-panel/show-price-and-discount-from-cache';
       }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' }
       axios
@@ -181,6 +182,7 @@ const PriceList = {
             if (response.data.data === true) {
               location.reload();
             } else {
+              console.log('Response from show-price-and-discount',response.data);
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
               this.setRubPrice();

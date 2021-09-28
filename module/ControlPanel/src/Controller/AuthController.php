@@ -9,6 +9,7 @@ namespace ControlPanel\Controller;
 use ControlPanel\Service\HtmlContentProvider;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 use Laminas\Authentication\Result;
@@ -161,5 +162,12 @@ class AuthController extends AbstractActionController
     {
         return (new ViewModel())->setTerminal(true);
     }
+    
+//    public function confirmOfferAction()
+//    {
+//        $identity = $this->authManager->getIdentity();
+//        $this->userManager->confirmOffer([]);
+//        return new JsonModel(['show_popup' => true]);
+//    }
 
 }

@@ -81,9 +81,29 @@ const ProductEdit = {
                           <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
                           <textarea class="textarea" v-model="product.description"></textarea>
                       </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.weight && errors)}">Вес с упаковкой <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.weight" />
+                          <span class="unit">(г)</span>
+                      </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.length && errors)}">Длина упаковки <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.length" />
+                          <span class="unit">(см)</span>
+                      </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.width && errors)}">Ширина упаковки <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.width" />
+                          <span class="unit">(см)</span>
+                      </div>
+                      <div class="product__attribute">
+                          <h2 :class="{'input-error' : (!product.width && errors)}">Высота упаковки <span class="required">*</span></h2>
+                          <input class="input input--number" type="number" v-model="product.height" />
+                          <span class="unit">(см)</span>
+                      </div>
                       <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
-                          <div class="custom-select custom-select--radio">
+                          <div class="custom-select custom-select--radio" style="width: 253px;">
                             <div class="custom-select__label input"></div>
                             <div class="custom-select__dropdown">
                               <div class="custom-select__dropdown-inner">
@@ -323,7 +343,7 @@ const ProductEdit = {
   },
   methods: {
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName  || this.showBrand == -1) || !this.product.title || (!this.product.color_id || this.showColor == -1)  || !this.product.description || !this.product.images.length){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || (!this.selectedBrandName && this.showBrand != -1) || !this.product.title || (!this.product.color_id && this.showColor != -1)  || !this.product.description || !this.product.images.length || !this.product.length || !this.product.width  || !this.product.height  || !this.product.weight){
         return true;
       }
       return false;
@@ -426,11 +446,11 @@ const ProductEdit = {
               characteristic.value = this.selectedCountryId;
             }
             // Бренд
-            if (characteristic.id == '000000003'){
+            if (characteristic.id == '000000003' && this.showBrand != -1){
               characteristic.value = this.selectedBrandId;
             }
             // Цвет
-            if (characteristic.id == '000000004'){
+            if (characteristic.id == '000000004' && this.showColor != -1){
               characteristic.value = this.product.color_id;
             }
           }
@@ -441,6 +461,13 @@ const ProductEdit = {
           let cloneImages = JSON.parse(JSON.stringify(this.product.images));
           for (image in cloneImages){
             cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
+          }
+          if (this.showBrand == -1){
+            this.selectedBrandId = '';
+            this.product.brand_id = '';
+          }
+          if (this.showColor == -1){
+            this.product.color_id = '';
           }
           let request = {
             id : this.product.id,
@@ -494,11 +521,17 @@ const ProductEdit = {
                   } else {
                     delete this.product.color_id;
                   }
-                  this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
-                  this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
+                  if (product.characteristics){
+                    this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
+                    this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
+                  } else {
+                    this.showBrand = -1;
+                    this.showColor = -1;
+                  }
+
                 } else {
                   if (response.data.result){
-                    router.replace('/products');
+                    //router.replace('/products');
                   }
                 }
               })

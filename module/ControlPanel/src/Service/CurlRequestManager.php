@@ -50,6 +50,7 @@ class CurlRequestManager
 
     public function sendCurlRequestWithCredentials($url, $content, $curlHeaders = [])
     {
+        unset($content['_id']);
         $headers = ArrayHelper::extractCredentials($curlHeaders);
         //$content = array_merge(['credentials' => $headers], $content);
         $curl = curl_init($url);
@@ -74,7 +75,7 @@ class CurlRequestManager
             return ['http_code' => $info['http_code'], 'data' => $arr];
             //return array_merge(['http_code' => $info['http_code']], $arr);
         } catch (LaminasJsonRuntimeException $e) {
-            return ['result' => 10, 'message' => $e->getMessage()];
+            return ['result' => $info['http_code'], 'message' => $e->getMessage()];
         }
 
     }
