@@ -110,10 +110,9 @@ const PriceList = {
   },
   methods: {
     setRubPrice() {
-      console.log('123');
-      // for (product of this.products){
-      //   product.price = product.price / 100;
-      // }
+      for (product of this.products) {
+        product.price = product.price / 100;
+      }
     },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-price-and-discount';
@@ -171,7 +170,7 @@ const PriceList = {
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
               console.log('Получено',this.products);
-              this.setRubPrice();
+              // this.setRubPrice();
               console.log('Обработано',this.products);
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
