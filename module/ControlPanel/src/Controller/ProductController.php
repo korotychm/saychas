@@ -275,8 +275,8 @@ class ProductController extends AbstractActionController
     {
         $post = $this->getRequest()->getPost()->toArray();
         $product = json_decode($post['data']['product'], true);
-        if (true || $this->canUpdatePriceAndDiscount($product)) {
-            unset($product['_id']);
+        unset($product['_id']);
+        if ($this->canUpdatePriceAndDiscount($product)) {
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true]);
         }
