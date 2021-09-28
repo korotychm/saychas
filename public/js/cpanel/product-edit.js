@@ -435,30 +435,25 @@ const ProductEdit = {
         }
         if (!this.errors || categoryChange){
           const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-          if (this.product.characteristics){
-            let chars = JSON.parse(JSON.stringify(this.product.characteristics));
-            for (characteristic of chars){
-              delete characteristic.characteristic_name;
-              delete characteristic.real_value;
-              delete characteristic.title;
-              delete characteristic.available_values;
-              // Страна
-              if (characteristic.id == '000000001'){
-                characteristic.value = this.selectedCountryId;
-              }
-              // Бренд
-              if (characteristic.id == '000000003'){
-                characteristic.value = this.selectedBrandId;
-              }
-              // Цвет
-              if (characteristic.id == '000000004'){
-                characteristic.value = this.product.color_id;
-              }
+          let chars = JSON.parse(JSON.stringify(this.product.characteristics));
+          for (characteristic of chars){
+            delete characteristic.characteristic_name;
+            delete characteristic.real_value;
+            delete characteristic.title;
+            delete characteristic.available_values;
+            // Страна
+            if (characteristic.id == '000000001'){
+              characteristic.value = this.selectedCountryId;
             }
-          } else {
-            let chars = {};
+            // Бренд
+            if (characteristic.id == '000000003'){
+              characteristic.value = this.selectedBrandId;
+            }
+            // Цвет
+            if (characteristic.id == '000000004'){
+              characteristic.value = this.product.color_id;
+            }
           }
-          
           let category_in_request = this.selectedCategoryId;
           if (oldCategory) {
             category_in_request = oldCategory;
@@ -467,8 +462,6 @@ const ProductEdit = {
           for (image in cloneImages){
             cloneImages[image] = cloneImages[image].split('/').slice(-1).pop();
           }
-
-
           let request = {
             id : this.product.id,
             vat: this.product.vat,
