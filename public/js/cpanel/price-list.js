@@ -171,12 +171,13 @@ const PriceList = {
               console.log('Response from show-price-and-discount',response.data);
               this.pages = response.data.data.limits.total;
               this.products = response.data.data.body;
+              console.log('Получено',this.products);
               this.setRubPrice();
+              console.log('Обработано',this.products);
               if (!this.filtersCreated){
                 this.filters = response.data.data.filters;
                 this.filtersCreated = true;
               }
-              console.log(this.products);
             }
           })
           .catch(error => {
