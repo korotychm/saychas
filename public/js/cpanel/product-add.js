@@ -5,9 +5,9 @@ const ProductAdd = {
                       <a class="btn btn--primary">По одному товару</a>
                   </div>
                   <div class="filter__btn">
-                      <router-link to="/product-add-file" class="btn btn--secondary">Массой товаров</router-link>
+                      <router-link to="/product-add-file" class="btn btn--secondary disabled">Массой товаров</router-link>
                   </div>
-                  <div class="filter__btn">
+                  <div class="filter__btn" style="display: none;">
                       <router-link to="/product-add-api" class="btn btn--secondary">Загрузка по API</router-link>
                   </div>
                 </div>
