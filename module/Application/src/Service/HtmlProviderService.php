@@ -243,7 +243,7 @@ class HtmlProviderService {
 
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                 $value[] = "<div class='iblok relative'  >"
-                        . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:25px; height:25px; vertical-align:middle'></div>"
+                        . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()};'></div>"
                         . "      {$color->getTitle()}   "
                         . "</div>";
             } else
