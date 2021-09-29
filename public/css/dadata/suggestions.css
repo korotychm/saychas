@@ -64,6 +64,10 @@
   background: var(--red);
   color: #fff;
 }
+.suggestions-suggestion:hover strong {
+  color: #fff;
+  font-weight: bold;
+}
 /**
  * Выбранная (активная) подсказка
  */
