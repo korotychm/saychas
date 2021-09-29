@@ -150,19 +150,17 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
 
         //$access = $this->rbacManager->isGranted(null, 'analyst', ['product_id' => $post['product_id']]);
-        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\ProductManager::class, 'where' => ['id' => $post['product_id']] ]);
+        $access = $this->rbacManager->isGranted(null, 'administrator', ['manager' => \ControlPanel\Service\ProductManager::class, 'where' => ['id' => $post['product_id']]]);
 
         if (!$access) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
 
-//        $post = $this->getRequest()->getPost()->toArray();
-
         $product = $this->productManager->findProduct($post['product_id']);
 
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
-        
+
         mail('user@localhost', 'accumulator', print_r($categoryTree, true));
 
         return new JsonModel(['category_tree' => $categoryTree, 'product' => $product]);
@@ -174,7 +172,7 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['category_tree' => $categoryTree]);
     }
-    
+
     public function categoryTreeAction()
     {
         $categoryTree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
@@ -265,12 +263,12 @@ class ProductController extends AbstractActionController
         }
         return new JsonModel(['result' => false]);
     }
-    
-//        ДанныеДля1С.Вставить("КодТовара", Неопределено);//обязательный - строка
-//	ДанныеДля1С.Вставить("Дата",      Неопределено);//обязательный - строка
-//	ДанныеДля1С.Вставить("Цена",      Неопределено);//обязательный - строка/число
-//	ДанныеДля1С.Вставить("Скидка",    Неопределено);//обязательный - строка/число
-        
+
+    /**
+     * Update price and discount action
+     *
+     * @return JsonModel
+     */
     public function updatePriceAndDiscountAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
@@ -283,6 +281,12 @@ class ProductController extends AbstractActionController
         return new JsonModel(['result' => false]);
     }
 
+    /**
+     * Check to see if price and discount can be updated
+     *
+     * @param array $product
+     * @return bool
+     */
     private function canUpdatePriceAndDiscount(array $product): bool
     {
         $identity = $this->authService->getIdentity();
@@ -292,12 +296,12 @@ class ProductController extends AbstractActionController
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         return $res;
     }
-    
-//      "vendor_code": "test 13",
-//  "category_id": "000000006",
-//  "description": "Текст описания 11",
-//  "title": "Смартфон vivo Y31, голубой океан",
-//  "characteristics": [
+
+    /**
+     * Save newly added product action
+     *
+     * @return JsonModel
+     */
     public function saveNewlyAddedProductAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
@@ -313,6 +317,11 @@ class ProductController extends AbstractActionController
         return new JsonModel(['result' => false]);
     }
 
+    /**
+     * Request category characteristics action
+     *
+     * @return JsonModel
+     */
     public function requestCategoryCharacteristicsAction()
     {
         $identity = $this->authService->getIdentity();
@@ -329,6 +338,12 @@ class ProductController extends AbstractActionController
         return new JsonModel(['answer' => $answer]);
     }
 
+    /**
+     * Request category characteristics only;
+     * Do not request the product "header"
+     *
+     * @return JsonModel
+     */
     public function requestCategoryCharacteristicsOnlyAction()
     {
         $identity = $this->authService->getIdentity();
@@ -350,29 +365,3 @@ class ProductController extends AbstractActionController
     }
 
 }
-
-//            $this->productManager->updateDocument([
-//                'where' => ['id' => $product['id']],
-//                'set' =>
-//            ]);
-
-//        $result = $this->productManager->updateDocument([
-//            'where' => ['id' => $post['product_id']/*'000000000001'*/, 'characteristics.id' => '000000008' ],
-//            'set' => ['characteristics.$.value' => '0.1345']
-//        ]);
-
-//        if ($this->canUpdateProduct($post)) {
-//            $result = $this->productManager->updateDocument([
-//                'where' => ['id' => $post['product_id']],
-//                'set' => [
-//                    'category_id' => $post['category_id'],
-//                    'brand_id' => $post['brand_id'],
-//                    'color' => $post['color'],
-//                    'country' => $post['country'],
-//                    'title' => $post['title']
-//                ],
-//            ]);
-//        }
-//        exit;
-        //$result = $this->productManager->updateDocument([ 'where' => ['id' => '000000000001', ], 'set' => ['description' => 'Huiption'] ]);
-        //return $result;
