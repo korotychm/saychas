@@ -93,17 +93,18 @@ const Inventory = {
             use_cache: this.filtersCreated
           }), {headers})
           .then(response => {
-            if (response.data.data === true) {
-              location.reload();
-            } else {
-              this.pages = response.data.data.limits.total;
-              this.products = response.data.data.body;
-              if (!this.filtersCreated){
-                this.filters = response.data.data.filters;
-                this.filtersCreated = true;
-              }
-              console.log(response.data);
-            }
+            console.log('Ответ после выбора магазина',response.data);
+            // if (response.data.data === true) {
+            //   location.reload();
+            // } else {
+            //   this.pages = response.data.data.limits.total;
+            //   this.products = response.data.data.body;
+            //   if (!this.filtersCreated){
+            //     this.filters = response.data.data.filters;
+            //     this.filtersCreated = true;
+            //   }
+            //   console.log(response.data);
+            // }
           })
           .catch(error => {
             if (error.response.status == '403'){
