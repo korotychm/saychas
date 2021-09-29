@@ -108,10 +108,10 @@ class StockBalanceManager extends ListManager implements LoadableInterface
                 $result[] = $arr;
             }
         }
-        $result['filters']['categories'] = $this->findCategories($params);        
+        $cursor['body'] = $result;
+        $cursor['filters']['categories'] = $this->findCategories($params);        
         
-        // $cursor['filters']['categories'] = $this->findCategories($params);
-        return $result;
+        return $cursor;
     }
 
     public function updateServerDocument($headers, $content = [])
