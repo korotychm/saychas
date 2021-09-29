@@ -52,7 +52,7 @@ const Inventory = {
             <div class="td">Количество</div>
           </div>
           <div class="tbody">
-              <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
+              <div v-for="(product, index) in products" class="tr inventory__item">
                   <div class="td products__img product-small-img">
                     <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
@@ -63,7 +63,23 @@ const Inventory = {
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td inventory__quantity">{{ product.quantity }}</div>
-              </router-link>
+                  <div class="inventory__popup">
+                    <div class="inventory__quantity-input">
+                      <input type="number" class="input input--number" v-model="product.quantity"/>
+                      <button class="btn btn--primary">
+                        <svg
+                         xmlns="http://www.w3.org/2000/svg"
+                         xmlns:xlink="http://www.w3.org/1999/xlink"
+                         width="27px" height="19px">
+                        <path fill-rule="evenodd"  fill="currentColor"
+                         d="M3.343,9.721 L9.778,16.156 C10.363,16.741 10.363,17.691 9.778,18.277 C9.192,18.863 8.242,18.863 7.656,18.277 L1.221,11.842 C0.635,11.256 0.635,10.306 1.221,9.721 C1.807,9.135 2.757,9.135 3.343,9.721 Z"/>
+                        <path fill-rule="evenodd"  fill="currentColor"
+                         d="M25.571,2.488 L10.519,17.541 C9.950,18.110 9.27,18.110 8.458,17.541 C7.889,16.971 7.889,16.49 8.458,15.479 L23.510,0.427 C24.79,0.141 25.2,0.141 25.571,0.427 C26.140,0.996 26.140,1.919 25.571,2.488 Z"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+              </div>
           </div>
         </div>
         <div v-if="filtersCreated" class="pagination">
