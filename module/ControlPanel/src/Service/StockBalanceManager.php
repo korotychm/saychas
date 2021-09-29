@@ -119,11 +119,12 @@ class StockBalanceManager extends ListManager implements LoadableInterface
     public function replaceStockBalance($stockBalance)
     {
         $collection = $this->db->{$this->collectionName};
-        $collection->deleteMany([
-            'id' => $stockBalance['id'],
-            'provider_id' => $stockBalance['provider_id'],
-        ]);
-        $updateResult = $collection->insertOne($stockBalance);
+        foreach($stockBalance['data'] as $balance) {
+            $collection->deleteMany([
+                'store_id' => $balance['store_id'],
+            ]);
+            $updateResult = $collection->insertOne($balance);
+        }
         return $updateResult;
     }
     
