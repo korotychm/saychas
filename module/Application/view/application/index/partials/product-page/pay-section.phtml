@@ -6,7 +6,7 @@
            <div class="panel__price-current"><?=$price_formated?><?=Resource::CURRENCY_RUBL?></div>
            <div class="panel__price-old">21 990 ₽</div>
         </div>
-        <div class="panel__bonuses">
+        <div class="panel__bonuses" style="display: none;">
             <span>+179</span> сейбонов
             <div class="question">
                 <div class="question__icon">?</div>
@@ -27,7 +27,7 @@
                   <p>При заказе товаров из одного магазина</p>
                 </div>
            </div>
-           <div class="panel__delivery-item">
+           <div class="panel__delivery-item" style="display: none;">
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -43,7 +43,7 @@
         </div>
         <div class="panel__btn-group">
             <button class="btn btn--primary paybutton" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_ADD_TO_BASKET ?></button>
-            <button class="btn btn--secondary" rel="<?=$id?>"><?=Resource::BUTTON_LABLE_PAY_NOW ?></button>
+            <button class="btn btn--secondary" rel="<?=$id?>"  style="display: none;"><?=Resource::BUTTON_LABLE_PAY_NOW ?></button>
         </div>
         <div class="panel__to-wishlist <?= ($isFav) ? "remove" : ""?> " rel='<?=$id?>'>
             <svg
@@ -56,18 +56,19 @@
             <span><?= ($isFav) ? Resource::REMOVE_FROM_FAVORITES : Resource::ADD_TO_FAVORITES?></span>
         </div>
     </div>
-<?php if ($brand['id']):?><div class="product-card__store">
+<?php if ($brand['id']):?><div class="product-card__store"  style="display: none;">
        <div class="product-card__store-logo">
             <img src="<?=$image_path_brand.'/'.$brand['image']?>" />
        </div>
         <a href="/brand/<?=$brand['id']?>">Все товары <?=$brand['title']?> →</a>
     </div>
-<?php endIf; ?>    
+<?php endIf; ?>
 <?php if ($provider['id']):?><div class="product-card__store">
        <div class="product-card__store-logo">
             <img src="<?=$image_path_provider.'/'.$provider['image']?>" />
        </div>
+       <?php print_r($provider) ?>
         <a href="/seller/<?=$provider['id']?>">Все товары постащика →</a>
     </div>
-<?php endIf; ?>    
+<?php endIf; ?>
 </div>
