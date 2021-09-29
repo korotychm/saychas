@@ -238,7 +238,7 @@ class HtmlProviderService {
 
                 $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
             } elseif ($chType == Resource::BRAND_REF) {
-                $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                $value[] ="<a href='/brand/$val' >". $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle() . "</a>";
             } elseif ($chType == Resource::COLOR_REF) {
 
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
