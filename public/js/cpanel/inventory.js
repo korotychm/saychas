@@ -44,12 +44,12 @@ const Inventory = {
           </div>
         </div>
         <!-- фильтр end -->
-        <div v-if="filtersCreated" class="cp-container products list">
+        <div v-if="filtersCreated" class="cp-container products list inventory">
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
             <div class="td">Категория</div>
-            <div class="td">Бренд</div>
+            <div class="td">Количество</div>
           </div>
           <div class="tbody">
               <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
@@ -62,7 +62,7 @@ const Inventory = {
                   <div class="td products__category">
                       <div>{{ product.category_name }}</div>
                   </div>
-                  <div class="td">{{ product.brand_name }}</div>
+                  <div class="td inventory__quantity">{{ product.quantity }}</div>
               </router-link>
           </div>
         </div>
