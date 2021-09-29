@@ -116,7 +116,7 @@ class CommonHelperFunctionsService
                         
                 $return[$product->getId()] = [
                     "reserve" => $product->receiveRest($store),
-                    "price" => $product->getPrice(),
+                    "price" => $price,
                     "title" => $product->getTitle(),
                     'available' =>  $available,
                     "oldprice" => $oldPrice,

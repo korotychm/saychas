@@ -206,26 +206,40 @@ class HtmlProviderService {
         }
         return $return;
     }
+    
+    /*const HEADER = 0;
+    const STRING = 1;
+    const INTEGER = 2;
+    const BOOLEAN = 3;
+    const CHAR_VALUE_REF = 4;
+    const PROVIDER_REF = 5;
+    const BRAND_REF = 6;
+    const COLOR_REF = 7;
+    const COUNTRY_REF = 8;*/
 
     private function valueParce($v = [], $chType) {
         $bool = [Resource::NO, Resource::YES];
-        if (!$v or !is_array($v))
-            return $v;
+        if (!$v or !is_array($v)){
+            return ;
+        }
+        $value =[];
         foreach ($v as $val) {
-            if (!$val)
+            
+            if (!$val){
                 continue;
-            if ($chType == 3)
+            }
+            elseif ($chType == Resource::BOOLEAN)
                 $value[] = $bool[$val];
 
-            elseif ($chType == 8) {
+            elseif ($chType == Resource::COUNTRY_REF) {
                 $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
-                $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
-            } elseif ($chType == 4) {
+                $value[] = /*"<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . */ $b->getTitle();
+            } elseif ($chType == Resource::CHAR_VALUE_REF) {
 
                 $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
-            } elseif ($chType == 6) {
+            } elseif ($chType == Resource::BRAND_REF) {
                 $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-            } elseif ($chType == 7) {
+            } elseif ($chType == Resource::COLOR_REF) {
 
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                 $value[] = "<div class='iblok relative'  >"
@@ -236,7 +250,7 @@ class HtmlProviderService {
                 $value = $v;
         }
         if ($value)
-            return print_r(join(", ", $value), true);
+            return join(", ", $value);
     }
 
     public function productPageService($filteredProducts, $category_id = 0) {

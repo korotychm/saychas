@@ -534,7 +534,16 @@ class IndexController extends AbstractActionController
         } else {
             $breadCrumbs = [];
         }
-        return new ViewModel([ "catalog" => '' /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
+        $childCategories = [];
+       $categoryTree =  $this->categoryRepository->categoryFilteredTree($category_id);
+       foreach ($categoryTree as $category ){
+           $childCategories[] =[$category['id'], $category['title']]; 
+       }
+           
+       //exit (print_r($childCategories));
+        
+        
+        return new ViewModel([ "catalog" => $childCategories /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
         ]);
     }
 

@@ -1,0 +1,11 @@
+<?php if (!empty($categories)) :     ?>
+<b>Категории</b>
+  <ul>
+    <?php foreach ($categories as $breadCrumb) : ?>
+        <li>
+          <a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a>
+        </li>
+    <?php
+    endforeach; ?>
+  </ul>
+<?php endif; ?>

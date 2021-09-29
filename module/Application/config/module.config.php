@@ -892,6 +892,29 @@ return [
                     ],
                 ],
             ],
+             'ajax-get-products-top' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-top',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsTop',
+                    ],
+                ],
+            ],
+            
+             'ajax-get-products-sale' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-sale',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsSale',
+                    ],
+                ],
+            ],
+            
+            
             
             
             'ajax-fltr-json' => [
