@@ -86,22 +86,16 @@ class StockBalanceManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
-        /**
-         * productName
-         * categoryName
-         * image
-         * stock_balance
-         */
         $cursor = $this->findAll($params);
         $result = [];
         foreach ($cursor['body'] as &$c) {
-            unset($c['_id']);
+            //unset($c['_id']);
             // find product by product_id
             $products = $c['products'];
             foreach($products as $product) {
                 $productId = $product['product_id'];
                 $quantity = $product['quantity'];
-                $arr = (array) $this->db->products->find(['id' => $productId])->toArray();
+                $arr = (array) $this->db->products->find(['id' => $productId]/*, ['_id' => 0]*/)->toArray();
                 $arr = $arr[0];
                 unset($arr['_id']);
                 $arr['quantity'] = $quantity;
@@ -109,6 +103,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
             }
         }
         $cursor['body'] = $result;
+        unset($params['where']['store_id']);
         $cursor['filters']['categories'] = $this->findCategories($params);        
         
         return $cursor;
