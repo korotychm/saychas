@@ -434,10 +434,10 @@
   text-decoration: none;
   color: inherit;
   transition: 0.3s;
-  padding: 3px 0;
+  padding: 5px 0;
   display: block;
 }
-.cats__children ul a.cat__all {
+.cats__children ul a.cats__all {
   color: var(--gray2);
 }
 @media (hover) {
