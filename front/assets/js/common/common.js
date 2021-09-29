@@ -30,3 +30,10 @@ $(document).ready(function () {
 $(document).on('click', '.popup__close', function () {
     $(this).parent().parent().fadeOut();
 });
+
+$(document).click( function(e){
+    if ( $(e.target).closest('.header__catalog').length ) {
+        return;
+    }
+    $('#burger').prop('checked',false);
+});
