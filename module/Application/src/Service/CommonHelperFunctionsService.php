@@ -94,7 +94,6 @@ class CommonHelperFunctionsService
         $container = new Container(Resource::SESSION_NAMESPACE);
         $legalStores = $container->legalStore;
         foreach ($products as $product) {
-            //if (!isset($filteredProducts[$product->getId()])) {
                 $oldPrice = 0;
                 $price = $product->getPrice();
                 $discont = $product->getDiscount();
@@ -131,7 +130,7 @@ class CommonHelperFunctionsService
 
     public function getUserInfo($user)
     {
-        if (null == $user) {
+        if (empty($user)) {
             return [];
         }
         $return['id'] = $user->getId();
@@ -159,7 +158,7 @@ class CommonHelperFunctionsService
     
     public function basketProductsCount($userId)
     {
-        return Basket::findAll(["where" => ["user_id" => $userId, "order_id" => 0]])->count();
+        return Basket::findAll(["where" => ["user_id" => $userId, "order_id" => 0], 'columns' => ["user_id"]])->count();
     }
   
 }

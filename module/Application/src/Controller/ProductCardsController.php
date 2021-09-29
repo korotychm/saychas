@@ -168,7 +168,8 @@ class ProductCardsController extends AbstractActionController {
      * @param array $characteristics, object Where
      * @return object Where
      */
-    private function filterWhere($characteristics, $where): Where {
+    private function filterWhere($characteristics, $where): Where 
+    {
         $inChars = array_keys($characteristics);
         $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
         //$groupChars = [0];
@@ -180,7 +181,6 @@ class ProductCardsController extends AbstractActionController {
             $type = $found->getType();
             $filterWhere->equalTo('characteristic_id', $found->getCharacteristicId($key));
             if ($type == CharacteristicRepository::INTEGER_TYPE) {
-                //reset($value);
                 list($min, $max) = explode(';', current($value));
                 $filterWhere->between('value', $min * 1, $max * 1);
             } elseif ($type == CharacteristicRepository::BOOL_TYPE) {
@@ -194,7 +194,6 @@ class ProductCardsController extends AbstractActionController {
         }
         $subWhere = new Where();
         $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
-        //$productsFiltredDefault =  empty($productsFiltred) ? [0] : $productsFiltred; 
         $nest = $where->nest();
         $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltred)->unnest();
         return $where;
@@ -281,17 +280,17 @@ class ProductCardsController extends AbstractActionController {
         $count_columns = new \Laminas\Db\Sql\Expression("count(`product_id`) as `count`, `product_id` as product_id");
         $products = ProductHistory::findAll(['columns' => [$count_columns], 'group' => ['product_id'], 'having' => ['count > 1'], 'group' => ['product_id'],'limit' => $limit,])->toArray();
         $productsId = ArrayHelper::extractId($products);
-        //exit (print_r($productsId));
         $where = new Where();
         $where->in("id" , $productsId);                
         return $where; 
          //SELECT `product_id`, COUNT(`product_id`) AS `count` FROM 'product_history` GROUP BY `product_id` HAVING  `count` > order BY `count` DESC LIMIT 0, 40
      }
-     /**
-     * Return where clause for query
-     *
-     * @return Where
-     */
+
+    /**
+    * Return where clause for query
+    *
+    * @return Where
+    */
     private function getWhereSale ()
     {
         $where = new Where();
@@ -404,13 +403,6 @@ class ProductCardsController extends AbstractActionController {
         return $filteredProducts;
     }
     
-    /**
-     * return productId array from product_history
-     * 
-     * @param int  Limit for SQL query
-     * @return array
-     */
-
     
 
     private function prepareCharacteristics(&$characteristics) {
