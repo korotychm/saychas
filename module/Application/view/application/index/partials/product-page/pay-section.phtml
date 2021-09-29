@@ -67,8 +67,7 @@
        <div class="product-card__store-logo">
             <img src="<?=$image_path_provider.'/'.$provider['image']?>" />
        </div>
-       <?php print_r($provider) ?>
-        <a href="/seller/<?=$provider['id']?>">Все товары постащика →</a>
+        <a href="/seller/<?=$provider['id']?>">Все товары <?=$provider['title']?> →</a>
     </div>
 <?php endIf; ?>
 </div>
