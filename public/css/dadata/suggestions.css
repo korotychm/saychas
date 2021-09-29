@@ -26,7 +26,6 @@
  */
 .suggestions-suggestions {
   background: #fff;
-  border: 1px solid #999;
   -ms-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -37,10 +36,14 @@
   position: absolute;
   z-index: 9999;
   -webkit-text-size-adjust: 100%;
+  top: 5px;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0px 5px 35px 0px rgba(66, 66, 66, 0.2);
 }
 .suggestions-suggestions strong {
-  font-weight: normal;
-  color: #3399ff;
+  font-weight: 500;
+  color: var(--red);
 }
 .suggestions-suggestions.suggestions-mobile {
   border-style: none;
@@ -52,11 +55,17 @@
  * Контейнер для одной подсказки
  */
 .suggestions-suggestion {
-  padding: 4px 4px;
+  width: calc(100% + 60px);
+  margin-left: -30px;
+  padding: 5px 30px;
   overflow: hidden;
 }
 .suggestions-suggestion:hover {
-  background: #f7f7f7;
+  background: var(--red);
+  color: #fff;
+}
+.suggestions-suggestion:hover strong {
+  color: #fff;
 }
 /**
  * Выбранная (активная) подсказка

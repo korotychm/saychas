@@ -55,7 +55,7 @@ const PriceList = {
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
                   </div>
-                  <div class="td pricelist__discount">{{ product.discount }}%</div>
+                  <div class="td pricelist__discount"><span v-if="product.discount!==''">{{ product.discount }}</span><span v-else>0</span>%</div>
                   <div class="td">
                     <div v-if="+product.discount > 0" class="pricelist__oldprice">{{ product.price }} ₽</div>
                     <div v-if="+product.discount > 0" class="pricelist__price">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</div>
@@ -205,14 +205,23 @@ const PriceList = {
   }
 }
 
-$(document).on('click','.pricelist__item',function(){
-  $('.pricelist__item').removeClass('active');
+$(document).on('click','.pricelist__item, .inventory__item',function(){
+  $('.pricelist__item, .inventory__item').removeClass('active');
   $(this).addClass('active');
 });
 
 $(document).mouseup(function(e)
 {
     var container = $(".pricelist__popup");
+    if (!container.is(e.target) && container.has(e.target).length === 0)
+    {
+        container.parent().removeClass('active');
+    }
+});
+
+$(document).mouseup(function(e)
+{
+    var container = $(".inventory__popup");
     if (!container.is(e.target) && container.has(e.target).length === 0)
     {
         container.parent().removeClass('active');

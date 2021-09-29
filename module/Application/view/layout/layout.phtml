@@ -7,7 +7,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js"></script>
 
-
         <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;amp;display=swap" />
 
         <meta charset="utf-8" >
@@ -20,14 +19,7 @@
         <!-- Le styles -->
         <?=
                 $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-                ->prependStylesheet($this->basePath('css/custom_select.css'))
-                //->prependStylesheet($this->basePath('css/style.css'))
-                //->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-                //->prependStylesheet($this->basePath('css/bs.css'))
-                //->prependStylesheet($this->basePath('css/treeview.css'))
                 ->prependStylesheet($this->basePath('css/dadata/suggestions.css'))
-                ->prependStylesheet($this->basePath('css/nouislider.css'))
-                //->prependStylesheet($this->basePath('css/saychas_z.css?' . time()))
                 ->prependStylesheet($this->basePath('css/temp.css?' . time()))
                 ->prependStylesheet($this->basePath('css/style.min.css?' . time()))
         ?>
@@ -40,15 +32,10 @@
         <?=
                 $this->inlineScript()
                 ->prependFile($this->basePath('/js/useractions.js'))
-                ->prependFile($this->basePath('/js/custom_select.js'))
                 ->prependFile($this->basePath('/js/services.js'))
-                ->prependFile($this->basePath('/js/nouislider.min.js'))
-                ->prependFile($this->basePath('/js/nivo.slider.js'))
-                //->prependFile($this->basePath('js/jquery.treeview.js'))
                 ->prependFile($this->basePath('js/saychas_z.js?' . time()))
                 ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
-                //->prependFile($this->basePath('js/jquery.treeview.async.js'))
-                ->prependFile($this->basePath('js/bootstrap.min.js'))
+                //->prependFile($this->basePath('js/bootstrap.min.js'))
                 ->prependFile($this->basePath('js/temp.js'))
                 ->prependFile($this->basePath('js/user-modal.js'))
                 ->prependFile($this->basePath('js/scripts.min.js'))
@@ -94,8 +81,8 @@
                                           <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
                                         </li>
                                       </div>
-                                      <li>
-                                        <a :href="'/catalog/' + categoryChild.id">Все товары</a>
+                                      <li v-if="categoryChild.children && categoryChild.children.length > 6">
+                                        <a class="cats__all" :href="'/catalog/' + categoryChild.id">Все товары</a>
                                       </li>
                                     </ul>
                                   </div>

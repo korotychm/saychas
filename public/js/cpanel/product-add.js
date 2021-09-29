@@ -99,18 +99,21 @@ const ProductAdd = {
                                         <span class="unit">(г)</span>
                                     </div>
                                     <div class="product__attribute">
-                                        <h2>Длина упаковки</h2>
-                                        <input class="input input--number" type="number" v-model="product.length" />
-                                        <span class="unit">(см)</span>
-                                    </div>
-                                    <div class="product__attribute">
-                                        <h2>Ширина упаковки</h2>
-                                        <input class="input input--number" type="number" v-model="product.width" />
-                                        <span class="unit">(см)</span>
-                                    </div>
-                                    <div class="product__attribute">
-                                        <h2>Высота упаковки</h2>
-                                        <input class="input input--number" type="number" v-model="product.height" />
+                                        <h2>Размер упаковки</h2>
+                                        <div class="size-input-group">
+                                          <div class="size-input-group__item">
+                                            <input class="input input--number" type="number" v-model="product.length" />
+                                            <span>Д</span>
+                                          </div>
+                                          <div class="size-input-group__item">
+                                            <input class="input input--number" type="number" v-model="product.width" />
+                                            <span>Ш</span>
+                                          </div>
+                                          <div class="size-input-group__item">
+                                            <input class="input input--number" type="number" v-model="product.height" />
+                                            <span>В</span>
+                                          </div>
+                                        </div>
                                         <span class="unit">(см)</span>
                                     </div>
                                     <div class="product__attribute product__attribute--short">
@@ -240,7 +243,7 @@ const ProductAdd = {
                                   </div>
                                   <div v-if="product.images" class="product__images">
                                       <div class="product__attribute">
-                                          <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p></h2>
+                                          <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p><p>Формат фото - JPG, JPEG, PNG.</p></h2>
                                           <div class="product__images-wrap">
                                               <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                                   <div class="product__images-list product__images-list--slider">
@@ -257,7 +260,7 @@ const ProductAdd = {
                                                   <label for="photo-upload" class="product__images-empty">Не загружено ни одной фотографии.<br>Загрузите хотя бы одну.</label><img :src="currentImg ? (imgPath + currentImg) : ''" />
                                               </div>
                                               <div class="product__images-controls">
-                                                  <input type="file" id="photo-upload" style="display:none;" @change="uploadFile"/>
+                                                  <input type="file" id="photo-upload" accept=".jpg, .jpeg, .png" style="display:none;" @change="uploadFile"/>
                                                   <label for="photo-upload" class="product__images-control product__images-control--add"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
                                                           <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M1.499,5.999 L13.499,5.999 C14.328,5.999 14.999,6.671 14.999,7.499 C14.999,8.328 14.328,8.999 13.499,8.999 L1.499,8.999 C0.671,8.999 0.0,8.328 0.0,7.499 C0.0,6.671 0.671,5.999 1.499,5.999 Z" />
                                                           <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M7.499,0.0 C8.328,0.0 8.999,0.671 8.999,1.499 L8.999,13.499 C8.999,14.328 8.328,14.999 7.499,14.999 C6.671,14.999 5.999,14.328 5.999,13.499 L5.999,1.499 C5.999,0.671 6.671,0.0 7.499,0.0 Z" />
