@@ -53,13 +53,13 @@ const Inventory = {
           </div>
           <div class="tbody">
               <div v-for="(product, index) in products" class="tr inventory__item">
-                  <div class="td products__img product-small-img">
+                  <div class="td products__img product-small-img inventory__img">
                     <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
-                  <div class="td td--hover">
+                  <div class="td td--hover inventory__title">
                     {{ product.title }}
                   </div>
-                  <div class="td products__category">
+                  <div class="td products__category inventory__category">
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td inventory__quantity">{{ product.quantity }}</div>

@@ -205,14 +205,23 @@ const PriceList = {
   }
 }
 
-$(document).on('click','.pricelist__item',function(){
-  $('.pricelist__item').removeClass('active');
+$(document).on('click','.pricelist__item, .inventory__item',function(){
+  $('.pricelist__item, .inventory__item').removeClass('active');
   $(this).addClass('active');
 });
 
 $(document).mouseup(function(e)
 {
     var container = $(".pricelist__popup");
+    if (!container.is(e.target) && container.has(e.target).length === 0)
+    {
+        container.parent().removeClass('active');
+    }
+});
+
+$(document).mouseup(function(e)
+{
+    var container = $(".inventory__popup");
     if (!container.is(e.target) && container.has(e.target).length === 0)
     {
         container.parent().removeClass('active');
