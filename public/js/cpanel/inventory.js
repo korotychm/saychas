@@ -43,7 +43,32 @@ const Inventory = {
             </div>
           </div>
         </div>
-        <!-- фильтр -->
+        <!-- фильтр end -->
+        <div v-if="filtersCreated" class="cp-container products list">
+          <div class="thead">
+            <div class="td"></div>
+            <div class="td">Наименование</div>
+            <div class="td">Категория</div>
+            <div class="td">Бренд</div>
+          </div>
+          <div class="tbody">
+              <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
+                  <div class="td products__img product-small-img">
+                    <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
+                  </div>
+                  <div class="td td--hover">
+                    {{ product.title }}
+                  </div>
+                  <div class="td products__category">
+                      <div>{{ product.category_name }}</div>
+                  </div>
+                  <div class="td">{{ product.brand_name }}</div>
+              </router-link>
+          </div>
+        </div>
+        <div v-if="filtersCreated" class="pagination">
+          <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
+        </div>
       </div>
     </div>`,
  data: function () {
@@ -59,7 +84,8 @@ const Inventory = {
           store_id: ''
         },
         search: '',
-        filtersCreated: false
+        filtersCreated: false,
+        products: {}
       }
   },
   methods: {
