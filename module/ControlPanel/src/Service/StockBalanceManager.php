@@ -102,8 +102,9 @@ class StockBalanceManager extends ListManager implements LoadableInterface
                 $productId = $product['product_id'];
                 $quantity = $product['quantity'];
                 $arr = (array) $this->db->products->find(['id' => $productId])->toArray();
+                $arr = $arr[0];
                 unset($arr['_id']);
-                $arr[0]['quantity'] = $quantity;
+                $arr['quantity'] = $quantity;
                 $result[] = $arr;
             }
         }
