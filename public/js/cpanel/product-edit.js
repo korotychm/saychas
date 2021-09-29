@@ -87,7 +87,7 @@ const ProductEdit = {
                           <span class="unit">(г)</span>
                       </div>
                       <div class="product__attribute">
-                          <h2>Размер упаковки упаковки</h2>
+                          <h2>Размер упаковки</h2>
                           <div class="size-input-group">
                             <div class="size-input-group__item">
                               <input class="input input--number" type="number" v-model="product.length" />
