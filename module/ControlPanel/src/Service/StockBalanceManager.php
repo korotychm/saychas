@@ -64,7 +64,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
 
     private function findCategories($params)
     {
-        $collection = $this->db->{$this->collectionName};
+        $collection = $this->db->products;//{$this->collectionName};
         $results = $collection->distinct('category_id', $params['where']);
         $accumulator = [];
         foreach($results as &$c) {
@@ -93,7 +93,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
          * stock_balance
          */
         $cursor = $this->findAll($params);
-        $result = null;
+        $result = [];
         foreach ($cursor['body'] as &$c) {
             unset($c['_id']);
             // find product by product_id
@@ -108,6 +108,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
                 $result[] = $arr;
             }
         }
+        $result['filters']['categories'] = $this->findCategories($params);        
         
         // $cursor['filters']['categories'] = $this->findCategories($params);
         return $result;
