@@ -135,7 +135,7 @@ const Inventory = {
             .then(response => {
               console.log('Ответ на сохранение остатков', response.data);
               if (response.data.result){
-                $('.pricelist__item').removeClass('active');
+                $('.inventory__item').removeClass('active');
               }
             })
             .catch(error => {
