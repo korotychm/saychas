@@ -136,6 +136,9 @@ class ListController extends AbstractControlPanelActionController
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
         $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1],]);
 
+//        echo '<pre>';
+//        print_r($cursor);
+//        echo '</pre>';
         return new JsonModel(['data' => $cursor, 'http_code' => $answer['http_code']]);
     }
 
