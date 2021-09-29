@@ -95,6 +95,10 @@ class StockBalanceController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         //$product = json_decode($post['data']['product'], true);
         //unset($product['_id']);
+        $identity = $this->authService->getIdentity();
+        foreach($post['data'] as &$p) {
+            $p['provider_id'] = $identity['provider_id'];
+        }
         if ($this->canUpdateStockBalance($post)) {
             $result = $this->stockBalanceManager->replaceStockBalance($post);
             return new JsonModel(['result' => true]);
