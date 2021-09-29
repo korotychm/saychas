@@ -43,8 +43,7 @@ const routes = [
     name: 'inventory',
     path: '/inventory',
     meta: {
-      h1: 'Товарные остатки',
-      back_route: '/products'
+      h1: 'Товарные остатки'
     },
     component: Inventory
   },
