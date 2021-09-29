@@ -87,18 +87,21 @@ const ProductEdit = {
                           <span class="unit">(г)</span>
                       </div>
                       <div class="product__attribute">
-                          <h2>Длина упаковки</h2>
-                          <input class="input input--number" type="number" v-model="product.length" />
-                          <span class="unit">(см)</span>
-                      </div>
-                      <div class="product__attribute">
-                          <h2>Ширина упаковки</h2>
-                          <input class="input input--number" type="number" v-model="product.width" />
-                          <span class="unit">(см)</span>
-                      </div>
-                      <div class="product__attribute">
-                          <h2>Высота упаковки</h2>
-                          <input class="input input--number" type="number" v-model="product.height" />
+                          <h2>Размер упаковки упаковки</h2>
+                          <div class="size-input-group">
+                            <div class="size-input-group__item">
+                              <input class="input input--number" type="number" v-model="product.length" />
+                              <span>Д</span>
+                            </div>
+                            <div class="size-input-group__item">
+                              <input class="input input--number" type="number" v-model="product.width" />
+                              <span>Ш</span>
+                            </div>
+                            <div class="size-input-group__item">
+                              <input class="input input--number" type="number" v-model="product.height" />
+                              <span>В</span>
+                            </div>
+                          </div>
                           <span class="unit">(см)</span>
                       </div>
                       <div class="product__attribute product__attribute--short">
