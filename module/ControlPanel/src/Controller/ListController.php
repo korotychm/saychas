@@ -133,6 +133,9 @@ class ListController extends AbstractControlPanelActionController
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
+        if($managerName == \ControlPanel\Service\StockBalanceManager::class) {
+            $where = array_merge($where, ['store_id' => $post['filters']['store_id']]);
+        }
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
         $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1],]);
 

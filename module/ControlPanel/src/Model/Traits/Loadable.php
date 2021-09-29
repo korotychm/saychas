@@ -198,7 +198,8 @@ trait Loadable
                 'skip' => 0 >= $limits['min'] ? 0 : $limits['min'] - 1,
                 'limit' => $this->pageSize,
                 'sort' => $params['sort'],
-                'projection' => $params['columns'],
+                'projection' => array_merge($params['columns'], ['_id' => 0]),
+                //'projection' => $params['columns'],
             ]);
             $result['body'] = $cursor->toArray();
             $result['limits'] = $limits;
