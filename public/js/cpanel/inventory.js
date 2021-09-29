@@ -66,7 +66,7 @@ const Inventory = {
                   <div class="inventory__popup">
                     <div class="inventory__quantity-input">
                       <input type="number" class="input input--number" v-model="product.quantity"/>
-                      <button class="btn btn--primary">
+                      <button class="btn btn--primary" @click="saveProduct(index)">
                         <svg
                          xmlns="http://www.w3.org/2000/svg"
                          xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -107,6 +107,45 @@ const Inventory = {
       }
   },
   methods: {
+    saveProduct(index) {
+      let requestUrl = '/control-panel/update-stock-balance';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      if (!this.products[index].quantity !== ""){
+        showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните количество');
+      } else {
+        let request = [
+          {
+            store_id: this.selectedFilters.store_id,
+            products: [
+              {
+                product_id: this.products[index].id,
+                quantity: this.products[index].quantity
+              }
+            ]
+          }
+        ];
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              data: request
+            }),
+            {
+              headers
+            })
+            .then(response => {
+              console.log('Ответ на сохранение остатков', response.data);
+              if (response.data.result){
+                $('.pricelist__item').removeClass('active');
+              }
+            })
+            .catch(error => {
+              console.log(error);
+              if (error.response.status == '403'){
+                location.reload();
+              }
+            });
+      }
+    },
     getStores() {
       let requestUrl = '/control-panel/show-stores';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
