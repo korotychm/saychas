@@ -213,6 +213,19 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-stock-balance-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-stock-balance-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\StoreManager::class,
+                            'is_test' => 'false',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     'update-stock-balance' => [
                         'type' => Literal::class,
                         'options' => [
