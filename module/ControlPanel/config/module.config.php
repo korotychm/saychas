@@ -10,6 +10,7 @@ use ControlPanel\Controller\Factory\IndexControllerFactory;
 use ControlPanel\Controller\Factory\AuthControllerFactory;
 use ControlPanel\Controller\Factory\ProductControllerFactory;
 use ControlPanel\Controller\Factory\StoreControllerFactory;
+use ControlPanel\Controller\Factory\StockBalanceControllerFactory;
 use ControlPanel\Controller\Factory\ListControllerFactory;
 use ControlPanel\Controller\Factory\ApiControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
@@ -23,6 +24,7 @@ return [
             \ControlPanel\Controller\AuthController::class => AuthControllerFactory::class,
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
             \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
+            \ControlPanel\Controller\StockBalanceController::class => StockBalanceControllerFactory::class,
             \ControlPanel\Controller\ListController::class => ListControllerFactory::class,
             \ControlPanel\Controller\ApiController::class => ApiControllerFactory::class,
         ],        
@@ -88,8 +90,12 @@ return [
                 ['actions' => ['saveNewlyAddedStore',], 'allow' => '+administrator'],
                 //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
             ],
+            \ControlPanel\Controller\StockBalanceController::class => [
+                ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
+            ],
             \ControlPanel\Controller\ListController::class => [
-                ['actions' => ['showList',], 'allow' => '+administrator'],
+                ['actions' => ['showList',],'urls' => ['control-panel/show-products',], 'allow' => '+administrator'],
+                [/*'actions' => ['showList',], */'urls' => ['control-panel/show-stores',], 'allow' => '+store.manager'],
                 ['actions' => ['showListFromCache', ], 'allow' => '+administrator'],
 //                ['actions' => ['showList',], 'allow' => '+brand.manager'],
 //                ['actions' => ['showListFromCache', ], 'allow' => '+brand.manager'],
@@ -172,6 +178,7 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list',
+                                'url' => 'show-list',
                             ],
                             'repository' => \ControlPanel\Service\StoreManager::class,
                             'is_test' => 'false',
@@ -187,6 +194,20 @@ return [
                                 'action' => 'show-list-from-cache',
                             ],
                             'repository' => \ControlPanel\Service\StoreManager::class,
+                            'is_test' => 'false',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-stock-balance' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-stock-balance',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
+                                'url' => 'show-list',
+                            ],
+                            'repository' => \ControlPanel\Service\StockBalanceManager::class,
                             'is_test' => 'false',
                         ],
                         // 'may_terminate' => true,
@@ -669,6 +690,8 @@ return [
             \ControlPanel\Service\StoreManager::class => \ControlPanel\Service\Factory\StoreManagerFactory::class,
             /** Price and Discount Manager */
             \ControlPanel\Service\PriceAndDiscountManager::class => \ControlPanel\Service\Factory\PriceAndDiscountManagerFactory::class,
+            /** Stock Balance Manager */
+            \ControlPanel\Service\StockBalanceManager::class => \ControlPanel\Service\Factory\StockBalanceManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
             /** Auth Adapter */
@@ -705,13 +728,19 @@ return [
             'lk_store_info' => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             'lk_add_store' => 'http://SRV02:8000/SC/hs/site/lk_add_store',
             'lk_update_store' => 'http://SRV02:8000/SC/hs/site/lk_update_store',
+            /** StockBalanceManager */
+            'lk_update_balance' => 'http://SRV02:8000/SC/hs/site/lk_update_balance',
+            'lk_balance_info' => 'http://SRV02:8000/SC/hs/site/lk_balance_info',
+            /** StockBalanceManager link alias */
+            \ControlPanel\Service\StockBalanceManager::class => 'http://SRV02:8000/SC/hs/site/lk_balance_info',
             /** StoreManager link alias */
             \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SC/hs/site/lk_store_info',
             /** PriceAndDiscountManager */
             'lk_price_info' => 'http://SRV02:8000/SC/hs/site/lk_price_info',
-            'lk_update_price' => 'http://SRV02:8000/SC/hs/site//lk_update_price',
+            'lk_update_price' => 'http://SRV02:8000/SC/hs/site/lk_update_price',
             /** PriceAndDiscountManager link alias */
             \ControlPanel\Service\PriceAndDiscountManager::class => 'http://SRV02:8000/SC/hs/site/lk_price_info',
+            
         ],
         'store_statuses' => [
             [ '0', 'Работает' ],

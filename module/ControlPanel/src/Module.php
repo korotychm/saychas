@@ -53,6 +53,8 @@ class Module implements ConfigProviderInterface
     {
         $controller = $event->getTarget();
         $controllerName = $event->getRouteMatch()->getParam('controller', null);
+        $routeMatch = $event->getRouteMatch();
+        $matchedRouteName = $routeMatch->getMatchedRouteName();
         $actionName = $event->getRouteMatch()->getParam('action', null);
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
         
@@ -80,7 +82,7 @@ class Module implements ConfigProviderInterface
 //                return $controller->redirect()->toUrl('/control-panel/login');
             }
 
-            $result = $authManager->filterAccess($controllerName, $actionName);
+            $result = $authManager->filterAccess($controllerName, $actionName, $matchedRouteName);
             
             if($result == AuthManager::AUTH_REQUIRED) {
                 $uri = $event->getApplication()->getRequest()->getUri();
