@@ -42,7 +42,7 @@
   box-shadow: 0px 5px 35px 0px rgba(66, 66, 66, 0.2);
 }
 .suggestions-suggestions strong {
-  font-weight: normal;
+  font-weight: 500;
   color: var(--red);
 }
 .suggestions-suggestions.suggestions-mobile {
@@ -66,7 +66,6 @@
 }
 .suggestions-suggestion:hover strong {
   color: #fff;
-  font-weight: bold;
 }
 /**
  * Выбранная (активная) подсказка
