@@ -221,7 +221,7 @@ return [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list-from-cache',
                             ],
-                            'repository' => \ControlPanel\Service\StoreManager::class,
+                            'repository' => \ControlPanel\Service\StockBalanceManager::class,
                             'is_test' => 'false',
                         ],
                         // 'may_terminate' => true,
