@@ -186,9 +186,9 @@ const Inventory = {
     },
     getProducts() {
       let requestUrl = '/control-panel/show-stock-balance';
-      // if (this.filtersCreated) {
-      //   requestUrl = '/control-panel/show-products-from-cache';
-      // }
+      if (this.filtersCreated) {
+        requestUrl = '/control-panel/show-stock-balance-from-cache';
+      }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' }
       axios
         .post(requestUrl,
