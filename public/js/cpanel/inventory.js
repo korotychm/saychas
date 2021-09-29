@@ -110,7 +110,7 @@ const Inventory = {
     saveProduct(index) {
       let requestUrl = '/control-panel/update-stock-balance';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      if (!this.products[index].quantity !== ""){
+      if (!this.products[index].quantity === ""){
         showServicePopupWindow('Невозможно сохранить изменения', 'Пожалуйста, заполните количество');
       } else {
         let request = [
