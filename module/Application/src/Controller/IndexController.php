@@ -592,7 +592,7 @@ class IndexController extends AbstractActionController
         }
         $providerTitle = $provider->getTitle();
         $categories = $this->getProviderCategories($provider_id); 
-           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        $categoryTitle = Resource::THE_ALL_PRODUCTS; 
         $breadCrumbs[]=[null, $providerTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
@@ -613,7 +613,15 @@ class IndexController extends AbstractActionController
             $view = new ViewModel();
             return $view->setTemplate('error/404.phtml');
         }
-        $storeTitle = $store->getTitle();
+        $provider_id = $store->getProviderId();
+         if (empty($provider = Provider::find(["id"=> $provider_id ]))){
+             $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+         }
+        
+        $storeTitle = $provider->getTitle();
         $categories = $this->getStoreCategories($store_id); //$this->getBrandCategories($brand_id);
         $categoryTitle = Resource::THE_ALL_PRODUCTS; 
         $breadCrumbs[]=[null, $storeTitle];
@@ -623,7 +631,7 @@ class IndexController extends AbstractActionController
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
-        return new ViewModel( ['breadCrumbs' => $breadCrumbs,'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $storeTitle, 'category_title' => $categoryTitle,]);
+        return new ViewModel( ['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage() , 'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $storeTitle, 'category_title' => $categoryTitle,]);
     }
     
     

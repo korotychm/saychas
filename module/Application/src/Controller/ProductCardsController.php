@@ -262,7 +262,7 @@ class ProductCardsController extends AbstractActionController {
      */
     private function getWhereStore($params): Where {
         $storeProducts = StockBalance::findAll(["where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
-        $products = ArrayHelper::extractProdictsId($storeProducts);
+        $products = ArrayHelper::extractId($storeProducts);
         $where = new Where();
         $where->in('product_id', $products);
         if (!empty($params['category_id'])) {
