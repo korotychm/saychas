@@ -78,10 +78,10 @@ const Inventory = {
       this.getProducts();
     },
     getProducts() {
-      let requestUrl = '/control-panel/show-products';
-      if (this.filtersCreated) {
-        requestUrl = '/control-panel/show-products-from-cache';
-      }
+      let requestUrl = '/control-panel/show-stock-balance';
+      // if (this.filtersCreated) {
+      //   requestUrl = '/control-panel/show-products-from-cache';
+      // }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' }
       axios
         .post(requestUrl,
