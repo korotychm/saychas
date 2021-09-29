@@ -92,6 +92,7 @@ return [
             ],
             \ControlPanel\Controller\StockBalanceController::class => [
                 ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
+                ['actions' => ['updateStockBalance',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',],'urls' => ['control-panel/show-products',], 'allow' => '+administrator'],
@@ -206,6 +207,20 @@ return [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list',
                                 'url' => 'show-list',
+                            ],
+                            'repository' => \ControlPanel\Service\StockBalanceManager::class,
+                            'is_test' => 'false',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'update-stock-balance' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-stock-balance',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\StockBalanceController::class,
+                                'action' => 'update-stock-balance',
+                                'url' => 'update-stock-balance',
                             ],
                             'repository' => \ControlPanel\Service\StockBalanceManager::class,
                             'is_test' => 'false',

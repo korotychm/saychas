@@ -111,7 +111,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
 
     public function updateServerDocument($headers, $content = [])
     {
-        $url = $this->config['parameters']['1c_provider_links']['lk_update_price_and_discount'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_balance'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }

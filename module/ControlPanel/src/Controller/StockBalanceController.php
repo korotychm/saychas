@@ -80,6 +80,28 @@ class StockBalanceController extends AbstractActionController
         return $response;
     }
     
+    private function canUpdateStockBalance(array $stockBalance): bool
+    {
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->stockBalanceManager->updateServerDocument($credentials, $stockBalance);
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        return $res;
+    }
+
+    public function updateStockBalanceAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        //$product = json_decode($post['data']['product'], true);
+        //unset($product['_id']);
+        if ($this->canUpdateStockBalance($post)) {
+            //$result = $this->stockBalanceManager->replaceProduct($post);
+            return new JsonModel(['result' => true]);
+        }
+        return new JsonModel(['result' => false]);
+    }
+    
     public function showStockBalanceAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
