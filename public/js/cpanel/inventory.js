@@ -79,6 +79,8 @@ const Inventory = {
         stores: {},
         pages: 1,
         filters: {},
+        imgPath: productImgPath,
+        imgPathModerated: productImgPathModerated,
         selectedFilters: {
           category_id: '',
           store_id: ''
