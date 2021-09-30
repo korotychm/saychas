@@ -103,7 +103,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
             }
         }
         $cursor['body'] = $result;
-        unset($params['where']['store_id']);
+//        unset($params['where']['store_id']);
         $cursor['filters']['categories'] = $this->findCategories($params);        
         
         return $cursor;
@@ -128,6 +128,12 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
+    public function deleteMany(string $collectionName, array $params = [])
+    {
+        $collection = $this->db->$collectionName;
+        $deleteResult = $collection->deleteMany($params);
+        return $deleteResult;
+    }
     
 }
 

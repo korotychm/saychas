@@ -81,20 +81,35 @@ class ArrayHelper
     public static function buildTree(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
     {
         $branch = [];
-
-        foreach ($elements as $element) {
-            if ($element[$parentKey] == $parentId) {
-                $children = self::buildTree($elements, $element[$key], $parentKey, $key);
-                if ($children) {
-                    $element['children'] = $children;
-                }
-                $branch[] = $element;
-            }
+        if (!empty($elements[$parentId])){
+            foreach ($elements[$parentId] as $element) {
+                    $children = self::buildTree($elements, $element[$key], $parentKey, $key);
+                    if ($children) {
+                        $element['children'] = $children;
+                    }
+                    $branch[] = $element;
+               }
         }
-
         return $branch;
     }
-
+    
+    public static function buildTreeAlex(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
+    {
+        $branch = [];
+      
+            foreach ($elements as $element) {
+                if ($element[$parentKey] == $parentId) {
+                    $children = self::buildTree($elements, $element[$key], $parentKey, $key);
+                    if ($children) {
+                        $element['children'] = $children;
+                    }
+                    $branch[] = $element;
+                
+                }
+        }
+        return $branch;
+    }
+    
     /**
      * Search tree haystack for given needle
      *
@@ -145,11 +160,19 @@ class ArrayHelper
         return $allParentIds;
     }
     
-    public static function extractProdictsId ($products)
+//    public static function extractProdictsId ($products, $key = "product_id")
+//    {
+//        $filtredProducts = [];
+//        foreach ($products as $p) {
+//            $filtredProducts[] = $p[$key];
+//        }
+//        return $filtredProducts;
+//    }
+    public static function extractId ($products, $key = "product_id")
     {
         $filtredProducts = [];
         foreach ($products as $p) {
-            $filtredProducts[] = $p["product_id"];
+            $filtredProducts[] = $p[$key];
         }
         return $filtredProducts;
     }

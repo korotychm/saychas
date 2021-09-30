@@ -163,7 +163,7 @@ trait Loadable
         //$cred = $this->extractCredentials($credentials);
         $cred = ArrayHelper::extractCredentials($credentials);
         
-        $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
+        $result = $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
 
         if(null == $answer['data']) {
             $answer['data'] = [];

@@ -124,10 +124,10 @@ class ListController extends AbstractControlPanelActionController
 
         $url = $this->config['parameters']['1c_provider_links'][$managerName];
 
-        $answer['http_code'] = '200';
-        if (true /* != $useCache */) {
-            $answer = $manager->loadAll($url, $credentials);
-        }
+//        $answer['http_code'] = '200';
+//        if (true /* != $useCache */) {
+//            $answer = $manager->loadAll($url, $credentials);
+//        }
 
         $manager->setPageSize(!empty($post['rows_per_page']) ? (int) $post['rows_per_page'] : self::ROWS_PER_PAGE);
         $where = [
@@ -135,6 +135,13 @@ class ListController extends AbstractControlPanelActionController
         ];
         if($managerName == \ControlPanel\Service\StockBalanceManager::class) {
             $where = array_merge($where, ['store_id' => $post['filters']['store_id']]);
+            //unset($where['provider_id']);
+            
+            $manager->deleteMany('stock_balance', $where);
+        }
+        $answer['http_code'] = '200';
+        if (true /* != $useCache */) {
+            $answer = $manager->loadAll($url, $credentials);
         }
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
         $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1],]);
@@ -152,7 +159,7 @@ class ListController extends AbstractControlPanelActionController
         $routeMatch = $this->getEvent()->getRouteMatch();
         $result = $this->getManagerInfo($routeMatch);
         $manager = $result['manager'];
-        //$managerName = $result['manager_name'];
+        $managerName = $result['manager_name'];
 
         $post = $this->getRequest()->getPost()->toArray();
         $identity = $this->authService->getIdentity();
@@ -160,6 +167,10 @@ class ListController extends AbstractControlPanelActionController
         $where = [
             'provider_id' => $identity['provider_id'],
         ];
+        if($managerName == \ControlPanel\Service\StockBalanceManager::class) {
+            //unset($where['provider_id']);
+            $where = array_merge($where, ['store_id' => $post['filters']['store_id']]);
+        }
         foreach ($post['filters'] as $key => $value) {
             if ('' !== $value) {
                 $where[$key] = $value;
