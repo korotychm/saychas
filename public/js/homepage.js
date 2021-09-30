@@ -11,8 +11,8 @@ $(document).ready(function(){
           axios
             .post('/ajax-get-products-sale')
             .then(response => {
-              console.log(response);
               this.products = response.data.products;
+              console.log('Продукты со скидкой',this.products);
             });
       },
       updated() {
@@ -39,8 +39,8 @@ $(document).ready(function(){
           axios
             .post('/ajax-get-products-top')
             .then(response => {
-              console.log(response);
               this.products = response.data.products;
+              console.log('Популярные продукты',this.products);
             });
       }
     });
