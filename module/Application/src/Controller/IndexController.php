@@ -511,7 +511,7 @@ class IndexController extends AbstractActionController
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
-        if (empty($category_id = $this->params()->fromRoute('id', '')) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
+        if (empty($category_id = $this->params()->fromRoute('id', '')) or empty($category = $this->categoryRepository->findCategory(['id' => $category_id]))) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
@@ -520,6 +520,7 @@ class IndexController extends AbstractActionController
         } else {
             $breadCrumbs = [];
         }
+       $categoryTitle = $category->getTitle();
        $childCategories = [];
        $categoryTree =  $this->categoryRepository->categoryFilteredTree($category_id);
        foreach ($categoryTree as $category ){
