@@ -14,6 +14,15 @@ $(document).ready(function(){
               console.log(response);
               this.products = response.data.products;
             });
+      },
+      updated() {
+        $('.products-carousel--4').slick(
+          {
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4
+          }
+        );
       }
     });
 
