@@ -192,18 +192,18 @@ class IndexController extends AbstractActionController
         return new ViewModel([]);
     }
 
-    public function signupAction()
-    {
-        $post = $this->getRequest()->getPost()->toArray();
-        $container = new Container();
-        $password = $post['password'];
-        if('123451' == $password) {
-            $container->signedUp = true;
-            return $this->redirect()->toUrl('/');
-        }
-        $container->signedUp = false;
-        return $this->redirect()->toUrl('/my-login');
-    }
+//    public function signupAction()
+//    {
+//        $post = $this->getRequest()->getPost()->toArray();
+//        $container = new Container();
+//        $password = $post['password'];
+//        if('123451' == $password) {
+//            $container->signedUp = true;
+//            return $this->redirect()->toUrl('/');
+//        }
+//        $container->signedUp = false;
+//        return $this->redirect()->toUrl('/my-login');
+//    }
 
 //    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
 //    {
@@ -312,10 +312,10 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $container = new Container();
-        if($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
 //        $userPaycard = new UserPaycard();
 //        $userPaycard->setUserId('000001');
@@ -452,10 +452,10 @@ class IndexController extends AbstractActionController
 
     public function previewAction()
     {
-        $container = new Container();
-        if($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         return new ViewModel([
             'menu' => null,
@@ -464,10 +464,10 @@ class IndexController extends AbstractActionController
     
     public function clientFavoritesPageAction()
     {
-        $container = new Container();
-        if($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
        $userId = $this->identity();
         $user = User::find(['id' => $userId]);
@@ -487,10 +487,10 @@ class IndexController extends AbstractActionController
 
     public function productPageAction()
     {
-        $container = new Container();
-        if($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
@@ -515,10 +515,10 @@ class IndexController extends AbstractActionController
 
     public function catalogAction()
     {
-        $container = new Container();
-        if($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         
         $category_id = $this->params()->fromRoute('id', '');
        
@@ -655,10 +655,10 @@ class IndexController extends AbstractActionController
 
     public function userAction(/*$category_id = false*/)
     {
-        $container = new Container();
-        if($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);

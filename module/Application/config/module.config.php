@@ -670,26 +670,27 @@ return [
                     ],
                 ],
             ],
-            'my-login' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/my-login',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'myLogin',
-                    ],
-                ],
-            ],
-            'signup' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/signup',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'signup',
-                    ],
-                ],
-            ],
+//            'my-login' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/my-login',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action'     => 'myLogin',
+//                    ],
+//                ],
+//            ],
+//            'signup' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/signup',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action'     => 'signup',
+//                    ],
+//                ],
+//            ],
+
 //            'test-repos' => [
 //                'type'    => Literal::class,
 //                'options' => [
