@@ -494,16 +494,16 @@ class IndexController extends AbstractActionController
         $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
-        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))) {
+        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
           return $this->responseError404();
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        $productPage['breadCrumbs'] = (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) 
+        $productPage['breadCrumbs'] = ($productPage['categoryId'] and !empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) 
          ? array_reverse($matherCategories) : [];
         
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
-        $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
+        $productPage['category'] = ($productPage['categoryId']) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
         return new ViewModel($productPage);
     }

@@ -3,6 +3,7 @@
 // src\Service\Factory\CommonHelperFunctionsService.php
 
 namespace Application\Service;
+
 //use Application\Model\Entity;
 use Laminas\Config\Config;
 use Laminas\Json\Json;
@@ -11,10 +12,10 @@ use Laminas\Session\Container;
 use Application\Resource\Resource;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\Basket;
-/*use Application\Model\Entity\ClientOrder;
-use Application\Model\Entity\Delivery;
-use Application\Model\Entity\Provider;
-use Application\Model\Entity\Product;*/
+/* use Application\Model\Entity\ClientOrder;
+  use Application\Model\Entity\Delivery;
+  use Application\Model\Entity\Provider;
+  use Application\Model\Entity\Product; */
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 //use Laminas\Session\Container;
@@ -26,37 +27,34 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
  *
  * @author alex
  */
-class CommonHelperFunctionsService
-{
+class CommonHelperFunctionsService {
 
     /**
      * @var Config
      */
     private $config;
 
-    public function __construct($config, 
-            HandbookRelatedProductRepositoryInterface $productRepository)
-    {
+    public function __construct($config,
+            HandbookRelatedProductRepositoryInterface $productRepository) {
         $this->config = $config;
         $this->productRepository = $productRepository;
     }
 
- /*   public function example()
-    {
-//         ProductFavorites::findAll([]);
-//        ClientOrder::findAll([]);
-//        Delivery::findAll([]);
-    }
-*/
-    
+    /*   public function example()
+      {
+      //         ProductFavorites::findAll([]);
+      //        ClientOrder::findAll([]);
+      //        Delivery::findAll([]);
+      }
+     */
+
     /**
      * Update legal stores
      *
      * @param string $json
      * @return array
      */
-    public function updateLegalStores($json)
-    {
+    public function updateLegalStores($json) {
         $url = $this->config['parameters']['1c_request_links']['get_store'];
         $result = file_get_contents($url, false, stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]]));
         if (empty($result)) {
@@ -74,62 +72,57 @@ class CommonHelperFunctionsService
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->legalStore = $sessionLegalStore; //Json::decode($result, true);
         $container->legalStoreArray = $sessionLegalStoreArray;
-        
+
         return ["result" => true, "message" => "Stores received"];
     }
 
-    public function setErrorRedirect($errorCode)
-    {
+    public function setErrorRedirect($errorCode) {
         $response = new Response();
         $response->setStatusCode($errorCode);
         return $response;
     }
-    
-    public function getProductCardArray($products, $userId)
-    {
-        $return =[];
-        if (empty($products)){
+
+    public function getProductCardArray($products, $userId) {
+       // $return = [];
+        if (empty($products)) {
             return $return;
         }
         $container = new Container(Resource::SESSION_NAMESPACE);
         $legalStores = $container->legalStore;
         foreach ($products as $product) {
-                $oldPrice = 0;
-                $price = $product->getPrice();
-                $discont = $product->getDiscount();
-                if ($discont > 0 ){
-                    $oldPrice =  $price;
-                    $price = $oldPrice - ($oldPrice * $discont /100);
+            $item = ['title' => $product->getTitle(), 'oldPrice' => 0, 'price' => $product->getPrice(), 'discont' => $product->getDiscount(), 'isFav' => $this->isInFavorites($product->getId(), $userId)];
+            if ($item['discont'] > 0) {
+                $item['oldPrice'] = $item['price'];
+                $item['price'] = $item['oldPrice'] - ($item['oldPrice'] * $item['discont'] / 100);
+            }
+            $strs = $product->getProvider()->getStores();
+            $item['available'] = false;
+            $store = [];
+            foreach ($strs as $s) {
+                if (!empty($legalStores[$s->getId()])) {
+                    $item['available'] = true;
+                    $store[] = $s->getId();
                 }
-                $strs = $product->getProvider()->getStores();
-                $available = false; 
-                $store =[];                
-                foreach($strs as $s){
-                    if (!empty($legalStores[$s->getId()])) {
-                       $available = true; 
-                       $store[] =  $s->getId();
-                    }
-                }
-                $image = $product->receiveFirstImageObject();
-                $imageUrl = (!empty($image)) ? $image->getHttpUrl() : null; //Resource::DEFAULT_IMAGE;
-                        
-                $return[$product->getId()] = [
-                    "reserve" => $product->receiveRest($store),
-                    "price" => $price,
-                    "title" => $product->getTitle(),
-                    'available' =>  $available,
-                    "oldprice" => $oldPrice,
-                    "discount" => $product->getDiscount(),
-                    "image" => $imageUrl,
-                    'isFav' => $this->isInFavorites($product->getId(), $userId ),
-                ];
-           // }
+            }
+            $image = $product->receiveFirstImageObject();
+            $item['image'] = (!empty($image)) ? $image->getHttpUrl() : null; //Resource::DEFAULT_IMAGE;
+            $item['reserve'] = $product->receiveRest($store);
+            $return[$product->getId()] = $item;
+//                   [
+//                    "price" => $price,
+//                    "title" => $product->getTitle(),
+//                    'available' =>  $available,
+//                    "oldprice" => $oldPrice,
+//                    "discount" => $product->getDiscount(),
+//                    "image" => $imageUrl,
+//                    'isFav' => $this->isInFavorites($product->getId(), $userId ),
+//                ];
+            // }
         }
         return $return;
     }
 
-    public function getUserInfo($user)
-    {
+    public function getUserInfo($user) {
         if (empty($user)) {
             return [];
         }
@@ -140,25 +133,23 @@ class CommonHelperFunctionsService
         $return['email'] = $user->getEmail();
         $usdat = $user->getUserData()->current();
         if (null != $usdat) {
-            $return['userAddress'] = $usdat->getAddress(); 
+            $return['userAddress'] = $usdat->getAddress();
             $return['userGeodata'] = $usdat->getGeoData();
         }
         return $return;
     }
-    
-    public function isInFavorites ($productId, $userId)
+
+    public function isInFavorites($productId, $userId) 
     {
-        if (!empty($userId)) {
-            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))){
-                return true;
-            }
+        if (empty($userId)) { 
+            return false;
         }
-        return  false; 
+            return !empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId])) ; 
     }
-    
-    public function basketProductsCount($userId)
+
+    public function basketProductsCount($userId) 
     {
         return Basket::findAll(["where" => ["user_id" => $userId, "order_id" => 0], 'columns' => ["user_id"]])->count();
     }
-  
+
 }
