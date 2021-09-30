@@ -768,8 +768,9 @@ class IndexController extends AbstractActionController
     {
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_404);
+            $this->layout('error/404');
             $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+            return $view; //->setTemplate('error/404.phtml');
         
     }
     
