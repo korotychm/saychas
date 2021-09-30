@@ -408,6 +408,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
             return $echo;
         }
     }
+       
 
     /**
      * Return a single category.

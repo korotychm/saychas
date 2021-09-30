@@ -11,6 +11,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
   <div class="catalog__wrap" id="catalog-wrap">
     <aside class="catalog__sidebar">
       <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
+      <?= $this->partial("/application/index/partials/catalog/categories-menu", ["categories" => $this->catalog, "id" => $this->id]) ?>
       <?= $this->partial("/application/index/partials/catalog/filters", ["filters" => $this->filterform, "id" => $this->id]) ?>
     </aside>
     <div class="catalog__content">

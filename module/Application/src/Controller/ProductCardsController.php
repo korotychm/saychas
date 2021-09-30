@@ -20,10 +20,12 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\Entity\StockBalance;
+use Application\Model\Entity\ProductHistory;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Json\Json;
 use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
+use Application\Resource\Resource;
 
 //use Application\Helper\StringHelper;
 
@@ -50,6 +52,7 @@ class ProductCardsController extends AbstractActionController {
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(ProductCharacteristic::class);
         $this->entityManager->initRepository(StockBalance::class);
+         $this->entityManager->initRepository(ProductHistory::class);
       }
 
     /**
@@ -68,10 +71,20 @@ class ProductCardsController extends AbstractActionController {
         foreach ($category as $item) {
             $param[] = $item["id"];
         }
-        $products = $this->getProductsCategories($param);
-        return new JsonModel($products);
+        return new JsonModel(["products" =>$this->getProductsCategories($param)]);
+    }
+    
+    
+    /**
+     * return JSON product cards
+     *
+     * @return Json model
+     */
+    public function getProductsTopAction() {
+        return new JsonModel(["products" => $this->getProductsTop()]);
     }
 
+    
     /**
      * return JSON product cards
      *
@@ -82,8 +95,7 @@ class ProductCardsController extends AbstractActionController {
         if (empty($post->brandId)) {
             return new JsonModel([]);
         }
-        $products = $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId]);
-        return new JsonModel($products);
+        return new JsonModel(["products" =>$this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId])]);
     }
 
     /**
@@ -96,8 +108,7 @@ class ProductCardsController extends AbstractActionController {
         if (empty($post->storeId)) {
             return new JsonModel([]);
         }
-        $products = $this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId]);
-        return new JsonModel($products);
+        return new JsonModel(["products" =>$this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId])]);
         //return new JsonModel($post);
     }
 
@@ -111,8 +122,7 @@ class ProductCardsController extends AbstractActionController {
         if (empty($post->providerId)) {
             return new JsonModel([]);
         }
-        $products = $this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId]);
-        return new JsonModel($products);
+        return new JsonModel(["products" => $this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId])]);
     }
 
     /**
@@ -122,10 +132,19 @@ class ProductCardsController extends AbstractActionController {
      */
     public function getProductsCatalogAction() {
         $post = $this->getRequest()->getPost()->toArray();
-        $products = $this->getProductsCatalog($post);
-        return new JsonModel(["products" => $products]);
+        return new JsonModel(["products" => $this->getProductsCatalog($post)]);
     }
 
+    /**
+     * return JSON product cards
+     *
+     * @return Json model
+     */
+    public function getProductsSaleAction() {
+        return new JsonModel(["products" => $this->getProductsSale()]);
+    }
+    
+    
     /**
      * Return where clause to filter products by price and category
      *
@@ -149,7 +168,8 @@ class ProductCardsController extends AbstractActionController {
      * @param array $characteristics, object Where
      * @return object Where
      */
-    private function filterWhere($characteristics, $where): Where {
+    private function filterWhere($characteristics, $where): Where 
+    {
         $inChars = array_keys($characteristics);
         $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
         //$groupChars = [0];
@@ -161,7 +181,6 @@ class ProductCardsController extends AbstractActionController {
             $type = $found->getType();
             $filterWhere->equalTo('characteristic_id', $found->getCharacteristicId($key));
             if ($type == CharacteristicRepository::INTEGER_TYPE) {
-                //reset($value);
                 list($min, $max) = explode(';', current($value));
                 $filterWhere->between('value', $min * 1, $max * 1);
             } elseif ($type == CharacteristicRepository::BOOL_TYPE) {
@@ -175,7 +194,6 @@ class ProductCardsController extends AbstractActionController {
         }
         $subWhere = new Where();
         $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
-        //$productsFiltredDefault =  empty($productsFiltred) ? [0] : $productsFiltred; 
         $nest = $where->nest();
         $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltred)->unnest();
         return $where;
@@ -243,7 +261,7 @@ class ProductCardsController extends AbstractActionController {
      */
     private function getWhereStore($params): Where {
         $storeProducts = StockBalance::findAll(["where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
-        $products = ArrayHelper::extractProdictsId($storeProducts);
+        $products = ArrayHelper::extractId($storeProducts);
         $where = new Where();
         $where->in('product_id', $products);
         if (!empty($params['category_id'])) {
@@ -251,8 +269,37 @@ class ProductCardsController extends AbstractActionController {
         }
         return $where;
     }
+    
+    /**
+     * Return where clause for query
+     *
+     * @return Where
+     */
+    private function getWhereTop ($limit = Resource::SQL_LIMIT_PRODUCTCARD_IN_SLIDER)
+    {
+        $count_columns = new \Laminas\Db\Sql\Expression("count(`product_id`) as `count`, `product_id` as product_id");
+        $products = ProductHistory::findAll(['columns' => [$count_columns], 'group' => ['product_id'], 'having' => ['count > 1'], 'group' => ['product_id'],'limit' => $limit,])->toArray();
+        $productsId = ArrayHelper::extractId($products);
+        $where = new Where();
+        $where->in("id" , $productsId);                
+        return $where; 
+         //SELECT `product_id`, COUNT(`product_id`) AS `count` FROM 'product_history` GROUP BY `product_id` HAVING  `count` > order BY `count` DESC LIMIT 0, 40
+     }
 
     /**
+    * Return where clause for query
+    *
+    * @return Where
+    */
+    private function getWhereSale ()
+    {
+        $where = new Where();
+        $where->greaterThan("discount" , 0);                
+        return $where; 
+         //SELECT `product_id`, COUNT(`product_id`) AS `count` FROM 'product_history` GROUP BY `product_id` HAVING  `count` > order BY `count` DESC LIMIT 0, 40
+     }
+    
+     /**
      * Return filtered HandbookRelatedProduct
      *
      * @param array $params
@@ -316,6 +363,32 @@ class ProductCardsController extends AbstractActionController {
         $params['where'] = $this->getWhereProvider($params);
         return $this->getProducts($params);
     }
+    
+    /**
+     * Return filtered HandbookRelatedProduct
+     *
+     * @param array $params
+     * @return HandbookRelatedProduct[]
+     *
+     */
+    private function getProductsTop() {
+        $params['where'] = $this->getWhereTop();
+        return $this->getProducts($params);
+    }
+
+    /**
+     * Return filtered HandbookRelatedProduct
+     *
+     * @param array $params
+     * @return HandbookRelatedProduct[]
+     *
+     */
+    private function getProductsSale() {
+        $params['where'] = $this->getWhereSale();
+        $params['order'] = ['discount desc'];
+        $params['limit'] = Resource::SQL_LIMIT_PRODUCTCARD_IN_SLIDER;
+        return $this->getProducts($params);
+    }
 
     /**
      * Return filtered HandbookRelatedProduct
@@ -329,6 +402,8 @@ class ProductCardsController extends AbstractActionController {
         $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
         return $filteredProducts;
     }
+    
+    
 
     private function prepareCharacteristics(&$characteristics) {
         if (!$characteristics) {

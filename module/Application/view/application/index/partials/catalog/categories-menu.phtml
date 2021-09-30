@@ -1,0 +1,12 @@
+<?php 
+if (!empty($categories)) :     ?>
+  <b><?= \Application\Resource\Resource::THE_CATEGORY?></b> 
+  <ul>
+    <?php foreach ($categories as $breadCrumb) : ?>
+        <li>
+          <a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a>
+        </li>
+    <?php
+    endforeach; ?>
+  </ul>
+<?php endif; ?>
