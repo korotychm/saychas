@@ -47,4 +47,34 @@ $(document).ready(function(){
 
   }
 
+  if ($('#viewed-products').length){
+
+    var categoryPage = new Vue({
+      el: '#viewed-products',
+      data: {
+        products: [],
+        length: 0
+      },
+      created() {
+          axios
+            .post('/ajax-get-client-history')
+            .then(response => {
+              this.products = response.data.products;
+              this.length = Object.keys(this.products).length;
+              console.log('Продукты со скидкой',this.products);
+            });
+      },
+      updated() {
+        $('#viewed-products .products-carousel').slick(
+          {
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4
+          }
+        );
+      }
+    });
+
+  }
+
 });
