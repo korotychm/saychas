@@ -2,6 +2,9 @@
 if (!empty($categories)) :     ?>
   <nav class="catalog__nav">
     <h2 class="catalog__sidebar-heading"><?= \Application\Resource\Resource::THE_CATEGORY?></h2>
-    <a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a>
+    <?php foreach ($categories as $breadCrumb) : ?>
+      <a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a>
+    <?php
+    endforeach; ?>
   </nav>
 <?php endif; ?>
