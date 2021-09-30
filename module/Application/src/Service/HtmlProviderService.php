@@ -581,11 +581,14 @@ class HtmlProviderService {
         if (empty($item)) {
             return;
         }
+        
+       
 
         while (list($prov, $prod) = each($item)) {
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
+             
             $infostore1c = "";
             if (null != $store) {
                 $idStore = $store->getId();
@@ -643,6 +646,7 @@ class HtmlProviderService {
                 "products" => $prod,
                 "infostore1c" => $infostore1c,
             ];
+            
         }
         if ($countproducts) {
             $countproviders = (int) count($countprovider);
@@ -655,6 +659,7 @@ class HtmlProviderService {
         if (!empty($return["product"])) {
             ksort($return["product"]);
         }
+        //exit (print_r($return["product"]));
         return $return;
     }
 
