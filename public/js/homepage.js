@@ -52,7 +52,7 @@ $(document).ready(function(){
     var categoryPage = new Vue({
       el: '#viewed-products',
       data: {
-        products: [],
+        products: {},
         length: 0
       },
       created() {
@@ -61,7 +61,7 @@ $(document).ready(function(){
             .then(response => {
               this.products = response.data.products;
               this.length = Object.keys(this.products).length;
-              console.log('История',this.products);
+              console.log('Истор',this.products);
             });
       },
       updated() {
