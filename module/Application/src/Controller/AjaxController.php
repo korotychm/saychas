@@ -399,7 +399,7 @@ class AjaxController extends AbstractActionController {
                 $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);
             }
         }
-        return new JsonModel($products);
+        return new JsonModel(["products" => $products]);
     }
 
     public function getClientHistoryAction() {
@@ -417,7 +417,7 @@ class AjaxController extends AbstractActionController {
                 $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);
             };
         }
-        return new JsonModel($products);
+        return new JsonModel(["products" => $products]);
     }
 
     /*
