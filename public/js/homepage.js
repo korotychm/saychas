@@ -61,7 +61,7 @@ $(document).ready(function(){
             .then(response => {
               this.products = response.data.products;
               this.length = Object.keys(this.products).length;
-              console.log('Продукты со скидкой',this.products);
+              console.log('История',this.products);
             });
       },
       updated() {
