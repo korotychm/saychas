@@ -18,7 +18,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/brands.js'));
       <section class="section">
         <div class="products-grid products-grid--3">
           <div v-for="(product, name) in products" :key="name" class="product">
-              <div class="product__label">Акция</div>
+              <div class="product__label" v-if="product.oldPrice && product.oldPrice != product.price">Акция</div>
               <a class="product__img" :href="'/product/' + name">
                 <img :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
               </a>
@@ -38,7 +38,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/brands.js'));
               </div>
               <div class="product__price">
                   <div class="product__price-current">{{ (product.price / 100).toLocaleString() }} ₽</div>
-                  <div v-if="product.oldprice && product.oldprice != product.price" class="product__price-old">{{ (product.oldprice / 100).toLocaleString() }} ₽</div>
+                  <div v-if="product.oldPrice && product.oldPrice != product.price" class="product__price-old">{{ (product.oldPrice / 100).toLocaleString() }} ₽</div>
               </div>
               <div class="product__tocart">
                 <button class="btn btn--primary paybutton" :rel="name">В корзину</button>
