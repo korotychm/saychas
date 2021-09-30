@@ -59,7 +59,7 @@ $(document).ready(function(){
           axios
             .post('/ajax-get-client-history')
             .then(response => {
-              this.products = response.data;
+              this.products = response.data.products;
               //this.length = Object.keys(this.products).length;
               console.log('Истор',this.products);
             });
