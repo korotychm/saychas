@@ -170,9 +170,7 @@ class HtmlProviderService {
         if (empty($filters)) {
             return["error" => "errorId"];
         }
-        //  $return = [];
-        //$j = 0;
-        foreach ($filters as $row) {
+            foreach ($filters as $row) {
             $row['val'] = explode(",", $row['val']);
             $row['val'] = array_unique($row['val']);
             //$getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
