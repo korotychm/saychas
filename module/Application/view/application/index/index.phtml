@@ -16,7 +16,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
 </section>
 <section class="section">
     <h2 class="h2 section__heading">Горящие предложения</h2>
-    <div class="products-carousel products-carousel--4" id="sale-products">
+    <div class="products-carousel" id="sale-products">
       <div v-for="(product, name) in products" :key="name" class="product">
           <div class="product__label" v-if="product.oldprice && product.oldprice != product.price">Акция</div>
           <a class="product__img" :href="'/product/' + name">

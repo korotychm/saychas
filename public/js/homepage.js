@@ -16,7 +16,7 @@ $(document).ready(function(){
             });
       },
       updated() {
-        $('.products-carousel--4').slick(
+        $('#sale-products').slick(
           {
             infinite: true,
             slidesToShow: 4,
