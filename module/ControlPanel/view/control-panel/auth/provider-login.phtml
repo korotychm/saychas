@@ -1,0 +1,18 @@
+<div class="cp-login__content">
+  <div class="cp-login__card">
+    <h1>Введите код поставщика</h1>
+    <form method="POST" action="<?= $action ?>" autocomplete="off">
+        <input type="hidden" name="returnUrl" value="<?= $returnUrl ?>" />
+        <h2>Код поставщика</h2>
+        <div class="cp-login__input">
+          <input type="text" placeholder="00000" class="input" value="" name="code">
+        </div>
+        <input type="submit" id="send-provider-login" class="btn btn--primary" value="Войти" />
+    </form>
+  </div>
+</div>
+
+<?php
+    $banzaii = 'vonzaii';
+    //echo $banzaii;
+?>

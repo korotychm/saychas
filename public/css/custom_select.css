@@ -53,7 +53,7 @@
 	font-weight:400;
 	font-size:13px; text-align:left;
 	padding: 10px ; /* паддинг справа - это отступ текста от ползунка */
-	zoom: 1;
+	
 	/*font-weight:bolder; color:#000;*/
 }
 .cusel span:hover,

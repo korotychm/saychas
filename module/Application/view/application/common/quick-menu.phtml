@@ -1,0 +1,11 @@
+<?php if (!empty($menu)): ?>
+    <nav class="header__bottom">
+        <?php while (list($key, $menuItem) = each($menu)): ?>
+            <a href="/category/<?=$key?>" id="quick-menu-item-<?=$key?>"><?=$menuItem['title']?></a>
+        <?php endwhile; ?>
+    </nav>
+<?php endif; 
+/*$param["000001"]=["title"=>"title", "param"=>"params"];
+$param["000002"]=["title"=>"title2", "param"=>"params2"];*/
+//echo json_encode($menu);
+?>

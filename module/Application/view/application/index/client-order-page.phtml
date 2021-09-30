@@ -1,0 +1,28 @@
+<?php
+$this->headTitle($this->title, 'PREPEND');
+$this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
+?>
+<div class="page-heading">
+    <h1 class="h1"><?=$this->title?></h1>
+        <span>от <?=$this->orderDate?></span>
+    
+    
+</div>
+<div class="profile-page">
+    
+
+  <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
+    
+    <a href='#' onclick ="$('#printr').slideToggle(); return false;">Доступные php данные для View </a>
+   <pre style='display:none; font-size:12px;' id="printr"> 
+   <?=print_r($this->orderInfo) /*доступные данные на странице*/?></pre>
+    
+    
+
+    
+  <pre id="client-order">
+  </pre> 
+
+
+<pre><?=print_r($this->order_info)?></pre>
+    

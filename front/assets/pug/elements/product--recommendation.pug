@@ -1,0 +1,22 @@
+mixin product--recommendation(img,title,label)
+  div.product.product--recommendation
+    div.product__label= label
+    a(href="#").product__img
+      img(src=img)
+    a(href="#").product__title= title
+    div.product__reviews
+      div.product__reviews-grade
+        include ../../img/icons/icon.svg
+        span 4.7
+      a(href="#").product__reviews-link 28 отзывов
+    div.product__price
+      div.product__price-current 17 990 ₽
+      div.product__price-old 21 990 ₽
+    div.product__tocart
+      button.btn.btn--primary В корзину
+      ul.product__attributes
+        li <span>Диагональ экрана, дюймы</span> 1.4
+        li <span>Разрешение экрана</span> 360x360
+        li <span>Беспроводные интерфейсы</span> NFC
+        li <span>Совместимость</span> Android
+        li <span>Защита от влаги</span> Да

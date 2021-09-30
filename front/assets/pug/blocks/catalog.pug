@@ -1,0 +1,38 @@
+section.catalog
+  div.page-heading
+    h1.h1 Мобильные телефоны 
+      span 312 515 товаров
+    select.select.catalog__sort
+      option(selected,value="") Сначала свежие
+      option(value="") Сначала популярные
+      option(value="") Сначала дешевые
+      option(value="") Сначала дорогие
+  div.catalog__wrap
+    aside.catalog__sidebar
+    
+      ul.catalog__breadcrumbs
+        li.catalog__sidebar-heading
+          a(href="#") Электроника
+        li
+          a(href="#") Смартфоны и аксессуары
+        li
+          a(href="#") Мобильные телефоны
+          
+      nav.catalog__nav
+        h2.catalog__sidebar-heading Категории
+        a(href="#") Смартфоны
+        a(href="#") Кнопочные телефоны
+        a(href="#") Аксессуары
+        a(href="#") Рации и прочие телефоны
+        
+      include catalog__filter.pug
+              
+    div.catalog__content
+      section.section
+        include products-grid-3.pug
+        
+  section.catalog__wrap
+    div.catalog__sidebar
+    section.section
+      h2.h2.section__heading Вы смотрели
+      include products-carousel-3.pug

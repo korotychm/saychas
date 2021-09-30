@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel/src\Service\AuthManager.php
+// ControlPanel/src\Service\RbacManager.php
 
 namespace ControlPanel\Service;
 
@@ -57,6 +57,8 @@ class RbacManager
         $this->cache = $cache;
         $this->assertionManagers = $assertionManagers;
         $this->userManager = $userManager;
+
+        $this->entityManager->initRepository(CPRole::class);
     }
 
     /**
@@ -169,7 +171,7 @@ class RbacManager
 
         $roles = $user['roles'];
 
-        $this->entityManager->initRepository(CPRole::class);
+//        $this->entityManager->initRepository(CPRole::class);
 
         foreach ($roles as $role) {
             // if ($this->rbac->isGranted($role->getName(), $permission)) {
@@ -181,7 +183,7 @@ class RbacManager
                 }
                 //Otherwise we need to conduct additional verification
                 foreach ($this->assertionManagers as $assertionManager) {
-                    if ($assertionManager->assert($this->rbac, $permission, $params)) {
+                    if (!$assertionManager->assert($this->rbac, $permission, $params)) {
                         return true;
                     }
                 }

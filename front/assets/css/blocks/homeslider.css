@@ -1,0 +1,7 @@
+.homeslider {
+  position: relative;
+  margin-bottom: 20px;
+}
+.homeslider .slick-list {
+  border-radius: 20px;
+}

@@ -31,6 +31,7 @@ use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
+use Application\Service\CommonHelperFunctionsService;
 use Application\Service\HtmlFormProviderService;
 use Application\Controller\IndexController;
 
@@ -61,6 +62,7 @@ class IndexControllerFactory implements FactoryInterface
         $config = $container->get('Config');
         $htmlProvider = $container->get(HtmlProviderService::class);
         $htmlFormProvider = $container->get(HtmlFormProviderService::class);
+        $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
         $userRepository = $container->get(UserRepository::class);
         $authService = $container->get(AuthenticationService::class);
         $productCharacteristic = $container->get(ProductCharacteristicRepositoryInterface::class);
@@ -74,7 +76,7 @@ class IndexControllerFactory implements FactoryInterface
         $sessionManager = $container->get(SessionManager::class);
         
         return new IndexController($test, $category, $provider, $store, $product, $filteredProduct, $brand, $colorRepository, $setting, $characteristic,
-                $price, $stockBalance, $handBookProduct, $entityManager, $config, $htmlProvider, $htmlFormProvider, $userRepository, $authService, $productCharacteristic,
+                $price, $stockBalance, $handBookProduct, $commonHelperFuncions, $entityManager, $config, $htmlProvider, $htmlFormProvider,  $userRepository, $authService, $productCharacteristic,
                 $basketRepository/*, $sessionContainer*/, $sessionManager);
     }
 

@@ -1,0 +1,124 @@
+.popup {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: none;
+}
+.popup__inner {
+  position: absolute;
+  background: #fff;
+  border-radius: 20px;
+  padding: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.popup__heading {
+  font-size: 34px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  padding-right: 50px;
+}
+.popup__close {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  cursor: pointer;
+}
+.popup__close.disabled {
+  display: none;
+}
+.popup__close::before,
+.popup__close::after {
+  content: '';
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: var(--red);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.popup__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+.auth-reg {
+  width: 600px;
+  position: relative;
+}
+.auth-reg .error1c {
+  color: var(--red);
+  margin: 30px 0 0 190px;
+}
+.auth-reg .btn {
+  width: 270px;
+  margin-left: 190px;
+}
+.auth-reg__back {
+  position: absolute;
+  left: 0;
+  bottom: 16px;
+  color: var(--red);
+  text-decoration: none;
+  cursor: pointer;
+}
+.auth-reg__input-group {
+  display: flex;
+  margin-bottom: 25px;
+  font-size: 20px;
+}
+.auth-reg__input-group__label {
+  width: 190px;
+  padding-right: 25px;
+  text-align: right;
+  font-weight: bold;
+  margin-top: 13px;
+}
+.auth-reg__input-group__value {
+  height: 55px;
+  display: flex;
+  align-items: center;
+}
+.auth-reg__input-group__input {
+  width: 270px;
+  position: relative;
+}
+.auth-reg__input-group__input--large {
+  width: 440px;
+}
+.auth-reg__input-group__input input {
+  height: 55px;
+  width: 100%;
+  border: 2px solid var(--gray);
+  padding: 0 25px;
+  font-size: inherit;
+  border-radius: 55px;
+  outline: none;
+}
+.auth-reg__input-group__input input.error {
+  border-color: var(--red);
+}
+.auth-reg__input-group__input p {
+  font-size: 16px;
+  margin: 5px 0 0 25px;
+  color: var(--gray2);
+}
+.auth-reg__input-group__input p.error {
+  color: var(--red);
+}
+.auth-reg__input-group__input a {
+  display: inline-block;
+  text-decoration: none;
+  color: var(--red);
+  margin-top: 5px;
+  margin-left: 25px;
+  font-size: 16px;
+  cursor: pointer;
+}

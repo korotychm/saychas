@@ -9,6 +9,7 @@ namespace ControlPanel\Controller;
 use ControlPanel\Service\HtmlContentProvider;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
 use Laminas\Authentication\Result;
@@ -33,7 +34,7 @@ class AuthController extends AbstractActionController
 
     /** @var AuthManager */
     protected $authManager;
-    
+
     /**
      * Constructor
      *
@@ -64,6 +65,16 @@ class AuthController extends AbstractActionController
         return $response;
     }
 
+    public function providerLoginAction()
+    {
+        $data = $this->params()->fromQuery('data');
+        if (null != $data) {
+            return new \Laminas\View\Model\JsonModel(['data' => true]);
+        }
+        $returnUrl = $this->params()->fromQuery('p');
+        return new ViewModel(['action' => '/control-panel/check-provider-login', 'returnUrl' => $returnUrl]);
+    }
+
     /**
      * Login get request
      * Render a form to enter login details
@@ -79,14 +90,14 @@ class AuthController extends AbstractActionController
 ////            'roles' => ["000000002", "000000003", "000000003",],
 ////            'access_is_allowed' => true,
 //        ]);
-        
         //$returnUrl = $this->params()->fromQuery('returnUrl');
         $data = $this->params()->fromQuery('data');
-        if(null != $data) {
+        if (null != $data) {
             return new \Laminas\View\Model\JsonModel(['data' => true]);
         }
         $returnUrl = $this->params()->fromQuery('p');
-        return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl]);
+        $code = $this->params()->fromQuery('c');
+        return new ViewModel(['action' => '/control-panel/check-login', 'returnUrl' => $returnUrl, 'code' => $code]);
     }
 
     /**
@@ -98,13 +109,24 @@ class AuthController extends AbstractActionController
     public function checkLoginAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $result = $this->authManager->login(['provider_id' => '00002', 'login' => $post['username'], 'password' => $post['password'],]);
-        if($result->getCode() == Result::SUCCESS) {
+        $result = $this->authManager->login(['provider_id' => $post['code'] /* '00002' */, 'login' => $post['username'], 'password' => $post['password'],]);
+        if ($result->getCode() == Result::SUCCESS) {
             // set session
-            return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel?'/*$post['returnUrl']*/);
+            return $this->redirect()->toUrl($post['returnUrl']); //->toUrl('/control-panel?'/*$post['returnUrl']*/);
         }
-        
-        return $this->redirect()->toUrl($post['returnUrl']);//->toUrl('/control-panel'/*$post['returnUrl']*/);
+
+        return $this->redirect()->toUrl($post['returnUrl']); //->toUrl('/control-panel'/*$post['returnUrl']*/);
+    }
+
+    /**
+     * Check provider code
+     *
+     * @return Redirect
+     */
+    public function checkProviderLoginAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        return $this->redirect()->toUrl('/control-panel/login?p=' . $post['returnUrl'] . '&c=' . $post['code']);
     }
 
     /**
@@ -119,7 +141,7 @@ class AuthController extends AbstractActionController
     }
 
     /**
-     * Set 403: "Forbidden" status 
+     * Set 403: "Forbidden" status
      *
      * @return ViewModel
      */
@@ -127,18 +149,25 @@ class AuthController extends AbstractActionController
     {
         $response = $this->getResponse();
         $response->setStatusCode(403);
-        
+
         return $response;
     }
 
     /**
      *  Displays the "Not Authorized" page.
-     * 
+     *
      * @return ViewModel
      */
     public function notAuthorizedViewAction()
     {
         return (new ViewModel())->setTerminal(true);
     }
+    
+//    public function confirmOfferAction()
+//    {
+//        $identity = $this->authManager->getIdentity();
+//        $this->userManager->confirmOffer([]);
+//        return new JsonModel(['show_popup' => true]);
+//    }
 
 }

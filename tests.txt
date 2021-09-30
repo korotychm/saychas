@@ -76,6 +76,18 @@ curl -i -L saychas-z.local/receive-marker?XDEBUG_SESSION_START=netbeans-xdebug -
 curl -i -L saychas-z.local/receive-marker --data '[{"product_id": "1", "product_id": "1" }]' -X DELETE
 
 
+[{"orderId":"000000023","order_status":"0","deliveries":[{"delivery_id":"000000000000000090","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000133","requisition_status":"0"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"000000000000000088","delivery_status":"1","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"0"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}]
+
+curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": { "order_only": true, "order_id": "000000409", "order_status": "2", "deliveries": [ { "delivery_id": "123123", "delivery_status": 0 }, { "delivery_id": "123124", "delivery_status": 1 } ], "applications":[ { "application_id": "123123","application_status": 0 }, { "application_id": "123124","application_status": 1 }] } }'
+
+
+curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"orderId":"000000023","order_status":"0","deliveries":[{"delivery_id":"000000000000000090","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000133","requisition_status":"0"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"000000000000000088","delivery_status":"1","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"0"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}] }'
+
+curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"order_id":"000000465","order_status":"5","deliveries":[{"delivery_id":"000000000000000855","delivery_status":"77","requisitions":[{"requisition_id":"000000000000000859","requisition_status":"958999"},{"requisition_id":"000000000000000134","requisition_status":"0"}]},{"delivery_id":"0000000000000000856","delivery_status":"17","requisitions":[{"requisition_id":"000000000000000130","requisition_status":"110"}]},{"delivery_id":"000000000000000087","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000129","requisition_status":"0"}]},{"delivery_id":"000000000000000089","delivery_status":"0","requisitions":[{"requisition_id":"000000000000000131","requisition_status":"0"},{"requisition_id":"000000000000000132","requisition_status":"0"}]}]}] }'
+
+curl -i -L saychas-z.local/receive-client-order-statuses?XDEBUG_SESSION_START=netbeans-xdebug --data '{"truncate": false, "data": [{"type":"0","order_id":"000000023","status":"0"},{"type":"0","order_id":"000000024","status":"1"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000090","status":"0"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000088","status":"0"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000130","status":"1"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000134","status":"1"}] }'
+
+
 // Telephone code request
 curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 9160010203, "code": 7777}] }'
 
@@ -84,4 +96,6 @@ curl -i -L http://SRV02:8000/SC/hs/site/send_regitration_code --data '{"phone": 
 // Making request to get all users from srv02.saychas.office
 
  curl -i -L curl http://srv02.saychas.office:8000/SC/hs/site/lk_get_all_users --data '{"provider_id": "00002"}'
+
+
 

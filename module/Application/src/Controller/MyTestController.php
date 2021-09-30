@@ -28,7 +28,7 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 use Application\Model\Repository\UserRepository;
 use Application\Service\HtmlProviderService;
 use Application\Service\HtmlFormProviderService;
-use Application\Resource\StringResource;
+use Application\Resource\Resource;
 //use Laminas\Authentication\AuthenticationService;
 
 use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter as AuthAdapter;
@@ -222,7 +222,7 @@ class MyTestController extends AbstractActionController
         print_r($characteristic);
         echo '</pre>';
         exit;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $container->item = 'foo';
 
         $id=$this->params()->fromRoute('id', '0');
@@ -476,7 +476,7 @@ class MyTestController extends AbstractActionController
 //        print_r($header->TestCookie);
 //        echo '</pre>';
         
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $container->userIdentity = ['my_username', 'my_data'];
 
         //setcookie("userIdentity", ['my_username', 'my_data']);
@@ -681,7 +681,7 @@ class MyTestController extends AbstractActionController
     
     public function testReposAction()
     {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         echo $container->identity;
         echo '<hr/>';
         $this->layout()->setTemplate('layout/mainpage');

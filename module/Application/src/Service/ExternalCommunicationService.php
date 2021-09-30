@@ -1,6 +1,6 @@
 <?php
 
-// src\Service\ExternalCommunicationService.php
+// src\Service\AcquiringCommunicationService.php
 
 namespace Application\Service;
 
@@ -12,7 +12,7 @@ use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 use Application\Model\Entity\ClientOrder;
 
 /**
- * Description of ExternalCommunicationService
+ * Description of AcquiringCommunicationService
  *
  * @author alex
  */
@@ -46,18 +46,12 @@ class ExternalCommunicationService
         ];
         return $this->sendCurlRequest($url, $content);
     }
-
-    public function sendBasketData($content)
-    {
-        $url = $this->config['parameters']['1c_request_links']['create_order'];
-
-        if (!$content["products"])
-            return false;
-        if (empty($content["products"]))
-            return false;
-
-        while (list($id, $value) = each($content["products"])) {
-            $store[$value["store"]][] = [
+    
+    
+    /***********************
+    
+    
+     $store[$value["store"]][] = [
                 "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
             ];
             $productupdate[]=$id;
@@ -65,7 +59,7 @@ class ExternalCommunicationService
         }
         //(надо вынести в resource)
         $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
-        
+
         $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
         $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
         //$q = -1;
@@ -88,72 +82,116 @@ class ExternalCommunicationService
             while (list($key, $val) = each($delivery))
                 $deliv[] = $val;
         }
-        $content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv];
+        $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] ,"selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
+
+    ************************/
+
+    public function sendBasketData($content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['create_order'];
+        $selfdeliv = $deliv =[];
+        if (empty($content["products"]))
+            return false;
+
+        while (list($id, $value) = each($content["products"])) {
+            $store[$value["store"]][] = [
+                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
+            ];
+            $productupdate[]=$id;
+            //$coontent["delevery"][] = $store[$value['store']];
+        }
+        //(надо вынести в resource)
+        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
+        
+            $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
+        $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
+        //$q = -1;
+        while (list($key, $val) = each($store)) {
+            $i++;
+            //$selfdelevery = false;
+            if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
+
+                $selfdeliv[] = ["store" => $key, "products" => $val];
+                
+            } else {
+                if ($i < $limit) {
+                    $i = 1;
+                    $j++;
+                }
+                $delivery[$j][] = ["store" => $key, "products" => $val];
+            }
+        }
+        foreach ($delivery as $d)
+        {
+            $deliveries[] = ["pickup" => false, "requisitions" => $d];
+        }
+        
+        foreach ($selfdeliv as $d)
+        {
+            $deliveries[] = ["pickup" => true, "requisitions" => [$d]];
+        }
+        
+//        array_push($delivery, [$selfdeliv]);
+//        
+//
+//        if (!empty($delivery)) {
+//            while (list($key, $val) = each($delivery))
+//                $deliv[] = $val;
+//        }
+//        //$content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
+        $content["deliveries"] =  $deliveries;
+        $return["deliveries"] = $content["deliveries"]; //; =  $deliveries;
+        
+        $return["delivery_price"] = $content['delivery_price'];
+        //$return["delivery_price"] = ;
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
         unset(
                 $content['timepointtext1'],
                 $content['timepointtext3'],
                 $content['timepointtext3'],
-                // $content['selfdelevery'], 
+                $content['selfdelevery'], 
                 $content["products"]);
-        /* unset($content['userGeoLocation']);
-          $content['userGeoLocation'] = []; */
-        //return $content;
         
-        $return['basketinfo']['username'] = $content['username'];
-        $return['products'] = $productupdate;
+        $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
+        $return['basketinfo']['timepoint'] = $content["timepoint"];
+        $return['basketinfo']['ordermerge'] = $content["ordermerge"];
+        $return['basketinfo']['delivery_price'] = $content['delivery_price'];
+        $return['basketinfo']['products'] = $return['products'] = $productupdate;
         $return['response'] = $this->sendCurlRequest($url, $content);
    
         
         return $return;
-        /*try {
-            $arr = Json::decode($answer, Json::TYPE_ARRAY);
-            return $arr;
-        } catch (LaminasJsonRuntimeException $e) {
-            //return ['result' => 10, 'message' => $e->getMessage().' '.$response];
-            return ['result' => false, 'message' => $e->getMessage() . ' >>> ' . $answer];
-        }*/
-        
-        
-        /*$response = file_get_contents(
-          $url,
-          false,
-          stream_context_create([
-          'http' => [
-          'method' => 'POST',
-          'header' => 'Content-type: application/x-www-form-urlencoded',
-          'content' => http_build_query($content)]
-          ])*/
-        
-        //$return = json_decode($answer, true);
-        //$order = ClientOrder::findFirstOrDefault([]);
-       //return "<pre>" .print_r($return, true) ."</pre>";
-        //return $return;
-        
+       
         
     }
     
     public function createClientOrder ($content, $order, $userId)
     {
-        
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
-        $deliveries = Json::encode($content['response']['deliveries']);
+        $deliveries = Json::encode($content['response']['delivery_info']);
+        $jsonNull = Json::encode([]);
         $orderId = $content['response']['order_id'];
-//        $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
-        
+    //    $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
         $order->setOrderId($orderId); 
         $order->setUserId($userId); 
         $order->setDeliveryInfo($deliveries); 
         $order->setBasketInfo($basketinfo); 
+        $order->setPaymentInfo($jsonNull); 
+        $order->setConfirmInfo($jsonNull); 
         $order->setDateCreated(time());
-        $order->persist(['order_id'=>$orderId]);
-        return ['result'=> true, 'orderId'=>$orderId, 'products' => $content['products']];
+        try {
+            $order->persist(['order_id'=>$orderId]);
+            return ['result'=> true,  'orderId'=>$orderId, 'products' => $content['products']];
+        }
+        catch(\Exception $ex){
+            
+                return ['result'=> false, 'description' => $ex->getMessage()];
+        }
         
     }
-    
-    
+
     /**
      * Send curl request.
      *
@@ -295,6 +333,12 @@ class ExternalCommunicationService
     public function sendCredentials(array $content)
     {
         $url = $this->config['parameters']['1c_request_links']['update_client_info'];
+        return $this->sendCurlRequest($url, $content);
+    }
+    
+    public function sendOrderPaymentInfo (array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['order_payment'];
         return $this->sendCurlRequest($url, $content);
     }
 

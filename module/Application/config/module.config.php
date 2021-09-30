@@ -18,12 +18,14 @@ use Application\Controller\Factory\IndexControllerFactory;
 use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
+use Application\Controller\Factory\ProductCardsControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Application\Controller\Factory\FtpControllerFactory;
+use Application\Controller\Factory\AcquiringControllerFactory;
 use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
-//use Application\Resource\StringResource;
+//use Application\Resource\Resource;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\Session;
@@ -179,13 +181,64 @@ return [
             'client-orders' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/client-orders',
+                    'route'    => '/user/orders',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'clientOrders',
                     ],
                 ],
             ],
+            'client-order' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/user/order[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'clientOrderPage',
+                    ],
+                ],
+            ],
+            'client-favorites' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/user/favorites',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'clientFavoritesPage',
+                    ],
+                ],
+            ],
+            'ajax-get-client-favorites' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-client-favorites',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getClientFavorites',
+                    ],
+                ],
+            ],
+            'ajax-get-client-history' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-client-history',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getClientHistory',
+                    ],
+                ],
+            ],
+            'get-search-booster-api' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/get-search-booster-api[/:id1][/:id2][/:id3][/:id4][/:id6]',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'searchBoosterApi',
+                    ],
+                ],
+            ],
+            
             
 //            'show-provider' => [
 //                'type'    => Segment::class,
@@ -197,17 +250,17 @@ return [
 //                    ],
 //                ],
 //            ],
-            'testing' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/testing[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testing',
-                    ],
-                ],
-            ],
-            'provider' => [
+//            'testing' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/testing[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'testing',
+//                    ],
+//                ],
+//            ],
+            /*'provider' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/provider',
@@ -216,7 +269,7 @@ return [
                         'action'     => 'provider',
                     ],
                 ],
-            ],
+            ],*/
             /**/
             'catalog' => [
                 'type'    => Segment::class,
@@ -228,6 +281,49 @@ return [
                     ],
                 ],
             ],
+            'category' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/category[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'category',
+                    ],
+                ],
+            ],
+            
+            'brand' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/brand/:brand_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'brandProducts',
+                    ],
+                ],
+            ],
+            
+            'store' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/store/:store_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'storeProducts',
+                    ],
+                ],
+            ],
+            'provider' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/seller/:provider_id[/:category_id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'providerProducts',
+                    ],
+                ],
+            ],
+            
             'basket' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -292,18 +388,29 @@ return [
                         'action'     => 'sendBasketData',
                     ],
                 ],
-            ],//userAuth
+            ],
+            'get-client-order-bill' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/get-client-order-bill',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffOrderBill',
+                    ],
+                ],
+            ],
+            
             'product' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/product[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'product',
+                        'action'     => 'productPage',
                     ],
                 ],
             ],
-             'product-page' => [
+            /* *'product-page' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/product-page[/:id]',
@@ -312,7 +419,7 @@ return [
                         'action'     => 'productPage',
                     ],
                 ],
-            ],
+            ], /**/
             /*'catalog' => [
                 // First we define the basic options for the parent route: \Laminas\Router\Http\
                 'type' => Segment::class,
@@ -501,6 +608,18 @@ return [
                     'repository' => \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class,
                 ],
             ],
+            'receive-client-order-statuses' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/receive-client-order-statuses[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
+                    'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
             'set-client-info' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -551,46 +670,36 @@ return [
                     ],
                 ],
             ],
-            'hello-world' => [
+            'my-login' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/hello-world',
+                    'route'    => '/my-login',
                     'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'helloWorld',
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'myLogin',
                     ],
                 ],
             ],
-            'test-repos' => [
+            'signup' => [
                 'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/test-repos',
+                    'route'    => '/signup',
                     'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testRepos',
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'signup',
                     ],
                 ],
             ],
-            'test-identity' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-identity',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testIdentity',
-                    ],
-                ],
-            ],
-            'test-client' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/test-client',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'testClient',
-                    ],
-                ],
-            ],
+//            'test-repos' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/test-repos',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'testRepos',
+//                    ],
+//                ],
+//            ],
             'get-image' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -703,7 +812,7 @@ return [
                     ],
                 ],
             ],
-            'ajax' => [
+            /*'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/ajax[/:id]',
@@ -712,8 +821,8 @@ return [
                         'action'     => 'ajax',
                     ],
                 ],
-            ],
-            'banzaii' => [
+            ],*/
+            /*'banzaii' => [
                 'type'    => Segment::class,
                 'options' => [
                     'route'    => '/banzaii[/:id]',
@@ -723,7 +832,7 @@ return [
                     ],
                 ],
             ],
-            'ajax-to-web' => [
+            /*'ajax-to-web' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-to-web',
@@ -732,18 +841,72 @@ return [
                         'action'     => 'ajaxToWeb',
                     ],
                 ],
-            ],
+            ],*/
             'ajax-fltr' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-fltr',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'setFilterForCategory',
                     ],
                 ],
             ],
-           'ajax-get-store' => [
+            'ajax-get-products-categories' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-categories',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductCategories',
+                    ],
+                ],
+            ],
+            'ajax-get-products-brand' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-brand',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsBrand',
+                    ],
+                ],
+            ],
+            'ajax-get-products-store' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-store',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsStore',
+                    ],
+                ],
+            ],
+             'ajax-get-products-provider' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-provider',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsProvider',
+                    ],
+                ],
+            ],
+            
+            
+            'ajax-fltr-json' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-fltr-json',
+                    'defaults' => [
+//                        'controller' => Controller\AjaxController::class,
+//                        'action'     => 'getFiltredProductForCategoryJson',
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsCatalog',
+                    ],
+                ],
+            ],
+           /*'ajax-get-store' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-get-store',
@@ -752,7 +915,7 @@ return [
                         'action'     => 'ajaxGetStore',
                     ],
                 ],
-            ],
+            ],*/
             'ajax-set-user-address'=>[
                 'type'    => Literal::class,
                 'options' => [
@@ -780,6 +943,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'ajaxGetLegalStore',
+                    ],
+                ],
+            ],
+            'ajax-get-basket-json'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-basket-json',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'ajaxGetBasketJson',
                     ],
                 ],
             ],
@@ -867,6 +1040,38 @@ return [
                     ],
                 ],
             ],
+            'ajax-chek-order-status'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-chek-order-status',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'checkOrderStatus',
+                    ],
+                ],
+            ],
+            'ajax-get-order-list'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-order-list',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getUserOrderList',
+                    ],
+                ],
+            ],
+            'ajax-get-order-page'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-order-page',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getUserOrderPage',
+                    ],
+                ],
+            ],
+            
+            
             'add-to-basket'=> [
                 'type'    => Literal::class,
                 'options' => [
@@ -874,6 +1079,26 @@ return [
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action'     => 'addToBasket',
+                    ],
+                ],
+            ],
+             'add-to-favorites'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/add-to-favorites',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'addToFavorites',
+                    ],
+                ],
+            ],
+             'remove-from-favorites'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax/remove-from-favorites',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'removeFromFavorites',
                     ],
                 ],
             ],
@@ -897,8 +1122,57 @@ return [
                     ],
                 ],
             ],
-            
-            
+            'ajax-get-category-filters'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-category-filters',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getJsonCategoryFilters',
+                    ],
+                ],
+            ],
+            'tinkoff-payment'=> [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/tinkoff/payment[/:order]',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffPayment',
+                    ],
+                ],
+            ],
+            'tinkoff-callback'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/callback',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffCallback',
+                    ],
+                ],
+            ],
+            'tinkoff-redirect-success'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/success',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffSuccess',
+                    ],
+                ],
+            ],
+             'tinkoff-redirect-error'=> [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/tinkoff/error',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action'     => 'tinkoffError',
+                    ],
+                ],
+            ],
+            //getJsonCategoryFiltersAction
         ],
     ],
     'controllers' => [
@@ -910,6 +1184,8 @@ return [
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
             Controller\FtpController::class => FtpControllerFactory::class,
+            Controller\AcquiringController::class => AcquiringControllerFactory::class,
+            Controller\ProductCardsController::class => ProductCardsControllerFactory::class,
         ],
     ],
     'laminas-cli' => [
@@ -940,6 +1216,7 @@ return [
             \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class => \Application\Model\Repository\StockBalanceRepository::class,
             \Application\Model\RepositoryInterface\SizeRepositoryInterface::class => \Application\Model\Repository\SizeRepository::class,
             \Application\Model\RepositoryInterface\BrandRepositoryInterface::class => \Application\Model\Repository\BrandRepository::class,
+            \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class => \Application\Model\Repository\ClientOrderRepository::class,
             \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class => \Application\Model\Repository\MarkerRepository::class,
             \Application\Model\RepositoryInterface\BasketRepositoryInterface::class => \Application\Model\Repository\BasketRepository::class,
             \Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface::class => \Application\Model\Repository\ProductFavoritesRepository::class,
@@ -971,6 +1248,7 @@ return [
             \Application\Model\Repository\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
+            \Application\Model\Repository\StockBalance::class => \Application\Model\Factory\StockBalanceFactory::class,            
             \Application\Model\Repository\ProviderRelatedStoreRepository::class => \Application\Model\Factory\ProviderRelatedStoreRepositoryFactory::class,
             \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
             \Application\Model\Repository\FilteredProductRepository::class => \Application\Model\Factory\FilteredProductRepositoryFactory::class,
@@ -998,6 +1276,7 @@ return [
             \Application\Service\HtmlProviderService::class => \Application\Service\Factory\HtmlProviderServiceFactory::class,
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
             \Application\Service\ExternalCommunicationService::class => \Application\Service\Factory\ExternalCommunicationServiceFactory::class,
+            \Application\Service\AcquiringCommunicationService::class => \Application\Service\Factory\AcquiringCommunicationServiceFactory::class,
 
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
             
@@ -1011,12 +1290,31 @@ return [
 
             /** Entities */
             \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
+            \Application\Model\Entity\Setting::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
+            \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
+            \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
+            \Application\Model\Entity\Store::class => \Application\Model\Factory\StoreRepositoryFactory::class,
+            \Application\Model\Entity\StockBalance::class => \Application\Model\Factory\StockBalanceRepositoryFactory::class,
+            \Application\Model\Entity\UserPaycard::class => \Application\Model\Factory\UserPaycardRepositoryFactory::class,
+            \Application\Model\Entity\Color::class => \Application\Model\Factory\ColorRepositoryFactory::class,
+            \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
 
-            
+            \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
+            \Application\Model\Entity\Category::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
+            \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
+            \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
+            \Application\Model\Entity\ProductFavorites::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
+            //\Application\Model\Entity\ProductCharacteristic::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
+
+            \Application\Model\Entity\Provider::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
+            \Application\Model\Entity\CharacteristicValue::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
+            \Application\Model\Entity\HandbookRelatedProduct::class => \Application\Model\Factory\HandbookRelatedProductRepositoryFactory::class,
+            \Application\Model\Entity\Characteristic::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
+            \Application\Model\Entity\ProductCharacteristic::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
+
         ],
         'invokables' => [
-//            'my_auth_service' => \Laminas\Authentication\AuthenticationService\AuthenticationService::class,
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
         ]
     ],
@@ -1051,20 +1349,25 @@ return [
         'aliases' => [
             'imagePath' => View\Helper\ImagePath::class,
         ],
-  ],
-//    'view_helpers' => [
-//        'factories' => [
-//            View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
-//        ],
-//        'aliases' => [
-//            'access' => View\Helper\Access::class,
-//        ],
-//    ],
+    ],
     
     'parameters' => [
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
+        ],
+        'TinkoffMerchantAPI'=> [
+            'terminal' => '1629956533317DEMO',  //наш
+            //'terminal' => '1629729309127DEMO',  //мишин
+            'token' => '9mfca0gpenpfi4rb',   //наш 
+            //'token' => 'z62eq0aa900wvaku',   // мишин
+            'api_url' => 'https://securepay.tinkoff.ru/v2/',
+            'company_email' => 'd.sizov@saychas.ru',
+            'company_taxation' => 'osn',
+            'time_order_live' => 900,// время для оплаты заказа в сек.
+            'success_url' => 'https://z.saychas.ru/tinkoff/success', 
+            'fail_url' =>    'https://z.saychas.ru/tinkoff/error',
+            //'vat' => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
@@ -1077,6 +1380,7 @@ return [
             'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
             //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
+            'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
             
         ],
         'image_path' => [
@@ -1085,6 +1389,7 @@ return [
                 'brand' => 'brand',
                 'product' => 'product',
                 'provider' => 'provider',
+                'cpanel_product' => 'cpanel_product'
             ],
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
@@ -1117,20 +1422,60 @@ return [
         ],
 
     ],
+
+    /** Correct configuration for doctrine migrations; */
     'doctrine' => [
+
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => AnnotationDriver::class,
                 'cache' => 'array',
-                'paths' => [__DIR__ . '/../src/Entity']
+                'paths' => [__DIR__ . '/../../module/Application/src/Entity']
             ],
             'orm_default' => [
                 'drivers' => [
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                ]
-            ]
-        ]
+                    __NAMESPACE__ . '\Application\Entity' => __NAMESPACE__ . '_driver'
+                ],
+            ],
+        ],
+
+        'connection' => [
+            // default connection name
+            'orm_default' => [
+                'driverClass' => \Doctrine\DBAL\Driver\PDOMySql\Driver::class,
+                'params' => [
+                    'host'     => 'localhost',
+                    'port'     => '3306',
+                    'user'     => 'saychas_z',
+                    'password' => 'saychas_z',
+                    'dbname'   => 'saychas_z',
+                ],
+            ],
+        ],
+        
+        'migrations_configuration' => [
+            'orm_default' => [
+                'table_storage' => [
+                    'table_name' => 'DoctrineMigrationVersions',
+                    'version_column_name' => 'version',
+                    'version_column_length' => 1024,
+                    'executed_at_column_name' => 'executedAt',
+                    'execution_time_column_name' => 'executionTime',
+                ],
+                //'migrations_paths' => ['SaychasProjectZ\Migrations' => 'data/doctrine/migrations'], // an array of namespace => path
+                'migrations_paths' => ['Saychas\Migrations' => 'data/doctrine/migrations'], // an array of namespace => path
+                'migrations' => [], // an array of fully qualified migrations
+                'all_or_nothing' => false,
+                'check_database_platform' => true,
+                'organize_migrations' => 'year', // year or year_and_month
+                'custom_template' => null,
+            ],
+            'orm_other' => [
+            ],
+        ],
     ],
+    /** Doctrine migrations configuration ends here */
+
 //    'session_manager' => [
 //        'config' => [
 //            'class' => \Session\Config\SessionConfig::class,
@@ -1145,7 +1490,7 @@ return [
 //        ],
 //    ],    
 //    'session_containers' => [
-//        StringResource::SESSION_NAMESPACE,
+//        Resource::SESSION_NAMESPACE,
 //    ],
 //    'session_storage' => [
 //        'type' => Laminas\Session\Storage\SessionArrayStorage::class,

@@ -1,48 +1,31 @@
 {
-    "selfdelivery": [],
-    
-       "delivery": [{
-            "id": "000000000000000291",
-            "delivery_status": "0",
-            "applications": [{
-                    "store": "000000005",
+    "deliveries": {
+        "delivery_price": "29900",
+        "delivery": [{
+                "store": "000000005",
+                "products": [{
+                        "id": "000000000003",
+                        "count": "1",
+                        "price": "5699000",
+                        "discont": 0
+                    }],
+                "pickup": true
+            }, {
+                "0": {
+                    "store": "000000007",
                     "products": [{
-                            "id": "000000000025",
-                            "count": "4"
+                            "id": "000000000014",
+                            "count": "2",
+                            "price": "2000000",
+                            "discont": 0
+                        }, {
+                            "id": "000000000017",
+                            "count": "1",
+                            "price": "1250000",
+                            "discont": 0
                         }]
-                }]
-        }, {
-            "id": "000000000000000292",
-            "delivery_status": "0",
-            "applications": [{
-                    "id":"123",
-                    "store": "000000009",
-                    "status":"0",
-                    "products": [{
-                            "id": "000000000018",
-                            "count": "7"
-                        }, {
-                            "id": "000000000019",
-                            "count": "2"
-                        }, {
-                            "id": "000000000020",
-                            "count": "1"
-                        }]
-                }],
-             "applications": [{
-                    "id":"1232",
-                    "store": "0000000092",
-                    "status":"0",
-                    "products": [{
-                            "id": "000000000018",
-                            "count": "7"
-                        }, {
-                            "id": "000000000019",
-                            "count": "2"
-                        }, {
-                            "id": "000000000020",
-                            "count": "1"
-                        }]
-                }]
-        }]
+                },
+                "pickup": false
+            }]
+    }
 }

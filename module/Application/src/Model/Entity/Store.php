@@ -73,6 +73,16 @@ class Store extends Entity
      * @var string
      */
     protected $icon = '';
+    
+    /**
+     * @var bigint
+     */
+    protected $contact_phone;
+
+    /**
+     * @var string
+     */
+    protected $contact_person;
 
     /**
      * Get id.
@@ -250,6 +260,50 @@ class Store extends Entity
     public function getIcon()
     {
         return $this->icon;
+    }
+    
+    /**
+     * Set contact phone
+     * 
+     * @param bigint $contactPhone
+     * @return $this
+     */
+    public function setContactPhone($contactPhone)
+    {
+        $this->contact_phone = $contactPhone;
+        return $this;
+    }
+    
+    /**
+     * Get contact phone
+     * 
+     * @return bigint
+     */
+    public function getContactPhone()
+    {
+        return $this->contact_phone;
+    }
+    
+    /**
+     * Set contact person
+     * 
+     * @param string $contactPerson
+     * @return $this
+     */
+    public function setContactPerson($contactPerson)
+    {
+        $this->contact_person = $contactPerson;
+        return $this;
+    }
+    
+    /**
+     * Get contact person
+     * 
+     * @return string
+     */
+    public function getContactPerson()
+    {
+        return $this->contact_person;
     }
 
 }

@@ -25,13 +25,16 @@ class CategoryRepositoryFactory implements FactoryInterface
         $adapter = $container->get(AdapterInterface::class);
 
         $adp = $container->get('Application\Db\WriteAdapter');
+        
+        $cache = $container->get('FilesystemCache');
 
         return new CategoryRepository(
                 $adapter,
                 new ReflectionHydrator(),
                 new Category('', 0, 0, null, null),
                 $config['parameters']['1c_auth']['username'],
-                $config['parameters']['1c_auth']['password']
+                $config['parameters']['1c_auth']['password'],
+                $cache
         );
     }
 

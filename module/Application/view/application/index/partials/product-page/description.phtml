@@ -1,0 +1,9 @@
+<section class="product-card__description">
+    <?php if (!empty($description)) : ?>
+        <h2 class="product-card__section-heading">Описание</h2>
+        <div class="product-card__description-text">
+           <?= $description['text'] ?>
+        </div>
+        <a class="product-card__description-toggle"></a>
+    <?php endif;?>
+</section>

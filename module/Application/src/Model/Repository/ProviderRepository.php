@@ -31,6 +31,11 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
      * @var Provider
      */
     protected Provider $prototype;
+    
+    /**
+     * @var laminas.entity.manager
+     */
+    protected $entityManager;
 
     /**
      * @param AdapterInterface $db
@@ -40,12 +45,14 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
     public function __construct(
             AdapterInterface $db,
             HydratorInterface $hydrator,
-            Provider $prototype
+            Provider $prototype,
+            $entityManager
     )
     {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
+        $this->entityManager = $entityManager;
         
         parent::__construct();
     }

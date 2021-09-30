@@ -182,5 +182,13 @@ class UserManager
         $hydrator = new ClassMethodsHydrator();
         return $hydrator->hydrate($user, new User());
     }
+    
+    public function confirmOffer($content)
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_confirm_offer'];
+        $answer = $this->curlRequestManager->sendCurlRequest($url, $content);
+        
+        return $answer;
+    }
 
 }

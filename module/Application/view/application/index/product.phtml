@@ -3,23 +3,11 @@ $this->headTitle('Каталог товаров/'.$this->category, 'PREPEND');
 //$this->headTitle(, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 ?><div class="container mainconteiner"  >
-    <!-- div id="left-col">
-        <div class="content-col">
-            <?= $this->addressform ?>
-            
-            <ul id="tree" class="tree" style="display:none">
-                <?= $this->catalog ?>
-            </ul>
-            <div class=" testlegalstor" ></div>
-        </div>               id="main-col"
-    </div -->
     <div  class="contentwrapper">
-        <?= $this->bread ?> 
-        
-            <h2><?= $this->title ?> <?php if (false and $this->id) echo "<span>id: " . $this->id . "</span>"; ?></h2>
+            <h2><?= $this->title ?></h2>
         <div id="tovar-list">
             <?= $this->product ?>
         </div>
     </div>               
 </div>
-</div>
+

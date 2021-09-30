@@ -1,1 +1,11 @@
 ./vendor/bin/doctrine-module migrations:generate --configuration=migrations.php
+./vendor/bin/doctrine-module migrations:list --configuration=./migrations.php
+./vendor/bin/doctrine-module migrations:status --configuration=./migrations.php
+./vendor/bin/doctrine-module migrations:migrate first --configuration=./migrations.php
+./vendor/bin/doctrine-module migrations:migrate next --configuration=./migrations.php
+./vendor/bin/doctrine-module migrations:migrate priv --configuration=./migrations.php
+./vendor/bin/doctrine-module migrations:migrate latest --configuration=./migrations.php
+./vendor/bin/doctrine-module migrations:migrate current --configuration=./migrations.php
+
+./vendor/bin/doctrine-module migrations:execute --down 'SaychasProjectZ\Migrations\Version20210813110822'
+

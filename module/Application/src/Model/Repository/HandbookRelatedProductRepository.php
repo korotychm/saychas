@@ -59,6 +59,16 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
         return ['minprice' => current($products)['price'], 'maxprice' => end($products)['price']];
     }
     
+     public function findMinMaxPriceValueByCategory2(array $categoryTree) : array
+    {
+        //$columns = ["min" =>  new \Laminas\Db\Sql\Expression("MIN('price')")];//,  "max" =>  new \Laminas\Db\Sql\Expression("MAX('price')"), ];
+        $products = $this->findAll(['where' => ['category_id' => $categoryTree],  'columns' => ['id'], "group" => ['id']])->toArray();   
+        exit (print_r($products));
+        reset($products);
+        return ['minprice' => current($products)['price'], 'maxprice' => end($products)['price']];
+    }
+    
+    
 //    public function findFilteredProducts($params)
 //    {
 ////        $params = [
@@ -84,7 +94,7 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
     public function findAll($params)
     {
         $join = new Join();
-        $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", ['price', 'old_price'], Select::JOIN_LEFT);
+        $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", ['price', 'old_price', 'discount'], Select::JOIN_LEFT);
         $params['joins'] = $join;
         return parent::findAll($params);
     }

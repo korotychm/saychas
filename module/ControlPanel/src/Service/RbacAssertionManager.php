@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel/src\Service\AuthManager.php
+// ControlPanel/src\Service\RbacAssertionManager.php
 
 namespace ControlPanel\Service;
 
@@ -19,14 +19,20 @@ class RbacAssertionManager
     private $authService;
     
     private $userManager;
+    
+    // private $productManager;
+    
+    private $container;
 
     /**
      * Constructs the service.
      */
-    public function __construct($authService, $userManager)
+    public function __construct($container, $authService, $userManager/*, $productManager*/)
     {
         $this->authService = $authService;
         $this->userManager = $userManager;
+        //$this->productManager = $productManager;
+        $this->container = $container;
     }
 
     /**
@@ -44,7 +50,15 @@ class RbacAssertionManager
          * @Todo:
          * Remove comments below and modify the code to conduct additional verification
          */
-//        $identity = $this->authService->getIdentity();
+        $identity = $this->authService->getIdentity();
+        //$product = $this->productManager->find(['id' => $params['product_id']]);
+        $managerName = $params['manager'];
+        // $product = $this->$manager->find(['id' => $params['product_id']]);
+        $manager = $this->container->get($managerName);
+        $document = $manager->find($params['where']);
+        if(null != $document && ($document['provider_id'] != $identity['provider_id']) ) {
+            return true;
+        }
 //        $currentUser = $this->userManager->findOne(['provider_id' => $identity['provider_id'], 'login' => $identity['login'],]);
 //
 //        if ($permission == 'developer' && $params['user']['login'] == $currentUser['login']) {

@@ -4,6 +4,9 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\PriceRepository;
+use Application\Model\Traits\Searchable;
+
 //use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,6 +17,13 @@ namespace Application\Model\Entity;
  */
 class Price extends Entity
 {
+
+    use Searchable;
+
+    /**
+     * @var PriceRepository
+     */
+    public static PriceRepository $repository;
 
     /**
      * @var string
@@ -44,6 +54,11 @@ class Price extends Entity
      * @var int
      */
     protected $old_price;
+    
+    /**
+     * @var int
+     */
+    protected $discount;
 
     /**
      * @var string
@@ -214,6 +229,28 @@ class Price extends Entity
     public function getOldPrice()
     {
         return $this->old_price;
+    }
+    
+    /**
+     * Set discount
+     * 
+     * @param int $discount
+     * @return $this
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+        return $this;
+    }
+    
+    /**
+     * Get discount
+     * 
+     * @return int
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
     }
 
 }

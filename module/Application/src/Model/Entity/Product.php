@@ -33,6 +33,11 @@ class Product extends Entity
     /**
      * @var string
      */
+    protected $parent_category_id;
+    
+    /**
+     * @var string
+     */
     protected $title;
 
     /**
@@ -110,6 +115,19 @@ class Product extends Entity
      * @var string (json)
      */
     protected $param_variable_list;
+    
+    protected $vat;
+    
+    public function getVat()
+    {
+        return $this->vat;
+    }
+    
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
+        return $this;
+    }
 
     /**
      * Set color.
@@ -252,6 +270,29 @@ class Product extends Entity
         return $this->category_id;
     }
 
+    /**
+     * Set parentCategoryId.
+     *
+     * @param string $parentCategoryId
+     * @return Product
+     */
+    public function setParentCategoryId($parentCategoryId)
+    {
+        $this->parent_category_id = $parentCategoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get parentCategoryId.
+     *
+     * @return string
+     */
+    public function getParentCategoryId()
+    {
+        return $this->parent_category_id;
+    }
+    
     /**
      * Set title.
      *

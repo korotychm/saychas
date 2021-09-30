@@ -1,0 +1,268 @@
+<section>
+    <div class="page-heading">
+        <h1 class="h1">13 товаров из 5 магазинов</h1>
+    </div>
+    <div class="cart">
+        <div class="cart__left">
+            <div class="cart__all"><label class="checkbox"><input type="checkbox" checked="checked" /><span class="checkbox__check"></span><span class="checkbox__value">Все товары</span></label></div>
+            <div class="cart__stores">
+                <div class="cart__store">
+                    <div class="cart__store-top">
+                        <div class="cart__checkbox"><label class="checkbox"><input type="checkbox" checked="checked" /><span class="checkbox__check"></span></label></div>
+                        <div class="cart__store-logo"><img src="/images/stores/store1.jpg" /></div>
+                        <div class="cart__store-info">
+                            <p>Ежедневно, 10:00–22:00 (до закрытия 3 часа)</p>
+                            <p>Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)</p>
+                        </div>
+                    </div>
+                    <ul class="cart__products">
+                        <li class="cart__product">
+                            <div class="cart__checkbox"><label class="checkbox"><input type="checkbox" checked="checked" /><span class="checkbox__check"></span></label></div>
+                            <div class="cart__product-img"><img src="/images/products/product1.jpg" /></div><a class="cart__product-title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                            <div><button class="cart__product-del"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </button></div>
+                            <div class="cart__product-info">
+                                <div class="cart__product-quantity"><button class="cart__product-minus disabled"></button><input type="number" value="1" /><button class="cart__product-plus"></button></div>
+                                <div class="cart__product-price">
+                                    <div class="cart__product-price-current">17 990 ₽</div>
+                                    <div class="cart__product-price-old">21 990 ₽</div>
+                                </div>
+                            </div>
+                            <div><button class="cart__product-wishlist active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </button></div>
+                        </li>
+                        <li class="cart__product cart__product--na">
+                            <div class="cart__checkbox"></div>
+                            <div class="cart__product-img"><img src="/images/products/product1.jpg" /></div><a class="cart__product-title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                            <div><button class="cart__product-del"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </button></div>
+                            <div class="cart__product-info">
+                                <div class="cart__product-na">Товара нет в наличии</div>
+                            </div>
+                            <div><button class="cart__product-wishlist active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </button></div>
+                        </li>
+                    </ul>
+                    <div class="cart__store-link"><a class="cart__store-link-plus" href="#"></a><a href="#">Добавить еще товаров<span>из этого магазина бесплатно</span></a></div>
+                    <div class="cart__store-self-delivery">
+                        <div>Заберу из магазина самостоятельно (-299 ₽)<label class="boolean" v-if="filter.type==3"> <input type="checkbox" :name="filter.id" value="1" /><span class="boolean__check"></span></label></div>
+                        <div>Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно</div>
+                    </div>
+                </div>
+                <div class="cart__store cart__store--closed">
+                    <div class="cart__store-top">
+                        <div class="cart__checkbox"></div>
+                        <div class="cart__store-logo"><img src="/images/stores/store1.jpg" /></div>
+                        <div class="cart__store-notice">
+                            <div class="cart__store-closed">Магазин уже закрылся<div class="question">?<div class="question__popup">К сожалению, магазин уже закрыт.<br>
+                                        Откроется завтра, с 9:00. </div>
+                                </div>
+                            </div><button class="cart__store-del"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Удалить товары</span></button>
+                        </div>
+                    </div>
+                    <ul class="cart__products">
+                        <li class="cart__product cart__product--na">
+                            <div class="cart__checkbox"></div>
+                            <div class="cart__product-img"><img src="/images/products/product1.jpg" /></div><a class="cart__product-title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                            <div><button class="cart__product-del"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </button></div>
+                            <div class="cart__product-info"></div>
+                            <div><button class="cart__product-wishlist active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                </button></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cart-delivery">
+                <h2 class="h2">Доставка</h2>
+                <div class="cart-delivery__item">
+                    <h3 class="cart-delivery__heading">Адрес доставки:</h3>
+                    <div class="cart-delivery__input"><input type="text" />
+                        <p>При изменении адреса изменяется доступность товаров в корзине</p>
+                    </div>
+                </div>
+                <div class="cart-delivery__item">
+                    <h3 class="cart-delivery__heading">Комментарий курьерам:</h3>
+                    <div class="cart-delivery__input"><input type="text" /></div>
+                </div>
+                <div class="cart-delivery__item">
+                    <h3 class="cart-delivery__heading">Получатель:</h3>
+                    <div class="cart-delivery__user">
+                        <div class="cart-delivery__user-info">
+                            <div class="cart-delivery__avatar">
+                                <div class="cart-delivery__avatar-letter">К</div>
+                                <div class="cart-delivery__avatar-img"><img src="/images/testimonials/avatar1.jpg" /></div>
+                            </div>
+                            <div>
+                                <div class="cart-delivery__name">Сергей Заказчиков</div>
+                                <div class="cart-delivery__phone">+7 (925) 456-80-20</div>
+                            </div>
+                        </div><button class="cart-delivery__logout"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <span>Выйти</span></button>
+                    </div>
+                </div>
+                <div class="cart__radio-group"><input type="radio" name="delivery" checked="checked" id="delivery1" />
+                    <div class="cart__radio"><label for="delivery1"><span class="cart__radio-check"></span><span><b>Из 5 магазинов <span class="accent">за 1 час</span></b> - 899 ₽</span></label>
+                        <div class="cart__radio-content">
+                            <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в 5 доставках</p><select class="select">
+                                <option selected="selected" value="">Сегодня, с 15 до 16</option>
+                                <option value="">Сегодня, с 15 до 16</option>
+                                <option value="">Сегодня, с 15 до 16</option>
+                                <option value="">Сегодня, с 15 до 16</option>
+                            </select>
+                        </div>
+                    </div><input type="radio" name="delivery" id="delivery2" />
+                    <div class="cart__radio"><label for="delivery2"><span class="cart__radio-check"></span><span><b>Объединить заказы за 3 часа</b> - 499 ₽</span></label>
+                        <div class="cart__radio-content">
+                            <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше)</p><select class="select">
+                                <option selected="selected" value="">Сегодня, с 15 до 16</option>
+                                <option value="">Сегодня, с 15 до 16</option>
+                                <option value="">Сегодня, с 15 до 16</option>
+                                <option value="">Сегодня, с 15 до 16</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-self-delivery">
+                <h2 class="h2">Самовывоз</h2>
+                <h3 class="cart-self-delivery__subtitle"><b>4 товара из 2 магазинов - </b>бесплатно</h3>
+                <div class="cart-self-delivery__store">
+                    <div class="cart-self-delivery__store-images">
+                        <div class="cart__store-logo"><img src="/images/stores/store1.jpg" /></div>
+                        <div class="cart__store-products">
+                            <div><img src="/images/products/product1.jpg" /></div>
+                            <div><img src="/images/products/product1.jpg" /></div>
+                        </div>
+                    </div>
+                    <div class="cart-self-delivery__store-info"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <p>Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно</p>
+                    </div>
+                    <div class="cart-self-delivery__store-info"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <p>Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)</p>
+                    </div>
+                </div>
+                <div class="cart-self-delivery__store">
+                    <div class="cart-self-delivery__store-images">
+                        <div class="cart__store-logo"><img src="/images/stores/store1.jpg" /></div>
+                        <div class="cart__store-products">
+                            <div><img src="/images/products/product1.jpg" /></div>
+                            <div><img src="/images/products/product1.jpg" /></div>
+                            <div><img src="/images/products/product1.jpg" /></div>
+                            <div><img src="/images/products/product1.jpg" /></div>
+                            <div><img src="/images/products/product1.jpg" /></div>
+                            <div><img src="/images/products/product1.jpg" /></div>
+                        </div>
+                    </div>
+                    <div class="cart-self-delivery__store-info"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <p>Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно</p>
+                    </div>
+                    <div class="cart-self-delivery__store-info"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <p>Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-payment">
+                <h2 class="h2">Оплата</h2>
+                <div class="cart__radio-group"><input type="radio" name="payment" checked="checked" id="payment1" />
+                    <div class="cart__radio"><label for="payment1"><span class="cart__radio-check"></span><span><b>Оплата с привязанной карты</b></span></label>
+                        <div class="cart__radio-content"><select class="select">
+                                <option selected="selected" value="">5213 2487 **** 0817</option>
+                                <option value="">5213 2487 **** 0817</option>
+                                <option value="">5213 2487 **** 0817</option>
+                                <option value="">5213 2487 **** 0817</option>
+                            </select></div>
+                    </div><input type="radio" name="payment" id="payment2" />
+                    <div class="cart__radio"><label for="payment2"><span class="cart__radio-check"></span><span><b>Оплата новой картой</b></span></label>
+                        <div class="cart__radio-content">
+                            <p>Расплачиватесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cart__right">
+            <div class="panel panel--cart">
+                <div class="panel__delivery">
+                    <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <div>
+                            <h2>Доставка</h2>
+                            <p>5 доставок, сегодня с 15 до 16</p>
+                            <p>Москва, Самая длинная угрешская улица, 2с34</p>
+                        </div>
+                    </div>
+                    <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <div>
+                            <h2>Самовывоз</h2>
+                            <p>Из 2 магазинов</p>
+                        </div>
+                    </div>
+                    <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                        <div>
+                            <h2>Оплата</h2>
+                            <p>Онлайн, картой <span class="panel__cardnumber">5213 2487 **** 0817</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel__zip"></div>
+                <div class="panel__price">
+                    <div class="panel__price-current">17 990 ₽</div>
+                    <div class="panel__price-old">21 990 ₽</div>
+                </div>
+                <div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
+                        <div class="question__icon">?</div>
+                    </div>
+                </div>
+                <div class="panel__table">
+                    <div class="panel__tr">
+                        <div>Товары (13)</div>
+                        <div class="panel__tr-items-total">
+                            <div>389 800 ₽</div>
+                            <div>402 190 ₽</div>
+                        </div>
+                    </div>
+                    <div class="panel__tr">
+                        <div> <b>Доставка за час</b></div>
+                        <div>899 ₽</div>
+                    </div>
+                    <div class="panel__tr">
+                        <div>Самовывоз</div>
+                        <div>0 ₽</div>
+                    </div>
+                </div><button class="btn btn--primary">Перейти к оплате</button>
+                <div class="panel__notice">Нажимая на кнопку, вы соглашаетесь с <a href="#">Условиями обработки перс. данных</a>, а также с <a href="#">Условиями продажи</a></div>
+            </div>
+        </div>
+    </div>
+</section>

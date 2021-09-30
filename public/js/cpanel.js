@@ -1,5 +1,5 @@
 $(function () {
-    
+
     /** calendar loaded; lets add some event handlers */
 //    $(document).on('calendarLoaded', function(e, data){
 //        $('#calendar-left').unbind();
@@ -69,7 +69,7 @@ $(function () {
             console.log('d.status = ', d.status);
         });
     };
-    var panel = $('#controlPanelMenu li a');
+    var panel = $('#controlPanelMenu .sidebar__nav a');
     panel.unbind();
 
     panel.click(function (ths) {
@@ -94,7 +94,7 @@ $(function () {
             });
         } else if('accountManagementId' === ths.currentTarget.id) {
             $.post('/control-panel/account-management', {post: {}}, function (data) {
-                redirectToLogin(data);                
+                redirectToLogin(data);
             })
             .fail(function (data) {
 //                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
@@ -138,7 +138,7 @@ $(function () {
             });
         }else if('actionAndDiscountId' === ths.currentTarget.id) {
             $.post('/control-panel/action-and-discount', {post: {}}, function (data) {
-                redirectToLogin(data);                
+                redirectToLogin(data);
             })
             .fail(function (data) {
 //                console.log('Show Profile failed :( data = ', data, ' ', data.statusText);
@@ -153,8 +153,21 @@ $(function () {
                 error403(data.status);
             });
         } else if ('productsId' === ths.currentTarget.id) {
-            $.post('/control-panel/show-products', {post: {}}, function (data) {
-                redirectToLogin(data);
+            $.post('/control-panel/show-products', {page_no: 1, rows_per_page: 10}, function (data) {
+                //redirectToLogin(data);
+                //console.log(data.data.body);
+                var sum = '';
+                $.each(data.data.body, function(idx, val){
+                    //console.log($(val));
+                    //var e = $('<tr><td>'+_args.NomerZakazaText+ '</td></tr>');
+                    //var e = $(`<div>${val.id}</div>`);
+                    sum += `<div>${val.id} ${val.category_id} ${val.title}</div>`;
+                    $('#controlPanelContentId').html();
+                    $('#controlPanelContentId').html(sum);
+                    //$('#controlPanelContentId').append($(val).html());
+                });
+                
+                //$('#controlPanelContentId').text(l);
             })
             .fail(function (data) {
 //                console.log('ShowProducts failed :( data = ', data, ' ', data.statusText);

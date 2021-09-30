@@ -1,0 +1,11 @@
+<?php if (!empty($breadCrumbs)) :    $j = 0; ?>
+  <ul class="catalog__breadcrumbs">
+    <?php foreach ($breadCrumbs as $breadCrumb) : ?>
+        <li class="<?= ($j==0) ? 'catalog__sidebar-heading':'' ?>">
+          <a href="/catalog/<?= $breadCrumb[0] ?>"><?= $breadCrumb[1] ?></a>
+        </li>
+    <?php
+    $j++;
+    endforeach; ?>
+  </ul>
+<?php endif; ?>

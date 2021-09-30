@@ -5,10 +5,19 @@
 namespace Application\Model\Entity;
 
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+use Application\Model\Repository\ProviderRepository;
+use Application\Model\Traits\Searchable;
 
 class Provider extends Entity
 {
 
+    use Searchable;
+    
+    /**
+     * @var ProviderRepository
+     */
+    public static ProviderRepository $repository;
+    
     /**
      * @var StoreRepository
      */
@@ -45,6 +54,22 @@ class Provider extends Entity
             throw new \Exception('StoreRepositoryInterface expected; other type given');
         }
         return self::$storeRepository->findAll(['where' => ['provider_id=?' => $this->getId()]]);
+    }
+    
+    public function storesToArray()
+    {
+        $stores = $this->getStores();
+        return $stores->toArray();
+    }
+    
+    public function getStoreArray()
+    {
+        $stores = $this->getStores();
+        $result = [];
+        foreach($stores as $store) {
+            $result[] = $store;
+        }
+        return $result;
     }
     
     /**

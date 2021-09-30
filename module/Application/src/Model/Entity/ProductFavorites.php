@@ -42,6 +42,12 @@ class ProductFavorites extends Entity
     protected $timestamp;
 
     /**
+     * @var  int  
+     * Unix time
+     */
+    protected $time;
+
+    /**
      * Get user_id.
      *
      * @return string
@@ -97,7 +103,19 @@ class ProductFavorites extends Entity
         return $this->timestamp;
     }
     
-    /**
+
+    public function setTime($time)
+    {
+        $this->time = $time;
+        return $this;
+    }
+    
+    public function getTime()
+    {
+        return $this->time;
+    }
+    
+     /**
      * Get ts
      * 
      * @return timestamp

@@ -11,6 +11,8 @@ use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\MarkerRepositoryInterface;
+use Application\Model\Repository\HandbookRelatedProductRepository;
+use Application\Model\Traits\Searchable;
 
 /**
  * HandbookRelatedProduct
@@ -20,6 +22,13 @@ use Application\Model\RepositoryInterface\MarkerRepositoryInterface;
  */
 class HandbookRelatedProduct extends Entity
 {
+    
+    use Searchable;
+
+    /**
+     * @var HandbookRelatedProductRepository
+     */
+    public static HandbookRelatedProductRepository $repository;
 
     /**
      * @var BrandRepositoryInterface
@@ -164,9 +173,9 @@ class HandbookRelatedProduct extends Entity
         $expression->setExpression('sum(rest)');
 
         $where = ['product_id' => $this->getId()];
-        if(count($storeIds) > 0) {
-            $where = array_merge($where, ['store_id' => $storeIds]);
-        }
+        //if(count($storeIds) > 0) {
+        $where = array_merge($where, ['store_id' => $storeIds]);
+        //}
         $result = self::$stockBalanceRepository->findAll(['where' => $where, 'columns' => ['rest' => $expression], 'group' => ['product_id']/* , 'having' => ['product_id' => $this->getId()] */]);
 
         $current = $result->current();
@@ -190,6 +199,11 @@ class HandbookRelatedProduct extends Entity
      * @var string
      */
     protected $category_id;
+    
+    /**
+     * @var string
+     */
+    protected $parent_category_id;
 
     /**
      * @var string
@@ -236,6 +250,19 @@ class HandbookRelatedProduct extends Entity
     protected $old_price;
 
     /**
+     * Product discount from joined price table
+     * @var int
+     */
+    protected $discount;
+
+    /**
+     * Vat
+     *
+     * @var int
+     */
+    protected $vat;
+
+    /**
      * Get price from one-to-one joined price table
      *
      * @return int
@@ -276,6 +303,28 @@ class HandbookRelatedProduct extends Entity
     public function setOldPrice($oldPrice)
     {
         $this->old_price = $oldPrice;
+        return $this;
+    }
+
+    /**
+     * Get discount from one-to-one joined discount table
+     *
+     * @return int
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * Set discount. Needed when hydrating;
+     *
+     * @param int $discount
+     * @return $this
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
         return $this;
     }
 
@@ -345,6 +394,29 @@ class HandbookRelatedProduct extends Entity
     public function getCategoryId()
     {
         return $this->category_id;
+    }
+
+    /**
+     * Set parentCategoryId.
+     *
+     * @param string $parentCategoryId
+     * @return Product
+     */
+    public function setParentCategoryId($parentCategoryId)
+    {
+        $this->parent_category_id = $parentCategoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get parentCategoryId.
+     *
+     * @return string
+     */
+    public function getParentCategoryId()
+    {
+        return $this->parent_category_id;
     }
 
     /**
@@ -463,7 +535,7 @@ class HandbookRelatedProduct extends Entity
      */
     public function getParamVariableList()
     {
-        return $this->paramVariableList;
+        return $this->param_variable_list;
     }
 
     /**
@@ -488,14 +560,47 @@ class HandbookRelatedProduct extends Entity
         return $this;
     }
 
+    /**
+     * Get rest(balance)
+     *
+     * @return int
+     */
     public function getRest()
     {
         return $this->rest;
     }
 
+    /**
+     * Set rest(balance)
+     *
+     * @param int $rest
+     * @return $this
+     */
     public function setRest($rest)
     {
         $this->rest = $rest;
+        return $this;
+    }
+
+    /**
+     * Get vat
+     *
+     * @return int
+     */
+    public function getVat()
+    {
+        return $this->vat;
+    }
+
+    /**
+     * Set vat
+     *
+     * @param int $vat
+     * @return $this
+     */
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
         return $this;
     }
 

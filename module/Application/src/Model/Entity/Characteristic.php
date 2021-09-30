@@ -4,11 +4,21 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\CharacteristicRepository;
+use Application\Model\Traits\Searchable;
+
 /**
  * Characteristic
  */
 class Characteristic extends Entity
 {
+    
+    use Searchable;
+
+    /**
+     * @var CharacteristicRepository
+     */
+    public static CharacteristicRepository $repository;
 
     /**
      * characteristic_id

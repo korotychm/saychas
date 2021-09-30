@@ -1,0 +1,267 @@
+section
+  div.page-heading
+    h1.h1 13 товаров из 5 магазинов
+  div.cart
+    div.cart__left
+      div.cart__all
+        label.checkbox
+          input(type="checkbox", checked)
+          span.checkbox__check
+          span.checkbox__value Все товары
+          
+      div.cart__stores
+      
+        div.cart__store
+          div.cart__store-top
+            div.cart__checkbox
+              label.checkbox
+                input(type="checkbox", checked)
+                span.checkbox__check
+            div.cart__store-logo
+              img(src="/images/stores/store1.jpg")
+            div.cart__store-info
+              p Ежедневно, 10:00–22:00 (до закрытия 3 часа)
+              p Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)
+          ul.cart__products
+            li.cart__product
+              div.cart__checkbox
+                label.checkbox
+                  input(type="checkbox", checked)
+                  span.checkbox__check
+              div.cart__product-img
+                img(src="/images/products/product1.jpg")
+              a(href="#").cart__product-title Смартфон Huawei P Smart 2021 4+128GB Crush Green
+              div
+                button.cart__product-del
+                  include ../../img/icons/icon.svg
+              div.cart__product-info
+                div.cart__product-quantity
+                  button.cart__product-minus.disabled
+                  input(type="number",value="1")
+                  button.cart__product-plus
+                div.cart__product-price
+                  div.cart__product-price-current 17 990 ₽
+                  div.cart__product-price-old 21 990 ₽
+                  
+              div
+                button.cart__product-wishlist.active
+                  include ../../img/icons/icon.svg
+                
+            li.cart__product.cart__product--na
+              div.cart__checkbox
+              div.cart__product-img
+                img(src="/images/products/product1.jpg")
+              a(href="#").cart__product-title Смартфон Huawei P Smart 2021 4+128GB Crush Green
+              div
+                button.cart__product-del
+                  include ../../img/icons/icon.svg
+              div.cart__product-info
+                div.cart__product-na Товара нет в наличии
+              div
+                button.cart__product-wishlist.active
+                  include ../../img/icons/icon.svg
+                  
+          div.cart__store-link
+            a(href="#").cart__store-link-plus
+            a(href="#") Добавить еще товаров
+              span из этого магазина бесплатно
+              
+          div.cart__store-self-delivery
+            div Заберу из магазина самостоятельно (-299 ₽)
+              label(v-if="filter.type==3").boolean 
+                input(type="checkbox",:name="filter.id",value="1")
+                span.boolean__check
+            div Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно
+            
+                
+
+        div.cart__store.cart__store--closed
+          div.cart__store-top
+            div.cart__checkbox
+            div.cart__store-logo
+              img(src="/images/stores/store1.jpg")
+            div.cart__store-notice
+              div.cart__store-closed Магазин уже закрылся
+                div.question ?
+                  div.question__popup
+                    | К сожалению, магазин уже закрыт.<br>
+                    | Откроется завтра, с 9:00. 
+              button.cart__store-del
+                include ../../img/icons/icon.svg
+                span Удалить товары
+          ul.cart__products
+            li.cart__product.cart__product--na
+              div.cart__checkbox
+              div.cart__product-img
+                img(src="/images/products/product1.jpg")
+              a(href="#").cart__product-title Смартфон Huawei P Smart 2021 4+128GB Crush Green
+              div
+                button.cart__product-del
+                  include ../../img/icons/icon.svg
+              div.cart__product-info
+              div
+                button.cart__product-wishlist.active
+                  include ../../img/icons/icon.svg
+                
+      div.cart-delivery
+        h2.h2 Доставка
+        div.cart-delivery__item
+          h3.cart-delivery__heading Адрес доставки:
+          div.cart-delivery__input
+            input(type="text")
+            p При изменении адреса изменяется доступность товаров в корзине
+        div.cart-delivery__item
+          h3.cart-delivery__heading Комментарий курьерам:
+          div.cart-delivery__input
+            input(type="text")
+        div.cart-delivery__item
+          h3.cart-delivery__heading Получатель:
+          div.cart-delivery__user
+            div.cart-delivery__user-info
+              div.cart-delivery__avatar
+                div.cart-delivery__avatar-letter К
+                div.cart-delivery__avatar-img
+                  img(src="/images/testimonials/avatar1.jpg")
+              div
+                div.cart-delivery__name Сергей Заказчиков
+                div.cart-delivery__phone +7 (925) 456-80-20
+            button.cart-delivery__logout
+              include ../../img/icons/icon.svg
+              span Выйти
+        div.cart__radio-group
+          input(type="radio",name="delivery",checked)#delivery1
+          div.cart__radio
+            label(for="delivery1")
+              span.cart__radio-check
+              span <b>Из 5 магазинов <span class="accent">за 1 час</span></b> - 899 ₽
+            div.cart__radio-content
+              p Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в 5 доставках
+              select.select
+                option(selected,value="") Сегодня, с 15 до 16
+                option(value="") Сегодня, с 15 до 16
+                option(value="") Сегодня, с 15 до 16
+                option(value="") Сегодня, с 15 до 16
+          input(type="radio",name="delivery")#delivery2
+          div.cart__radio
+            label(for="delivery2")
+              span.cart__radio-check
+              span <b>Объединить заказы за 3 часа</b> - 499 ₽
+            div.cart__radio-content
+              p На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше)
+              select.select
+                option(selected,value="") Сегодня, с 15 до 16
+                option(value="") Сегодня, с 15 до 16
+                option(value="") Сегодня, с 15 до 16
+                option(value="") Сегодня, с 15 до 16
+                
+      div.cart-self-delivery
+        h2.h2 Самовывоз
+        h3.cart-self-delivery__subtitle <b>4 товара из 2 магазинов - </b>бесплатно
+        div.cart-self-delivery__store
+          div.cart-self-delivery__store-images
+            div.cart__store-logo
+              img(src="/images/stores/store1.jpg")
+            div.cart__store-products
+              div
+                img(src="/images/products/product1.jpg")
+              div
+                img(src="/images/products/product1.jpg")
+            
+          div.cart-self-delivery__store-info
+            include ../../img/icons/icon.svg
+            p Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно
+          div.cart-self-delivery__store-info
+            include ../../img/icons/icon.svg
+            p Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)
+            
+        div.cart-self-delivery__store
+          div.cart-self-delivery__store-images
+            div.cart__store-logo
+              img(src="/images/stores/store1.jpg")
+            div.cart__store-products
+              div
+                img(src="/images/products/product1.jpg")
+              div
+                img(src="/images/products/product1.jpg")
+              div
+                img(src="/images/products/product1.jpg")
+              div
+                img(src="/images/products/product1.jpg")
+              div
+                img(src="/images/products/product1.jpg")
+              div
+                img(src="/images/products/product1.jpg")
+            
+          div.cart-self-delivery__store-info
+            include ../../img/icons/icon.svg
+            p Сегодня до 21:50 и далее с 10:00 до 22:00 ежедневно, до 19 мая включительно
+          div.cart-self-delivery__store-info
+            include ../../img/icons/icon.svg
+            p Октябрьский просп., 366, Люберцы (ТЦ Орбита, этаж 1, помещение 38)
+  
+        
+      div.cart-payment
+        h2.h2 Оплата
+        div.cart__radio-group
+          input(type="radio",name="payment",checked)#payment1
+          div.cart__radio
+            label(for="payment1")
+              span.cart__radio-check
+              span <b>Оплата с привязанной карты</b>
+            div.cart__radio-content
+              select.select
+                option(selected,value="") 5213 2487 **** 0817
+                option(value="") 5213 2487 **** 0817
+                option(value="") 5213 2487 **** 0817
+                option(value="") 5213 2487 **** 0817
+          input(type="radio",name="payment")#payment2
+          div.cart__radio
+            label(for="payment2")
+              span.cart__radio-check
+              span <b>Оплата новой картой</b>
+            div.cart__radio-content
+              p Расплачиватесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз
+                
+                
+    div.cart__right    
+      div.panel.panel--cart
+        div.panel__delivery
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 Доставка
+              p 5 доставок, сегодня с 15 до 16
+              p Москва, Самая длинная угрешская улица, 2с34
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 Самовывоз
+              p Из 2 магазинов
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 Оплата
+              p Онлайн, картой <span class="panel__cardnumber">5213 2487 **** 0817</span>
+        div.panel__zip
+        div.panel__price
+          div.panel__price-current 17 990 ₽
+          div.panel__price-old 21 990 ₽
+        div.panel__bonuses
+          <span>+179</span> сейбонов
+          div.question
+            div.question__icon ?
+        div.panel__table
+          div.panel__tr
+            div Товары (13)
+            div.panel__tr-items-total
+              div 389 800 ₽
+              div 402 190 ₽
+          div.panel__tr
+            div 
+              b Доставка за час
+            div 899 ₽
+          div.panel__tr
+            div Самовывоз
+            div 0 ₽
+        button.btn.btn--primary Перейти к оплате
+        div.panel__notice Нажимая на кнопку, вы соглашаетесь с <a href="#">Условиями обработки перс. данных</a>, а также с <a href="#">Условиями продажи</a>

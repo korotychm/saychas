@@ -8,6 +8,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Repository\ClientOrderRepository;
+use Application\Service\AcquiringCommunicationService;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ClassMethodsHydrator;
 
@@ -43,11 +44,14 @@ class ClientOrderRepositoryFactory implements FactoryInterface
         $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
             
         $prototype = new ClientOrder;
+        
+        $acquiringService = $container->get(AcquiringCommunicationService::class);
 
         return new ClientOrderRepository(
                 $adapter,
                 $hydrator,
-                $prototype
+                $prototype,
+                $acquiringService
         );
     }
 

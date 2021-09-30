@@ -49,14 +49,14 @@ class HandbookRelatedProductRepositoryFactory implements FactoryInterface
 
         $hydrator = new ClassMethodsHydrator();
         
-//        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
-//        $composite->addFilter(
-//                'excludeval',
-//                new \Laminas\Hydrator\Filter\MethodMatchFilter('getPrice'),
-//                \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
-//        );
-//
-//        $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
+        $composite = new \Laminas\Hydrator\Filter\FilterComposite();
+        $composite->addFilter(
+                'excludeval',
+                new \Laminas\Hydrator\Filter\MethodMatchFilter('getProvider'),
+                \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND
+        );
+
+        $hydrator->addFilter('excludes', $composite, \Laminas\Hydrator\Filter\FilterComposite::CONDITION_AND);
         
         return new HandbookRelatedProductRepository(
                 $adapter,

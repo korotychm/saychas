@@ -1,0 +1,32 @@
+- var page_title = "Say:час главная страница"
+- var page_description = ""
+- var page_keywords = ""
+
+<!DOCTYPE html>
+html(lang="ru")
+  include common/head.pug
+  body
+    include common/header.pug
+    div.main
+      div.container
+        include blocks/homeslider.pug
+        section.section
+          h2.h2.section__heading Горящие предложения до -70%
+          include blocks/products-carousel.pug
+        section.section
+          h2.h2.section__heading Популярные товары в этом месяце
+          include blocks/products-grid.pug
+        section.section
+          include blocks/banners-carousel.pug
+        section.section
+          include blocks/products-grid.pug
+        section.section
+          h2.h2.section__heading Популярные бренды
+          include blocks/brands-grid.pug
+        section.section
+          h2.h2.section__heading Вы смотрели
+          include blocks/products-carousel.pug
+    include common/footer.pug
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js")
+    script(src="js/scripts.min.js")

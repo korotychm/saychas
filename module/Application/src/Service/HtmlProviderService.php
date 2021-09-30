@@ -7,9 +7,10 @@ namespace Application\Service;
 use Application\Model\Entity;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
-use Application\Resource\StringResource;
-use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
-use Laminas\Db\ResultSet\HydratingResultSet;
+//use Laminas\Http\Response;
+use Application\Resource\Resource;
+//use Application\Model\RepositoryInterface\FilteredProductRepositoryInterface;
+//use Laminas\Db\ResultSet\HydratingResultSet;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\BrandRepositoryInterface;
 use Application\Model\RepositoryInterface\BasketRepositoryInterface;
@@ -23,16 +24,16 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
-use Application\Model\RepositoryInterface\StoreRepositoryInterface;
-use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
+//use Application\Model\RepositoryInterface\StoreRepositoryInterface;
+//use Application\Model\Entity\User;
+//use Application\Model\Entity\UserData;
 use Application\Model\Entity\Store;
 use Application\Model\Entity\Basket;
-use Application\Helper\ArrayHelper;
+use Application\Model\Entity\ProductFavorites;
+//use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
-class HtmlProviderService
-{
+class HtmlProviderService {
 
     private $stockBalanceRepository;
     private $brandRepository;
@@ -60,8 +61,7 @@ class HtmlProviderService
             BasketRepositoryInterface $basketRepository,
             HandbookRelatedProductRepositoryInterface $productRepository,
             ProductImageRepositoryInterface $productImageRepository
-    )
-    {
+    ) {
         $this->stockBalanceRepository = $stockBalanceRepository;
         $this->brandRepository = $brandRepository;
         $this->colorRepository = $colorRepository;
@@ -77,456 +77,143 @@ class HtmlProviderService
     }
 
     /**
-     * Returns Html string
-     * @return string
+     * Returns Array
+     * @return Array
      */
-    public function testHtml()
-    {
-        return '<h1>Hello world!!!</h1>';
+    public function getMainMenu($mainMenu) {
+        return Json::decode($mainMenu->getValue(), Json::TYPE_ARRAY);
     }
+
     /**
      * Returns Array
      * @return Array
      */
-    public function basketCheckBeforeSendService($param, $basket)
-    {
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+    public function getUserPayCardInfoService($userPaycards) {
+        $payCards = [];
+        if (!empty($userPaycards)) {
+
+            foreach ($userPaycards as $paycard) {
+                $payCards[] = ["id" => $paycard->getCardId(), "pan" => $paycard->getPan()];
+            }
+        }
+        return $payCards;
+    }
+
+    /**
+     * Returns Array
+     * @return Array
+     */
+    public function basketCheckBeforeSendService($param, $basket) {
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $param["legalStore"] = $container->legalStore;
         $legalStoreKey = (!empty($param["legalStore"])) ? array_keys($param["legalStore"]) : [];
         $return["result"] = true;
         $error = ["result" => false, "reload" => true, "reloadUrl" => "/basket"];
-
+        $whatHappened = [];
         /**/ if ($param['basketUserId'] != $param['userId']) {
             return $error;
         }/**/
-
         foreach ($basket as $basketItem) {
             $basketProducts[$basketItem->getProductId()] = [
                 'price' => $basketItem->getPrice(),
                 'total' => $basketItem->getTotal(),
             ];
         }
-        $test = false;
         while (list($key, $product) = each($param['postedProducts'])) { //
-            if (empty($basketProducts[$key] or $test)) {
-                $error["reloadUrl"] = "/client-orders";
+            if (empty($basketProducts[$key])) {
+                $error["reloadUrl"] = "/user/orders";
                 return $error;
             }
-            if (empty($param["legalStore"][$product['store']]) or $test) {
+            if (empty($param["legalStore"][$product['store']])) {
                 $whatHappened['stores'][$product['store']][] = $key;
                 $return["result"] = false;
             }
-
             $productRow = $this->productRepository->find(['id' => $key]);
             $price = (int) $productRow->receivePriceObject()->getPrice();
             $rest = $productRow->receiveRest($legalStoreKey);
-            if ($basketProducts[$key]["price"] != $price or $test) {
+            if ($basketProducts[$key]["price"] != $price) {
                 $whatHappened['products'][$key]['oldprice'] = $basketProducts[$key]["price"];
                 $whatHappened['products'][$key]['price'] = $price;
                 $return["result"] = false;
             }
-            if ($basketProducts[$key]["total"] > $rest or $test) {
+            if ($basketProducts[$key]["total"] > $rest) {
                 $whatHappened['products'][$key]['oldrest'] = $basketProducts[$key]["total"];
                 $whatHappened['products'][$key]['rest'] = $rest;
                 $return["result"] = false;
             }
-            //$test  = false;
         }
         if (!empty($whatHappened)) {
             $container->whatHappened = $whatHappened;
         }
         $return['test'] = [$whatHappened];
-
         return $return;
     }
 
-    /**
-     * Returns Html string
-     * @return string
-     */
-    public function breadCrumbs($a = [])
-    {
-        if ($a and count($a)):
-            //<span class='bread-crumbs-item'></span>"
-            $return[] = "<a href=# class='catalogshow'>Каталог</a>";
-            $a = array_reverse($a);
-            foreach ($a as $b) {
-                $return[] = "<a href=/catalog/" . $b[0] . ">" . $b[1] . "</a>";
-            }
-            //return "<div  class='bread-crumbs'><span class='bread-crumbs-item'>" . join("</span> / <span class='bread-crumbs-item'>", $return) . "</span></div>";
-            return join('<b class="brandcolor"> : </b>', $return);
-        endif;
-    }
-
-    public function orderList($orders)
-    {
+    public function orderList($orders) {
+        $returns = [];
         foreach ($orders as $order) {
 
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
-            $return['basketInfo'] = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY);
+            $return['orderDate'] = $order->getDateCreated(); //date_created
+            $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
             unset($return['basketInfo']['userGeoLocation']['data']);
 
-            $return['deliveryInfo'] = Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY);
+            $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
+            $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
+            $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
             $return['date'] = $order->getDateCreated();
             $returns[] = $return;
         }
+        //json_encode($return)
         return $returns;
     }
 
-    public function breadCrumbsMenu($a = [])
-    {
-        if ($a and count($a)) {
-            //<span class='bread-crumbs-item'></span>"
-            //$return[] = "<a href=# class='catalogshow'>Каталог</a>";
-            $a = array_reverse($a);
-            $j = 0;
-            foreach ($a as $b) {
-
-                $return[] = "<span class='bread-crumbs-item breadtab$j'><a href=/catalog/" . $b[0] . ">" . $b[1] . "</a></span>";
-                if ($j < 4)
-                    $j++;
-            }
-            return "<div  class='bread-crumbs'>" . join("", $return) . "</div>";
-            // return join('<b class="brandcolor"> : </b>', $return);
+    public function getCategoryFilterJson($filters) {
+        if (empty($filters)) {
+            return["error" => "errorId"];
         }
-    }
-
-    /**
-     * Returns Html string
-     * @return string
-     */
-    public function getCategoryFilterArray($filter, $categoryTree)
-    {
-        if (!$filter or!$categoryTree)
-            return;
-        $tree = [];
-        foreach ($categoryTree as $category)
-            $tree[] = $category[0];
-        if (!count($tree))
-            return;
-        $where = "and `tit`.filter=1 and `tit`.category_id in (0," . join(",", $tree) . ")";
-        return $where; // (print_r($filter, true));
-    }
-
-    public function getCategoryFilter($category_id = 0)
-    {
-
-    }
-
-    /**
-     * Return Html
-     * @return string
-     */
-    public function getCategoryFilterHtml($filters, $category_id, $price = ["minprice" => 12000, "maxprice" => 54000])
-    {
-        $typeText[0] = "Заголовок";
-        $typeText[1] = "Строка";
-        $typeText[2] = "Число";
-        $typeText[3] = "Булево";
-        $typeText[4] = "Ссылка.Характеристики";
-        $typeText[5] = "Ссылка.Поставщики";
-        $typeText[6] = "Ссылка.Бренды";
-        $typeText[7] = "Ссылка.Цвета";
-        $typeText[8] = "Ссылка.Страна";
-        $pricesel['maxprice'] = $price['maxprice'];
-        $pricesel['minprice'] = $price['minprice'];
-
-        if (!$filters or!$category_id)
-            return;
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        $filtrForCategory = $container->filtrForCategory;
-        if (!$filtred = $filtrForCategory[$category_id]['fltr'])
-            $filtred = [];
-        $return = "";
+        $return = [];
         $j = 0;
         foreach ($filters as $row) {
             $row['val'] = explode(",", $row['val']);
             $row['val'] = array_unique($row['val']);
             $getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
-            //$row['val']=array_diff ([""], $row['val']);
-            unset($options);
+            $chars = [];
             foreach ($row['val'] as $val) {
                 $j++;
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
-                if ($val) {
-                    $valuetext = $val;
-                    if ($row['type'] == 4)
-                        $valuetext = $char->getTitle();
-                    elseif ($row['type'] == 5)
-                        $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                    elseif ($row['type'] == 6)
-                        $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                    elseif ($row['type'] == 7) {
-                        $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
-                        $valuetext = "<div class='iblok relative' >"
-                                . " <div class=' checkgroup relative cirkulcheck ' for='$j' style='background-color:{$color->getValue()};' title='  {$color->getTitle()} '></div>"
-                                //. "      {$color->getTitle()}   "
-                                . "</div>";
-                    } elseif ($row['type'] == 8)
-                        $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
-
-                    if ($row['type'] == 2) {
-                        $options[] = $val;
-                    } elseif ($row['type'] == 7) {
-                        $options .= $valuetext
-                                . "<input
-                                    type='checkbox'
-                                    class='none fltrcheck$j'
-                                    name='characteristics[" . $row['id'] . "][]'
-
-                                    value='" . $val . "'  "
-                                . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
-                                ";
-                    } else
-                        $options .= "<div class='nopub checkgroup blok " . (in_array($option['valId'], $filtred) ? " zach " : "") . "' for='$j' >" . $valuetext
-                                . "<input
-                                     type='checkbox'
-                                     class='none fltrcheck$j'
-                                     name='characteristics[" . $row['id'] . "][]'
-
-                                     value='" . $val . "'  "
-                                . (false and in_array($option['valId'], $filtred) ? " checked " : "") . " >
-                               </div>";
+                $valuetext = $val;
+                if ($row['type'] == 4) {
+                    $valuetext = $char->getTitle();
+                } elseif ($row['type'] == 5) {
+                    $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                } elseif ($row['type'] == 6) {
+                    $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+                } elseif ($row['type'] == 7) {
+                    $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
+                    $valuetext = [$color->getValue(), $color->getTitle()];
+                } elseif ($row['type'] == 8) {
+                    $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
                 }
+                $chars[] = [
+                    "valueCode" => $val,
+                    "value" => $valuetext,
+                ];
             }
-            if ($options) {
-                if ($row['type'] == 2) {
-                    $min = min($options);
-                    $max = max($options);
-                    // $options = "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; margin-right:10px;' value='$min' >"
-                    //          . "<input type=number step=0.1  min='$min' max='$max' class=iblok style='width:80px; ' value='$max' >";
-                    $rzn = $max - $min;
-                    $step = 1;
-                    if ($rzn > 10000)
-                        $step = 100;
-                    elseif ($rzn > 1000)
-                        $step = 10;
-                    elseif ($rzn > 100)
-                        $step = 1;
-                    elseif ($rzn < 10)
-                        $step = 0.1;
-
-                    $maxsel = $max;
-                    $minsel = $min;
-                    $rangeId = str_replace("-", "", $row['id']);
-                    $options = '
-    <script>
-        $(function(){
-            $("#rangeslider' . $rangeId . '").ionRangeSlider({
-                    hide_min_max: true,
-                    keyboard: true,
-                    min: ' . $min . ',
-                    max: ' . $max . ',
-                    from:' . $minsel . ',
-                    to:  ' . $maxsel . ',
-                    hideMinMax:true,
-                    type: "double",
-                    step: ' . $step . ',
-                    postfix: "' . $getUnit . '",
-                    grid: false,
-                    onChange: function (obj) {
-
-                        $("#minCost2' . $rangeId . '").val(obj.from);
-                        $("#maxCost2-' . $rangeId . '").val(obj.to);
-                        $("#minCost' . $rangeId . '").html(obj.from);
-                        $("#maxCost' . $rangeId . '").html(obj.to);
-              }
-            });
-        })
-     </script> '
-                            . "
-
-                <div style='padding:0px 6px; display:block; position:relative'>
-                    <input type='text' id='rangeslider$rangeId' class='rangeslider'  value='' name='characteristics[" . $row['id'] . "][]'  style=''/>
-                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id='minCost$rangeId'>" . $minsel . "</span>
-                       </div><div
-                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id='maxCost$rangeId'>" . $maxsel . "</span></div>
-                    <!-- input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['min']\" id='minCost2$rangeId' value='" . $minsel . "'
-                    ><input type=hidden class='numonly'   pattern='^[ 0-9]+$' name=\"characteristics[" . $row['id'] . "]['max']\" id='maxCost2$rangeId' value='" . $maxsel . "' -->
-                </div>
-        ";
-                } elseif ($row['type'] == 3) {
-                    $options = "
-                    <div class=blok >
-                        <div class='fltronoff   onoff ' for=123  rel=1 >Нет
-                            <input type='checkbox' rel=1 class='none  relcheck fltrcheck123' name='characteristics[" . $row['id'] . "]' value='0' >
-                        </div>
-                        <div class='fltronoff onoff  ' for=122  rel=1 >Да
-                                <input type='checkbox' rel=1 class='none  relcheck  fltrcheck122' name='characteristics[" . $row['id'] . "]' value='1' >
-                        </div>
-                    </div>";
-                    /* . "<radiogroup>"
-                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=1 > Да</div>"
-                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=0 > Нет</div>"
-                      . "<div class=blok ><input type=radio name='characteristics[".$row['id']."][]' value=-1 checked > Не важно</div>"
-                      . "</radiogroup>"; */
-                }
-
-                $return .= '<div class="ifilterblock"  >
-                            <div class="filtritemtitle" rel="' . $row['id'] . '">' . $row['tit'] . (($getUnit) ? " <span class='gray iblok'>$getUnit</span>" : "") . ((false and $count = (int) $row['type']) ? "<div class='count' >$count</div>" : "") . '
-                                <span class="blok mini gray nobold" >' . $typeText[$row['type']] . '</span>
-                                     <span class="blok mini gray nobold" >id: ' . $row['id'] . '</span>
-                             </div>
-
-                            <!-- div class="filtritem" id="fi' . $row['id'] . '" -->
-                                <div class="filtritemcontent" id="fc' . $row['id'] . '">
-                                    <!-- div class="blok" ><div class="closefilteritem" rel="' . $row['id'] . '">' . $row['tit'] . '</div></div -->
-                                    ' . $options . "
-                                    <!-- div class='block'><input type='button' value='применить' class='formsendbuttonnew'  ></div-->
-                                 </div>
-                            <!-- /div -->
-                        </div>";
-            }
-        }
-
-        $rzn = $price['maxprice'] / 100 - $price['minprice'] / 100;
-        if ($rzn > 10000)
-            $step = 100;
-        elseif ($rzn > 1000)
-            $step = 10;
-        elseif ($rzn > 10)
-            $step = 1;
-        //elseif ($rzn < 10) $step=0.1;
-
-
-        (true or $return) ? $return = '
-        <div  class="formsendbutton" > post filter view</div>
-        <input type=hidden name="offset" value="72" id="sqlOutline"  >
-        <input type=hidden name="limit" value="72" id="sqlOutline"  >
-        <script>
-            $(function(){
-                $("#rangeslider").ionRangeSlider({
-                    hide_min_max: true,
-                    keyboard: true,
-                    min: ' . (int) $price['minprice'] . ',
-                    max: ' . (int) $price['maxprice'] . ',
-             //        from:' . (int) $pricesel['minprice'] . ',
-             //       to:  ' . (int) $pricesel['maxprice'] . ',
-                    hideMinMax:true,
-                    type: "double",
-                    step: ' . ($step * 100) . ',
-                    postfix: "₽",
-                    grid: false,
-                    onChange: function (obj) {
-                        console.log(' . $step . ');
-                        var fmin = new Intl.NumberFormat("ru-RU").format(obj.from/100)
-                        var fmax = new Intl.NumberFormat("ru-RU").format(obj.to/100)
-
-                        $("#minCost2").val(obj.from);
-                        $("#maxCost2").val(obj.to);
-                        $("#minCost").html(fmin);
-                        $("#maxCost").html(fmax);
-                        $("#sub0").html("!");
-                        $("#submitfiltr").show();
-                        $(".submitfiltr").show();
-		}
-            });
-        })
-        </script> '
-                        . "
-        <div class=blok >
-            <div class='fltrblock'>
-                   <div class='filtritemtitleprice blokl' >Цена <span class='gray iblok'>₽</span></div>
-                <div style='padding:0px 6px; display:block; position:relative'>
-                    <input type='text' id='rangeslider' class='rangeslider'  value='' name='priceRange'  style=''/>
-                        <div  style='' class='minvaluenum' ><span class='gray'>от</span>&nbsp;<span id=minCost>" . number_format($pricesel['minprice'] / 100, 0, ',', ' ') . "</span>
-                       </div><div
-                       style='' class='maxvaluenum' ><span class='gray'>до</span>&nbsp;<span id=maxCost>" . number_format($pricesel['maxprice'] / 100, 0, ',', ' ') . "</span></div>
-                   </div>
-            </div>
-        </div>
-        " . $return : "";
-        //
-        return $return;
-    }
-
-    public function productCard($filteredProducts, $category_id = 0)
-    {
-        $return = []; // new $return;
-        $filters = [];
-
-        foreach ($filteredProducts as $product) {
-            $cena = $price = (int) $product->getPrice();
-            $cena = $cena / 100;
-            $cena = number_format($cena, 0, "", "&nbsp;");
-
-            $oldprice = (int) $product->getOldPrice();
-            if ($oldprice > $price) {
-                $oldprice = $oldprice / 100;
-                $oldprice = number_format($oldprice, 0, "", "&nbsp;");
-            } else
-                $oldprice = 0; /**/
-
-            $container = new Container(StringResource::SESSION_NAMESPACE);
-            $legalStore = $container->legalStore;
-            $filtrForCategory = $container->filtrForCategory;
-            $timeDelevery = (int) $legalStore[$product->getStoreId()];
-            $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $r = (int) $rest->getRest();
-            $_id = $product->getId();
-            $_return[$_id]['rest'] += $r;
-            $_return[$_id]['id'] = $_id;
-            $_return[$_id]['imageurl'] = $product->getHttpUrl(); //            $_return[$_id]['imageurl'] = $product->getProductImage()->getHttpUrl();
-
-            if (!$_return[$_id]['speedlable'] and $timeDelevery)
-                $_return[$_id]['speedlable'] = "<div class=speedlable>$timeDelevery" . "ч</div>";
-            if (!$_return[$_id]['image'] and $imageurl = $product->getHttpUrl())
-                $_return[$_id]['image'] = $imageurl;
-            $_return[$_id]['brand'] = $product->getBrandTitle();
-            $_return[$_id]['price'] = $cena;
-            $_return[$_id]['oldprice'] = $oldprice;
-            $_return[$_id]['art'] = $product->getVendorCode();
-            $_return[$_id]['title'] = $product->getTitle();
-            $_return[$_id]['cena'] = $cena;
-            $prices[] = $cena;
-        }
-
-        if ($_return) {
-            foreach ($_return as $Card) {
-                if (!($filtrForCategory[$category_id]['hasRestOnly'] and!$Card['rest']) and!empty($Card)) {
-
-                    $return['card']
-                            //.=$this->partial('application/ajax/partials/card', ['card' => $card]); .= "<div class='productcard ' >"
-                            // . $Card['speedlable']
-                            . "<div class='contentabsolute  content opacity" . $Card['rest'] . "'>"
-                            . "<a  href='/product/" . $Card['id'] . "' >"
-                            . "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . (($Card['image']) ? $Card['image'] : "nophoto_1.jpeg") . ")'/></div>"
-                            . "</a>"
-                            . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
-                            . "         <div class='inactiveblok'></div>"
-                            . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
-                            . (($Card['oldprice']) ? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>" : "")
-                            . "        <div class='payblockcard'>"
-                            . "             <div class='paybutton' rel='" . $Card['id'] . "' >в корзину</div>"
-                            . "        </div>"
-                            . "   </div>"
-                            . "   <div class='content opacity" . $Card['rest'] . "'>"
-                            . "<a  href='/product/" . $Card['id'] . "' >"
-                            //. "       <img src='/images/product/"' alt='alt' class='productimage'/>"
-                            . "      <div class='zeroblok'><img src='/img/zero.png' alt='alt' class='productimage zero' style='background-image:url(/images/product/" . (($Card['image']) ? $Card['image'] : "nophoto_1.jpeg") . ")'/></div>"
-                            . "</a>"
-                            . "       <strong class='blok producttitle'><a  href='/product/" . $Card['id'] . "' >" . $Card['title'] . "</a></strong>"
-                            . "         <div class='inactiveblok'></div>" . "       <span class='price'>" . $Card['cena'] . "&#8381;</span>"
-                            . (($Card['oldprice']) ? "       <span class='oldprice'>" . $Card['oldprice'] . "&#8381;</span>" : "")
-                            . "   </div>"
-                            . "</div>"; /**/
-                }
-            }
+            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $getUnit, "options" => $chars];
         }
         return $return;
     }
 
-    private function valueParce($v = [], $chType)
-    {
-        $bool = ["нет", "да"];
-        if (!$v or!is_array($v))
+    private function valueParce($v = [], $chType) {
+        $bool = [Resource::NO, Resource::YES];
+        if (!$v or !is_array($v))
             return $v;
         foreach ($v as $val) {
             if (!$val)
                 continue;
-            //if ($chArray and is_array($value)) $value=join(", ",$value);
             if ($chType == 3)
                 $value[] = $bool[$val];
 
@@ -549,554 +236,178 @@ class HtmlProviderService
                 $value = $v;
         }
         if ($value)
-            return  print_r(join(", ", $value), true);
+            return print_r(join(", ", $value), true);
     }
 
-    public function productPage($filteredProducts, $category_id = 0)
-    {
-        $return = $filters = [];
-        if (!$filteredProducts->count()) {
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location:/");
-            exit();
-        }
-        foreach ($filteredProducts as $product) {
-            $cena = $price = (int) $product->getPrice();
-            $cena = $cena / 100;
-            $cena = number_format($cena, 0, "", "&nbsp;");
-
-            $oldprice = (int) $product->getOldPrice();
-            if ($oldprice > $price) {
-                $oldprice = $oldprice / 100;
-                $oldprice = number_format($oldprice, 0, "", "&nbsp;");
-            } else
-                $oldprice = 0; /**/
-
-            $container = new Container(StringResource::SESSION_NAMESPACE);
-            $legalStore = $container->legalStore;
-
-            $filtrForCategory = $container->filtrForCategory;
-            $timeDelevery = (int) $legalStore[$product->getStoreId()];
-            $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $r = (int) $rest->getRest();
-            if (!$speed or $speed < $timeDelevery) {
-                $speed = (int) $timeDelevery;
-            }
-            ($timeDelevery and $r) ? $speedlable = " / доставка <b class='speedlable2' >$speed" . "ч</b>" : $speedlable = "";
-            //$filtersTmp = explode(",", $product->getParamValueList());
-            //$filters = array_merge($filters, $filtersTmp);
-            $id = $product->getId();
-            $title = $product->getTitle();
-            $categoryId = $product->getCategoryId();
-            $charNew = $product->getParamVariableList();
-            $charNew = json_decode($charNew, true);
-            $charsNew = "<pre>" . print_r($charNew, true) . "</pre>";
-
-            //$category = $product->getCategoryTitle();
-
-            $img[] = $product->getHttpUrl();
-            //$filtersTmp = explode(",", $product->getParamValueList2());
-            //$filters = array_merge($filters, $filtersTmp);
-            $vendor = $product->getVendorCode();
-            $brandtitle = $product->getBrandTitle();
-
-            $brandid = $product->getBrandId();
-            //exit($brandid."!");
-            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid]);
-            $brandimage = $brandobject->getImage();
-            //exit($brandimage."!");
-            $description = $product->getDescription();
-
-            $description = (strlen($description) < 501) ? "<p>" . str_replace("\n", "</p><p>", $description) . "</p>" : ""
-                    . "<div  id='spoiler-hide-$id' >"
-                    . "     <p><div class='blok relative'>"
-                    . "         " . substr(strip_tags($description), 0, 500)
-                    . "         <div class='gradientbottom'></div>"
-                    . "     </div>"
-                    . "     <a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
-                    . "     </p>"
-                    . "</div>"
-                    . "<div  id='spoiler-show-$id'   class='blok' style='display:none' ><p>" . str_replace("\n", "</p><p>", $description) . "</p></div>";
-
-            $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
-            $rst[$product->getStoreId()] = $r;
-        }
-        $totalRest = (count($rst)) ? array_sum($rst) : 0;
-        ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
-
-        $charNew = array_diff($charNew, array(''));
-        if (!empty($charNew)) {
-            if ($characterictics = $charNew)
-                $j = 0;
-
-            foreach ($characterictics as $char) {
-                $charRow = "";
-                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
-                $chTit = $ch->getTitle();
-                $chType = (int) $ch->getType();
-                $chArray = $ch->getIsList();
-                $chMain = $ch->getIsMain();
-                $idchar = $char['id'];
-                if ($value = $char['value'] /* or true /* */) {
-
-                    ($chArray) ? $v = $value : $v[] = $value;
-                    $value = $this->valueParce($v, $chType);
-                    unset($v);
-                    $charRow = "<div class='char-row'><span class='char-title'><span>" . $chTit . " "
-                            . "" . $ch->getUnit() . ""
-                            . "</span></span><span class=char-value ><span>$value</span></span></div>";
-                    $j++;
-                } elseif ($chType == 0) {
-                    $charRow = "<h3>$chTit</h3>";
-                    $j++;
-                }
-                if ($chMain)
-                    $chars .= $charRow;
-                $charsmore .= $charRow;
-            }
-
-            $join = $chars;
-        } else
-            $join = "";
-        $j = 0;
-        $img = array_unique($img);
-        foreach ($img as $im) {
-            if ($im) {
-                $borderred = "";
-                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
-                if (!$j) {
-                    $mainimage = "<div class='square'><div class='squarecontent'>$image</div></div>";
-                    $borderred = " borderred ";
-                }
-                $j++;
-                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
-                $imgicons .= "<div class='product-image-container-mini iblok $borderred' >$image</div>";
-            }
-        }
-        $return['title'] = $title;
-        $return['categoryId'] = $categoryId;
-        $return['card'] .= ""
-                . "<div class='pw-contentblock cblock-2'>"
-                . "         <div class='inactiveblok'></div>"
-                . "</div>"
-                . "<div class='pw-contentblock gray iblokr cblock-2'>Код товара: $vendor</div>"
-                . "<div class='pw-contentblock cblock-3'>
-                    <div class='contentpadding' id=productpageimg>
-                            $speedlable2
-                            $imagesready
-                    <div class='iblok iconimg' style='width:98px;' >$imgicons</div>
-                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>
-                     </div>
-                 </div>"
-                . "
-                 <div class='pw-contentblock cblock-3'>
-                    <div class='contentpadding'>
-                      <div class='productpagecard ' >"
-                . "   <div class='content opacity-" . $r . "'>"
-        ;
-
-        $return['card'] .= ($join) ? "<div class='char-blok'>$join</div>" : "";
-        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
-        //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
-        $return['card'] .= "   </div>"
-                . "</div>"
-                . "</div>"
-                . "</div>    "
-                . "<div class='pw-contentblock cblock-3'>
-                         <div class='contentpadding'>
-				<div class='paybox' >"
-                . "     		<div class='contentpadding'>
-						<h2 class='blok price'>   " . $cena . " &#8381; "
-                . (($oldprice) ? "<span class='oldprice'>" . ($oldprice) . "&nbsp;&#8381;</span>" : "")
-                . "</h2>
-					</div>
-        				<div class='volna' ></div>
-            				<div class='contentpadding'>
-						доставка
-                                        </div>
-                                        <div class='pw-contentblock cblock-2'>
-                                            <div class='contentpadding'>
-                                                 <div class=paybutton rel='$id' >в корзину</div>
-                                            </div>
-                                         </div>
-                                         <div class='pw-contentblock cblock-2'>
-                                            <div class='contentpadding'>
-                                                 <div class=paybuttonwhite rel='$id' >купить сразу</div>
-                                            </div>
-                                         </div>
-									"
-                . "         <div class='contentpadding'>
-                                <div class='favstar favtext'>Добавить в избранное</div>
-                            </div>
-                      </div>
-                       <div class=brandblok >
-                               " . (($brandimage) ? "<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>" : " <div class='brandlogo' >$brandtitle</div>") . "
-                               <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
-                         </div>
-                    </div>
-                 </div>
-                 "
-        ;
-        $return['card'] .= ""
-                . "<div class=blok  >"
-                . "    <div class='pw-contentblock cblock-5' >
-                            <div class='contentpadding ' >"
-                //. $charsNew."!!!"
-                . $description
-                . (($charsmore) ? "<h3>Характеристики</h3>
-
-                                <div class='char-blok-bottom'>
-                                    $charsmore
-                                </div>" : "") . "
-                            </div>
-                        </div>"
-                . "<div class='pw-contentblock cblock-3' >"
-                . "<div class='contentpadding ' >"
-                . "<div class='mini opacity0'>
-                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
-                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
-                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
-                . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
-                            </ul>
-                      </div>
-                      </div>
-                      </div>
-                      </div>"
-                . "</div>";
-
-        return $return;
-    }
-    
-    
-    public function productPageService($filteredProducts, $category_id = 0)
-    {
+    public function productPageService($filteredProducts, $category_id = 0) {
         $productImages = $return = $filters = [];
-        if (!$filteredProducts->count()) {
-            header("HTTP/1.1 301 Moved Permanently");
-            header("Location:/");
-            exit();
-        }
         foreach ($filteredProducts as $product) {
-            
-            $return['price'] = (int)$product->getPrice();
-            $return['price_formated' ]= number_format(($return['price']/100), 0, "", "&nbsp;");
-            //$return['discont'] = $product->getDiscont();
-            $container = new Container(StringResource::SESSION_NAMESPACE);
-            $legalStore = $container->legalStore;
 
-            //$filtrForCategory = $container->filtrForCategory;
-            $timeDelevery = (int) $legalStore[$product->getStoreId()];
+            $return['price'] = (int) $product->getPrice();
+            $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
+            //$container = new Container(Resource::SESSION_NAMESPACE);
+            //$legalStore = $container->legalStore;
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $return['rest'] = $r = (int) $rest->getRest();
-            if (!$speed or $speed < $timeDelevery) {
-                $speed = (int) $timeDelevery;
-            }
+            $return['rest'] = (int) $rest->getRest();
             $return['product_id'] = $id = $product->getId();
             $return['title'] = $product->getTitle();
-            $return['category_id'] =  $categoryId = $product->getCategoryId();
+            /** Alex has added the below code */
+            $parentCategoryId = $product->getParentCategoryId();
+            $categoryId = $product->getCategoryId();
+            if(!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
+                $categoryId = $parentCategoryId;
+            }
+            $return['category_id'] = $categoryId;
+            /** End of Alex's code */
             
+            // Alex has commented out the below code
+            //$return['category_id'] = $categoryId = $product->getCategoryId();
             $charNew = $product->getParamVariableList();
-            $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
-            
-
-            //$category = $product->getCategoryTitle();
-
+            $characteristicsArray = [];
+            if (!empty($charNew)) {
+                $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
+            }
             $productImages[] = $product->getHttpUrl();
-            //$filtersTmp = explode(",", $product->getParamValueList2());
-            //$filters = array_merge($filters, $filtersTmp);
             $vendor = $product->getVendorCode();
-            $brandtitle = $product->getBrandTitle();
-
-            $brandid = $product->getBrandId();
-            //exit($brandid."!");
-            $brandobject = $this->brandRepository->findFirstOrDefault(['id' => $brandid]);
-            $brandimage = $brandobject->getImage();
-            //exit($brandimage."!");
-            $return['description'] = $description = $product->getDescription();
-
-            /*$description = (strlen($description) < 501) ? "<p>" . str_replace("\n", "</p><p>", $description) . "</p>" : ""
-                    . "<div  id='spoiler-hide-$id' >"
-                    . "     <p><div class='blok relative'>"
-                    . "         " . substr(strip_tags($description), 0, 500)
-                    . "         <div class='gradientbottom'></div>"
-                    . "     </div>"
-                    . "     <a href=# class='redlink spoileropenlink ' rel='$id'  >развернуть описание&darr;</a>"
-                    . "     </p>"
-                    . "</div>"
-                    . "<div  id='spoiler-show-$id'   class='blok' style='display:none' ><p>" . str_replace("\n", "</p><p>", $description) . "</p></div>";
-              */      
-            $stors[$product->getStoreId()] = "{$product->getStoreTitle()}<span class='blok mini' >остаток: $r $speedlable  </span>";
-            $rst[$product->getStoreId()] = $r;
+            $productId = $product->getId();
+            
+            $return["brand"]["title"] = $product->getBrandTitle();
+            $return["brand"]["id"] = $product->getBrandId();
+            $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
+            
+            
+            $return["provider"]["id"] = $product->getProviderId();
+            //exit($return["provider"]["id"]);
+            $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
+                    
+            $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
+            $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
+            
+            
+            
+            $description = $product->getDescription();
+            if (!empty($description)) {
+                $return['description']["text"] = StringHelper::eolFormating($description);
+                $return['description']['if_spoiler'] = ((strlen($description) < 501));
+                $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
+            }
         }
-        $totalRest = (count($rst)) ? array_sum($rst) : 0;
-        ($speed and $totalRest) ? $speedlable2 = "<div class=speedlable>$speed" . "ч</div>" : $speedlable2 = "";
-
-        $characteristicsArray  = array_diff($characteristicsArray , array(''));
+        $characteristicsArray = array_diff($characteristicsArray, array(''));
         if (!empty($characteristicsArray)) {
             foreach ($characteristicsArray as $char) {
-                
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
-                 
                 $chArray = $ch->getIsList();
-                 ($chArray) ? $v = $value : $v[] = $value;
+                $chType = $ch->getType();
+                $getmain = ($ch->getIsMain()) ? 1 : 0;
+                if ($char['value']) {
+                    ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
                     $value = $this->valueParce($v, $chType);
-                    
-                
-                
-            $return["characteristics"][$ch->getIsMain()][] = [
+                    unset($v);
+                }
+                $return["characteristics"][$getmain][] = [
                     "id" => $char['id'],
                     "title" => $ch->getTitle(),
-                    "array" => $chArray ,
+                    "type" => $chType,
+                    "array" => $chArray,
                     "value" => $value,
                     "unit" => $ch->getUnit(),
                 ];
             }
-        } else $return["characteristics"]=$characteristicsArray;
-        
-        $j = 0;
-        $productImages = array_unique($productImages);
-        $return['images']=$productImages;
-        
-        /* /foreach ($img as $im) {
-            if ($im) {
-                $borderred = "";
-                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
-                if (!$j) {
-                    $mainimage = "<div class='square'><div class='squarecontent'>$image</div></div>";
-                    $borderred = " borderred ";
-                }
-                $j++;
-                $image = "<img src='/images/product/$im' alt='alt' class='product-page-image productimage$j' id='productimage$j' title='img$j' />";
-                $imgicons .= "<div class='product-image-container-mini iblok $borderred' >$image</div>";
-            }
-        }/**/
-        $return['title'] = $title;
+        } else {
+            $return["characteristics"] = [];
+        }
+        //$productImages = ;
+        $return['images'] = array_unique($productImages);
         $return['categoryId'] = $categoryId;
-        $return['card'] .= ""
-                . "<div class='pw-contentblock cblock-2'>"
-                . "         <div class='inactiveblok'></div>"
-                . "</div>"
-                . "<div class='pw-contentblock gray iblokr cblock-2'>Код товара: $vendor</div>"
-                . "<div class='pw-contentblock cblock-3'>
-                    <div class='contentpadding' id=productpageimg>
-                            $speedlable2
-                            $imagesready
-                    <div class='iblok iconimg' style='width:98px;' >$imgicons</div>
-                    <div class='iblok mainimg'  style='width:calc(100% - 110px) ' >$mainimage</div>
-                     </div>
-                 </div>"
-                . "
-                 <div class='pw-contentblock cblock-3'>
-                    <div class='contentpadding'>
-                      <div class='productpagecard ' >"
-                . "   <div class='content opacity-" . $r . "'>"
-        ;
-
-        $return['card'] .= ($join) ? "<div class='char-blok'>$join</div>" : "";
-        //. "       <b><span class='blok'>Характеристики</span></b><ul>$join <hr><div class=mini>".str_replace(",","<br>",$join2)." </div></ul>"
-        //. "       <i class='blok'> ".$product->getStoreAddress()."</i>"
-        $return['card'] .= "   </div>"
-                . "</div>"
-                . "</div>"
-                . "</div>    "
-                . "<div class='pw-contentblock cblock-3'>
-                         <div class='contentpadding'>
-				<div class='paybox' >"
-                . "     		<div class='contentpadding'>
-						<h2 class='blok price'>   " . $cena . " &#8381; "
-                . (($oldprice) ? "<span class='oldprice'>" . ($oldprice) . "&nbsp;&#8381;</span>" : "")
-                . "</h2>
-					</div>
-        				<div class='volna' ></div>
-            				<div class='contentpadding'>
-						доставка
-                                        </div>
-                                        <div class='pw-contentblock cblock-2'>
-                                            <div class='contentpadding'>
-                                                 <div class=paybutton rel='$id' >в корзину</div>
-                                            </div>
-                                         </div>
-                                         <div class='pw-contentblock cblock-2'>
-                                            <div class='contentpadding'>
-                                                 <div class=paybuttonwhite rel='$id' >купить сразу</div>
-                                            </div>
-                                         </div>
-									"
-                . "         <div class='contentpadding'>
-                                <div class='favstar favtext'>Добавить в избранное</div>
-                            </div>
-                      </div>
-                       <div class=brandblok >
-                               " . (($brandimage) ? "<div class='brandlogo' style='background-image:url(\"/images/brand/$brandimage\")'></div>" : " <div class='brandlogo' >$brandtitle</div>") . "
-                               <a class='brandlink' href=# >Все товары марки&nbsp;&rarr;</a>
-                         </div>
-                    </div>
-                 </div>
-                 "
-        ;
-        $return['card'] .= ""
-                . "<div class=blok  >"
-                . "    <div class='pw-contentblock cblock-5' >
-                            <div class='contentpadding ' >"
-                //. $charsNew."!!!"
-                . $description
-                . (($charsmore) ? "<h3>Характеристики</h3>
-
-                                <div class='char-blok-bottom'>
-                                    $charsmore
-                                </div>" : "") . "
-                            </div>
-                        </div>"
-                . "<div class='pw-contentblock cblock-3' >"
-                . "<div class='contentpadding ' >"
-                . "<div class='mini opacity0'>
-                            <UL><span class='blok'>Артикул: " . $vendor . "</span>"
-                //. "       <span class='blok'>Торговая марка: " . $brand . "</span>"
-                . "               <span class='blok'>Остаток: " . $totalRest . "</span>"
-                . "           <b><span class='blok'>Магазины</span></b><li>" . join("</li><li>", $stors) . "</li>
-                            </ul>
-                      </div>
-                      </div>
-                      </div>
-                      </div>"
-                . "</div>";
-
+        $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
+        //exit(print_r($return));
         return $return;
     }
-    
-    
-    
-    
-    
 
-    public function writeUserAddress($user = null)
-    {
-        //$userId = $this->identity();
-        /* $userData = new UserData();
-          $userData->getUserId($userId)
-          ->getAddress()
-          ->getGeodata(); */
-        $container = new Container(StringResource::SESSION_NAMESPACE);
-        if (null != $user){
-            $username = $user->getName();
-            $userData = $user->getUserData();
-            $usdat = $userData->current();
+    public function getUserAddresses($user = null, $limit) {
+        $return = ['address' => [], 'addresses' => []];
+        if (null === $user) {
+            return $return;
         }
-        if (!empty($usdat)) {
-            $userAddress = $usdat->getAddress(); //$container->userAddress;
-            $userGeodata = $usdat->getGeoData();
-            //exit ($userGeodata);
-
+        $addressData = $user->getUserData();
+        if (!empty($addressData)) {
             $i = 0;  //индекс для лимита вывода адресов!
-            foreach ($userData as $adress) {
-                $adressId = $adress->getId();
-                $adressText = $adress->getAddress();
-                $altmenu[] = "<span class='menuitem pointer setuseraddress' rel='$adressId' >$adressText</span>";
+            foreach ($addressData as $address) {
+                if ($i === 0) {
+                    $return['address'] = ["id" => $address->getId(), "text" => $address->getAddress(), "geodata" => $address->getGeoData()];
+                } else {
+                    $return['addresses'][] = ["id" => $address->getId(), "text" => $address->getAddress()];
+                }
                 $i++;
-                if ($i == 5)
+                if ($i > $limit) {
                     break;
-            }
-            //unset($altmenu[0]);
-            if (!empty($altmenu)) {
-                $hasalt = " hasalt ";
-                $altmenu[] = "<span class='menuitem pointer open-user-address-form red'  >Ввести адрес</span>";
-                //<span class="strelka"></span>
-                $altcontent = '<div class="altcontentview">
-
-                          <div class="blok ">'
-                        . join("", $altmenu)
-                        . '</div>
-                 </div>         ';
+                }
             }
         }
-        ($userAddress) ?: $userAddress = "Укажи адрес и получи заказ за час!";
-
-        return "<span class='blok relative $hasalt useraddressalt' >"
-                . "$altcontent"
-                . "<span>$userAddress</span>"
-                . "<textarea id='geodatadadata' class='none' >$userGeodata</textarea></span>"
-        //. "<h1></h1>"
-        //
-        //. "<input type=hidden22 id='geodatadadata22' class='none22' value=\"".($userGeodata2)?$userGeodata:"{2222}"."\" />"
-        ;
+        return $return;
     }
 
-    public function getUserInfo($user)
-    {
-        if (null == $user) return [];
-        //$container = new Container(StringResource::SESSION_NAMESPACE);
+    public function getUserInfo($user) {
+        if (null == $user) {
+            return [];
+        }
+        //$container = new Container(Resource::SESSION_NAMESPACE);
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
         $return['phone'] = $user->getPhone();
+        $return['email'] = $user->getEmail();
         $userData = $user->getUserData();
-
         $usdat = $userData->current();
         if (null != $usdat) {
             $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
             $return['userGeodata'] = $usdat->getGeoData();
-            //exit ($userGeodata);
         }
-        //exit (print_r($return));
         return $return;
     }
 
-    public function basketPayInfoData($post, $param)
-    {
-        /*   $param = [
-          "hourPrice"=> 333,
-          "mergePrice"=> 50,
-
-          "mergePriceFirst"=> 150,
-          ]; */
-
-        $return["post"] = "<pre>" . print_r($post, true) . "</pre>";
+    public function basketPayInfoData($post, $param) {
         $products = $post->products;
         $storeAdress = [];
-        if ($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery)) {
+        if (!empty($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery))) {
             foreach ($selfdelevery as $providerinfo) {
-                //$provider = $this->storeReposi
                 $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
                 $store = $stores->current();
-                //$address = explode(",", $store->getAddress());/**/
-
-                $storeAdress[] = StringHelper::cutAddress($store->getAddress()); /**/
-                //$storeAdress[]= print_r($stores, true);
-                //$storeAdress[] = $providerinfo;
+                $storeAdress[] = StringHelper::cutAddress($store->getAddress());
             }
         }
-
-
         $j = 0;
-        if (!empty($products))
+        if (!empty($products)) {
             while (list($p, $c) = each($products)) {
-
+                if ($c["count"] <= 0) {
+                    continue;
+                }
                 $product = $this->productRepository->find(['id' => $p]);
-                if (null == $product)
+                if (null == $product) {
                     continue;
-                if (!$price = (int) $product->receivePriceObject()->getPrice())
+                }
+                if (!$price = (int) $product->receivePriceObject()->getPrice()) {
                     continue;
+                }
                 $total += ($price * $c['count']);
                 $j += $c["count"];
-                if ($providerId = $product->getProviderId())
+                if ($providerId = $product->getProviderId()) {
                     $provider[$providerId] = 1;
+                }
             }
-        if ($provider)
+        }
+        if (!empty($provider)) {
             $countDelevery = count($provider);
+        }
         $countDelevery = (int) $countDelevery - $countSelfdelevery;
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
         } else {
-
             $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
-
             $priceDelevery = $countDelevery * $param['mergePrice'] + ceil($countDelevery / $param['mergecount']) * $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery / $param['mergecount']);
+            $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
-
-
-        //$return['payEnable'] =($total>0 and  ($countSelfdelevery or ($countDelevery and $timeDelevery)))?true:false;
-        $return["textDelevery"] = "за час";
         $return["basketpricetotalall"] = $return["total"] = $total;
         $return["count"] = $j;
         $return["timeDelevery"] = $timeDelevery;
@@ -1106,27 +417,20 @@ class HtmlProviderService
         $return["countDeleveryText"] = $countDelevery;
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress;
-        //$return["paycardinfo"] = "4276 5555 **** <span class='red'>1234&darr;</span>";
-
         return $return;
     }
 
-    public function basketMergeData($post, $param)
-    {
-        /* $param = [
-          "hourPrice" => 29900,  //цена доставки за час
-          "mergePrice" => 5000, //цена доставки за три часа
-          "mergePriceFirst" => 24900,  //цена доставки за первый махгазин  при объеденении заказа
-          "mergecount" => 4, //количество объеденямых магазинов
-          ]; */
+    public function basketMergeData($post, $param) {
         $return = [];
+        $timeDelevery3Hour = $timeDelevery1Hour = [];
         $products = $post->products;
-        if (!$selfdelevery = $post->selfdelevery)
+        if (!$selfdelevery = $post->selfdelevery) {
             $countSelfdelevery = 0;
-        else
+        } else {
             $countSelfdelevery = count($selfdelevery);
+        }
         //return ['count' => print_r($products , true)];
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
@@ -1136,45 +440,35 @@ class HtmlProviderService
         if ($products and!empty($products)) {
             $products = array_keys($products);
             foreach ($products as $pId) {
-                //$return["count"] = print_r($pId, true);         break;
                 $product = $this->productRepository->find(['id' => $pId]);
-                //$return["count"] = print_r($product, true);
-
                 $providerId = $product->getProviderId();
                 $provider = $this->providerRepository->find(['id' => $providerId]);
-
                 $store = $provider->recieveStoresInList($legalStore);
                 $idStore = $store->getId();
-                //
-                //
-                //$return["count"] = print_r($idStore, true);         break;
                 $timeClose[$idStore] = $legalStoresArray[$idStore]['time_until_closing'];
-                //$legalStoresArray[$idStore]['time_until_closing'];
             }
             $return['timeClose'] = min($timeClose);
-            //<option value="0" rel=" в течение часа ">сейчас за час</option>
             $timeDelevery1Hour[] = [
-                "lable" => StringResource::BASKET_SAYCHAS_title,
+                "lable" => Resource::BASKET_SAYCHAS_title,
                 "value" => 0,
-                "rel" => StringResource::BASKET_SAYCHAS_do,
+                "rel" => Resource::BASKET_SAYCHAS_do,
             ];
-            /**/$timeDelevery3Hour[] = [
-                "lable" => StringResource::BASKET_SAYCHAS3_title,
+            $timeDelevery3Hour[] = [
+                "lable" => Resource::BASKET_SAYCHAS3_title,
                 "value" => 0,
-                "rel" => StringResource::BASKET_SAYCHAS3_do,
-            ]; /**/
+                "rel" => Resource::BASKET_SAYCHAS3_do,
+            ];
 
             for ($i = 1; $i <= 12; $i++) {
                 $timeStart = time() + 3600 * $i;
                 $timeEnd = time() + 3600 * $i + 3600;
                 $time3End = time() + 3600 * $i + 3600 * 3;
 
-                if ($timeEnd > $return['timeClose']){
+                if ($timeEnd > $return['timeClose']) {
                     break;
                 }
                 $value = "c " . date("H", $timeStart) . ":00" . " до " . date("H", $timeEnd) . ":00";
                 $value3 = "c " . date("H", $timeStart) . ":00" . " до " . date("H", $time3End) . ":00";
-
                 $rel = (date("d", $timeStart) == date("d")) ? " сегодня " : " завтра ";
 
                 $timeDelevery1Hour[] = [
@@ -1201,10 +495,9 @@ class HtmlProviderService
         return $return;
     }
 
-    public function basketWhatHappenedUpdate($userId, $products)
-    {
+    public function basketWhatHappenedUpdate($userId, $products) {
+        $j = 0;
         while (list($productId, $changes) = each($products)) {
-            $product_id[] = $productId;
             $persist = false;
             $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
 
@@ -1221,21 +514,22 @@ class HtmlProviderService
                 $j++;
             } /**/
         }
-        return "обновлено товаров - $j";
+        return "$j products updated ";
         //return $product_id;
     }
 
-    public function basketData($basket)
-    {
+    public function basketData($basket, $userId) {
         $countproducts = 0;
         $countprovider = [];
-        $container = new Container(StringResource::SESSION_NAMESPACE);
+        $productStoreId = null;
+        $whatHappened = null;
+        $container = new Container(Resource::SESSION_NAMESPACE);
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
         $legalStore = array_keys($container->legalStore);
         $legalStoresArray = $container->legalStoreArray;
-
+        $item = [];
         foreach ($basket as $b) {
             if ($pId = $b->productId) {
                 /** @var HandbookRelatedProduct */
@@ -1249,14 +543,10 @@ class HtmlProviderService
                 $productStore = $productProvider->recieveStoresInList($legalStore);
                 $productAvailable = (null != $productStore);
                 unset($productStoreId);
-
                 if ($rest) {
                     $availblechek[$productProviderId] = true;
                 }
-
-
                 if ($productAvailable) {
-
                     $productStoreId = $productStore->getId();
                     if ($oldprice != $price) {
                         $whatHappened['products'][$pId]['oldprice'] = $oldprice;
@@ -1273,7 +563,6 @@ class HtmlProviderService
                 }//if ($rest) $countproducts +=$count ;
                 if ($rest) {
                     $countproducts++;
-                    //$countproducts +=$count ;
                     $countprovider[$product->getProviderId()] = 1;
                 }
                 $item[$product->getProviderId()][] = [
@@ -1286,36 +575,29 @@ class HtmlProviderService
                     'availble' => $rest,
                     'count' => $count,
                     'store' => $productStoreId,
+                    'isFav' => $this->isInFavorites($pId, $userId),
                 ];
             }
             if ($whatHappened) {
                 $container->whatHappened = $whatHappened;
             }
         }
-        if (!$item or!count($item)){
+        if (empty($item)) {
             return;
         }
-        //$return = [];
-        $g = 0;
+
         while (list($prov, $prod) = each($item)) {
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
-            //exit( print_r($store));
-            unset($idStore, $timStoreOpen);
             $infostore1c = "";
             if (null != $store) {
                 $idStore = $store->getId();
-                //$infostore1c .= "id:".$idStore."<BR/>".print_r($legalStore, true);
                 $infostore1c .= ($legalStoresArray[$idStore]['working_hours_from']) ?
                         "сегодня с " . substr($legalStoresArray[$idStore]['working_hours_from'], 0, -3) . " до " . substr($legalStoresArray[$idStore]['working_hours_to'], 0, -3) : "";
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
                 $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
                 $timStoreOpen = $IntervalOpen + time();
-                //$timStoreOpen = time()+60*60*1;
-            }
-            if (null != $store) {
-
                 if (!$legalStoresArray[$idStore]['status']) {
                     //все работает
                     $provider_disable = false;
@@ -1327,29 +609,28 @@ class HtmlProviderService
                     $provider_addressappend = StringHelper::cutAddress($provider_address);
                     $countprovider++;
                 } else {
-
                     if ($IntervalOpen > 0) {
                         $returnprefix = $j;
                         //закрыт на ночь
-                        $provider_disable = StringResource::STORE_CLOSE_FOR_NIGHT;
-                        $infostore1c = StringResource::STORE_CLOSE_FOR_NIGHT_ALT;
+                        $provider_disable = Resource::STORE_CLOSE_FOR_NIGHT;
+                        $infostore1c = Resource::STORE_CLOSE_FOR_NIGHT_ALT;
                         $infostore1c .= (date("d") == date("d", $timStoreOpen)) ? " сегодня " : " завтра ";
                         $infostore1c .= "в " . date("H:i", $timStoreOpen);
                     } else {
-                        $returnprefix = $j + 100;
+                        $returnprefix = $j + 100; //индекс для сортировки
                         //закрыт на неопределеноне время
-                        $provider_disable = StringResource::STORE_UNAVALBLE;
-                        $infostore1c = StringResource::STORE_UNAVALBLE_ALT;
+                        $provider_disable = Resource::STORE_UNAVALBLE;
+                        $infostore1c = Resource::STORE_UNAVALBLE_ALT;
                     }
                 }
-            } else {
-                $provider_disable = StringResource::STORE_OUT_OF_RANGE;
-                $returnprefix = $j + 1000;
-                $provider_address = $provider_worktime = $provider_timeclose = "";
-                $infostore1c = StringResource::STORE_OUT_OF_RANGE_ALT;
-                //$provider_store_off = "Комментарий из 1с ".$ifostore1c;
-            }
 
+                //  unset($idStore, $timStoreOpen);
+            } else {
+                $provider_disable = Resource::STORE_OUT_OF_RANGE;
+                $returnprefix = $j + 1000; //индекс для сортировки
+                $provider_address = $provider_worktime = $provider_timeclose = "";
+                $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
+            }
             $return["product"][$returnprefix] = [
                 "provider_id" => $provider_store_id, //$prov,
                 "availblechek" => $availblechek[$prov],
@@ -1362,7 +643,7 @@ class HtmlProviderService
                 "provider_timeclose" => "",
                 "provider_store" => $provider_store,
                 "provider_store_id" => $provider_store_id,
-                "provider_store_off" => $provider_store_off,
+                //"provider_store_off" => $provider_store_off,
                 "products" => $prod,
                 "infostore1c" => $infostore1c,
             ];
@@ -1375,9 +656,19 @@ class HtmlProviderService
         }
         $return ["countproviders"] = $countproviders;
         $return ["countprducts"] = $countproducts;
-        if (is_array($return["product"]))
+        if (!empty($return["product"])) {
             ksort($return["product"]);
+        }
         return $return;
+    }
+
+    private function isInFavorites($productId, $userId) {
+        if (!empty($userId) && !empty($productId)) {
+            if (!empty(ProductFavorites::find(['user_id' => $userId, 'product_id' => $productId]))) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

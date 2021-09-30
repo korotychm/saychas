@@ -32,29 +32,84 @@ class ArrayHelper
     }
 
     /**
-     * Build tree out of a flat array
-     *
+     * filter tree out of a flat array
+     * @author plusweb
      * @param array $elements
      * @param type $parentId
-     * @return type
+     * @param array keys $categoriesHasProduct
+     * @return array
+     */
+    public static function filterTree(array $elements, $parentId = 0, $categoriesHasProduct = [])
+    {
+        $return = [];
+        if ($elements[$parentId]) {
+            foreach ($elements[$parentId] as $element) {
+                //exit (print_r($element['id']));
+                $isHasProduct = self::isHasProduct($elements, $element['id'], $categoriesHasProduct);
+                if (!empty($categoriesHasProduct[$element['id']]) or $isHasProduct) {
+                    $children = self::filterTree($elements, $element['id'], $categoriesHasProduct);
+                    $element['children'] = $children;
+                    $return[] = $element;
+                }
+            }
+        }
+        return $return;
+    }
+
+    private function isHasProduct(array $elements, $parentId, array $categoriesHasProduct, $return = false)
+    {
+//        if ($return) {
+//            return true;
+//        }
+        if (!$return and !empty($elements[$parentId])) {
+            foreach ($elements[$parentId] as $element) {
+                if (!empty($categoriesHasProduct[$element['id']])) {
+                   return true;
+                }
+            $return = self::isHasProduct($elements, $element['id'], $categoriesHasProduct, $return);
+            }
+        }
+        return $return;
+    }
+    /**
+     * Build tree out of a flat array
+     * @author Kraskov
+     * @param array $elements
+     * @param mixed $parentId
+     * @return array
      */
     public static function buildTree(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
     {
         $branch = [];
-
-        foreach ($elements as $element) {
-            if ($element[$parentKey] == $parentId) {
-                $children = self::buildTree($elements, $element[$key], $parentKey, $key);
-                if ($children) {
-                    $element['children'] = $children;
-                }
-                $branch[] = $element;
-            }
+        if (!empty($elements[$parentId])){
+            foreach ($elements[$parentId] as $element) {
+                    $children = self::buildTree($elements, $element[$key], $parentKey, $key);
+                    if ($children) {
+                        $element['children'] = $children;
+                    }
+                    $branch[] = $element;
+               }
         }
-
         return $branch;
     }
-
+    
+    public static function buildTreeAlex(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
+    {
+        $branch = [];
+      
+            foreach ($elements as $element) {
+                if ($element[$parentKey] == $parentId) {
+                    $children = self::buildTree($elements, $element[$key], $parentKey, $key);
+                    if ($children) {
+                        $element['children'] = $children;
+                    }
+                    $branch[] = $element;
+                
+                }
+        }
+        return $branch;
+    }
+    
     /**
      * Search tree haystack for given needle
      *
@@ -104,5 +159,23 @@ class ArrayHelper
 
         return $allParentIds;
     }
+    
+//    public static function extractProdictsId ($products, $key = "product_id")
+//    {
+//        $filtredProducts = [];
+//        foreach ($products as $p) {
+//            $filtredProducts[] = $p[$key];
+//        }
+//        return $filtredProducts;
+//    }
+    public static function extractId ($products, $key = "product_id")
+    {
+        $filtredProducts = [];
+        foreach ($products as $p) {
+            $filtredProducts[] = $p[$key];
+        }
+        return $filtredProducts;
+    }
+
 
 }

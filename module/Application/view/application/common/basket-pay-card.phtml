@@ -1,35 +1,27 @@
-<?php if($cardinfo) {?> 
-
-    <h2>Способы оплаты</h2>
-    
-        <div class='pw-contentblock cblock-2  borderredhalf <?=($paycard)?"left":""?>'>
-            <div class='contentpadding'>
-                <div class='radio <?=($paycard)?"zach":""?>  black loadpayinfo' rel='paynew' for='paynewoff'> 
-                    <b> 
-                         <span class='iblok valign-middle '>Оплата с привязанной карты </span> 
-                       
-					</b>
-		</div>
-             
-                <select name="cardinfo" class='lableinfo margin16 text'><option value="<?=strip_tags($cardinfo)?>" ><?=$cardinfo ?></select>
-                
-                 
-             </div>
-        </div><?php }  
-        ?><div class='pw-contentblock cblock-2  borderredhalf <?=(!$paycard)?"right":""?>  <?=(!$cardinfo)?" left":""?>  '>
-            <div class='contentpadding'>
-                <div class='radio black <?=(!$paycard or !$cardinfo)?"zach":""?> loadpayinfo' rel='paynew' for='paynewon'> 
-                     <b>
-                         <span class='iblok valign-middle '>Оплата новой картой</span> 
-                     </b>
-			</div>
-                <span class='blok gray text' >
-                    Расплачиватесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз
-                </span>
-               
-                
+<?php use Application\Resource\Resource; ?>
+<div class="cart-payment">
+    <h2 class="h2">Оплата  <?=(empty($paycard) or $paycard != "0" )?"checked":"!!!"?></h2>
+    <div class="cart__radio-group">
+        <?php if(!empty($cardinfo)) :?>
+          <input type="radio" name='paycard' <?=(empty($paycard) or $paycard != "0" )?"checked":""?> id="payment1" value="1" />
+          <div class="cart__radio">
+            <label for="payment1"><span class="cart__radio-check"></span><span><b><?=Resource::ORDER_MEMBER_PAYCARD_TITLE?></b></span></label>
+              <div class="cart__radio-content">
+              
+                <select name="cardinfo" class="select">
+                    <?php foreach ($cardinfo as $card):?>
+                      <option value="<?=strip_tags($card["id"])?>" <?=($default == $card["id"])?"selected":""?> ><?=$card["pan"]?></option>
+                   <?php endforeach;?>   
+                </select>
+              </div>
+          </div>
+        <?php endif;?>
+        <input type="radio" name='paycard' <?=($paycard == 0)?"checked":""?> id="payment2" value="0" />
+        <div class="cart__radio">
+            <label for="payment2"><span class="cart__radio-check"></span><span><b><?=Resource::ORDER_NEW_PAYCARD_TITLE?></b></span></label>
+            <div class="cart__radio-content">
+                <p><?=Resource::ORDER_NEW_PAYCARD_TEXT?></p>
             </div>
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewon' value='0' <?=(!$paycard or !$cardinfo)?"checked":""?>  >
-            <input type="checkbox" name='paycard' class='relradiopaynew none fltrcheckpaynewoff' value='1' <?=($paycard and $cardinfo)?"checked":""?>  >
         </div>
-    
+    </div>
+</div>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>Say:час карточка товара</title>
+    <link rel="stylesheet" href="css/style.min.css?v=6" />
+    <link rel="icon" href="img/favicon.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;amp;display=swap" />
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <nav class="header__nav">
+                    <div class="header__nav-items"><a href="#">Частые вопросы</a><a href="#">Доставка</a><a href="#">Скидки</a><a href="#">Контакты</a><a href="#">Бренды</a><a href="#">Система лояльности</a><a href="#">Стать партнером</a></div>
+                    <div class="header__nav-dashboard"><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <span>Вход для партнёров</span></a></div>
+                </nav>
+            </div>
+        </div>
+        <div class="container">
+            <div class="header__mid">
+                <div class="header__mid-left">
+                    <div class="header__catalog"><input type="checkbox" id="burger" /><label class="header__burger" for="burger"><span class="header__burger-icon"><span></span><span></span><span></span></span><span>Каталог</span></label>
+                        <nav class="cats container">
+                            <div class="cats__left">
+                                <div class="cats__item"><a class="cats__parent" href="#">Женская одежда</a>
+                                    <div class="cats__children"></div>
+                                </div>
+                                <div class="cats__item"><a class="cats__parent" href="#">Женская одежда</a>
+                                    <div class="cats__children"></div>
+                                </div>
+                                <div class="cats__item active"><a class="cats__parent" href="#">Женская одежда</a></div>
+                            </div>
+                            <div class="cats__right">
+                                <div class="cats__children">
+                                    <ul>
+                                        <li><a href="#">Смартфоны и аксессуары</a></li>
+                                        <li><a href="#">Кнопочные телефоны</a></li>
+                                        <li><a href="#">Смартфоны и аксессуары</a></li>
+                                        <li><a href="#">Кнопочные телефоны</a></li>
+                                        <li><a href="#">Аксессуары</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="#">Смартфоны и аксессуары</a></li>
+                                        <li><a href="#">Кнопочные телефоны</a></li>
+                                        <li><a href="#">Аксессуары</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="#">Смартфоны и аксессуары</a></li>
+                                        <li><a href="#">Кнопочные телефоны</a></li>
+                                    </ul>
+                                    <ul>
+                                        <li><a href="#">Смартфоны и аксессуары</a></li>
+                                        <li><a href="#">Кнопочные телефоны</a></li>
+                                        <li><a href="#">Аксессуары</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="header__logo"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="204" height="151" viewBox="0 0 204 151">
+                            <image id="Лого" width="204" height="151" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAACXCAYAAABZa7TGAAARt0lEQVR4nO2dTXLquhaFzaszAU4j7pNyMy0yBNJKOxlCGEIYQjKEMISknVYYQmilSYW+O4ch5JV4Szwh9GtsyYH1VZ26dQPYsqWlv7239uDn56cg6RgMBrt71XU9LIrioSiKCf60KYpiUZblXH6H9dMvKJjESMHUdS1E8loUxdBQgmVRFDdlWW5YP/3iP+f+AnJQ1/XYIRaB+PzjtN/C74SCycOTQyyScV3Xjyf8Dn4lFEweJoF3Df0eSQQFkxisXUIZnct7+S1QMOlZR9wx5rskARRMYsqyXEcIgYLpGRRMHuaBd30+tQf/7VAwGSjL8jlANFOMRqRHUDCZKMtyWhTFzDDtEkbLe9XaT/oDLf2JUV1jJHVdj7AjthTWffUz1k+/oGASYxKMC9ZPv+CUjJAIKBhCIqBgCImAgiEkAgqGkAgoGEIi+MOXlR/Fg3lTluXynN9F36EdJjFaTL8IEHvUgsmE5X9WluVbQTtM76BgEqPE9IsQ5TvH3YUv2Zz10y8omMQIwWBkeQq48/XFxQWnaD2Ci/48hMbqP5zag/92KJjEwNHSdwCGhCHKPYOCSU+MCCiYnkHBJKYsy0XEHRlA1jMomDy8Bd41RlwkARRMHp5xjrKLJUKZSY+gYDIAa/6NQzTyc9IzaIdJjOH0/jucpTzCmmXJ0/v7CwVDSASckhESAQVDSAQUDCERUDCEREDBEBIBBUNIBBQMIRFQMIRE4D3ot6qqO1ih5UENMp5DRgKK/y5Xq1WoQ6EXyz1HijPiEv8Wq9XK55MlrjeENd3FMuRaluv70vCtV6vVgefxz+2VMU//4P3LeXJ/VVVjT0xN0LMEvJfNarVqHPHZdj02LMMEzyjfmd5+F/CwcJZBGvitgqmq6hGVGRqTsUHOk+cmD19V1QiRiHcRAVYbeP4+mxqkcm1xvW/PdcU1Zg3L/e352s1qtdrzPP65vfLm6R+8fxnfY1VVH56EsQf3s1xn4klvLhpRlE9bl/UYUQbZEekHjPiY28ogBXMwJRMPXFXVJ2LOYwKYhijgd1VVwaG14uGqqnpCo3uIfED5Yj5d94SAfflWXAdSuPA969oglpPL05+iHgPL8YgyhKR213lA+7WGkO8JBsr8DJi+uBDXeKmq6iXg4ca437H56OU9XS/bJ5gRphCx+CrY5KIflKf/5/bqV+TpT1yPtjIMlY4+Vig6T+Ja0MMe+gjj6vVieXApFS/5o+UwXOvLxjDrm6ZE5cXHvVzvS6wBTEI9mTz9qevRUYbvIzt6ne1z6aLZCQY3bbOCxMLTGAClvOS2xKnyZOoZgG9j4sHxWxO+Eeng+bF2CaXXMf0Z61Etw7DDMojn25spqSNMyHRkiUYwR29tW9yvPQFQk44esFDWUgegt/ctKoOmZVjc+hq/aXQ5pTz9WepRoyuxSO7UmZIqGN9wJnZersVO0mq1mordk9Vq9Vec0KhVrBDRvWunDCOPa02xRsJUcb+B+FcUxSXuFRLnfsxaJnQq4Pve3PQOBu9fJ5OnP3M9ygV+6DRMdvYz5V+oKWQ30u+2lT1bld7tRRT+CWIJKojhnhts6zlj2bGh4Guwxq3VwG3gS9/2ZlVV/zw9m/UaWMyHnHx5CYHp9/ZtK89877BocVs5Uz2GmAoKCGVm22ZHe3hyzCy279K6rWxh7JtP4uVcRhow7zUD6E1IRYsRLqD3NfY8aMRHjTIBi/2FS3CD96+gPP0msQDfs3c5RTGRvB4Dt66XPpuUqKfVanWPUUdljZFx7zlUwbiMjcMQ+0qs0QlTlnsMzzeRVmWfMF0LZt9vfeuY6MW+zuD9y5mn32Ptb2Ud1haZ6tE3Mm1QliAjOoQh620BsRw8hyoY30PKPfKtYSdyN8lV0DXWQ7HeAb7yWgWDHsfV6Kw2mYDF/oGh0oYYaQbvX5eY14upz9/B+9f14P3L14h8ghkdawCMJWU9YnfOt4M4iy0LPD2mrudQBTMPOCurQEHFnO+fmIMG+FF1xbG+R74pke25mhgqnYip1+D9a2FzhTEQ0oO/uOxgIPXUzUSTevQt9G32Ly++3+0ykAlFVVU10/edPTzAdrHAIu+okxrRe4f0HkULNoq5x9dIPJepl3IJpnFFxSB686qqlgEN5wkjzZvWMIfoENo09O1IUI8+oXd2Yuheyj5R2VVVFZGiKfDyJxDONGYtg5f7gHl3MkMdOog3jwDu1JEoYLGf8qTKeWA9jVpwWfGSuB591+8sp87BLhl6yJuGNoBJjAMdpgzSBymHVTt2t8y3mO58dJGgnnqRbClDPWbzgDBuK2NqdY1dnNg5ZpADHfbg23CUawx2QVyNboyeM2SxbzRUdsy0hbXcUWSqx2yHtFvtMKLypW3Fsv3p40k2Nh24gfclu1boKNP6Yv9YIPgmnVor9KweVTrbiPJGXKpgq/UuYp//ICgr0NJeoBG4en9ftGBw8JPHai+2Sy8934kOtGoTbLO+djBVsT5XznpEO3z13PdvmyO+tPRH5emHFf9Niarz9S4mpfvEFupWEfLSQpk7FsbCpuELezhqdFE8mDeD96/odQlGmssGUbLrI0SWsx5D3tFDbL3Atvjoiho+CCAL2LuXRqop1jkuFZt6Dt9w6X3JoM3e9JhozGBDpY7wKfu5vfoHfy7x7/Pn9ur75/aqkaVevDcxGqJepCeB9CyfK06H94oTZFOy1SN2YX2iecLIG8MLBPNp+60+wrxie3ji8zhGwZdVVbl65yaE9rCtzZ1h11g0nPs2Gl1+bq9sefpFA3r9ub2a+g7DsBGwmbHFtsZsia7rMWRbXQSAeV11MLK8KPUxgmgOnFjVALIXpcFM4DsW0tO1vcDyViJGwbYru0njbGSohLey792+IPb/t9JpPQbGNg3R8K2uXNjN/bTUhxilXtXf/lF+pCtdfOkVFuW57oGrrGNcldrETiAe7s02uilhBK0i1mdVVcXO6ZuuXWLy9B8zbcpJinqcBa5/ntD4l9oSwndcVaGcfrPdePiD6ZdraNuFacILYKmc7eTDNLf3TX1GGN2eNcGNIxe0TZhHVmKT0eVU8vRnr0d0cs8RHVDTEXvXMf5pUPCYm5oa1FtAoxx2MYoEEFI2SVND5ank6e9FPQqzRQfnUajsBZ/9B3PBLob9mcmnDH/rZXbgwOAySaNnEF7JEV/vbYhyz+rxviPr/9y46Ido7lu0GB/cSEMfppsQtBPUgJCIUWdEZQCnkqe/F/UIr5SblgX8DNPJHrtdMhglL490INxgZHGOWJjK3BzRIN48abuPIUQIx1ZMUJ5+hDL3lr7VI7xKmjoOS9aI1DQeG7xnuIRSpUEyNKCskFZdUwy0DaVXCInrlrzhYbw2oiPwbfc2NlRKYM0/iTz9fatHUTcw3t5HjOQF3rkITbl01W/I6f0TZftNXfDLLbrlsQ2o2D9IUL+PPP/s2GlQSBlCTiKZthUkhtP7D/L0NzVY9oE+1KOKkqFAb8Nr5d/SVybv6f3nSIBtYIOz2MiZEXvM0skD461vC7TXawrSPVHeyqeIElrrM36FpMwgJ87ZCEaZbqlHtYa4RkgaJYoip8U5jjCjBhb0GIMmOWG4hgljytGFFBRMENM2ts3JaUDBuJmlOJiP/B7OfpfMwhpiaS2VepdoxrkJfPl+RdldiHO8sdkyVw7d8KYi6YLB4H8my3MSzCbg0AcZLGcNfGqTuq6NefrLsgwa1dCIXvTf/4LMZaEsZQegWOizriXP0tJvOkA99Tqlrmtvnv6yLK2NQ8kvqUbEntTGBDoEmZJv2KZbUlMG0uRPEr3wwUCIJSSZ6rIsy2tT/YhrIOtXkfM8tBQo081lHzoECiYxEIwv5Z5kdnFxceCOA8H8wEN4qTg7LvSREgZb42EdOLlyrX6GkUue1bDB9PTZcWDFWvlcNmh5IPkSa5Clcv2g8pi+h7I9+MJHuoS7ZHk4Kk+/cjzSnXLiyR2OFdIPhXCltbhTP1NyXo7gGr+UJ6covxlZYvIn8rAJrKHecO1PbQocWp6JVrZhR6d7RsFdssRg7RKKr3GM1dRy8hRJ0TtrcUlDiGzjmda8Yuqzm+bh3Lmx7OnR+CeWfEBDLdWdiLf/xMbEZYPyqHwoIRDZ4AiTnjbz9O9Nd+RRvpY0Hd/IGvdt2vTA34a6R7a4fsRCe2E4NO8Zx+2qo4q3PFrZ5AiXPb0HBZOYsizbzNNvakCmrfMFIjhv8JsPw6mXQ+X3TTGNFhvt+qHl2YK1zKTDkPQoKJg8HHUyDQx3G0s49cQQY79G6O5CuabeQKX4Dq4ZkQDYdZa2Ku6Q8sjfPsZkQ+4armEyUJblc13XI8+5wlMxGjl2MZ+xIJcLbGkEHRvOA5BrhqFyz72RBOdLz3Fi5QbXHClBdSHb1yMcOfysCNp0Gr63PPJ6OOO7F5nWCo4w+SjL0pmn32ftx6J+hgb9reyW3RsW43eG75jOjJtCKKLR/8P3R7hPCAsI9hu/f4Gbjv77oPL00T2JdpjESJ8kFYw2Ixgr96YeNsOlRDHsbUw9MT7fTam087GHxf+PS4q55khv4DCkbtOgYIE/xP/r3wsqj+UexvKmhIJJjEkwLnyC6QuqYH59JTnglIy0xaYPu1hdwxEmMac6wpwLHGEIiYCCISQCCoacHXDH2dp/xG6c8PwOzfdJwZBzZKl4IERFctLS3wMUD+ZNWZa9sWqfMDP4r/1TIjmDBMNdssSoO1x1XT/CdUT11doewFGW5dbCzV2ybmgayUnBJEY29rqubXn6JcKXbO4IUX6Bj9aBSwniYoZKDIv02ZL3W6j+XU2jJeGWfwf3FxmTo0ZsruUJNoERm6bP36Srj5K5W2f3Hmz3tz2D8pu9SE5b5CnXMBnAyOLN04/YfxsjTCv2PIlR0S/aqPWKyl9ACA9a5uzoaEn8/VV1n8HfpP+ZTMj1itBjiStiU4+LudM8oOVvh9r/jyLu743kdEWecg2Th7by9I9Q2VtPYu2UFZUFHBzliCIawItoLMp0JDRaUory1eBY+Yqe+F75rjwE/i98xFwRmwutl7cFls3gXa2LzHp/kZ7cMvUyRXJaI08pmMTA0bKtPP1b72BEJE5R0QcBZJjyDBWnSHn/oTIVs0VLih56rHwmRblQxaJEbA4xXdSfYdxlktsm9zdFcroiT8X3KJj0tJmnX6b+/lCmGdeYluxAA3LF3hQR0ZLy7yPDCCX/a4r4bMPPbHtdSyhA1P2VSM5LdDT6dYyRpxRMYsqyXNR1HXpTb7iwmNZUVTXFtOcG057d59gAeMCU7E35m366THC0JEYzOV27174z7/CwPdchGDH3l6PIwfvSIk/3RhnRQVAweXgLWPQXoVMYnOPlO95Wrl/GltSEodGSMjrzHpsOL2LdoURsPqEBLtAot7tu6rqiCVif3dneSeT9rZGcvshT7pLlIShPvwhlDi2dTSwYVRZo3D8YGUy9dGi0pLzuAqPLA6Y3esSmjKh8aCkZ1Tf+a30nEfd3RnK6Ik9ph0mMYodxHRe7O1vZYYexRh+aPtOjINWIxshoSf26B+eLNYzYNF3bGYHpuZbx/jGRnKbrUDCJ0Sz9xjz9ajx/Ckv/uURLtgHXMInRBGDMzJyhEzuLaMk24AhDSARc9BMSAQVDSAQUDCERUDCEREDBEBIBBUNIBBQMIRHQcJkYg6XfmaefdrJ+QcNlYhRfsqA8/ayffsEpWQbgeGkTSwHfso+Tfgm/FAomD08BYcpjHJZBegQFk4ej8vSTfFAwiWk5Tz9JDAWTnjbz9JPEUDCJaTlPP0kMBZOHo/L0k3xQMBnA4RY+0UwxGpEeQcFk4tg8/SQPtPQnpo08/SRj/bFC0tJGFmWSD07JCImAgiEkAgqGkAgoGEIioGAIiYCCISQChij3AObp/z3QDpOYNvL0k4z1xwpJSxt5+knG+mOFpEUIBiOLKW2ezvXFxQWnaD2Ci/48xOTpJz2CgklMy3n6SWIomPS0maefJIaCSYzI0x9xRwaQ9QwKJg/WlNcaMeIiCaBg8tB6nn6SBgomA7Dm3zhEIz8nPYN2mMS0kaefZKIoiv8C+WF9D5H6ndYAAAAASUVORK5CYII=" />
+                        </svg>
+                    </div>
+                    <div class="header__search">
+                        <form class="search"><input type="text" placeholder="Быстрый поиск" /><button></button></form>
+                        <div class="header__search-tooltip">Например: <span>Смартфоны с диагональю до 5 дюймов</span></div>
+                    </div>
+                    <div class="header__address">
+                        <div class="header__address-title"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <span>Мой адрес:</span>
+                        </div>
+                        <div class="header__address-val">Москва, Самая длинная угрешская улица, 2с34</div>
+                    </div>
+                </div>
+                <div class="header__icons">
+                    <div class="header__profile"><a href="#">
+                            <div class="header__icon"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M28.999 0.999023C44.463 0.999023 56.999 13.535 56.999 28.999C56.999 44.463 44.463 56.999 28.999 56.999C13.535 56.999 0.998993 44.463 0.998993 28.999C0.998993 13.535 13.535 0.999023 28.999 0.999023Z" fill="white" stroke="#FF4B2D" stroke-width="2" />
+                                </svg>
+                            </div><span>Профиль</span>
+                            <div class="header__icon-popup"></div>
+                        </a><!-- auth popup-->
+                        <div class="header__profile-popup header__profile-popup--auth"><a><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <b>Вход или регистрация</b></a></div><!-- profile links-->
+                        <div class="header__profile-popup header__profile-popup--links"><a href="#"><b>Алексей С.</b></a><a href="#">История заказов</a><a href="#">Избранные товары</a><a><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Выйти</span></a></div>
+                    </div><a href="#">
+                        <div class="header__icon"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M28.999 0.999023C44.463 0.999023 56.999 13.535 56.999 28.999C56.999 44.463 44.463 56.999 28.999 56.999C13.535 56.999 0.998993 44.463 0.998993 28.999C0.998993 13.535 13.535 0.999023 28.999 0.999023Z" fill="white" stroke="#FF4B2D" stroke-width="2" />
+                            </svg>
+                            <div class="header__cart-count">2</div>
+                        </div><span>Корзина</span>
+                    </a>
+                </div>
+            </div>
+            <nav class="header__bottom"><a href="#">Электроника</a><a href="#">Аксессуары</a><a href="#">Одежда</a><a href="#">Детям</a><a href="#">Продукты</a><a href="#">Аптеки</a><a href="#">Афиша</a><a href="#">Билеты</a><a href="#">Услуги</a></nav>
+        </div>
+    </header>
+    <div class="main">
+        <div class="container">
+            <section class="product-card">
+                <ul class="breadcrumbs">
+                    <li><a href="">Электроника</a></li>
+                    <li><a href="">Телефоны и смарт-часы</a></li>
+                    <li><a href="">Смарт-часы и фитнес-браслеты</a></li>
+                    <li><a href="">Смарт-часы</a></li>
+                </ul>
+                <div class="product-card__heading">
+                    <h1>Умные часы Samsung Galaxy Watch Active 2, 40 мм, розовый (ваниль) (SM-R830NZDASER)</h1>
+                </div>
+                <div class="product-card__top">
+                    <div class="product-card__grade">
+                        <div class="product-card__grade-icons">
+                            <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="product-card__grade-val">4,7</div><a class="anchor product-card__reviews-link" href="#">28 отзывов</a>
+                    </div>
+                    <div class="product-card__code">Код товара: 160653571</div>
+                </div>
+                <div class="product-card__main">
+                    <div class="product-card__img-nav">
+                        <div class="product-card__small-img active"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                        <div class="product-card__small-img"><img src="/images/products/product2.jpg" /></div>
+                    </div>
+                    <div class="product-card__img">
+                        <div>
+                            <div class="product-card__big-img active" id="test"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                            <div class="product-card__big-img"><img src="/images/products/product2.jpg" /></div>
+                        </div>
+                    </div>
+                    <div class="product-card__info">
+                        <div class="product-card__options">
+                            <div class="product-card__options-item">
+                                <h2 class="product-card__options-title">Цвет товара</h2>
+                                <ul class="product-card__options-products">
+                                    <li class="product-card__options-img active"><img src="/images/products/product2.jpg" /></li>
+                                    <li class="product-card__options-img"><img src="/images/products/product2.jpg" /></li>
+                                    <li class="product-card__options-img"><img src="/images/products/product2.jpg" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="product-card__table product-card__table--justify">
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Диагональ экрана, дюймы</div>
+                                <div class="product-card__table-val">1.2</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Разрешение экрана</div>
+                                <div class="product-card__table-val">360x360</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Беспроводные интерфейсы</div>
+                                <div class="product-card__table-val">Bluetooth, GPS, NFC</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Совместимость<div class="question">
+                                        <div class="question__icon">?</div>
+                                    </div>
+                                </div>
+                                <div class="product-card__table-val">Android</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Защита от влаги</div>
+                                <div class="product-card__table-val">Да</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Технология матрицы</div>
+                                <div class="product-card__table-val">AMOLED</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Защищенность</div>
+                                <div class="product-card__table-val">Водонепроницаемость</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Цвет</div>
+                                <div class="product-card__table-val">Ваниль</div>
+                            </li>
+                            <li class="product-card__table-tr">
+                                <div class="product-card__table-th">Гарантия</div>
+                                <div class="product-card__table-val">1 год</div>
+                            </li>
+                        </ul><a class="anchor product-card__to-table" href="#">Все характеристики ↓</a>
+                    </div>
+                    <div>
+                        <div class="panel">
+                            <div class="panel__label">Хит</div>
+                            <div class="panel__price">
+                                <div class="panel__price-current">17 990 ₽</div>
+                                <div class="panel__price-old">21 990 ₽</div>
+                            </div>
+                            <div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
+                                    <div class="question__icon">?</div>
+                                </div>
+                            </div>
+                            <div class="panel__zip"></div>
+                            <div class="panel__delivery">
+                                <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                    <div>
+                                        <h2><b>Доставим за 1 час!</b> <span class="product-card__delivery-price">299 ₽</span></h2>
+                                        <p>При заказе товаров из одного магазина</p>
+                                    </div>
+                                </div>
+                                <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                    </svg>
+                                    <div>
+                                        <h2>Самовывоз из магазина <span class="product-card__delivery-price">299 ₽</span></h2>
+                                        <p>Можете забрать самостоятельно из ближайшего к вам магазина</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel__btn-group"><button class="btn btn--primary">В корзину</button><button class="btn btn--secondary">Купить сейчас</button></div>
+                            <div class="panel__to-wishlist"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>Добавить в избранное</span>
+                            </div>
+                        </div>
+                        <div class="product-card__store">
+                            <div class="product-card__store-logo"><img src="/images/brands/brand2.svg.webp" /></div><a href="#">Все товары магазина →</a>
+                        </div>
+                    </div>
+                    <section class="product-card__description">
+                        <h2 class="product-card__section-heading">Описание</h2>
+                        <div class="product-card__description-text">
+                            <p>Обтекаемый профиль корпуса Galaxy Watch Active2 - это совершенство минималистичного дизайна. Обновлённый дисплей получил увеличенное рабочее пространство за счёт более тонкой рамки экрана, а также инновационный сенсорный безель для удобства навигации и лёгкого скроллинга. Создай свой собственный уникальный дизайн, играя сочетаниями ремешков и циферблатов. С Galaxy Watch Active2 новый образ - каждый день! Galaxy Watch Active2 умеют отслеживать активность, так что просто надень их и</p>
+                        </div><a class="product-card__description-toggle"></a>
+                    </section>
+                    <section class="product-card__full-table" id="attributes">
+                        <h2 class="product-card__section-heading">Характеристики</h2>
+                        <h3>Общие характеристики</h3>
+                        <table>
+                            <tr>
+                                <td> <span>Модель</span></td>
+                                <td>Active 2 40mm</td>
+                            </tr>
+                            <tr>
+                                <td> <span>Гарантийный срок</span></td>
+                                <td>1 год</td>
+                            </tr>
+                        </table>
+                        <h3>Экран</h3>
+                        <table>
+                            <tr>
+                                <td> <span>Диагональ экрана</span></td>
+                                <td>1.2</td>
+                            </tr>
+                            <tr>
+                                <td><span>Разрешение экрана</span></td>
+                                <td>360x360</td>
+                            </tr>
+                        </table>
+                        <h3>Питание</h3>
+                        <table>
+                            <tr>
+                                <td><span>Питание</span></td>
+                                <td>от аккумулятора</td>
+                            </tr>
+                            <tr>
+                                <td><span>Типоразмер элемента питания</span>
+                                    <div class="question">
+                                        <div class="question__icon">?</div>
+                                    </div>
+                                </td>
+                                <td>Собственный Li-Ion</td>
+                            </tr>
+                        </table>
+                    </section>
+                    <div class="product-card__files">
+                        <div class="product-card__file"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M28.999 0.999023C44.463 0.999023 56.999 13.535 56.999 28.999C56.999 44.463 44.463 56.999 28.999 56.999C13.535 56.999 0.998993 44.463 0.998993 28.999C0.998993 13.535 13.535 0.999023 28.999 0.999023Z" fill="white" stroke="#FF4B2D" stroke-width="2" />
+                            </svg>
+                            <a href="#">Инструкция для Samsung Galaxy Watch Active2 SM-R830 Ваниль <span>(2.5 Mb)</span></a>
+                        </div>
+                        <div class="product-card__file"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M28.999 0.999023C44.463 0.999023 56.999 13.535 56.999 28.999C56.999 44.463 44.463 56.999 28.999 56.999C13.535 56.999 0.998993 44.463 0.998993 28.999C0.998993 13.535 13.535 0.999023 28.999 0.999023Z" fill="white" stroke="#FF4B2D" stroke-width="2" />
+                            </svg>
+                            <a href="#">Скачать сертификат соответствия <span>(942.1 Kb)</span></a>
+                        </div>
+                    </div>
+                    <div class="recommendations">
+                        <h2 class="product-card__section-heading">Рекомендуем присмотреться </h2>
+                        <div class="products-carousel products-carousel--4 recommendations__carousel">
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="product product--recommendation">
+                                <div class="product__label">Акция</div><a class="product__img" href="#"><img src="img/demo/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                                <div class="product__reviews">
+                                    <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                        </svg>
+                                        <span>4.7</span>
+                                    </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                                </div>
+                                <div class="product__price">
+                                    <div class="product__price-current">17 990 ₽</div>
+                                    <div class="product__price-old">21 990 ₽</div>
+                                </div>
+                                <div class="product__tocart"><button class="btn btn--primary">В корзину</button>
+                                    <ul class="product__attributes">
+                                        <li><span>Диагональ экрана, дюймы</span> 1.4</li>
+                                        <li><span>Разрешение экрана</span> 360x360</li>
+                                        <li><span>Беспроводные интерфейсы</span> NFC</li>
+                                        <li><span>Совместимость</span> Android</li>
+                                        <li><span>Защита от влаги</span> Да</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="recommendations__table">
+                            <li><span>Диагональ экрана, дюймы</span></li>
+                            <li><span>Разрешение экрана</span></li>
+                            <li><span>Беспроводные интерфейсы</span></li>
+                            <li><span>Совместимость</span></li>
+                            <li><span>Защита от влаги</span></li>
+                        </ul>
+                    </div>
+                    <div class="testimonials">
+                        <h2 class="product-card__section-heading">Отзывы о товаре </h2>
+                        <div class="testimonials__photos testimonials__photos--carousel">
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                        </div>
+                        <div class="testimonials__sort"><select class="select">
+                                <option selected="selected" value="">Сначала свежие</option>
+                                <option value="">Сначала популярные</option>
+                                <option value="">Сначала дешевые</option>
+                                <option value="">Сначала дорогие</option>
+                            </select></div>
+                        <div class="testimonials__items">
+                            <div class="testimonials__item">
+                                <div class="testimonials__avatar">
+                                    <div class="testimonials__avatar-letter">К</div>
+                                </div>
+                                <div class="testimonials__content">
+                                    <div class="testimonials__heading">
+                                        <h3 class="testimonials__name">Кристина М.</h3>
+                                        <div class="testimonials__info">Вчера, 14:07</div>
+                                        <div class="testimonials__info">Цвет товара: Ваниль</div>
+                                    </div>
+                                    <div class="testimonials__grade">
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="testimonials__text">
+                                        <p>Замечательные часы, целый год на них смотрела. Заранее скачала приложение Galaxy Wearable, подключила часы сразу в пункте выдачи. Все работает!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimonials__item">
+                                <div class="testimonials__avatar">
+                                    <div class="testimonials__avatar-letter">К</div>
+                                    <div class="testimonials__avatar-img"><img src="/images/testimonials/avatar1.jpg" /></div>
+                                </div>
+                                <div class="testimonials__content">
+                                    <div class="testimonials__heading">
+                                        <h3 class="testimonials__name">Анастасия А.</h3>
+                                        <div class="testimonials__info">16 апреля, 20:52</div>
+                                        <div class="testimonials__info">Цвет товара: Ваниль</div>
+                                    </div>
+                                    <div class="testimonials__grade">
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="testimonials__text">
+                                        <p>Часы взяли девочке - диабетику шести лет, не громоздкие, очень удобные, ремешок пришлось поменять - родной велик, принимает смс и разговаривает по ним, с смс на уроке очень удобно.</p>
+                                    </div>
+                                    <div class="testimonials__answer">
+                                        <div class="testimonials__answer-heading">
+                                            <h4 class="testimonials__store">Samsung Russia</h4>
+                                            <div class="testimonials__info">16 апреля, 22:15</div>
+                                        </div>
+                                        <div class="testimonials__text">
+                                            <p>Наталия, здравствуйте! Спасибо за отзыв. Мы рады, что Вы оценили дизайн и удобство использования смарт-часов Samsung Galaxy Watch Active2. Для того, чтобы часы работали дольше от одного заряда аккумулятора, Вы можете оптимизировать их работу. Для этого зайдите на часах в меню Настройки -> Аккумулятор -> Оптимизация заряда -> проведите оптимизацию заряда. </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="testimonials__item">
+                                <div class="testimonials__avatar">
+                                    <div class="testimonials__avatar-letter">С</div>
+                                </div>
+                                <div class="testimonials__content">
+                                    <div class="testimonials__heading">
+                                        <h3 class="testimonials__name">Сергей О.</h3>
+                                        <div class="testimonials__info">13 апреля, 20:41</div>
+                                        <div class="testimonials__info">Цвет товара: Ваниль</div>
+                                    </div>
+                                    <div class="testimonials__grade">
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div class="active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                        <div><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="testimonials__text">
+                                        <p>Часы не реально крутые. Взяла за 14 к .К Самсунгу А 71 подключились за секунду. Благодаря в телефоне встроенному приложению Galaxy Wearable. Очень много функций в часах, на работе хожу в них как директор)))</p>
+                                        <div class="testimonials__photos">
+                                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                                            <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><button class="btn btn--secondary">Показать еще отзывы</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="testimonials-panel">
+                            <div class="testimonials-panel__grade">
+                                <div class="testimonials-panel__grade-val">4.7</div>
+                                <div class="testimonials-panel__grade-count"><span>2 649</span> отзывов</div>
+                            </div>
+                            <div class="testimonials-panel__item"><span>5</span>
+                                <div class="testimonials-panel__graph">
+                                    <div class="testimonials-panel__graph-current" style="width: 71%"></div>
+                                </div><span>71 %</span>
+                            </div>
+                            <div class="testimonials-panel__item"><span>4</span>
+                                <div class="testimonials-panel__graph">
+                                    <div class="testimonials-panel__graph-current" style="width: 12%"></div>
+                                </div><span>12 %</span>
+                            </div>
+                            <div class="testimonials-panel__item"><span>3</span>
+                                <div class="testimonials-panel__graph">
+                                    <div class="testimonials-panel__graph-current" style="width: 5%"></div>
+                                </div><span>5 %</span>
+                            </div>
+                            <div class="testimonials-panel__item"><span>2</span>
+                                <div class="testimonials-panel__graph">
+                                    <div class="testimonials-panel__graph-current" style="width: 3%"></div>
+                                </div><span>3 %</span>
+                            </div>
+                            <div class="testimonials-panel__item"><span>1</span>
+                                <div class="testimonials-panel__graph">
+                                    <div class="testimonials-panel__graph-current" style="width: 9%"></div>
+                                </div><span>9 %</span>
+                            </div><button class="btn btn--secondary">Оставить отзыв</button><a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="h2 section__heading">С этим товаром покупают</h2>
+                <div class="products-carousel products-carousel--4">
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                    <div class="product">
+                        <div class="product__label">Акция</div><a class="product__img" href="#"><img src="/images/products/product1.jpg" /></a><a class="product__title" href="#">Смартфон Huawei P Smart 2021 4+128GB Crush Green</a>
+                        <div class="product__reviews">
+                            <div class="product__reviews-grade"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                                <span>4.7</span>
+                            </div><a class="product__reviews-link" href="#">28 отзывов</a>
+                        </div>
+                        <div class="product__price">
+                            <div class="product__price-current">17 990 ₽</div>
+                            <div class="product__price-old">21 990 ₽</div>
+                        </div>
+                        <div class="product__tocart"><button class="btn btn--primary">В корзину</button></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="footer">
+                <div class="footer__col">
+                    <div class="footer__info">
+                        <p class="footer__copyright">2021 © ООО «Сейчас»<br>
+                            Все права защищены.</p>
+                        <div class="footer__social"><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </a><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </a><a href="#"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </a></div>
+                    </div>
+                    <div class="footer__logo"><a href="#"><img src="/img/footer-logo.png" /></a></div>
+                </div>
+                <div class="footer__col">
+                    <nav class="footer__nav">
+                        <div class="footer__nav-col"><a href="#">Электроника</a><a href="#">Аксессуары</a><a href="#">Одежда</a><a href="#">Детям</a><a href="#">Продукты</a></div>
+                        <div class="footer__nav-col"><a href="#">Аптеки</a><a href="#">Афиша</a><a href="#">Билеты</a><a href="#">Услуги</a><a href="#">Доставка за час</a></div>
+                        <div class="footer__nav-col"><a href="#">Частые вопросы</a><a href="#">Доставка</a><a href="#">Скидки</a><a href="#">Контакты</a><a href="#">Бренды</a><a href="#">Система лояльности</a><a href="#">Стать партнером</a></div>
+                    </nav>
+                </div>
+                <div class="footer__col">
+                    <div class="footer__right"><a class="footer__dashboard-link"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            <span>Вход для партнеров</span></a>
+                        <div class="footer__icons">
+                            <div class="footer__icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div class="footer__icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                            <div class="footer__icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="popup">
+        <div class="popup__inner">
+            <div class="popup__close"></div>
+            <div class="popup__content">
+                <!-- auth phone-->
+                <div class="popup__heading">Вход или регистрация</div>
+                <div class="auth-reg">
+                    <div class="auth-reg__input-group">
+                        <div class="auth-reg__input-group__label">Телефон:</div>
+                        <div class="auth-reg__input-group__input"><input class="phoneinput" type="text" placeholder="+7 (999) 999-99-99" /></div>
+                    </div><button class="btn btn--primary">Продолжить</button>
+                </div><!-- auth login-->
+                <div class="popup__heading">Привет, Алексей!</div>
+                <div class="auth-reg">
+                    <div class="auth-reg__input-group auth-reg__input-group--center">
+                        <div class="auth-reg__input-group__label">Телефон:</div>
+                        <div class="auth-reg__input-group__value">+7 (999) 999-99-99</div>
+                    </div>
+                    <div class="auth-reg__input-group">
+                        <div class="auth-reg__input-group__label">Пароль:</div>
+                        <div class="auth-reg__input-group__input"><input type="password" /><a>Забыли пароль?</a></div>
+                    </div><button class="btn btn--primary">Войти</button><a class="auth-reg__back">← Вернуться</a>
+                </div><!-- reg-->
+                <div class="popup__heading">Регистрация</div>
+                <div class="auth-reg">
+                    <div class="auth-reg__input-group auth-reg__input-group--center">
+                        <div class="auth-reg__input-group__label">Телефон:</div>
+                        <div class="auth-reg__input-group__value">+7 (999) 999-99-99</div>
+                    </div>
+                    <div class="auth-reg__input-group">
+                        <div class="auth-reg__input-group__label">Код:</div>
+                        <div class="auth-reg__input-group__input"><input type="password" />
+                            <p>Мы отправили его на телефон</p><a>Выслать его еще раз?</a>
+                        </div>
+                    </div>
+                    <div class="auth-reg__input-group">
+                        <div class="auth-reg__input-group__label">Ваше имя:</div>
+                        <div class="auth-reg__input-group__input auth-reg__input-group__input--large"><input type="text" /></div>
+                    </div>
+                    <div class="auth-reg__input-group">
+                        <div class="auth-reg__input-group__label">Почта:</div>
+                        <div class="auth-reg__input-group__input auth-reg__input-group__input--large"><input type="text" /></div>
+                    </div><button class="btn btn--primary">Зарегистрироваться</button><a class="auth-reg__back">← Вернуться</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="js/scripts.min.js"></script>
+</body>
+
+</html>

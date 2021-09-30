@@ -18,6 +18,16 @@ class ClientOrder extends Entity
     use Searchable;
     
     /**
+     * Auto increment key
+     * 
+     * @return string
+     */
+    public function autoIncrementKey()
+    {
+        return 'id';
+    }
+    
+    /**
      * Get primary key
      *
      * @return string|array
@@ -45,8 +55,12 @@ class ClientOrder extends Entity
     protected $delivery_info = '';
     
     /** @var string */
-    protected $payment_info = '';
+    protected $confirm_info = '';
     
+    /** @var string */
+    protected $payment_info = '';
+   
+     
     /** @var int */
     protected $date_created;
     
@@ -168,6 +182,30 @@ class ClientOrder extends Entity
         return $this->delivery_info;
     }
 
+    /**
+     * Set confirm_info
+     *
+     * @param string $confirmInfo
+     * @return $this
+     */
+    public function setConfirmInfo($confirmInfo)
+    {
+        $this->confirm_info = $confirmInfo;
+        return $this;
+    }
+    
+    /**
+     * Get confirm_info
+     *
+     * @return string
+     */
+    public function getConfirmInfo()
+    {
+        return $this->confirm_info;
+    }
+
+
+    
     /**
      * Set payment_info
      *

@@ -53,6 +53,8 @@ class Module implements ConfigProviderInterface
     {
         $controller = $event->getTarget();
         $controllerName = $event->getRouteMatch()->getParam('controller', null);
+        $routeMatch = $event->getRouteMatch();
+        $matchedRouteName = $routeMatch->getMatchedRouteName();
         $actionName = $event->getRouteMatch()->getParam('action', null);
         $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
         
@@ -64,20 +66,23 @@ class Module implements ConfigProviderInterface
             $controllerName != \Application\Controller\AjaxController::class &&
             $controllerName != \Application\Controller\ReceivingController::class &&
             $controllerName != \Application\Controller\FtpController::class &&
-            $controllerName != \Application\Controller\MyTestController::class) {
+            $controllerName != \Application\Controller\MyTestController::class &&
+            $controllerName != \Application\Controller\AcquiringController::class &&
+            $controllerName != \Application\Controller\ProductCardsController::class ) {
             
             $hasIdentity = $authManager->hasIdentity();
             if(!$hasIdentity) {
                 $request = $event->getApplication()->getRequest();
                 if($request->isXmlHttpRequest()) {
                     $data = Json::encode(['data' => true]);//  json_encode(['data' => false]); // 
-                    return $controller->redirect()->toUrl('/control-panel/login?data='.$data);
+                    //return $controller->redirect()->toUrl('/control-panel/login?data='.$data);
+                    return $controller->redirect()->toUrl('/control-panel/provider-login?data='.$data);
                 }
 //                $controller->layout()->setTemplate('layout/control-panel-auth');
 //                return $controller->redirect()->toUrl('/control-panel/login');
             }
 
-            $result = $authManager->filterAccess($controllerName, $actionName);
+            $result = $authManager->filterAccess($controllerName, $actionName, $matchedRouteName);
             
             if($result == AuthManager::AUTH_REQUIRED) {
                 $uri = $event->getApplication()->getRequest()->getUri();
@@ -85,7 +90,8 @@ class Module implements ConfigProviderInterface
                     ->setHost(null)
                     ->setPort(null)
                     ->setUserInfo(null)
-                    ->setPath('/control-panel/login');
+                    ->setPath('/control-panel/provider-login');
+                    //->setPath('/control-panel/login');
 //                $redirectUrl = $uri->toString();
                 $redirectUrl = $uri->toString();
 //                $query = $uri->getQuery();

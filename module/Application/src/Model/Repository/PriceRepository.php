@@ -87,6 +87,21 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 
         return $params['array'] == 1 ? $resultSet->toArray() : $resultSet;
     }
+    
+    public function findMinMaxPrice(array $products)
+    {
+        $sql = new Sql($this->db);
+        $select = $sql->select($this->tableName);
+        $columns = ["minprice" =>  new \Laminas\Db\Sql\Expression(" MIN(`price`) "),  "maxprice" =>  new \Laminas\Db\Sql\Expression(" MAX(`price`) "), ];
+        $select->columns($columns);
+        //$select->columns(['price']);
+        $select->where(['product_id' => $products]);
+        
+        //$stmt = $sql->prepareStatementForSqlObject($select);
+        
+        $queryString = $sql->buildSqlString($select);
+        return  $this->db->query($queryString)->execute()->current();        
+     }
 
     /**
      * Adds given price into it's repository
@@ -106,12 +121,13 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 //        $this->mclient->saychas->$tableName->insertMany($result['data']);
         
         foreach ($result/*['data']*/ as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `provider_id`) VALUES ( '%s', '%s', %u, '%s', %u, %u, '%s')",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['old_price'], $row['provider_id']);
+            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `provider_id`, `discount`) VALUES ( '%s', '%s', %u, '%s', %u, %u, '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['old_price'], $row['provider_id'], $row['discount']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
+                //throw new \Exception($e->getMessage());
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }

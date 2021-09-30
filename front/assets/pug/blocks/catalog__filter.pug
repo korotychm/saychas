@@ -1,0 +1,88 @@
+div.filter#filter
+  form
+    //Категория
+    input(type="hidden",name="category",:value="category_id")
+    //Фильтр по цене
+    div.filter__item
+      h2.catalog__sidebar-heading Цена <span class="unit">₽</span>
+      div.range
+        input(type="range",:min="rangeprice.minprice / 100",:max="rangeprice.maxprice / 100 + 100",step="100",:value="rangeprice.minprice / 100").range__left
+        input(type="range",:min="rangeprice.minprice / 100",:max="rangeprice.maxprice / 100 + 100",step="100",:value="rangeprice.maxprice / 100").range__right
+        div.range__slider
+          div.range__track
+          div.range__range
+          div.range__thumb.range__thumb--left
+          div.range__thumb.range__thumb--right
+        div.range__tooltips
+          div
+            input(type="number",:value="rangeprice.minprice / 100",:min="rangeprice.minprice / 100",:max="rangeprice.maxprice / 100").tooltip-from
+          div
+            input(type="number",:value="rangeprice.maxprice / 100",:min="rangeprice.minprice / 100",:max="rangeprice.maxprice / 100").tooltip-to
+            
+    
+    div(v-for="filter in filters", :key="filter.id", :class="{ 'filter__item--boolean' : filter.type == 3}").filter__item
+      h2.catalog__sidebar-heading {{ filter.title }} <span class="unit">{{ filter.unit }}</span>
+      
+      // Тип число
+      div(v-if="filter.type==2").range
+        input(type="range",:min="filter.min",:max="filter.max",:step="filter.step",:value="filter.min").range__left
+        input(type="range",:min="filter.min",:max="filter.max",:step="filter.step",:value="filter.max").range__right
+        div.range__slider
+          div.range__track
+          div.range__range
+          div.range__thumb.range__thumb--left
+          div.range__thumb.range__thumb--right
+        div.range__tooltips
+          div
+            input(type="number",:min="filter.min",:max="filter.max",:step="filter.step",:value="filter.min").tooltip-from
+          div
+            input(type="number",:min="filter.min",:max="filter.max",:step="filter.step",:value="filter.max").tooltip-to
+      
+      // Тип вкл-выкл
+      label(v-if="filter.type==3").boolean 
+        input(type="checkbox",:name="filter.id",value="1")
+        span.boolean__check
+        
+      // Тип чекбоксы
+      div(v-if="filter.type==4 || filter.type==6 || filter.type==8").filter__checkboxes
+        div.filter__scroll
+          label(v-for="option in filter.options", :key="option.valueCode").checkbox
+            input(type="checkbox",:name="filter.id + '[]'",:value="option.valueCode")
+            span.checkbox__check
+            span.checkbox__value {{ option.value }}
+              span.checkbox__count
+        div(v-if="filter.options.length > 6").filter__search
+          div.search
+            input(type="text", placeholder="Поиск значений")
+        div(v-if="filter.options.length > 6").filter__show-all
+        
+      // Тип цвета
+      div(v-if="filter.type==7").filter__colors
+        label(v-for="option in filter.options", :key="option.valueCode").color-checkbox
+          input(type="checkbox",:name="filter.id + '[]'", :value="option.valueCode")
+          span.color-checkbox__check
+            span(:style="{backgroundColor: option.value[0]}").color-checkbox__check-color
+            
+      
+        
+            
+    div.filter__item
+      // Тип да-нет-не важно
+      h2.catalog__sidebar-heading Слот для карты памяти
+      div.boolean2 
+        label
+          input(type="checkbox")
+          span.boolean2__check Да
+        label
+          input(type="checkbox")
+          span.boolean2__check Нет
+      
+    div.filter__item
+      h2.catalog__sidebar-heading Способ доставки
+      // Тип радио
+      div.filter__checkboxes
+        div.filter__scroll
+          label.checkbox.checkbox--radio
+            input(name="radio", type="radio")
+            span.checkbox__check.checkbox__check--radio
+            span.checkbox__value Доставка курьером

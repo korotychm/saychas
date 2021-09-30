@@ -6,6 +6,7 @@ namespace ControlPanel\Service;
 
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use ControlPanel\Helper\ArrayHelper;
 
 /**
  * Description of CurlRequestManager
@@ -45,6 +46,38 @@ class CurlRequestManager
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => 10, 'message' => $e->getMessage()];
         }
+    }
+
+    public function sendCurlRequestWithCredentials($url, $content, $curlHeaders = [])
+    {
+        unset($content['_id']);
+        $headers = ArrayHelper::extractCredentials($curlHeaders);
+        //$content = array_merge(['credentials' => $headers], $content);
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        if(count($curlHeaders) > 0) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $curlHeaders);
+        }
+        //curl_setopt($curl, CURLOPT_HTTPHEADER, ['BOM_required: false', 'charset_response: UTF-8']);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($content));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array_merge(['credentials' => $headers], $content)));
+
+        //curl_setopt($curl, CURLOPT_USERPWD, $login.":".$pass);
+        curl_setopt($curl, CURLOPT_SSLVERSION, 3);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($curl);
+        $info = curl_getinfo($curl);
+        
+        try {
+            $arr = Json::decode($response, Json::TYPE_ARRAY);
+            return ['http_code' => $info['http_code'], 'data' => $arr];
+            //return array_merge(['http_code' => $info['http_code']], $arr);
+        } catch (LaminasJsonRuntimeException $e) {
+            return ['result' => $info['http_code'], 'message' => $e->getMessage()];
+        }
+
     }
 
     public function getFakeAnswer($url = 'lk_get_all_users')

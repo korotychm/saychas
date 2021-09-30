@@ -7,6 +7,7 @@ namespace Application\Service\Factory;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Application\Service\CommonHelperFunctionsService;
+use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 class CommonHelperFunctionsServiceFactory implements FactoryInterface
 {
@@ -18,8 +19,9 @@ class CommonHelperFunctionsServiceFactory implements FactoryInterface
         }
 
         $config = $container->get('Config');
+        $productRepository = $container->get(HandbookRelatedProductRepositoryInterface::class);
 
-        return new CommonHelperFunctionsService($config);
+        return new CommonHelperFunctionsService($config, $productRepository);
     }
 
 }

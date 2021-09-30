@@ -1,0 +1,125 @@
+header.header
+  div.header__top
+    div.container
+      nav.header__nav
+        div.header__nav-items
+          a(href="#") Частые вопросы
+          a(href="#") Доставка
+          a(href="#") Скидки
+          a(href="#") Контакты
+          a(href="#") Бренды
+          a(href="#") Система лояльности
+          a(href="#") Стать партнером
+        div.header__nav-dashboard
+          a(href="#")
+            include ../../img/icons/icon.svg
+            span Вход для партнёров
+  div.container
+    div.header__mid
+      div.header__mid-left
+        div.header__catalog
+          input(type="checkbox")#burger
+          label(for="burger").header__burger
+            span.header__burger-icon
+              span
+              span
+              span
+            span Каталог
+          nav.cats.container
+            div.cats__left
+              div.cats__item
+                a(href="#").cats__parent Женская одежда
+                div.cats__children
+              div.cats__item
+                a(href="#").cats__parent Женская одежда
+                div.cats__children
+              div.cats__item.active
+                a(href="#").cats__parent Женская одежда
+            div.cats__right
+              div.cats__children
+                ul
+                  li
+                    a(href="#") Смартфоны и аксессуары
+                  li
+                    a(href="#") Кнопочные телефоны
+                  li
+                    a(href="#") Смартфоны и аксессуары
+                  li
+                    a(href="#") Кнопочные телефоны
+                  li
+                    a(href="#") Аксессуары
+                ul
+                  li
+                    a(href="#") Смартфоны и аксессуары
+                  li
+                    a(href="#") Кнопочные телефоны
+                  li
+                    a(href="#") Аксессуары
+                ul
+                  li
+                    a(href="#") Смартфоны и аксессуары
+                  li
+                    a(href="#") Кнопочные телефоны
+                ul
+                  li
+                    a(href="#") Смартфоны и аксессуары
+                  li
+                    a(href="#") Кнопочные телефоны
+                  li
+                    a(href="#") Аксессуары
+              
+              
+        div.header__logo
+          include ../../img/logo.svg
+        div.header__search
+          form.search
+            input(type="text", placeholder="Быстрый поиск")
+            button
+          div.header__search-tooltip Например: <span>Смартфоны с диагональю до 5 дюймов</span>
+        div.header__address
+          div.header__address-title
+            include ../../img/icons/icon.svg
+            span Мой адрес:
+          div.header__address-val Москва, Самая длинная угрешская улица, 2с34
+      div.header__icons
+        div.header__profile
+          a(href="#")
+            div.header__icon
+              include ../../img/icons/icon-big.svg
+            span Профиль
+            div.header__icon-popup
+          // auth popup
+          div.header__profile-popup.header__profile-popup--auth
+            a
+              include ../../img/icons/icon.svg
+              b Вход или регистрация
+          // profile links
+          div.header__profile-popup.header__profile-popup--links
+            a(href="#")
+              b Алексей С.
+            a(href="#") История заказов
+            a(href="#") Избранные товары
+            a
+              include ../../img/icons/icon.svg
+              span Выйти
+        a(href="#")
+          div.header__icon
+            include ../../img/icons/icon-big.svg
+            div.header__cart-count 2
+          span Корзина
+          
+    nav.header__bottom
+      a(href="#") Электроника
+      a(href="#") Аксессуары
+      a(href="#") Одежда
+      a(href="#") Детям
+      a(href="#") Продукты
+      a(href="#") Аптеки
+      a(href="#") Афиша
+      a(href="#") Билеты
+      a(href="#") Услуги
+        
+          
+        
+        
+      
