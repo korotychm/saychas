@@ -242,19 +242,18 @@ class HtmlProviderService {
         return !empty($value) ? join(", ", $value) : "";
     }
 
-    public function productPageService($filteredProducts, $category_id = 0) {
+    public function productPageService($filteredProducts) {
         $productImages = $return = $filters = [];
-        foreach ($filteredProducts as $product) {
-
+        //foreach ($filteredProducts as $product) {
+            $product = $filteredProducts->current();
             $return['price'] = (int) $product->getPrice();
             $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
             //$container = new Container(Resource::SESSION_NAMESPACE);
             //$legalStore = $container->legalStore;
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $return['rest'] = (int) $rest->getRest();
+            $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
             $return['product_id'] = $id = $product->getId();
             $return['title'] = $product->getTitle();
-            /** Alex has added the below code */
             $parentCategoryId = $product->getParentCategoryId();
             $categoryId = $product->getCategoryId();
             if (!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
@@ -290,7 +289,7 @@ class HtmlProviderService {
                 $return['description']['if_spoiler'] = ((strlen($description) < 501));
                 $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
             }
-        }
+        //}
         $characteristicsArray = array_diff($characteristicsArray, array(''));
         if (!empty($characteristicsArray)) {
             foreach ($characteristicsArray as $char) {
