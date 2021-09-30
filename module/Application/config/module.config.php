@@ -1361,6 +1361,7 @@ return [
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/error'           => __DIR__ . '/../view/layout/errorLayout.phtml',
             'layout/preview'          => __DIR__ . '/../view/layout/menu.phtml',
             'layout/mainpagenew'      => __DIR__ . '/../view/layout/mainpagenew.phtml',
             
