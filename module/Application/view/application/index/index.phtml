@@ -85,7 +85,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
     <h2 class="h2 section__heading">Популярные бренды</h2>
     <div class="brands-grid" id="popular-brands">
       <a v-for="brand in brands" class="brands-grid__logo" :href="'/brand'+brand.id" :alt="brand.title">
-        <img :src="'/images/brands/'+brand.image" />
+        <img :src="'/images/brand/'+brand.image" />
       </a>
     </div>
 </section>
