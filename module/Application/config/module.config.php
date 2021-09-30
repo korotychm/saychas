@@ -903,13 +903,24 @@ return [
                 ],
             ],
             
-             'ajax-get-products-sale' => [
+            'ajax-get-products-sale' => [
                 'type'    => Literal::class,
                 'options' => [
                     'route'    => '/ajax-get-products-sale',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getProductsSale',
+                    ],
+                ],
+            ],
+            
+            'ajax-get-brands-top' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-brands-top',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getBrandsTop',
                     ],
                 ],
             ],
