@@ -495,17 +495,12 @@ class IndexController extends AbstractActionController
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
         if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))) {
-            $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+          return $this->responseError404();
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        $breadCrumbs = [];
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) {
-            $breadCrumbs = array_reverse($matherCategories);
-        }
-        $productPage['breadCrumbs'] = $breadCrumbs;
+        $productPage['breadCrumbs'] = (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) 
+         ? array_reverse($matherCategories) : [];
+        
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
         $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
@@ -519,10 +514,7 @@ class IndexController extends AbstractActionController
         if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
-        
-        $category_id = $this->params()->fromRoute('id', '');
-       
-        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
+        if (empty($category_id = $this->params()->fromRoute('id', '')) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
@@ -608,17 +600,11 @@ class IndexController extends AbstractActionController
         $store_id = $this->params()->fromRoute('store_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($store = Store::find(["id"=> $store_id ]))){
-            $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+            return $this->responseError404();
         }
         $provider_id = $store->getProviderId();
          if (empty($provider = Provider::find(["id"=> $provider_id ]))){
-             $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+             return $this->responseError404();
          }
         
         $storeTitle = $provider->getTitle();
@@ -666,10 +652,7 @@ class IndexController extends AbstractActionController
         return  $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
     }
     
-    
-    
-    
-
+   
     public function userAction(/*$category_id = false*/)
     {
         $container = new Container();
@@ -743,6 +726,15 @@ class IndexController extends AbstractActionController
         }
         return  false; 
     }
+    private function responseError404 ()
+    {
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $view = new ViewModel();
+            return $view->setTemplate('error/404.phtml');
+        
+    }
+    
     
     
 }
