@@ -77,4 +77,34 @@ $(document).ready(function(){
 
   }
 
+  if ($('#popular-brands').length){
+
+    var categoryPage = new Vue({
+      el: '#popular-brands',
+      data: {
+        brands: [],
+        length: 0
+      },
+      created() {
+          axios
+            .post('/ajax-get-brands-top')
+            .then(response => {
+              this.brands = response.data;
+              //this.length = Object.keys(this.products).length;
+              console.log('Brands',this.brands);
+            });
+      },
+      updated() {
+        $('#viewed-products .products-carousel').slick(
+          {
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4
+          }
+        );
+      }
+    });
+
+  }
+
 });

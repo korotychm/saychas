@@ -83,7 +83,11 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
 </section>
 <section class="section">
     <h2 class="h2 section__heading">Популярные бренды</h2>
-    <div class="brands-grid"><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand1.svg.png" /></a><a class="brands-grid__logo" href="#"><img src="/images/brands/brand2.svg.webp" /></a></div>
+    <div class="brands-grid" id="popular-brands">
+      <a v-for="brand in brands" class="brands-grid__logo" :href="'/brand'+brand.id" :alt="brand.title">
+        <img :src="'/images/brands/'+brand.image" />
+      </a>
+    </div>
 </section>
 <div id="viewed-products">
 <section class="section">
