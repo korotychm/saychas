@@ -52,14 +52,14 @@ $(document).ready(function(){
     var categoryPage = new Vue({
       el: '#viewed-products',
       data: {
-        products: {},
+        products: [],
         length: 0
       },
       created() {
           axios
             .post('/ajax-get-client-history')
             .then(response => {
-              this.products = response.data.products;
+              this.products = response.data;
               //this.length = Object.keys(this.products).length;
               console.log('Истор',this.products);
             });
