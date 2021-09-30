@@ -5,7 +5,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?>
 <section class="catalog">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?> <span>312 515 товаров</span></h1>
+      <h1 class="h1"><?= $this->title ?> <span style="display:none;">312 515 товаров</span></h1>
       <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
   </div>
   <div class="catalog__wrap" id="catalog-wrap">
@@ -18,7 +18,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
       <section class="section">
         <div class="products-grid products-grid--3">
           <div v-for="(product, name) in products" :key="name" class="product">
-              <div class="product__label">Акция</div>
+              <div class="product__label" v-if="product.oldprice && product.oldprice != product.price">Акция</div>
               <a class="product__img" :href="'/product/' + name">
                 <img :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
               </a>
