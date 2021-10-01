@@ -17,7 +17,7 @@ $(document).ready(function(){
             });
       },
       updated() {
-        $('#sale-products').slick(
+        $('#sale-products .products-carousel').slick(
           {
             infinite: true,
             slidesToShow: 4,
