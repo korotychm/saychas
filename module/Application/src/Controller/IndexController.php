@@ -406,6 +406,11 @@ class IndexController extends AbstractActionController
 
     public function basketAction()
     {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+        
         $userId = $this->identity();
         $where = new Where();
         $where->equalTo('user_id', $userId)->equalTo('order_id', 0);
