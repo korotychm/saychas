@@ -211,7 +211,7 @@
   margin-top: 20px;
 }
 .filter__item--boolean {
-  display: flex;
+  display: flex !important;
   align-items: center;
 }
 .filter__item--boolean .catalog__sidebar-heading {
