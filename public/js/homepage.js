@@ -5,18 +5,21 @@ $(document).ready(function(){
     var categoryPage = new Vue({
       el: '#sale-products',
       data: {
-        products: []
+        products: [],
+        length: 0
       },
       created() {
           axios
             .post('/ajax-get-products-sale')
             .then(response => {
+              console.log(response);
               this.products = response.data.products;
-              console.log('Продукты со скидкой',this.products);
+              this.length = Object.keys(this.products).length;
+              console.log('Продукты со скидкой',this.length,this.products);
             });
       },
       updated() {
-        $('#sale-products').slick(
+        $('#sale-products .products-carousel').slick(
           {
             infinite: true,
             slidesToShow: 4,
@@ -33,14 +36,16 @@ $(document).ready(function(){
     var categoryPage = new Vue({
       el: '#popular-products',
       data: {
-        products: []
+        products: [],
+        length: 0
       },
       created() {
           axios
             .post('/ajax-get-products-top')
             .then(response => {
               this.products = response.data.products;
-              console.log('Популярные продукты',this.products);
+              this.length = Object.keys(this.products).length;
+              console.log('Популярные продукты',this.length,this.products);
             });
       }
     });
@@ -60,8 +65,8 @@ $(document).ready(function(){
             .post('/ajax-get-client-history')
             .then(response => {
               this.products = response.data.products;
-              //this.length = Object.keys(this.products).length;
-              console.log('Истор',this.products);
+              this.length = Object.keys(this.products).length;
+              console.log('Истор',this.length,this.products);
             });
       },
       updated() {
@@ -90,8 +95,8 @@ $(document).ready(function(){
             .post('/ajax-get-brands-top')
             .then(response => {
               this.brands = response.data;
-              //this.length = Object.keys(this.products).length;
-              console.log('Brands',this.brands);
+              this.length = this.brands.length;
+              console.log('Brands',this.length,this.brands);
             });
       },
       updated() {

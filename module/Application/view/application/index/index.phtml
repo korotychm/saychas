@@ -14,9 +14,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
         <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
     </div>
 </section>
-<section class="section">
+<div id="sale-products">
+<section class="section" v-if="length > 0">
     <h2 class="h2 section__heading">Горящие предложения</h2>
-    <div class="products-carousel" id="sale-products">
+    <div class="products-carousel">
       <div v-for="(product, name) in products" :key="name" class="product">
           <div class="product__label" v-if="product.oldPrice && product.oldPrice != product.price">Акция</div>
           <a class="product__img" :href="'/product/' + name">
@@ -46,9 +47,11 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
       </div>
     </div>
 </section>
-<section class="section">
+</div>
+<div id="popular-products">
+<section class="section" v-if="length > 0">
     <h2 class="h2 section__heading">Популярные товары в этом месяце</h2>
-    <div class="products-grid" id="popular-products">
+    <div class="products-grid">
       <div v-for="(product, name) in products" :key="name" class="product">
           <div class="product__label" v-if="product.oldPrice && product.oldPrice != product.price">Акция</div>
           <a class="product__img" :href="'/product/' + name">
@@ -78,19 +81,22 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
       </div>
     </div>
 </section>
+</div>
 <section class="section">
     <div class="banners-carousel"><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a></div>
 </section>
-<section class="section">
+<div id="popular-brands">
+<section class="section" v-if="length > 0">
     <h2 class="h2 section__heading">Популярные бренды</h2>
-    <div class="brands-grid" id="popular-brands">
+    <div class="brands-grid">
       <a v-for="brand in brands" class="brands-grid__logo" :href="'/brand'+brand.id" :alt="brand.title">
         <img :src="'/images/brand/'+brand.image" />
       </a>
     </div>
 </section>
+</div>
 <div id="viewed-products">
-<section class="section">
+<section class="section" v-if="length > 0">
     <h2 class="h2 section__heading">Вы смотрели</h2>
     <div class="products-carousel">
       <div v-for="(product, name) in products" :key="name" class="product">

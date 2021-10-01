@@ -36,7 +36,7 @@ $this->headTitle($this->title, 'PREPEND');
         <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>
         <?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>
         <?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->append]) ?>
-        <div class="recommendations">
+        <div class="recommendations" style="display: none;">
             <h2 class="product-card__section-heading">Рекомендуем присмотреться </h2>
             <div class="products-carousel products-carousel--4 recommendations__carousel">
                 <div class="product product--recommendation">
@@ -272,7 +272,7 @@ $this->headTitle($this->title, 'PREPEND');
                 <li><span>Защита от влаги</span></li>
             </ul>
         </div>
-        <div class="testimonials">
+        <div class="testimonials" style="display: none">
             <h2 class="product-card__section-heading">Отзывы о товаре </h2>
             <div class="testimonials__photos testimonials__photos--carousel">
                 <div class="testimonials__photo"><a href="/images/testimonials/product1.jpg" data-fancybox="gallery"><img src="/images/testimonials/product1.jpg" /></a></div>
@@ -506,7 +506,7 @@ $this->headTitle($this->title, 'PREPEND');
                 </div><button class="btn btn--secondary">Показать еще отзывы</button>
             </div>
         </div>
-        <div>
+        <div style="display: none;">
             <div class="testimonials-panel">
                 <div class="testimonials-panel__grade">
                     <div class="testimonials-panel__grade-val">4.7</div>

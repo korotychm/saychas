@@ -10,6 +10,7 @@ if ($param and count($param)):
 </div>
 <div class="cart__stores">
   <?php foreach ($param as $provider): ?>
+    <?php print_r($provider)?>
     <div class="cart__store <?=($provider['provider_disable'])?'cart__store--closed':''?>" id='providerblok-<?=$provider['provider_id']?>' rel='<?=$provider['provider_id']?>'>
       <div class="cart__store-top">
         <?php if(!$provider['provider_disable'] and $provider['availblechek']):?>
