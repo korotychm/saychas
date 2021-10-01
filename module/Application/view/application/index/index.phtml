@@ -41,7 +41,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
               <div class="product__price-current">{{ (product.price / 100).toLocaleString() }} ₽</div>
               <div v-if="product.oldPrice && product.oldPrice != product.price" class="product__price-old">{{ (product.oldPrice / 100).toLocaleString() }} ₽</div>
           </div>
-          <div class="product__tocart">
+          <div class="product__tocart" v-if="product.price">
             <button class="btn btn--primary paybutton" :rel="name">В корзину</button>
           </div>
       </div>
@@ -75,7 +75,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
               <div class="product__price-current">{{ (product.price / 100).toLocaleString() }} ₽</div>
               <div v-if="product.oldPrice && product.oldPrice != product.price" class="product__price-old">{{ (product.oldPrice / 100).toLocaleString() }} ₽</div>
           </div>
-          <div class="product__tocart">
+          <div class="product__tocart" v-if="product.price">
             <button class="btn btn--primary paybutton" :rel="name">В корзину</button>
           </div>
       </div>
@@ -122,7 +122,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
               <div class="product__price-current">{{ (product.price / 100).toLocaleString() }} ₽</div>
               <div v-if="product.oldPrice && product.oldPrice != product.price" class="product__price-old">{{ (product.oldPrice / 100).toLocaleString() }} ₽</div>
           </div>
-          <div class="product__tocart">
+          <div class="product__tocart" v-if="product.price">
             <button class="btn btn--primary paybutton" :rel="name">В корзину</button>
           </div>
       </div>
