@@ -11,6 +11,7 @@ $(document).ready(function(){
           axios
             .post('/ajax-get-products-sale')
             .then(response => {
+              console.log(response);
               this.products = response.data.products;
               this.length = Object.keys(this.products).length;
               console.log('Продукты со скидкой',this.length,this.products);
