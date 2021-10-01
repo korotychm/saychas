@@ -17,6 +17,66 @@
  */
 
 return [
+    'parameters' => [
+        '1c_provider_links' => [
+            /** UserManager links */
+            /** Provider login code */
+            'lk_provider_login' => 'http://SRV02:8000/SayChasDev/hs/site/lk_provider_login',
+            /** Create user */
+            'lk_create_user' => 'http://SRV02:8000/SayChasDev/hs/site/lk_create_user',
+            /** Update user */
+            'lk_update_user' => 'http://SRV02:8000/SayChasDev/hs/site/lk_update_user',
+            /** Get all users */
+            'lk_get_all_users' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_all_users',
+            /** Confirm offer */
+            'lk_confirm_offer' => 'http://SRV02:8000/SayChasDev/hs/site/lk_confirm_offer',
+            /** ProductManager links */
+            'lk_product_info' => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',
+            'lk_get_info_by_category' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_info_by_category',
+            /** ProductManager link alias */
+            \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',
+            /** ProductManager; Edit product */
+            //'lk_edit_product' => 'http://SRV02:8000/SayChasDev/hs/site/lk_edit_product',
+            'lk_update_product' => 'http://SRV02:8000/SayChasDev/hs/site/lk_update_product',
+            'lk_add_product' => 'http://SRV02:8000/SayChasDev/hs/site/lk_add_product',
+            /** StoreManager links */
+            'lk_store_info' => 'http://SRV02:8000/SayChasDev/hs/site/lk_store_info',
+            'lk_add_store' => 'http://SRV02:8000/SayChasDev/hs/site/lk_add_store',
+            'lk_update_store' => 'http://SRV02:8000/SayChasDev/hs/site/lk_update_store',
+            /** StockBalanceManager */
+            'lk_update_balance' => 'http://SRV02:8000/SayChasDev/hs/site/lk_update_balance',
+            'lk_balance_info' => 'http://SRV02:8000/SayChasDev/hs/site/lk_balance_info',
+            /** StockBalanceManager link alias */
+            \ControlPanel\Service\StockBalanceManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_balance_info',
+            /** StoreManager link alias */
+            \ControlPanel\Service\StoreManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_store_info',
+            /** PriceAndDiscountManager */
+            'lk_price_info' => 'http://SRV02:8000/SayChasDev/hs/site/lk_price_info',
+            'lk_update_price' => 'http://SRV02:8000/SayChasDev/hs/site/lk_update_price',
+            /** PriceAndDiscountManager link alias */
+            \ControlPanel\Service\PriceAndDiscountManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_price_info',
+            
+        ],
+        '1c_request_links' => [
+            'get_product' => 'http://SRV02:8000/SayChasDev/hs/site/get_product',
+            'get_store' => 'http://SRV02:8000/SayChasDev/hs/site/get_store',
+            'send_registration_code' => 'http://SRV02:8000/SayChasDev/hs/site/send_registration_code',
+            'get_client_info' => 'http://SRV02:8000/SayChasDev/hs/site/get_client_info',
+            'set_client_info' => 'http://SRV02:8000/SayChasDev/hs/site/set_client_info',
+            'update_client_info' => 'http://SRV02:8000/SayChasDev/hs/site/update_client_info',
+            'change_client_password' => 'http://SRV02:8000/SayChasDev/hs/site/change_client_password',
+            'client_login' => 'http://SRV02:8000/SayChasDev/hs/site/client_login',
+            //'send_basket' => 'http://SRV02:8000/SayChasDev/hs/site/create_order',
+            'create_order' => 'http://SRV02:8000/SayChasDev/hs/site/create_order',
+            'order_payment' => 'http://SRV02:8000/SayChasDev/hs/site/order_payment',
+            
+        ],
+        
+        'server_catalog' => [
+            'ftp_mountpoint' => '/home/alex/ftp',
+        ],
+    ],
+    
     'view_manager' => [
         'display_exceptions' => true,
     ],

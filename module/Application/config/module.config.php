@@ -213,7 +213,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-client-favorites',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getClientFavorites',
                     ],
                 ],
@@ -223,7 +223,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-client-history',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getClientHistory',
                     ],
                 ],
@@ -670,26 +670,27 @@ return [
                     ],
                 ],
             ],
-            'my-login' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/my-login',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'myLogin',
-                    ],
-                ],
-            ],
-            'signup' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/signup',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'signup',
-                    ],
-                ],
-            ],
+//            'my-login' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/my-login',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action'     => 'myLogin',
+//                    ],
+//                ],
+//            ],
+//            'signup' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/signup',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action'     => 'signup',
+//                    ],
+//                ],
+//            ],
+
 //            'test-repos' => [
 //                'type'    => Literal::class,
 //                'options' => [
@@ -1404,20 +1405,20 @@ return [
             'fail_url' =>    'https://z.saychas.ru/tinkoff/error',
             //'vat' => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
-        '1c_request_links' => [
-            'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
-            'get_store' => 'http://SRV02:8000/SC/hs/site/get_store',
-            'send_registration_code' => 'http://SRV02:8000/SC/hs/site/send_registration_code',
-            'get_client_info' => 'http://SRV02:8000/SC/hs/site/get_client_info',
-            'set_client_info' => 'http://SRV02:8000/SC/hs/site/set_client_info',
-            'update_client_info' => 'http://SRV02:8000/SC/hs/site/update_client_info',
-            'change_client_password' => 'http://SRV02:8000/SC/hs/site/change_client_password',
-            'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
-            //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
-            'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
-            'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
-            
-        ],
+//        '1c_request_links' => [
+//            'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
+//            'get_store' => 'http://SRV02:8000/SC/hs/site/get_store',
+//            'send_registration_code' => 'http://SRV02:8000/SC/hs/site/send_registration_code',
+//            'get_client_info' => 'http://SRV02:8000/SC/hs/site/get_client_info',
+//            'set_client_info' => 'http://SRV02:8000/SC/hs/site/set_client_info',
+//            'update_client_info' => 'http://SRV02:8000/SC/hs/site/update_client_info',
+//            'change_client_password' => 'http://SRV02:8000/SC/hs/site/change_client_password',
+//            'client_login' => 'http://SRV02:8000/SC/hs/site/client_login',
+//            //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
+//            'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
+//            'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
+//            
+//        ],
         'image_path' => [
             'base_url' => '/images',
             'subpath' => [
