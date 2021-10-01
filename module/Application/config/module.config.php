@@ -15,7 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
-use Application\Controller\Factory\MyTestControllerFactory;
+//use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ProductCardsControllerFactory;
@@ -128,16 +128,16 @@ return [
                     ],
                 ],
             ],
-            'add-user-data' =>  [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/add-user-data',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action' => 'addUserData',
-                    ],
-                ],
-            ],
+//            'add-user-data' =>  [
+//                'type' => Literal::class,
+//                'options' => [
+//                    'route' => '/add-user-data',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action' => 'addUserData',
+//                    ],
+//                ],
+//            ],
             'send-registration-sms' =>  [
                 'type' => Literal::class,
                 'options' => [
@@ -454,16 +454,16 @@ return [
             
             
             
-            'show-store' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/show-store',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'showStore',
-                    ],
-                ],
-            ],
+//            'show-store' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/show-store',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'showStore',
+//                    ],
+//                ],
+//            ],
             'receive-provider' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -758,61 +758,61 @@ return [
 //                    ],
 //                ],
 //            ],
-            'blog' => [
-                // First we define the basic options for the parent route: \Laminas\Router\Http\
-                'type' => Segment::class,
-                'options' => [
-                    'route'    => '/blog/:id',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'blog',
-                    ],
-                    'constraints' => [
-                        'id' => '(\d)+',
-                    ],
-                ],
-                'may_terminate' => true, // \Laminas\Router\Http\
-                'child_routes' => [
-                    'product' => [
-                        'type'    => Segment::class,
-                        'options' => [
-                            'route'    => '[/product/:product_id]',
-                            'defaults' => [
-                                'controller' => Controller\MyTestController::class,
-                                'action'     => 'product',
-                            ],
-//                            'constraints' => [
-//                                'product_id' => '(\d)+',
-//                            ],
-                        ],
-                    ],
-                ],
-            ],
-            
-            'cat' => [
-                'type' => Segment::class,
-                'options' => [
-                    'route' => '/cat[/:id][/:product_id]',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action' => 'cat',
-                    ],
-//                    'constraints' => [
-//                        'product_id' => '(\d)+',
+//            'blog' => [
+//                // First we define the basic options for the parent route: \Laminas\Router\Http\
+//                'type' => Segment::class,
+//                'options' => [
+//                    'route'    => '/blog/:id',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'blog',
 //                    ],
-                ],
-            ],
+//                    'constraints' => [
+//                        'id' => '(\d)+',
+//                    ],
+//                ],
+//                'may_terminate' => true, // \Laminas\Router\Http\
+//                'child_routes' => [
+//                    'product' => [
+//                        'type'    => Segment::class,
+//                        'options' => [
+//                            'route'    => '[/product/:product_id]',
+//                            'defaults' => [
+//                                'controller' => Controller\MyTestController::class,
+//                                'action'     => 'product',
+//                            ],
+////                            'constraints' => [
+////                                'product_id' => '(\d)+',
+////                            ],
+//                        ],
+//                    ],
+//                ],
+//            ],
             
-            'add-new-post' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/add-new-post[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\MyTestController::class,
-                        'action'     => 'addNewPost',
-                    ],
-                ],
-            ],
+//            'cat' => [
+//                'type' => Segment::class,
+//                'options' => [
+//                    'route' => '/cat[/:id][/:product_id]',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action' => 'cat',
+//                    ],
+////                    'constraints' => [
+////                        'product_id' => '(\d)+',
+////                    ],
+//                ],
+//            ],
+            
+//            'add-new-post' => [
+//                'type'    => Segment::class,
+//                'options' => [
+//                    'route'    => '/add-new-post[/:id]',
+//                    'defaults' => [
+//                        'controller' => Controller\MyTestController::class,
+//                        'action'     => 'addNewPost',
+//                    ],
+//                ],
+//            ],
             /*'ajax' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -1214,7 +1214,7 @@ return [
         'factories' => [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
-            Controller\MyTestController::class => MyTestControllerFactory::class,
+//            Controller\MyTestController::class => MyTestControllerFactory::class,
             Controller\UserDataController::class => UserDataControllerFactory::class,
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
