@@ -390,16 +390,9 @@ class AjaxController extends AbstractActionController {
             return; 
         }
         $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
-        if ($favProducts->count() < 1) {
-            return new JsonModel([]);
-        }
-        $products = [];
-        foreach ($favProducts as $favProduct) {
-            if (null != $product = $this->handBookRelatedProductRepository->find(["id" => $favProduct->getProductId()])) {
-                $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);
-            }
-        }
-        return new JsonModel(["products" => $products]);
+        $productsId = ArrayHelper::extractId($favProducts);
+        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
+        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
     }
 
     public function getClientHistoryAction() {
@@ -407,17 +400,10 @@ class AjaxController extends AbstractActionController {
             $this->getResponse()->setStatusCode(403);
             return; //$this->redirect()->toRoute('home');
         }
-        $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
-        if ($favProducts->count() < 1) {
-            return new JsonModel([]);
-        }
-        $products = [];
-        foreach ($favProducts as $favProduct) {
-            if (null != $product = $this->handBookRelatedProductRepository->find(["id" => $favProduct->getProductId()])) {
-                $products[] = $this->commonHelperFuncions->getProductCardArray([$product], $userId);
-            };
-        }
-        return new JsonModel(["products" => $products]);
+        $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
+        $productsId = ArrayHelper::extractId($favProducts);
+        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
+        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
     }
 
     /*
