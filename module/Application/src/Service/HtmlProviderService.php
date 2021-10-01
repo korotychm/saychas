@@ -244,7 +244,17 @@ class HtmlProviderService {
         $productImages = $return = $filters = [];
         //foreach ($filteredProducts as $product) {
             $product = $filteredProducts->current();
+            $return['oldPrice'] = 0;
             $return['price'] = (int) $product->getPrice();
+            $return['discont'] = (int) $product->getDiscount();
+            
+            if ($return['discont'] > 0) {
+                $return['oldPrice'] = $return['price'];
+                $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discont'] / 100);
+            }
+            
+            
+            
             $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
             //$container = new Container(Resource::SESSION_NAMESPACE);
             //$legalStore = $container->legalStore;
@@ -632,6 +642,7 @@ class HtmlProviderService {
             }
             $return["product"][$returnprefix] = [
                 "provider_id" => $provider_store_id, //$prov,
+                "provider_main_id" => $prov,
                 "availblechek" => $availblechek[$prov],
                 "provider_disable" => $provider_disable,
                 "provider_name" => $provider->getTitle(),

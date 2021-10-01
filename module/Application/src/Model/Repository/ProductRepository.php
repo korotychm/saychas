@@ -233,7 +233,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 ->join(
                         ['pri' => 'price'],
                         'pr.id = pri.product_id',
-                        ['price', 'old_price'],
+                        ['price', 'old_price', 'discount'],
                         $select::JOIN_LEFT
                 )
 //            ->join(

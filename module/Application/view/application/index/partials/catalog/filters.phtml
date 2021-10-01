@@ -4,7 +4,7 @@
         <input type="hidden" name="limit" value="72">
         <input type="hidden" name="category_id" :value="category_id">
         <!--Фильтр по цене-->
-        <div class="filter__item">
+        <div class="filter__item" v-if="rangeprice.minprice != rangeprice.maxprice">
             <h2 class="catalog__sidebar-heading">Цена <span class="unit">₽</span></h2>
             <div class="range range--price">
                 <input class="range__left" type="range" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" step="1" v-model="rangeprice.currentMin" />
@@ -22,9 +22,9 @@
                 <input type="hidden" class="range__hidden" name="priceRange" :value="(rangeprice.currentMin * 100) + ';' + (rangeprice.currentMax * 100)" @input="getProducts">
             </div>
         </div>
-        <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}">
+        <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}" :style="{ display: (filter.type == 2 && filter.max == filter.min) ? 'none' : 'block' }">
             <h2 class="catalog__sidebar-heading">{{ filter.title }} <span class="unit">{{ filter.unit }}</span></h2><!-- Тип число-->
-            <div class="range" v-if="filter.type==2">
+            <div class="range" v-if="filter.type==2 && filter.min != filter.max">
                 <input class="range__left" type="range" :min="filter.min" :max="filter.max" :step="filter.step" v-model="filter.currentMin" />
                 <input class="range__right" type="range" :min="filter.min" :max="filter.max" :step="filter.step"v-model="filter.currentMax" />
                 <div class="range__slider">

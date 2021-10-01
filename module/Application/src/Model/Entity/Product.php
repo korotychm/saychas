@@ -12,8 +12,7 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="product")
  * @ORM\Entity
  */
-class Product extends Entity
-{
+class Product extends Entity {
 
     /**
      * @var string
@@ -34,7 +33,7 @@ class Product extends Entity
      * @var string
      */
     protected $parent_category_id;
-    
+
     /**
      * @var string
      */
@@ -55,13 +54,11 @@ class Product extends Entity
      */
     protected $price;
 
-    
     /**
      * @var int
      */
     protected $old_price;
 
-    
     /**
      * @var int
      */
@@ -76,7 +73,8 @@ class Product extends Entity
      * @var string
      */
     protected $brand_title;
-     /**
+
+    /**
      * @var string
      */
     protected $brand_id;
@@ -100,7 +98,7 @@ class Product extends Entity
      * @var string
      */
     protected $param_value_list;
-    
+
     /**
      * @var string
      */
@@ -115,100 +113,101 @@ class Product extends Entity
      * @var string (json)
      */
     protected $param_variable_list;
-    
+
+    /**
+     * VAT
+     *
+     * @var int
+     */
     protected $vat;
-    
-    public function getVat()
-    {
+
+    /**
+     * discount
+     *
+     * @var int
+     */
+    protected $discount;
+
+    public function getVat() {
         return $this->vat;
     }
-    
-    public function setVat($vat)
-    {
+
+    public function setVat($vat) {
         $this->vat = $vat;
         return $this;
     }
 
     /**
      * Set color.
-     * 
+     *
      * @param string $color
      * @return $this
      */
-    public function setColor($color)
-    {
+    public function setColor($color) {
         $this->color = $color;
         return $this;
     }
-    
+
     /**
      * Get color.
-     * 
+     *
      * @return string
      */
-    public function getColor()
-    {
+    public function getColor() {
         return $this->color;
     }
-    
+
     /**
      * Set size.
-     * 
+     *
      * @param string $size
      * @return $this
      */
-    public function setSize($size)
-    {
+    public function setSize($size) {
         $this->size = $size;
         return $this;
     }
-    
+
     /**
      * Get size.
-     * 
+     *
      * @return string
      */
-    public function getSize()
-    {
+    public function getSize() {
         return $this->size;
     }
 
     /**
      * @return string
      */
-    public function getParamValueList2()
-    {
+    public function getParamValueList2() {
         return $this->param_value_list;
     }
 
-    public function getParamVariableList2()
-    {
+    public function getParamVariableList2() {
         return $this->param_variable_list;
     }
 
     /**
      * Get product_title.
-     * 
+     *
      * @return string
      */
-    public function getProductTitle()
-    {
+    public function getProductTitle() {
         return $this->product_title;
     }
 
     /**
      * @return string, length=9
      */
-    public function getStoreId()
-    {
+    public function getStoreId() {
         return $this->store_id;
     }
 
     /**
      * @return string
      */
-    public function getStoreTitle()
-    {
+    public function getStoreTitle() {
         return $this->store_title;
     }
 
@@ -217,8 +216,7 @@ class Product extends Entity
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -229,8 +227,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setProviderId($providerId)
-    {
+    public function setProviderId($providerId) {
         $this->provider_id = $providerId;
 
         return $this;
@@ -241,8 +238,7 @@ class Product extends Entity
      *
      * @return int
      */
-    public function getProviderId()
-    {
+    public function getProviderId() {
         return $this->provider_id;
     }
 
@@ -253,8 +249,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setCategoryId($categoryId)
-    {
+    public function setCategoryId($categoryId) {
         $this->category_id = $categoryId;
 
         return $this;
@@ -265,8 +260,7 @@ class Product extends Entity
      *
      * @return int
      */
-    public function getCategoryId()
-    {
+    public function getCategoryId() {
         return $this->category_id;
     }
 
@@ -276,8 +270,7 @@ class Product extends Entity
      * @param string $parentCategoryId
      * @return Product
      */
-    public function setParentCategoryId($parentCategoryId)
-    {
+    public function setParentCategoryId($parentCategoryId) {
         $this->parent_category_id = $parentCategoryId;
 
         return $this;
@@ -288,11 +281,10 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getParentCategoryId()
-    {
+    public function getParentCategoryId() {
         return $this->parent_category_id;
     }
-    
+
     /**
      * Set title.
      *
@@ -300,8 +292,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -312,8 +303,7 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
@@ -324,8 +314,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -336,8 +325,7 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -348,8 +336,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setVendorCode($vendorCode)
-    {
+    public function setVendorCode($vendorCode) {
         $this->vendor_code = $vendor_code;
 
         return $this;
@@ -360,8 +347,7 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getVendorCode()
-    {
+    public function getVendorCode() {
         return $this->vendor_code;
     }
 
@@ -372,8 +358,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setParamValueList($paramValueList)
-    {
+    public function setParamValueList($paramValueList) {
         $this->param_value_list = $paramValueList;
 
         return $this;
@@ -384,8 +369,7 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getParamValueList()
-    {
+    public function getParamValueList() {
         return $this->param_value_list;
     }
 
@@ -396,8 +380,7 @@ class Product extends Entity
      *
      * @return Product
      */
-    public function setParamVariableList($paramVariableList)
-    {
+    public function setParamVariableList($paramVariableList) {
         $this->param_variable_list = $paramVariableList;
 
         return $this;
@@ -408,8 +391,7 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getParamVariableList()
-    {
+    public function getParamVariableList() {
         return $this->param_variable_list;
     }
 
@@ -418,29 +400,27 @@ class Product extends Entity
      *
      * @return int
      */
-    public function getPrice()
-    {
+    public function getPrice() {
         return $this->price;
     }
 
     /**
      * Set old_price
-     * 
+     *
      * @param int $oldPrice
      * @return $this
      */
-    public function setOldPrice($oldPrice)
-    {
+    public function setOldPrice($oldPrice) {
         $this->old_price = $oldPrice;
         return $this;
     }
+
     /**
      * Get old_price.
      *
      * @return int
      */
-    public function getOldPrice()
-    {
+    public function getOldPrice() {
         return $this->old_price;
     }
 
@@ -449,8 +429,7 @@ class Product extends Entity
      *
      * @return int
      */
-    public function getRest()
-    {
+    public function getRest() {
         return $this->rest;
     }
 
@@ -459,8 +438,7 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getHttpUrl()
-    {
+    public function getHttpUrl() {
         return $this->http_url;
     }
 
@@ -469,18 +447,37 @@ class Product extends Entity
      *
      * @return string
      */
-    public function getBrandTitle()
-    {
+    public function getBrandTitle() {
         return $this->brand_title;
     }
+
     /**
      * Get brand_title.
      *
      * @return string
      */
-    public function getBrandId()
-    {
+    public function getBrandId() {
         return $this->brand_id;
+    }
+
+    /**
+     * Get discount from one-to-one joined discount table
+     *
+     * @return int
+     */
+    public function getDiscount() {
+        return $this->discount;
+    }
+
+    /**
+     * Set discount. Needed when hydrating;
+     *
+     * @param int $discount
+     * @return $this
+     */
+    public function setDiscount($discount) {
+        $this->discount = $discount;
+        return $this;
     }
 
 }
