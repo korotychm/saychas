@@ -85,7 +85,7 @@ class CommonHelperFunctionsService {
     public function getProductCardArray($products, $userId) {
        // $return = [];
         if (empty($products)) {
-            return $return;
+            return [];
         }
         $container = new Container(Resource::SESSION_NAMESPACE);
         $legalStores = $container->legalStore;
