@@ -293,7 +293,7 @@ class UserDataController extends AbstractActionController
         //$post[] = $this->getRequest()->getPost()->toArray();
         $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);
         $orderId = $post["OrderId"];
-        $order = ClientOrder::find(['order_id' => $orderId]);
+        //$order = ClientOrder::find(['order_id' => $orderId]);
 //        $userId = $order->getUserId();
 //        $user = User::find(["id" => $userId]);
         $post["User"] = $userInfo = $this->commonHelperFuncions->getUserInfo();
@@ -301,6 +301,7 @@ class UserDataController extends AbstractActionController
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $answer = ['result' => true, 'description' => 'ok'];
+        
         return new JsonModel($answer);
     }
 
