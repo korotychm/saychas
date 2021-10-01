@@ -21,9 +21,11 @@ $this->headTitle($this->title, 'PREPEND');
             <?= $this->partial("/application/index/partials/product-page/options") ?>
             <?= $this->partial("/application/index/partials/product-page/main-characteristics", ["characteristics" => $this->characteristics]) ?>
         </div>
-        <?= $this->partial("/application/index/partials/product-page/pay-section",
+        <?=($this->price) ? $this->partial("/application/index/partials/product-page/pay-section",
                 [
                    "price" => $this->price,
+                   "oldPrice" => $this->oldPrice,
+                   "discont" => $this->discont,
                    "price_formated" => $this->price_formated,
                    "id" => $this->id,
                    "brand" => $this->brand,
@@ -31,7 +33,7 @@ $this->headTitle($this->title, 'PREPEND');
                    "image_path_brand" => $this->imagePath('brand'),
                     "image_path_provider" => $this->imagePath('provider'),
                     "isFav" => $this->isFav,
-                ])
+                ]) : ""
         ?>
         <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>
         <?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>

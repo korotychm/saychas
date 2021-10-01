@@ -422,7 +422,7 @@ class IndexController extends AbstractActionController
             $content["basketUser"]['address'] = $userData->current()->getAddress();
             $content["basketUser"]['geodata'] = $userData->current()->getGeoData();
         }
-        $content["legalUser"] = (!$content["basketUser"]['phone'] or!$content["basketUser"]['name']) ? false : true;
+        $content["legalUser"] = (!$content["basketUser"]['phone'] or !$content["basketUser"]['name']) ? false : true;
         $content['textdefault'] = Resource::BASKET_SAYCHAS_do . ", ";
         $content["register_title"] = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $content["register_text"] = Resource::MESSAGE_ENTER_OR_REGISTER_TEXT;

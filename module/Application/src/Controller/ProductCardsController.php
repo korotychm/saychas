@@ -452,25 +452,4 @@ class ProductCardsController extends AbstractActionController {
         return $filteredProducts;
     }
 
-    /**
-     *  function by Alex
-     *
-     * @param $array
-     * @return  $array
-     */
-//    private function prepareCharacteristics(&$characteristics) {
-//        if (!$characteristics) {
-//            return;
-//        }
-//        foreach ($characteristics as $key => &$value) {
-//            if ($value) {
-//                foreach ($value as &$v) {
-//                    if (empty($v)) {
-//                        $v = '0;' . PHP_INT_MAX;
-//                    }
-//                }
-//            }
-//        }
-//    }
-
 }
