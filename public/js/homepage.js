@@ -5,7 +5,8 @@ $(document).ready(function(){
     var categoryPage = new Vue({
       el: '#sale-products',
       data: {
-        products: []
+        products: [],
+        length: 0
       },
       created() {
           axios
