@@ -21,8 +21,10 @@ use Application\Service\CommonHelperFunctionsService;
 use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\Entity\StockBalance;
 use Application\Model\Entity\ProductHistory;
+use Application\Model\Entity\ProductFavorites;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Json\Json;
+use Laminas\Http\Response;
 use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
 use Application\Resource\Resource;
@@ -53,6 +55,7 @@ class ProductCardsController extends AbstractActionController {
         $this->entityManager->initRepository(ProductCharacteristic::class);
         $this->entityManager->initRepository(StockBalance::class);
          $this->entityManager->initRepository(ProductHistory::class);
+         $this->entityManager->initRepository(ProductFavorites::class);
       }
 
     /**
@@ -63,10 +66,10 @@ class ProductCardsController extends AbstractActionController {
     public function getClientFavoritesAction()
     {
         if (!$userId = $this->identity()) {
-            $this->getResponse()->setStatusCode(403);
+            $this->getResponse()->setStatusCode(Response::STATUS_CODE_403);
             return; 
         }
-        $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
+        $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
         $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
        
@@ -81,7 +84,7 @@ class ProductCardsController extends AbstractActionController {
     public function getClientHistoryAction()
     {
         if (!$userId = $this->identity()) {
-            $this->getResponse()->setStatusCode(403);
+            $this->getResponse()->setStatusCode(Response::STATUS_CODE_403);
             return; //$this->redirect()->toRoute('home');
         }
         $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();

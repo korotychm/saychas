@@ -546,7 +546,7 @@ class IndexController extends AbstractActionController
         
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
-        $productPage['category'] = ($productPage['categoryId']) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
+        $productPage['category'] = (!empty($productPage['categoryId'])) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
         return new ViewModel($productPage);
     }
