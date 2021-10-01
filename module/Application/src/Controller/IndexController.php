@@ -406,49 +406,92 @@ class IndexController extends AbstractActionController
 
     public function basketAction()
     {
-        $basketUser['id'] = $userId = $this->identity();
+        $userId = $this->identity();
+        $where = new Where();
+        $where->equalTo('user_id', $userId)->equalTo('order_id', 0);
+        $columns = ['product_id', 'order_id', 'total', 'price'];
+        $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+        $content = $this->htmlProvider->basketData($basket, $userId);
+        $content['title'] = Resource::THE_BASKET;
+        $content["content"] = $content["product"];
         $user = $this->userRepository->find(['id' => $userId]);
-        $basketUser['userId'] = $user->getUserId();
-        $basketUser['phone'] = $user->getPhone();
-        $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
-        $basketUser['name'] = $user->getName();
-
+        $content["basketUser"] = ['id' =>   $userId, 'userId' => $user->getUserId(), 'phone' => $user->getPhone(), 'phoneformated' => StringHelper::phoneFromNum($user->getPhone()),'name' => $user->getName(),];
         $userData = $user->getUserData();
         //$count = $userData->count();
         if (!empty($userData) and $userData->count()) {
-            $basketUser['address'] = $userData->current()->getAddress();
-            $basketUser['geodata'] = $userData->current()->getGeoData();
+            $content["basketUser"]['address'] = $userData->current()->getAddress();
+            $content["basketUser"]['geodata'] = $userData->current()->getGeoData();
         }
-        if (!$basketUser['phone'] or!$basketUser['name']) {
-            $legalUser = false;
-        } else {
-            $legalUser = true;
-        }
-        $where = new Where();
-        $where->equalTo('user_id', $userId);
-        $where->equalTo('order_id', 0);
-        $columns = ['product_id', 'order_id', 'total', 'price'];
-        $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
-
-        $content = $this->htmlProvider->basketData($basket, $userId);
-       
+        $content["legalUser"] = (!$content["basketUser"]['phone'] or!$content["basketUser"]['name']) ? false : true;
+        $content['textdefault'] = Resource::BASKET_SAYCHAS_do . ", ";
+        $content["register_title"] = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
+        $content["register_text"] = Resource::MESSAGE_ENTER_OR_REGISTER_TEXT;
         
-        return new ViewModel([
-            /* "providers" => $providers, */
-            "content" => $content["product"],
-            "title" => "Корзина",
-            "titleH" => $content["title"],
-            "basketUser" => $basketUser,
-       //     "cardinfo" => $cardInfo,
-            "countproviders" => $content["countproviders"],
-            "countprducts" => $content["countproducts"],
-            "legalUser" => $legalUser,
-            // "legalAddress" => $legalAddress,
-            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
-            "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
-            "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
-        ]);
+         return new ViewModel($content);
+        //$content["basketUser"] = $basketUser;
+//        
+//        return new ViewModel([
+//            /* "providers" => $providers, */
+//            "content" => $content["product"],
+//            "title" => "Корзина",
+//            "titleH" => $content["title"],
+//            "basketUser" => $basketUser,
+//       //     "cardinfo" => $cardInfo,
+//            "countproviders" => $content["countproviders"],
+//            "countprducts" => $content["countproducts"],
+//            "legalUser" => $legalUser,
+//            // "legalAddress" => $legalAddress,
+//            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
+//            "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
+//            "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
+//        ]);
     }
+    
+//    public function basketAction2()
+//    {
+//        $basketUser['id'] = $userId = $this->identity();
+//        $user = $this->userRepository->find(['id' => $userId]);
+//        $basketUser['userId'] = $user->getUserId();
+//        $basketUser['phone'] = $user->getPhone();
+//        $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
+//        $basketUser['name'] = $user->getName();
+//
+//        $userData = $user->getUserData();
+//        //$count = $userData->count();
+//        if (!empty($userData) and $userData->count()) {
+//            $basketUser['address'] = $userData->current()->getAddress();
+//            $basketUser['geodata'] = $userData->current()->getGeoData();
+//        }
+//        if (!$basketUser['phone'] or!$basketUser['name']) {
+//            $legalUser = false;
+//        } else {
+//            $legalUser = true;
+//        }
+//        $where = new Where();
+//        $where->equalTo('user_id', $userId);
+//        $where->equalTo('order_id', 0);
+//        $columns = ['product_id', 'order_id', 'total', 'price'];
+//        $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
+//
+//        $content = $this->htmlProvider->basketData($basket, $userId);
+//       
+//        
+//        return new ViewModel([
+//            /* "providers" => $providers, */
+//            "content" => $content["product"],
+//            "title" => "Корзина",
+//            "titleH" => $content["title"],
+//            "basketUser" => $basketUser,
+//       //     "cardinfo" => $cardInfo,
+//            "countproviders" => $content["countproviders"],
+//            "countprducts" => $content["countproducts"],
+//            "legalUser" => $legalUser,
+//            // "legalAddress" => $legalAddress,
+//            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
+//            "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
+//            "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
+//        ]);
+//    }
 
     public function previewAction()
     {
@@ -494,21 +537,16 @@ class IndexController extends AbstractActionController
         $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
-        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params))) {
-            $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
+          return $this->responseError404();
         }
         $productPage = $this->htmlProvider->productPageService($products);
-        $breadCrumbs = [];
-        if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) {
-            $breadCrumbs = array_reverse($matherCategories);
-        }
-        $productPage['breadCrumbs'] = $breadCrumbs;
+        $productPage['breadCrumbs'] = ($productPage['categoryId'] and !empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) 
+         ? array_reverse($matherCategories) : [];
+        
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
-        $productPage['category'] = $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle();
+        $productPage['category'] = ($productPage['categoryId']) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
         return new ViewModel($productPage);
     }
@@ -522,20 +560,23 @@ class IndexController extends AbstractActionController
         
         $category_id = $this->params()->fromRoute('id', '');
        
-        if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
+        //if (empty($category_id) or empty($categoryTitle = $this->categoryRepository->findCategory(['id' => $category_id])->getTitle())) {
+        if (empty($category_id = $this->params()->fromRoute('id', '')) or empty($category = $this->categoryRepository->findCategory(['id' => $category_id]))) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
-        //$this->handBookRelatedProductRepository->findMinMaxPriceValueByCategory2([$category_id]);        
-//$categories = $this->categoryRepository->findAllCategories("", 0, $category_id);
-        //$matherCategories = $this->categoryRepository->findAllMatherCategories($category_id);
         if (!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             $breadCrumbs = array_reverse($matherCategories);
         } else {
             $breadCrumbs = [];
         }
-        return new ViewModel([ "catalog" => '' /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, /*'filterform' => $filterForm,*/
-        ]);
+       $categoryTitle = $category->getTitle();
+       $childCategories = [];
+       $categoryTree =  $this->categoryRepository->categoryFilteredTree($category_id);
+       foreach ($categoryTree as $category ){
+           $childCategories[] =[$category['id'], $category['title']]; 
+       }
+            return new ViewModel([ "catalog" => $childCategories /*$categories*/,"title" => $categoryTitle,"id" => $category_id,"breadCrumbs" => $breadCrumbs, ]);
     }
 
     public function categoryAction($category_id = false)
@@ -543,7 +584,10 @@ class IndexController extends AbstractActionController
         if (empty($category_id)) {
             $category_id = $this->params()->fromRoute('id', '');
         }
-        $categories = (!empty($params = Setting::find(['id' => 'main_menu']))) ? Json::decode($params->getValue(), Json::TYPE_ARRAY) : [];
+        if (empty($params = Setting::find(['id' => 'main_menu']))){
+            return $this->responseError404();
+        }
+        $categories =  Json::decode($params->getValue(), Json::TYPE_ARRAY);
         $category = $categories[$category_id];
         return new ViewModel(["title" => $category["title"],]);
     }
@@ -553,20 +597,23 @@ class IndexController extends AbstractActionController
         $brand_id = $this->params()->fromRoute('brand_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($brand = Brand::find(["id"=> $brand_id ]))){
-            $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+            return $this->responseError404();
         }
         $brandTitle = $brand->getTitle();
         $categories = $this->getBrandCategories($brand_id); 
-           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';  
+      //$categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : ''; 
         $breadCrumbs[]=[null, $brandTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
                 $categoryTitle =  $category->getTitle();
             }
+        
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }
+        if (!empty($category_id) and empty($categoryTitle)){
+           $this->getResponse()->setStatusCode(301);
+           return $this->redirect()->toUrl('/brand/'.$brand_id);
         }
         return new ViewModel(['breadCrumbs' => $breadCrumbs,'logo' => $brand->getImage() , 'id' => $brand_id,'category_id' => $category_id,"title" =>  $brandTitle, 'category_title' => $categoryTitle,]);
     }
@@ -576,20 +623,22 @@ class IndexController extends AbstractActionController
         $provider_id = $this->params()->fromRoute('provider_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($provider = Provider::find(["id"=> $provider_id ]))){
-            $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+            return $this->responseError404();
         }
         $providerTitle = $provider->getTitle();
         $categories = $this->getProviderCategories($provider_id); 
-           $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+       $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';  
+       //$categoryTitle = Resource::THE_ALL_PRODUCTS; 
         $breadCrumbs[]=[null, $providerTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
                 $categoryTitle =  $category->getTitle();
             }
-            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+         $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+        }  
+        if (!empty($category_id) and empty($categoryTitle)){
+           $this->getResponse()->setStatusCode(301);
+           return $this->redirect()->toUrl('/seller/'.$provider_id);
         }
         return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage() , 'id' => $provider_id,'category_id' => $category_id,"title" => $providerTitle, 'category_title' => $categoryTitle,]);
     }
@@ -599,14 +648,16 @@ class IndexController extends AbstractActionController
         $store_id = $this->params()->fromRoute('store_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($store = Store::find(["id"=> $store_id ]))){
-            $response = new Response();
-            $response->setStatusCode(Response::STATUS_CODE_404);
-            $view = new ViewModel();
-            return $view->setTemplate('error/404.phtml');
+            return $this->responseError404();
         }
-        $storeTitle = $store->getTitle();
+        $provider_id = $store->getProviderId();
+         if (empty($provider = Provider::find(["id"=> $provider_id ]))){
+             return $this->responseError404();
+         }
+        $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';  
+        $storeTitle = $provider->getTitle();
         $categories = $this->getStoreCategories($store_id); //$this->getBrandCategories($brand_id);
-        $categoryTitle = Resource::THE_ALL_PRODUCTS; 
+        //$categoryTitle = Resource::THE_ALL_PRODUCTS; 
         $breadCrumbs[]=[null, $storeTitle];
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
@@ -614,7 +665,12 @@ class IndexController extends AbstractActionController
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
-        return new ViewModel( ['breadCrumbs' => $breadCrumbs,'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $storeTitle, 'category_title' => $categoryTitle,]);
+        if (!empty($category_id) and empty($categoryTitle)){
+           $this->getResponse()->setStatusCode(301);
+           return $this->redirect()->toUrl('/store/'.$store_id);
+        }
+        
+        return new ViewModel( ['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage() , 'address' => StringHelper::cutAddress($store->getAddress()),'id' => $store_id,'category_id' => $category_id,"title" => $storeTitle, 'category_title' => $categoryTitle,]);
     }
     
     
@@ -649,11 +705,8 @@ class IndexController extends AbstractActionController
         return  $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]);//->toArray();
     }
     
-    
-    
-    
-
-    public function userAction(/*$category_id = false*/)
+   
+    public function userAction()
     {
 //        $container = new Container();
 //        if($container->signedUp != true) {
@@ -662,27 +715,17 @@ class IndexController extends AbstractActionController
 
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);
-        //$userData = 
         $phone = $user->getPhone();
         $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
         $paycards =($userPaycards->count())?$userPaycards:null;
         $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
         
-        if (!$phone) {
+        if (empty($phone)) {
             return $this->unauthorizedLocation();
         }
         $userPhone = StringHelper::phoneFromNum($phone);
         $title = ($user->getName()) ? $user->getName() : "Войти на сайт";
-        return new ViewModel([
-            "user" => $user,
-            "userData" => $user->getUserData(),
-            "userPhone" => $userPhone,
-            "title" => $title, //."/$category_id",
-            "id" => "userid: " . $userId,
-            "bread" => "bread ",
-            "auth" => ($user->getPhone()),
-            "paycards" =>  $cardInfo, 
-        ]);
+        return new ViewModel(["user" => $user,"userData" => $user->getUserData(),"userPhone" => $userPhone,"title" => $title, "id" => "userid: " . $userId, "bread" => "bread ","auth" => ($user->getPhone()),"paycards" =>  $cardInfo, ]);
     }
     
     private function packParams($params)
@@ -701,9 +744,8 @@ class IndexController extends AbstractActionController
     private function unauthorizedLocation()
     {
            $this->getResponse()->setStatusCode(403);
-           $vw = new ViewModel();
-           $vw->setTemplate('error/403.phtml');
-           return $vw;
+           $vm = new ViewModel();
+           return $vm->setTemplate('error/403.phtml');;
     }
     
     private function addProductToHistory($productId)
@@ -726,6 +768,14 @@ class IndexController extends AbstractActionController
         }
         return  false; 
     }
-    
+    private function responseError404 ()
+    {
+            $response = new Response();
+            $response->setStatusCode(Response::STATUS_CODE_404);
+            $this->layout('error/404');
+            $view = new ViewModel();
+            return $view; //->setTemplate('error/404.phtml');
+        
+    }
     
 }

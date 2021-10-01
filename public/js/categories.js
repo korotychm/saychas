@@ -48,7 +48,7 @@ $(document).ready(function(){
               }))
             .then(response => {
               console.log(response);
-              this.products = response.data;
+              this.products = response.data.products;
               this.length = Object.keys(this.products).length
               console.log('Products', this.products);
             });

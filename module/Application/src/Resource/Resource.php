@@ -128,6 +128,8 @@ class Resource
      * Числовые данные
      */
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
+    const SQL_LIMIT_PRODUCTCARD_IN_SLIDER = 12; //максимальное количество карточек товара в сладере
+    const SQL_LIMIT_BRAND_SLIDER = 40; //максимальное количество брендов в сладере
     
 
     /*

@@ -26,6 +26,9 @@
 .slick-dots button:hover {
   background: var(--red);
 }
+.slick-track {
+  margin-left: 0;
+}
 .slick-arrow {
   position: absolute;
   z-index: 2;

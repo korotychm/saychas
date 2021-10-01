@@ -114,10 +114,7 @@ class HtmlProviderService {
             return $error;
         }/**/
         foreach ($basket as $basketItem) {
-            $basketProducts[$basketItem->getProductId()] = [
-                'price' => $basketItem->getPrice(),
-                'total' => $basketItem->getTotal(),
-            ];
+            $basketProducts[$basketItem->getProductId()] = ['price' => $basketItem->getPrice(), 'total' => $basketItem->getTotal(),];
         }
         while (list($key, $product) = each($param['postedProducts'])) { //
             if (empty($basketProducts[$key])) {
@@ -173,28 +170,26 @@ class HtmlProviderService {
         if (empty($filters)) {
             return["error" => "errorId"];
         }
-        $return = [];
-        $j = 0;
-        foreach ($filters as $row) {
+            foreach ($filters as $row) {
             $row['val'] = explode(",", $row['val']);
             $row['val'] = array_unique($row['val']);
-            $getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
+            //$getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
             $chars = [];
             foreach ($row['val'] as $val) {
-                $j++;
+                //$j++;
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
                 $valuetext = $val;
-                if ($row['type'] == 4) {
+                if ($row['type'] == Resource:: CHAR_VALUE_REF) {
                     $valuetext = $char->getTitle();
-                } elseif ($row['type'] == 5) {
+                } elseif ($row['type'] == Resource::PROVIDER_REF) {
                     $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                } elseif ($row['type'] == 6) {
+                } elseif ($row['type'] == Resource::BRAND_REF) {
                     $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                } elseif ($row['type'] == 7) {
+                } elseif ($row['type'] == Resource::COLOR_REF) {
                     $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                     $valuetext = [$color->getValue(), $color->getTitle()];
-                } elseif ($row['type'] == 8) {
+                } elseif ($row['type'] == Resource::COUNTRY_REF) {
                     $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
                 }
                 $chars[] = [
@@ -202,64 +197,68 @@ class HtmlProviderService {
                     "value" => $valuetext,
                 ];
             }
-            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $getUnit, "options" => $chars];
+            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit(), "options" => $chars];
         }
-        return $return;
+        return !empty($return) ? $return : [];
     }
 
-    private function valueParce($v = [], $chType) {
-        $bool = [Resource::NO, Resource::YES];
-        if (!$v or !is_array($v))
-            return $v;
+    /* const HEADER = 0;
+      const STRING = 1;
+      const INTEGER = 2;
+      const BOOLEAN = 3;
+      const CHAR_VALUE_REF = 4;
+      const PROVIDER_REF = 5;
+      const BRAND_REF = 6;
+      const COLOR_REF = 7;
+      const COUNTRY_REF = 8; */
+
+    private function valueParce(array $v = [], $chType) {
+        //$bool = [Resource::NO, Resource::YES];
+        if (!$v or!is_array($v)) {
+            return;
+        }
+        $value = [];
         foreach ($v as $val) {
-            if (!$val)
+            if (!$val) {
                 continue;
-            if ($chType == 3)
-                $value[] = $bool[$val];
-
-            elseif ($chType == 8) {
-                $b = $this->countryRepository->findFirstOrDefault(['id' => $val]);
-                $value[] = "<img style='margin-right:5px;' class='iblok' src='/img/flags/" . strtolower($b->getCode()) . ".gif' >" . $b->getTitle();
-            } elseif ($chType == 4) {
-
+            } elseif ($chType == Resource::BOOLEAN) {
+                $value[] = $val == 0 ? Resource::NO : Resource::YES;
+            } elseif ($chType == Resource::COUNTRY_REF) {
+                $value[] = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();
+            } elseif ($chType == Resource::CHAR_VALUE_REF) {
                 $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
-            } elseif ($chType == 6) {
-                $value[] = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-            } elseif ($chType == 7) {
-
+            } elseif ($chType == Resource::BRAND_REF) {
+                $value[] = "<a href='/brand/$val' >" . $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle() . "</a>";
+            } elseif ($chType == Resource::COLOR_REF) {
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
-                $value[] = "<div class='iblok relative'  >"
-                        . "     <div class='cirkul iblok relative' style='background-color:{$color->getValue()}; border:1px solid var(--gray); width:25px; height:25px; vertical-align:middle'></div>"
-                        . "      {$color->getTitle()}   "
-                        . "</div>";
-            } else
+                $value[] = "<div class='iblok relative'  ><div class='cirkul iblok relative' style='background-color:{$color->getValue()};'></div>{$color->getTitle()}</div>";
+            } else {
                 $value = $v;
+            }
         }
-        if ($value)
-            return print_r(join(", ", $value), true);
+
+        return !empty($value) ? join(", ", $value) : "";
     }
 
-    public function productPageService($filteredProducts, $category_id = 0) {
+    public function productPageService($filteredProducts) {
         $productImages = $return = $filters = [];
-        foreach ($filteredProducts as $product) {
-
+        //foreach ($filteredProducts as $product) {
+            $product = $filteredProducts->current();
             $return['price'] = (int) $product->getPrice();
             $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
             //$container = new Container(Resource::SESSION_NAMESPACE);
             //$legalStore = $container->legalStore;
             $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-            $return['rest'] = (int) $rest->getRest();
+            $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
             $return['product_id'] = $id = $product->getId();
             $return['title'] = $product->getTitle();
-            /** Alex has added the below code */
             $parentCategoryId = $product->getParentCategoryId();
             $categoryId = $product->getCategoryId();
-            if(!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
+            if (!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
                 $categoryId = $parentCategoryId;
             }
             $return['category_id'] = $categoryId;
             /** End of Alex's code */
-            
             // Alex has commented out the below code
             //$return['category_id'] = $categoryId = $product->getCategoryId();
             $charNew = $product->getParamVariableList();
@@ -270,28 +269,25 @@ class HtmlProviderService {
             $productImages[] = $product->getHttpUrl();
             $vendor = $product->getVendorCode();
             $productId = $product->getId();
-            
+
             $return["brand"]["title"] = $product->getBrandTitle();
             $return["brand"]["id"] = $product->getBrandId();
             $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
-            
-            
+
             $return["provider"]["id"] = $product->getProviderId();
             //exit($return["provider"]["id"]);
             $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
-                    
+
             $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
             $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
-            
-            
-            
+
             $description = $product->getDescription();
             if (!empty($description)) {
                 $return['description']["text"] = StringHelper::eolFormating($description);
                 $return['description']['if_spoiler'] = ((strlen($description) < 501));
                 $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
             }
-        }
+        //}
         $characteristicsArray = array_diff($characteristicsArray, array(''));
         if (!empty($characteristicsArray)) {
             foreach ($characteristicsArray as $char) {
@@ -585,11 +581,14 @@ class HtmlProviderService {
         if (empty($item)) {
             return;
         }
+        
+       
 
         while (list($prov, $prod) = each($item)) {
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
             $store = $provider->recieveStoresInList($legalStore);
+             
             $infostore1c = "";
             if (null != $store) {
                 $idStore = $store->getId();
@@ -647,6 +646,7 @@ class HtmlProviderService {
                 "products" => $prod,
                 "infostore1c" => $infostore1c,
             ];
+            
         }
         if ($countproducts) {
             $countproviders = (int) count($countprovider);
@@ -659,6 +659,7 @@ class HtmlProviderService {
         if (!empty($return["product"])) {
             ksort($return["product"]);
         }
+        //exit (print_r($return["product"]));
         return $return;
     }
 

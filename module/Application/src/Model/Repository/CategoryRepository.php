@@ -408,6 +408,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
             return $echo;
         }
     }
+       
 
     /**
      * Return a single category.
@@ -436,12 +437,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $category = $resultSet->current();
 
         if (!$category) {
-            throw new InvalidArgumentException(sprintf(
-                                    'Category with identifier "%s" not found.',
-                                    $params['id']
-            ));
+            return null; 
         }
-
         return $category;
     }
 

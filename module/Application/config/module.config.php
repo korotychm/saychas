@@ -213,7 +213,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-client-favorites',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getClientFavorites',
                     ],
                 ],
@@ -223,7 +223,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-client-history',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getClientHistory',
                     ],
                 ],
@@ -893,6 +893,40 @@ return [
                     ],
                 ],
             ],
+             'ajax-get-products-top' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-top',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsTop',
+                    ],
+                ],
+            ],
+            
+            'ajax-get-products-sale' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-products-sale',
+                    'defaults' => [
+                        'controller' => Controller\ProductCardsController::class,
+                        'action'     => 'getProductsSale',
+                    ],
+                ],
+            ],
+            
+            'ajax-get-brands-top' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-brands-top',
+                    'defaults' => [
+                        'controller' => Controller\AjaxController::class,
+                        'action'     => 'getBrandsTop',
+                    ],
+                ],
+            ],
+            
+            
             
             
             'ajax-fltr-json' => [
@@ -1328,6 +1362,7 @@ return [
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/error'           => __DIR__ . '/../view/layout/errorLayout.phtml',
             'layout/preview'          => __DIR__ . '/../view/layout/menu.phtml',
             'layout/mainpagenew'      => __DIR__ . '/../view/layout/mainpagenew.phtml',
             
