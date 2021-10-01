@@ -422,7 +422,7 @@ class IndexController extends AbstractActionController
             $content["basketUser"]['address'] = $userData->current()->getAddress();
             $content["basketUser"]['geodata'] = $userData->current()->getGeoData();
         }
-        $content["legalUser"] = (!$content["basketUser"]['phone'] or!$content["basketUser"]['name']) ? false : true;
+        $content["legalUser"] = (!$content["basketUser"]['phone'] or !$content["basketUser"]['name']) ? false : true;
         $content['textdefault'] = Resource::BASKET_SAYCHAS_do . ", ";
         $content["register_title"] = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $content["register_text"] = Resource::MESSAGE_ENTER_OR_REGISTER_TEXT;
@@ -546,7 +546,7 @@ class IndexController extends AbstractActionController
         
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId );
         $this->addProductToHistory($product_id);
-        $productPage['category'] = ($productPage['categoryId']) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
+        $productPage['category'] = (!empty($productPage['categoryId'])) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
         return new ViewModel($productPage);
     }
