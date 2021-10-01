@@ -12,7 +12,8 @@ $(document).ready(function(){
             .post('/ajax-get-products-sale')
             .then(response => {
               this.products = response.data.products;
-              console.log('Продукты со скидкой',this.products);
+              this.length = Object.keys(this.products).length;
+              console.log('Продукты со скидкой',this.length,this.products);
             });
       },
       updated() {
@@ -33,14 +34,16 @@ $(document).ready(function(){
     var categoryPage = new Vue({
       el: '#popular-products',
       data: {
-        products: []
+        products: [],
+        length: 0
       },
       created() {
           axios
             .post('/ajax-get-products-top')
             .then(response => {
               this.products = response.data.products;
-              console.log('Популярные продукты',this.products);
+              this.length = Object.keys(this.products).length;
+              console.log('Популярные продукты',this.length,this.products);
             });
       }
     });
@@ -90,8 +93,8 @@ $(document).ready(function(){
             .post('/ajax-get-brands-top')
             .then(response => {
               this.brands = response.data;
-              //this.length = Object.keys(this.products).length;
-              console.log('Brands',this.brands);
+              this.length = this.brands.length;
+              console.log('Brands',this.length,this.brands);
             });
       },
       updated() {
