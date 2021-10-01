@@ -632,6 +632,7 @@ class HtmlProviderService {
             }
             $return["product"][$returnprefix] = [
                 "provider_id" => $provider_store_id, //$prov,
+                "provider_main_id" => $prov,
                 "availblechek" => $availblechek[$prov],
                 "provider_disable" => $provider_disable,
                 "provider_name" => $provider->getTitle(),
