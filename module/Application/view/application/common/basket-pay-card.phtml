@@ -1,17 +1,17 @@
 <?php use Application\Resource\Resource; ?>
 <div class="cart-payment">
-    <h2 class="h2">Оплата  <?=(empty($paycard) or $paycard != "0" )?"checked":"!!!"?></h2>
+    <h2 class="h2">Оплата</h2>
     <div class="cart__radio-group">
         <?php if(!empty($cardinfo)) :?>
           <input type="radio" name='paycard' <?=(empty($paycard) or $paycard != "0" )?"checked":""?> id="payment1" value="1" />
           <div class="cart__radio">
             <label for="payment1"><span class="cart__radio-check"></span><span><b><?=Resource::ORDER_MEMBER_PAYCARD_TITLE?></b></span></label>
               <div class="cart__radio-content">
-              
+
                 <select name="cardinfo" class="select">
                     <?php foreach ($cardinfo as $card):?>
                       <option value="<?=strip_tags($card["id"])?>" <?=($default == $card["id"])?"selected":""?> ><?=$card["pan"]?></option>
-                   <?php endforeach;?>   
+                   <?php endforeach;?>
                 </select>
               </div>
           </div>
