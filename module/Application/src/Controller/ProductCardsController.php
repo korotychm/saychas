@@ -29,8 +29,6 @@ use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
 use Application\Resource\Resource;
 
-//use Application\Helper\StringHelper;
-
 class ProductCardsController extends AbstractActionController {
 
     private $categoryRepository;
@@ -42,7 +40,7 @@ class ProductCardsController extends AbstractActionController {
     private $commonHelperFuncions;
 
     public function __construct(
-            CategoryRepositoryInterface $categoryRepository, CharacteristicRepositoryInterface $characteristicRepository, HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config, AuthenticationService $authService, CommonHelperFunctionsService $commonHelperFuncions) {
+        CategoryRepositoryInterface $categoryRepository, CharacteristicRepositoryInterface $characteristicRepository, HandbookRelatedProductRepositoryInterface $handBookProduct, $entityManager, $config, AuthenticationService $authService, CommonHelperFunctionsService $commonHelperFuncions) {
         $this->categoryRepository = $categoryRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->handBookRelatedProductRepository = $handBookProduct;
@@ -146,7 +144,6 @@ class ProductCardsController extends AbstractActionController {
         }
 
         return new JsonModel(["products" => $this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId])]);
-        //return new JsonModel($post);
     }
 
     /**
@@ -193,8 +190,10 @@ class ProductCardsController extends AbstractActionController {
         $category_id = $params['category_id'];
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $where = new Where();
-        list($low, $high) = explode(';', $params['priceRange']);
-        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+        if (!empty($params['priceRange'])){
+            list($low, $high) = explode(';', $params['priceRange']);
+            $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
+        }
         $where->in('category_id', $categoryTree);
         $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
 
@@ -327,7 +326,6 @@ class ProductCardsController extends AbstractActionController {
         $where->in("id", $productsId);
 
         return $where;
-        //SELECT `product_id`, COUNT(`product_id`) AS `count` FROM 'product_history` GROUP BY `product_id` HAVING  `count` > order BY `count` DESC LIMIT 0, 40
     }
 
     /**
@@ -350,7 +348,7 @@ class ProductCardsController extends AbstractActionController {
      *
      */
     private function getProductsCatalog($params) {
-        $this->prepareCharacteristics($params['characteristics']);
+        //$this->prepareCharacteristics($params['characteristics']);
         if (empty($params['priceRange'])) {
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
@@ -460,19 +458,19 @@ class ProductCardsController extends AbstractActionController {
      * @param $array
      * @return  $array
      */
-    private function prepareCharacteristics(&$characteristics) {
-        if (!$characteristics) {
-            return;
-        }
-        foreach ($characteristics as $key => &$value) {
-            if ($value) {
-                foreach ($value as &$v) {
-                    if (empty($v)) {
-                        $v = '0;' . PHP_INT_MAX;
-                    }
-                }
-            }
-        }
-    }
+//    private function prepareCharacteristics(&$characteristics) {
+//        if (!$characteristics) {
+//            return;
+//        }
+//        foreach ($characteristics as $key => &$value) {
+//            if ($value) {
+//                foreach ($value as &$v) {
+//                    if (empty($v)) {
+//                        $v = '0;' . PHP_INT_MAX;
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 }
