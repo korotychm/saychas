@@ -213,7 +213,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-client-favorites',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getClientFavorites',
                     ],
                 ],
@@ -223,7 +223,7 @@ return [
                 'options' => [
                     'route'    => '/ajax-get-client-history',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ProductCardsController::class,
                         'action'     => 'getClientHistory',
                     ],
                 ],

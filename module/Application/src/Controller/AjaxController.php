@@ -384,27 +384,27 @@ class AjaxController extends AbstractActionController {
         return new JsonModel(['result' => true, "description" => "product $productId removed from favorites", 'lable' => Resource::ADD_TO_FAVORITES]);
     }
 
-    public function getClientFavoritesAction() {
-        if (!$userId = $this->identity()) {
-            $this->getResponse()->setStatusCode(403);
-            return; 
-        }
-        $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
-        $productsId = ArrayHelper::extractId($favProducts);
-        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
-    }
-
-    public function getClientHistoryAction() {
-        if (!$userId = $this->identity()) {
-            $this->getResponse()->setStatusCode(403);
-            return; //$this->redirect()->toRoute('home');
-        }
-        $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
-        $productsId = ArrayHelper::extractId($favProducts);
-        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
-    }
+//    public function getClientFavoritesAction() {
+//        if (!$userId = $this->identity()) {
+//            $this->getResponse()->setStatusCode(403);
+//            return; 
+//        }
+//        $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
+//        $productsId = ArrayHelper::extractId($favProducts);
+//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
+//        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
+//    }
+//
+//    public function getClientHistoryAction() {
+//        if (!$userId = $this->identity()) {
+//            $this->getResponse()->setStatusCode(403);
+//            return; //$this->redirect()->toRoute('home');
+//        }
+//        $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
+//        $productsId = ArrayHelper::extractId($favProducts);
+//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
+//        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
+//    }
 
     /*
      *  промежуточный скрипт для http://api4.searchbooster.io
