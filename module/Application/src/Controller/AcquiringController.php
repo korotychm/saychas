@@ -24,12 +24,12 @@ use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
-use Application\Model\Entity\ProductCharacteristic;
+//use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\Repository\UserRepository;
-use Application\Model\Repository\CharacteristicRepository;
-use Application\Model\Entity\HandbookRelatedProduct;
-use Application\Model\Entity\Provider;
+//use Application\Model\Repository\CharacteristicRepository;
+//use Application\Model\Entity\HandbookRelatedProduct;
+//use Application\Model\Entity\Provider;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Delivery;
@@ -143,12 +143,9 @@ class AcquiringController extends AbstractActionController
     /*
      * @return JsonModel
      */
-
     public function tinkoffPaymentAction()
     {
         //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
-
-
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $orderId = $this->params()->fromRoute('order', '');
@@ -206,7 +203,7 @@ class AcquiringController extends AbstractActionController
     public function tinkoffOrderBillAction()
     {
         //$post[] = $this->getRequest()->getPost()->toArray();
-        $Amount = 0;
+        $amount = 0;
         $json = file_get_contents('php://input');
         $post["post1C"] = Json::decode($json, Json::TYPE_ARRAY);
 
@@ -225,13 +222,13 @@ class AcquiringController extends AbstractActionController
 
         foreach ($post["post1C"]["products"] as $item) {
             $item["Tax"] = ($item["Tax"] == null ) ? "none" : "vat" . $item["Tax"];
-            $Amount += $item["Amount"] = $item["Price"] * $item["Quantity"];
+            $amount += $item["Amount"] = $item["Price"] * $item["Quantity"];
 
             $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
         }
         $post["requestTinkoff"]["Receipt"]["Items"][] = $this->addDeliveryItem($post["post1C"]["amount_delevery"]);
-        $Amount += $post["post1C"]["amount_delevery"];
-        $post["requestTinkoff"]["Amount"] = $Amount;
+        $amount += $post["post1C"]["amount_delevery"];
+        $post["requestTinkoff"]["Amount"] = $amount;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         $post["requestTinkoff"]['SuccessURL'] = "https://saychas.ru/user/order/" . $orderId;
         $post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/order/" . $orderId;
@@ -248,6 +245,7 @@ class AcquiringController extends AbstractActionController
         $response->setStatusCode(Response::STATUS_CODE_200);
         //$post["answerTinkoff"][]
         $answer = ['result' => true, 'description' => 'ok'];
+
         return new JsonModel($answer);
     }
 
@@ -296,7 +294,6 @@ class AcquiringController extends AbstractActionController
      * get post json
      * @return response
      */
-
     public function tinkoffCallbackAction()
     {
         $jsonData = file_get_contents('php://input');

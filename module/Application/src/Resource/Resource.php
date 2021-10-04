@@ -18,6 +18,8 @@ class Resource
     const THE_CATEGORY = "Категории ";
     const THE_BRANDS = "Торговые марки ";
     const THE_CATEGORY_OF_PRODUCTS = "Категории товаров ";
+    const THE_ORDER_NUM = "Заказ № ";
+    const THE_PICKUP = "Самовывоз";
 
     /*
      *  user
