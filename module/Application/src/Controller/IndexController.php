@@ -137,7 +137,6 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(Store::class);
         $this->entityManager->initRepository(StockBalance::class);
-        //$this->entityManager->initRepository(Category::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -161,7 +160,15 @@ class IndexController extends AbstractActionController
 
         // Return the response
         $this->layout()->setVariables([
+            //'headerText' => $this->htmlProvider->testHtml(),
+            //'footerText' => 'banzaii',
+            //'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
+            //'categoryTree' => $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', '')),
+            //  'userAddressHtml' => $userAddressHtml,
+
             'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
+            //'categoryTree' => $this->categoryRepository->categoryTree("",0,0),
+            //'userAddressHtml' => $userAddressHtml,
             'addressLegal' => $addressLegal,
             'addresses' => $userAddressArray,
             'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
@@ -184,7 +191,7 @@ class IndexController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $container = new Container();
         $password = $post['password'];
-        if('123451' == $password) {
+        if ('123451' == $password) {
             $container->signedUp = true;
             return $this->redirect()->toUrl('/');
         }
@@ -291,107 +298,22 @@ class IndexController extends AbstractActionController
             //'orders'=> $orderList,
             "orderInfo" => $this->htmlProvider->orderList([$order])[0],
         ]);
-    }    
+    }
 
     public function indexAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
-
-//        $userPaycard = new UserPaycard();
-//        $userPaycard->setUserId('000001');
-//        $userPaycard->setCardId('000000001');
-//        $userPaycard->setPan('pan-hujpan');
-//        $userPaycard->setTime(time());
-//        $userPaycard->persist(['card_id'=>'000000001']);
-//
-//        $up = UserPaycard::find(['card_id' => '000000001']);
-//
-//        print_r($up);
-
-
-//        $container = new Container();
-//        print_r($container->banzaii);
-//        exit;
-//        if(true) {
-//            $this->redirect()->toUrl('/login');
-//        }
-
-//        $product = $this->handBookRelatedProductRepository->find(['id' => '000000000001']);
-//        $provider = $product->getProvider();
-//        $stores = $provider->getStoreArray();
-        //$s = $provider->storesToArray();
-
-//        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
-//        echo '<pre>';
-//        print_r($tree);
-//        echo '</pre>';
-//        exit;
-//        $user = User::findFirstOrDefault(['id' => 497]);
-//        $userData = new UserData();
-//        $userData->setUserId($user->getId());
-//        $userData->setAddress('address5555');
-////        $userData->setFiasLevel(8);
-////        $userData->setFiasId('asdfasdf');
-//        $userData->setGeodata('{"data":{"fias_id": "22222222", "fias_level": "8"}}');
-//        $userData->setTime(time());
-//        $user->setUserData([$userData]);
-//        $user->persist(['id' => $user->getId()]);
-//        $delivery = new Delivery();
-//        $delivery->setId(null);
-//        $delivery->setDeliveryId('0000002');
-//        $delivery->setOrderId('0000111');
-//        $delivery->setDateCreated(time());
-//        $delivery->persist(['id' => $delivery->getId()]);
-        // $clientOrder = new ClientOrder();
-//        $clientOrder = ClientOrder::findFirstOrDefault(['id' => null]);
-//        $clientOrder->setId(null);
-//        $clientOrder->setOrderId('00000000003');
-//        $clientOrder->setDateCreated(time());
-////        $date = (new \DateTime("now"))->format('Y-m-d h:i:s');
-////        $clientOrder->setTimestamp($date);
-//
-//        $clientOrder->persist(['id' => $clientOrder->getId()]);
-//        $validator = new \Laminas\Validator\EmailAddress();
-//
-//        $email = 'alex.kraskov@gmail.com';
-//
-//        if ($validator->isValid($email)) {
-//            // email appears to be valid
-//            print_r('ok');
-//            exit;
-//        } else {
-//            // email is invalid; print the reasons
-//            foreach ($validator->getMessages() as $message) {
-//                echo "$message\n";
-//            }
-//            exit;
-//        }
-//        $validator = new \Laminas\Validator\Regex(['pattern' => '/^Test/']);
-//
-//        $validator->isValid("Test"); // returns true
-//        $validator->isValid("Testing"); // returns true
-//        $validator->isValid("Pest"); // returns false
-        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
-//        $container = new Container(Resource::SESSION_NAMESPACE);
-//        if(isset($container->item)) {
-//            print_r($container->item);
-//        }else{
-//            print_r('null');
-//        }
-//        exit;
         return new ViewModel([
-                //'fooItem' => 'banzaii', //  $container->item
         ]);
-
     }
 
     public function basketAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
         $userId = $this->identity();
@@ -421,7 +343,7 @@ class IndexController extends AbstractActionController
     public function previewAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
 
@@ -433,12 +355,11 @@ class IndexController extends AbstractActionController
     public function clientFavoritesPageAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
 
         $userId = $this->identity();
-
         $user = User::find(['id' => $userId]);
         $userInfo = $this->commonHelperFuncions->getUserInfo($user);
         if (empty($userInfo["phone"])) {
@@ -453,7 +374,7 @@ class IndexController extends AbstractActionController
     public function productPageAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
         $userId = $this->identity();
@@ -476,14 +397,16 @@ class IndexController extends AbstractActionController
     public function catalogAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+
         $category_id = $this->params()->fromRoute('id', '');
         if (empty($category_id = $this->params()->fromRoute('id', '')) or empty($category = $this->categoryRepository->findCategory(['id' => $category_id]))) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
+
         $breadCrumbs = ((!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id)))) ? array_reverse($matherCategories) : [];
         $categoryTitle = $category->getTitle();
         $childCategories = [];
@@ -491,7 +414,6 @@ class IndexController extends AbstractActionController
         foreach ($categoryTree as $category) {
             $childCategories[] = [$category['id'], $category['title']];
         }
-
         return new ViewModel(["catalog" => $childCategories /* $categories */, "title" => $categoryTitle, "id" => $category_id, "breadCrumbs" => $breadCrumbs,]);
     }
 
@@ -508,10 +430,11 @@ class IndexController extends AbstractActionController
             return $this->responseError404();
         }
         $categories = Json::decode($params->getValue(), Json::TYPE_ARRAY);
-        if  (empty($category = $categories[$category_id])) {
-             return $this->responseError404();
+
+        if (empty($category = $categories[$category_id])) {
+            return $this->responseError404();
         }
-        
+
         return new ViewModel(["title" => $category["title"],]);
     }
 
@@ -568,11 +491,11 @@ class IndexController extends AbstractActionController
             }
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
+
         if (!empty($category_id) and empty($categoryTitle)) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toUrl('/seller/' . $provider_id);
         }
-
         return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'id' => $provider_id, 'category_id' => $category_id, "title" => $providerTitle, 'category_title' => $categoryTitle,]);
     }
 
@@ -582,6 +505,7 @@ class IndexController extends AbstractActionController
         if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+
         $store_id = $this->params()->fromRoute('store_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($store = Store::find(["id" => $store_id]))) {
@@ -593,8 +517,10 @@ class IndexController extends AbstractActionController
         }
         $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';
         $storeTitle = $provider->getTitle();
+
         $categories = $this->getStoreCategories($store_id);
         $breadCrumbs[] = [null, $storeTitle];
+
         foreach ($categories as $category) {
             if ($category->getId() == $category_id) {
                 $categoryTitle = $category->getTitle();
@@ -615,6 +541,7 @@ class IndexController extends AbstractActionController
         if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+
         $storeProducts = StockBalance::findAll(["where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
         $products = ArrayHelper::extractId($storeProducts);
         $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
@@ -652,7 +579,8 @@ class IndexController extends AbstractActionController
     public function userAction()
     {
         $container = new Container();
-        if($container->signedUp != true) {
+
+        if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
 
@@ -666,6 +594,7 @@ class IndexController extends AbstractActionController
         if (empty($phone)) {
             return $this->unauthorizedLocation();
         }
+
         $userPhone = StringHelper::phoneFromNum($phone);
         $title = ($user->getName()) ? $user->getName() : "Войти на сайт";
 
@@ -690,6 +619,7 @@ class IndexController extends AbstractActionController
     {
         $this->getResponse()->setStatusCode(403);
         $vm = new ViewModel();
+
         return $vm->setTemplate('error/403.phtml');
     }
 
@@ -698,6 +628,7 @@ class IndexController extends AbstractActionController
         $userId = $this->identity();
         //ProductHistory::remove(['user_id' => $userId, 'product_id' => $productId]);
         $historyItem = ProductHistory::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
+
         $historyItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
     }
 
@@ -716,6 +647,7 @@ class IndexController extends AbstractActionController
     {
         $response = new Response();
         $response->setStatusCode(Response::STATUS_CODE_404);
+
         //$this->layout('error/404');
         $view = new ViewModel();
 

@@ -113,7 +113,7 @@ class AuthManager
      * whenther the current visitor is allowed to access the given controller action
      * or not. It returns true if allowed; otherwise false.
      */
-    public function filterAccess($controllerName, $actionName, $matchedRouteName = '')
+    public function filterAccess($controllerName, $actionName, $routeUrl = '' /*  $matchedRouteName = '' */)
     {
         if (!$this->authService->hasIdentity()) {
             // Only authenticated user is allowed go further.
@@ -137,7 +137,7 @@ class AuthManager
                 $actionList = $item['actions'];
                 $urlList = $item['urls'];
                 $allow = $item['allow'];
-                if (is_array($actionList) && in_array($actionName, $actionList) || is_array($urlList) && in_array($matchedRouteName, $urlList) ||
+                if (is_array($actionList) && in_array($actionName, $actionList) || is_array($urlList) && in_array($routeUrl /* $matchedRouteName */, $urlList) ||
                         $actionList == '*') {
                     if ($allow == '*') {
                         // Anyone is allowed to see the page.
