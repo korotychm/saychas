@@ -531,6 +531,8 @@ $(function () {
 
     calculateBasketMerge($("#user-basket-form").serialize(), true);
 
+    setAllCustomSelects();
+
     $("body").on("click", "#sendbasketbutton", function () {
         checkBasketDataBeforeSend();
     });
