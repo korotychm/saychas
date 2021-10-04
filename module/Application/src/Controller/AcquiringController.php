@@ -203,7 +203,7 @@ class AcquiringController extends AbstractActionController
     public function tinkoffOrderBillAction()
     {
         //$post[] = $this->getRequest()->getPost()->toArray();
-        $Amount = 0;
+        $amount = 0;
         $json = file_get_contents('php://input');
         $post["post1C"] = Json::decode($json, Json::TYPE_ARRAY);
 
@@ -222,13 +222,13 @@ class AcquiringController extends AbstractActionController
 
         foreach ($post["post1C"]["products"] as $item) {
             $item["Tax"] = ($item["Tax"] == null ) ? "none" : "vat" . $item["Tax"];
-            $Amount += $item["Amount"] = $item["Price"] * $item["Quantity"];
+            $amount += $item["Amount"] = $item["Price"] * $item["Quantity"];
 
             $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
         }
         $post["requestTinkoff"]["Receipt"]["Items"][] = $this->addDeliveryItem($post["post1C"]["amount_delevery"]);
-        $Amount += $post["post1C"]["amount_delevery"];
-        $post["requestTinkoff"]["Amount"] = $Amount;
+        $amount += $post["post1C"]["amount_delevery"];
+        $post["requestTinkoff"]["Amount"] = $amount;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         $post["requestTinkoff"]['SuccessURL'] = "https://saychas.ru/user/order/" . $orderId;
         $post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/order/" . $orderId;
