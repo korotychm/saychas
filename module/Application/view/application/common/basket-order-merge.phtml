@@ -24,7 +24,7 @@ if ($countStors < 2) {
                       <?php foreach ($select1hour as $option): ?>
                       <label class="custom-select__option">
                         <div>
-                          <?=$selectedtimepoint[0][$option['value']]?>
+                          <?print_r($selectedtimepoint)?>
                         </div>
                         <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" type="radio" <?php if ($selectedtimepoint[0][$option['value']]=='selected'):?>checked="checked"<?php endif;?> name="timepoint[0]" class="timepoint__option" />
                         <span><?= $option['lable'] ?></span>
