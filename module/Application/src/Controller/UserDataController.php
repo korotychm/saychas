@@ -301,7 +301,7 @@ class UserDataController extends AbstractActionController
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $answer = ['result' => true, 'description' => 'ok'];
-        
+
         return new JsonModel($answer);
     }
 
@@ -460,7 +460,7 @@ class UserDataController extends AbstractActionController
         if (empty($userAutSession['smscode'])) {
             return $this->userModalSendSms($return);
         }
-        
+
         if (!empty($post->userSmsCode) and $userAutSession['smscode'] != $post->userSmsCode) {
             if(!empty($post->userSmsCode)) {
                 $return['error']['sms'] = Resource::ERROR_SEND_SMS_CODE_MESSAGE;
@@ -475,7 +475,7 @@ class UserDataController extends AbstractActionController
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->userIdentity = $user->getId();
-        $this->userModalUpdateGeo($user); 
+        $this->userModalUpdateGeo($user);
         unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
     }
@@ -484,28 +484,28 @@ class UserDataController extends AbstractActionController
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
-       
+
         $return['CodeBlock'] = false;
         $return['UserBlock'] = true;
-        
+
         if ($post->userblok_post != "1") {
             return $this->userModalView($return);
         }
-        
+
         $userAutSession['username'] = null == $post->userName ? '' : $post->userName;
         $userAutSession['usermail'] = null == $post->userName ? '' : $post->userMail;
         $container->userAutSession = $userAutSession;
-        
+
         if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3 ) {
             $return['error']['username'] = Resource::ERROR_SEND_USERNAME_MESSAGE;
             return $this->userModalView($return);
         }
-        
+
         if (!$this->testEmail($userAutSession['usermail'])) {
             $return['error']['usermail'] = Resource::ERROR_SEND_EMAIL_MESSAGE;
             return $this->userModalView($return);
         }
-       
+
         $params = ['name' => $userAutSession['username'], 'phone' => $return['sendingPhone'], 'email' => $userAutSession['usermail'],];
         $response = $this->externalCommunicationService->setClientInfo($params);
         $answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
@@ -513,26 +513,26 @@ class UserDataController extends AbstractActionController
             $return["error"]["1c"] = $answer['errorDescription'];
             return $this->userModalView($return);
         }
-        
+
         $userId = $container->userIdentity;
         $newUser = $this->userRepository->findFirstOrDefault(["id" => $userId]);
         $newUser->setId($userId)->setName($userAutSession['username'])->setEmail($userAutSession['usermail'])->setUserId($answer['id'])->setPhone($return['sendingPhone']);
         $newUser->persist(['id' => $userId]);
-        $this->userModalUpdateGeo($user); 
-        
+        $this->userModalUpdateGeo($user);
+
         unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
     }
-    
+
     private function userModalUpdateGeo ($user)
     {
         $userdata = $user->getUserData();
-        $userGeodata = ($userdata->count() > 0 ) ? $userdata->current()->getGeodata() : null; 
+        $userGeodata = ($userdata->count() > 0 ) ? $userdata->current()->getGeodata() : null;
         if (!empty($userGeodata)) {
             $this->commonHelperFuncions->updateLegalStores($userGeodata);
         }
     }
-    
+
     private function userModalSendSms($return)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);

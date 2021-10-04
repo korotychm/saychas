@@ -508,8 +508,10 @@ class IndexController extends AbstractActionController
             return $this->responseError404();
         }
         $categories = Json::decode($params->getValue(), Json::TYPE_ARRAY);
-        $category = $categories[$category_id];
-
+        if  (empty($category = $categories[$category_id])) {
+             return $this->responseError404();
+        }
+        
         return new ViewModel(["title" => $category["title"],]);
     }
 

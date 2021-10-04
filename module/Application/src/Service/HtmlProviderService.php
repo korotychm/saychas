@@ -414,8 +414,8 @@ class HtmlProviderService {
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
-        $return["basketpricetotalall"] = $return["total"] = $total;
-        $return["count"] = $j;
+        $return["basketpricetotalall"] = $return["producttotal"] = $total;
+        $return["productcount"] = $j;
         $return["timeDelevery"] = $timeDelevery;
         $return["countSelfdelevery"] = $countSelfdelevery;
         $return["priceDelevery"] = $priceDelevery;
@@ -424,6 +424,11 @@ class HtmlProviderService {
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress;
         return $return;
+        
+//         'productcount' => $row['count'],
+//            'producttotal' => $row['total'],
+        
+        
     }
 
     public function basketMergeData($post, $param) {
