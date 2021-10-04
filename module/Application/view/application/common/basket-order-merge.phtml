@@ -22,12 +22,12 @@ if ($countStors < 2) {
                   <div class="custom-select__dropdown">
                     <div class="custom-select__dropdown-inner">
                       <div>
-                        <?php print_r($selectedtimepoint)?>
+                        <?php echo $selectedtimepoint?>
                       </div>
                       <?php foreach ($select1hour as $option): ?>
                       <label class="custom-select__option">
-                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" type="radio" name="timepoint[0]" class="timepoint__option" />
-                        <span><?= $option['lable'] ?></span>
+                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?php if ($selectedtimepoint[0][$option['value']]=='selected'):?> checked <?php endif;?>type="radio" name="timepoint[0]" class="timepoint__option" />
+                        <span><?=$selectedtimepoint[0][$option['value']]?> <?= $option['lable'] ?></span>
                       </label>
                       <?php endforeach; ?>
                     </div>
