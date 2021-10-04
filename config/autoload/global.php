@@ -20,7 +20,6 @@ use Laminas\Session\Storage\SessionArrayStorage;
 //use Laminas\Session\Validator\HttpUserAgent;
 //use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 //use Laminas\Session;
-
 return [
     'service_manager' => [
         'abstract_factories' => [
@@ -28,6 +27,12 @@ return [
         ],
         'factories' => [
             Adapter\AdapterInterface::class => Adapter\AdapterServiceFactory::class,
+            // Configures the default SessionManager instance
+            //'Laminas\Session\ManagerInterface'
+            \Laminas\Session\ManagerInterface::class => \Laminas\Session\Service\SessionManagerFactory::class,// 'Laminas\Session\Service\SessionManagerFactory',
+            // Provides session configuration to SessionManagerFactory
+            //'Laminas\Session\Config\ConfigInterface'
+            \Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,// 'Laminas\Session\Service\SessionConfigFactory',
         ],
         'aliases' => [
             Adapter\Adapter::class => Adapter\AdapterInterface::class
