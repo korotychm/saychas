@@ -670,16 +670,16 @@ return [
                     ],
                 ],
             ],
-//            'my-login' => [
-//                'type'    => Literal::class,
-//                'options' => [
-//                    'route'    => '/my-login',
-//                    'defaults' => [
-//                        'controller' => Controller\IndexController::class,
-//                        'action'     => 'myLogin',
-//                    ],
-//                ],
-//            ],
+            'my-login' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/my-login',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'myLogin',
+                    ],
+                ],
+            ],
 //            'signup' => [
 //                'type'    => Literal::class,
 //                'options' => [
