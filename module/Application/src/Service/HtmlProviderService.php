@@ -492,11 +492,11 @@ class HtmlProviderService {
                 }
             }
             //$return["count"] = min($timeClose);
-            $return["count"] = count($timeClose) - $countSelfdelevery;
+            $return["countStors"] = count($timeClose) - $countSelfdelevery;
             $return["select1hour"] = $timeDelevery1Hour;
             $return["select3hour"] = $timeDelevery3Hour;
-            $return["hourPrice"] = $return["count"] * $param["hourPrice"];
-            $return["hour3Price"] = $return["count"] * $param['mergePrice'] + ceil($return["count"] / $param['mergecount']) * $param['mergePriceFirst'];
+            $return["hourPrice"] = $return["countStors"] * $param["hourPrice"];
+            $return["hour3Price"] = $return["countStors"] * $param['mergePrice'] + ceil($return["countStors"] / $param['mergecount']) * $param['mergePriceFirst'];
         }
         return $return;
     }
