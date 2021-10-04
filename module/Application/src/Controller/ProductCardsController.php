@@ -447,9 +447,8 @@ class ProductCardsController extends AbstractActionController {
      */
     private function getProducts($params) {
         $products = $this->handBookRelatedProductRepository->findAll($params);
-        $filteredProducts = $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
-
-        return $filteredProducts;
+        
+        return $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
     }
 
 }

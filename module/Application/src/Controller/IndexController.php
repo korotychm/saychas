@@ -266,10 +266,7 @@ class IndexController extends AbstractActionController
         //$userData = $user->getUserData();
         $userPhone = $user->getPhone();
         if (!$userPhone) {
-            $this->getResponse()->setStatusCode(403);
-            $vw = new ViewModel();
-            $vw->setTemplate('error/403.phtml');
-            return $vw;
+             return $this->unauthorizedLocation();
         }
 
         return new ViewModel([
