@@ -120,9 +120,12 @@ class StockBalanceManager extends ListManager implements LoadableInterface
     {
         $collection = $this->db->{$this->collectionName};
         foreach($stockBalance['data'] as $balance) {
-            $collection->deleteMany([
-                'store_id' => $balance['store_id'],
-            ]);
+            foreach($balance['products'] as $product) {
+                $collection->deleteMany([
+                    'store_id' => $balance['store_id'],
+                    'product_id' => $product['product_id'],
+                ]);
+            }
             $updateResult = $collection->insertOne($balance);
         }
         return $updateResult;

@@ -137,7 +137,7 @@ class ListController extends AbstractControlPanelActionController
             $where = array_merge($where, ['store_id' => $post['filters']['store_id']]);
             //unset($where['provider_id']);
             
-            $manager->deleteMany('stock_balance', $where);
+            //$manager->deleteMany('stock_balance', $where);
         }
         $answer['http_code'] = '200';
         if (true /* != $useCache */) {
