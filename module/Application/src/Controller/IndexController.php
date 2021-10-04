@@ -162,13 +162,6 @@ class IndexController extends AbstractActionController
 
         // Return the response
         $this->layout()->setVariables([
-            //'headerText' => $this->htmlProvider->testHtml(),
-            //'footerText' => 'banzaii',
-            //'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
-
-            //'categoryTree' => $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', '')),
-          //  'userAddressHtml' => $userAddressHtml,
-
             'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
             //'categoryTree' => $this->categoryRepository->categoryTree("",0,0),
             //'userAddressHtml' => $userAddressHtml,
@@ -184,6 +177,11 @@ class IndexController extends AbstractActionController
             'basketProductsCount' => $this->commonHelperFuncions->basketProductsCount($userId),
         ]);
         return $response;
+    }
+
+    public function indexAction()
+    {
+        return new ViewModel([]);
     }
 
     public function myLoginAction()
@@ -302,105 +300,6 @@ class IndexController extends AbstractActionController
         
     }    
         
-    
-    
-    
-    
-
-    public function indexAction()
-    {
-//        $container = new Container();
-//        if($container->signedUp != true) {
-//            return $this->redirect()->toUrl('/my-login');
-//        }
-
-//        $userPaycard = new UserPaycard();
-//        $userPaycard->setUserId('000001');
-//        $userPaycard->setCardId('000000001');
-//        $userPaycard->setPan('pan-hujpan');
-//        $userPaycard->setTime(time());
-//        $userPaycard->persist(['card_id'=>'000000001']);
-//
-//        $up = UserPaycard::find(['card_id' => '000000001']);
-//
-//        print_r($up);
-
-
-//        $container = new Container();
-//        print_r($container->banzaii);
-//        exit;
-//        if(true) {
-//            $this->redirect()->toUrl('/login');
-//        }
-
-//        $product = $this->handBookRelatedProductRepository->find(['id' => '000000000001']);
-//        $provider = $product->getProvider();
-//        $stores = $provider->getStoreArray();
-        //$s = $provider->storesToArray();
-
-//        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
-//        echo '<pre>';
-//        print_r($tree);
-//        echo '</pre>';
-//        exit;
-//        $user = User::findFirstOrDefault(['id' => 497]);
-//        $userData = new UserData();
-//        $userData->setUserId($user->getId());
-//        $userData->setAddress('address5555');
-////        $userData->setFiasLevel(8);
-////        $userData->setFiasId('asdfasdf');
-//        $userData->setGeodata('{"data":{"fias_id": "22222222", "fias_level": "8"}}');
-//        $userData->setTime(time());
-//        $user->setUserData([$userData]);
-//        $user->persist(['id' => $user->getId()]);
-//        $delivery = new Delivery();
-//        $delivery->setId(null);
-//        $delivery->setDeliveryId('0000002');
-//        $delivery->setOrderId('0000111');
-//        $delivery->setDateCreated(time());
-//        $delivery->persist(['id' => $delivery->getId()]);
-        // $clientOrder = new ClientOrder();
-//        $clientOrder = ClientOrder::findFirstOrDefault(['id' => null]);
-//        $clientOrder->setId(null);
-//        $clientOrder->setOrderId('00000000003');
-//        $clientOrder->setDateCreated(time());
-////        $date = (new \DateTime("now"))->format('Y-m-d h:i:s');
-////        $clientOrder->setTimestamp($date);
-//
-//        $clientOrder->persist(['id' => $clientOrder->getId()]);
-//        $validator = new \Laminas\Validator\EmailAddress();
-//
-//        $email = 'alex.kraskov@gmail.com';
-//
-//        if ($validator->isValid($email)) {
-//            // email appears to be valid
-//            print_r('ok');
-//            exit;
-//        } else {
-//            // email is invalid; print the reasons
-//            foreach ($validator->getMessages() as $message) {
-//                echo "$message\n";
-//            }
-//            exit;
-//        }
-//        $validator = new \Laminas\Validator\Regex(['pattern' => '/^Test/']);
-//
-//        $validator->isValid("Test"); // returns true
-//        $validator->isValid("Testing"); // returns true
-//        $validator->isValid("Pest"); // returns false
-        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
-//        $container = new Container(Resource::SESSION_NAMESPACE);
-//        if(isset($container->item)) {
-//            print_r($container->item);
-//        }else{
-//            print_r('null');
-//        }
-//        exit;
-        return new ViewModel([
-                //'fooItem' => 'banzaii', //  $container->item
-        ]);
-    }
-
     public function basketAction()
     {
         $userId = $this->identity();
@@ -425,78 +324,10 @@ class IndexController extends AbstractActionController
         $content["register_text"] = Resource::MESSAGE_ENTER_OR_REGISTER_TEXT;
         
          return new ViewModel($content);
-        //$content["basketUser"] = $basketUser;
-//        
-//        return new ViewModel([
-//            /* "providers" => $providers, */
-//            "content" => $content["product"],
-//            "title" => "Корзина",
-//            "titleH" => $content["title"],
-//            "basketUser" => $basketUser,
-//       //     "cardinfo" => $cardInfo,
-//            "countproviders" => $content["countproviders"],
-//            "countprducts" => $content["countproducts"],
-//            "legalUser" => $legalUser,
-//            // "legalAddress" => $legalAddress,
-//            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
-//            "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
-//            "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
-//        ]);
     }
-    
-//    public function basketAction2()
-//    {
-//        $basketUser['id'] = $userId = $this->identity();
-//        $user = $this->userRepository->find(['id' => $userId]);
-//        $basketUser['userId'] = $user->getUserId();
-//        $basketUser['phone'] = $user->getPhone();
-//        $basketUser['phoneformated'] = StringHelper::phoneFromNum($basketUser['phone']);
-//        $basketUser['name'] = $user->getName();
-//
-//        $userData = $user->getUserData();
-//        //$count = $userData->count();
-//        if (!empty($userData) and $userData->count()) {
-//            $basketUser['address'] = $userData->current()->getAddress();
-//            $basketUser['geodata'] = $userData->current()->getGeoData();
-//        }
-//        if (!$basketUser['phone'] or!$basketUser['name']) {
-//            $legalUser = false;
-//        } else {
-//            $legalUser = true;
-//        }
-//        $where = new Where();
-//        $where->equalTo('user_id', $userId);
-//        $where->equalTo('order_id', 0);
-//        $columns = ['product_id', 'order_id', 'total', 'price'];
-//        $basket = $this->basketRepository->findAll(['where' => $where, 'columns' => $columns]);
-//
-//        $content = $this->htmlProvider->basketData($basket, $userId);
-//       
-//        
-//        return new ViewModel([
-//            /* "providers" => $providers, */
-//            "content" => $content["product"],
-//            "title" => "Корзина",
-//            "titleH" => $content["title"],
-//            "basketUser" => $basketUser,
-//       //     "cardinfo" => $cardInfo,
-//            "countproviders" => $content["countproviders"],
-//            "countprducts" => $content["countproducts"],
-//            "legalUser" => $legalUser,
-//            // "legalAddress" => $legalAddress,
-//            'textdefault' => Resource::BASKET_SAYCHAS_do . ", ",
-//            "register_title" => Resource::MESSAGE_ENTER_OR_REGISTER_TITLE,
-//            "register_text" => Resource::MESSAGE_ENTER_OR_REGISTER_TEXT,
-//        ]);
-//    }
 
     public function previewAction()
     {
-//        $container = new Container();
-//        if($container->signedUp != true) {
-//            return $this->redirect()->toUrl('/my-login');
-//        }
-
         return new ViewModel([
             'menu' => null,
         ]);
@@ -504,12 +335,7 @@ class IndexController extends AbstractActionController
     
     public function clientFavoritesPageAction()
     {
-//        $container = new Container();
-//        if($container->signedUp != true) {
-//            return $this->redirect()->toUrl('/my-login');
-//        }
-
-       $userId = $this->identity();
+        $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userInfo = $this->commonHelperFuncions->getUserInfo($user);
         if (empty($userInfo["phone"])) {
@@ -769,9 +595,9 @@ class IndexController extends AbstractActionController
     {
             $response = new Response();
             $response->setStatusCode(Response::STATUS_CODE_404);
-            $this->layout('error/404');
+            //$this->layout('error/404');
             $view = new ViewModel();
-            return $view; //->setTemplate('error/404.phtml');
+            return $view->setTemplate('error/404');
         
     }
     
