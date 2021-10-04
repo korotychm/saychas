@@ -261,6 +261,10 @@
   border: 2px solid var(--gray);
   position: relative;
 }
+.cart__radio .custom-select {
+  width: 345px !important;
+  margin-top: 30px !important;
+}
 .cart__radio:first-of-type {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -280,14 +284,14 @@
 .cart__radio p ~ .select {
   margin-top: 30px;
 }
-.cart__radio label {
+.cart__radio > label {
   font-size: 19px;
   display: flex;
   align-items: center;
   cursor: pointer;
   margin-bottom: 20px;
 }
-.cart__radio label .accent {
+.cart__radio > label .accent {
   padding: 5px 12px;
   background: var(--red);
   color: #fff;

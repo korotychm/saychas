@@ -28,7 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                                 'register_text' => $this->register_text,
                     ])
                     ?>
-                    <div id='basketordermerge'>
+                    <div id='basketordermerge' style="position: relative; z-index: 3;">
                       <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
                     </div>
                     <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
@@ -39,7 +39,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                       <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
                       <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
                       <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
-                      
+
                     </div>
                 </div>
                 <div class="cart__right">
