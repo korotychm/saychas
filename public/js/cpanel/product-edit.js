@@ -1,7 +1,7 @@
 const ProductEdit = {
   template: `<div class="cp-container product">
                 <div v-if="editable">
-                  <div v-if="product.category_id" class="product__info product__info--top>
+                  <div class="product__info product__info--top">
                     <div class="product__attribute">
                         <h2>Код товара</h2>
                         <p>{{ product.id }}</p>
