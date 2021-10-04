@@ -175,6 +175,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function indexAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         return new ViewModel([]);
     }
 
@@ -183,18 +187,18 @@ class IndexController extends AbstractActionController {
         return new ViewModel([]);
     }
 
-//    public function signupAction()
-//    {
-//        $post = $this->getRequest()->getPost()->toArray();
-//        $container = new Container();
-//        $password = $post['password'];
-//        if('123451' == $password) {
-//            $container->signedUp = true;
-//            return $this->redirect()->toUrl('/');
-//        }
-//        $container->signedUp = false;
-//        return $this->redirect()->toUrl('/my-login');
-//    }
+    public function signupAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $container = new Container();
+        $password = $post['password'];
+        if('123451' == $password) {
+            $container->signedUp = true;
+            return $this->redirect()->toUrl('/');
+        }
+        $container->signedUp = false;
+        return $this->redirect()->toUrl('/my-login');
+    }
 //    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
 //    {
 //        $flags = [];
@@ -250,6 +254,10 @@ class IndexController extends AbstractActionController {
 //    }
 
     public function clientOrdersAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         //$userData = $user->getUserData();
@@ -266,6 +274,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function clientOrderPageAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userPhone = $user->getPhone();
@@ -287,6 +299,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function basketAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $userId = $this->identity();
         $where = new Where();
         $where->equalTo('user_id', $userId)->equalTo('order_id', 0);
@@ -318,6 +334,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function clientFavoritesPageAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userInfo = $this->commonHelperFuncions->getUserInfo($user);
@@ -331,6 +351,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function productPageAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
@@ -349,6 +373,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function catalogAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $container = new Container();
         if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
@@ -372,6 +400,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function categoryAction($category_id = false) {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         if (empty($category_id)) {
             $category_id = $this->params()->fromRoute('id', '');
         }
@@ -385,6 +417,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function brandProductsAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $brand_id = $this->params()->fromRoute('brand_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($brand = Brand::find(["id" => $brand_id]))) {
@@ -411,6 +447,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function providerProductsAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $provider_id = $this->params()->fromRoute('provider_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($provider = Provider::find(["id" => $provider_id]))) {
@@ -436,6 +476,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function storeProductsAction() {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $store_id = $this->params()->fromRoute('store_id', '');
         $category_id = $this->params()->fromRoute('category_id', '');
         if (empty($store = Store::find(["id" => $store_id]))) {
@@ -464,6 +508,10 @@ class IndexController extends AbstractActionController {
     }
 
     private function getStoreCategories($store_id) {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $storeProducts = StockBalance::findAll(["where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
         $products = ArrayHelper::extractId($storeProducts);
         $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
@@ -484,6 +532,10 @@ class IndexController extends AbstractActionController {
     }
 
     private function getProviderCategories($provider_id) {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
         $brandProductsCategories = $this->productRepository->findAll(["where" => ["provider_id" => $provider_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
         foreach ($brandProductsCategories as $category) {
             $categoriesArray[] = $category->getCategoryId();
@@ -493,10 +545,10 @@ class IndexController extends AbstractActionController {
     }
 
     public function userAction() {
-//        $container = new Container();
-//        if($container->signedUp != true) {
-//            return $this->redirect()->toUrl('/my-login');
-//        }
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
 
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);

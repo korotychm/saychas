@@ -680,16 +680,16 @@ return [
                     ],
                 ],
             ],
-//            'signup' => [
-//                'type'    => Literal::class,
-//                'options' => [
-//                    'route'    => '/signup',
-//                    'defaults' => [
-//                        'controller' => Controller\IndexController::class,
-//                        'action'     => 'signup',
-//                    ],
-//                ],
-//            ],
+            'signup' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/signup',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'signup',
+                    ],
+                ],
+            ],
 
 //            'test-repos' => [
 //                'type'    => Literal::class,
