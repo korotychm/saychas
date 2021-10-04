@@ -1,6 +1,16 @@
 const ProductEdit = {
   template: `<div class="cp-container product">
                 <div v-if="editable">
+                  <div v-if="product.category_id" class="product__info">
+                    <div class="product__attribute  product__attribute--short">
+                        <h2>Код товара</h2>
+                        <p>{{ product.id }}</p>
+                    </div>
+                    <div class="product__attribute  product__attribute--short">
+                        <h2>Статус</h2>
+                        <p>Товар прошел модерацию и опубликован на сайте</p>
+                    </div>
+                  </div>
                   <div class="product__category">
                       <h2 :class="{'input-error' : (!selectedCategoryName && errors)}">Категория <span class="required">*</span></h2>
                       <div class="search-select">
