@@ -173,15 +173,6 @@ class IndexController extends AbstractActionController
         return $response;
     }
 
-    public function indexAction()
-    {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
-        return new ViewModel([]);
-    }
-
     public function myLoginAction()
     {
         $this->layout()->setTemplate('layout/my-layout');
@@ -193,7 +184,7 @@ class IndexController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $container = new Container();
         $password = $post['password'];
-        if ('123451' == $password) {
+        if('123451' == $password) {
             $container->signedUp = true;
             return $this->redirect()->toUrl('/');
         }
@@ -300,12 +291,107 @@ class IndexController extends AbstractActionController
             //'orders'=> $orderList,
             "orderInfo" => $this->htmlProvider->orderList([$order])[0],
         ]);
+    }    
+
+    public function indexAction()
+    {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+
+//        $userPaycard = new UserPaycard();
+//        $userPaycard->setUserId('000001');
+//        $userPaycard->setCardId('000000001');
+//        $userPaycard->setPan('pan-hujpan');
+//        $userPaycard->setTime(time());
+//        $userPaycard->persist(['card_id'=>'000000001']);
+//
+//        $up = UserPaycard::find(['card_id' => '000000001']);
+//
+//        print_r($up);
+
+
+//        $container = new Container();
+//        print_r($container->banzaii);
+//        exit;
+//        if(true) {
+//            $this->redirect()->toUrl('/login');
+//        }
+
+//        $product = $this->handBookRelatedProductRepository->find(['id' => '000000000001']);
+//        $provider = $product->getProvider();
+//        $stores = $provider->getStoreArray();
+        //$s = $provider->storesToArray();
+
+//        $tree = $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', ''));
+//        echo '<pre>';
+//        print_r($tree);
+//        echo '</pre>';
+//        exit;
+//        $user = User::findFirstOrDefault(['id' => 497]);
+//        $userData = new UserData();
+//        $userData->setUserId($user->getId());
+//        $userData->setAddress('address5555');
+////        $userData->setFiasLevel(8);
+////        $userData->setFiasId('asdfasdf');
+//        $userData->setGeodata('{"data":{"fias_id": "22222222", "fias_level": "8"}}');
+//        $userData->setTime(time());
+//        $user->setUserData([$userData]);
+//        $user->persist(['id' => $user->getId()]);
+//        $delivery = new Delivery();
+//        $delivery->setId(null);
+//        $delivery->setDeliveryId('0000002');
+//        $delivery->setOrderId('0000111');
+//        $delivery->setDateCreated(time());
+//        $delivery->persist(['id' => $delivery->getId()]);
+        // $clientOrder = new ClientOrder();
+//        $clientOrder = ClientOrder::findFirstOrDefault(['id' => null]);
+//        $clientOrder->setId(null);
+//        $clientOrder->setOrderId('00000000003');
+//        $clientOrder->setDateCreated(time());
+////        $date = (new \DateTime("now"))->format('Y-m-d h:i:s');
+////        $clientOrder->setTimestamp($date);
+//
+//        $clientOrder->persist(['id' => $clientOrder->getId()]);
+//        $validator = new \Laminas\Validator\EmailAddress();
+//
+//        $email = 'alex.kraskov@gmail.com';
+//
+//        if ($validator->isValid($email)) {
+//            // email appears to be valid
+//            print_r('ok');
+//            exit;
+//        } else {
+//            // email is invalid; print the reasons
+//            foreach ($validator->getMessages() as $message) {
+//                echo "$message\n";
+//            }
+//            exit;
+//        }
+//        $validator = new \Laminas\Validator\Regex(['pattern' => '/^Test/']);
+//
+//        $validator->isValid("Test"); // returns true
+//        $validator->isValid("Testing"); // returns true
+//        $validator->isValid("Pest"); // returns false
+        //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
+//        $container = new Container(Resource::SESSION_NAMESPACE);
+//        if(isset($container->item)) {
+//            print_r($container->item);
+//        }else{
+//            print_r('null');
+//        }
+//        exit;
+        return new ViewModel([
+                //'fooItem' => 'banzaii', //  $container->item
+        ]);
+
     }
 
     public function basketAction()
     {
         $container = new Container();
-        if ($container->signedUp != true) {
+        if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
         $userId = $this->identity();
@@ -334,6 +420,11 @@ class IndexController extends AbstractActionController
 
     public function previewAction()
     {
+        $container = new Container();
+        if($container->signedUp != true) {
+            return $this->redirect()->toUrl('/my-login');
+        }
+
         return new ViewModel([
             'menu' => null,
         ]);
@@ -342,10 +433,12 @@ class IndexController extends AbstractActionController
     public function clientFavoritesPageAction()
     {
         $container = new Container();
-        if ($container->signedUp != true) {
+        if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
+
         $userId = $this->identity();
+
         $user = User::find(['id' => $userId]);
         $userInfo = $this->commonHelperFuncions->getUserInfo($user);
         if (empty($userInfo["phone"])) {
@@ -360,7 +453,7 @@ class IndexController extends AbstractActionController
     public function productPageAction()
     {
         $container = new Container();
-        if ($container->signedUp != true) {
+        if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
         $userId = $this->identity();
@@ -383,7 +476,7 @@ class IndexController extends AbstractActionController
     public function catalogAction()
     {
         $container = new Container();
-        if ($container->signedUp != true) {
+        if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
         $category_id = $this->params()->fromRoute('id', '');
@@ -557,7 +650,7 @@ class IndexController extends AbstractActionController
     public function userAction()
     {
         $container = new Container();
-        if ($container->signedUp != true) {
+        if($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
         }
 
