@@ -15,13 +15,21 @@ if ($countStors < 2) {
           </b> &mdash;&nbsp;<?= number_format($hourPrice / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
         </label>
         <div class="cart__radio-content">
-              <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>. <br>Крайнее время доставки - <?= date("r", $timeClose - 3600) ?>.</p>
+              <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>.</p>
               <?php if ($select1hour && !empty($select1hour)) : ?>
-                <select class="select" name="timepoint[0]" id="timepoint-dostmerge1" rel="timepointtext1">
-                  <?php foreach ($select1hour as $option) : ?>
-                      <option value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?= $selectedtimepoint[0][$option['value']] ?> ><?= $option['lable'] ?></option>
-                  <?php endforeach; ?>
-                </select>
+                <div class="custom-select custom-select--radio">
+                  <div class="custom-select__label input"></div>
+                  <div class="custom-select__dropdown">
+                    <div class="custom-select__dropdown-inner">
+                      <?php foreach ($select1hour as $option): ?>
+                      <label class="custom-select__option">
+                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" type="radio" <?php if ($selectedtimepoint[0[$option['value']]=='selected'):?>checked="checked"<?phpendif;?> name="timepoint[0]" class="timepoint__option" />
+                        <span><?= $option['lable'] ?></span>
+                      </label>
+                      <?php endforeach; ?>
+                    </div>
+                  </div>
+                </div>
               <?php else: ?>
                 <div class="timepoint">Нет доставки</div>
               <?php endif;?>
@@ -35,13 +43,21 @@ if ($countStors < 2) {
             <span><b>Объединить заказы за 3 часа</b> &mdash;&nbsp;<?= number_format($hour3Price / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
           </label>
             <div class="cart__radio-content">
-                <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше).<br>Крайнее время доставки - <?= date("r", $timeClose - 3600 * 3) ?>.</p>
+                <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше).</p>
                 <?php if ($select3hour && !empty($select3hour)): ?>
-                  <select class="select" name="timepoint[1]" id="timepoint-dostmerge3" rel="timepointtext3">
-                    <?php foreach ($select3hour as $option3): ?>
-                      <option value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" <?= $selectedtimepoint[1][$option3['value']] ?>><?= $option3['lable'] ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                  <div class="custom-select custom-select--radio">
+                    <div class="custom-select__label input"></div>
+                    <div class="custom-select__dropdown">
+                      <div class="custom-select__dropdown-inner">
+                        <?php foreach ($select3hour as $option3): ?>
+                        <label class="custom-select__option">
+                          <input value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" type="radio" <?php if ($selectedtimepoint[1][$option3['value']]=='selected'):?>checked="checked"<?phpendif;?> name="timepoint[1]" class="timepoint__option" />
+                          <span><?= $option3['lable'] ?></span>
+                        </label>
+                        <?php endforeach; ?>
+                      </div>
+                    </div>
+                  </div>
                 <?php else: ?>
                   <div class="timepoint">Нет доставки</div>
                 <?php endif;?>

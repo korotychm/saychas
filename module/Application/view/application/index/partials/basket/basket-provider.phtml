@@ -56,7 +56,7 @@ if ($param and count($param)):
           <a class="cart__store-link-plus" href="/store/<?=$provider['provider_store_id']?>"></a>
           <a href="/store/<?=$provider['provider_store_id']?>">Добавить еще товаров<span>из этого магазина бесплатно</span></a>
         </div>
-        <div class="cart__store-self-delivery">
+        <div class="cart__store-self-delivery" style="display: none;">
             <div>Заберу из магазина самостоятельно (-299 ₽)
               <label class="boolean">
                 <input type="checkbox" data-provider='<?=$provider['provider_id']?>' id='selfdeleverycheckbox-<?=$provider['provider_id']?>' value='<?=$provider['provider_store_id']?>' name='selfdelevery[]' />

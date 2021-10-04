@@ -1,6 +1,6 @@
 <?php use Application\Resource\Resource; ?>
 <div class="cart-payment">
-    <h2 class="h2">Оплата</h2>
+    <h2 class="h2">Способ оплаты</h2>
     <div class="cart__radio-group">
         <?php if(!empty($cardinfo)) :?>
           <input type="radio" name='paycard' <?=(empty($paycard) or $paycard != "0" )?"checked":""?> id="payment1" value="1" />
