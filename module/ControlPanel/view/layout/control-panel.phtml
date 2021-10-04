@@ -154,7 +154,7 @@
         </main>
       </div>
       <?php $doc_confirmed = $currentUser->getOffer(); ?>
-      <?php if ($doc_confirmed): ?>
+      <?php if (!$doc_confirmed): ?>
       <div class="popup popup--doc">
         <div class="popup__inner">
           <div class="popup__content">
