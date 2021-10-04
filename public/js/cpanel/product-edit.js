@@ -1,14 +1,16 @@
 const ProductEdit = {
   template: `<div class="cp-container product">
                 <div v-if="editable">
-                  <div v-if="product.category_id" class="product__info">
-                    <div class="product__attribute  product__attribute--short">
+                  <div v-if="product.category_id" class="product__info product__info--top>
+                    <div class="product__attribute">
                         <h2>Код товара</h2>
                         <p>{{ product.id }}</p>
                     </div>
-                    <div class="product__attribute  product__attribute--short">
+                    <div class="product__attribute">
                         <h2>Статус</h2>
-                        <p>Товар прошел модерацию и опубликован на сайте</p>
+                        <p v-if="product.moderated">Товар прошел модерацию и опубликован на сайте.</p>
+                        <p v-if="!product.moderated && product.processed">Товар не прошел модерацию. Измените товар и сохраните снова.</p>
+                        <p v-if="!product.moderated && !product.processed">Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
                     </div>
                   </div>
                   <div class="product__category">
@@ -295,7 +297,7 @@ const ProductEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary" @click="saveProduct(false)">Сохранить изменения</button>
+                      <button class="btn btn--primary" :class="{disabled: (!product.moderated && !product.processed)}" @click="saveProduct(false)">Сохранить и отправить на модерацию</button>
                     </div>
                   </div>
                 </div>
