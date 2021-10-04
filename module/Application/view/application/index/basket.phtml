@@ -29,7 +29,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                     ])
                     ?>
                     <div id='basketordermerge'>
-                      <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault]) ?>
+                      <?= $this->partial("/application/common/basket-order-merge", ["countStors" => $this->countproviders, "timepointtext1" => $this->textdefault, 'timepoint' => $this->timepoint ]) ?>
                     </div>
                     <?= $this->partial("/application/index/partials/basket/basket-self-delevery", ["param" => $this->content]) ?>
                     <div id='baskepaycardinfo'>

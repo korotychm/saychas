@@ -5,6 +5,7 @@ if ($countStors < 2) {
 ?>
 
 <?php if ($countStors) :?>
+<?=print_r($timepoint) ?>
 
   <div class="cart__radio-group">
       <input name='ordermerge' value="0" type="radio" <?= (!$ordermerge) ? 'checked' : '' ?> id="delivery1" />

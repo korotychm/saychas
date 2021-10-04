@@ -143,12 +143,9 @@ class AcquiringController extends AbstractActionController
     /*
      * @return JsonModel
      */
-
     public function tinkoffPaymentAction()
     {
         //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
-
-
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $orderId = $this->params()->fromRoute('order', '');
@@ -248,6 +245,7 @@ class AcquiringController extends AbstractActionController
         $response->setStatusCode(Response::STATUS_CODE_200);
         //$post["answerTinkoff"][]
         $answer = ['result' => true, 'description' => 'ok'];
+
         return new JsonModel($answer);
     }
 
@@ -296,7 +294,6 @@ class AcquiringController extends AbstractActionController
      * get post json
      * @return response
      */
-
     public function tinkoffCallbackAction()
     {
         $jsonData = file_get_contents('php://input');

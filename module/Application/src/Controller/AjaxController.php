@@ -508,8 +508,9 @@ class AjaxController extends AbstractActionController {
         $post = $this->getRequest()->getPost();
         $timepoint = $post->timepoint;
         $selectedtimepoint = [];
-        $selectedtimepoint[0][$timepoint[0]] = " selected ";
-        $selectedtimepoint[1][$timepoint[1]] = " selected ";
+        $selectedtimepoint[0][$timepoint[0]] = " checked ";
+        $selectedtimepoint[1][$timepoint[1]] = " checked ";
+        
         $return = $this->htmlProvider->basketMergeData($post, $param);
         $view = new ViewModel([
             'ordermerge' => $post->ordermerge,
@@ -520,6 +521,7 @@ class AjaxController extends AbstractActionController {
             'select1hour' => $return["select1hour"],
             'select3hour' => $return["select3hour"],
             'selectedtimepoint' => $selectedtimepoint,
+            'timepoint' => $timepoint,
             'timepointtext1' => $post->timepointtext1,
             'timepointtext3' => $post->timepointtext3,
             'printr' => "<pre>" . print_r($post, true) . "</pre>",

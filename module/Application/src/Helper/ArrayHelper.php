@@ -45,8 +45,8 @@ class ArrayHelper
         if ($elements[$parentId]) {
             foreach ($elements[$parentId] as $element) {
                 //exit (print_r($element['id']));
-                $isHasProduct = self::isHasProduct($elements, $element['id'], $categoriesHasProduct);
-                if (!empty($categoriesHasProduct[$element['id']]) or $isHasProduct) {
+                $LegalTree = self::LegalTree($elements, $element['id'], $categoriesHasProduct);
+                if (!empty($categoriesHasProduct[$element['id']]) or $LegalTree) {
                     $children = self::filterTree($elements, $element['id'], $categoriesHasProduct);
                     $element['children'] = $children;
                     $return[] = $element;
@@ -56,7 +56,7 @@ class ArrayHelper
         return $return;
     }
 
-    private function isHasProduct(array $elements, $parentId, array $categoriesHasProduct, $return = false)
+    private function LegalTree(array $elements, $parentId, array $categoriesHasProduct, $return = false)
     {
 //        if ($return) {
 //            return true;
@@ -66,7 +66,7 @@ class ArrayHelper
                 if (!empty($categoriesHasProduct[$element['id']])) {
                    return true;
                 }
-            $return = self::isHasProduct($elements, $element['id'], $categoriesHasProduct, $return);
+            $return = self::LegalTree($elements, $element['id'], $categoriesHasProduct, $return);
             }
         }
         return $return;
