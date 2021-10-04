@@ -21,12 +21,12 @@ if ($countStors < 2) {
                   <div class="custom-select__label input">Выберите время доставки</div>
                   <div class="custom-select__dropdown">
                     <div class="custom-select__dropdown-inner">
+                      <div>
+                        <?print_r($selectedtimepoint)?>
+                      </div>
                       <?php foreach ($select1hour as $option): ?>
                       <label class="custom-select__option">
-                        <div>
-                          <?print_r($selectedtimepoint)?>
-                        </div>
-                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" type="radio" <?php if ($selectedtimepoint[0][$option['value']]=='selected'):?>checked="checked"<?php endif;?> name="timepoint[0]" class="timepoint__option" />
+                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" type="radio" name="timepoint[0]" class="timepoint__option" />
                         <span><?= $option['lable'] ?></span>
                       </label>
                       <?php endforeach; ?>
@@ -54,7 +54,7 @@ if ($countStors < 2) {
                       <div class="custom-select__dropdown-inner">
                         <?php foreach ($select3hour as $option3): ?>
                         <label class="custom-select__option">
-                          <input value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" type="radio" <?php if ($selectedtimepoint[1][$option3['value']]=='selected'):?>checked="checked"<?php endif;?> name="timepoint[1]" class="timepoint__option" />
+                          <input value="<?= $option3['value'] ?>" name="timepoint[1]" class="timepoint__option" />
                           <span><?= $option3['lable'] ?></span>
                         </label>
                         <?php endforeach; ?>
