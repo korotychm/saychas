@@ -26,7 +26,7 @@ if ($countStors < 2) {
                       </div>
                       <?php foreach ($select1hour as $option): ?>
                       <label class="custom-select__option">
-                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?php if ($selectedtimepoint[0][$option['value']]=='selected'):?> checked <?php endif;?>type="radio" name="timepoint[0]" class="timepoint__option" />
+                        <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?php if (strval($selectedtimepoint[0][$option['value']]=='selected')):?> checked <?php endif;?>type="radio" name="timepoint[0]" class="timepoint__option" />
                         <span><?=$selectedtimepoint[0][$option['value']]?> <?= $option['lable'] ?></span>
                       </label>
                       <?php endforeach; ?>
