@@ -50,9 +50,12 @@
 .product__wishlist {
   padding: 0;
   border: none;
-  color: var(--gray);
+  color: var(--gray2);
   background: none;
   cursor: pointer;
+}
+.product__wishlist.active {
+  color: var(--red);
 }
 .product__reviews {
   display: flex;
