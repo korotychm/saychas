@@ -36,7 +36,6 @@ class StockBalanceManager extends ListManager implements LoadableInterface
      * @var Laminas\Config\Config
      */
     protected $config;
-    
     protected $entityManager;
 
     /**
@@ -64,23 +63,23 @@ class StockBalanceManager extends ListManager implements LoadableInterface
 
     private function findCategories($params)
     {
-        $collection = $this->db->products;//{$this->collectionName};
+        $collection = $this->db->products; //{$this->collectionName};
         $results = $collection->distinct('category_id', $params['where']);
         $accumulator = [];
-        foreach($results as &$c) {
+        foreach ($results as &$c) {
             //$c1 = $c;
-            if(!empty($c)) {
+            if (!empty($c)) {
                 $category = $this->categoryRepo->findCategory(['id' => $c]);
                 $category_name = (null == $category) ? '' : $category->getTitle();
-                $accumulator[] = [$c, $category_name, ];
+                $accumulator[] = [$c, $category_name,];
             }
         }
         return $accumulator;
     }
-    
+
     /**
      * Find store documents for specified provider
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -92,10 +91,10 @@ class StockBalanceManager extends ListManager implements LoadableInterface
             //unset($c['_id']);
             // find product by product_id
             $products = $c['products'];
-            foreach($products as $product) {
+            foreach ($products as $product) {
                 $productId = $product['product_id'];
                 $quantity = $product['quantity'];
-                $arr = (array) $this->db->products->find(['id' => $productId]/*, ['_id' => 0]*/)->toArray();
+                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray();
                 $arr = $arr[0];
                 unset($arr['_id']);
                 $arr['quantity'] = $quantity;
@@ -104,8 +103,8 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         }
         $cursor['body'] = $result;
 //        unset($params['where']['store_id']);
-        $cursor['filters']['categories'] = $this->findCategories($params);        
-        
+        $cursor['filters']['categories'] = $this->findCategories($params);
+
         return $cursor;
     }
 
@@ -115,42 +114,44 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }
-    
-    public function replaceStockBalance1($stockBalance)
-    {
-        $collection = $this->db->{$this->collectionName};
-        $updateResult = null;
-        foreach($stockBalance['data'] as $balance) {
-            //$updateResult = $collection->findOneAndUpdate(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id'], 'products.$.product_id' => $balance['products'][0]['product_id']], ['$set' => [ 'products.$.quantity' => '123' ]], []);
-            $updateResult = $collection->findOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id'], 'products.$.product_id' => $balance['products'][0]['product_id']]);
-        }
-        return $updateResult;
-    }
-    
+
     public function replaceStockBalance($stockBalance)
     {
         $collection = $this->db->{$this->collectionName};
-        // find the stock balance document
-        foreach($stockBalance['data'] as $balance) {
-            $p = $balance['products'][0]; // We take the first one
-            $foundDocument = $collection->findOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']]);//->toArray();
-            if(null != $foundDocument) {
-                foreach($foundDocument['products'] as &$product) {
-                    if($p['product_id'] == $product['product_id']){
-                        $product['quantity'] = $p['quantity'];
-                    }
-                }
-            }
-            $collection->deleteMany([
-                'store_id' => $balance['store_id'],
-                'provider_id' => $balance['provider_id'],
-            ]);
-            $updateResult = $collection->insertOne($foundDocument);
+        $updateResult = null;
+        foreach ($stockBalance['data'] as $balance) {
+            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
+                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
+                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
         }
-        
+
         return $updateResult;
     }
-    
+
+//    public function replaceStockBalance1($stockBalance)
+//    {
+//        $collection = $this->db->{$this->collectionName};
+//        // find the stock balance document
+//        foreach ($stockBalance['data'] as $balance) {
+//            $p = $balance['products'][0]; // We take the first one
+//            $foundDocument = $collection->findOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']]); //->toArray();
+//            if (null != $foundDocument) {
+//                foreach ($foundDocument['products'] as &$product) {
+//                    if ($p['product_id'] == $product['product_id']) {
+//                        $product['quantity'] = $p['quantity'];
+//                    }
+//                }
+//            }
+//            $collection->deleteMany([
+//                'store_id' => $balance['store_id'],
+//                'provider_id' => $balance['provider_id'],
+//            ]);
+//            $updateResult = $collection->insertOne($foundDocument);
+//        }
+//
+//        return $updateResult;
+//    }
+
 //    public function replaceStockBalance($stockBalance)
 //    {
 //        $collection = $this->db->{$this->collectionName};
@@ -172,6 +173,9 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         $deleteResult = $collection->deleteMany($params);
         return $deleteResult;
     }
-    
+
 }
 
+//$updateResult = $collection->findOneAndUpdate(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id'], 'products.$.product_id' => $balance['products'][0]['product_id']], ['$set' => [ 'products.$.quantity' => '123' ]], []);
+            //db.stock_balance.updateOne({store_id: '000000033', provider_id: '00007'}, {$set: {"products.$[element].quantity": '321'}}, {arrayFilters: [{"element.product_id": {$eq: '000000000082'} }]})
+            //$updateResult = $collection->findOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id'], 'products.$.product_id' => $balance['products'][0]['product_id']]);
