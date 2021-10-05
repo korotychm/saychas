@@ -46,35 +46,39 @@
       </div>
     <?php endif;?>
 </div>
-<div class="panel__zip"></div>
-<div class="panel__price">
-    <div class="panel__price-current"><span id="basketpricetotalall"><?=number_format(((int)($basketpricetotalall + $priceDelevery )/100), 0, ',', '&nbsp;')?></span> ₽</div>
-    <?php if($basketoldpricetotalall):?>
-      <div class="panel__price-old"><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span> ₽</div>
-    <?php endif; ?>
-</div>
+<?php if ($producttotal && $producttotal > 0):?>
+  <div class="panel__zip"></div>
+  <div class="panel__price">
+      <div class="panel__price-current"><span id="basketpricetotalall"><?=number_format(((int)($basketpricetotalall + $priceDelevery )/100), 0, ',', '&nbsp;')?></span> ₽</div>
+      <?php if($basketoldpricetotalall):?>
+        <div class="panel__price-old"><span id="basketoldpricetotal"><?=$basketoldpricetotalall ?></span> ₽</div>
+      <?php endif; ?>
+  </div>
+<?php endif; ?>
 <!-- div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
         <div class="question__icon">?</div>
     </div>
 </div -->
 <div class="panel__table">
+    <?php if ($producttotal && $producttotal > 0):?>
     <div class="panel__tr">
         <div>Товары (<span id="basketproductcount"><?=$productcount?></span>)</div>
         <div class="panel__tr-items-total">
             <div><?=number_format(((int)$producttotal/100), 0, ',', '&nbsp;')?> ₽</div>
-            <?php if ($basketoldpricetotal):?>
+            <?php if ($basketoldpricetotal && $basketoldpricetotal > 0):?>
               <div><?=$basketoldpricetotal?> ₽</div>
             <?php endif; ?>
         </div>
     </div>
-    <?php if ($countDelevery) :?>
+    <?php endif; ?>
+    <?php if ($countDelevery && $countDelevery > 0) :?>
       <div class="panel__tr">
           <div> <b><?= Resource::ORDER_DELIVERY_TITLE?> <?=(!$ordermerge) ? Resource::BASKET_SAYCHAS_short : Resource::BASKET_SAYCHAS3_short?> (<?=$countDelevery?>)</b></div>
           <div><?=number_format(($priceDelevery/100),0,",","&nbsp;")?> ₽</div>
       </div>
     <?php endif; ?>
 
-    <?php if ($countSelfdelevery) :?>
+    <?php if ($countSelfdelevery && $countSelfdelevery > 0) :?>
       <div class="panel__tr">
           <div><?= Resource::ORDER_PICKUP_TITLE?>(<?=$countSelfdelevery?>)</div>
           <div><?=($countSelfdelevery * $priceSelfdelevery) ?> ₽</div>
