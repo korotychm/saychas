@@ -226,8 +226,9 @@ const StoreEdit = {
     }
   },
   methods: {
-    testAlert() {
-      alert('kawabanga!');
+    setAddress() {
+      let dadata = JSON.parse($('#dadata').val());
+      this.store.address = dadata.value;
     },
     checkModifiedDate() {
       let localedDate = this.selectedDate.toLocaleString("ru-RU",{
@@ -381,9 +382,6 @@ const StoreEdit = {
               $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
           }
       });
-    },
-    testAlert() {
-      alert(456);
     },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
