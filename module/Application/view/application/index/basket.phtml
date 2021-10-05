@@ -19,6 +19,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
             <div class="cart">
                 <div class="cart__left">
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
+                    <?php if ($producttotal && $producttotal > 0):?>
                     <?=
                     $this->partial("/application/index/partials/basket/basket-user",
                             [
@@ -39,8 +40,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
                       <input type="hidden" name="userId" value="<?= $this->basketUser['userId'] ?>">
                       <input type="hidden" name="userIdentity" value="<?= $this->basketUser['id'] ?>">
                       <textarea class="none" name="userGeoLocation" ><?= $this->basketUser['geodata'] ?></textarea>
-
                     </div>
+                  <?php endif; ?>
                 </div>
                 <div class="cart__right">
                     <?= $this->partial("/application/index/partials/basket/basket-paysection") ?>
