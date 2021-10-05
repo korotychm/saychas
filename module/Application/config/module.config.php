@@ -1349,6 +1349,7 @@ return [
             \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
             \Application\Model\Entity\Setting::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Entity\ProductRating::class => \Application\Model\Factory\ProductRatingRepositoryFactory::class,
+            \Application\Model\Entity\ProductUserRating::class => \Application\Model\Factory\ProductUserRatingRepositoryFactory::class,
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
             \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,

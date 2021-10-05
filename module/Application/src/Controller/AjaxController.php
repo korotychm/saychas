@@ -24,6 +24,7 @@ use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ProductRating;
+use Application\Model\Entity\ProductUserRating;
 use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 //use Application\Model\Repository\CharacteristicRepository;
@@ -125,6 +126,7 @@ class AjaxController extends AbstractActionController {
         $this->entityManager->initRepository(StockBalance::class);
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(ProductRating::class);
+        $this->entityManager->initRepository(ProductUserRating::class);
     }
 
     /**
@@ -700,10 +702,10 @@ class AjaxController extends AbstractActionController {
             $this->getResponse()->setStatusCode(403);
             return;
         }
-        $produtRating = ProductRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
+        $produtRating = ProductUserRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
         $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
 
-        return new JsonModel([$produtRating->getRating(), $userId]);
+        return new JsonModel([$produtRating->getRating(), $userId, $productId ]);
     }
     //    private function prepareCharacteristics(&$characteristics) {
 //        if (!$characteristics) {
