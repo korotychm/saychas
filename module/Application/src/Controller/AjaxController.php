@@ -23,12 +23,13 @@ use Application\Model\RepositoryInterface\BasketRepositoryInterface;
 use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Setting;
+use Application\Model\Entity\ProductRating;
 use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 //use Application\Model\Repository\CharacteristicRepository;
 use Application\Model\RepositoryInterface\PriceRepositoryInterface;
 use Application\Model\RepositoryInterface\StockBalanceRepositoryInterface;
-use Application\Model\Entity\HandbookRelatedProduct;
+//use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductCharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
@@ -123,6 +124,7 @@ class AjaxController extends AbstractActionController {
         $this->entityManager->initRepository(ProductCharacteristic::class);
         $this->entityManager->initRepository(StockBalance::class);
         $this->entityManager->initRepository(Brand::class);
+        $this->entityManager->initRepository(ProductRating::class);
     }
 
     /**
@@ -583,7 +585,7 @@ class AjaxController extends AbstractActionController {
             $cardInfo = $cardUpdate->getPan();
             $cardUpdate->setTime(time())->persist(["user_id" => $userId, "card_id" => $post->cardinfo]);
         }
-        
+        $row['basketUser'] = $basketUser;
         $row['ordermerge'] = $post->ordermerge;
         $row['priceDelevery'] = $param['hourPrice'];
         $row['priceDeleveryMerge'] = $param['mergePrice'];
@@ -684,6 +686,24 @@ class AjaxController extends AbstractActionController {
         $return["legalStore"] = $container->legalStore;
 
         return new JsonModel($return);
+    }
+    
+    public function setProductRatingAction() 
+    {
+//        $productId = $this->getRequest()->getPost()->productId;
+//        $rating =  $this->getRequest()->getPost()->rating;
+        
+        $productId = "000000000036";
+        $rating =  50;
+        
+        if (!$userId = $this->identity()) {
+            $this->getResponse()->setStatusCode(403);
+            return;
+        }
+        $produtRating = ProductRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
+        $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
+
+        return new JsonModel([$produtRating->getRating(), $userId]);
     }
     //    private function prepareCharacteristics(&$characteristics) {
 //        if (!$characteristics) {
