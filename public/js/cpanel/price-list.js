@@ -62,7 +62,7 @@ const PriceList = {
                     <div v-else class="pricelist__price">{{ product.price }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
-                    <div class="pricelist__popup-category">Техника для дома</div>
+                    <div class="pricelist__popup-category">{{ product.category_name }}</div>
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
