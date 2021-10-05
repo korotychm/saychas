@@ -249,7 +249,6 @@ const StoreAdd = {
     setAddress() {
       let dadata = JSON.parse($('#dadata').val());
       this.store.address = dadata.value;
-      console.log(123);
     },
     checkModifiedDate() {
       let localedDate = this.selectedDate.toLocaleString("ru-RU",{
