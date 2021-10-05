@@ -372,13 +372,17 @@ const StoreEdit = {
                   $("#store-address-error").html("Укажите адрес до номера дома!").show();
                   return false;
               }
+              alert(123);
+              this.testAlert();
               var dataString = JSON.stringify(suggestion);
               $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
               $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
               $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
-              $('#store-address').val(suggestion.value)[0].dispatchEvent(new Event('input'));
           }
       });
+    },
+    testAlert() {
+      alert(456);
     },
     getStore() {
       let requestUrl = '/control-panel/edit-store';
