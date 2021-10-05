@@ -32,7 +32,7 @@
     <?php endif;?>
     <?php if($payEnable ):?>
       <div class="panel__delivery-item">
-          <svg 
+          <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           width="18px" height="13px">
@@ -85,5 +85,9 @@
 <?php if(!$payEnable):?>
   <div class="overcoverlocal"></div>
 <?php endif;?>
+<?php if ($legalUser) :?>
   <div class="btn btn--primary" id="sendbasketbutton"><?= Resource::ORDER_PAYMENT_BUTTON ?></div>
-  <div class="panel__notice"><?= Resource::ORDER_AGGREMENT_NOTES ?></div>
+<?php else: ?>
+  <div class="btn btn--primary user-modal-open">Войти или зарегистрироваться</div>
+<?php endif; ?>
+<div class="panel__notice"><?= Resource::ORDER_AGGREMENT_NOTES ?></div>
