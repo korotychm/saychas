@@ -116,7 +116,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         return $result;
     }
     
-    public function replaceStockBalance($stockBalance)
+    public function replaceStockBalance1($stockBalance)
     {
         $collection = $this->db->{$this->collectionName};
         $updateResult = null;
@@ -127,7 +127,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
-    public function replaceStockBalance1($stockBalance)
+    public function replaceStockBalance($stockBalance)
     {
         $collection = $this->db->{$this->collectionName};
         // find the stock balance document
