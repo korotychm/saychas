@@ -249,6 +249,7 @@ const StoreAdd = {
     setAddress() {
       let dadata = JSON.parse($('#dadata').val());
       this.store.address = dadata.value;
+      console.log(123);
     },
     checkModifiedDate() {
       let localedDate = this.selectedDate.toLocaleString("ru-RU",{
@@ -393,7 +394,7 @@ const StoreAdd = {
               $("#store-address-error").hide();
               if (!suggestion.data.house)
               {
-                  $("#store-address-error").html("Необходимо указать адрес до номера дома!").show();
+                  $("#store-address-error").html("Укажите адрес до номера дома!").show();
                   return false;
               }
               var dataString = JSON.stringify(suggestion);
