@@ -16,7 +16,7 @@ use ControlPanel\Model\Entity\User;
 class UserManager
 {
 
-    public const MAX_PASSWORD_LENGTH = 10;
+    public const MAX_PASSWORD_LENGTH = 100;
 
     protected $config;
     protected $curlRequestManager;
