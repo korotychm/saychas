@@ -110,7 +110,7 @@ const PriceList = {
   },
   methods: {
     checkPrice(index) {
-      parseInt(this.products[index].price);
+      this.products[index].price = parseInt(this.products[index].price);
     },
     setRubPrice() {
       for (product of this.products) {
