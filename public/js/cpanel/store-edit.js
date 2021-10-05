@@ -372,7 +372,7 @@ const StoreEdit = {
                   $("#store-address-error").html("Укажите адрес до номера дома!").show();
                   return false;
               }
-              console.log(suggestion);
+              console.log(suggestion.data);
               var dataString = JSON.stringify(suggestion);
               $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
               $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
