@@ -56,7 +56,7 @@ const Products = {
             <div class="td">Наименование</div>
             <div class="td">Категория</div>
             <div class="td">Бренд</div>
-            <div class="td">Статус</td>
+            <div class="td">Статус</div>
           </div>
           <div class="tbody">
               <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
