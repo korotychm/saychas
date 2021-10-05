@@ -508,22 +508,30 @@ class AjaxController extends AbstractActionController {
         $post = $this->getRequest()->getPost();
         $timepoint = $post->timepoint;
         $selectedtimepoint = [];
-        $selectedtimepoint[0][$timepoint[0]] = " selected ";
-        $selectedtimepoint[1][$timepoint[1]] = " selected ";
+        $selectedtimepoint[0][$timepoint[0]] = " checked ";
+        $selectedtimepoint[1][$timepoint[1]] = " checked ";
+        
         $return = $this->htmlProvider->basketMergeData($post, $param);
-        $view = new ViewModel([
-            'ordermerge' => $post->ordermerge,
-            'timeClose' => $return['timeClose'],
-            'countStors' => $return["count"],
-            'hourPrice' => $return["hourPrice"],
-            'hour3Price' => $return["hour3Price"],
-            'select1hour' => $return["select1hour"],
-            'select3hour' => $return["select3hour"],
-            'selectedtimepoint' => $selectedtimepoint,
-            'timepointtext1' => $post->timepointtext1,
-            'timepointtext3' => $post->timepointtext3,
-            'printr' => "<pre>" . print_r($post, true) . "</pre>",
-        ]);
+        $return['ordermerge'] = $post->ordermerge;
+        $return['selectedtimepoint'] = $selectedtimepoint;
+        $return['timepoint'] = $timepoint;
+        $return['timepointtext1'] = $post->timepointtext1;
+        $return['timepointtext3'] = $post->timepointtext3;            
+        $view = new ViewModel($return);
+//        $view = new ViewModel([
+//            'ordermerge' => $post->ordermerge,
+//            'timeClose' => $return['timeClose'],
+//            'countStors' => $return["count"],
+//            'hourPrice' => $return["hourPrice"],
+//            'hour3Price' => $return["hour3Price"],
+//            'select1hour' => $return["select1hour"],
+//            'select3hour' => $return["select3hour"],
+//            'selectedtimepoint' => $selectedtimepoint,
+//            'timepoint' => $timepoint,
+//            'timepointtext1' => $post->timepointtext1,
+//            'timepointtext3' => $post->timepointtext3,
+//            'printr' => "<pre>" . print_r($post, true) . "</pre>",
+//        ]);
         $view->setTemplate('application/common/basket-order-merge');
 
         return $view->setTerminal(true);
@@ -567,38 +575,48 @@ class AjaxController extends AbstractActionController {
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
-        $row['payEnable'] = ($row['total'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
-
+        $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
+        $cardInfo = '';
         if ($post->cardinfo) {
             $userPaycards = UserPaycard::findAll(["where" => ["user_id" => $userId, "card_id" => $post->cardinfo]]);
             $cardUpdate = $userPaycards->current();
             $cardInfo = $cardUpdate->getPan();
-            $cardUpdate->setTime(time());
-            $cardUpdate->persist(["user_id" => $userId, "card_id" => $post->cardinfo]);
+            $cardUpdate->setTime(time())->persist(["user_id" => $userId, "card_id" => $post->cardinfo]);
         }
+        
+        $row['ordermerge'] = $post->ordermerge;
+        $row['priceDelevery'] = $param['hourPrice'];
+        $row['priceDeleveryMerge'] = $param['mergePrice'];
+        $row['priceDeleveryMergeFirst'] = $param['mergePriceFirst'];
+        $row['addressDelevery'] = StringHelper::cutAddressCity($basketUser['address']);
+        $row['priceSelfdelevery'] = 0;
+        $row["cardinfo"] = $cardInfo;
+        $row['paycard'] = $post->paycard;
+        $row['timeDelevery'] = $timeDelevery;
+        $view = new ViewModel($row) ;
 
-        $view = new ViewModel([
-            "payEnable" => $row["payEnable"],
-            "textDelevery" => $row["textDelevery"],
-            'priceDelevery' => $param['hourPrice'],
-            'ordermerge' => $post->ordermerge,
-            'priceDeleveryMerge' => $param['mergePrice'],
-            'priceDeleveryMergeFirst' => $param['mergePriceFirst'],
-            'countDelevery' => $row["countDelevery"],
-            'countDeleveryText' => $row["countDeleveryText"],
-            'priceDelevery' => $row['priceDelevery'],
-            'addressDelevery' => StringHelper::cutAddressCity($basketUser['address']),
-            'priceSelfdelevery' => 0,
-            'basketpricetotalall' => $row['basketpricetotalall'],
-            'post' => $row['post'],
-            'productcount' => $row['count'],
-            'producttotal' => $row['total'],
-            'countSelfdelevery' => $row['countSelfdelevery'],
-            'storeAdress' => $row["storeAdress"],
-            "cardinfo" => $cardInfo,
-            'paycard' => $post->paycard,
-            'timeDelevery' => $timeDelevery,
-        ]);
+//        $view = new ViewModel([
+//            "payEnable" => $row["payEnable"],
+//            "textDelevery" => $row["textDelevery"],
+//            'priceDelevery' => $param['hourPrice'],
+//            'ordermerge' => $post->ordermerge,
+//            'priceDeleveryMerge' => $param['mergePrice'],
+//            'priceDeleveryMergeFirst' => $param['mergePriceFirst'],
+//            'countDelevery' => $row["countDelevery"],
+//            'countDeleveryText' => $row["countDeleveryText"],
+//            'priceDelevery' => $row['priceDelevery'],
+//            'addressDelevery' => StringHelper::cutAddressCity($basketUser['address']),
+//            'priceSelfdelevery' => 0,
+//            'basketpricetotalall' => $row['basketpricetotalall'],
+//            'post' => $row['post'],
+//            'productcount' => $row['productcount'],
+//            'producttotal' => $row['producttotal'],
+//            'countSelfdelevery' => $row['countSelfdelevery'],
+//            'storeAdress' => $row["storeAdress"],
+//            "cardinfo" => $cardInfo,
+//            'paycard' => $post->paycard,
+//            'timeDelevery' => $timeDelevery,
+//        ]);
         $view->setTemplate('application/common/basket-payinfo');
         return $view->setTerminal(true);
     }
