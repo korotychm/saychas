@@ -486,7 +486,7 @@ function loadPayInfo() {
         data: $("#user-basket-form").serialize(),
         success: function (data) {
             $("#basket-payinfo").html(data);
-            $("#basket-payinfo-cover").hide();
+            //$("#basket-payinfo-cover").hide();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#basket-payinfo").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");

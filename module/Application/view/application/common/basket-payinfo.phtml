@@ -1,7 +1,6 @@
 <?php use Application\Resource\Resource; ?>
 <?php if ($producttotal && $producttotal > 0):?>
   <div class="panel panel--cart">
-      <div class="blok waitcover waiting" id="basket-payinfo-cover"></div>
       <div>
         <div class="panel__delivery">
             <?php if($countDelevery and $addressDelevery and $payEnable):?>
@@ -89,6 +88,7 @@
         <?php if(!$payEnable):?>
           <div class="overcoverlocal"></div>
         <?php endif;?>
+        <?php print_r($legalUser);?>
         <?php if ($legalUser) :?>
           <div class="btn btn--primary" id="sendbasketbutton"><?= Resource::ORDER_PAYMENT_BUTTON ?></div>
         <?php else: ?>
@@ -97,5 +97,5 @@
         <div class="panel__notice"><?= Resource::ORDER_AGGREMENT_NOTES ?></div>
       </div>
   </div>
-  
+
 <?php endif;?>
