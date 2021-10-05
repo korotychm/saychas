@@ -176,6 +176,10 @@
   margin: 0;
   padding: 0;
 }
+.product-card__table a {
+  color: var(--red) !important;
+  text-decoration: none;
+}
 .product-card__table-tr {
   position: relative;
   display: flex;
