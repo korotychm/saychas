@@ -69,7 +69,7 @@ const PriceList = {
                           <input type="number" max="100" min="0" v-model.lazy="product.discount" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" v-model.lazy="product.price" />
+                          <input type="number" min="0" max="999999" v-model.lazy="product.price" @change="checkPrice(index)" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -109,6 +109,9 @@ const PriceList = {
       }
   },
   methods: {
+    checkPrice(index) {
+      parseInt(this.products[index].price);
+    },
     setRubPrice() {
       for (product of this.products) {
         product.price = product.price / 100;
