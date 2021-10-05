@@ -14,6 +14,7 @@ if ($countStors < 2) {
           <span><b>Из <?= $countStors ?> магазинов <span class="accent">за 1 час</span>
           </b> &mdash;&nbsp;<?= number_format($hourPrice / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
         </label>
+        <?php print_r($selectedtimepoint) ?>
         <div class="cart__radio-content">
               <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>.</p>
               <?php if ($select1hour && !empty($select1hour)) : ?>
