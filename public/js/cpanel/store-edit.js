@@ -11,9 +11,9 @@ const StoreEdit = {
                         <h2 :class="{'input-error' : (!store.address && errors)}">Адрес <span class="required">*</span></h2>
                         <div>
                           <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
-                          <input type="hidden" class="input" v-model="store.geox" id="geox" />
+                          <input type="hidden" class="input" v-model="store.geox" id="geox"/>
                           <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
-                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" />
+                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" @input="testAlert" />
                           <p class="error" id="store-address-error"></p>
                         </div>
                       </div>
@@ -226,6 +226,9 @@ const StoreEdit = {
     }
   },
   methods: {
+    testAlert() {
+      alert('kawabanga!');
+    },
     checkModifiedDate() {
       let localedDate = this.selectedDate.toLocaleString("ru-RU",{
         day: 'numeric',
@@ -372,8 +375,6 @@ const StoreEdit = {
                   $("#store-address-error").html("Укажите адрес до номера дома!").show();
                   return false;
               }
-              alert(123);
-              this.testAlert();
               var dataString = JSON.stringify(suggestion);
               $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
               $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
