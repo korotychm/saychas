@@ -55,3 +55,9 @@ db.products.find({id: '000000000001', "characteristics.id": '000000008'},{"_id":
 db.products.find({id: '000000000001', "characteristics.id": '000000008'},{"_id": 0, title: 1, description: 1, characteristics: {$elemMatch: {value: "0.1345"}}}).pretty()
 
 db.products.find({id: '000000000001', "characteristics.id": '000000008'},{"_id": 0, title: 1, description: 1, characteristics: {$elemMatch: {value: "0.1345"}}}).pretty()
+
+
+//updateOne $set
+db.stock_balance.updateOne({store_id: '000000033', provider_id: '00007'}, {$set: {"products.$[element].quantity": '321'}}, {arrayFilters: [{"element.product_id": {$eq: '000000000058'} }]}
+//find document with specified array element
+db.stock_balance.find({store_id: '000000033', "products": { $elemMatch: {product_id: "000000000082"} } }, { "products.$": 1}).pretty()

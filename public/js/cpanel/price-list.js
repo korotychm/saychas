@@ -62,14 +62,14 @@ const PriceList = {
                     <div v-else class="pricelist__price">{{ product.price }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
-                    <div class="pricelist__popup-category">Техника для дома</div>
+                    <div class="pricelist__popup-category">{{ product.category_name }}</div>
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
                           <input type="number" max="100" min="0" v-model.lazy="product.discount" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" v-model.lazy="product.price" />
+                          <input type="number" min="0" max="999999" v-model.lazy="product.price" @change="checkPrice(index)" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -109,6 +109,9 @@ const PriceList = {
       }
   },
   methods: {
+    checkPrice(index) {
+      this.products[index].price = parseInt(this.products[index].price);
+    },
     setRubPrice() {
       for (product of this.products) {
         product.price = product.price / 100;

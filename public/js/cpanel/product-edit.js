@@ -1,6 +1,18 @@
 const ProductEdit = {
   template: `<div class="cp-container product">
                 <div v-if="editable">
+                  <div class="product__info product__info--top">
+                    <div class="product__attribute">
+                        <h2>Код товара</h2>
+                        <p>{{ product.id }}</p>
+                    </div>
+                    <div class="product__attribute">
+                        <h2>Статус</h2>
+                        <p class="product__status" v-if="product.moderated"><span class="product__status-circle product__status-circle--0"></span>Товар прошел модерацию и опубликован на сайте.</p>
+                        <p class="product__status" v-if="!product.moderated && product.processed"><span class="product__status-circle product__status-circle--2"></span>Товар не прошел модерацию. Измените товар и сохраните снова.</p>
+                        <p class="product__status" v-if="!product.moderated && !product.processed"><span class="product__status-circle product__status-circle--1"></span>Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
+                    </div>
+                  </div>
                   <div class="product__category">
                       <h2 :class="{'input-error' : (!selectedCategoryName && errors)}">Категория <span class="required">*</span></h2>
                       <div class="search-select">
@@ -285,7 +297,7 @@ const ProductEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary" @click="saveProduct(false)">Сохранить изменения</button>
+                      <button class="btn btn--primary" :class="{disabled: (!product.moderated && !product.processed)}" @click="saveProduct(false)">Сохранить и отправить на модерацию</button>
                     </div>
                   </div>
                 </div>
@@ -755,6 +767,11 @@ $(document).on('change','.custom-select--radio input',function(){
   let el = $(this).parent().parent().parent().parent();
   el.removeClass('active');
   setCustomSelectLabels(el);
+});
+
+$(document).on('click','.custom-select--radio input:checked',function(){
+  let el = $(this).parent().parent().parent().parent();
+  el.removeClass('active');
 });
 
 $(document).on('click','.custom-select__label',function(){

@@ -56,6 +56,7 @@ const Products = {
             <div class="td">Наименование</div>
             <div class="td">Категория</div>
             <div class="td">Бренд</div>
+            <div class="td">Статус</div>
           </div>
           <div class="tbody">
               <router-link :to="'/products/' + product.id" v-for="product in products" class="tr">
@@ -69,6 +70,17 @@ const Products = {
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td">{{ product.brand_name }}</div>
+                  <div class="td">
+                  <span class="product__status" v-if="product.moderated">
+                    <span class="product__status-circle product__status-circle--0"></span>
+                  </span>
+                  <span class="product__status" v-if="!product.moderated && product.processed">
+                    <span class="product__status-circle product__status-circle--2"></span>
+                  </span>
+                  <span class="product__status product__status--1" v-if="!product.moderated && !product.processed">
+                    <span class="product__status-circle product__status-circle--1"></span>
+                  </span>
+                  </div>
               </router-link>
           </div>
         </div>

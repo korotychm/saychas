@@ -183,7 +183,7 @@
     &-wishlist
       width 16px
       margin-right 30px
-      color var(--gray2)
+      color #d9d9d9
       flex-shrink 0
       background none
       border none
@@ -202,6 +202,26 @@
       .cart__product-img
         opacity .3
         pointer-events none
+
+  &__login
+    cursor pointer
+    h3
+      margin 0 0 7px
+      display flex
+      align-items center
+      font-size 20px
+      font-weight bold
+      transition .3s
+      &:hover
+        color var(--red)
+      svg
+        color var(--red)
+        margin-right 15px
+    p
+      margin 0
+      color var(--gray2)
+      font-size 16px
+      padding-left 33px
 
   &__radio
     width 50%
@@ -403,7 +423,6 @@
         font-size 18px
         color var(--red)
         cursor pointer
-        font-weight 600
         position relative
         margin-left 25px
         &__popup
@@ -451,7 +470,7 @@
       cursor pointer
       font-weight 500
       svg
-        color var(--gray)
+        color #d9d9d9
         margin-right 10px
 
 .cart-payment
@@ -537,9 +556,12 @@
     border 2px solid var(--gray)
     border-radius 20px
     padding 20px 30px
+    &--notlegal
+      background var(--gray)
     &-info
       display flex
       align-items center
+
   &__name
     font-size 20px
     font-weight bold
@@ -608,7 +630,9 @@
       padding-left 30px
       position absolute
       left 0
-      bottom -30px
+      top 62px
+      .error
+        color var(--red)
 
 @keyframes top-clip {
 	0%{}
