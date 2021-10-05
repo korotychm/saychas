@@ -372,11 +372,11 @@ const StoreEdit = {
                   $("#store-address-error").html("Укажите адрес до номера дома!").show();
                   return false;
               }
+              console.log(suggestion);
               var dataString = JSON.stringify(suggestion);
               $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
               $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
               $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
-              console.log(suggestion);
           }
       });
     },
