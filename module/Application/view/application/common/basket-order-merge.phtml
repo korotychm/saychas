@@ -59,8 +59,8 @@ if ($countStors < 2) {
                         </label>
                         <?php foreach ($select3hour as $option3): ?>
                         <label class="custom-select__option">
-                          <input value="<?= $option3['value'] ?>" <?=$selectedtimepoint[1][$option['value']]?> name="timepoint[1]" class="timepoint__option" />
-                          <span><?= $option3['lable'] ?></span>
+                          <input value="<?= $option3['value'] ?>" rel="<?= $option3['rel'] ?>" <?=$selectedtimepoint[1][$option3['value']]?> type="radio" name="timepoint[1]" class="timepoint__option" />
+                          <span><?= $option['lable'] ?></span>
                         </label>
                         <?php endforeach; ?>
                       </div>
