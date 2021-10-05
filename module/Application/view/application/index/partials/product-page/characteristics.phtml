@@ -3,24 +3,21 @@
         <h2 class="product-card__section-heading">Характеристики</h2>
         <?php
         $i=0;
-        echo '<pre>';
-        print_r($characteristics[0]);
-        echo '</pre>';
         foreach ($characteristics[0] as $characteristic) : ?>
-          <?php if ($characteristics[0][$i+1]['type']):?>
             <?php if ($characteristic['type'] == 0) :?>
+              <?php if ($characteristics[0][$i+1]['type']):?>
                 <?php if ($i!=0): ?>
                     </table>
                 <?php endif;?>
                 <h3><?= $characteristic['title'] ?></h3>
                 <table>
+              <?php endif; ?>
             <?php else : ?>
                 <tr>
                    <td><span><?= $characteristic['title'] ?></span></td>
                    <td><?= $characteristic['value'] ?></td>
                 </tr>
             <?php endif; ?>
-          <?php endif; ?>
         <?php
         $i++;
         endforeach;  ?>
