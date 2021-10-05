@@ -376,7 +376,7 @@ const StoreEdit = {
               $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
               $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
               $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
-              console.log(suggestion.data);
+              console.log(suggestion);
           }
       });
     },
