@@ -254,12 +254,19 @@
   opacity: 0.3;
   pointer-events: none;
 }
+.cart__login {
+  cursor: pointer;
+}
 .cart__login h3 {
-  margin: 0 0 10px;
+  margin: 0 0 7px;
   display: flex;
   align-items: center;
   font-size: 20px;
   font-weight: bold;
+  transition: 0.3s;
+}
+.cart__login h3:hover {
+  color: var(--red);
 }
 .cart__login h3 svg {
   color: var(--red);
@@ -269,6 +276,7 @@
   margin: 0;
   color: var(--gray2);
   font-size: 16px;
+  padding-left: 33px;
 }
 .cart__radio {
   width: 50%;
