@@ -3,6 +3,9 @@
         <h2 class="product-card__section-heading">Характеристики</h2>
         <?php
         $i=0;
+        echo '<pre>';
+        print_r($characteristics[0]);
+        echo '</pre>';
         foreach ($characteristics[0] as $characteristic) : ?>
           <?php if ($characteristics[0][$i+1]['type']):?>
             <?php if ($characteristic['type'] == 0) :?>
