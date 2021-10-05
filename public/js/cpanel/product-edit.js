@@ -769,6 +769,11 @@ $(document).on('change','.custom-select--radio input',function(){
   setCustomSelectLabels(el);
 });
 
+$(document).on('click','.custom-select--radio input:checked',function(){
+  let el = $(this).parent().parent().parent().parent();
+  el.removeClass('active');
+});
+
 $(document).on('click','.custom-select__label',function(){
   $('.custom-select__label').not(this).parent().removeClass('active');
   $(this).parent().toggleClass('active');
