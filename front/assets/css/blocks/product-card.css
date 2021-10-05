@@ -246,12 +246,14 @@
   content: 'Развернуть описание ↓';
 }
 .product-card__description-text {
-  max-height: 110px;
   font-size: 18px;
-  overflow-y: hidden;
   position: relative;
 }
-.product-card__description-text::after {
+.product-card__description-text--spoiler {
+  max-height: 110px;
+  overflow-y: hidden;
+}
+.product-card__description-text--spoiler::after {
   content: '';
   display: block;
   width: 100%;
