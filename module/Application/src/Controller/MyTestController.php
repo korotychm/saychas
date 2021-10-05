@@ -134,7 +134,7 @@ class MyTestController extends AbstractActionController
         // Call the base class' onDispatch() first and grab the response
         $response = parent::onDispatch($e);
 //        $servicemanager = $e->getApplication()->getServiceManager();
-        $userAddressHtml = $this->htmlProvider->writeUserAddress();
+      //  $userAddressHtml = $this->htmlProvider->writeUserAddress();
 
 //        $this->categoryRepository = $servicemanager->get(CategoryRepositoryInterface::class);
 //        $category = $this->categoryRepository->findCategory(29);
@@ -142,9 +142,9 @@ class MyTestController extends AbstractActionController
 
         // Return the response
         $this->layout()->setVariables([
-            'headerText' => $this->htmlProvider->testHtml(),
+        //    'headerText' => $this->htmlProvider->testHtml(),
             'footerText' => 'banzaii',
-            'userAddressHtml' => $userAddressHtml,
+            'userAddressHtml' => " ", //$userAddressHtml,
         ]);
         $this->layout()->setTemplate('layout/mainpage');
         return $response;
@@ -878,5 +878,25 @@ class MyTestController extends AbstractActionController
         }
         return $this->getResponse();
     }
+    
+    public function averageCategoryPriceAction ()
+    {
+        $post = $this->getRequest()->getPost();
+
+        
+        $result["categoryId"] = $catId = !empty($post->categoryId) ? $post->categoryId : "0";
+        //return new \Laminas\View\Model\JsonModel([$categoryId]);
+        $query = "CALL average_category_price('$catId', @res);";
+        $res = $this->db->query($query)->execute();
+        //return new \Laminas\View\Model\JsonModel($result);
+       //return new \Laminas\View\Model\JsonModel([$catId]);
+        foreach ($res as $r){
+            $return = $r['a_price']; break;    
+        }
+        $result["average_price"] = $return ; //->execute()
+        return new \Laminas\View\Model\JsonModel($result);
+    }
+    
+    
     
 }

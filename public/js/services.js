@@ -31,6 +31,30 @@ $(function () {
         });
     };
     
+    
+    
+     var setAveragePrice = function(categoryId) {
+        var data = {'categoryId': categoryId};
+        //console.log(categoryId);
+        $.ajax({
+            type: "POST",
+            url: "/average-category-price",
+            //dataType: "json",
+            //method: 'post',
+//            contentType: false, // Not to set any content header
+//            processData: false, // Not to process data
+            data: data, // formData,
+            success: function (result, status, xhr) {
+                console.log('result = ', result, 'status = ', status);
+            },
+            error: function (xhr, status, error) {
+                console.log('Sms sending failed', xhr, status);
+            }
+        });
+    };
+    
+    
+    
     var sendTinkoff = function() {
 //        var formData = new FormData();
 //        formData.append('phone', '9185356024');
@@ -193,6 +217,11 @@ $(function () {
     $('#sendTinkoff').click(function(){
         sendTinkoff();
     });
+    
+    $('#sendAveragePrice').click(function(){
+       setAveragePrice($('#inputSomeDataId').val());
+    });
+    
     
     
     $('#codeFeedbackId').click(function(){

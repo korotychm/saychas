@@ -664,8 +664,9 @@ class HtmlProviderService {
             ];
             
         }
+        $countproviders = (int) count($countprovider);
         if ($countproducts) {
-            $countproviders = (int) count($countprovider);
+            
             $return["title"] = ($countproducts == 1) ? "$countproducts позиция " : ($countproducts > 1 and $countproducts < 5) ? "$countproducts позиции " : "$countproducts позиций ";
             $return["title"] .= "из ";
             $return["title"] .= ($countproviders == 1) ? "$countproducts магазина " : "$countproducts магазинов ";

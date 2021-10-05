@@ -15,7 +15,7 @@ use Laminas\Router\Http\Segment;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 use Application\Controller\Factory\IndexControllerFactory;
-//use Application\Controller\Factory\MyTestControllerFactory;
+use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ProductCardsControllerFactory;
@@ -701,6 +701,17 @@ return [
 //                    ],
 //                ],
 //            ],
+            'average-category-price' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/average-category-price',
+                    'defaults' => [
+                        'controller' => Controller\MyTestController::class,
+                        'action'     => 'averageCategoryPrice',
+                    ],
+                ],
+            ],
+            //averageCategoryPriceAction
             'get-image' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -1214,7 +1225,7 @@ return [
         'factories' => [
 //            Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
-//            Controller\MyTestController::class => MyTestControllerFactory::class,
+            Controller\MyTestController::class => MyTestControllerFactory::class,
             Controller\UserDataController::class => UserDataControllerFactory::class,
             Controller\AjaxController::class => AjaxControllerFactory::class,
             Controller\ReceivingController::class => ReceivingControllerFactory::class,
