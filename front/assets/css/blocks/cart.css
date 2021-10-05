@@ -753,6 +753,7 @@
   top: 62px;
 }
 .cart-delivery__input p .error {
+  display: block;
   color: var(--red);
 }
 .waiting {
