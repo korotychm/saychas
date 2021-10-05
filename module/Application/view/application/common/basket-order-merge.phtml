@@ -14,7 +14,6 @@ if ($countStors < 2) {
           <span><b>Из <?= $countStors ?> магазинов <span class="accent">за 1 час</span>
           </b> &mdash;&nbsp;<?= number_format($hourPrice / 100, 0, "", "&nbsp;") ?>&nbsp;₽</span>
         </label>
-        <?php print_r($selectedtimepoint) ?>
         <div class="cart__radio-content">
               <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>.</p>
               <?php if ($select1hour && !empty($select1hour)) : ?>
@@ -22,6 +21,10 @@ if ($countStors < 2) {
                   <div class="custom-select__label input">Выберите время доставки</div>
                   <div class="custom-select__dropdown">
                     <div class="custom-select__dropdown-inner">
+                      <label class="custom-select__option">
+                        <input value="" <?=$selectedtimepoint[0][]?> type="radio" name="timepoint[0]" class="timepoint__option" />
+                        <span>Выберите время доставки</span>
+                      </label>
                       <?php foreach ($select1hour as $option): ?>
                       <label class="custom-select__option">
                         <input value="<?= $option['value'] ?>" rel="<?= $option['rel'] ?>" <?=$selectedtimepoint[0][$option['value']]?> type="radio" name="timepoint[0]" class="timepoint__option" />
@@ -50,6 +53,10 @@ if ($countStors < 2) {
                     <div class="custom-select__label input">Выберите время доставки</div>
                     <div class="custom-select__dropdown">
                       <div class="custom-select__dropdown-inner">
+                        <label class="custom-select__option">
+                          <input value="" <?=$selectedtimepoint[1][]?> type="radio" name="timepoint[0]" class="timepoint__option" />
+                          <span>Выберите время доставки</span>
+                        </label>
                         <?php foreach ($select3hour as $option3): ?>
                         <label class="custom-select__option">
                           <input value="<?= $option3['value'] ?>" <?=$selectedtimepoint[1][$option['value']]?> name="timepoint[1]" class="timepoint__option" />
