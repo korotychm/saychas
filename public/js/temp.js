@@ -54,9 +54,8 @@ function addProductToFavorites (productId, callback) {
 
 $(document).ready(function () {
 
-      // Самовывоз из магазина
-  $(document).on('click', '.wishlist-icon',function(){
-  //$('.panel__to-wishlist').click(function(){
+  $(document).on('click', '.wishlist-icon',function(e){
+      e.preventDefault();
       var callback = $(this);
       if (callback.hasClass("active")){
           removeProductFromFavorites(callback.data("id"), callback);
