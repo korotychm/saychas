@@ -69,7 +69,7 @@
     </div>
     <?php if ($countDelevery) :?>
       <div class="panel__tr">
-          <div> <b><?= Resource::ORDER_DELIVERY_TITLE?><?=(!$ordermerge) ? Resource::BASKET_SAYCHAS_short : Resource::BASKET_SAYCHAS3_short?> (<?=$countDelevery?>)</b></div>
+          <div> <b><?= Resource::ORDER_DELIVERY_TITLE?> <?=(!$ordermerge) ? Resource::BASKET_SAYCHAS_short : Resource::BASKET_SAYCHAS3_short?> (<?=$countDelevery?>)</b></div>
           <div><?=number_format(($priceDelevery/100),0,",","&nbsp;")?> ₽</div>
       </div>
     <?php endif; ?>
