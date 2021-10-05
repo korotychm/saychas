@@ -95,8 +95,8 @@ return [
                 ['actions' => ['updateStockBalance',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\ListController::class => [
-                ['actions' => ['showList',],'urls' => ['control-panel/show-products',], 'allow' => '+administrator'],
-                [/*'actions' => ['showList',], */'urls' => ['control-panel/show-stores',], 'allow' => '+store.manager'],
+                ['actions' => ['showList',], /*'urls' => ['show-products',], */ 'allow' => '+administrator'],
+                //[/*'actions' => ['showList',], */'urls' => ['show-stores',], 'allow' => '+store.manager'],
                 ['actions' => ['showListFromCache', ], 'allow' => '+administrator'],
 //                ['actions' => ['showList',], 'allow' => '+brand.manager'],
 //                ['actions' => ['showListFromCache', ], 'allow' => '+brand.manager'],
@@ -179,7 +179,7 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list',
-                                'url' => 'show-list',
+                                'url' => 'show-stores',
                             ],
                             'repository' => \ControlPanel\Service\StoreManager::class,
                             'is_test' => 'false',
@@ -257,6 +257,7 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list',
+                                'url' => 'show-products',
                             ],
                             'repository' => \ControlPanel\Service\ProductManager::class,
                             'is_test' => 'false',
