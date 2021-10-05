@@ -82,6 +82,7 @@ class AjaxController extends AbstractActionController {
     private $basketRepository;
     private $productImageRepository;
     private $commonHelperFuncions;
+    private $repoRating;
 
     //private $sessionContainer;
 
@@ -127,6 +128,7 @@ class AjaxController extends AbstractActionController {
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(ProductRating::class);
         $this->entityManager->initRepository(ProductUserRating::class);
+        //$this->repoRating = $this->entityManager->getRepository(ProductUserRating::class);
     }
 
     /**
@@ -703,6 +705,8 @@ class AjaxController extends AbstractActionController {
             return;
         }
         $produtRating = ProductUserRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
+        //$produtRating = $this->repoRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
+        
         $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
 
         return new JsonModel([$produtRating->getRating(), $userId, $productId ]);

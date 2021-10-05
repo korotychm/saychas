@@ -43,6 +43,17 @@ class ProductUserRatingRepository extends Repository implements ProductUserRatin
         $this->prototype = $prototype;
     }
 
+    /**
+     * set rating product_user_rating and set average rating product_rating
+     *
+     *  @param type array
+     */
+    public function setProductRating ($param)
+    {
+        $query = "CALL set_product_rating('".$param["product_id"]."','".$param["user_id"]."','".$param["product_id"]."',);";
+        return $res = $this->db->query($query)->execute();
+        
+    }
 //    /**
 //     * Adds given setting into it's repository
 //     *
