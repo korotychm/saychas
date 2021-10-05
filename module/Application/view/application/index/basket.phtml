@@ -17,6 +17,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/basket.js'));
     <div id="user-basket">
         <form method='POST' id='user-basket-form'>
             <div class="cart">
+                <?php print_r($this->content);?>
                 <div class="cart__left">
                     <?= $this->partial("/application/index/partials/basket/basket-provider", ["param" => $this->content]) ?>
                     <?=
