@@ -119,18 +119,53 @@ class StockBalanceManager extends ListManager implements LoadableInterface
     public function replaceStockBalance($stockBalance)
     {
         $collection = $this->db->{$this->collectionName};
+        $updateResult = null;
         foreach($stockBalance['data'] as $balance) {
-            foreach($balance['products'] as $product) {
-                $collection->deleteMany([
-                    'store_id' => $balance['store_id'],
-                    'product_id' => $product['product_id'],
-                ]);
-            }
-            $updateResult = $collection->insertOne($balance);
+            //$updateResult = $collection->findOneAndUpdate(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id'], 'products.$.product_id' => $balance['products'][0]['product_id']], ['$set' => [ 'products.$.quantity' => '123' ]], []);
+            $updateResult = $collection->findOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id'], 'products.$.product_id' => $balance['products'][0]['product_id']]);
         }
         return $updateResult;
     }
     
+    public function replaceStockBalance1($stockBalance)
+    {
+        $collection = $this->db->{$this->collectionName};
+        // find the stock balance document
+        foreach($stockBalance['data'] as $balance) {
+            $p = $balance['products'][0]; // We take the first one
+            $foundDocument = $collection->findOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']]);//->toArray();
+            if(null != $foundDocument) {
+                foreach($foundDocument['products'] as &$product) {
+                    if($p['product_id'] == $product['product_id']){
+                        $product['quantity'] = $p['quantity'];
+                    }
+                }
+            }
+            $collection->deleteMany([
+                'store_id' => $balance['store_id'],
+                'provider_id' => $balance['provider_id'],
+            ]);
+            $updateResult = $collection->insertOne($foundDocument);
+        }
+        
+        return $updateResult;
+    }
+    
+//    public function replaceStockBalance($stockBalance)
+//    {
+//        $collection = $this->db->{$this->collectionName};
+//        foreach($stockBalance['data'] as $balance) {
+//            foreach($balance['products'] as $product) {
+//                $collection->deleteMany([
+//                    'store_id' => $balance['store_id'],
+//                    'product_id' => $product['product_id'],
+//                ]);
+//            }
+//            $updateResult = $collection->insertOne($balance);
+//        }
+//        return $updateResult;
+//    }
+
     public function deleteMany(string $collectionName, array $params = [])
     {
         $collection = $this->db->$collectionName;
