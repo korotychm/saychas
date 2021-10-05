@@ -372,12 +372,12 @@ const StoreEdit = {
                   $("#store-address-error").html("Укажите адрес до номера дома!").show();
                   return false;
               }
-              console.log('suggestion',suggestion.data);
               var dataString = JSON.stringify(suggestion);
-              console.log('suggestion-string',dataString);
               $('#geox').val(suggestion.data.geo_lat)[0].dispatchEvent(new Event('input'));
               $('#geoy').val(suggestion.data.geo_lon)[0].dispatchEvent(new Event('input'));
               $('#dadata').val(dataString)[0].dispatchEvent(new Event('input'));
+              this.store.address = suggestion.value;
+              console.log(this.store.address);
           }
       });
     },
