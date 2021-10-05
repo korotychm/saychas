@@ -8,9 +8,9 @@ const ProductEdit = {
                     </div>
                     <div class="product__attribute">
                         <h2>Статус</h2>
-                        <p v-if="product.moderated">Товар прошел модерацию и опубликован на сайте.</p>
-                        <p v-if="!product.moderated && product.processed">Товар не прошел модерацию. Измените товар и сохраните снова.</p>
-                        <p v-if="!product.moderated && !product.processed">Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
+                        <p class="product__status product__status--0" v-if="product.moderated"><span></span>Товар прошел модерацию и опубликован на сайте.</p>
+                        <p class="product__status product__status--2" v-if="!product.moderated && product.processed"><span></span>Товар не прошел модерацию. Измените товар и сохраните снова.</p>
+                        <p class="product__status product__status--1" v-if="!product.moderated && !product.processed"><span></span>Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
                     </div>
                   </div>
                   <div class="product__category">
