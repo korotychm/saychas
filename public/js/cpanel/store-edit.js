@@ -13,7 +13,7 @@ const StoreEdit = {
                           <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
                           <input type="hidden" class="input" v-model="store.geox" id="geox"/>
                           <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
-                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" @input="testAlert" />
+                          <input type="hidden" class="input" v-model="store.dadata" id="dadata" @input="setAddress" />
                           <p class="error" id="store-address-error"></p>
                         </div>
                       </div>
