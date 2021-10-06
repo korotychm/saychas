@@ -236,7 +236,7 @@ class ProductController extends AbstractActionController
             $newFileName = "$uuid.$ext";
             $tmpName = $_FILES['file']['tmp_name'];
             //move_uploaded_file($tmpName, "$uploadsDir/$fileName");
-            move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
+            $result = move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
         }
         return new JsonModel(['image_file_name' => $newFileName]);
     }
@@ -253,11 +253,15 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $product = json_decode($post['data']['product'], true);
         $deletedImages = $product['del_images'];
+        $clonedImages = $product['clone_images'];
         $result = ['matched_count' => 0, 'modified_count' => 0];
         if ($this->canUpdateProduct($product)) {
             $result = $this->productManager->replaceProduct($product);
             foreach ($deletedImages as $image) {
                 $this->productManager->deleteProductImage($image);
+            }
+            foreach ($clonedImages as $imagge) {
+                $this->productManager->copyProductImage($image);
             }
             return new JsonModel(['result' => true]);
         }
