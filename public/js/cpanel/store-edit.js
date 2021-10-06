@@ -234,8 +234,8 @@ const StoreEdit = {
           dadata = JSON.parse($('#dadata').val());
           if (this.store.address != dadata.value){
             this.store.address = dadata.value;
-            return;
           }
+          return;
         }
         if (this.store.address != this.initialAddress){
           this.store.address = this.initialAddress;
