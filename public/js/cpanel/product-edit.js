@@ -767,22 +767,26 @@ $(document).on('change','.custom-select--radio input',function(){
   let el = $(this).parent().parent().parent().parent();
   el.removeClass('active');
   setCustomSelectLabels(el);
+  console.log('444');
 });
 
 $(document).on('click','.custom-select--radio input:checked',function(){
   let el = $(this).parent().parent().parent().parent();
   el.removeClass('active');
+  console.log('333');
 });
 
 $(document).on('click','.custom-select__label',function(){
   $('.custom-select__label').not(this).parent().removeClass('active');
   $(this).parent().toggleClass('active');
+  console.log('222');
 });
 
 $(document).click( function(e){
     if ( $(e.target).closest('.custom-select').length ) {
         return;
     }
+    console.log('111');
     $('.custom-select').removeClass('active');
 });
 
