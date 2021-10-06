@@ -619,6 +619,7 @@ const ProductEdit = {
           });
     },
     checkCategory() {
+      console.log('checkCategory');
       if (this.categorySearch != this.selectedCategoryName){
         this.categorySearch = this.selectedCategoryName;
       }
@@ -634,6 +635,7 @@ const ProductEdit = {
       }
     },
     selectCategory(id,value) {
+      console.log('selectCategory');
       if (id != this.selectedCategoryId){
         let oldCategory = this.selectedCategoryId;
         this.selectedCategoryId = id;
