@@ -66,7 +66,7 @@ const Products = {
                   <div class="td td--hover">
                     <div class="products__title">
                       {{ product.title }}
-                      <span class="products__art"><span>арт.:</span> {{ product.vendor_code }}</span>
+                      <span class="products__art">{{ product.vendor_code }}</span>
                     </div>
                   </div>
                   <div class="td products__category">
