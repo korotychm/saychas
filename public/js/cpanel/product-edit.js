@@ -619,7 +619,6 @@ const ProductEdit = {
           });
     },
     checkCategory() {
-      console.log('checkCategory');
       setTimeout(() => {
         if (this.categorySearch != this.selectedCategoryName){
           this.categorySearch = this.selectedCategoryName;
@@ -627,17 +626,20 @@ const ProductEdit = {
       }, 100);
     },
     checkBrand() {
-      if (!this.brandSearch){
-        this.brandSearch = this.brandName;
-      }
+      setTimeout(() => {
+        if (this.brandSearch != this.selectedBrandName){
+          this.brandSearch = this.selectedBrandName;
+        }
+      }, 100);
     },
     checkCountry() {
-      if (!this.countrySearch){
-        this.countrySearch = this.countryName;
-      }
+      setTimeout(() => {
+        if (this.countrySearch != this.selectedCountryName){
+          this.countrySearch = this.selectedCountryName;
+        }
+      }, 100);
     },
     selectCategory(id,value) {
-      console.log('selectCategory');
       if (id != this.selectedCategoryId){
         let oldCategory = this.selectedCategoryId;
         this.selectedCategoryId = id;
