@@ -43,6 +43,10 @@ class Review extends Entity
     /**
      * @var int
      */
+    protected $id = 0;
+    /**
+     * @var int
+     */
     protected $user_id = 0;
 
     /**
@@ -85,8 +89,31 @@ class Review extends Entity
      */
     protected $timestamp;
 
+    
     /**
      * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id.
+     *
+     * @param string $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Get user_id.
      *
      * @return string
      */

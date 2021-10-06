@@ -14,6 +14,7 @@ use Laminas\View\Model\JsonModel;
 //use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
+use Application\Model\Entity\ReviewImage;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 //use Application\Model\Repository\ProductRepository;
 //use Application\Model\Entity\HandbookRelatedProduct;
@@ -60,6 +61,7 @@ class ReviewController extends AbstractActionController
 //        $this->entityManager->initRepository(ProductHistory::class);
 //        $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(Review::class);
+        $this->entityManager->initRepository(ReviewImage::class);
     }
 
     /**
@@ -102,11 +104,26 @@ class ReviewController extends AbstractActionController
 
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int)$review['time_created']);
-            $review['images'] = []; 
+            $review['images'] = $this->getReviewImages($review['id']); 
             $reviews["reviews"][] = $review;
         }
 
         return new JsonModel($reviews);
+    }
+    
+    /**
+     * get images of review
+     *
+     * @param int $reviewId
+     * @return array
+     */
+    private function getReviewImages($reviewId) 
+    {
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewId]])->toArray();
+        foreach ($images as $image){
+            $return[] = $image['filename'];
+        }
+        return $return;
     }
 
 }

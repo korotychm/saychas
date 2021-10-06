@@ -1289,6 +1289,7 @@ return [
             \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class => \Application\Model\Repository\MarkerRepository::class,
             \Application\Model\RepositoryInterface\BasketRepositoryInterface::class => \Application\Model\Repository\BasketRepository::class,
             \Application\Model\RepositoryInterface\ReviewRepositoryInterface::class => \Application\Model\Repository\ReviewRepository::class,
+            \Application\Model\RepositoryInterface\ReviewImageRepositoryInterface::class => \Application\Model\Repository\ReviewImageRepository::class,
             \Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface::class => \Application\Model\Repository\ProductFavoritesRepository::class,
             \Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface::class => \Application\Model\Repository\ProductHistoryRepository::class,
             \Application\Model\RepositoryInterface\ColorRepositoryInterface::class => \Application\Model\Repository\ColorRepository::class,
@@ -1329,6 +1330,7 @@ return [
             \Application\Model\Repository\MarkerRepository::class => \Application\Model\Factory\MarkerRepositoryFactory::class,
             \Application\Model\Repository\BasketRepository::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Repository\ReviewRepository::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
+            \Application\Model\Repository\ReviewImageRepository::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
             \Application\Model\Repository\ProductFavoritesRepository::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
             \Application\Model\Repository\ProductHistoryRepository::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Repository\ColorRepository::class => \Application\Model\Factory\ColorRepositoryFactory::class,
@@ -1375,6 +1377,7 @@ return [
 
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Entity\Review::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
+            \Application\Model\Entity\ReviewImage::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
             \Application\Model\Entity\Category::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,

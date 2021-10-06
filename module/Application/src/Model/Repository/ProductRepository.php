@@ -557,7 +557,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         }
         foreach ($res as $return) {
             $return['result'] = true;
-            return [$return];
+            return $return;
         }
     }
 //BEGIN
