@@ -171,6 +171,7 @@ const StoreEdit = {
       editable: true,
       selectedDate: null,
       highlightedStyles: '',
+      initialAddress: '',
       modified_date: {
         date: '',
         time_from: '',
@@ -231,9 +232,14 @@ const StoreEdit = {
         let dadata = '';
         if ($('#dadata').val()){
           dadata = JSON.parse($('#dadata').val());
+          if (this.store.address != dadata.value){
+            this.store.address = dadata.value;
+            return;
+          }
         }
-        console.log('dadata',dadata);
-        console.log('store address',this.store.address);
+        if (this.store.address != this.initialAddress){
+          this.store.address = this.initialAddress;
+        }
       }, 100);
     },
     setAddress() {
@@ -408,6 +414,7 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               this.store.dadata = '';
+              this.initialAddress = this.store.address;
               console.log(this.store);
               setTimeout(() => {
                 this.storeDaData();
