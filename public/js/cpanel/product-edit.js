@@ -789,6 +789,6 @@ $(document).click( function(e){
 $(document).on('keydown','.custom-select__label',function(e){
   if (e.keyCode == 40){
     console.log('arrow pressed');
-    $(this).parent().find('input').focus();
+    $(this).parent().find('input').eq(0).focus();
   }
 });
