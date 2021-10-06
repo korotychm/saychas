@@ -51,8 +51,8 @@ const PriceList = {
                   </div>
                   <div class="td td--hover pricelist__title">
                     <div class="products__title">
-                      {{ product.title }}
-                      <span class="products__art">{{ product.vendor_code }}</span>
+                      {{ product.product_name }}
+                      <span class="products__art">Арт.: {{ product.vendor_code }}</span>
                     </div>
                   </div>
                   <div class="td pricelist__category">
