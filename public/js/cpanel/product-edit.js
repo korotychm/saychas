@@ -620,9 +620,11 @@ const ProductEdit = {
     },
     checkCategory() {
       console.log('checkCategory');
-      // if (this.categorySearch != this.selectedCategoryName){
-      //   this.categorySearch = this.selectedCategoryName;
-      // }
+      setTimeout(() => {
+        if (this.categorySearch != this.selectedCategoryName){
+          this.categorySearch = this.selectedCategoryName;
+        }
+      }, 200);
     },
     checkBrand() {
       if (!this.brandSearch){
