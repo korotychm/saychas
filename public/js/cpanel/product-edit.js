@@ -619,7 +619,7 @@ const ProductEdit = {
           });
     },
     checkCategory() {
-      if (!this.categorySearch){
+      if (this.categorySearch != this.selectedCategoryName){
         this.categorySearch = this.selectedCategoryName;
       }
     },
