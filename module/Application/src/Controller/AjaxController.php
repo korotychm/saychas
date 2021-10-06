@@ -692,24 +692,27 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
     
+    /**
+     * set product_rating and product_user_rating
+     * 
+     * @param POST productId  rating
+     * @return JSON
+     */
     public function setProductRatingAction() 
     {
-//        $productId = $this->getRequest()->getPost()->productId;
-//        $rating =  $this->getRequest()->getPost()->rating;
-        
-        $productId = "000000000036";
-        $rating =  50;
-        
-        if (!$userId = $this->identity()) {
-            $this->getResponse()->setStatusCode(403);
-            return;
+        if (empty($param['user_id']  = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
+            return $this->getResponse()->setStatusCode(403);
         }
-        $produtRating = ProductUserRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
-        //$produtRating = $this->repoRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
         
-        $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
+        $patternRating = Resource::PRODUCT_RATING_VALUES;
+        $rating =  $this->getRequest()->getPost()->rating;
+        $param['rating'] = !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+        
+        
+//        $produtRating = ProductUserRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
+//        $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
 
-        return new JsonModel([$produtRating->getRating(), $userId, $productId ]);
+        return new JsonModel($this->productRepository->setProductRating($param));
     }
     //    private function prepareCharacteristics(&$characteristics) {
 //        if (!$characteristics) {
