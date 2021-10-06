@@ -260,7 +260,7 @@ class ProductController extends AbstractActionController
             foreach ($deletedImages as $image) {
                 $this->productManager->deleteProductImage($image);
             }
-            foreach ($clonedImages as $imagge) {
+            foreach ($clonedImages as $image) {
                 $this->productManager->copyProductImage($image);
             }
             return new JsonModel(['result' => true]);
