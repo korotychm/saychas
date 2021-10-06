@@ -228,7 +228,10 @@ const StoreEdit = {
   methods: {
     checkAddress() {
       setTimeout(() => {
-        let dadata = JSON.parse($('#dadata').val());
+        let dadata = '';
+        if ($('#dadata').val()){
+          dadata = JSON.parse($('#dadata').val());
+        }
         console.log('dadata',dadata);
         console.log('store address',this.store.address);
       }, 100);
