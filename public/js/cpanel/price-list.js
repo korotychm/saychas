@@ -50,7 +50,10 @@ const PriceList = {
                     <img :src="(product.image) ? (((product.moderated) ? imgPathModerated : imgPath) + product.image) : '/img/ui/nophoto.jpg'" />
                   </div>
                   <div class="td td--hover pricelist__title">
-                    <a>{{ product.product_name }}</a>
+                    <div class="products__title">
+                      {{ product.title }}
+                      <span class="products__art">{{ product.vendor_code }}</span>
+                    </div>
                   </div>
                   <div class="td pricelist__category">
                       <div>{{ product.category_name }}</div>
