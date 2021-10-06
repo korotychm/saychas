@@ -505,6 +505,17 @@ class ProductManager extends ListManager implements LoadableInterface
         return ['result' => unlink($fileName)];
     }
     
+    public function copyProductImage($fileName)
+    {
+        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+        $productUrl = 'public'.$baseUrl.'/'.$this->config['parameters']['image_path']['subpath']['product'];
+        $descProductUrl = 'public'.$baseUrl.'/'.$this->config['parameters']['image_path']['subpath']['cpanel_product'];
+        $fileName = $productUrl.'/'.$fileName;
+        $result = copy($productUrl, $descProductUrl);
+        
+        return ['result' => $result];
+    }
+    
 
     public function findTest()
     {
