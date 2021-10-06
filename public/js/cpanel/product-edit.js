@@ -785,3 +785,10 @@ $(document).click( function(e){
     }
     $('.custom-select').removeClass('active');
 });
+
+$(document).on('keydown','.custom-select__label',function(e){
+  if (e.keyCode == 40){
+    console.log('arrow pressed');
+    $(this).parent().find('input').focus();
+  }
+});
