@@ -769,7 +769,7 @@ function setAllCustomSelects() {
   });
 }
 
-$(document).on('change','.custom-select--radio input',function(){
+$(document).on('click','.custom-select--radio input',function(){
   let el = $(this).parent().parent().parent().parent();
   el.removeClass('active');
   setCustomSelectLabels(el);
@@ -792,21 +792,21 @@ $(document).click( function(e){
     $('.custom-select').removeClass('active');
 });
 
-// $(document).on('keydown','.custom-select__label',function(e){
-//   if (e.keyCode == 40){
-//     console.log('arrow pressed');
-//     $(this).parent().find('.custom-select__option').eq(0).focus();
-//   }
-// });
-//
-// $(document).on('keydown','.custom-select__option',function(e){
-//   let index = $(this).index();
-//   let length = $(this).parent().find('.custom-select__option').length;
-//   if (e.keyCode == 40){
-//     if (index != (length - 1)){
-//       $(this).parent().find('.custom-select__option').eq(index + 1).focus();
-//     } else {
-//       $(this).parent().find('.custom-select__option').eq(0).focus();
-//     }
-//   }
-// });
+$(document).on('keydown','.custom-select__label',function(e){
+  if (e.keyCode == 40){
+    console.log('arrow pressed');
+    $(this).parent().find('.custom-select__option').eq(0).focus();
+  }
+});
+
+$(document).on('keydown','.custom-select__option',function(e){
+  let index = $(this).index();
+  let length = $(this).parent().find('.custom-select__option').length;
+  if (e.keyCode == 40){
+    if (index != (length - 1)){
+      $(this).parent().find('.custom-select__option').eq(index + 1).focus();
+    } else {
+      $(this).parent().find('.custom-select__option').eq(0).focus();
+    }
+  }
+});
