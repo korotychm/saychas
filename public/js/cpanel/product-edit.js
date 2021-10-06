@@ -624,7 +624,7 @@ const ProductEdit = {
         if (this.categorySearch != this.selectedCategoryName){
           this.categorySearch = this.selectedCategoryName;
         }
-      }, 50);
+      }, 100);
     },
     checkBrand() {
       if (!this.brandSearch){
