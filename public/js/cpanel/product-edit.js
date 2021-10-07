@@ -677,7 +677,7 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
-    setAllCustomSelects();
+    //setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
