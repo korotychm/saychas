@@ -10,7 +10,7 @@ const StoreAdd = {
                       <div class="product__attribute">
                         <h2 :class="{'input-error' : (!store.address && errors)}">Адрес <span class="required">*</span></h2>
                         <div>
-                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
+                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" @focusout="checkAddress" />
                           <input type="hidden" class="input" v-model="store.geox" id="geox" />
                           <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
                           <input type="hidden" class="input" v-model="store.dadata" id="dadata" @input="setAddress" />
@@ -170,6 +170,7 @@ const StoreAdd = {
       editable: true,
       selectedDate: null,
       highlightedStyles: '',
+      initialAddress: '',
       modified_date: {
         date: '',
         time_from: '',
@@ -246,6 +247,21 @@ const StoreAdd = {
     }
   },
   methods: {
+    checkAddress() {
+      setTimeout(() => {
+        let dadata = '';
+        if ($('#dadata').val()){
+          dadata = JSON.parse($('#dadata').val());
+          if (this.store.address != dadata.value){
+            this.store.address = dadata.value;
+          }
+          return;
+        }
+        if (this.store.address != this.initialAddress){
+          this.store.address = this.initialAddress;
+        }
+      }, 100);
+    },
     setAddress() {
       let dadata = JSON.parse($('#dadata').val());
       this.store.address = dadata.value;

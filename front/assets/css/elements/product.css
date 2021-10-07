@@ -24,6 +24,19 @@
   font-size: 12px;
   font-weight: 700;
 }
+.product__wishlist {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 0;
+  border: none;
+  color: var(--gray2);
+  background: none;
+  cursor: pointer;
+}
+.product__wishlist.active {
+  color: var(--red);
+}
 .product__img {
   display: flex;
   align-items: center;
@@ -41,11 +54,16 @@
   margin: 25px 0 12px;
   color: inherit;
 }
+.product__panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 11px;
+}
 .product__reviews {
   display: flex;
   align-items: center;
   font-size: 16px;
-  margin-bottom: 11px;
 }
 .product__reviews-grade {
   display: flex;

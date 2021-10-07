@@ -43,7 +43,10 @@ const Stores = {
         <div class="tbody">
             <router-link :to="'/stores/' + store.id" v-for="store in stores" class="tr">
                 <div class="td td--hover">
-                  {{ store.title }}
+                  <div class="products__title">
+                    {{ store.title }}
+                    <span class="products__art">Код: {{ store.id }}</span>
+                  </div>
                 </div>
                 <div class="td">
                     <div>{{ store.address }}</div>

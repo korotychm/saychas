@@ -57,7 +57,10 @@ const Inventory = {
                     <img :src="(product.images.length) ? (((product.moderated) ? imgPathModerated : imgPath) + product.images[0]) : '/img/ui/nophoto.jpg'" />
                   </div>
                   <div class="td td--hover inventory__title">
-                    {{ product.title }}
+                    <div class="products__title">
+                      {{ product.title }}
+                      <span class="products__art">Арт.: {{ product.vendor_code }}</span>
+                    </div>
                   </div>
                   <div class="td products__category inventory__category">
                       <div>{{ product.category_name }}</div>

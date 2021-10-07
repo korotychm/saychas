@@ -4,13 +4,17 @@ const StoreEdit = {
                   <div v-if="store.id">
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
+                        <h2>Код магазина</h2>
+                        <span style="line-height: 55px;">{{ store.id }}</span>
+                      </div>
+                      <div class="product__attribute product__attribute--short">
                         <h2 :class="{'input-error' : (!store.title && errors)}">Название магазина <span class="required">*</span></h2>
                         <input type="text" class="input" v-model="store.title" />
                       </div>
                       <div class="product__attribute">
                         <h2 :class="{'input-error' : (!store.address && errors)}">Адрес <span class="required">*</span></h2>
                         <div>
-                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" />
+                          <input type="text" class="input suggestions-input" v-model="store.address" id="store-address" placeholder="Начните вводить адрес..." pattern="[A-Za-zА-Яа-яЁё]{3,}" accept="" @focusout="checkAddress" />
                           <input type="hidden" class="input" v-model="store.geox" id="geox"/>
                           <input type="hidden" class="input" v-model="store.geoy" id="geoy" />
                           <input type="hidden" class="input" v-model="store.dadata" id="dadata" @input="setAddress" />
@@ -171,6 +175,7 @@ const StoreEdit = {
       editable: true,
       selectedDate: null,
       highlightedStyles: '',
+      initialAddress: '',
       modified_date: {
         date: '',
         time_from: '',
@@ -226,9 +231,25 @@ const StoreEdit = {
     }
   },
   methods: {
+    checkAddress() {
+      setTimeout(() => {
+        let dadata = '';
+        if ($('#dadata').val()){
+          dadata = JSON.parse($('#dadata').val());
+          if (this.store.address != dadata.value){
+            this.store.address = dadata.value;
+          }
+          return;
+        }
+        if (this.store.address != this.initialAddress){
+          this.store.address = this.initialAddress;
+        }
+      }, 100);
+    },
     setAddress() {
       let dadata = JSON.parse($('#dadata').val());
       this.store.address = dadata.value;
+      console.log(dadata);
     },
     checkModifiedDate() {
       let localedDate = this.selectedDate.toLocaleString("ru-RU",{
@@ -397,6 +418,7 @@ const StoreEdit = {
             } else {
               this.store = response.data.store;
               this.store.dadata = '';
+              this.initialAddress = this.store.address;
               console.log(this.store);
               setTimeout(() => {
                 this.storeDaData();

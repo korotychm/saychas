@@ -20,6 +20,17 @@
     border-radius 20px
     font-size 12px
     font-weight 700
+  &__wishlist
+    position absolute
+    top 10px
+    left 10px
+    padding 0
+    border none
+    color var(--gray2)
+    background none
+    cursor pointer
+    &.active
+      color var(--red)
   &__img
     display flex
     align-items center
@@ -34,11 +45,15 @@
     display block
     margin 25px 0 12px
     color inherit
+  &__panel
+    display flex
+    align-items center
+    justify-content space-between
+    margin-bottom 11px
   &__reviews
     display flex
     align-items center
     font-size 16px
-    margin-bottom 11px
     &-grade
       display flex
       align-items center

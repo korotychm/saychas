@@ -23,7 +23,7 @@ const ProductEdit = {
                               <div v-if="(categorySearch && filteredCategories.length)">
                                 <label v-for="category in filteredCategories">
                                   <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
-                                  <span class="search-select__suggestion" @click="selectCategory(category.id, category.name)">
+                                  <span class="search-select__suggestion" @mousedown="selectCategory(category.id, category.name)">
                                     <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
                                     <span class="search-select__suggestion-category">{{category.name}}</span>
                                   </span>
@@ -48,7 +48,7 @@ const ProductEdit = {
                                     <div v-if="(countrySearch && filteredCountries.length)">
                                       <label v-for="country in filteredCountries">
                                         <input type="radio" name="suggest" :checked="(country.id == selectedCountryId)" />
-                                        <span class="search-select__suggestion" @click="selectCountry(country.id, country.title)">
+                                        <span class="search-select__suggestion" @mousedown="selectCountry(country.id, country.title)">
                                           <span>{{ country.title }}</span>
                                         </span>
                                       </label>
@@ -66,7 +66,7 @@ const ProductEdit = {
                                     <div v-if="(brandSearch && filteredBrands.length)">
                                       <label v-for="brand in filteredBrands">
                                         <input type="radio" name="suggest" :checked="(brand.id == selectedBrandId)" />
-                                        <span class="search-select__suggestion" @click="selectBrand(brand.id, brand.title)">
+                                        <span class="search-select__suggestion" @mousedown="selectBrand(brand.id, brand.title)">
                                           <span>{{ brand.title }}</span>
                                         </span>
                                       </label>
@@ -619,19 +619,25 @@ const ProductEdit = {
           });
     },
     checkCategory() {
-      if (!this.categorySearch){
-        this.categorySearch = this.selectedCategoryName;
-      }
+      setTimeout(() => {
+        if (this.categorySearch != this.selectedCategoryName){
+          this.categorySearch = this.selectedCategoryName;
+        }
+      }, 100);
     },
     checkBrand() {
-      if (!this.brandSearch){
-        this.brandSearch = this.brandName;
-      }
+      setTimeout(() => {
+        if (this.brandSearch != this.selectedBrandName){
+          this.brandSearch = this.selectedBrandName;
+        }
+      }, 100);
     },
     checkCountry() {
-      if (!this.countrySearch){
-        this.countrySearch = this.countryName;
-      }
+      setTimeout(() => {
+        if (this.countrySearch != this.selectedCountryName){
+          this.countrySearch = this.selectedCountryName;
+        }
+      }, 100);
     },
     selectCategory(id,value) {
       if (id != this.selectedCategoryId){
@@ -785,3 +791,22 @@ $(document).click( function(e){
     }
     $('.custom-select').removeClass('active');
 });
+
+// $(document).on('keydown','.custom-select__label',function(e){
+//   if (e.keyCode == 40){
+//     console.log('arrow pressed');
+//     $(this).parent().find('.custom-select__option').eq(0).focus();
+//   }
+// });
+//
+// $(document).on('keydown','.custom-select__option',function(e){
+//   let index = $(this).index();
+//   let length = $(this).parent().find('.custom-select__option').length;
+//   if (e.keyCode == 40){
+//     if (index != (length - 1)){
+//       $(this).parent().find('.custom-select__option').eq(index + 1).focus();
+//     } else {
+//       $(this).parent().find('.custom-select__option').eq(0).focus();
+//     }
+//   }
+// });

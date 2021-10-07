@@ -23,7 +23,7 @@ function addProductToFavorites (productId, callback) {
             success: function (data) {
                 console.log(data);
                 if (!data.result) {showAjaxErrorPopupWindow("", data.description ); return;}
-                callback.addClass("remove");
+                callback.addClass("active");
                 callback.children("span").text(data.lable);
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -41,7 +41,7 @@ function addProductToFavorites (productId, callback) {
             success: function (data) {
                 console.log(data);
                 if (!data.result) {showAjaxErrorPopupWindow("", data.description ); return;}
-                callback.removeClass("remove");
+                callback.removeClass("active");
                 callback.children("span").text(data.lable);
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -54,18 +54,15 @@ function addProductToFavorites (productId, callback) {
 
 $(document).ready(function () {
 
-      // Самовывоз из магазина
-  $(document).on('click', '.panel__to-wishlist',function(){
-  //$('.panel__to-wishlist').click(function(){
+  $(document).on('click', '.wishlist-icon',function(e){
+      e.preventDefault();
       var callback = $(this);
-      if (callback.hasClass("remove")){
-          removeProductFromFavorites(callback.attr("rel"), callback);
+      if (callback.hasClass("active")){
+          removeProductFromFavorites(callback.data("id"), callback);
       }
       else {
-          addProductToFavorites(callback.attr("rel"), callback);
-
+          addProductToFavorites(callback.data("id"), callback);
       }
-
   });
 
 });
