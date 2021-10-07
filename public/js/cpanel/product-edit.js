@@ -549,7 +549,7 @@ const ProductEdit = {
                     this.showBrand = -1;
                     this.showColor = -1;
                   }
-                  setTimeout(() => {setAllCustomSelects()}, 2000);
+
                 } else {
                   if (response.data.result){
                     router.replace('/products');
@@ -611,7 +611,6 @@ const ProductEdit = {
               this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
               console.log(this.product);
-              setTimeout(() => {setAllCustomSelects()}, 2000);
             }
           })
           .catch(error => {
@@ -678,6 +677,7 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
+    setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
@@ -768,6 +768,7 @@ function setCustomSelectLabels(el) {
 function setAllCustomSelects() {
   $('.custom-select--radio').each(function(){
     setCustomSelectLabels($(this));
+    console.log($(this).parent().find('h2').text());
   });
 }
 
