@@ -708,26 +708,7 @@ class AjaxController extends AbstractActionController {
         $rating =  $this->getRequest()->getPost()->rating;
         $param['rating'] = !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
         
-        
-//        $produtRating = ProductUserRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
-//        $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
-
         return new JsonModel($this->productRepository->setProductRating($param));
     }
-    //    private function prepareCharacteristics(&$characteristics) {
-//        if (!$characteristics) {
-//            return;
-//        }
-//        foreach ($characteristics as $key => &$value) {
-//            if ($value) {
-//                foreach ($value as &$v) {
-//                    if (empty($v)) {
-//                        $v = '0;' . PHP_INT_MAX;
-//                    }
-//                }
-//            }
-//        }
-//    }
-
 
 }
