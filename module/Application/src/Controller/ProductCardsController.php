@@ -245,7 +245,7 @@ class ProductCardsController extends AbstractActionController
         $subWhere = new Where();
         $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
         $nest = $where->nest();
-        $nest->in('product_id', $legalProducts)->or->notIn('product_id', $productsFiltred)->unnest();
+        $nest->in('id', $legalProducts)->or->notIn('id', $productsFiltred)->unnest();
 
         return $where;
     }
@@ -323,7 +323,7 @@ class ProductCardsController extends AbstractActionController
         $storeProducts = StockBalance::findAll(["where" => ['store_id' => $params['store_id']], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
         $products = ArrayHelper::extractId($storeProducts);
         $where = new Where();
-        $where->in('product_id', $products);
+        $where->in('id', $products);
         if (!empty($params['category_id'])) {
             $where->equalTo('category_id', $params['category_id']);
         }

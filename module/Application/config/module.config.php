@@ -19,6 +19,7 @@ use Application\Controller\Factory\MyTestControllerFactory;
 use Application\Controller\Factory\UserDataControllerFactory;
 use Application\Controller\Factory\AjaxControllerFactory;
 use Application\Controller\Factory\ProductCardsControllerFactory;
+use Application\Controller\Factory\ReviewControllerFactory;
 use Application\Controller\Factory\ReceivingControllerFactory;
 use Application\Controller\Factory\FtpControllerFactory;
 use Application\Controller\Factory\AcquiringControllerFactory;
@@ -26,9 +27,9 @@ use Laminas\Db\Adapter\AdapterAbstractServiceFactory;
 //use Laminas\ServiceManager\Factory\InvokableFactory;
 //use Application\Model\Factory\LaminasDbSqlRepositoryFactory;
 //use Application\Resource\Resource;
-use Laminas\ServiceManager\Factory\InvokableFactory;
+//use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-use Laminas\Session;
+//use Laminas\Session;
 //use Laminas\Router\Http\Regex;
 //use Laminas\Router\Http\Hostname;
 
@@ -968,8 +969,18 @@ return [
                 'options' => [
                     'route'    => '/ajax-set-product-rating',
                     'defaults' => [
-                        'controller' => Controller\AjaxController::class,
+                        'controller' => Controller\ReviewController::class,
                         'action'     => 'setProductRating',
+                    ],
+                ],
+            ],
+            'ajax-get-product-review'=>[
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-get-product-review',
+                    'defaults' => [
+                        'controller' => Controller\ReviewController::class,
+                        'action'     => 'getProductReview',
                     ],
                 ],
             ],
@@ -1243,6 +1254,7 @@ return [
             Controller\FtpController::class => FtpControllerFactory::class,
             Controller\AcquiringController::class => AcquiringControllerFactory::class,
             Controller\ProductCardsController::class => ProductCardsControllerFactory::class,
+            Controller\ReviewController::class => ReviewControllerFactory::class,
         ],
     ],
     'laminas-cli' => [
@@ -1276,6 +1288,8 @@ return [
             \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class => \Application\Model\Repository\ClientOrderRepository::class,
             \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class => \Application\Model\Repository\MarkerRepository::class,
             \Application\Model\RepositoryInterface\BasketRepositoryInterface::class => \Application\Model\Repository\BasketRepository::class,
+            \Application\Model\RepositoryInterface\ReviewRepositoryInterface::class => \Application\Model\Repository\ReviewRepository::class,
+            \Application\Model\RepositoryInterface\ReviewImageRepositoryInterface::class => \Application\Model\Repository\ReviewImageRepository::class,
             \Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface::class => \Application\Model\Repository\ProductFavoritesRepository::class,
             \Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface::class => \Application\Model\Repository\ProductHistoryRepository::class,
             \Application\Model\RepositoryInterface\ColorRepositoryInterface::class => \Application\Model\Repository\ColorRepository::class,
@@ -1315,6 +1329,8 @@ return [
             \Application\Model\Repository\BrandRepository::class => \Application\Model\Factory\BrandRepositoryFactory::class,
             \Application\Model\Repository\MarkerRepository::class => \Application\Model\Factory\MarkerRepositoryFactory::class,
             \Application\Model\Repository\BasketRepository::class => \Application\Model\Factory\BasketRepositoryFactory::class,
+            \Application\Model\Repository\ReviewRepository::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
+            \Application\Model\Repository\ReviewImageRepository::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
             \Application\Model\Repository\ProductFavoritesRepository::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
             \Application\Model\Repository\ProductHistoryRepository::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Repository\ColorRepository::class => \Application\Model\Factory\ColorRepositoryFactory::class,
@@ -1349,6 +1365,7 @@ return [
             \Application\Model\Entity\ClientOrder::class => \Application\Model\Factory\ClientOrderRepositoryFactory::class,
             \Application\Model\Entity\Setting::class => \Application\Model\Factory\SettingRepositoryFactory::class,
             \Application\Model\Entity\ProductRating::class => \Application\Model\Factory\ProductRatingRepositoryFactory::class,
+            \Application\Model\Entity\ProductUserRating::class => \Application\Model\Factory\ProductUserRatingRepositoryFactory::class,
             \Application\Model\Entity\Delivery::class => \Application\Model\Factory\DeliveryRepositoryFactory::class,
             \Application\Model\Entity\Country::class => \Application\Model\Factory\CountryRepositoryFactory::class,
             \Application\Model\Entity\Brand::class => \Application\Model\Factory\BrandRepositoryFactory::class,
@@ -1359,6 +1376,8 @@ return [
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
 
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
+            \Application\Model\Entity\Review::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
+            \Application\Model\Entity\ReviewImage::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
             \Application\Model\Entity\Category::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,

@@ -69,7 +69,9 @@ class Module implements ConfigProviderInterface
             $controllerName != \Application\Controller\FtpController::class &&
             $controllerName != \Application\Controller\MyTestController::class &&
             $controllerName != \Application\Controller\AcquiringController::class &&
-            $controllerName != \Application\Controller\ProductCardsController::class ) {
+            $controllerName != \Application\Controller\ReviewController::class &&
+            $controllerName != \Application\Controller\ProductCardsController::class
+                ) {
             
             $hasIdentity = $authManager->hasIdentity();
             if(!$hasIdentity) {

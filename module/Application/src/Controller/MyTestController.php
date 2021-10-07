@@ -879,24 +879,23 @@ class MyTestController extends AbstractActionController
         return $this->getResponse();
     }
     
+    /**
+     * This is demo for use mySQL stored procedure
+     * 
+     * @return JSON
+     */
     public function averageCategoryPriceAction ()
     {
         $post = $this->getRequest()->getPost();
-
-        
-        $result["categoryId"] = $catId = !empty($post->categoryId) ? $post->categoryId : "0";
-        //return new \Laminas\View\Model\JsonModel([$categoryId]);
+        $catId = !empty($post->categoryId) ? $post->categoryId : "0";
         $query = "CALL average_category_price('$catId', @res);";
         $res = $this->db->query($query)->execute();
-        //return new \Laminas\View\Model\JsonModel($result);
-       //return new \Laminas\View\Model\JsonModel([$catId]);
+        
         foreach ($res as $r){
             $return = $r['a_price']; break;    
         }
-        $result["average_price"] = $return ; //->execute()
-        return new \Laminas\View\Model\JsonModel($result);
+        
+        return new \Laminas\View\Model\JsonModel(["categoryId" => $catId, "average_price" => $return ]);
     }
-    
-    
     
 }

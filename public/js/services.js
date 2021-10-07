@@ -209,9 +209,61 @@ $(function () {
             }
         });
     };
+    
+    var sendProductRating = function(params) {
+        var data = params;
+        $.ajax({
+            type: "POST",
+            url: "/ajax-set-product-rating",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result);
+                 $("#productRatingAnswer").html(JSON.stringify(result, null, " "));    
+            },
+            error: function (xhr, status, error) {
+                console.log('sendProductRating Faled', xhr, status);
+            }
+        });
+    };
+    
+    var getProductReview = function(params) {
+        var data = params;
+        $.ajax({
+            type: "POST",
+            url: "/ajax-get-product-review",
+            method: 'post',
+            data: data,
+            success: function (result, status, xhr) {
+                console.log('result = ', result);
+                 $("#productRatingAnswer").html(JSON.stringify(result, null, " "));    
+            },
+            error: function (xhr, status, error) {
+                console.log('GetProductReview failed', xhr, status);
+            }
+        });
+    };
+    
+    
 
     $('#userDataFormId').click(function(){
         sendSms($('#inputSomeDataId').val());
+    });
+    
+    $('#productRatingForm').submit(function(){        
+//        console.log("****");
+        var data = $('#productRatingForm').serialize();
+        console.log(data);
+       sendProductRating(data);
+    return false;
+    });
+    
+    $('#productReview').click(function(){        
+//        console.log("****");
+        var data = $('#productRatingForm').serialize();
+       console.log(data);
+       getProductReview(data);
+    return false;
     });
     
     $('#sendTinkoff').click(function(){

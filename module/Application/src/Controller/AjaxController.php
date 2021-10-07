@@ -24,6 +24,7 @@ use Application\Model\Entity\Basket;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\ProductRating;
+use Application\Model\Entity\ProductUserRating;
 use Application\Model\Entity\Delivery;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 //use Application\Model\Repository\CharacteristicRepository;
@@ -81,6 +82,7 @@ class AjaxController extends AbstractActionController {
     private $basketRepository;
     private $productImageRepository;
     private $commonHelperFuncions;
+    private $repoRating;
 
     //private $sessionContainer;
 
@@ -125,6 +127,8 @@ class AjaxController extends AbstractActionController {
         $this->entityManager->initRepository(StockBalance::class);
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(ProductRating::class);
+        $this->entityManager->initRepository(ProductUserRating::class);
+        //$this->repoRating = $this->entityManager->getRepository(ProductUserRating::class);
     }
 
     /**
@@ -688,37 +692,23 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
     
+    /**
+     * set product_rating and product_user_rating
+     * 
+     * @param POST productId  rating
+     * @return JSON
+     */
     public function setProductRatingAction() 
     {
-//        $productId = $this->getRequest()->getPost()->productId;
-//        $rating =  $this->getRequest()->getPost()->rating;
-        
-        $productId = "000000000036";
-        $rating =  50;
-        
-        if (!$userId = $this->identity()) {
-            $this->getResponse()->setStatusCode(403);
-            return;
+        if (empty($param['user_id']  = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
+            return $this->getResponse()->setStatusCode(403);
         }
-        $produtRating = ProductRating::findFirstOrDefault(['product_id' => $productId, 'user_id' => $userId ]);
-        $produtRating->setRating($rating)->setUserId($userId)->setProductId($productId)->persist(['product_id' => $productId, 'user_id' => $userId ]);
-
-        return new JsonModel([$produtRating->getRating(), $userId]);
+        
+        $patternRating = Resource::PRODUCT_RATING_VALUES;
+        $rating =  $this->getRequest()->getPost()->rating;
+        $param['rating'] = !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+        
+        return new JsonModel($this->productRepository->setProductRating($param));
     }
-    //    private function prepareCharacteristics(&$characteristics) {
-//        if (!$characteristics) {
-//            return;
-//        }
-//        foreach ($characteristics as $key => &$value) {
-//            if ($value) {
-//                foreach ($value as &$v) {
-//                    if (empty($v)) {
-//                        $v = '0;' . PHP_INT_MAX;
-//                    }
-//                }
-//            }
-//        }
-//    }
-
 
 }
