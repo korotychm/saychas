@@ -386,24 +386,27 @@ const ProductAdd = {
     uploadFile() {
       var data = new FormData();
       var imagefile = document.querySelector('#photo-upload');
-      console.log(imagefile.files[0].size);
-      data.append('file', imagefile.files[0]);
-      data.append('product_id', this.product.id);
-      data.append('provider_id', this.product.provider_id);
-      axios.post('/control-panel/upload-product-image', data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-      })
-      .then(response => {
-        console.log(response)
-        this.product.images.push(response.data.image_file_name);
-        this.currentImg = response.data.image_file_name;
-        checkProductImagesSlider();
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
+      if (imagefile.files[0].size > 5242880){
+        showServicePopupWindow('Невозможно загрузить фото', 'Размер фото превышает 5Мб.');
+      } else {
+        data.append('file', imagefile.files[0]);
+        data.append('product_id', this.product.id);
+        data.append('provider_id', this.product.provider_id);
+        axios.post('/control-panel/upload-product-image', data, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        })
+        .then(response => {
+          console.log(response)
+          this.product.images.push(response.data.image_file_name);
+          this.currentImg = response.data.image_file_name;
+          checkProductImagesSlider();
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      }
     },
     flatCategories() {
       let categoriesFlat = [];
