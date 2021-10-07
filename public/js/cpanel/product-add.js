@@ -529,7 +529,6 @@ const ProductAdd = {
               }
               this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
               this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
-              setTimeout(() => {setAllCustomSelects();},5000);
             }
           })
           .catch(error => {
@@ -625,6 +624,7 @@ const ProductAdd = {
   },
   updated: function(){
     checkProductImagesSlider();
+    setAllCustomSelects();
     $('.main__loader').hide();
   }
 }

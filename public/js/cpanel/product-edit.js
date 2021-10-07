@@ -762,12 +762,12 @@ $(document).on('click','.product__images-arrow',function(){
 
 function setCustomSelectLabels(el) {
   let textValue = el.find('input:checked + span').text();
-  let elTitle = el.parent().find('h2').text();
-  el.find('.custom-select__label').text(textValue);
+  el.find('.custom-select__label').html('<span class="select-selected-value">'+textValue+'</span>');
   console.log(elTitle,textValue);
 }
 
 function setAllCustomSelects() {
+  $('.select-selected-value').remove();
   $('.custom-select--radio').each(function(){
     setCustomSelectLabels($(this));
   });
