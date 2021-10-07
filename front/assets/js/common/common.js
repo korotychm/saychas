@@ -37,3 +37,10 @@ $(document).click( function(e){
     }
     $('#burger').prop('checked',false);
 });
+
+$(document).on('click', '.anchor', function (event) {
+    event.preventDefault();
+    $('html, body').animate({
+        scrollTop: $($.attr(this, 'href')).offset().top
+    }, 500);
+});

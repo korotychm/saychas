@@ -6,7 +6,8 @@
     </button>
     <div class="product__label" v-if="product.oldPrice && product.oldPrice != product.price">Акция</div>
     <a class="product__img" :href="'/product/' + name">
-      <img :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
+      <img v-if="product.image" :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
+      <img v-else src="/img/ui/nophoto.jpg" />
     </a>
     <a class="product__title" :href="'/product/' + name">{{ product.title }}</a>
     <div class="product__panel">
