@@ -517,6 +517,7 @@ class ProductManager extends ListManager implements LoadableInterface
 
         $handle = fopen($descProductUrl, "w");
         fwrite($handle, $data);
+        fflush($handle);
         fclose($handle);
     }
     
