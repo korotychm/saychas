@@ -611,6 +611,7 @@ const ProductEdit = {
               this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
               console.log(this.product);
+              setTimeout(() => {setAllCustomSelects()}, 200);
             }
           })
           .catch(error => {
