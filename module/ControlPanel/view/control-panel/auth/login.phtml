@@ -22,3 +22,15 @@
     </form>
   </div>
 </div>
+
+<script>
+  $('.cp-login__show-password').click(function(e){
+    e.preventDefault();
+    $(this).toggleClass('active');
+    if ($(this).hasClass('active')){
+      $(this).parent().find('input').attr('type','text');
+    } else {
+      $(this).parent().find('input').attr('type','password');
+    }
+  });
+</script>
