@@ -762,13 +762,14 @@ $(document).on('click','.product__images-arrow',function(){
 
 function setCustomSelectLabels(el) {
   let textValue = el.find('input:checked + span').text();
+  let elTitle = el.parent().find('h2').text();
   el.find('.custom-select__label').text(textValue);
+  console.log(elTitle,textValue);
 }
 
 function setAllCustomSelects() {
   $('.custom-select--radio').each(function(){
-    // setCustomSelectLabels($(this));
-    // console.log($(this).parent().find('h2').text());
+    setCustomSelectLabels($(this));
   });
 }
 
