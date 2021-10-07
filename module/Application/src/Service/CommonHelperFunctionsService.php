@@ -107,6 +107,8 @@ class CommonHelperFunctionsService {
             $image = $product->receiveFirstImageObject();
             $item['image'] = (!empty($image)) ? $image->getHttpUrl() : null; //Resource::DEFAULT_IMAGE;
             $item['reserve'] = $product->receiveRest($store);
+            $item['rating'] = $product->getRating();
+            $item['reviews'] = $product->getReviews();
             $return[$product->getId()] = $item;
 //                   [
 //                    "price" => $price,

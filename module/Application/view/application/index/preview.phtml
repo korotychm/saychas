@@ -113,4 +113,33 @@
 
 
 </div>
+<div class="card-deck"> 	
+
+    <div class="card">
+        <h2 class="card-header">Рейтинг товара</h2>
+        <div class="card-body">  
+            <form id="productRatingForm" >
+                
+                <p><input   name='productId' val=""  id="productId"  placeholder="id продукта" value="000000000001" required ></p>
+                <p>
+                    <select   name='rating'  id="productRating" >
+                        <option value="4" >&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="3" >&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="2" >&#9733;&#9733;&#9733;</option>
+                        <option value="1" >&#9733;&#9733;</option>
+                        <option value="0" >&#9733;</option>
+                    </select>
+                </p>
+                <button id='productRatingButton' >Отправить рейтинг</button>
+                <button id='productReview' >Получить отзывы</button>
+                
+                <pre id="productRatingAnswer"></pre>
+                
+
+            </form>  
+        </div> 
+    </div> 
+
+
+</div>
 </div>    

@@ -266,7 +266,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $s = $this->packParams($params);
             $select->where($s);
         }
-        
+
         if (isset($params['where'])) {
             $select->where($params['where']);
         }
@@ -289,7 +289,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             return [];
         }
         //exit (count($result));
-        
+
         $resultSet = new HydratingResultSet(
                 $this->hydrator,
                 $this->prototype
@@ -298,7 +298,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 
         //exit(print_r($resultSet));
         return $resultSet;
-        
     }
 
     public function filterProductsByCategories($products, $categories)
@@ -373,7 +372,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
      * @param array $params
      * @return bool
      */
-    private function deleteProductCharacteristics($product_id) : bool {
+    private function deleteProductCharacteristics($product_id): bool
+    {
         $sql = new Sql($this->db);
         // deleting existing product data
         $delete = $sql->delete()->from('product_characteristic')->where(['product_id' => $product_id]);
@@ -381,14 +381,15 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         try {
             $this->db->query($deleteString, $this->db::QUERY_MODE_EXECUTE);
         } catch (InvalidQueryException $e) {
-            print_r($deleteString.$e->getMessage());
+            print_r($deleteString . $e->getMessage());
             exit;
         }
         return true;
     }
 
-    private function saveProductCharacteristics($params) : bool {
-        foreach($params as $param) {
+    private function saveProductCharacteristics($params): bool
+    {
+        foreach ($params as $param) {
             $sql = new Sql($this->db);
             $insert = $sql->insert()->into('product_characteristic')
                     ->columns(['product_id', 'characteristic_id', 'type', 'sort_order', 'value'])
@@ -397,7 +398,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             try {
                 $this->db->query($insertString, $this->db::QUERY_MODE_EXECUTE);
             } catch (InvalidQueryException $e) {
-                print_r($insertString.$e->getMessage());
+                print_r($insertString . $e->getMessage());
                 exit;
             }
         }
@@ -443,7 +444,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
 //            }
 //        }
         /** End of comment to be deleted */
-
         $jsonCharacteristics = '';
         /** $result->data - products */
         foreach ($result->data as $product) {
@@ -451,16 +451,16 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $prods = [];
             $prodChs = [];
             if (count($product->characteristics) > 0) {
-                
+
                 try {
                     $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
 //                    $jsonCharacteristics = Json::encode($product->characteristics, JSON_UNESCAPED_UNICODE);
-                }catch(LaminasJsonRuntimeException $e){
+                } catch (LaminasJsonRuntimeException $e) {
                     return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
                 }
-            
+
 //                $jsonCharacteristics = json_encode($product->characteristics, JSON_UNESCAPED_UNICODE);
-                
+
                 $current = [];
                 foreach ($product->characteristics as $prodChar) {
 
@@ -470,10 +470,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                         continue;
                         throw new \Exception("Unexpected db error: characteristic with id " . " is not found");
                     }
-                    if( !(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($prodChar->value) ) {
+                    if (!(CharacteristicRepository::HEADER_TYPE == $found->getType() || CharacteristicRepository::STRING_TYPE == $found->getType()) && !empty($prodChar->value)) {
                         $isList = $found->getIsList();
-                        if($isList && is_array($prodChar->value)) {
-                            foreach($prodChar->value as $v) {
+                        if ($isList && is_array($prodChar->value)) {
+                            foreach ($prodChar->value as $v) {
                                 $prodChs['product_id'] = $product->id;
                                 $prodChs['characteristic_id'] = implode('-', [$prodChar->id, $product->category_id]);
                                 $prodChs['sort_order'] = $prodChar->index;
@@ -481,7 +481,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                                 $prodChs['type'] = $found->getType();
                                 $prods[] = $prodChs;
                             }
-                        }else{
+                        } else {
                             $prodChs['product_id'] = $product->id;
                             $prodChs['characteristic_id'] = implode('-', [$prodChar->id, $product->category_id]);
                             $prodChs['sort_order'] = $prodChar->index;
@@ -516,7 +516,6 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 }
                 $filteredCurrent = array_filter($current);
                 $curr = implode(',', $filteredCurrent);
-
             }
 
             $this->deleteProductCharacteristics($product->id);
@@ -526,9 +525,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
-
             //if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
-                //mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
+            //mail('user@localhost', 'product->characteristics', print_r($jsonCharacteristics, true));
             //}
 
             try {
@@ -543,4 +541,32 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
 
+    /**
+     * set rating product_user_rating and set average rating product_rating
+     *
+     *  @param type array
+     */
+    public function setProductRating($param)
+    {
+        $query = "CALL set_product_rating('" . $param["product_id"] . "','" . $param["user_id"] . "','" . $param["rating"] . "');";
+        //return [$query];
+        try {
+            $res = $this->db->query($query)->execute();
+        } catch (InvalidQueryException $e) {
+            return ['result' => false, 'description' => "error executing $e $query"];
+        }
+        foreach ($res as $return) {
+            $return['result'] = true;
+            return $return;
+        }
+    }
+//BEGIN
+//    DECLARE average_rating INT;
+//    REPLACE INTO `product_user_rating` (`product_id`, `user_id`, `rating`) VALUES (productid, userid, ratingvalue) ;
+//    SELECT AVG(`rating`) INTO average_rating FROM `product_user_rating`;
+//    IF average_rating > 0 THEN
+//            REPLACE INTO `product_rating`(`product_id`, `rating`) VALUES (productid,average_rating);
+//    END IF;
+//    SELECT average_rating;
+//END
 }

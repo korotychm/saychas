@@ -512,11 +512,23 @@ class ProductManager extends ListManager implements LoadableInterface
         $productUrl = $productUrl.'/'.$fileName;
         $descProductUrl = 'public'.$baseUrl.'/'.$this->config['parameters']['image_path']['subpath']['cpanel_product'];
         $descProductUrl = $descProductUrl.'/'.$fileName;
+        
+        exec ("cp " . $productUrl . " " . $descProductUrl);
+    }
+    
+    public function copyProductImage2($fileName)
+    {
+        $baseUrl = $this->config['parameters']['image_path']['base_url'];
+        $productUrl = 'public'.$baseUrl.'/'.$this->config['parameters']['image_path']['subpath']['product'];
+        $productUrl = $productUrl.'/'.$fileName;
+        $descProductUrl = 'public'.$baseUrl.'/'.$this->config['parameters']['image_path']['subpath']['cpanel_product'];
+        $descProductUrl = $descProductUrl.'/'.$fileName;
 
         $data = file_get_contents($productUrl);
 
         $handle = fopen($descProductUrl, "w");
         fwrite($handle, $data);
+        fflush($handle);
         fclose($handle);
     }
     

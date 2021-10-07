@@ -1,31 +1,31 @@
 <?php
 
-// src/Model/Entity/ProductRating.php
+// src/Model/Entity/ProductUserRating.php
 
 namespace Application\Model\Entity;
 
 use Application\Model\Traits\Searchable;
-use Application\Model\RepositoryInterface\ProductRatingRepositoryInterface;
+use Application\Model\RepositoryInterface\ProductUserRatingRepositoryInterface;
 
 /**
- * ProductRating
+ * ProductUserRating
  */
-class ProductRating extends Entity
+class ProductUserRating extends Entity
 {
 
     use Searchable;
     
-    public static ProductRatingRepositoryInterface $repository;
+    public static ProductUserRatingRepositoryInterface $repository;
 
     /**
      * @var string
      */
     protected $product_id;
-    
+     
     /**
-     * @var int
+     * @var string
      */
-    protected $reviews;
+    protected $user_id;
 
     /**
      * @var string
@@ -79,24 +79,24 @@ class ProductRating extends Entity
         return $this->rating;
     }
      /**
-     * Get reviews
+     * Get id.
      *
-     * @return int
+     * @return string
      */
-    public function getReviews()
+    public function getUserId()
     {
-        return $this->reviews;
+        return $this->user_id;
     }
 
     /**
-     * Set reviews.
+     * Set user_id.
      *
-     * @param string $reviews
+     * @param string $userId
      * @return $this
      */
-    public function setUserId($reviews)
+    public function setUserId($userId)
     {
-        $this->reviews = $reviews;
+        $this->user_id = $userId;
         return $this;
     }
 

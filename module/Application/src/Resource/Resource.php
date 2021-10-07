@@ -156,6 +156,7 @@ class Resource
     const COLOR_REF = 7;
     const COUNTRY_REF = 8;
     
+    const PRODUCT_RATING_VALUES = [10,20,30,40,50];
     
     const DEFAULT_IMAGE = "nophoto.jpeg";
 
