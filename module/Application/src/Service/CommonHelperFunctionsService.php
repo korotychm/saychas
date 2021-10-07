@@ -128,6 +128,7 @@ class CommonHelperFunctionsService {
         if (empty($user)) {
             return [];
         }
+        $return = [];
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();

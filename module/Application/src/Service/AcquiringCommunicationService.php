@@ -16,7 +16,6 @@ use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterf
 /**
  * Description of AcquiringCommunicationService
  *
- * @author plusweb
  */
 class AcquiringCommunicationService
 {
