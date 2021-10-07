@@ -549,7 +549,7 @@ const ProductEdit = {
                     this.showBrand = -1;
                     this.showColor = -1;
                   }
-
+                  setTimeout(() => {setAllCustomSelects()}, 200);
                 } else {
                   if (response.data.result){
                     router.replace('/products');
@@ -677,7 +677,6 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
-    //setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
