@@ -4,6 +4,10 @@ const StoreEdit = {
                   <div v-if="store.id">
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
+                        <h2>Код магазина</h2>
+                        <p>{{ store.id }}</p>
+                      </div>
+                      <div class="product__attribute product__attribute--short">
                         <h2 :class="{'input-error' : (!store.title && errors)}">Название магазина <span class="required">*</span></h2>
                         <input type="text" class="input" v-model="store.title" />
                       </div>
