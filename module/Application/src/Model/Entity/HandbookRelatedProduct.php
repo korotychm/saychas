@@ -261,6 +261,20 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $vat;
+    
+    /**
+     * Rating
+     *
+     * @var int
+     */
+    protected $rating;
+    
+    /**
+     * Reviews
+     *
+     * @var int
+     */
+    protected $reviews;
 
     /**
      * Get price from one-to-one joined price table
@@ -601,6 +615,50 @@ class HandbookRelatedProduct extends Entity
     public function setVat($vat)
     {
         $this->vat = $vat;
+        return $this;
+    }
+    
+     /**
+     * Get rating from one-to-one joined product_rating table
+     *
+     * @return int
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * Set rating. Needed when hydrating;
+     *
+     * @param type $rating
+     * @return $this
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+        return $this;
+    }
+
+    /**
+     * Get reviews count from one-to-one joined product_rating table
+     *
+     * @return int
+     */
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
+
+    /**
+     * Set rating. Needed when hydrating;
+     *
+     * @param type $reviews
+     * @return $this
+     */
+    public function setReviews($reviews)
+    {
+        $this->reviews = $reviews;
         return $this;
     }
 

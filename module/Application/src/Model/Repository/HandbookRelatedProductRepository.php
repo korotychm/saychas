@@ -95,6 +95,7 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
     {
         $join = new Join();
         $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", ['price', 'old_price', 'discount'], Select::JOIN_LEFT);
+        $join->join(['product_rating' => 'product_rating'], "{$this->tableName}.id = product_rating.product_id", ['rating',  'reviews'], Select::JOIN_LEFT);
         $params['joins'] = $join;
         return parent::findAll($params);
     }
