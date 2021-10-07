@@ -5,7 +5,7 @@ const StoreEdit = {
                     <div class="store__fields">
                       <div class="product__attribute product__attribute--short">
                         <h2>Код магазина</h2>
-                        <p>{{ store.id }}</p>
+                        <span style="line-height: 55px;">{{ store.id }}</span>
                       </div>
                       <div class="product__attribute product__attribute--short">
                         <h2 :class="{'input-error' : (!store.title && errors)}">Название магазина <span class="required">*</span></h2>
