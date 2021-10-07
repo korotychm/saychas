@@ -767,8 +767,8 @@ function setCustomSelectLabels(el) {
 
 function setAllCustomSelects() {
   $('.custom-select--radio').each(function(){
-    setCustomSelectLabels($(this));
-    console.log($(this).parent().find('h2').text());
+    // setCustomSelectLabels($(this));
+    // console.log($(this).parent().find('h2').text());
   });
 }
 
