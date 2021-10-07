@@ -522,7 +522,7 @@ const ProductEdit = {
                 if (categoryChange) {
                   let product = response.data.answer.data.product;
                   console.log(product);
-                  this.product.characteristics = JSON.parse(JSON.stringify(product.characteristics));
+                  this.product.characteristics = product.characteristics;
                   if (product.brand_id !== undefined){
                     this.product.brand_id = product.brand_id;
                     this.product.brand_name = product.brand_name;
@@ -677,7 +677,7 @@ const ProductEdit = {
   },
   updated: function(){
     checkProductImagesSlider();
-    setAllCustomSelects();
+    //setAllCustomSelects();
     $('.main__loader').hide();
   }
 }
