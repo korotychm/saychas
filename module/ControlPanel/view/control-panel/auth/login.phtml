@@ -10,7 +10,7 @@
         </div>
         <h2>Пароль</h2>
         <div class="cp-login__input">
-          <input type="password" placeholder="••••" class="input" name="password">
+          <input id="password-input" type="password" placeholder="••••" class="input" name="password">
           <button class="cp-login__show-password">
             <svg width="39" height="20" viewBox="0 0 39 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1.82016 10.002L3.89582 12.0776C12.452 20.6338 26.3716 20.6338 34.9277 12.0776L36.9954 10.002L34.9198 7.92632C26.3636 -0.629827 12.444 -0.629827 3.8879 7.92632L1.82016 10.002V10.002ZM19.4078 20C13.4027 20 7.3975 17.7104 2.8263 13.1392L0.219846 10.5328C-0.0732818 10.2397 -0.0732818 9.76431 0.219846 9.46326L2.8263 6.8568C11.9687 -2.2856 26.8469 -2.2856 35.9893 6.8568L38.5958 9.46326C38.8889 9.75639 38.8889 10.2317 38.5958 10.5328L35.9893 13.1392C31.4181 17.7104 25.413 20 19.4078 20V20Z" fill="currentColor"/>
@@ -28,9 +28,11 @@
     e.preventDefault();
     $(this).toggleClass('active');
     if ($(this).hasClass('active')){
-      $(this).parent().find('input').attr('type','text');
+      console.log(1);
+      $('#password-input').attr('type','text');
     } else {
-      $(this).parent().find('input').attr('type','password');
+      console.log(2);
+      $('#password-input').attr('type','password');
     }
   });
 </script>
