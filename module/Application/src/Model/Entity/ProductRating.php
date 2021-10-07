@@ -21,11 +21,11 @@ class ProductRating extends Entity
      * @var string
      */
     protected $product_id;
-     
-//    /**
-//     * @var string
-//     */
-//    protected $user_id;
+    
+    /**
+     * @var int
+     */
+    protected $reviews;
 
     /**
      * @var string
@@ -79,25 +79,25 @@ class ProductRating extends Entity
         return $this->rating;
     }
      /**
-     * Get id.
+     * Get reviews
      *
-     * @return string
+     * @return int
      */
-//    public function getUserId()
-//    {
-//        return $this->user_id;
-//    }
+    public function getReviews()
+    {
+        return $this->reviews;
+    }
 
     /**
-     * Set user_id.
+     * Set reviews.
      *
-     * @param string $userId
+     * @param string $reviews
      * @return $this
      */
-//    public function setUserId($userId)
-//    {
-//        $this->user_id = $userId;
-//        return $this;
-//    }
+    public function setUserId($reviews)
+    {
+        $this->reviews = $reviews;
+        return $this;
+    }
 
 }
