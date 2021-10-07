@@ -549,7 +549,7 @@ const ProductEdit = {
                     this.showBrand = -1;
                     this.showColor = -1;
                   }
-                  setTimeout(() => {setAllCustomSelects()}, 200);
+                  setTimeout(() => {setAllCustomSelects()}, 2000);
                 } else {
                   if (response.data.result){
                     router.replace('/products');
@@ -611,7 +611,7 @@ const ProductEdit = {
               this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
               console.log(this.product);
-              setTimeout(() => {setAllCustomSelects()}, 200);
+              setTimeout(() => {setAllCustomSelects()}, 2000);
             }
           })
           .catch(error => {
