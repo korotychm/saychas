@@ -84,6 +84,18 @@ class ReviewController extends AbstractActionController
     }
 
     /**
+     * set product review
+     *
+     * @param POST data
+     * @return JSON
+     */
+    public function  setProductReviewAction()
+    {
+        $return = ["result"=>false, "description" => "Post error"];
+        return new JsonModel($return);
+    }
+    
+    /**
      * get product review
      *
      * @param POST productId
