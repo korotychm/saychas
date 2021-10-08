@@ -269,10 +269,10 @@ class HtmlProviderService
         // Alex has commented out the below code
         //$return['category_id'] = $categoryId = $product->getCategoryId();
         $charNew = $product->getParamVariableList();
-        $characteristicsArray = [];
-        if (!empty($charNew)) {
-            $characteristicsArray = Json::decode($charNew, Json::TYPE_ARRAY);
-        }
+        //$characteristicsArray = [];
+        //if (!empty($charNew)) {
+            $characteristicsArray = !empty($charNew) ? Json::decode($charNew, Json::TYPE_ARRAY) : [];
+        //}
         $productImages[] = $product->getHttpUrl();
         $vendor = $product->getVendorCode();
         $productId = $product->getId();
@@ -320,7 +320,7 @@ class HtmlProviderService
             $return["characteristics"] = [];
         }
         //$productImages = ;
-        $return['images'] = array_unique($productImages);
+       // $return['images'] = array_unique($productImages);
         $return['categoryId'] = $categoryId;
         $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
         //exit(print_r($return));
