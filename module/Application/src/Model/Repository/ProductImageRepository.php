@@ -103,6 +103,14 @@ class ProductImageRepository extends Repository implements ProductImageRepositor
     {
         foreach ($data as $product) {
             foreach ($product->images as $image) {
+                $s = sprintf("delete from `product_image` where product_id='%s'", $product->id);
+                try {
+                    $q = $this->db->query($s);
+                    $q->execute();
+                } catch (Exception $ex) {
+                    return ['result' => false, 'description' => "error executing sql statement", 'statusCode' => 418];
+                }
+                
                 $sql = sprintf("replace INTO `product_image`(`product_id`, `ftp_url`, `http_url`, `sort_order`) VALUES ( '%s', '%s', '%s', %u )",
                         $product->id, $image, $image, 0);
                 try {
