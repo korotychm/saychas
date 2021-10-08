@@ -302,11 +302,6 @@ const ProductEdit = {
                   </div>
                 </div>
                 <div v-else class="product__error">Вы не можете редактировать этот товар</div>
-                <style>
-                  .custom-select__label:focus {
-                    background: yellow !important;
-                  }
-                </style>
             </div>`,
   data: function () {
     return {

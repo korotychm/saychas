@@ -7,3 +7,6 @@ body {
 .testdiv:focus {
   color: var(--red);
 }
+.custom-select__label:focus {
+  background: #ff0 !important;
+}
