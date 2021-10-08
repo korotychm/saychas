@@ -4,23 +4,13 @@
 
 namespace Application\Service;
 
-//use Application\Model\Entity;
 use Laminas\Config\Config;
 use Laminas\Json\Json;
-//use Laminas\View\Model\ViewModel;
 use Laminas\Session\Container;
 use Application\Resource\Resource;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\Basket;
-/* use Application\Model\Entity\ClientOrder;
-  use Application\Model\Entity\Delivery;
-  use Application\Model\Entity\Provider;
-  use Application\Model\Entity\Product; */
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
-
-//use Laminas\Session\Container;
-//use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 
 /**
  * Description of CommonHelperFunctionsService
@@ -175,6 +165,7 @@ class CommonHelperFunctionsService
     }
 
     /**
+     * Count basket product
      * 
      * @param int $userId
      * @return int
