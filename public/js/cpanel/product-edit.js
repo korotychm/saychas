@@ -787,6 +787,7 @@ $(document).on('click','.custom-select--radio input:checked',function(){
 $(document).on('click','.custom-select__label',function(){
   $('.custom-select__label').not(this).parent().removeClass('active');
   $(this).parent().toggleClass('active');
+  $(this).focus();
 });
 
 $(document).click( function(e){
