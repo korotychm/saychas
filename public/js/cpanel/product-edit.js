@@ -119,7 +119,7 @@ const ProductEdit = {
                       <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
                           <div class="custom-select custom-select--radio" style="width: 253px;">
-                            <div class="custom-select__label input"></div>
+                            <div class="custom-select__label input" tabindex="0"></div>
                             <div class="custom-select__dropdown">
                               <div class="custom-select__dropdown-inner">
                                 <label class="custom-select__option">
@@ -172,7 +172,7 @@ const ProductEdit = {
                             </div>
                             <!-- Тип 4 - справочник (мульти) -->
                             <div class="custom-select custom-select--checkboxes" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
-                              <div class="custom-select__label input">Добавить</div>
+                              <div class="custom-select__label input" tabindex="0">Добавить</div>
                               <!-- выпадающий список -->
                               <div class="custom-select__dropdown">
                                 <div class="custom-select__dropdown-inner">
@@ -796,21 +796,35 @@ $(document).click( function(e){
     $('.custom-select').removeClass('active');
 });
 
-// $(document).on('keydown','.custom-select__label',function(e){
-//   if (e.keyCode == 40){
-//     console.log('arrow pressed');
-//     $(this).parent().find('.custom-select__option').eq(0).focus();
-//   }
-// });
-//
-// $(document).on('keydown','.custom-select__option',function(e){
-//   let index = $(this).index();
-//   let length = $(this).parent().find('.custom-select__option').length;
-//   if (e.keyCode == 40){
-//     if (index != (length - 1)){
-//       $(this).parent().find('.custom-select__option').eq(index + 1).focus();
-//     } else {
-//       $(this).parent().find('.custom-select__option').eq(0).focus();
-//     }
-//   }
-// });
+$('.custom-select__label').keydown(function(e){
+  console.log('down');
+  if (e.keyCode == 40){
+    $(this).parent().find('input').eq(0).focus();
+  }
+});
+
+$('.custom-select__option input').keydown(function(e){
+  e.preventDefault();
+  let activeEl = $(this).parent().find('input:focus'),
+      index = activeEl.parent().index() - 1,
+      length = $(this).parent().find('input').length,
+      step = 0;
+  if (e.keyCode == 13){
+    $(this).parent().find('input:focus').prop('checked',true);
+    return;
+  }
+  if (e.keyCode == 40){
+    index++;
+    if (index == length){
+      index = 0;
+    }
+  }
+  if (e.keyCode == 38){
+    index--;
+    if (index == -1){
+      index = length - 1;
+    }
+  }
+  console.log('pressed',index);
+  $(this).parent().find('input').eq(index).focus();
+})
