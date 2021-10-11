@@ -10,9 +10,29 @@
         </div>
         <h2>Пароль</h2>
         <div class="cp-login__input">
-          <input type="password" placeholder="••••" class="input" name="password">
+          <input id="password-input" type="password" placeholder="••••" class="input" name="password">
+          <button class="cp-login__show-password">
+            <svg width="39" height="20" viewBox="0 0 39 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.82016 10.002L3.89582 12.0776C12.452 20.6338 26.3716 20.6338 34.9277 12.0776L36.9954 10.002L34.9198 7.92632C26.3636 -0.629827 12.444 -0.629827 3.8879 7.92632L1.82016 10.002V10.002ZM19.4078 20C13.4027 20 7.3975 17.7104 2.8263 13.1392L0.219846 10.5328C-0.0732818 10.2397 -0.0732818 9.76431 0.219846 9.46326L2.8263 6.8568C11.9687 -2.2856 26.8469 -2.2856 35.9893 6.8568L38.5958 9.46326C38.8889 9.75639 38.8889 10.2317 38.5958 10.5328L35.9893 13.1392C31.4181 17.7104 25.413 20 19.4078 20V20Z" fill="currentColor"/>
+              <path id="openeye" d="M19.4078 4.25827C16.2388 4.25827 13.6641 6.83304 13.6641 10.002C13.6641 13.1709 16.2388 15.7457 19.4078 15.7457C22.5767 15.7457 25.1515 13.1709 25.1515 10.002C25.1515 6.83304 22.5767 4.25827 19.4078 4.25827ZM19.4078 17.2509C15.407 17.2509 12.1588 13.9949 12.1588 10.002C12.1588 6.00119 15.4149 2.75302 19.4078 2.75302C23.4006 2.75302 26.6567 6.00911 26.6567 10.002C26.6567 14.0028 23.4086 17.2509 19.4078 17.2509Z" fill="currentColor"/>
+            </svg>
+          </button>
         </div>
-        <input type="submit" id="sendlogin" class="btn btn-primary" value="Войти" />
+        <input type="submit" id="sendlogin" class="btn btn--primary" value="Войти" />
     </form>
   </div>
 </div>
+
+<script>
+  $('.cp-login__show-password').click(function(e){
+    e.preventDefault();
+    $(this).toggleClass('active');
+    if ($(this).hasClass('active')){
+      console.log(1);
+      $('#password-input').attr('type','text');
+    } else {
+      console.log(2);
+      $('#password-input').attr('type','password');
+    }
+  });
+</script>
