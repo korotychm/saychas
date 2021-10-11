@@ -1,6 +1,6 @@
 function zoomImg() {
   $('.product-card__big-img').trigger('zoom.destroy');
-  let imgSrc = $('.product-card__big-img img').attr('src');
+  let imgSrc = $('.product-card__big-img.active img').attr('src');
   $('.product-card__big-img.active').zoom({url: imgSrc});
 }
 
