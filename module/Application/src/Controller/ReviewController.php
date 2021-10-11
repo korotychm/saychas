@@ -102,6 +102,7 @@ class ReviewController extends AbstractActionController
     public function setProductReviewAction()
     {
         $return = ["result" => true, "seller_name" => "", "seller_message" => ""];
+        $stripTags = new StripTags();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
             return new JsonModel(["result" => false, "description" => "Product Id error"]);
@@ -121,9 +122,6 @@ class ReviewController extends AbstractActionController
             return $this->getResponse()->setStatusCode(403);
         }
 
-
-
-        $stripTags = new StripTags();
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
         $reviewId = $this->addReview($return);
         $files = $this->getRequest()->getFiles();
