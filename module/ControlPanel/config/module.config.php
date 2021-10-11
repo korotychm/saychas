@@ -795,10 +795,12 @@ return [
         'factories' => [
             Controller\Plugin\AccessPlugin::class => Controller\Plugin\Factory\AccessPluginFactory::class,
             Controller\Plugin\CurrentUserPlugin::class => Controller\Plugin\Factory\CurrentUserPluginFactory::class,
+            Controller\Plugin\ImagePathPlugin::class => Controller\Plugin\Factory\ImagePathPluginFactory::class,
         ],
         'aliases' => [
             'access' => Controller\Plugin\AccessPlugin::class,
             'currentUser' => Controller\Plugin\CurrentUserPlugin::class,
+            'imagePath' => Controller\Plugin\ImagePathPlugin::class,
         ],
     ],    
     'view_helpers' => [
