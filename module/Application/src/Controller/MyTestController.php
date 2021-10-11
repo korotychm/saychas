@@ -153,6 +153,14 @@ class MyTestController extends AbstractActionController
     
     public function showStoreAction()
     {
+        print_r($this->imagePath('provider'));
+        print_r($this->imagePath('product'));
+        print_r($this->imagePath('brand'));
+        print_r($this->imagePath('cpanel_product'));
+        print_r($this->imagePath('review_images'));
+        $img = $this->imagePath('provider');
+        print_r("<img src=\"{$img}/00001.jpg\"/>");
+        
         //$this->storeRepository->findProductsByProviderIdAndExtraCondition(1, [1, 2]);
         $stores = $this->storeRepository->findStoresByProviderIdAndExtraCondition(1, [1,2, 3]);
         $stores = $this->storeRepository->findAll(['000000001', 2, 3]);
