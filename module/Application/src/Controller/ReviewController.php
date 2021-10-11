@@ -91,9 +91,12 @@ class ReviewController extends AbstractActionController
      */
     public function  setProductReviewAction()
     {
-        $return = ["result"=>false, "description" => "Post error"];
+        //$return = ["result"=>false, "description" => "Post error"];
+        
         $return["post"] = $this->getRequest()->getPost();
-        $return["fles"] = $_FILES;//$this->getRequest()->getFiles();
+        
+        
+        $return["files"] = (!empty($files = $this->getRequest()->getFiles()))  ? $files['files']: [];
         return new JsonModel($return);
     }
     

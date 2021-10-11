@@ -142,7 +142,7 @@
     <div class="card">
         <h2 class="card-header">Оставить отзыв</h2>
         <div class="card-body">  
-            <form id="productReviewForm" enctype='multipart/form-data' >
+            <form id="productReviewForm" <?php /*enctype='multipart/form-data'*/?> >
                 
                 <p><input   name='productId' val=""  id="productReviewId"  placeholder="id продукта" value="000000000001" required ></p>
                 <p>
@@ -155,7 +155,7 @@
                     </select>
                 </p>
                 <p>
-                    <textarea name="reviewMessage" placeholder="тзыв о товаре"></textarea>
+                    <textarea name="reviewMessage" id="reviewMessage" placeholder="тзыв о товаре"></textarea>
                 </p>
                 <input type="file" id="file" multiple="true" name="file" >
                 

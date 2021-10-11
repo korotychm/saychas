@@ -239,11 +239,7 @@ $(function () {
     };
     
     var sendProductReview = function (params) {
-        var data = params;
-        
-        $.each($('#file')[0].files, function(i, file) {
-            data.append('file-'+i, file);
-        });
+        var data = params ;
         
         $.ajax({
             type: "POST",
@@ -251,6 +247,8 @@ $(function () {
             method: 'post',
            // contentType: 'multipart/form-data',
             data: data,
+            processData: false,
+            contentType: false,
             success: function (result, status, xhr) {
                 console.log('result = ', result);
                 $("#productReviewAnswer").html(JSON.stringify(result, null, " "));
@@ -261,10 +259,17 @@ $(function () {
         });
         return false;
     };
-
     
-     $('#productReviewForm').submit(function () {
-        var data = $(this).serialize();
+    $('#productReviewForm').submit(function () {
+        
+        var data = new FormData();
+        $.each($('#file')[0].files, function(i, file) {
+            data.append('files['+i+']', file);
+        });
+        //reviewMessage productId
+        data.append('productId', $("#productId").val()) ;
+        data.append('reviewMessage', $("#reviewMessage").val()) ;
+        
         sendProductReview(data);
         return false;
     });
