@@ -253,77 +253,64 @@ class HtmlProviderService
         }
 
         $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
-        //$container = new Container(Resource::SESSION_NAMESPACE);
-        //$legalStore = $container->legalStore;
         $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
         $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
         $return['product_id'] = $id = $product->getId();
         $return['title'] = $product->getTitle();
         $parentCategoryId = $product->getParentCategoryId();
         $categoryId = $product->getCategoryId();
+        
         if (!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
             $categoryId = $parentCategoryId;
         }
+        
         $return['category_id'] = $categoryId;
-        /** End of Alex's code */
-        // Alex has commented out the below code
-        //$return['category_id'] = $categoryId = $product->getCategoryId();
         $charNew = $product->getParamVariableList();
-        //$characteristicsArray = [];
-        //if (!empty($charNew)) {
-            $characteristicsArray = !empty($charNew) ? Json::decode($charNew, Json::TYPE_ARRAY) : [];
-        //}
+        $characteristicsArray = !empty($charNew) ? Json::decode($charNew, Json::TYPE_ARRAY) : [];
         $productImages[] = $product->getHttpUrl();
         $vendor = $product->getVendorCode();
         $productId = $product->getId();
-
         $return["brand"]["title"] = $product->getBrandTitle();
         $return["brand"]["id"] = $product->getBrandId();
         $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
-
         $return["provider"]["id"] = $product->getProviderId();
-        //exit($return["provider"]["id"]);
         $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
-
         $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
         $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
-
         $description = $product->getDescription();
+
         if (!empty($description)) {
             $return['description']["text"] = StringHelper::eolFormating($description);
             $return['description']['if_spoiler'] = ((strlen($description) < 501));
             $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
         }
-        //}
-        $characteristicsArray = array_diff($characteristicsArray, array(''));
+
+        //$characteristicsArray = array_diff($characteristicsArray, array(''));
         if (!empty($characteristicsArray)) {
             foreach ($characteristicsArray as $char) {
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                 $chArray = $ch->getIsList();
                 $chType = $ch->getType();
-                $getmain = ($ch->getIsMain()) ? 1 : 0;
+
                 if ($char['value']) {
                     ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
                     $value = $this->valueParce($v, $chType);
                     unset($v);
                 }
-                $return["characteristics"][$getmain][] = [
-                    "id" => $char['id'],
-                    "title" => $ch->getTitle(),
-                    "type" => $chType,
-                    "array" => $chArray,
-                    "value" => $value,
-                    "unit" => $ch->getUnit(),
-                ];
+
+                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
+                $return["characteristics"][0][] = $char;
+                if ($ch->getIsMain()) {
+                    $return["characteristics"][1][] = $char;
+                }
             }
         } else {
             $return["characteristics"] = [];
         }
-        //$productImages = ;
-       // $return['images'] = array_unique($productImages);
+        
         $return['categoryId'] = $categoryId;
         $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
-        //exit(print_r($return));
+
         return $return;
     }
 
@@ -356,7 +343,6 @@ class HtmlProviderService
         if (null == $user) {
             return [];
         }
-        //$container = new Container(Resource::SESSION_NAMESPACE);
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
