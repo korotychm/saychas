@@ -5,6 +5,7 @@
 namespace Application\Model\Entity;
 
 use Application\Model\Traits\Searchable;
+//use Application\Model\Repository\ProductRatingRepository;
 use Application\Model\RepositoryInterface\ProductRatingRepositoryInterface;
 
 /**
@@ -15,6 +16,7 @@ class ProductRating extends Entity
 
     use Searchable;
     
+    //public static ProductRatingRepository $repository;
     public static ProductRatingRepositoryInterface $repository;
 
     /**

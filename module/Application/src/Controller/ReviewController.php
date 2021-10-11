@@ -43,12 +43,12 @@ class ReviewController extends AbstractActionController
     private $commonHelperFuncions;
 
     public function __construct(
-            //CategoryRepositoryInterface $categoryRepository,
+            //ProductRatingRepositoryInterface $productRatingRepository,
             ProductRepositoryInterface $productRepository, /**/
             //HandbookRelatedProductRepositoryInterface $handBookProduct,
             $entityManager, $config, AuthenticationService $authService, CommonHelperFunctionsService $commonHelperFuncions)
     {
-        // $this->categoryRepository = $categoryRepository;
+       // $this->productRatingRepository = $productRatingRepository;
         $this->productRepository = $productRepository;
         //  $this->handBookRelatedProductRepository = $handBookProduct;
         $this->entityManager = $entityManager;
@@ -84,6 +84,23 @@ class ReviewController extends AbstractActionController
     }
 
     /**
+     * set product review
+     *
+     * @param POST and  FILES data
+     * @return JSON
+     */
+    public function  setProductReviewAction()
+    {
+        //$return = ["result"=>false, "description" => "Post error"];
+        
+        $return["post"] = $this->getRequest()->getPost();
+        
+        
+        $return["files"] = (!empty($files = $this->getRequest()->getFiles()))  ? $files['files']: [];
+        return new JsonModel($return);
+    }
+    
+    /**
      * get product review
      *
      * @param POST productId
@@ -101,13 +118,14 @@ class ReviewController extends AbstractActionController
         
         $reviews["reviews"] = [];
         $res = Review::findAll(['where' => $param])->toArray();
+        $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']); 
 
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int)$review['time_created']);
             $review['images'] = $this->getReviewImages($review['id']); 
             $reviews["reviews"][] = $review;
         }
-
+        
         return new JsonModel($reviews);
     }
     

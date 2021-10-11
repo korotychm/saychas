@@ -169,16 +169,16 @@ return [
                     ],
                 ],
             ],
-            'preview' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/preview',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'preview',
-                    ],
-                ],
-            ],
+//            'preview' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/preview',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action'     => 'preview',
+//                    ],
+//                ],
+//            ],
             'client-orders' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -984,6 +984,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-set-product-review'=>[
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-set-product-review',
+                    'defaults' => [
+                        'controller' => Controller\ReviewController::class,
+                        'action'     => 'setProductReview',
+                    ],
+                ],
+            ],
             'ajax-set-user-address'=>[
                 'type'    => Literal::class,
                 'options' => [
@@ -1290,6 +1300,7 @@ return [
             \Application\Model\RepositoryInterface\BasketRepositoryInterface::class => \Application\Model\Repository\BasketRepository::class,
             \Application\Model\RepositoryInterface\ReviewRepositoryInterface::class => \Application\Model\Repository\ReviewRepository::class,
             \Application\Model\RepositoryInterface\ReviewImageRepositoryInterface::class => \Application\Model\Repository\ReviewImageRepository::class,
+            \Application\Model\RepositoryInterface\ProductImageRepositoryInterface::class => \Application\Model\Repository\ProductImageRepository::class,
             \Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface::class => \Application\Model\Repository\ProductFavoritesRepository::class,
             \Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface::class => \Application\Model\Repository\ProductHistoryRepository::class,
             \Application\Model\RepositoryInterface\ColorRepositoryInterface::class => \Application\Model\Repository\ColorRepository::class,
@@ -1331,6 +1342,7 @@ return [
             \Application\Model\Repository\BasketRepository::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Repository\ReviewRepository::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
             \Application\Model\Repository\ReviewImageRepository::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
+            \Application\Model\Repository\ProductImageRepository::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
             \Application\Model\Repository\ProductFavoritesRepository::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
             \Application\Model\Repository\ProductHistoryRepository::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Repository\ColorRepository::class => \Application\Model\Factory\ColorRepositoryFactory::class,
@@ -1378,6 +1390,7 @@ return [
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Entity\Review::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
             \Application\Model\Entity\ReviewImage::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
+            \Application\Model\Entity\ProductImage::class => \Application\Model\Factory\ProductImageRepositoryFactory::class,
             \Application\Model\Entity\Category::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Entity\User::class => \Application\Model\Factory\UserRepositoryFactory::class,
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
