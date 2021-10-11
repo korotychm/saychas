@@ -61,7 +61,11 @@
 <?php endIf; ?>
 <?php if ($provider['id']):?><div class="product-card__store">
        <div class="product-card__store-logo">
+          <?php if ($provider['image']):?>
             <img src="<?=$image_path_provider.'/'.$provider['image']?>" />
+          <?php else: ?>
+            <img src="/img/ui/nophoto.jpg" />
+          <?php endif;?>
        </div>
         <a href="/seller/<?=$provider['id']?>">Все товары <?=$provider['title']?> →</a>
     </div>
