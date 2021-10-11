@@ -159,8 +159,8 @@ class AjaxController extends AbstractActionController {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         if (empty($return['userId'])) {
-            $this->getResponse()->setStatusCode(403);
-            return;
+            return $this->getResponse()->setStatusCode(403);
+            //return;
         }
         $return['basket'] = [];
         $basket = Basket::findAll(['user_id' => $userId, 'order_id' => "0"]);
