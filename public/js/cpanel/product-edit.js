@@ -407,7 +407,7 @@ const ProductEdit = {
           console.log(response);
           let newImgPath = this.imgPath + '/' + response.data.image_file_name;
           this.product.images.push(newImgPath);
-          this.currentImg = response.data.image_file_name;
+          this.currentImg = newImgPath;
           checkProductImagesSlider();
         })
         .catch(error => {
