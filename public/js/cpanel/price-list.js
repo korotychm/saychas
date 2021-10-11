@@ -69,7 +69,7 @@ const PriceList = {
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" max="100" min="0" v-model.lazy="product.discount" />
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="checkDiscount(index)" />
                         </div>
                         <div class="pricelist__popup-price">
                           <input type="number" min="0" max="999999" length="6" v-model.lazy="product.price" @change="checkPrice(index)" />
@@ -112,11 +112,23 @@ const PriceList = {
       }
   },
   methods: {
+    checkDiscount(index) {
+      if (this.products[index].discount === ''){
+        this.products[index].discount = 0;
+      }
+      this.products[index].discount = parseInt(this.products[index].discount);
+      if (this.products[index].discount > 100){
+        this.products[index].discount = 100;
+      }
+    }
     checkPrice(index) {
       if (this.products[index].price === ''){
         this.products[index].price = 0;
       }
       this.products[index].price = parseInt(this.products[index].price);
+      if (this.products[index].price > 999999){
+        this.products[index].price = 999999;
+      }
     },
     setRubPrice() {
       for (product of this.products) {
@@ -235,16 +247,4 @@ $(document).mouseup(function(e)
     {
         container.parent().removeClass('active');
     }
-});
-
-$(document).on('keypress','.pricelist__popup-price input',function(e){
-  if ($(this).val().length > 5){
-    e.preventDefault();
-  }
-});
-
-$(document).on('keypress','.pricelist__popup-sale input',function(e){
-  if ($(this).val().length > 1){
-    e.preventDefault();
-  }
 });
