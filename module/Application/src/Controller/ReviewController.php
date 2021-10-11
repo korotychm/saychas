@@ -16,6 +16,7 @@ use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
 use Application\Model\Entity\ReviewImage;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+use Laminas\Filter\StripTags;
 //use Application\Model\Repository\ProductRepository;
 //use Application\Model\Entity\HandbookRelatedProduct;
 //use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -91,8 +92,8 @@ class ReviewController extends AbstractActionController
      */
     public function  setProductReviewAction()
     {
-        //$return = ["result"=>false, "description" => "Post error"];
-        $htmlfilter = new Laminas\Filter\HtmlEntities();
+        $return = ["result"=>false, "description" => "Post error"];
+        $htmlfilter = new HtmlEntities();
         $return["post"] = $this->getRequest()->getPost();
         $return["post"]["reviewMessage"]  =   $htmlfilter->filter($return["post"]["reviewMessage"] );
         
