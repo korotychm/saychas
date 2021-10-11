@@ -93,7 +93,7 @@ class ReviewController extends AbstractActionController
     public function  setProductReviewAction()
     {
         $return = ["result"=>false, "description" => "Post error"];
-        $htmlfilter = new HtmlEntities();
+        $htmlfilter = new StripTags();
         $return["post"] = $this->getRequest()->getPost();
         $return["post"]["reviewMessage"]  =   $htmlfilter->filter($return["post"]["reviewMessage"] );
         
