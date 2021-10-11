@@ -96,6 +96,8 @@
   pointer-events: none;
   transition: opacity 0.3s;
   display: flex;
+  border-radius: 20px;
+  overflow: hidden;
 }
 .product-card__big-img.active {
   opacity: 1;
@@ -282,6 +284,10 @@
 }
 .product-card__full-table {
   grid-column: span 3;
+}
+.product-card__full-table a {
+  color: var(--red);
+  text-decoration: none;
 }
 .product-card__full-table h3 {
   font-size: 22px;

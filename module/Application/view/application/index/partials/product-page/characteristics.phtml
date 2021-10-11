@@ -15,7 +15,7 @@
             <?php else : ?>
                 <tr>
                    <td><span><?= $characteristic['title'] ?></span></td>
-                   <td><?= $characteristic['value'] ?></td>
+                   <td><?= $characteristic['value'] ?><?php if ($characteristic['unit']):?><span class="unit"> <?=$characteristic['unit']?></span><?php endif;?></td>
                 </tr>
             <?php endif; ?>
         <?php

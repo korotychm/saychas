@@ -24,7 +24,7 @@ class ReviewControllerFactory implements FactoryInterface
 
     public function __invoke(ContainerInterface $container, $requestName, array $options = null)
     {
-        //$category = $container->get(CategoryRepositoryInterface::class);
+        //$productRating = $container->get(ProductRatingRepositoryInterface::class);
         $product = $container->get(ProductRepositoryInterface::class);
         //$handBookProduct = $container->get(HandbookRelatedProductRepositoryInterface::class);
         $entityManager = $container->get('laminas.entity.manager');
@@ -36,7 +36,7 @@ class ReviewControllerFactory implements FactoryInterface
         
         
         return new ReviewController(
-                //$category, 
+          //      $productRating, 
                 $product, 
                // $handBookProduct, 
                 $entityManager, 

@@ -159,7 +159,7 @@ const ProductAdd = {
                                             <div class="custom-select__dropdown">
                                               <div class="custom-select__dropdown-inner">
                                                 <label class="custom-select__option">
-                                                  <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                                  <input type="radio" checked value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
                                                   <span>Не выбрано</span>
                                                 </label>
                                                 <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
@@ -243,7 +243,7 @@ const ProductAdd = {
                                   </div>
                                   <div v-if="product.images" class="product__images">
                                       <div class="product__attribute">
-                                          <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p><p>Формат фото - JPG, JPEG, PNG.</p></h2>
+                                          <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p><p>Формат фото - JPG, JPEG, PNG.</p><p>Максимальный размер файла - 5 Мб.</p></h2>
                                           <div class="product__images-wrap">
                                               <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                                   <div class="product__images-list product__images-list--slider">
@@ -386,24 +386,27 @@ const ProductAdd = {
     uploadFile() {
       var data = new FormData();
       var imagefile = document.querySelector('#photo-upload');
-      console.log(imagefile.files[0]);
-      data.append('file', imagefile.files[0]);
-      data.append('product_id', this.product.id);
-      data.append('provider_id', this.product.provider_id);
-      axios.post('/control-panel/upload-product-image', data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-      })
-      .then(response => {
-        console.log(response)
-        this.product.images.push(response.data.image_file_name);
-        this.currentImg = response.data.image_file_name;
-        checkProductImagesSlider();
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
+      if (imagefile.files[0].size > 5242880){
+        showServicePopupWindow('Невозможно загрузить фото', 'Размер фото превышает 5Мб.');
+      } else {
+        data.append('file', imagefile.files[0]);
+        data.append('product_id', this.product.id);
+        data.append('provider_id', this.product.provider_id);
+        axios.post('/control-panel/upload-product-image', data, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        })
+        .then(response => {
+          console.log(response)
+          this.product.images.push(response.data.image_file_name);
+          this.currentImg = response.data.image_file_name;
+          checkProductImagesSlider();
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      }
     },
     flatCategories() {
       let categoriesFlat = [];

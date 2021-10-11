@@ -28,10 +28,8 @@
     e.preventDefault();
     $(this).toggleClass('active');
     if ($(this).hasClass('active')){
-      console.log(1);
       $('#password-input').attr('type','text');
     } else {
-      console.log(2);
       $('#password-input').attr('type','password');
     }
   });
