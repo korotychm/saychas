@@ -72,7 +72,7 @@ const PriceList = {
                           <input type="number" max="100" min="0" v-model.lazy="product.discount" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" max="999999" v-model.lazy="product.price" @change="checkPrice(index)" />
+                          <input type="number" min="0" max="999999" length="6" v-model.lazy="product.price" @change="checkPrice(index)" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -80,8 +80,8 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3 v-if="product.discount">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</h3>
-                        <h3 v-else> {{ product.price.toLocaleString() }} ₽</h3>
+                        <h3 v-if="product.discount">{{ (+product.price * (100 - +product.discount) / 100).toLocaleString() }} ₽</h3>
+                        <h3 v-else> {{ +product.price.toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
