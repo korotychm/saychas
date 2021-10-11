@@ -139,6 +139,35 @@
             </form>  
         </div> 
     </div> 
+    <div class="card">
+        <h2 class="card-header">Оставить отзыв</h2>
+        <div class="card-body">  
+            <form id="productReviewForm" enctype='multipart/form-data' >
+                
+                <p><input   name='productId' val=""  id="productReviewId"  placeholder="id продукта" value="000000000001" required ></p>
+                <p>
+                    <select   name='rating'  class="productRating" >
+                        <option value="4" >&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="3" >&#9733;&#9733;&#9733;&#9733;</option>
+                        <option value="2" >&#9733;&#9733;&#9733;</option>
+                        <option value="1" >&#9733;&#9733;</option>
+                        <option value="0" >&#9733;</option>
+                    </select>
+                </p>
+                <p>
+                    <textarea name="reviewMessage" placeholder="тзыв о товаре"></textarea>
+                </p>
+                <input type="file" id="file" multiple="true" name="file" >
+                
+                <button id='productReiewButton' >Отправить отзыв</button>
+                
+                
+                <pre id="productReviewAnswer"></pre>
+                
+
+            </form>  
+        </div> 
+    </div> 
 
 
 </div>

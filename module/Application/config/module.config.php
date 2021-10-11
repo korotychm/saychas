@@ -984,6 +984,16 @@ return [
                     ],
                 ],
             ],
+            'ajax-set-product-review'=>[
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/ajax-set-product-review',
+                    'defaults' => [
+                        'controller' => Controller\ReviewController::class,
+                        'action'     => 'setProductReview',
+                    ],
+                ],
+            ],
             'ajax-set-user-address'=>[
                 'type'    => Literal::class,
                 'options' => [
