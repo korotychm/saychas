@@ -113,6 +113,9 @@ const PriceList = {
   },
   methods: {
     checkPrice(index) {
+      if (this.products[index].price === ''){
+        this.products[index].price = 0;
+      }
       this.products[index].price = parseInt(this.products[index].price);
     },
     setRubPrice() {
