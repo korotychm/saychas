@@ -4,14 +4,27 @@
 
 namespace Application\Model\Entity;
 
+use Application\Model\Repository\ProductImageRepository;
+use Application\Model\Traits\Searchable;
+
 /**
  * ProductImage
  *
  * @ORM\Table(name="product_image")
  * @ORM\Entity
  */
-class ProductImage
+class ProductImage extends Entity
 {
+
+     /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var BasketRepository
+     */
+    public static ProductImageRepository $repository;
 
     /**
      * @var string

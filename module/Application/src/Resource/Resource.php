@@ -156,7 +156,14 @@ class Resource
     const COLOR_REF = 7;
     const COUNTRY_REF = 8;
     
+    /**
+     *  Rating & review
+     */
     const PRODUCT_RATING_VALUES = [10,20,30,40,50];
+    const LEGAL_IMAGE_TYPES = ["image/jpeg", "image/png"];
+    
+    
+    
     
     const DEFAULT_IMAGE = "nophoto.jpeg";
 

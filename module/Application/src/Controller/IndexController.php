@@ -38,6 +38,7 @@ use Application\Model\Entity\UserPaycard;
 use Application\Model\Entity\Brand;
 use Application\Model\Entity\Store;
 use Application\Model\Entity\StockBalance;
+use Application\Model\Entity\ProductImage;
 //use Application\Model\Entity\Category;
 //use Application\Model\Entity\ProductHistory;
 use Laminas\Json\Json;
@@ -137,6 +138,7 @@ class IndexController extends AbstractActionController
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(Store::class);
         $this->entityManager->initRepository(StockBalance::class);
+        $this->entityManager->initRepository(ProductImage::class);
     }
 
     public function onDispatch(MvcEvent $e)
@@ -390,8 +392,28 @@ class IndexController extends AbstractActionController
         $this->addProductToHistory($product_id);
         $productPage['category'] = (!empty($productPage['categoryId'])) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
+        $productPage['images'] = $this->getProductImages($product_id); 
+        //exit (print_r($productPage['images']));
 
         return new ViewModel($productPage);
+    }
+    
+    /**
+     * Get  product images
+     * 
+     * @param string $product_id
+     * @return array
+     */
+    private function getProductImages($product_id)
+    {
+        $productImages = [];
+        $images = ProductImage::findAll(["where" => ['product_id' => $product_id]])->toArray();
+        
+        foreach ($images as $image){
+            $productImages[] = $image['http_url'];//->getHttpUrl();
+        } 
+        //exit (print_r($productImages));
+        return $productImages;
     }
 
     public function catalogAction()

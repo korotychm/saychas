@@ -560,6 +560,28 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             return $return;
         }
     }
+    
+    /**
+     * get counts  user_rating
+     *
+     *  @param string $productId
+     */
+    public function getCountsProductRating($productId)
+    {
+        $query = "SELECT count(IF (`rating` = 50, `rating`, NULL)) as five, count(if (`rating` = 40, `rating`, NULL)) as four, count(if (`rating` = 30, `rating`, NULL)) as three, count(if (`rating` = 20, `rating`, NULL)) as two, count(if (`rating` = 10,`rating`, NULL)) as one FROM `product_user_rating` WHERE `product_id` = '$productId' ";
+        //return [$query];
+        try {
+            $res = $this->db->query($query)->execute();
+        } catch (InvalidQueryException $e) {
+            return ['result' => false, 'description' => "error executing $e $query"];
+        }
+        foreach ($res as $return) {
+           // $return['result'] = true;
+            return $return;
+        }
+    }
+    
+    
 //BEGIN
 //    DECLARE average_rating INT;
 //    REPLACE INTO `product_user_rating` (`product_id`, `user_id`, `rating`) VALUES (productid, userid, ratingvalue) ;
