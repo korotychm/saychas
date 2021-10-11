@@ -120,7 +120,7 @@ const PriceList = {
       if (this.products[index].discount > 100){
         this.products[index].discount = 100;
       }
-    }
+    },
     checkPrice(index) {
       if (this.products[index].price === ''){
         this.products[index].price = 0;
