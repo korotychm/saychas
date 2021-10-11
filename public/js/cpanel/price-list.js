@@ -236,3 +236,15 @@ $(document).mouseup(function(e)
         container.parent().removeClass('active');
     }
 });
+
+$(document).on('keypress','.pricelist__popup-price input',function(e){
+  if ($(this).val().length > 5){
+    e.preventDefault();
+  }
+});
+
+$(document).on('keypress','.pricelist__popup-sale input',function(e){
+  if ($(this).val().length > 1){
+    e.preventDefault();
+  }
+});
