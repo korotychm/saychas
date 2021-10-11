@@ -169,16 +169,16 @@ return [
                     ],
                 ],
             ],
-            'preview' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/preview',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'preview',
-                    ],
-                ],
-            ],
+//            'preview' => [
+//                'type'    => Literal::class,
+//                'options' => [
+//                    'route'    => '/preview',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action'     => 'preview',
+//                    ],
+//                ],
+//            ],
             'client-orders' => [
                 'type'    => Literal::class,
                 'options' => [
