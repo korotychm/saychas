@@ -119,7 +119,7 @@ const ProductEdit = {
                       <div class="product__attribute product__attribute--short">
                           <h2>Ставка НДС <span class="required">*</span></h2>
                           <div class="custom-select custom-select--radio" style="width: 253px;">
-                            <div class="custom-select__label input"></div>
+                            <div class="custom-select__label input" tabindex="0"></div>
                             <div class="custom-select__dropdown">
                               <div class="custom-select__dropdown-inner">
                                 <label class="custom-select__option">
@@ -159,7 +159,7 @@ const ProductEdit = {
                               <div class="custom-select__dropdown">
                                 <div class="custom-select__dropdown-inner">
                                   <label class="custom-select__option">
-                                    <input type="radio" :checked="(characteristic.value == '')" value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
+                                    <input type="radio" checked value="" :name="'option' + characteristic.id" v-model="characteristic.value" />
                                     <span>Не выбрано</span>
                                   </label>
                                   <label v-for="(val,idx) in characteristic.available_values" class="custom-select__option">
@@ -172,7 +172,7 @@ const ProductEdit = {
                             </div>
                             <!-- Тип 4 - справочник (мульти) -->
                             <div class="custom-select custom-select--checkboxes" v-if="(characteristic.type == 4 && Array.isArray(characteristic.value))">
-                              <div class="custom-select__label input">Добавить</div>
+                              <div class="custom-select__label input" tabindex="0">Добавить</div>
                               <!-- выпадающий список -->
                               <div class="custom-select__dropdown">
                                 <div class="custom-select__dropdown-inner">
@@ -243,7 +243,7 @@ const ProductEdit = {
                     </div>
                     <div v-if="product.images" class="product__images">
                         <div class="product__attribute">
-                            <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p><p>Формат фото - JPG, JPEG, PNG.</p></h2>
+                            <h2><span :class="{'input-error' : (!product.images.length && errors)}">Фото товара <span class="required">*</span></span> <p>Рекомендуемый размер <br>фото — 1000х1000 px. </p><p>Вы можете загрузить до 8 фотографий.</p><p>Формат фото - JPG, JPEG, PNG.</p><p>Максимальный размер файла - 5 Мб.</p></h2>
                             <div class="product__images-wrap">
                                 <div class="product__images-nav"><button class="product__images-arrow product__images-arrow--up disabled" data-shift="-1"></button>
                                     <div class="product__images-list product__images-list--slider">
@@ -392,25 +392,27 @@ const ProductEdit = {
     uploadFile() {
       var data = new FormData();
       var imagefile = document.querySelector('#photo-upload');
-      console.log(imagefile.files[0]);
-      data.append('file', imagefile.files[0]);
-      data.append('product_id', this.product.id);
-      data.append('provider_id', this.product.provider_id);
-      axios.post('/control-panel/upload-product-image', data, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-      })
-      .then(response => {
-        console.log(response);
-        let newImg = this.imgPath + response.data.image_file_name;
-        this.product.images.push(newImg);
-        this.currentImg = this.imgPath + response.data.image_file_name;
-        checkProductImagesSlider();
-      })
-      .catch(error => {
-        console.log(error.response)
-      })
+      if (imagefile.files[0].size > 5242880){
+        showServicePopupWindow('Невозможно загрузить фото', 'Размер фото превышает 5Мб.');
+      } else {
+        data.append('file', imagefile.files[0]);
+        data.append('product_id', this.product.id);
+        data.append('provider_id', this.product.provider_id);
+        axios.post('/control-panel/upload-product-image', data, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+        })
+        .then(response => {
+          console.log(response)
+          this.product.images.push(response.data.image_file_name);
+          this.currentImg = response.data.image_file_name;
+          checkProductImagesSlider();
+        })
+        .catch(error => {
+          console.log(error.response)
+        })
+      }
     },
     flatCategories() {
       console.log('Категории',this.categories);
@@ -760,10 +762,12 @@ $(document).on('click','.product__images-arrow',function(){
 
 function setCustomSelectLabels(el) {
   let textValue = el.find('input:checked + span').text();
-  el.find('.custom-select__label').text(textValue);
+  el.find('.custom-select__label').html('<span class="select-selected-value">'+textValue+'</span>');
+  console.log(textValue);
 }
 
 function setAllCustomSelects() {
+  $('.select-selected-value').remove();
   $('.custom-select--radio').each(function(){
     setCustomSelectLabels($(this));
   });
@@ -783,6 +787,7 @@ $(document).on('click','.custom-select--radio input:checked',function(){
 $(document).on('click','.custom-select__label',function(){
   $('.custom-select__label').not(this).parent().removeClass('active');
   $(this).parent().toggleClass('active');
+  $(this).focus();
 });
 
 $(document).click( function(e){
@@ -792,21 +797,35 @@ $(document).click( function(e){
     $('.custom-select').removeClass('active');
 });
 
-// $(document).on('keydown','.custom-select__label',function(e){
-//   if (e.keyCode == 40){
-//     console.log('arrow pressed');
-//     $(this).parent().find('.custom-select__option').eq(0).focus();
-//   }
-// });
-//
-// $(document).on('keydown','.custom-select__option',function(e){
-//   let index = $(this).index();
-//   let length = $(this).parent().find('.custom-select__option').length;
-//   if (e.keyCode == 40){
-//     if (index != (length - 1)){
-//       $(this).parent().find('.custom-select__option').eq(index + 1).focus();
-//     } else {
-//       $(this).parent().find('.custom-select__option').eq(0).focus();
-//     }
-//   }
-// });
+$('.custom-select__label').keydown(function(e){
+  console.log('down');
+  if (e.keyCode == 40){
+    $(this).parent().find('input').eq(0).focus();
+  }
+});
+
+$('.custom-select__option input').keydown(function(e){
+  e.preventDefault();
+  let activeEl = $(this).parent().find('input:focus'),
+      index = activeEl.parent().index() - 1,
+      length = $(this).parent().find('input').length,
+      step = 0;
+  if (e.keyCode == 13){
+    $(this).parent().find('input:focus').prop('checked',true);
+    return;
+  }
+  if (e.keyCode == 40){
+    index++;
+    if (index == length){
+      index = 0;
+    }
+  }
+  if (e.keyCode == 38){
+    index--;
+    if (index == -1){
+      index = length - 1;
+    }
+  }
+  console.log('pressed',index);
+  $(this).parent().find('input').eq(index).focus();
+})

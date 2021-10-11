@@ -3,7 +3,7 @@
         <?php foreach($characteristics[1] as $characteristic):?>
             <li class="product-card__table-tr">
                <div class="product-card__table-th"><?=$characteristic['title']?></div>
-               <div class="product-card__table-val"><?=$characteristic['value']?></div>
+               <div class="product-card__table-val"><?=$characteristic['value']?> <?php if ($characteristic['unit']):?><span class="unit"> <?=$characteristic['unit']?></span><?php endif;?></div>
             </li>
         <?php endforeach;?>
     <?php endif;?>

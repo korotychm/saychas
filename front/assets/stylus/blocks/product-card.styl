@@ -79,6 +79,8 @@
     pointer-events none
     transition opacity .3s
     display flex
+    border-radius 20px
+    overflow hidden
     &.active
       opacity 1
       pointer-events auto
@@ -237,6 +239,9 @@
 
   &__full-table
     grid-column span 3
+    a
+      color var(--red)
+      text-decoration none
     h3
       font-size 22px
       margin 25px 0 15px
