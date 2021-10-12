@@ -401,6 +401,7 @@
 .testimonials__sort {
   margin: 50px 0 40px;
   height: 55px;
+  width: 350px;
 }
 .testimonials__photo {
   position: relative;
@@ -482,6 +483,10 @@
   margin-left: 30px;
   color: var(--gray2);
   font-size: 18px;
+}
+.testimonials__text {
+  font-size: 18px;
+  line-height: 1.55;
 }
 .testimonials__text p {
   margin: 0 0 10px;

@@ -29,7 +29,7 @@ $(document).ready(function(){
         getImages(){
           for (review in this.reviews){
             for (image in review.images){
-              this.reviewsImages.push(image);
+              this.reviewsPhotos.push(image);
             }
           }
         }
@@ -50,6 +50,15 @@ $(document).ready(function(){
               this.getImages();
               console.log(this.reviews);
             });
+      },
+      updated() {
+        $('.testimonials__photos--carousel').slick(
+          {
+            infinite: false,
+            slidesToShow: 10,
+            slidesToScroll: 1
+          }
+        );
       }
     });
 
