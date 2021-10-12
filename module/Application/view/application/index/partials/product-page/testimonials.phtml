@@ -122,23 +122,23 @@
         </div>
         <div class="testimonials-panel__item"><span>4</span>
             <div class="testimonials-panel__graph">
-                <div class="testimonials-panel__graph-current" style="width: 12%"></div>
-            </div><span>12 %</span>
+                <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('four') + '%'}"></div>
+            </div><span>{{ statisticsPercent('four') }} %</span>
         </div>
         <div class="testimonials-panel__item"><span>3</span>
             <div class="testimonials-panel__graph">
-                <div class="testimonials-panel__graph-current" style="width: 5%"></div>
-            </div><span>5 %</span>
+                <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('three') + '%'}"></div>
+            </div><span>{{ statisticsPercent('three') }} %</span>
         </div>
         <div class="testimonials-panel__item"><span>2</span>
             <div class="testimonials-panel__graph">
-                <div class="testimonials-panel__graph-current" style="width: 3%"></div>
-            </div><span>3 %</span>
+                <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('two') + '%'}"></div>
+            </div><span>{{ statisticsPercent('two') }} %</span>
         </div>
         <div class="testimonials-panel__item"><span>1</span>
             <div class="testimonials-panel__graph">
-                <div class="testimonials-panel__graph-current" style="width: 9%"></div>
-            </div><span>9 %</span>
+                <div class="testimonials-panel__graph-current"  :style="{width: statisticsPercent('one') + '%'}"></div>
+            </div><span>{{ statisticsPercent('one') }} %</span>
         </div><button class="btn btn--secondary">Оставить отзыв</button><a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
     </div>
 </div>
