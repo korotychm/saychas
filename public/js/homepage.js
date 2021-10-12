@@ -64,19 +64,23 @@ $(document).ready(function(){
           axios
             .post('/ajax-get-client-history')
             .then(response => {
-              this.products = response.data.products;
-              this.length = Object.keys(this.products).length;
+              if (response.data.products){
+                this.products = response.data.products;
+                this.length = Object.keys(this.products).length;
+              }
               console.log('Истор',this.length,this.products);
             });
       },
       updated() {
-        $('#viewed-products .products-carousel').slick(
-          {
-            infinite: true,
-            slidesToShow: 4,
-            slidesToScroll: 4
-          }
-        );
+        if (this.length){
+          $('#viewed-products .products-carousel').slick(
+            {
+              infinite: true,
+              slidesToShow: 4,
+              slidesToScroll: 4
+            }
+          );
+        }
       }
     });
 
