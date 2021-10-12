@@ -72,15 +72,7 @@ $(document).ready(function(){
             });
       },
       updated() {
-        if (this.length){
-          $('#viewed-products .products-carousel').slick(
-            {
-              infinite: true,
-              slidesToShow: 4,
-              slidesToScroll: 4
-            }
-          );
-        }
+        
       }
     });
 
