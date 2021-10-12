@@ -28,6 +28,7 @@ $(document).ready(function(){
       methods: {
         getImages(){
           for (review in this.reviews){
+            console.log('review',review);
             for (image in review.images){
               this.reviewsPhotos.push(image);
             }
