@@ -170,6 +170,19 @@ class ReviewController extends AbstractActionController
     }
 
     /**
+     * receive product reviews from 1c
+     *
+     * @param input JSON
+     * @return JSON
+     */
+    public function receiveReviewAction ()
+    {
+        $return = [];
+        
+        return new JsonModel($return);
+    }
+    
+    /**
      * get images of review
      *
      * @param int $reviewId
