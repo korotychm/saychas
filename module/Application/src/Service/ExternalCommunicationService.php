@@ -47,6 +47,19 @@ class ExternalCommunicationService
         return $this->sendCurlRequest($url, $content);
     }
     
+    /**
+     * 
+     * @param type $phone
+     * @param type $code
+     * @return type
+     */
+    public function sendReview($param)
+    {
+        $url = $this->config['parameters']['1c_request_links']['set_review'];
+        return $this->sendCurlRequest($url, $param);
+    }
+    
+    
     
     /***********************
     
@@ -146,12 +159,7 @@ class ExternalCommunicationService
         //$return["delivery_price"] = ;
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
-        unset(
-                $content['timepointtext1'],
-                $content['timepointtext3'],
-                $content['timepointtext3'],
-                $content['selfdelevery'], 
-                $content["products"]);
+        unset($content['timepointtext1'], $content['timepointtext3'], $content['timepointtext3'], $content['selfdelevery'], $content["products"]);
         
         $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
         $return['basketinfo']['timepoint'] = $content["timepoint"];
@@ -226,7 +234,7 @@ class ExternalCommunicationService
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($curl);
 //        $arr = json_decode($response, true);
-
+        //return [$url, $response];
         try {
             $arr = Json::decode($response, Json::TYPE_ARRAY);
             return $arr;

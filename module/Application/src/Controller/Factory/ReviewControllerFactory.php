@@ -14,6 +14,7 @@ use Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 use Application\Controller\ReviewController;
 use Application\Service\CommonHelperFunctionsService;
+use Application\Service\ExternalCommunicationService;
 
 /**
  * This is the factory for ReviewController. Its purpose is to instantiate the
@@ -31,6 +32,7 @@ class ReviewControllerFactory implements FactoryInterface
         $config = $container->get('Config');
         $authService = $container->get(AuthenticationService::class);
         $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
+        $externalCommunicationService = $container->get(ExternalCommunicationService::class);
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
         
@@ -42,7 +44,8 @@ class ReviewControllerFactory implements FactoryInterface
                 $entityManager, 
                 $config, 
                 $authService,
-                $commonHelperFuncions
+                $commonHelperFuncions,
+                $externalCommunicationService
                 );
     }
 
