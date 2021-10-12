@@ -72,8 +72,8 @@ $(document).ready(function(){
             });
       },
       updated() {
-          if (this.length){
-            this.$nextTick(() => {
+        console.log('111');
+        this.$nextTick(() => {
               $('#viewed-products .products-carousel').slick(
                 {
                   infinite: true,
@@ -81,8 +81,7 @@ $(document).ready(function(){
                   slidesToScroll: 4
                 }
               );
-            });
-          }
+        });
       }
     });
 
