@@ -11,7 +11,6 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
-//use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
 use Application\Model\Entity\ReviewImage;
@@ -19,21 +18,10 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\ProductRating;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Laminas\Filter\StripTags;
-//use Application\Model\Repository\ProductRepository;
-//use Application\Model\Entity\HandbookRelatedProduct;
-//use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Service\ImageHelperFunctionsService;
 use Application\Service\ExternalCommunicationService;
-//use Application\Model\Entity\ProductCharacteristic;
-//use Application\Model\Entity\StockBalance;
-//use Application\Model\Entity\ProductHistory;
-//use Application\Model\Entity\ProductFavorites;
 use Laminas\Authentication\AuthenticationService;
-//use Laminas\Json\Json;
-//use Laminas\Http\Response;
-//use Laminas\Db\Sql\Where;
-//use Application\Helper\ArrayHelper;
 use Application\Resource\Resource;
 
 class ReviewController extends AbstractActionController
@@ -66,10 +54,6 @@ class ReviewController extends AbstractActionController
         $this->imageHelperFuncions = $imageHelperFuncions;
         $this->externalCommunicationService = $externalCommunicationService;
         $this->entityManager->initRepository(Setting::class);
-//        $this->entityManager->initRepository(ProductCharacteristic::class);
-//        $this->entityManager->initRepository(StockBalance::class);
-//        $this->entityManager->initRepository(ProductHistory::class);
-//        $this->entityManager->initRepository(ProductFavorites::class);
         $this->entityManager->initRepository(Review::class);
         $this->entityManager->initRepository(ReviewImage::class);
         $this->entityManager->initRepository(User::class);
@@ -147,7 +131,7 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     * get product review
+     * get product reviews
      *
      * @param POST productId
      * @return JSON
@@ -167,6 +151,8 @@ class ReviewController extends AbstractActionController
         $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
         $reviews['overage_rating'] = ProductRating::findFirstOrDefault(['product_id'=>$param['product_id']])->getRating();
         $reviews['images_path'] = $this->imagePath("review_images");
+        $reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
+        
         $reviews["reviews"] = [];
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
@@ -251,12 +237,15 @@ class ReviewController extends AbstractActionController
     {
         $images = [];
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
-        $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  //const REVIEW_IMAGE_RESIZE =["width" => 800, "height" => 800, "crop" => false ];
+        $uploadPathThumbs = "public" . $this->imagePath("review_thumbnails") . "/";
+        $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  
         foreach ($files as $file) {
             $uuid = uniqid($this->identity() . "_" . time(), false);
-            $filename = $uuid . "." . $resizeParams['type'];
+            $filename = $uuid ;
+             
             //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
             if ($this->imageHelperFuncions->resizeImage($file['tmp_name'],  $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['crop'], $resizeParams['type'],)){
+                $this->imageHelperFuncions->resizeImage($file['tmp_name'],  $uploadPathThumbs . $filename, 600, 600, true, "jpeg" );
                 $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
                 $reviewImage->setReviewId($reviewId)->setFilename($filename)->persist(["id" => null]);
                 $images[] = $filename;

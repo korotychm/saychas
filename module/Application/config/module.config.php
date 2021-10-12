@@ -1499,6 +1499,7 @@ return [
                 'provider' => 'provider',
                 'cpanel_product' => 'cpanel_product',
                 'review_images' => 'user-images/review-images',
+                'review_thumbnails' => 'user-images/review-images/thumbnails',
             ],
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',

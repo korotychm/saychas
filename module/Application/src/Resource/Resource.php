@@ -164,7 +164,7 @@ class Resource
     const REVIEW_MESSAGE_VALID_ERROR = "Отзыв должен быть более подробным ";
     const LEGAL_IMAGE_TYPES = ["image/jpeg", "image/png"];
     const LEGAL_IMAGE_NOTICE = "Допустимые форматы загружаемых файлов: ";
-    const REVIEW_IMAGE_RESIZE =["width" => 800, "height" => 800, "crop" => false, "type" => "jpeg" ];
+    const REVIEW_IMAGE_RESIZE = [ "width" => 800,  "height" => 800, "crop" => false, "type" => "jpeg" ];
     //Напиши отзыв больше трех символов!
     
     

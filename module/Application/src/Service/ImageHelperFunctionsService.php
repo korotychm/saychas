@@ -43,13 +43,14 @@ class ImageHelperFunctionsService
      * @param string $type 
      * @return bool
      */
-    public function resizeImage($soureceFile, $destFile, $w, $h, $crop = FALSE, $type = "jpeg")
+    public function resizeImage($soureceFile, $destFile, $w, $h, $crop = false, $type = "jpeg")
     {
         if (!$src = $this->openImage ($soureceFile)){
          return false ;   
         }
         
         list($width, $height) = getimagesize($soureceFile);
+        $new_left = $new_top = 0;
 //       
 //         $types = array(false, "gif", "jpeg", "png"); // Массив-шаблон  названий  типов изображений для getimagesize()
 //        $ext = $types[$type]; // Название типа
@@ -61,15 +62,48 @@ class ImageHelperFunctionsService
 //        }
 
         $r = $width / $height;
+		/*
+  
+  //imagecopyresampled(   $im,    $source,    $new_left, $new_top,    0, 0,    $newwidth,    $newheight,    $width,    $height    );
+  
+		*/
 
         if ($crop) {
-            if ($width > $height) {
+         if ($width > $height) {
                 $width = ceil($width - ($width * abs($r - $w / $h)));
             } else {
                 $height = ceil($height - ($height * abs($r - $w / $h)));
             }
             $newwidth = $w;
             $newheight = $h;
+
+//	$x=$y=0;
+//  if ($use_x_ratio ) {
+//  $k=$new_height/$height;
+//  $x=floor (($w-$w*$k)/2);
+//  $w=floor($w-($w-$w*$k));
+//  }
+//  if (!$use_x_ratio ) {
+//  $k=$new_width/$width;
+//  $y=floor (($h-$h*$k)/2);
+//  $h=floor($h-($h-$h*$k));
+//   
+//  }           
+//
+//
+//		   
+//            
+//            $x_ratio = $w / $width;
+//            $y_ratio = $h / $height;
+//            $ratio = min($x_ratio, $y_ratio);
+//            $use_x_ratio = ($x_ratio == $ratio);
+//            $newwidth = $use_x_ratio ? $width : floor($width * $ratio);
+//            $newheight = !$use_x_ratio ? $height : floor($height * $ratio);
+//            $new_left = $use_x_ratio ? 0 : floor(($width - $newwidth) / 2);
+//            $new_top = !$use_x_ratio ? 0 : floor(($height - $newheight) / 2);
+//
+            
+            
         } else {
             if ($w / $h > $r) {
                 $newwidth = $h * $r;
@@ -82,10 +116,10 @@ class ImageHelperFunctionsService
 
         
         $dst = imagecreatetruecolor($newwidth, $newheight);
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        imagecopyresampled($dst, $src,  $new_left, $new_top, 0, 0, $newwidth, $newheight, $width, $height);
         $func = 'image'.$type; // Имя функции для сохранения результата
 
-        return $func($dst, $destFile); // Сохраняет изображение в  файл, возвращая результат этой операции true / false
+        return $func($dst, "$destFile.$type"); // Сохраняет изображение в  файл, возвращая результат этой операции true / false
     }
 
     /**
