@@ -26,13 +26,6 @@ $(document).ready(function(){
         reviewsPhotos: []
       },
       computed: {
-        statisticsPercent(grade){
-          let cumulative = 0;
-          for (item in this.statistics){
-            cumulative += +this.statistics[item]
-          }
-          return this.statistics[grade] / cumulative * 100;
-        },
         reviewsUnit(){
           let length = this.reviews.length.toString()
           if (length.slice(-1) == '1' && length.slice(-2) != '11'){
@@ -44,6 +37,13 @@ $(document).ready(function(){
         }
       },
       methods: {
+        statisticsPercent(grade){
+          let cumulative = 0;
+          for (item in this.statistics){
+            cumulative += +this.statistics[item]
+          }
+          return this.statistics[grade] / cumulative * 100;
+        },
         getImages(){
           for (review of this.reviews){
             console.log('review',review);
