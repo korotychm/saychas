@@ -6,7 +6,7 @@ use Application\Resource\Resource;
 $this->headTitle($this->category, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 ?>
-<section class="product-card">
+<section class="product-card" id="product-page">
     <?= $this->partial("/application/index/partials/product-page/bead-crumbs", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
     <div class="product-card__heading">
        <h1><?= $this->title ?> <?php if (false and $this->id) echo "<span>id: " . $this->id . "</span>"; ?></h1>
