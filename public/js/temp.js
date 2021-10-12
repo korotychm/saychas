@@ -23,7 +23,7 @@ $(document).ready(function(){
         overage_rating: 0,
         images_path: '',
         statistics: {},
-        reviewsImages: []
+        reviewsPhotos: []
       },
       methods: {
         getImages(){
