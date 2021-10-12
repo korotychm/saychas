@@ -16,6 +16,7 @@ use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
 use Application\Model\Entity\ReviewImage;
 use Application\Model\Entity\User;
+use Application\Model\Entity\ProductRating;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 use Laminas\Filter\StripTags;
 //use Application\Model\Repository\ProductRepository;
@@ -68,6 +69,7 @@ class ReviewController extends AbstractActionController
         $this->entityManager->initRepository(Review::class);
         $this->entityManager->initRepository(ReviewImage::class);
         $this->entityManager->initRepository(User::class);
+        $this->entityManager->initRepository(ProductRating::class);
     }
 
     /**
@@ -156,16 +158,19 @@ class ReviewController extends AbstractActionController
             return ['result' => false, 'description' => "product_id not set"];
         }
 
-        $reviews["reviews"] = [];
+        
         $res = Review::findAll(['where' => $param])->toArray();
         $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
-
+        $reviews['overage_rating'] = ProductRating::findFirstOrDefault(['product_id'=>$param['product_id']])->getRating();
+        $reviews['images_path'] = $this->imagePath("review_images");
+        $reviews["reviews"] = [];
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
             $review['images'] = $this->getReviewImages($review['id']);
             $reviews["reviews"][] = $review;
         }
-
+        
+                
         return new JsonModel($reviews);
     }
 
@@ -177,7 +182,10 @@ class ReviewController extends AbstractActionController
      */
     public function receiveReviewAction ()
     {
-        $return = [];
+        $json = file_get_contents('php://input');
+        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : "";
+        
+         mail("d.sizov@saychas.ru", "1C.Review.log", print_r($return, true)); // лог на почту*/
         
         return new JsonModel($return);
     }
