@@ -73,7 +73,15 @@ $(document).ready(function(){
       },
       updated() {
           if (this.length){
-            console.log(this.products);
+            this.$nextTick(() => {
+              $('#viewed-products .products-carousel').slick(
+                {
+                  infinite: true,
+                  slidesToShow: 4,
+                  slidesToScroll: 4
+                }
+              );
+            });
           }
       }
     });
