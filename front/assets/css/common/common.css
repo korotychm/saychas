@@ -117,6 +117,9 @@ body {
   top: -10px;
   transform: translateX(-50%) rotate(45deg);
 }
+.button-with-info__info a {
+  cursor: pointer;
+}
 .button-with-info:hover .button-with-info__info {
   opacity: 1;
   pointer-events: auto;
