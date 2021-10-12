@@ -48,6 +48,7 @@ $(document).ready(function(){
               this.images_path = response.data.images_path;
               this.reviews = response.data.reviews;
               this.getImages();
+              console.log(this.reviews);
             });
       }
     });
