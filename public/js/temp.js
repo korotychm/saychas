@@ -22,7 +22,7 @@ $(document).ready(function(){
         reviews: [],
         overage_rating: 0,
         images_path: '',
-        statistics: {},
+        statistic: {},
         reviewsPhotos: []
       },
       computed: {
@@ -39,10 +39,10 @@ $(document).ready(function(){
       methods: {
         statisticsPercent(grade){
           let cumulative = 0;
-          for (item in this.statistics){
-            cumulative += +this.statistics[item]
+          for (item in this.statistic){
+            cumulative += +this.statistic[item]
           }
-          return this.statistics[grade] / cumulative * 100;
+          return this.statistic[grade] / cumulative * 100;
         },
         getImages(){
           for (review of this.reviews){
@@ -62,7 +62,7 @@ $(document).ready(function(){
               }))
             .then(response => {
               console.log(response);
-              this.statistics = response.data.statistics;
+              this.statistic = response.data.statistic;
               this.overage_rating = response.data.overage_rating;
               this.images_path = response.data.images_path;
               this.reviews = response.data.reviews;
