@@ -72,14 +72,8 @@ $(document).ready(function(){
             });
       },
       updated() {
-          if ($('#viewed-products .product').length){
-            $('#viewed-products .products-carousel').slick(
-              {
-                infinite: true,
-                slidesToShow: 4,
-                slidesToScroll: 4
-              }
-            );
+          if (this.length){
+            console.log(this.products);
           }
       }
     });
