@@ -28,10 +28,10 @@ $(document).ready(function(){
       computed: {
         statisticsPercent(grade){
           let cumulative = 0;
-          for (item of this.statistics){
+          for (item in this.statistics){
             cumulative += +this.statistics[item]
           }
-          return this.statistics[item] / cumulative * 100;
+          return this.statistics[grade] / cumulative * 100;
         },
         reviewsUnit(){
           let length = this.reviews.length.toString()
