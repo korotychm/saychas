@@ -25,6 +25,17 @@ $(document).ready(function(){
         statistics: {},
         reviewsPhotos: []
       },
+      computed: {
+        reviewsUnit(){
+          let length = this.reviews.length.toString()
+          if (length.slice(-1) == '1' && length.slice(-2) != '11'){
+            return 'отзыв';
+          } else if (+length.slice(-1) > 1 && +length.slice(-1) < 5 && length.slice(-2) != '12' && length.slice(-2) != '13' && length.slice(-2) != '14'){
+            return 'отзыва';
+          }
+          return 'отзывов';
+        }
+      },
       methods: {
         getImages(){
           for (review of this.reviews){

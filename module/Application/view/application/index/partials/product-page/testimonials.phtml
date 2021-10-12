@@ -112,10 +112,7 @@
 <div>
     <div class="testimonials-panel">
         <div class="testimonials-panel__grade">
-            <div class="testimonials-panel__grade-val">{{ overage_rating / 10 }}</div>
-            <div class="testimonials-panel__grade-count" v-if="reviews.length.slice(-1) == '1' && reviews.length.slice(-2) != '11'">{{ reviews.length }} отзыв</div>
-            <div class="testimonials-panel__grade-count" v-else-if="+reviews.length.slice(-1) > 1 && +reviews.length.slice(-1) < 5 && reviews.length.slice(-2) != '12' && reviews.length.slice(-2) != '13' && reviews.length.slice(-2) != '14'">{{ reviews.length }} отзыва</div>
-            <div class="testimonials-panel__grade-count" v-else>{{ reviews.length }} отзывов</div>
+            <div class="testimonials-panel__grade-count">{{ reviews.length }} {{ reviewsUnit }}</div>
         </div>
         <div class="testimonials-panel__item"><span>5</span>
             <div class="testimonials-panel__graph">
