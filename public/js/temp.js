@@ -16,7 +16,7 @@ $(document).ready(function(){
   if ($('#testimonials').length){
 
     var testimonials = new Vue({
-      el: '#category-page',
+      el: '#testimonials',
       data: {
         product_id: '',
         reviews: [],
@@ -27,7 +27,7 @@ $(document).ready(function(){
       },
       methods: {
         getImages(){
-          for (review in reviews){
+          for (review in this.reviews){
             for (image in review.images){
               this.reviewsImages.push(image);
             }
