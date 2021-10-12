@@ -263,13 +263,11 @@ $(function () {
     $('#productReviewForm').submit(function () {
         
         var data = new FormData();
-        $.each($('#file')[0].files, function(i, file) {
+       $.each($('#file')[0].files, function(i, file) {
             data.append('files['+i+']', file);
         });
-        //reviewMessage productId
         data.append('productId', $("#productId").val()) ;
         data.append('reviewMessage', $("#reviewMessage").val()) ;
-        
         sendProductReview(data);
         return false;
     });
@@ -279,9 +277,7 @@ $(function () {
     });
 
     $('#productRatingForm').submit(function () {
-//        console.log("****");
         var data = $('#productRatingForm').serialize();
-        // console.log(data);
         sendProductRating(data);
         return false;
     });
