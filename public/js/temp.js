@@ -28,7 +28,7 @@ $(document).ready(function(){
       computed: {
         statisticsPercent(grade){
           let cumulative = 0;
-          for (item in this.statistics){
+          for (item of this.statistics){
             cumulative += +this.statistics[item]
           }
           return this.statistics[item] / cumulative * 100;
