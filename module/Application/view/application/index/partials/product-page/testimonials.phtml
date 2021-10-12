@@ -140,7 +140,8 @@
                 <div class="testimonials-panel__graph-current"  :style="{width: statisticsPercent('one') + '%'}"></div>
             </div><span>{{ statisticsPercent('one') }} %</span>
         </div>
-        <?php if (!$userLegal):?>
+        <?php echo $userLegal; ?>
+        <?php if ($userLegal):?>
           <button class="btn btn--secondary">Оставить отзыв</button>
         <?php else:?>
           <button class="btn btn--secondary disabled">Оставить отзыв</button>
