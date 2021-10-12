@@ -70,6 +70,9 @@ $(document).ready(function(){
               console.log(this.reviews);
             });
       },
+      mounted() {
+        zoomImg();
+      },
       updated() {
         $('.testimonials__photos--carousel').slick(
           {

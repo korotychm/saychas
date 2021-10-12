@@ -40,6 +40,6 @@ $this->headTitle($this->title, 'PREPEND');
         <?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>
         <?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->append]) ?>
         <?= $this->partial("/application/index/partials/product-page/recommendations", ["id" => $this->id]) ?>
-        <?= $this->partial("/application/index/partials/product-page/testimonials", ["id" => $this->id]) ?>
+        <?= $this->partial("/application/index/partials/product-page/testimonials", ["id" => $this->id, "userLegal" => $this->userLegal]) ?>
     </div>
 </section>
