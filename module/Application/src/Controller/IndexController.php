@@ -385,6 +385,9 @@ class IndexController extends AbstractActionController
         if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
             return $this->responseError404();
         }
+        $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
+        //exit (print_r($param));
+        
         $productPage = $this->htmlProvider->productPageService($products);
         $productPage['breadCrumbs'] = ($productPage['categoryId'] and!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) ? array_reverse($matherCategories) : [];
 
@@ -393,6 +396,7 @@ class IndexController extends AbstractActionController
         $productPage['category'] = (!empty($productPage['categoryId'])) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
         $productPage['images'] = $this->getProductImages($product_id); 
+        $productPage['delivery_price'] = $param ['hourPrice'];
         //exit (print_r($productPage['images']));
 
         return new ViewModel($productPage);

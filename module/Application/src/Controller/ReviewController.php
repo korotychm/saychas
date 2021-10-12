@@ -251,14 +251,12 @@ class ReviewController extends AbstractActionController
     {
         $images = [];
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
+        $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  //const REVIEW_IMAGE_RESIZE =["width" => 800, "height" => 800, "crop" => false ];
         foreach ($files as $file) {
             $uuid = uniqid($this->identity() . "_" . time(), false);
-            $ext = explode('/', $file['type']);
-            $filename = $uuid . "." . end($ext);
-            $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  //const REVIEW_IMAGE_RESIZE =["width" => 800, "height" => 800, "crop" => false ];
-
+            $filename = $uuid . "." . $resizeParams['type'];
             //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
-            if ($this->imageHelperFuncions->resizeImage($file['tmp_name'], $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['crop']) ){
+            if ($this->imageHelperFuncions->resizeImage($file['tmp_name'],  $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['crop'], $resizeParams['type'],)){
                 $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
                 $reviewImage->setReviewId($reviewId)->setFilename($filename)->persist(["id" => null]);
                 $images[] = $filename;
