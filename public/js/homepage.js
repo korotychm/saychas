@@ -72,7 +72,7 @@ $(document).ready(function(){
             });
       },
       updated() {
-          if (this.length){
+          if ($('#viewed-products .product').length){
             $('#viewed-products .products-carousel').slick(
               {
                 infinite: true,
