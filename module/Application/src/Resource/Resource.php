@@ -159,10 +159,13 @@ class Resource
     /**
      *  Rating & review
      */
-    const PRODUCT_RATING_VALUES = [10,20,30,40,50];
+    const PRODUCT_RATING_VALUES = [0 => 10, 1 => 20, 2 => 30, 3 => 40, 4 => 50];
+    const REVIEW_MESSAGE_VALID_MIN_LENGHT = 4;
+    const REVIEW_MESSAGE_VALID_ERROR = "Отзыв должен быть более подробным ";
     const LEGAL_IMAGE_TYPES = ["image/jpeg", "image/png"];
-    
-    
+    const LEGAL_IMAGE_NOTICE = "Допустимые форматы загружаемых файлов: ";
+    const REVIEW_IMAGE_RESIZE =["width" => 800, "height" => 800, "crop" => false ];
+    //Напиши отзыв больше трех символов!
     
     
     const DEFAULT_IMAGE = "nophoto.jpeg";

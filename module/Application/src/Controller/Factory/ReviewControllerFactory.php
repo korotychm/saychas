@@ -6,14 +6,15 @@ namespace Application\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
+//use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
-use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+//use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Laminas\Authentication\AuthenticationService;
 use Application\Model\RepositoryInterface\ProductFavoritesRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductHistoryRepositoryInterface;
 use Application\Controller\ReviewController;
 use Application\Service\CommonHelperFunctionsService;
+use Application\Service\ImageHelperFunctionsService;
 use Application\Service\ExternalCommunicationService;
 
 /**
@@ -32,19 +33,21 @@ class ReviewControllerFactory implements FactoryInterface
         $config = $container->get('Config');
         $authService = $container->get(AuthenticationService::class);
         $commonHelperFuncions = $container->get(CommonHelperFunctionsService::class);
+        $imageHelperFuncions = $container->get(ImageHelperFunctionsService::class);
         $externalCommunicationService = $container->get(ExternalCommunicationService::class);
         $container->get(ProductFavoritesRepositoryInterface::class);
         $container->get(ProductHistoryRepositoryInterface::class);
         
         
         return new ReviewController(
-          //      $productRating, 
+               // $productRating, 
                 $product, 
                // $handBookProduct, 
                 $entityManager, 
                 $config, 
                 $authService,
                 $commonHelperFuncions,
+                $imageHelperFuncions,
                 $externalCommunicationService
                 );
     }

@@ -23,6 +23,7 @@ use Laminas\Filter\StripTags;
 //use Application\Model\Entity\HandbookRelatedProduct;
 //use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 use Application\Service\CommonHelperFunctionsService;
+use Application\Service\ImageHelperFunctionsService;
 use Application\Service\ExternalCommunicationService;
 //use Application\Model\Entity\ProductCharacteristic;
 //use Application\Model\Entity\StockBalance;
@@ -50,7 +51,9 @@ class ReviewController extends AbstractActionController
             //ProductRatingRepositoryInterface $productRatingRepository,
             ProductRepositoryInterface $productRepository, /**/
             //HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, AuthenticationService $authService, CommonHelperFunctionsService $commonHelperFuncions,
+            $entityManager, $config, AuthenticationService $authService, 
+            CommonHelperFunctionsService $commonHelperFuncions,
+            ImageHelperFunctionsService $imageHelperFuncions,
             ExternalCommunicationService $externalCommunicationService)
     {
         // $this->productRatingRepository = $productRatingRepository;
@@ -60,6 +63,7 @@ class ReviewController extends AbstractActionController
         $this->config = $config;
         $this->authService = $authService;
         $this->commonHelperFuncions = $commonHelperFuncions;
+        $this->imageHelperFuncions = $imageHelperFuncions;
         $this->externalCommunicationService = $externalCommunicationService;
         $this->entityManager->initRepository(Setting::class);
 //        $this->entityManager->initRepository(ProductCharacteristic::class);
@@ -107,15 +111,15 @@ class ReviewController extends AbstractActionController
         $stripTags = new StripTags();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
-            return new JsonModel(["result" => false, "description" => "Product Id error"]);
+            return $this->getResponse()->setStatusCode(404);
         }
 
         if (empty($return['user_id'] = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }
 
-        if (empty($return["user_message"] = $stripTags->filter(trim($this->getRequest()->getPost()->reviewMessage))) or strlen($return["user_message"]) < 4) {
-            return new JsonModel(["result" => false, "description" => "Напиши отзыв больше трех символов!"]);
+        if (empty($return["user_message"] = $stripTags->filter(trim($this->getRequest()->getPost()->reviewMessage))) or strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
+            return new JsonModel(["result" => false, "description" => Resource::REVIEW_MESSAGE_VALID_ERROR ]);
         }
 
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $return['user_id']]));
@@ -130,8 +134,8 @@ class ReviewController extends AbstractActionController
 
         if (!empty($return["files"] = $files['files'])) {
 
-            if (!$this->getValidPostImage($return["files"])) {
-                return new JsonModel(["result" => false, "description" => "Допустимые форматы загружаемых файлов: " . join(", ", Resource::LEGAL_IMAGE_TYPES)]);
+            if (!$this->imageHelperFuncions->getValidPostImage($return["files"])) {
+                return new JsonModel(["result" => false, "description" => Resource::LEGAL_IMAGE_NOTICE . ": " . join(", ", Resource::LEGAL_IMAGE_TYPES)]);
             }
 
             $return['images'] = $this->addReviewImage($return["files"], $reviewId);
@@ -183,7 +187,7 @@ class ReviewController extends AbstractActionController
     public function receiveReviewAction ()
     {
         $json = file_get_contents('php://input');
-        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : "";
+        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
         
          mail("d.sizov@saychas.ru", "1C.Review.log", print_r($return, true)); // лог на почту*/
         
@@ -223,15 +227,19 @@ class ReviewController extends AbstractActionController
      * @param array $files
      * @return boolean
      */
-    private function getValidPostImage($files)
-    {
-        foreach ($files as $file) {
-            if (!in_array($file['type'], Resource::LEGAL_IMAGE_TYPES)) {
-                return false;
-            }
-        }
-        return true;
-    }
+//    
+//   /***  moved to ImagesHelperService */
+//    
+//    private function getValidPostImage($files)
+//    {
+//        foreach ($files as $file) {
+//            if (!in_array($file['type'], Resource::LEGAL_IMAGE_TYPES)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//    
 
     /**
      *
@@ -247,9 +255,10 @@ class ReviewController extends AbstractActionController
             $uuid = uniqid($this->identity() . "_" . time(), false);
             $ext = explode('/', $file['type']);
             $filename = $uuid . "." . end($ext);
-            //$return['uploadFiles'][] = ["from" => $file['tmp_name'], "to" => $return["uploadPath"] . $filename];
-            
-            if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
+            $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  //const REVIEW_IMAGE_RESIZE =["width" => 800, "height" => 800, "crop" => false ];
+
+            //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
+            if ($this->imageHelperFuncions->resizeImage($file['tmp_name'], $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['crop']) ){
                 $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
                 $reviewImage->setReviewId($reviewId)->setFilename($filename)->persist(["id" => null]);
                 $images[] = $filename;

@@ -621,6 +621,22 @@ return [
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
+            
+            'receive-review' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/receive-review',
+                    'defaults' => [
+                        'controller' => Controller\ReviewController::class,
+                        'action'     => 'receiveReview',
+                    ],
+                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
+                    //'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
+            
+            
+            
             'set-client-info' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -1369,6 +1385,7 @@ return [
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
             
             \Application\Service\CommonHelperFunctionsService::class => \Application\Service\Factory\CommonHelperFunctionsServiceFactory::class,
+            \Application\Service\ImageHelperFunctionsService::class => \Application\Service\Factory\ImageHelperFunctionsServiceFactory::class,
             
             //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
             //\Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
