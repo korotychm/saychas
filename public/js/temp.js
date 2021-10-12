@@ -42,6 +42,7 @@ $(document).ready(function(){
                 productId : this.product_id
               }))
             .then(response => {
+              console.log(response);
               this.statistics = response.data.statistics;
               this.overage_rating = response.data.overage_rating;
               this.images_path = response.data.images_path;
