@@ -27,9 +27,9 @@ $(document).ready(function(){
       },
       methods: {
         getImages(){
-          for (review in this.reviews){
+          for (review of this.reviews){
             console.log('review',review);
-            for (image in review.images){
+            for (image of review.images){
               this.reviewsPhotos.push(image);
             }
           }
