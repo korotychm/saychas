@@ -73,16 +73,14 @@ $(document).ready(function(){
             });
       },
       updated() {
-        this.$nextTick(() => {
-              $('#viewed-products .products-carousel').slick('unslick');
-              $('#viewed-products .products-carousel').slick(
-                {
-                  infinite: true,
-                  slidesToShow: 4,
-                  slidesToScroll: 4
-                }
-              );
-        });
+        $('#viewed-products .products-carousel').slick('unslick');
+        $('#viewed-products .products-carousel').slick(
+          {
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 4
+          }
+        );
       }
     });
 
