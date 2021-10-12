@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   if ($('#cats').length){
     var cats = new Vue({
       el: '#cats',
@@ -11,6 +12,48 @@ $(document).ready(function(){
       }
     });
   }
+
+  if ($('#testimonials').length){
+
+    var testimonials = new Vue({
+      el: '#category-page',
+      data: {
+        product_id: '',
+        reviews: [],
+        overage_rating: 0,
+        images_path: '',
+        statistics: {},
+        reviewsImages: []
+      },
+      methods: {
+        getImages(){
+          for (review in reviews){
+            for (image in review.images){
+              this.reviewsImages.push(image);
+            }
+          }
+        }
+      },
+      created() {
+          this.product_id = $('#testimonials').data('id'),
+          axios
+            .post('/ajax-get-product-review',
+              Qs.stringify({
+                productId : this.product_id
+              }))
+            .then(response => {
+              this.statistics = response.data.statistics;
+              this.overage_rating = response.data.overage_rating;
+              this.images_path = response.data.images_path;
+              this.reviews = response.data.reviews;
+              this.getImages();
+            });
+      }
+    });
+
+  }
+
+
 });
 
 
