@@ -13,10 +13,10 @@ $(document).ready(function(){
     });
   }
 
-  if ($('#product-page').length){
+  if ($('#product-card').length){
 
     var testimonials = new Vue({
-      el: '#product-page',
+      el: '#product-card',
       data: {
         product_id: '',
         reviews: [],
