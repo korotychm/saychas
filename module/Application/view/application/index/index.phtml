@@ -43,11 +43,3 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
     </div>
 </section>
 </div>
-<div id="viewed-products">
-<section class="section" v-if="length > 0">
-    <h2 class="h2 section__heading">Вы смотрели</h2>
-    <div class="products-carousel">
-      <?= $this->partial("/application/common/product") ?>
-    </div>
-</section>
-</div>
