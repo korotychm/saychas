@@ -117,8 +117,8 @@
         </div>
         <div class="testimonials-panel__item"><span>5</span>
             <div class="testimonials-panel__graph">
-                <div class="testimonials-panel__graph-current" style="width: 71%"></div>
-            </div><span>71 %</span>
+                <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('five') + '%'}"></div>
+            </div><span>{{ statisticsPercent('five') }} %</span>
         </div>
         <div class="testimonials-panel__item"><span>4</span>
             <div class="testimonials-panel__graph">

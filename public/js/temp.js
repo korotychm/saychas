@@ -26,6 +26,13 @@ $(document).ready(function(){
         reviewsPhotos: []
       },
       computed: {
+        statisticsPercent(grade){
+          let cumulative = 0;
+          for (item in this.statistics){
+            cumulative += +this.statistics[item]
+          }
+          return this.statistics[item] / cumulative * 100;
+        },
         reviewsUnit(){
           let length = this.reviews.length.toString()
           if (length.slice(-1) == '1' && length.slice(-2) != '11'){
