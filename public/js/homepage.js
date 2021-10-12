@@ -19,6 +19,7 @@ $(document).ready(function(){
             });
       },
       updated() {
+        $('#sale-products .products-carousel').slick('unslick');
         $('#sale-products .products-carousel').slick(
           {
             infinite: true,
@@ -72,8 +73,8 @@ $(document).ready(function(){
             });
       },
       updated() {
-        console.log('111');
         this.$nextTick(() => {
+              $('#viewed-products .products-carousel').slick('unslick');
               $('#viewed-products .products-carousel').slick(
                 {
                   infinite: true,
