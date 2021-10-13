@@ -102,6 +102,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
                 $arr['quantity'] = $quantity;
 
                 $flag = substr_count($arr['title'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
+                $flag |= substr_count($arr['vendor_code'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
                 $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
 
                 if (($flag && $flag2)) {

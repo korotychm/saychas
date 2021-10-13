@@ -93,6 +93,7 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
         $result = [];
         foreach ($cursor['body'] as &$c) {
             $flag = substr_count($c['product_name'], $title['$regex']) || empty($title['$regex']);
+            $flag |= substr_count($c['vendor_code'], $title['$regex']) || empty($title['$regex']);
             $flag2 = $c['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
 //            if(!empty($c['category_id'])) {
 //                $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
