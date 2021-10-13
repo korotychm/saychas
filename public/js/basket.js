@@ -221,7 +221,8 @@ function calculateBasketMerge(dataString, loadinfo = false)
         success: function (data) {
             $("#basketordermerge").html(data);
             $("#basket-ordermerge-cover").hide();
-            setTimepointText();
+            //setTimepointText();
+            loadPayInfo();
             setAllCustomSelects();
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -526,7 +527,6 @@ $(function () {
 
 
     $(document).on('change', '#basketordermerge .custom-select__option input', function () {
-        console.log($("#user-basket-form").serialize());
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
