@@ -166,6 +166,11 @@ const router = new VueRouter({
 
 const cp = new Vue({
   router,
+  watch:{
+    $route (to, from){
+      $('.header__heading .store-title').remove();
+    }
+  }
   mounted: function(){
     if(!this.$route.name) router.replace('/stores');
   }
