@@ -111,8 +111,7 @@ const Inventory = {
   },
   methods: {
     setTitle(title){
-      $('.header__heading .store-title').remove();
-      $('.header__heading span').append('<span class="store-title"> - ' + title + '</span>');
+      this.$route.meta.h1 = 'Товарные остатки - ' + title;
     },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-stock-balance';
@@ -232,6 +231,9 @@ const Inventory = {
             $('.main__loader').hide();
           });
     }
+  },
+  created: function(){
+    this.$route.meta.h1 = 'Товарные остатки';
   },
   mounted: function(){
     this.getStores();
