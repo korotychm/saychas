@@ -91,14 +91,14 @@ class ReviewController extends AbstractActionController
      */
     public function setProductReviewAction()
     {
-        $return = ["result" => true, "seller_name" => "", "seller_message" => ""];
+        $return = [ "seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => time(), 'review_id' => substr(md5(uniqid().time()), 0 , 36) ];
         $stripTags = new StripTags();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
             return $this->getResponse()->setStatusCode(404);
         }
 
-        if (empty($return['user_id'] = $this->identity())) {
+        if (empty($user_id = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }
 
@@ -106,23 +106,25 @@ class ReviewController extends AbstractActionController
             return new JsonModel(["result" => false, "description" => Resource::REVIEW_MESSAGE_VALID_ERROR ]);
         }
 
-        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $return['user_id']]));
+        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $user_id ]));
 
-        if (empty($return["user_name"] = $userInfo['name'])) {
+        if (empty($return["user_name"] = $userInfo['name']) or empty($return["user_id"] = $userInfo['userid'])) {
             return $this->getResponse()->setStatusCode(403);
         }
+        
+        
 
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
-        $reviewId = $this->addReview($return);
+        $return['id'] = $reviewId = $this->addReview($return);
         $files = $this->getRequest()->getFiles();
 
-        if (!empty($return["files"] = $files['files'])) {
+        if (!empty($files['files'])) {
 
-            if (!$this->imageHelperFuncions->getValidPostImage($return["files"])) {
+            if (!$this->imageHelperFuncions->getValidPostImage($files['files'])) {
                 return new JsonModel(["result" => false, "description" => Resource::LEGAL_IMAGE_NOTICE . ": " . join(", ", Resource::LEGAL_IMAGE_TYPES)]);
             }
 
-            $return['images'] = $this->addReviewImage($return["files"], $reviewId);
+            $return['images'] = $this->addReviewImage($files['files'], $reviewId);
         }
 
         $return['answer1c'] = $this->externalCommunicationService->sendReview($return);
@@ -147,7 +149,7 @@ class ReviewController extends AbstractActionController
         }
 
         
-        $res = Review::findAll(['where' => $param])->toArray();
+        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => "10" ])->toArray();
         $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
         $reviews['overage_rating'] = ProductRating::findFirstOrDefault(['product_id'=>$param['product_id']])->getRating();
         $reviews['images_path'] = $this->imagePath("review_images");
@@ -179,6 +181,24 @@ class ReviewController extends AbstractActionController
         
         return new JsonModel($return);
     }
+    
+    /**
+     * receive product rating from 1c
+     *
+     * @param input JSON
+     * @return JSON
+     */
+    public function receiveRatingAction ()
+    {
+        $json = file_get_contents('php://input');
+        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
+        
+         mail("d.sizov@saychas.ru", "1C.Rating.log", print_r($return, true)); // лог на почту*/
+        
+        return new JsonModel($return);
+    }
+    
+    
     
     /**
      * get images of review
@@ -239,16 +259,17 @@ class ReviewController extends AbstractActionController
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
         $uploadPathThumbs = "public" . $this->imagePath("review_thumbnails") . "/";
         $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  
+        $thumpParams = Resource::REVIEW_IMAGE_THUMBNAILS;  
         foreach ($files as $file) {
             $uuid = uniqid($this->identity() . "_" . time(), false);
             $filename = $uuid ;
              
             //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
-            if ($this->imageHelperFuncions->resizeImage($file['tmp_name'],  $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['crop'], $resizeParams['type'],)){
-                $this->imageHelperFuncions->resizeImage($file['tmp_name'],  $uploadPathThumbs . $filename, 600, 600, true, "jpeg" );
+            if ($this->imageHelperFuncions->resizeImage($file['tmp_name'],  $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['type'],)){
+                $this->imageHelperFuncions->cropImage($file['tmp_name'],  $uploadPathThumbs . $filename, $thumpParams['width'], $thumpParams['height'], $thumpParams['type'],);
                 $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
-                $reviewImage->setReviewId($reviewId)->setFilename($filename)->persist(["id" => null]);
-                $images[] = $filename;
+                $reviewImage->setReviewId($reviewId)->setFilename($filename.".".$resizeParams['type'])->persist(["id" => null]);
+                $images[] = $this->imagePath("review_images") . "/". $filename.".".$resizeParams['type'];
             }
         }
 
@@ -268,6 +289,7 @@ class ReviewController extends AbstractActionController
         return $review->setProductId($return['productId'])
                         ->setRating($return["rating"])
                         ->setUserId($return['user_id'])
+                        ->setReviewId($return['review_id'])
                         ->setUserName($return["user_name"])
                         ->setUserMessage($return['user_message'])
                         ->setSellerName($return["seller_name"])

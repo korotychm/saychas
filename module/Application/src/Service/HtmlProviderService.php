@@ -287,6 +287,7 @@ class HtmlProviderService
 
         //$characteristicsArray = array_diff($characteristicsArray, array(''));
         if (!empty($characteristicsArray)) {
+            
             foreach ($characteristicsArray as $char) {
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                 $chArray = $ch->getIsList();
@@ -300,6 +301,7 @@ class HtmlProviderService
 
                 $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
                 $return["characteristics"][0][] = $char;
+                
                 if ($ch->getIsMain()) {
                     $return["characteristics"][1][] = $char;
                 }

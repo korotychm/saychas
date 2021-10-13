@@ -15,7 +15,7 @@ class ProductRating extends Entity
 {
 
     use Searchable;
-    
+
     //public static ProductRatingRepository $repository;
     public static ProductRatingRepositoryInterface $repository;
 
@@ -23,7 +23,7 @@ class ProductRating extends Entity
      * @var string
      */
     protected $product_id;
-    
+
     /**
      * @var int
      */
@@ -33,7 +33,12 @@ class ProductRating extends Entity
      * @var string
      */
     protected $rating;
-    
+
+    /**
+     * @var string
+     */
+    protected $statistic;
+
     /**
      * Get productId.
      *
@@ -53,11 +58,11 @@ class ProductRating extends Entity
     public function setProductId($productId)
     {
         $this->product_id = $productId;
-       
+
         return $this;
     }
 
-     /**
+    /**
      * Set value.
      *
      * @param int $rating
@@ -80,7 +85,8 @@ class ProductRating extends Entity
     {
         return $this->rating;
     }
-     /**
+
+    /**
      * Get reviews
      *
      * @return int
@@ -100,6 +106,30 @@ class ProductRating extends Entity
     {
         $this->reviews = $reviews;
         return $this;
+    }
+
+    /**
+     * Set statistic .
+     *
+     * @param int $statistic
+     *
+     * @return $this
+     */
+    public function setStatistic($statistic)
+    {
+        $this->statistic = $statistic;
+
+        return $this;
+    }
+
+    /**
+     * Get statistic.
+     *
+     * @return string
+     */
+    public function getStatistic()
+    {
+        return $this->statistic;
     }
 
 }

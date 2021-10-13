@@ -630,8 +630,18 @@ return [
                         'controller' => Controller\ReviewController::class,
                         'action'     => 'receiveReview',
                     ],
-                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
-                    //'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
+            
+            'receive-rating' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/receive-rating',
+                    'defaults' => [
+                        'controller' => Controller\ReviewController::class,
+                        'action'     => 'receiveRating',
+                    ],
+                   
                 ],
             ],
             

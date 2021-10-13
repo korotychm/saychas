@@ -44,10 +44,16 @@ class Review extends Entity
      * @var int
      */
     protected $id = 0;
+    
     /**
-     * @var int
+     * @var string
      */
-    protected $user_id = 0;
+    protected $review_id ;
+    
+    /**
+     * @var string
+     */
+    protected $user_id ;
 
     /**
      * @var string
@@ -84,6 +90,12 @@ class Review extends Entity
      */
     protected $time_created = 0;
 
+    
+    /**
+     * @var int
+     */
+    protected $time_modified = 0;
+    
     /**
      * @var timestamp
      */
@@ -103,12 +115,34 @@ class Review extends Entity
     /**
      * Set id.
      *
-     * @param string $id
+     * @param int $id
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Get review_id.
+     *
+     * @return string
+     */
+    public function getReviewId()
+    {
+        return $this->review_id;
+    }
+
+    /**
+     * Set review_id.
+     *
+     * @param string $reviewId
+     * @return $this
+     */
+    public function setReviewId($reviewId)
+    {
+        $this->review_id = $reviewId;
         return $this;
     }
 
@@ -298,7 +332,29 @@ class Review extends Entity
         $this->time_created = $timeCreated;
         return $this;
     }
+    
+    /**
+     * Get time_modified
+     *
+     * @return string
+     */
+    public function getTimeModified()
+    {
+        return $this->time_modified;
+    }
 
+    /**
+     * Set time_modified
+     *
+     * @param string $timeModified
+     * @return $this
+     */
+    public function setTimeModified($timeModified)
+    {
+        $this->time_modified = $timeModified;
+        return $this;
+    }
+    
     /**
      * Get timestamp
      *

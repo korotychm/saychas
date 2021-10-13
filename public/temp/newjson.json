@@ -1,31 +1,26 @@
-{
-    "deliveries": {
-        "delivery_price": "29900",
-        "delivery": [{
-                "store": "000000005",
-                "products": [{
-                        "id": "000000000003",
-                        "count": "1",
-                        "price": "5699000",
-                        "discont": 0
-                    }],
-                "pickup": true
-            }, {
-                "0": {
-                    "store": "000000007",
-                    "products": [{
-                            "id": "000000000014",
-                            "count": "2",
-                            "price": "2000000",
-                            "discont": 0
-                        }, {
-                            "id": "000000000017",
-                            "count": "1",
-                            "price": "1250000",
-                            "discont": 0
-                        }]
-                },
-                "pickup": false
-            }]
+[
+    {
+        "product_id": "0000000000001",
+        "average_rating": "42",
+        "review_count": "95",
+        "statistic": {
+            "five": "2",
+            "four": "2",
+            "three": "1",
+            "two": "0",
+            "one": "0"
+        }
+    },
+    {
+        "product_id": "0000000000002",
+        "average_rating": "50",
+        "review_count": "10",
+        "statistic": {
+            "five": "10",
+            "four": "0",
+            "three": "0",
+            "two": "0",
+            "one": "0"
+        }
     }
-}
+]
