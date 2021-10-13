@@ -4,6 +4,7 @@ const Inventory = {
       <div v-if="htmlContent" v-html="htmlContent"></div>
       <div v-else>
         <!-- фильтр -->
+        <span class="store-title"></span>
         <div class="filter">
           <div class="filter__select" style="width: 400px; margin: 0 10px 0 0;">
             <div class="custom-select custom-select--radio">
@@ -111,7 +112,8 @@ const Inventory = {
   },
   methods: {
     setTitle(title){
-      this.$route.meta.h1 = 'Товарные остатки - ' + title;
+      $('.store-title').html('');
+      $('.store-title').html('Товарные остатки - ' + title);
       console.log(this.$route.meta.h1);
     },
     saveProduct(index) {
@@ -232,9 +234,6 @@ const Inventory = {
             $('.main__loader').hide();
           });
     }
-  },
-  created: function(){
-    this.$route.meta.h1 = 'Товарные остатки';
   },
   mounted: function(){
     this.getStores();
