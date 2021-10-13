@@ -112,6 +112,7 @@ const Inventory = {
   methods: {
     setTitle(title){
       this.$route.meta.h1 = 'Товарные остатки - ' + title;
+      console.log(this.$route.meta.h1);
     },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-stock-balance';
