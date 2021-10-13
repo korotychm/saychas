@@ -111,8 +111,7 @@ const Inventory = {
   },
   methods: {
     setTitle(title){
-      $('.header__heading .store-title').remove();
-      $('.header__heading span').append('<span class="store-title"> - ' + title + '</span>');
+      $('.header__heading span').html(this.$route.name + '-' + title);
     },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-stock-balance';
