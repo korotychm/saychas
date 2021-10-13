@@ -157,6 +157,7 @@ const PriceList = {
             .then(response => {
               console.log('Ответ на сохранение цены', response.data);
               if (response.data.result){
+                showMessage('Цена товара изменена и обновится на сайте сегодня ночью!');
                 $('.pricelist__item').removeClass('active');
               }
             })

@@ -603,6 +603,7 @@ const ProductAdd = {
             .then(response => {
                 console.log(response.data);
                 if (response.data.result){
+                  showMessage('Товар добавлен и отправлен на модерацию.');
                   router.replace('/products');
                 }
             })

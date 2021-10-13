@@ -20,7 +20,7 @@ const StoreAdd = {
                       <div class="product__attribute">
                         <h2>Комментарий</h2>
                         <div>
-                          <input type="text" class="input" v-model="store.description" />
+                          <input type="text" class="input" v-model="store.description" maxlength="200" />
                           <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
                         </div>
                       </div>
@@ -388,6 +388,7 @@ const StoreAdd = {
             }),{headers})
             .then(response => {
               if (response.data.result){
+                showMessage('Магазин добавлен!');
                 router.replace('/stores');
               }
             })

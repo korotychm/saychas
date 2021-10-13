@@ -144,6 +144,7 @@ const Inventory = {
             .then(response => {
               console.log('Ответ на сохранение остатков', response.data);
               if (response.data.result){
+                showMessage('Остатки товара изменены!');
                 $('.inventory__item').removeClass('active');
               }
             })

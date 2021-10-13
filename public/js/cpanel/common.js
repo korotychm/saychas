@@ -170,3 +170,11 @@ const cp = new Vue({
     if(!this.$route.name) router.replace('/stores');
   }
 }).$mount('#cp')
+
+showMessage(message){
+  $('.cp-message').html(message);
+  $('.cp-message').addClass('active');
+  setTimeout(function(){
+    $('.cp-message').removeClass('active');
+  }, 2500);
+}

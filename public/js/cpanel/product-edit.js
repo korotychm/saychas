@@ -553,6 +553,7 @@ const ProductEdit = {
 
                 } else {
                   if (response.data.result){
+                    showMessage('Информация о товаре сохранена и отправлена на модерацию.');
                     router.replace('/products');
                   }
                 }
