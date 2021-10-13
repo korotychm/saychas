@@ -554,6 +554,9 @@
   border-radius: 20px;
   text-align: center;
 }
+.testimonials-panel__info {
+  margin-bottom: 40px;
+}
 .testimonials-panel__grade {
   display: flex;
   align-items: center;
@@ -576,7 +579,6 @@
 }
 .testimonials-panel .btn {
   width: 100%;
-  margin-top: 40px;
 }
 .testimonials-panel__item {
   margin-bottom: 24px;
