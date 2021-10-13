@@ -164,8 +164,8 @@ class Resource
     const REVIEW_MESSAGE_VALID_ERROR = "Отзыв должен быть более подробным ";
     const LEGAL_IMAGE_TYPES = ["image/jpeg", "image/png"];
     const LEGAL_IMAGE_NOTICE = "Допустимые форматы загружаемых файлов: ";
-    const REVIEW_IMAGE_RESIZE = [ "width" => 800,  "height" => 800, "crop" => false, "type" => "jpeg" ];
-    const REVIEW_IMAGE_THUMBNAILS = [ "width" => 100,  "height" => 100, "crop" => false, "type" => "jpeg" ];
+    const REVIEW_IMAGE_RESIZE = [ "width" => 1500,  "height" => 1500, "crop" => false, "type" => "jpeg" ];
+    const REVIEW_IMAGE_THUMBNAILS = [ "width" => 100,  "height" => 100, "crop" => true, "type" => "jpeg" ];
     
     
     const DEFAULT_IMAGE = "nophoto.jpeg";

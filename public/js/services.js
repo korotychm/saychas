@@ -266,7 +266,7 @@ $(function () {
        $.each($('#file')[0].files, function(i, file) {
             data.append('files['+i+']', file);
         });
-        data.append('productId', $("#productId").val()) ;
+        data.append('productId', $("#productReviewId").val()) ;
         data.append('reviewMessage', $("#reviewMessage").val()) ;
         sendProductReview(data);
         return false;

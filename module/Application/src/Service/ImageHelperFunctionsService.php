@@ -61,12 +61,21 @@ class ImageHelperFunctionsService
         
         $im = $this->initImage($newwidth, $newheight);
         imagecopyresampled($im, $src, 0, 0, 0, 0,  $newwidth, $newheight, $width, $height);
-        $func = 'image' . $type; // Имя функции для сохранения результата
+        $func = 'image' . $type; 
         
-        return $func($im, "$destFile.$type"); // Сохраняет изображение в  файл, возвращая результат этой операции true / false
+        return $func($im, "$destFile.$type"); 
     }
-
-    public function cropImage($soureceFile, $destFile, $width, $height, $type = "png")
+    /**
+     * resize, crop and save image file
+     * 
+     * @param string $soureceFile
+     * @param string $destFile
+     * @param int $width
+     * @param int $height
+     * @param string $type
+     * @return boolean
+     */
+    public function cropImage($soureceFile, $destFile, $width, $height, $type = "jpeg")
     {
         if (!$src = $this->openImage($soureceFile)) {
             return false;
@@ -93,9 +102,9 @@ class ImageHelperFunctionsService
 
         $im = $this->initImage($width, $height);
         imagecopyresampled($im, $src, 0, 0, $x, $y, $width, $height, $w, $h);
-        $func = 'image' . $type; // Имя функции для сохранения результата
+        $func = 'image' . $type; 
 
-        return $func($im, "$destFile.$type"); // Сохраняет изображение в  файл, возвращая результат этой операции true / false
+        return $func($im, "$destFile.$type"); 
     }
 
     /**
@@ -154,7 +163,7 @@ class ImageHelperFunctionsService
                 $img = @ImageCreateFromBMP($src);
                 break;
             case IMAGETYPE_PSD:
-                $img = @imagecreatefrompsd($src); //@
+                $img = @imagecreatefrompsd($src); 
                 break;
             default:
                 $img = false;

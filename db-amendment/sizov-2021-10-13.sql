@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 13, 2021 at 12:49 PM
+-- Generation Time: Oct 13, 2021 at 02:54 PM
 -- Server version: 5.7.33-0ubuntu0.18.04.1
 -- PHP Version: 7.4.22
 
@@ -54,7 +54,7 @@ CREATE TABLE `review` (
   `seller_message` text COLLATE utf8_unicode_ci,
   `time_created` bigint(20) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `time_modified` bigint(20) NOT NULL
+  `time_modified` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
