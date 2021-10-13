@@ -526,6 +526,7 @@ $(function () {
 
 
     $(document).on('change', '#basketordermerge .custom-select__option input', function () {
+        console.log($("#user-basket-form").serialize());
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
