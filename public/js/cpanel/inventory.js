@@ -10,7 +10,7 @@ const Inventory = {
               <div class="custom-select__label input">Выберите магазин</div>
               <div class="custom-select__dropdown">
                 <div class="custom-select__dropdown-inner">
-                  <label v-for="store in stores" class="custom-select__option">
+                  <label v-for="store in stores" class="custom-select__option" @click="setTitle(store.title)">
                     <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="category_filter" v-model="selectedFilters.store_id" @change="loadPage()" />
                     <span>{{store.title}}</span>
                   </label>
@@ -110,6 +110,10 @@ const Inventory = {
       }
   },
   methods: {
+    setTitle(title){
+      $('.header__heading .store-title').remove();
+      $('.header__heading span').append('<span class="store-title"> - ' + title + '</span>');
+    },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-stock-balance';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
