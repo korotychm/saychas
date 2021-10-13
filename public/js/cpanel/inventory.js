@@ -113,7 +113,7 @@ const Inventory = {
   methods: {
     setTitle(title){
       $('.store-title').html('');
-      $('.store-title').html('Товарные остатки - ' + title);
+      $('.store-title').html(' - ' + title);
       console.log(this.$route.meta.h1);
     },
     saveProduct(index) {
