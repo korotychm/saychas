@@ -171,7 +171,7 @@ const cp = new Vue({
   }
 }).$mount('#cp')
 
-showMessage(message){
+function showMessage(message) {
   $('.cp-message').html(message);
   $('.cp-message').addClass('active');
   setTimeout(function(){
