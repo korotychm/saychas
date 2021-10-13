@@ -221,8 +221,7 @@ function calculateBasketMerge(dataString, loadinfo = false)
         success: function (data) {
             $("#basketordermerge").html(data);
             $("#basket-ordermerge-cover").hide();
-            //setTimepointText();
-            loadPayInfo();
+            setTimepointText();
             setAllCustomSelects();
         },
         error: function (xhr, ajaxOptions, thrownError) {
