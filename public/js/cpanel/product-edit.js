@@ -362,6 +362,7 @@ const ProductEdit = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
+            console.log('charCode',c);
             if (c < 32 && c > 255) {
                 output.substring(input[i], '');
             }
@@ -776,7 +777,6 @@ $(document).on('click','.product__images-arrow',function(){
 function setCustomSelectLabels(el) {
   let textValue = el.find('input:checked + span').text();
   el.find('.custom-select__label').html('<span class="select-selected-value">'+textValue+'</span>');
-  console.log(textValue);
 }
 
 function setAllCustomSelects() {
