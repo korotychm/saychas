@@ -153,7 +153,7 @@ class ImageHelperFunctionsService
      * @param array $images
      * @param string $id
      */
-    public function insertImage($images, $id)
+    public function insertReviewImage($images, $id)
     {
         if (!empty($images)) {
             //$reviewImages = ReviewImage::findFirstOrDefault(["id" => null]);

@@ -72,7 +72,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
-                $this->imageHelperFunctions->insertImage($row['images']['view'], $row['id']);
+                $this->imageHelperFunctions->insertReviewImage($row['images']['view'], $row['id']);
                 
             } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
