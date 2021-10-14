@@ -363,7 +363,7 @@ const ProductEdit = {
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
             if(c >= 32 && c <= 255) {
-                output += input.substring(i, 1);
+                output = input.substring(i, 1);
             }
       }
       this.product.title = output;
