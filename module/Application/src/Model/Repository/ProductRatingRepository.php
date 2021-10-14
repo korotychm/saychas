@@ -57,7 +57,7 @@ class ProductRatingRepository extends Repository implements ProductRatingReposit
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `store`(`product_id`, `rating`, `reviews`, `statistic`) VALUES ( '%s', '%s', '%s', '%s' )",
+            $sql = sprintf("replace INTO `product_rating`(`product_id`, `rating`, `reviews`, `statistic`) VALUES ( '%s', '%s', '%s', '%s' )",
                     $row['product_id'], $row['rating'], $row['review'], Json::encode($row['statistic']));
 
             try {
