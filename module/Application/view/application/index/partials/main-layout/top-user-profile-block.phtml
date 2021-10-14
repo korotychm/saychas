@@ -21,7 +21,7 @@ use Application\Resource\Resource;
         <!-- profile links-->
        <div class="header__profile-popup header__profile-popup--links">
             <a href="/user">
-                <b><?= $username ?></b>
+                <b><?= ($userinfo and is_array($userinfo)) ? $userinfo['name']: "" ?></b>
             </a>
             <a href="/user/orders"><?= Resource::USER_MENU_ORDERS ?></a>
             <a href="/user/favorites"><?= Resource::FAVORITES_TITLE ?></a>

@@ -251,7 +251,7 @@ $(function () {
             contentType: false,
             success: function (result, status, xhr) {
                 console.log('result = ', result);
-                $("#productReviewAnswer").html(JSON.stringify(result, null, " "));
+                $("#productReviewAnswer").html(JSON.stringify(result, null, "   "));
             },
             error: function (xhr, status, error) {
                 console.log('SendProductReview failed', xhr, status);
@@ -266,7 +266,7 @@ $(function () {
        $.each($('#file')[0].files, function(i, file) {
             data.append('files['+i+']', file);
         });
-        data.append('productId', $("#productId").val()) ;
+        data.append('productId', $("#productReviewId").val()) ;
         data.append('reviewMessage', $("#reviewMessage").val()) ;
         sendProductReview(data);
         return false;

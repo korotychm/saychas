@@ -86,19 +86,36 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
+//        $params['where']['product_name'] = $params['where']['title'];
+        $title = $params['where']['title'];
+        unset($params['where']['title']);
         $cursor = $this->findAll($params);
         $categories = [];
+        $result = [];
         foreach ($cursor['body'] as &$c) {
-            if(!empty($c['category_id'])) {
+            $flag = substr_count($c['product_name'], $title['$regex']) || empty($title['$regex']);
+            $flag |= substr_count($c['vendor_code'], $title['$regex']) || empty($title['$regex']);
+            $flag2 = $c['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
+//            if(!empty($c['category_id'])) {
+//                $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
+//                $c['category_name'] = (null == $category) ? '' : $category->getTitle();
+//                $categories[] = [$c['category_id'], $c['category_name'], ];
+//            }
+
+            if (($flag && $flag2)) {
                 $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
                 $c['category_name'] = (null == $category) ? '' : $category->getTitle();
                 $categories[] = [$c['category_id'], $c['category_name'], ];
+                $result[] = $c;
+                continue;
             }
 //            if(!empty($c['product_id'])) {
 //                $entity = Product::find(['id' => $c['product_id']]);
 //                $c['title'] = null != $entity ? $entity->getTitle() : '';
 //            }
         }
+        
+        $cursor['body'] = $result;
         
         $cursor['filters']['categories'] = $this->findCategories($params);
         return $cursor;

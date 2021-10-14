@@ -621,6 +621,33 @@ return [
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
+            
+            'receive-review' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/receive-review',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\Entity\Review::class,
+                ],
+            ],
+            
+            'receive-rating' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/receive-rating',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
+                    ],
+                    'repository' => \Application\Model\Entity\ProductRating::class,
+                ],
+            ],
+            
+            
+            
             'set-client-info' => [
                 'type'    => Segment::class,
                 'options' => [
@@ -1369,6 +1396,7 @@ return [
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
             
             \Application\Service\CommonHelperFunctionsService::class => \Application\Service\Factory\CommonHelperFunctionsServiceFactory::class,
+            \Application\Service\ImageHelperFunctionsService::class => \Application\Service\Factory\ImageHelperFunctionsServiceFactory::class,
             
             //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
             //\Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
@@ -1482,6 +1510,7 @@ return [
                 'provider' => 'provider',
                 'cpanel_product' => 'cpanel_product',
                 'review_images' => 'user-images/review-images',
+                'review_thumbnails' => 'user-images/review-images/thumbnails',
             ],
         ],
         'catalog_to_save_images' => __DIR__.'/../../../public/images/product',

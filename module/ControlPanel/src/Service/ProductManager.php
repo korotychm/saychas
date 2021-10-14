@@ -150,6 +150,14 @@ class ProductManager extends ListManager implements LoadableInterface
     {
 //        $this->findCharacteristics($params[ 'where']['product_id']);
 
+        $title = $params['where']['title'];
+        if(!empty($title)) {
+            unset($params['where']['title']);
+            $or = [];
+            array_push($or, ['vendor_code' => $title,]);
+            array_push($or, ['title' => $title,]);
+            $params['where']['$or'] = $or;
+        }
         $cursor = $this->findAll($params);
         $categories = [];
         $brands = [];
@@ -158,7 +166,8 @@ class ProductManager extends ListManager implements LoadableInterface
                 //$category = $this->productManager->findCategoryById(['id' => $c['category_id']]);
                 $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
                 $c['category_name'] = (null == $category) ? '' : $category->getTitle();
-                $categories[] = [$c['category_id'], $c['category_name'], ];
+                $c['mother_categories'] = $this->categoryRepo->findAllMatherCategories($c['category_id']);
+                $categories[] = [$c['category_id'], $c['category_name'], $c['mother_categories'], ];
             }
 
             if(!empty($c['brand_id'])) {
