@@ -358,10 +358,11 @@ const ProductEdit = {
   },
   methods: {
     checkText(target, characteristics = false){
+      let input = '';
       if (characteristics){
-        let input = this.product.characteristics[target].value;
+        input = this.product.characteristics[target].value;
       } else {
-        let input = this.product[target];
+        input = this.product[target];
       }
       let output = input;
       for (var i = 0; i < input.length; i++) {
