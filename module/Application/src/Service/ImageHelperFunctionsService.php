@@ -65,6 +65,7 @@ class ImageHelperFunctionsService
         
         return $func($im, "$destFile.$type"); 
     }
+    
     /**
      * resize, crop and save image file
      * 

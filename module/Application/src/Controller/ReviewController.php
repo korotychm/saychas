@@ -92,8 +92,8 @@ class ReviewController extends AbstractActionController
      */
     public function setProductReviewAction()
     {
-        $return = [ "seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => null, 'review_id' => substr(md5(uniqid().time()), 0 , 36) ];
-       // $stripTags = new StripTags();
+        $reviewId = substr(md5(uniqid().time()), 0 , 36);
+        $return = [ "seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => null, 'id' => $reviewId ];
         $escaper = new Escaper();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
@@ -114,10 +114,8 @@ class ReviewController extends AbstractActionController
             return $this->getResponse()->setStatusCode(403);
         }
         
-        
-
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
-        $return['id'] = $reviewId = $this->addReview($return);
+        //$return['id'] = $reviewId = $this->addReview($return);
         $files = $this->getRequest()->getFiles();
 
         if (!empty($files['files'])) {

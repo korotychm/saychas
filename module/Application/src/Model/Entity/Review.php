@@ -41,14 +41,14 @@ class Review extends Entity
     }
     
     /**
-     * @var int
+     * @var string
      */
     protected $id = 0;
     
     /**
      * @var string
      */
-    protected $review_id ;
+    //protected $review_id ;
     
     /**
      * @var string
@@ -129,10 +129,10 @@ class Review extends Entity
      *
      * @return string
      */
-    public function getReviewId()
-    {
-        return $this->review_id;
-    }
+//    public function getReviewId()
+//    {
+//        return $this->review_id;
+//    }
 
     /**
      * Set review_id.
@@ -140,11 +140,11 @@ class Review extends Entity
      * @param string $reviewId
      * @return $this
      */
-    public function setReviewId($reviewId)
-    {
-        $this->review_id = $reviewId;
-        return $this;
-    }
+//    public function setReviewId($reviewId)
+//    {
+//        $this->review_id = $reviewId;
+//        return $this;
+//    }
 
     /**
      * Get user_id.

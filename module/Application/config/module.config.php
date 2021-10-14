@@ -627,9 +627,10 @@ return [
                 'options' => [
                     'route'    => '/receive-review',
                     'defaults' => [
-                        'controller' => Controller\ReviewController::class,
-                        'action'     => 'receiveReview',
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
                     ],
+                    'repository' => \Application\Model\Entity\Review::class,
                 ],
             ],
             
@@ -638,10 +639,10 @@ return [
                 'options' => [
                     'route'    => '/receive-rating',
                     'defaults' => [
-                        'controller' => Controller\ReviewController::class,
-                        'action'     => 'receiveRating',
+                        'controller' => Controller\ReceivingController::class,
+                        'action'     => 'receiveRepository',
                     ],
-                   
+                    'repository' => \Application\Model\Entity\ProductRating::class,
                 ],
             ],
             
