@@ -64,7 +64,8 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
 
         
         if ((bool) $result['truncate']) {
-            $this->db->query("truncate table provider")->execute();
+            //$this->db->query("truncate table review")->execute();
+            return ['result' => false, 'description' => 'Method is not supported: can`t truncate review', 'statusCode' => 405];
         }
 
         foreach ($result['data'] as $row) {
@@ -82,7 +83,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
     }
     
     /**
-     * Delete review specified by JSON array of objects
+     * Delete review  and related review_image specified by JSON array of objects
      * @param JSON
      * @return array
      */
@@ -93,20 +94,23 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
+        
         $total = [];
+        
         foreach ($result as $item) {
             array_push($total, $item['id']);
         }
+        
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
         $deleteImages = $sql->delete()->from("review_image")->where(['review_id' => $total]);
 
         $selectString = $sql->buildSqlString($delete);
         $selectStringImages = $sql->buildSqlString($deleteImages);
+        
         try {
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
             $this->db->query($selectStringImages, $this->db::QUERY_MODE_EXECUTE);
-            
             return ['result' => true, 'description' => '', 'statusCode' => 200];
         } catch (InvalidQueryException $e) {
             return ['result' => false, 'description' => "$e error executing $sql ", 'statusCode' => 418];
