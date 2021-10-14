@@ -362,9 +362,9 @@ const ProductEdit = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            console.log('charCode',c);
+            console.log('charCode',c,'Symbol',input[i]);
             if (c < 32 && c > 255) {
-                output.substring(input[i], '');
+                output = output.substring(input[i], '');
             }
       }
       this.product.title = output;
