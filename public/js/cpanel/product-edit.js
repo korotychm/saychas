@@ -832,7 +832,8 @@ $('.custom-select__option input').keydown(function(e){
   $(this).parent().find('input').eq(index).focus();
 });
 
-$(document).on('input','.checktext',function(e){
+$(document).on('input','.checktext',function(){
+  console.log('input');
   let input = $(this).val();
   let output = '';
     for (var i = 0; i < input.length; i++) {
