@@ -362,8 +362,7 @@ const ProductEdit = {
       let output = '';
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            if(c >= 32 && c <= 255) {
-                console.log(input[i]);
+            if(c < 32 && c > 255) {
                 output = input.substring(input[i], '');
             }
       }
