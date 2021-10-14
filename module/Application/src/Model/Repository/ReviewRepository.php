@@ -68,7 +68,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `review`(`id`, `user_id`, `product_id`, `rating`, `user_name`, `seller_name`, `user_message`, `seller_message`, `time_created`,  `time_modified`)  VALUES ('%s', '%s', '%s','%s', '%s', '%s','%s', '%s', '%s', %s)", $row['id'], $row['user_id'], $row['product_id'], $row['rating'], $row['user_name'], $row['seller_name'], $row['user_message'], $row['seller_message'], $row['time_created'],  $row['time_modified'] );
+            $sql = sprintf("replace INTO `review`(`id`, `user_id`, `product_id`, `rating`, `user_name`, `seller_name`, `user_message`, `seller_message`, `time_created`,  `time_modified`)  VALUES ('%s', '%s', '%s','%s', '%s', '%s','%s', '%s', '%s','%s')", $row['id'], $row['user_id'], $row['product_id'], $row['rating'], $row['user_name'], $row['seller_name'], $row['user_message'], $row['seller_message'], $row['time_created'],  $row['time_modified'] );
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
@@ -99,14 +99,17 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
         }
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
+        $deleteImages = $sql->delete()->from("review_image")->where(['review_id' => $total]);
 
         $selectString = $sql->buildSqlString($delete);
+        $selectStringImages = $sql->buildSqlString($deleteImages);
         try {
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
+            $this->db->query($selectStringImages, $this->db::QUERY_MODE_EXECUTE);
             
             return ['result' => true, 'description' => '', 'statusCode' => 200];
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+            return ['result' => false, 'description' => "$e error executing $sql ", 'statusCode' => 418];
         }
     }
 

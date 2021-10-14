@@ -70,6 +70,8 @@ class ReviewController extends AbstractActionController
      */
     public function setProductRatingAction()
     {
+        
+        return new JsonModel(["sevice disabled"]);
         if (empty($param['user_id'] = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
             return $this->getResponse()->setStatusCode(403);
         }
@@ -171,31 +173,31 @@ class ReviewController extends AbstractActionController
      * @param input JSON
      * @return JSON
      */
-    public function receiveReviewAction ()
-    {
-        $json = file_get_contents('php://input');
-        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-        
-         mail("d.sizov@saychas.ru", "1C.Review.log", print_r($return, true)); // лог на почту*/
-        
-        return new JsonModel($return);
-    }
-    
-    /**
-     * receive product rating from 1c
-     *
-     * @param input JSON
-     * @return JSON
-     */
-    public function receiveRatingAction ()
-    {
-        $json = file_get_contents('php://input');
-        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-        
-         mail("d.sizov@saychas.ru", "1C.Rating.log", print_r($return, true)); // лог на почту*/
-        
-        return new JsonModel($return);
-    }
+//    public function receiveReviewAction ()
+//    {
+//        $json = file_get_contents('php://input');
+//        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
+//        
+//         mail("d.sizov@saychas.ru", "1C.Review.log", print_r($return, true)); // лог на почту*/
+//        
+//        return new JsonModel($return);
+//    }
+//    
+//    /**
+//     * receive product rating from 1c
+//     *
+//     * @param input JSON
+//     * @return JSON
+//     */
+//    public function receiveRatingAction ()
+//    {
+//        $json = file_get_contents('php://input');
+//        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
+//        
+//         mail("d.sizov@saychas.ru", "1C.Rating.log", print_r($return, true)); // лог на почту*/
+//        
+//        return new JsonModel($return);
+//    }
     
     
     
