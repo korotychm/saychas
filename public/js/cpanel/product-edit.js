@@ -91,7 +91,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
-                          <textarea class="textarea" v-model="product.description" @input="checkText('description)"></textarea>
+                          <textarea class="textarea" v-model="product.description" @input="checkText('description')"></textarea>
                       </div>
                       <div class="product__attribute">
                           <h2>Вес с упаковкой</h2>
