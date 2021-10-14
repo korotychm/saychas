@@ -251,7 +251,7 @@ $(function () {
             contentType: false,
             success: function (result, status, xhr) {
                 console.log('result = ', result);
-                $("#productReviewAnswer").html(JSON.stringify(result, null, " "));
+                $("#productReviewAnswer").html(JSON.stringify(result, null, "   "));
             },
             error: function (xhr, status, error) {
                 console.log('SendProductReview failed', xhr, status);

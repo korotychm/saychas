@@ -35,6 +35,7 @@ class ReviewController extends AbstractActionController
     private $config;
     private $authService;
     private $commonHelperFuncions;
+    private $imageHelperFuncions;
 
     public function __construct(
             //ProductRatingRepositoryInterface $productRatingRepository,
@@ -267,9 +268,10 @@ class ReviewController extends AbstractActionController
             //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
             if ($this->imageHelperFuncions->$funcView($file['tmp_name'],  $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['type'],)){
                 $this->imageHelperFuncions->$funcThumb($file['tmp_name'],  $uploadPathThumbs . $filename, $thumpParams['width'], $thumpParams['height'], $thumpParams['type'],);
-                $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
-                $reviewImage->setReviewId($reviewId)->setFilename($filename.".".$resizeParams['type'])->persist(["id" => null]);
-                $images[] = $this->imagePath("review_images") . "/". $filename.".".$resizeParams['type'];
+//                $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
+//                $reviewImage->setReviewId($reviewId)->setFilename($filename.".".$resizeParams['type'])->persist(["id" => null]);
+                $images['view'][] = $this->imagePath("review_images") . "/". $filename.".".$resizeParams['type'];
+                $images['thumbs'][] = $this->imagePath("review_thumbnails") . "/". $filename.".".$thumpParams['type'];
             }
         }
 
