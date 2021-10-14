@@ -198,7 +198,7 @@ const ProductEdit = {
                             </div>
                             <!-- Тип 1 - текст (обычный) -->
                             <div>
-                              <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input checktext" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
+                              <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input checktext" v-model="characteristic.value" @input="checkText(index,true)" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
                             </div>
                             <!-- Тип 1 - текст (мульти)-->
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
@@ -357,8 +357,12 @@ const ProductEdit = {
     }
   },
   methods: {
-    checkText(target){
-      let input = this.product[target];
+    checkText(target, characteristics = false){
+      if (characteristics){
+        let input = this.product.characteristics[target].value;
+      } else {
+        let input = this.product[target];
+      }
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
@@ -367,7 +371,11 @@ const ProductEdit = {
                 output = output.replace(input[i],'');
             }
       }
-      this.product[target] = output;
+      if (characteristics){
+        this.product.characteristics[target].value = output;
+      } else {
+        this.product[target] = output;
+      }
     },
     checkRequired(){
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
