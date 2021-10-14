@@ -54,33 +54,32 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
      * Adds given review into it's repository
      * @param json
      */
-//    public function replace($content)
-//    {
-//        try {
-//            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-//        } catch (\Laminas\Json\Exception\RuntimeException $e) {
-//            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
-//        }
-//
-//        
-//        if ((bool) $result['truncate']) {
-//            $this->db->query("truncate table provider")->execute();
-//        }
-//
-//        foreach ($result['data'] as $row) {
-//            $sql = sprintf("replace INTO `provider` 
-//                    (`review`(`id`, `user_id`, `product_id`, `rating`, `user_name`, `seller_name`, `user_message`, `seller_message`, `time_created`,  `time_modified`) 
-//                    VALUES ('%s', '%s', '%s','%s', '%s', '%s','%s', '%s', '%s','%s'))", 
-//                    $row['id'], $row['user_id'], $row['product_id'], $row['rating'], $row['user_name'], $row['seller_name'], $row['user_message'], $row['seller_message'], $row['time_created'],  $row['time_modified'] );
-//            try {
-//                $query = $this->db->query($sql);
-//                $query->execute();
-//            } catch (InvalidQueryException $e) {
-//                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
-//            }
-//        }
-//        return ['result' => true, 'description' => '', 'statusCode' => 200];
-//    }
+    public function replace($content)
+    {
+        try {
+            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
+        }
+
+        
+        if ((bool) $result['truncate']) {
+            $this->db->query("truncate table provider")->execute();
+        }
+
+        foreach ($result['data'] as $row) {
+            $sql = sprintf("replace INTO `provider` (`review`(`id`, `user_id`, `product_id`, `rating`, `user_name`, `seller_name`, `user_message`, `seller_message`, `time_created`,  `time_modified`)  VALUES ('%s', '%s', '%s','%s', '%s', '%s','%s', '%s', '%s','%s'))", $row['id'], $row['user_id'], $row['product_id'], $row['rating'], $row['user_name'], $row['seller_name'], $row['user_message'], $row['seller_message'], $row['time_created'],  $row['time_modified'] );
+            try {
+                $query = $this->db->query($sql);
+                $query->execute();
+                $this->imageHelperFunctions->insertImage($row['images']['view'], $row['id']);
+                
+            } catch (InvalidQueryException $e) {
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+            }
+        }
+        return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
     
     /**
      * Delete review specified by JSON array of objects

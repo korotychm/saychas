@@ -8,6 +8,7 @@ use Laminas\Config\Config;
 //use Laminas\Json\Json;
 //use Laminas\Session\Container;
 use Application\Resource\Resource;
+use Application\Model\Entity\ReviewImage;
 
 //use Application\Model\Entity\ProductFavorites;
 //use Application\Model\Entity\Basket;
@@ -29,6 +30,7 @@ class ImageHelperFunctionsService
     //,HandbookRelatedProductRepositoryInterface $productRepository)
     {
         $this->config = $config;
+        $this->entityManager->initRepository(ReviewImage::class);
         //$this->productRepository = $productRepository;
     }
 
@@ -58,17 +60,17 @@ class ImageHelperFunctionsService
             $newheight = $w / $r;
             $newwidth = $w;
         }
-        
+
         $im = $this->initImage($newwidth, $newheight);
-        imagecopyresampled($im, $src, 0, 0, 0, 0,  $newwidth, $newheight, $width, $height);
-        $func = 'image' . $type; 
-        
-        return $func($im, "$destFile.$type"); 
+        imagecopyresampled($im, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        $func = 'image' . $type;
+
+        return $func($im, "$destFile.$type");
     }
-    
+
     /**
      * resize, crop and save image file
-     * 
+     *
      * @param string $soureceFile
      * @param string $destFile
      * @param int $width
@@ -103,13 +105,13 @@ class ImageHelperFunctionsService
 
         $im = $this->initImage($width, $height);
         imagecopyresampled($im, $src, 0, 0, $x, $y, $width, $height, $w, $h);
-        $func = 'image' . $type; 
+        $func = 'image' . $type;
 
-        return $func($im, "$destFile.$type"); 
+        return $func($im, "$destFile.$type");
     }
 
     /**
-     * 
+     *
      * @param int $width
      * @param int $height
      * @return Image
@@ -144,6 +146,23 @@ class ImageHelperFunctionsService
     }
 
     /**
+     * 
+     * @param array $images
+     * @param string $id
+     */
+    public function insertImage($images, $id)
+    {
+        if (!empty($images)) {
+            //$reviewImages = ReviewImage::findFirstOrDefault(["id" => null]);
+            foreach ($images as $image) {
+                $file = explode("/", $image);
+                $reviewImages = new ReviewImage();
+                $reviewImages->setReviewId($id)->setFilename(end($file))->persist(["id" => null]);
+            }
+        }
+    }
+
+    /**
      *
      * @param string $src
      * @return image
@@ -164,7 +183,7 @@ class ImageHelperFunctionsService
                 $img = @ImageCreateFromBMP($src);
                 break;
             case IMAGETYPE_PSD:
-                $img = @imagecreatefrompsd($src); 
+                $img = @imagecreatefrompsd($src);
                 break;
             default:
                 $img = false;
