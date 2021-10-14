@@ -34,6 +34,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
      * @param AdapterInterface $db
      * @param HydratorInterface $hydrator
      * @param Review $prototype
+     * @param object $imageHelperFunctions
      */
     public function __construct(
             AdapterInterface $db,
@@ -62,7 +63,6 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        
         if ((bool) $result['truncate']) {
             //$this->db->query("truncate table review")->execute();
             return ['result' => false, 'description' => 'Method is not supported: can`t truncate review', 'statusCode' => 405];
@@ -74,11 +74,11 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
                 $this->imageHelperFunctions->insertReviewImage($row['images']['view'], $row['id']);
-                
             } catch (InvalidQueryException $e) {
                 return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
+        
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
     
@@ -104,7 +104,6 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
         $deleteImages = $sql->delete()->from("review_image")->where(['review_id' => $total]);
-
         $selectString = $sql->buildSqlString($delete);
         $selectStringImages = $sql->buildSqlString($deleteImages);
         

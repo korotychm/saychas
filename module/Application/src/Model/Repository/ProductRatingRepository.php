@@ -32,18 +32,19 @@ class ProductRatingRepository extends Repository implements ProductRatingReposit
      * @param HydratorInterface $hydrator
      * @param ProductRating $prototype
      */
-    public function __construct(
-            AdapterInterface $db,
-            HydratorInterface $hydrator,
-            ProductRating $prototype
-    )
+    public function __construct(AdapterInterface $db, HydratorInterface $hydrator, ProductRating $prototype)
     {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
     }
-
-//    /**INSERT INTO `product_rating`(`product_id`, `rating`, `reviews`, `statistic`) VALUES ([value-1],[value-2],[value-3],[value-4])
+    
+    /**
+     * Adds given product_rating into it's repository
+     * 
+     * @param Json $content
+     * @return array
+     */
     public function replace($content)
     {
         try {
@@ -57,17 +58,28 @@ class ProductRatingRepository extends Repository implements ProductRatingReposit
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `product_rating`(`product_id`, `rating`, `reviews`, `statistic`) VALUES ( '%s', '%s', '%s', '%s' )",
-                    $row['product_id'], $row['rating'], $row['reviews'], Json::encode($row['statistic']));
+            $sql = sprintf("replace INTO `{$this->tableName}`(`product_id`, `rating`, `reviews`, `statistic`) VALUES ( '%s', '%s', '%s', '%s' )", $row['product_id'], $row['rating'], $row['reviews'], Json::encode($row['statistic']));
 
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
+                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
             }
         }
+       
         return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
+    
+    /**
+     * return error message 
+     * 
+     * @param json $json
+     * @return array
+     */
+    public function delete($json)
+    {
+        return ['result' => false, 'description' => 'Method is not supported: can`t delete product rating', 'statusCode' => 405];
     }
 
 }
