@@ -188,28 +188,6 @@ class UserDataController extends AbstractActionController
         return $validator->isValid($pass);
     }
 
-//    private function generateRegistrationCode1($phone, $length = 5)
-//    {
-//        /** @var $phone */
-//        /* $phone is meant to be a a session key */
-//        // Generate new code and store it in session
-//        //$container = $this->sessionContainer;// new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
-//        //$container = new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
-//
-//        //$code = 77777; // simulate generation
-//
-//        //real generation
-//        //$length=($length < 1 && $length > 9) ? $length : 4;
-//        $suffle=[0,1,3,4,5,6,7,8,9];
-//        shuffle($suffle);
-//        for ($i=0; $i < $length; $i++ ){
-//            $code.=$suffle[$i];
-//        }
-//        $container = new Container(Resource::SESSION_NAMESPACE);
-//        $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code, 'live' => (time() + 60)];
-//        return $code;
-//    }
-
     /**
      * Generate registration code
      *
@@ -219,28 +197,14 @@ class UserDataController extends AbstractActionController
      */
     private function generateRegistrationCode($phone, $length = 4)
     {
-
-        /** @var $phone */
-        /* $phone is meant to be a a session key */
-        // Generate new code and store it in session
-        //$container = $this->sessionContainer;// new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
-        //$container = new Container(Resource::CODE_CONFIRMATION_SESSION_NAMESPACE);
-//        $code = 7777; // simulate generation
-//
-//        /* *///real generation
         $code = "";
         $lenght = ($lenght < 1 and $lenght > 9) ? $lenght : 4;
         $digits = [1, 3, 4, 5, 6, 7, 8, 9];
         shuffle($digits);
+
         for ($i = 0; $i < $length; $i++) {
             $code .= $digits[$i];
         }
-        /* */
-
-//        $deck=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-//        shuffle($deck);
-//        $output = array_slice($deck, 0, $length);
-//        $code = join('', $output);
 
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->userPhoneIdentity = ['phone' => $phone, 'code' => $code, 'live' => (time() + 60)];
@@ -248,7 +212,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * Send sms
+     * Call to phone number
      *
      * @param int $phone
      * @return array
@@ -261,7 +225,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * Send registration SMS
+     * Call to phone number
      *
      * @return JsonModel
      */

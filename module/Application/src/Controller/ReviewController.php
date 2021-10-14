@@ -118,7 +118,6 @@ class ReviewController extends AbstractActionController
         }
         
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
-        //$return['id'] = $reviewId = $this->addReview($return);
         $files = $this->getRequest()->getFiles();
 
         if (!empty($files['files'])) {
@@ -127,7 +126,7 @@ class ReviewController extends AbstractActionController
                 return new JsonModel(["result" => false, "description" => Resource::LEGAL_IMAGE_NOTICE . ": " . join(", ", Resource::LEGAL_IMAGE_TYPES)]);
             }
 
-            $return['images'] = $this->addReviewImage($files['files'], $reviewId);
+            $return['images'] = $this->addReviewImage($files['files']);
         }
 
         $return['answer1c'] = $this->externalCommunicationService->sendReview($return);
@@ -254,7 +253,7 @@ class ReviewController extends AbstractActionController
      * @param int $reviewId
      * @return array
      */
-    private function addReviewImage($files, $reviewId)
+    private function addReviewImage($files)
     {
         $images = [];
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
