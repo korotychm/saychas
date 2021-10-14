@@ -150,6 +150,14 @@ class ProductManager extends ListManager implements LoadableInterface
     {
 //        $this->findCharacteristics($params[ 'where']['product_id']);
 
+        $title = $params['where']['title'];
+        if(!empty($title)) {
+            unset($params['where']['title']);
+            $or = [];
+            array_push($or, ['vendor_code' => $title,]);
+            array_push($or, ['title' => $title,]);
+            $params['where']['$or'] = $or;
+        }
         $cursor = $this->findAll($params);
         $categories = [];
         $brands = [];
