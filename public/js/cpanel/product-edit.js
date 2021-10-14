@@ -359,11 +359,11 @@ const ProductEdit = {
   methods: {
     checkText(){
       let input = this.product.title;
-      let output = '';
+      let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            if(c < 32 && c > 255) {
-                output = input.substring(input[i], '');
+            if (c < 32 && c > 255) {
+                output.substring(input[i], '');
             }
       }
       this.product.title = output;
