@@ -367,7 +367,6 @@ const ProductEdit = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            console.log('charCode',c,'Symbol',input[i]);
             if (c < 32 || c == 39 || c == 96 || (c > 255 && c < 1072) || c > 1103) {
                 output = output.replace(input[i],'');
             }
