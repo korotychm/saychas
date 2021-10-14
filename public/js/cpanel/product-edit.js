@@ -36,7 +36,7 @@ const ProductEdit = {
                     <div class="product__main-attributes">
                       <div class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
-                          <input class="input checktext" type="text" v-model="product.vendor_code" />
+                          <input class="input checktext" type="text" v-model="product.vendor_code" @input="checkText('vendor_code')" />
                       </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
@@ -76,7 +76,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
-                          <input class="input" type="text" v-model="product.title" @input="checkText" />
+                          <input class="input" type="text" v-model="product.title" @input="checkText('title')" />
                       </div>
                       <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                           <h2>Цвет</h2>
@@ -91,7 +91,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
-                          <textarea class="textarea checktext" v-model="product.description"></textarea>
+                          <textarea class="textarea" v-model="product.description" @input="checkText('description)"></textarea>
                       </div>
                       <div class="product__attribute">
                           <h2>Вес с упаковкой</h2>
@@ -357,17 +357,17 @@ const ProductEdit = {
     }
   },
   methods: {
-    checkText(){
-      let input = this.product.title;
+    checkText(target){
+      let input = this.product[target];
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
             console.log('charCode',c,'Symbol',input[i]);
             if (c < 32 || c == 39 || c == 96 || (c > 255 && c < 1072) || c > 1103) {
-                output = output.substring(input[i], '');
+                output = output.replace(input[i],'');
             }
       }
-      this.product.title = output;
+      this.product[target] = output;
     },
     checkRequired(){
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
