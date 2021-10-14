@@ -85,24 +85,33 @@ class StockBalanceManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
-        $cursor = $this->findAll($params);
+        $storeId = $params['where']['store_id'];
+        $pageNo = $params['pageNo'];
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['store_id' => $storeId]]);
+        //$cursor = $this->findAll($params);
         $result = [];
         foreach ($cursor['body'] as &$c) {
-            //unset($c['_id']);
             // find product by product_id
             $products = $c['products'];
             foreach ($products as $product) {
                 $productId = $product['product_id'];
                 $quantity = $product['quantity'];
-                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray();
-                $arr = $arr[0];
+                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
+//                $arr = $arr[0];
                 unset($arr['_id']);
                 $arr['quantity'] = $quantity;
-                $result[] = $arr;
+
+                $flag = substr_count($arr['title'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
+                $flag |= substr_count($arr['vendor_code'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
+                $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
+
+                if (($flag && $flag2)) {
+                    $result[] = $arr;
+                }
             }
         }
         $cursor['body'] = $result;
-//        unset($params['where']['store_id']);
+        unset($params['where']['store_id']);
         $cursor['filters']['categories'] = $this->findCategories($params);
 
         return $cursor;
@@ -151,7 +160,6 @@ class StockBalanceManager extends ListManager implements LoadableInterface
 //
 //        return $updateResult;
 //    }
-
 //    public function replaceStockBalance($stockBalance)
 //    {
 //        $collection = $this->db->{$this->collectionName};
