@@ -36,7 +36,7 @@ const ProductEdit = {
                     <div class="product__main-attributes">
                       <div class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
-                          <input class="input" type="text" v-model="product.vendor_code" />
+                          <input class="input checktext" type="text" v-model="product.vendor_code" />
                       </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
                           <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
@@ -91,7 +91,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
-                          <textarea class="textarea" v-model="product.description"></textarea>
+                          <textarea class="textarea checktext" v-model="product.description"></textarea>
                       </div>
                       <div class="product__attribute">
                           <h2>Вес с упаковкой</h2>
@@ -198,7 +198,7 @@ const ProductEdit = {
                             </div>
                             <!-- Тип 1 - текст (обычный) -->
                             <div>
-                              <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
+                              <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input checktext" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
                             </div>
                             <!-- Тип 1 - текст (мульти)-->
                             <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
@@ -832,8 +832,14 @@ $('.custom-select__option input').keydown(function(e){
   $(this).parent().find('input').eq(index).focus();
 });
 
-$(document).on('keydown','input[type="text"], textarea',function(e){
-  if (e.keyCode < 32 || e.keyCode > 255) {
-    e.preventDefault();
+$(document).on('input','.checktext',function(e){
+  let input = $(this).val();
+  let output = '';
+    for (var i = 0; i < input.length; i++) {
+        let c = input.charCodeAt(i);
+        if(c >= 32 && c <= 255) {
+            output += input.substring(i, 1);
+        }
   }
+  $(this).val(output).change();
 });
