@@ -830,4 +830,10 @@ $('.custom-select__option input').keydown(function(e){
   }
   console.log('pressed',index);
   $(this).parent().find('input').eq(index).focus();
-})
+});
+
+$(document).on('keydown','input[type="text"], textarea',function(e){
+  if (e.keyCode < 32 || e.keyCode > 255) {
+    e.preventDefault();
+  }
+});
