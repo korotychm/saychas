@@ -251,7 +251,7 @@ $(function () {
             contentType: false,
             success: function (result, status, xhr) {
                 console.log('result = ', result);
-                $("#productReviewAnswer").html(JSON.stringify(result, null, " "));
+                $("#productReviewAnswer").html(JSON.stringify(result, null, "   "));
             },
             error: function (xhr, status, error) {
                 console.log('SendProductReview failed', xhr, status);
@@ -263,13 +263,11 @@ $(function () {
     $('#productReviewForm').submit(function () {
         
         var data = new FormData();
-        $.each($('#file')[0].files, function(i, file) {
+       $.each($('#file')[0].files, function(i, file) {
             data.append('files['+i+']', file);
         });
-        //reviewMessage productId
-        data.append('productId', $("#productId").val()) ;
+        data.append('productId', $("#productReviewId").val()) ;
         data.append('reviewMessage', $("#reviewMessage").val()) ;
-        
         sendProductReview(data);
         return false;
     });
@@ -279,9 +277,7 @@ $(function () {
     });
 
     $('#productRatingForm').submit(function () {
-//        console.log("****");
         var data = $('#productRatingForm').serialize();
-        // console.log(data);
         sendProductRating(data);
         return false;
     });

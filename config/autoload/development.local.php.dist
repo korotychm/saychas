@@ -56,6 +56,7 @@ return [
             /** PriceAndDiscountManager link alias */
             \ControlPanel\Service\PriceAndDiscountManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_price_info',
             
+            
         ],
         '1c_request_links' => [
             'get_product' => 'http://SRV02:8000/SayChasDev/hs/site/get_product',
@@ -69,6 +70,9 @@ return [
             //'send_basket' => 'http://SRV02:8000/SayChasDev/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SayChasDev/hs/site/create_order',
             'order_payment' => 'http://SRV02:8000/SayChasDev/hs/site/order_payment',
+             /** sendReview  link*/
+            'set_review' => 'http://SRV02:8000/SayChasDev/hs/site/set_review',
+           
             
         ],
         

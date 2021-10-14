@@ -5,11 +5,11 @@
 namespace Application\Service;
 
 use Laminas\Config\Config;
-use Laminas\Session\Container;
+//use Laminas\Session\Container;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Application\Model\Entity;
-use Application\Model\Entity\ClientOrder;
+//use Application\Model\Entity\ClientOrder;
 
 /**
  * Description of AcquiringCommunicationService
@@ -46,6 +46,19 @@ class ExternalCommunicationService
         ];
         return $this->sendCurlRequest($url, $content);
     }
+    
+    /**
+     * 
+     * @param type $phone
+     * @param type $code
+     * @return type
+     */
+    public function sendReview($param)
+    {
+        $url = $this->config['parameters']['1c_request_links']['set_review'];
+        return $this->sendCurlRequest($url, $param);
+    }
+    
     
     
     /***********************
@@ -89,9 +102,10 @@ class ExternalCommunicationService
     public function sendBasketData($content)
     {
         $url = $this->config['parameters']['1c_request_links']['create_order'];
-        $selfdeliv = $deliv =[];
-        if (empty($content["products"]))
+        $selfdeliv = $deliv = $delivery =[];
+        if (empty($content["products"])){
             return false;
+        }
 
         while (list($id, $value) = each($content["products"])) {
             $store[$value["store"]][] = [
@@ -146,12 +160,7 @@ class ExternalCommunicationService
         //$return["delivery_price"] = ;
         //$content["delevery"]=$store;
         $return['basketinfo']['userGeoLocation'] = $content['userGeoLocation'] = ($content['userGeoLocation']) ? Json::decode($content['userGeoLocation']) : [];
-        unset(
-                $content['timepointtext1'],
-                $content['timepointtext3'],
-                $content['timepointtext3'],
-                $content['selfdelevery'], 
-                $content["products"]);
+        unset($content['timepointtext1'], $content['timepointtext3'], $content['timepointtext3'], $content['selfdelevery'], $content["products"]);
         
         $return['basketinfo']['paycard'] = ($content["paycard"] and !empty($content["cardinfo"])) ? $content["cardinfo"] : "none"; 
         $return['basketinfo']['timepoint'] = $content["timepoint"];
@@ -226,7 +235,7 @@ class ExternalCommunicationService
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($curl);
 //        $arr = json_decode($response, true);
-
+        //return [$url, $response];
         try {
             $arr = Json::decode($response, Json::TYPE_ARRAY);
             return $arr;
@@ -336,6 +345,11 @@ class ExternalCommunicationService
         return $this->sendCurlRequest($url, $content);
     }
     
+    /**
+     * 
+     * @param array $content
+     * @return array
+     */
     public function sendOrderPaymentInfo (array $content)
     {
         $url = $this->config['parameters']['1c_request_links']['order_payment'];
