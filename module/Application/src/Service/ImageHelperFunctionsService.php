@@ -25,11 +25,14 @@ class ImageHelperFunctionsService
      * @var Config
      */
     private $config;
+    private $entityManager;
 
-    public function __construct($config)
+
+    public function __construct($config, $entityManager)
     //,HandbookRelatedProductRepositoryInterface $productRepository)
     {
         $this->config = $config;
+        $this->entityManager = $entityManager;
         $this->entityManager->initRepository(ReviewImage::class);
         //$this->productRepository = $productRepository;
     }
