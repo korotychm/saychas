@@ -76,7 +76,7 @@ const ProductEdit = {
                       </div>
                       <div class="product__attribute">
                           <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
-                          <input class="input" type="text" v-model="product.title" />
+                          <input class="input" type="text" v-model="product.title" @input="checkText" />
                       </div>
                       <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                           <h2>Цвет</h2>
@@ -357,6 +357,17 @@ const ProductEdit = {
     }
   },
   methods: {
+    checkText(){
+      let input = this.product.title;
+      let output = '';
+      for (var i = 0; i < input.length; i++) {
+            let c = input.charCodeAt(i);
+            if(c >= 32 && c <= 255) {
+                output += input.substring(i, 1);
+            }
+      }
+      this.product.title = output;
+    },
     checkRequired(){
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
         return true;
@@ -830,17 +841,4 @@ $('.custom-select__option input').keydown(function(e){
   }
   console.log('pressed',index);
   $(this).parent().find('input').eq(index).focus();
-});
-
-$(document).on('input','.checktext',function(){
-  console.log('input');
-  let input = $(this).val();
-  let output = '';
-    for (var i = 0; i < input.length; i++) {
-        let c = input.charCodeAt(i);
-        if(c >= 32 && c <= 255) {
-            output += input.substring(i, 1);
-        }
-  }
-  $(this).val(output).change();
 });
