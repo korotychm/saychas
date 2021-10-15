@@ -161,6 +161,7 @@ class Resource
      */
     const PRODUCT_RATING_VALUES = [0 => 10, 1 => 20, 2 => 30, 3 => 40, 4 => 50];
     const REVIEW_MESSAGE_VALID_MIN_LENGHT = 4;
+    const REVIEW_MESSAGES_PAGING_LIMIT = 10;
     const REVIEW_MESSAGE_VALID_ERROR = "Отзыв должен быть более подробным ";
     const LEGAL_IMAGE_TYPES = ["image/jpeg", "image/png"];
     const LEGAL_IMAGE_NOTICE = "Допустимые форматы загружаемых файлов: ";

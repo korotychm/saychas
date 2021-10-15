@@ -9,7 +9,7 @@ use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Laminas\Db\Sql\Sql;
+use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Review;
 use Application\Model\RepositoryInterface\ReviewRepositoryInterface;
@@ -89,6 +89,8 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
      */
     public function delete($json)
     {
+      // parent::delete($json);
+        
         try {
             $result = Json::decode($json, Json::TYPE_ARRAY);
         } catch (LaminasJsonRuntimeException $e) {

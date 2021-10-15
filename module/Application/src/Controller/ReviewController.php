@@ -12,6 +12,13 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Json\Json;
 use Laminas\View\Model\JsonModel;
+use Laminas\Session\Container; // as SessionContainer;
+use Laminas\Authentication\AuthenticationService;
+use Application\Resource\Resource;
+use Laminas\Escaper\Escaper;
+use Application\Service\CommonHelperFunctionsService;
+use Application\Service\ImageHelperFunctionsService;
+use Application\Service\ExternalCommunicationService;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
 use Application\Model\Entity\ReviewImage;
@@ -19,12 +26,7 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\ProductRating;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 //use Laminas\Filter\StripTags;
-use Laminas\Escaper\Escaper;
-use Application\Service\CommonHelperFunctionsService;
-use Application\Service\ImageHelperFunctionsService;
-use Application\Service\ExternalCommunicationService;
-use Laminas\Authentication\AuthenticationService;
-use Application\Resource\Resource;
+
 
 class ReviewController extends AbstractActionController
 {
@@ -160,22 +162,31 @@ class ReviewController extends AbstractActionController
      */
     public function getProductReviewAction()
     {
-        if (empty($this->identity())) {
+        if (empty($userId = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }
 
         if (empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
             return ['result' => false, 'description' => "product_id not set"];
         }
-
-        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => "10"])->toArray();
-        // $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
+        $offset = (int)$this->getRequest()->getPost()->page * Resource::REVIEW_MESSAGES_PAGING_LIMIT;
+        $limit = $offset + Resource::REVIEW_MESSAGES_PAGING_LIMIT;
+        
+        
+        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => $limit, "offset" => $offset])->toArray();
+        
+        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
+        $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
-        $reviews = ['overage_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews()];
+        $reviews = ['average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews()];
+        $reviews["limit"] = ["limit" => $limit, "offset" => $offset];
+        $reviews["reviewer"] = $this->externalCommunicationService->getReviewer($param);
         $reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
         $reviews['images_path'] = $this->imagePath("review_images");
         $reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
         $reviews["reviews"] = [];
+        
+        
 
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
@@ -209,7 +220,7 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
-        $rating = (int)$rating;
+        //$rating = (int)$rating;
         return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
     }
 
