@@ -102,7 +102,7 @@ class ProductRating extends Entity
      * @param string $reviews
      * @return $this
      */
-    public function setUserId($reviews)
+    public function setReviews($reviews)
     {
         $this->reviews = $reviews;
         return $this;
