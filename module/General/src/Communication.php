@@ -14,7 +14,7 @@ use Laminas\Json\Exception\RuntimeException;
  */
 class Communication
 {
-    public function sendCurlRequest($url, $content)
+    public static function sendCurlRequest($url, $content)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_HEADER, false);
