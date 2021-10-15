@@ -20,7 +20,7 @@ $(document).ready(function(){
       data: {
         product_id: '',
         reviews: [],
-        overage_rating: 0,
+        average_rating: 0,
         images_path: '',
         statistic: {},
         reviewsPhotos: []
@@ -63,7 +63,7 @@ $(document).ready(function(){
             .then(response => {
               console.log(response);
               this.statistic = response.data.statistic;
-              this.overage_rating = response.data.overage_rating;
+              this.average_rating = response.data.average_rating;
               this.images_path = response.data.images_path;
               this.reviews = response.data.reviews;
               this.getImages();
