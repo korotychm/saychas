@@ -1,5 +1,7 @@
 <?php
 
+// /module/src/View/Helper/ImagePath.php
+
 namespace Application\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;

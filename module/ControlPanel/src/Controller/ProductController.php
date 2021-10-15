@@ -386,10 +386,10 @@ class ProductController extends AbstractActionController
         $identity = $this->authService->getIdentity();
         
         $content = [
-          "provider_id" => $identity['provider_id'], //  "00005",
-          "store_id" => '', //  "00002",
-          "category_id" => $post['data']['category_id'], //  "000000527",
-          "query_type" => $post['data']['query_type'], // "product",
+          "provider_id" => $identity['provider_id'],
+          "store_id" => '',
+          "category_id" => $post['data']['category_id'],
+          "query_type" => $post['data']['query_type'],
         ];
         
         $result = $this->productManager->getProductFile($content);

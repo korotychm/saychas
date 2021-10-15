@@ -1415,9 +1415,11 @@ return [
         ],
         'factories' => [
             View\Helper\ImagePath::class => View\Helper\Factory\ImagePathFactory::class,
+            View\Helper\DocumentPath::class => View\Helper\Factory\DocumentPathFactory::class,
         ],
         'aliases' => [
             'imagePath' => View\Helper\ImagePath::class,
+            'documentPath' => View\Helper\DocumentPath::class,
         ],
     ],
     'parameters' => [
