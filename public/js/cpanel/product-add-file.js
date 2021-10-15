@@ -125,25 +125,25 @@ const ProductAddFile = {
     },
     getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
-      let requestUrl = '/control-panel/';
-      // axios
-      //   .post(requestUrl,Qs.stringify({
-      //     data: {
-      //       category_id: this.selectedCategoryId
-      //     }
-      //   }),{headers})
-      //     .then(response => {
-      //       if (response.data.data === true) {
-      //         location.reload();
-      //       } else {
-      //         console.log(response);
-      //       }
-      //     })
-      //     .catch(error => {
-      //       if (error.response.status == '403'){
-      //         location.reload();
-      //       }
-      //     });
+      let requestUrl = '/control-panel/get-product-file';
+      axios
+        .post(requestUrl,Qs.stringify({
+          data: {
+            category_id: this.selectedCategoryId
+          }
+        }),{headers})
+          .then(response => {
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              console.log('Файл',response);
+            }
+          })
+          .catch(error => {
+            if (error.response.status == '403'){
+              location.reload();
+            }
+          });
       this.file = true;
     }
   },
