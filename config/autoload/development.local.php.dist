@@ -33,6 +33,7 @@ return [
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',
             'lk_get_info_by_category' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_info_by_category',
+            'lk_get_template' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_template',
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',
             /** ProductManager; Edit product */

@@ -326,6 +326,12 @@
   margin-top: -7px;
   margin-right: 4px;
 }
+.product-card__full-table td.table__heading {
+  width: 100%;
+}
+.product-card__full-table td.table__heading::after {
+  display: none !important;
+}
 .product-card__file {
   display: flex;
   align-items: center;

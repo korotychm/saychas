@@ -4,6 +4,8 @@
 
 namespace ControlPanel\Service;
 
+use General;
+
 use ControlPanel\Service\CurlRequestManager;
 //use ControlPanel\Model\Traits\Loadable;
 use ControlPanel\Contract\LoadableInterface;
@@ -552,7 +554,28 @@ class ProductManager extends ListManager implements LoadableInterface
         $result = copy($productUrl, $descProductUrl);
         
         return ['result' => $result];
-    }    
+    }
+    
+    /**
+     * 
+     * Example
+     * $content = [
+     *   "provider_id" => "00005",
+     *   "store_id" => "00002",
+     *   "category_id" => "000000527",
+     *   "query_type" => "product"
+     * ];
+     * 
+     * @param type $headers
+     * @param type $content
+     * @return array
+     */
+    public function getProductFile($content)
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_get_template'];
+        $result = $this->curlRequestManager->sendCurlRequest($url, $content);
+        return $result;
+    }
 
     public function findTest()
     {

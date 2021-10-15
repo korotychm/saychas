@@ -367,5 +367,38 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['answer' => $answer]);
     }
+    
+    /**
+     * Example
+     *  $content => [
+     *    "partner_id": "00005",
+     *    "shop_id": "00002",
+     *    "category_id": "000000527",
+     *    "query_type": "product"
+     *  ]
+     * 
+     * @return JsonModel
+     */
+    public function getProductFileAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+
+        $identity = $this->authService->getIdentity();
+        
+        $content = [
+          "provider_id" => $identity['provider_id'], //  "00005",
+          "store_id" => '', //  "00002",
+          "category_id" => $post['data']['category_id'], //  "000000527",
+          "query_type" => $post['data']['query_type'], // "product",
+        ];
+        
+        $result = $this->productManager->getProductFile($content);
+        
+        if(false == $result['result']) {
+            return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
+        }
+        
+        return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
+    }
 
 }

@@ -56,6 +56,7 @@ const PriceList = {
                     </div>
                   </div>
                   <div class="td pricelist__category">
+                      <div>{{ product.mother_categories[1][1] }}</div>
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td pricelist__discount"><span v-if="product.discount!==''">{{ product.discount }}</span><span v-else>0</span>%</div>
