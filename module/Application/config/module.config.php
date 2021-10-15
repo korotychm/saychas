@@ -5,7 +5,6 @@
  * @copyright https://github.com/laminas/laminas-mvc-skeleton/blob/master/COPYRIGHT.md
  * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
  */
-
 declare(strict_types=1);
 
 namespace Application;
@@ -32,8 +31,6 @@ use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 //use Laminas\Session;
 //use Laminas\Router\Http\Regex;
 //use Laminas\Router\Http\Hostname;
-
-
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
 //$route = Regex::factory([
@@ -44,7 +41,7 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 //        'format'     => 'html',
 //    ],
 //    'spec' => '/blog/%id%.%format%',
-//]);            
+//]);
 
 return [
     'router' => [
@@ -73,7 +70,6 @@ return [
 //                    'spec' => '/blog[/%id%[/%product_id%]]',
 //                ],
 //            ],
-            
 //            'lk.saychas-z.local' => [
 //                'type' => Hostname::class,
 //                'options' => [
@@ -99,7 +95,7 @@ return [
 //                    ],
 //                ],
 //            ],
-            'save-user-data' =>  [
+            'save-user-data' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/save-user-data',
@@ -119,7 +115,7 @@ return [
 //                    ],
 //                ],
 //            ],
-            'clear-user-data' =>  [
+            'clear-user-data' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/clear-user-data',
@@ -139,7 +135,7 @@ return [
 //                    ],
 //                ],
 //            ],
-            'send-registration-sms' =>  [
+            'send-registration-sms' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/send-registration-sms',
@@ -149,7 +145,7 @@ return [
                     ],
                 ],
             ],
-            'send-feedback-code' =>  [
+            'send-feedback-code' => [
                 'type' => Literal::class,
                 'options' => [
                     'route' => '/send-feedback-code',
@@ -160,87 +156,85 @@ return [
                 ],
             ],
             'home' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/',
+                    'route' => '/',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
             ],
             'preview' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/preview',
+                    'route' => '/preview',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'preview',
+                        'action' => 'preview',
                     ],
                 ],
             ],
             'client-orders' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/user/orders',
+                    'route' => '/user/orders',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'clientOrders',
+                        'action' => 'clientOrders',
                     ],
                 ],
             ],
             'client-order' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/user/order[/:id]',
+                    'route' => '/user/order[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'clientOrderPage',
+                        'action' => 'clientOrderPage',
                     ],
                 ],
             ],
             'client-favorites' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/user/favorites',
+                    'route' => '/user/favorites',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'clientFavoritesPage',
+                        'action' => 'clientFavoritesPage',
                     ],
                 ],
             ],
             'ajax-get-client-favorites' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-client-favorites',
+                    'route' => '/ajax-get-client-favorites',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getClientFavorites',
+                        'action' => 'getClientFavorites',
                     ],
                 ],
             ],
             'ajax-get-client-history' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-client-history',
+                    'route' => '/ajax-get-client-history',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getClientHistory',
+                        'action' => 'getClientHistory',
                     ],
                 ],
             ],
             'get-search-booster-api' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/get-search-booster-api[/:id1][/:id2][/:id3][/:id4][/:id6]',
+                    'route' => '/get-search-booster-api[/:id1][/:id2][/:id3][/:id4][/:id6]',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'searchBoosterApi',
+                        'action' => 'searchBoosterApi',
                     ],
                 ],
             ],
-            
-            
 //            'show-provider' => [
 //                'type'    => Segment::class,
 //                'options' => [
@@ -261,200 +255,191 @@ return [
 //                    ],
 //                ],
 //            ],
-            /*'provider' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/provider',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'provider',
-                    ],
-                ],
-            ],*/
+            /* 'provider' => [
+              'type'    => Literal::class,
+              'options' => [
+              'route'    => '/provider',
+              'defaults' => [
+              'controller' => Controller\IndexController::class,
+              'action'     => 'provider',
+              ],
+              ],
+              ], */
             /**/
             'catalog' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/catalog[/:id]',
+                    'route' => '/catalog[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'catalog',
+                        'action' => 'catalog',
                     ],
                 ],
             ],
             'category' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/category[/:id]',
+                    'route' => '/category[/:id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'category',
+                        'action' => 'category',
                     ],
                 ],
             ],
-            
             'brand' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/brand/:brand_id[/:category_id]',
+                    'route' => '/brand/:brand_id[/:category_id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'brandProducts',
+                        'action' => 'brandProducts',
                     ],
                 ],
             ],
-            
             'store' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/store/:store_id[/:category_id]',
+                    'route' => '/store/:store_id[/:category_id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'storeProducts',
+                        'action' => 'storeProducts',
                     ],
                 ],
             ],
             'provider' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/seller/:provider_id[/:category_id]',
+                    'route' => '/seller/:provider_id[/:category_id]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'providerProducts',
+                        'action' => 'providerProducts',
                     ],
                 ],
             ],
-            
             'basket' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/basket',
+                    'route' => '/basket',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'basket',
+                        'action' => 'basket',
                     ],
                 ],
             ],
             'basket-pay-info' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/ajax-basket-pay-info',
+                    'route' => '/ajax-basket-pay-info',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'basketPayInfo',
+                        'action' => 'basketPayInfo',
                     ],
                 ],
             ],
             'basket-pay-card-info' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/ajax-basket-pay-card-info',
+                    'route' => '/ajax-basket-pay-card-info',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'basketPayCardInfo',
+                        'action' => 'basketPayCardInfo',
                     ],
                 ],
             ],
-            //basketPayInfo
-            
             'basket-check-before-send' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/ajax-basket-check-before-send',
+                    'route' => '/ajax-basket-check-before-send',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'basketCheckBeforeSend',
+                        'action' => 'basketCheckBeforeSend',
                     ],
                 ],
             ],
-            //basketPayInfo
-            
-            
-        'user-auth-modal' => [
-                'type'    => Segment::class,
+            'user-auth-modal' => [
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/user-auth-modal',
+                    'route' => '/user-auth-modal',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'userAuthModal',
+                        'action' => 'userAuthModal',
                     ],
                 ],
-            ],//userAuthModal
+            ], //userAuthModal
             'send-basket-data' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/send-basket-data',
+                    'route' => '/send-basket-data',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'sendBasketData',
+                        'action' => 'sendBasketData',
                     ],
                 ],
             ],
             'get-client-order-bill' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/get-client-order-bill',
-                    'defaults' => [
-                        'controller' => Controller\AcquiringController::class,
-                        'action'     => 'tinkoffOrderBill',
-                    ],
-                ],
-            ],
-            
-            'product' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/product[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'productPage',
-                    ],
-                ],
-            ],
-            /* *'product-page' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/product-page[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'productPage',
-                    ],
-                ],
-            ], /**/
-            /*'catalog' => [
-                // First we define the basic options for the parent route: \Laminas\Router\Http\
                 'type' => Segment::class,
                 'options' => [
-                    'route'    => '/catalog/:id',
+                    'route' => '/get-client-order-bill',
                     'defaults' => [
-                        'controller' => Controller\indexController::class,
-                        'action'     => 'catalog',
-                    ],
-                    'constraints' => [
-                        'id' => '(\d)+',
+                        'controller' => Controller\AcquiringController::class,
+                        'action' => 'tinkoffOrderBill',
                     ],
                 ],
-                'may_terminate' => true, // \Laminas\Router\Http\
-                'child_routes' => [
-                    'product' => [
-                        'type'    => Segment::class,
-                        'options' => [
-                            'route'    => '[/:product_id]',
-                            'defaults' => [
-                                'controller' => Controller\indexController::class,
-                                'action'     => 'product',
-                            ],
-//                            'constraints' => [
-//                                'product_id' => '(\d)+',
-//                            ],
-                        ],
+            ],
+            'product' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/product[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'productPage',
                     ],
                 ],
-            ],/**/
-            
-            
-            
-            
+            ],
+            /*             * 'product-page' => [
+              'type'    => Segment::class,
+              'options' => [
+              'route'    => '/product-page[/:id]',
+              'defaults' => [
+              'controller' => Controller\IndexController::class,
+              'action'     => 'productPage',
+              ],
+              ],
+              ], /* */
+            /* 'catalog' => [
+              // First we define the basic options for the parent route: \Laminas\Router\Http\
+              'type' => Segment::class,
+              'options' => [
+              'route'    => '/catalog/:id',
+              'defaults' => [
+              'controller' => Controller\indexController::class,
+              'action'     => 'catalog',
+              ],
+              'constraints' => [
+              'id' => '(\d)+',
+              ],
+              ],
+              'may_terminate' => true, // \Laminas\Router\Http\
+              'child_routes' => [
+              'product' => [
+              'type'    => Segment::class,
+              'options' => [
+              'route'    => '[/:product_id]',
+              'defaults' => [
+              'controller' => Controller\indexController::class,
+              'action'     => 'product',
+              ],
+              //                            'constraints' => [
+              //                                'product_id' => '(\d)+',
+              //                            ],
+              ],
+              ],
+              ],
+              ],/* */
+
+
+
+
 //            'show-store' => [
 //                'type'    => Literal::class,
 //                'options' => [
@@ -466,259 +451,253 @@ return [
 //                ],
 //            ],
             'receive-provider' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-provider[/:id]',
+                    'route' => '/receive-provider[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\ProviderRepositoryInterface::class,
                 ],
             ],
             'receive-store' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-store[/:id]',
+                    'route' => '/receive-store[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\StoreRepositoryInterface::class,
                 ],
             ],
             'receive-product' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-product[/:id]',
+                    'route' => '/receive-product[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\ProductRepositoryInterface::class,
                 ],
             ],
             'receive-price' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-price[/:id]',
+                    'route' => '/receive-price[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\PriceRepositoryInterface::class,
                 ],
             ],
             'receive-stock-balance' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-stock-balance[/:id]',
+                    'route' => '/receive-stock-balance[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\StockBalanceRepositoryInterface::class,
                 ],
             ],
             'receive-size' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-size[/:id]',
+                    'route' => '/receive-size[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\SizeRepositoryInterface::class,
                 ],
             ],
             'receive-category' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-category[/:id]',
+                    'route' => '/receive-category[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\CategoryRepositoryInterface::class,
                 ],
             ],
             'receive-brand' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-brand[/:id]',
+                    'route' => '/receive-brand[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\BrandRepositoryInterface::class,
                 ],
             ],
             'receive-color' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-color[/:id]',
+                    'route' => '/receive-color[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\ColorRepositoryInterface::class,
                 ],
             ],
             'receive-setting' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-setting[/:id]',
+                    'route' => '/receive-setting[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\SettingRepositoryInterface::class,
                 ],
             ],
             'receive-characteristic' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-characteristic[/:id]',
+                    'route' => '/receive-characteristic[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
                         //'action'     => 'receiveCharacteristic',
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\CharacteristicRepositoryInterface::class,
                 ],
             ],
             'receive-predef-char-value' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-predef-char-value[/:id]',
+                    'route' => '/receive-predef-char-value[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface::class,
                 ],
             ],
             'receive-marker' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-marker[/:id]',
+                    'route' => '/receive-marker[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\RepositoryInterface\MarkerRepositoryInterface::class,
                 ],
             ],
             'receive-client-order-statuses' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/receive-client-order-statuses[/:id]',
+                    'route' => '/receive-client-order-statuses[/:id]',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
-            
             'receive-review' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/receive-review',
+                    'route' => '/receive-review',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\Entity\Review::class,
                 ],
             ],
-            
             'receive-rating' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/receive-rating',
+                    'route' => '/receive-rating',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
-                        'action'     => 'receiveRepository',
+                        'action' => 'receiveRepository',
                     ],
                     'repository' => \Application\Model\Entity\ProductRating::class,
                 ],
             ],
-            
-            
-            
             'set-client-info' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/set-client-info[/:id]',
+                    'route' => '/set-client-info[/:id]',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'setClientInfo',
+                        'action' => 'setClientInfo',
                     ],
                 ],
             ],
             'get-client-info' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/get-client-info[/:id]',
+                    'route' => '/get-client-info[/:id]',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'getClientInfo',
+                        'action' => 'getClientInfo',
                     ],
                 ],
             ],
             'update-client-info' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/update-client-info[/:id]',
+                    'route' => '/update-client-info[/:id]',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'updateClientInfo',
+                        'action' => 'updateClientInfo',
                     ],
                 ],
             ],
             'change-client-password' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/change-client-password[/:id]',
+                    'route' => '/change-client-password[/:id]',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'changeClientPassword',
+                        'action' => 'changeClientPassword',
                     ],
                 ],
             ],
             'client-login' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/client-login[/:id]',
+                    'route' => '/client-login[/:id]',
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
-                        'action'     => 'clientLogin',
+                        'action' => 'clientLogin',
                     ],
                 ],
             ],
             'my-login' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/my-login',
+                    'route' => '/my-login',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'myLogin',
+                        'action' => 'myLogin',
                     ],
                 ],
             ],
             'signup' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/signup',
+                    'route' => '/signup',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'signup',
+                        'action' => 'signup',
                     ],
                 ],
             ],
-
 //            'test-repos' => [
 //                'type'    => Literal::class,
 //                'options' => [
@@ -730,37 +709,36 @@ return [
 //                ],
 //            ],
             'average-category-price' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/average-category-price',
+                    'route' => '/average-category-price',
                     'defaults' => [
                         'controller' => Controller\MyTestController::class,
-                        'action'     => 'averageCategoryPrice',
+                        'action' => 'averageCategoryPrice',
                     ],
                 ],
             ],
             //averageCategoryPriceAction
             'get-image' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/get-image',
+                    'route' => '/get-image',
                     'defaults' => [
                         'controller' => Controller\FtpController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
             ],
             'get-image2' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/get-image2/:table/:fileName',
+                    'route' => '/get-image2/:table/:fileName',
                     'defaults' => [
                         'controller' => Controller\FtpController::class,
-                        'action'     => 'getImage',
+                        'action' => 'getImage',
                     ],
                 ],
             ],
-
 //            'receive' => [
 //                // First we define the basic options for the parent route: \Laminas\Router\Http\
 //                'type' => Literal::class,
@@ -827,7 +805,6 @@ return [
 //                    ],
 //                ],
 //            ],
-            
 //            'cat' => [
 //                'type' => Segment::class,
 //                'options' => [
@@ -841,7 +818,6 @@ return [
 ////                    ],
 //                ],
 //            ],
-            
 //            'add-new-post' => [
 //                'type'    => Segment::class,
 //                'options' => [
@@ -852,212 +828,206 @@ return [
 //                    ],
 //                ],
 //            ],
-            /*'ajax' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/ajax[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajax',
-                    ],
-                ],
-            ],*/
-            /*'banzaii' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/banzaii[/:id]',
-                    'defaults' => [
-                        'controller' => Controller\AjaxController::class,
-                        'action'     => 'banzaii',
-                    ],
-                ],
-            ],
-            /*'ajax-to-web' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/ajax-to-web',
-                    'defaults' => [
-                        'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxToWeb',
-                    ],
-                ],
-            ],*/
+            /* 'ajax' => [
+              'type'    => Segment::class,
+              'options' => [
+              'route'    => '/ajax[/:id]',
+              'defaults' => [
+              'controller' => Controller\AjaxController::class,
+              'action'     => 'ajax',
+              ],
+              ],
+              ], */
+            /* 'banzaii' => [
+              'type'    => Segment::class,
+              'options' => [
+              'route'    => '/banzaii[/:id]',
+              'defaults' => [
+              'controller' => Controller\AjaxController::class,
+              'action'     => 'banzaii',
+              ],
+              ],
+              ],
+              /*'ajax-to-web' => [
+              'type'    => Literal::class,
+              'options' => [
+              'route'    => '/ajax-to-web',
+              'defaults' => [
+              'controller' => Controller\AjaxController::class,
+              'action'     => 'ajaxToWeb',
+              ],
+              ],
+              ], */
             'ajax-fltr' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-fltr',
+                    'route' => '/ajax-fltr',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'setFilterForCategory',
+                        'action' => 'setFilterForCategory',
                     ],
                 ],
             ],
             'ajax-get-products-categories' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-products-categories',
+                    'route' => '/ajax-get-products-categories',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductCategories',
+                        'action' => 'getProductCategories',
                     ],
                 ],
             ],
             'ajax-get-products-brand' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-products-brand',
+                    'route' => '/ajax-get-products-brand',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductsBrand',
+                        'action' => 'getProductsBrand',
                     ],
                 ],
             ],
             'ajax-get-products-store' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-products-store',
+                    'route' => '/ajax-get-products-store',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductsStore',
+                        'action' => 'getProductsStore',
                     ],
                 ],
             ],
-             'ajax-get-products-provider' => [
-                'type'    => Literal::class,
+            'ajax-get-products-provider' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-products-provider',
+                    'route' => '/ajax-get-products-provider',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductsProvider',
+                        'action' => 'getProductsProvider',
                     ],
                 ],
             ],
-             'ajax-get-products-top' => [
-                'type'    => Literal::class,
+            'ajax-get-products-top' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-products-top',
+                    'route' => '/ajax-get-products-top',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductsTop',
+                        'action' => 'getProductsTop',
                     ],
                 ],
             ],
-            
             'ajax-get-products-sale' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-products-sale',
+                    'route' => '/ajax-get-products-sale',
                     'defaults' => [
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductsSale',
+                        'action' => 'getProductsSale',
                     ],
                 ],
             ],
-            
             'ajax-get-brands-top' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-brands-top',
+                    'route' => '/ajax-get-brands-top',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'getBrandsTop',
+                        'action' => 'getBrandsTop',
                     ],
                 ],
             ],
-            
-            
-            
-            
             'ajax-fltr-json' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-fltr-json',
+                    'route' => '/ajax-fltr-json',
                     'defaults' => [
 //                        'controller' => Controller\AjaxController::class,
 //                        'action'     => 'getFiltredProductForCategoryJson',
                         'controller' => Controller\ProductCardsController::class,
-                        'action'     => 'getProductsCatalog',
+                        'action' => 'getProductsCatalog',
                     ],
                 ],
             ],
-           /*'ajax-get-store' => [
-                'type'    => Literal::class,
-                'options' => [
-                    'route'    => '/ajax-get-store',
-                    'defaults' => [
-                        'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxGetStore',
-                    ],
-                ],
-            ],*/
+            /* 'ajax-get-store' => [
+              'type'    => Literal::class,
+              'options' => [
+              'route'    => '/ajax-get-store',
+              'defaults' => [
+              'controller' => Controller\AjaxController::class,
+              'action'     => 'ajaxGetStore',
+              ],
+              ],
+              ], */
             //
-            'ajax-set-product-rating'=>[
-                'type'    => Literal::class,
+            'ajax-set-product-rating' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-set-product-rating',
+                    'route' => '/ajax-set-product-rating',
                     'defaults' => [
                         'controller' => Controller\ReviewController::class,
-                        'action'     => 'setProductRating',
+                        'action' => 'setProductRating',
                     ],
                 ],
             ],
-            'ajax-get-product-review'=>[
-                'type'    => Literal::class,
+            'ajax-get-product-review' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-product-review',
+                    'route' => '/ajax-get-product-review',
                     'defaults' => [
                         'controller' => Controller\ReviewController::class,
-                        'action'     => 'getProductReview',
+                        'action' => 'getProductReview',
                     ],
                 ],
             ],
-            'ajax-set-product-review'=>[
-                'type'    => Literal::class,
+            'ajax-set-product-review' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-set-product-review',
+                    'route' => '/ajax-set-product-review',
                     'defaults' => [
                         'controller' => Controller\ReviewController::class,
-                        'action'     => 'setProductReview',
+                        'action' => 'setProductReview',
                     ],
                 ],
             ],
-            'ajax-set-user-address'=>[
-                'type'    => Literal::class,
+            'ajax-set-user-address' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-set-user-address',
+                    'route' => '/ajax-set-user-address',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxSetUserAddress',
+                        'action' => 'ajaxSetUserAddress',
                     ],
                 ],
             ],
-            'ajax-add-user-address'=>[
-                'type'    => Literal::class,
+            'ajax-add-user-address' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-add-user-address',
+                    'route' => '/ajax-add-user-address',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxAddUserAddress',
+                        'action' => 'ajaxAddUserAddress',
                     ],
                 ],
             ],
-            'ajax-get-legal-store'=> [
-                'type'    => Literal::class,
+            'ajax-get-legal-store' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-legal-store',
+                    'route' => '/ajax-get-legal-store',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxGetLegalStore',
+                        'action' => 'ajaxGetLegalStore',
                     ],
                 ],
             ],
-            'ajax-get-basket-json'=> [
-                'type'    => Literal::class,
+            'ajax-get-basket-json' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-basket-json',
+                    'route' => '/ajax-get-basket-json',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxGetBasketJson',
+                        'action' => 'ajaxGetBasketJson',
                     ],
                 ],
             ],
@@ -1070,214 +1040,207 @@ return [
 //                ],
 //                'spec' => '/blog/%id%.%format%',
 //            ],
-
             'application' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route' => '/application[/:action]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action' => 'index',
                     ],
                 ],
             ],
             'user' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/user',
+                    'route' => '/user',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'user',
+                        'action' => 'user',
                     ],
                 ],
             ],
-            
             'user-auth' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax/user-auth',
+                    'route' => '/ajax/user-auth',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'userAuth',
+                        'action' => 'userAuth',
                     ],
                 ],
             ],
             'user-delete-address' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/user-delete-address',
+                    'route' => '/user-delete-address',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxUserDeleteAddress',
+                        'action' => 'ajaxUserDeleteAddress',
                     ],
                 ],
             ],
             'user-set-default-address' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/user-set-default-address',
+                    'route' => '/user-set-default-address',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxUserSetDefaultAddress',
+                        'action' => 'ajaxUserSetDefaultAddress',
                     ],
                 ],
             ],
-            
             'ajax-basket-changed' => [
-                'type'    => Literal::class,
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-basket-changed',
+                    'route' => '/ajax-basket-changed',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'ajaxBasketChanged',
+                        'action' => 'ajaxBasketChanged',
                     ],
                 ],
             ],
-            
-            
-            'ajax-basket-order-merge'=> [
-                'type'    => Literal::class,
+            'ajax-basket-order-merge' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-basket-order-merge',
+                    'route' => '/ajax-basket-order-merge',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'basketOrderMerge',
+                        'action' => 'basketOrderMerge',
                     ],
                 ],
             ],
-            'ajax-chek-order-status'=> [
-                'type'    => Literal::class,
+            'ajax-chek-order-status' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-chek-order-status',
+                    'route' => '/ajax-chek-order-status',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'checkOrderStatus',
+                        'action' => 'checkOrderStatus',
                     ],
                 ],
             ],
-            'ajax-get-order-list'=> [
-                'type'    => Literal::class,
+            'ajax-get-order-list' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-order-list',
+                    'route' => '/ajax-get-order-list',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'getUserOrderList',
+                        'action' => 'getUserOrderList',
                     ],
                 ],
             ],
-            'ajax-get-order-page'=> [
-                'type'    => Literal::class,
+            'ajax-get-order-page' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-order-page',
+                    'route' => '/ajax-get-order-page',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'getUserOrderPage',
+                        'action' => 'getUserOrderPage',
                     ],
                 ],
             ],
-            
-            
-            'add-to-basket'=> [
-                'type'    => Literal::class,
+            'add-to-basket' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax/add-to-basket',
+                    'route' => '/ajax/add-to-basket',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'addToBasket',
+                        'action' => 'addToBasket',
                     ],
                 ],
             ],
-             'add-to-favorites'=> [
-                'type'    => Literal::class,
+            'add-to-favorites' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax/add-to-favorites',
+                    'route' => '/ajax/add-to-favorites',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'addToFavorites',
+                        'action' => 'addToFavorites',
                     ],
                 ],
             ],
-             'remove-from-favorites'=> [
-                'type'    => Literal::class,
+            'remove-from-favorites' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax/remove-from-favorites',
+                    'route' => '/ajax/remove-from-favorites',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'removeFromFavorites',
+                        'action' => 'removeFromFavorites',
                     ],
                 ],
             ],
-             'del-from-basket'=> [
-                'type'    => Literal::class,
+            'del-from-basket' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax/del-from-basket',
+                    'route' => '/ajax/del-from-basket',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'delFromBasket',
+                        'action' => 'delFromBasket',
                     ],
                 ],
             ],
-            'calculate-basket-item'=> [
-                'type'    => Literal::class,
+            'calculate-basket-item' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax/calculate-basket-item',
+                    'route' => '/ajax/calculate-basket-item',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'calculateBasketItem',
+                        'action' => 'calculateBasketItem',
                     ],
                 ],
             ],
-            'ajax-get-category-filters'=> [
-                'type'    => Literal::class,
+            'ajax-get-category-filters' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/ajax-get-category-filters',
+                    'route' => '/ajax-get-category-filters',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
-                        'action'     => 'getJsonCategoryFilters',
+                        'action' => 'getJsonCategoryFilters',
                     ],
                 ],
             ],
-            'tinkoff-payment'=> [
-                'type'    => Segment::class,
+            'tinkoff-payment' => [
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/tinkoff/payment[/:order]',
+                    'route' => '/tinkoff/payment[/:order]',
                     'defaults' => [
                         'controller' => Controller\AcquiringController::class,
-                        'action'     => 'tinkoffPayment',
+                        'action' => 'tinkoffPayment',
                     ],
                 ],
             ],
-            'tinkoff-callback'=> [
-                'type'    => Literal::class,
+            'tinkoff-callback' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/tinkoff/callback',
+                    'route' => '/tinkoff/callback',
                     'defaults' => [
                         'controller' => Controller\AcquiringController::class,
-                        'action'     => 'tinkoffCallback',
+                        'action' => 'tinkoffCallback',
                     ],
                 ],
             ],
-            'tinkoff-redirect-success'=> [
-                'type'    => Literal::class,
+            'tinkoff-redirect-success' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/tinkoff/success',
+                    'route' => '/tinkoff/success',
                     'defaults' => [
                         'controller' => Controller\AcquiringController::class,
-                        'action'     => 'tinkoffSuccess',
+                        'action' => 'tinkoffSuccess',
                     ],
                 ],
             ],
-             'tinkoff-redirect-error'=> [
-                'type'    => Literal::class,
+            'tinkoff-redirect-error' => [
+                'type' => Literal::class,
                 'options' => [
-                    'route'    => '/tinkoff/error',
+                    'route' => '/tinkoff/error',
                     'defaults' => [
                         'controller' => Controller\AcquiringController::class,
-                        'action'     => 'tinkoffError',
+                        'action' => 'tinkoffError',
                     ],
                 ],
             ],
-            //getJsonCategoryFiltersAction
+        //getJsonCategoryFiltersAction
         ],
     ],
     'controllers' => [
@@ -1304,7 +1267,6 @@ return [
 //            \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
 //        ],
 //    ],
-
     'service_manager' => [
 //        'abstract_factories' => [
 //            ReflectionBasedAbstractFactory::class,
@@ -1339,12 +1301,9 @@ return [
             \Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface::class => \Application\Model\Repository\CharacteristicValue2Repository::class,
             \Application\Model\RepositoryInterface\ProductImageRepositoryInterface::class => \Application\Model\Repository\ProductImageRepository::class,
             \Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface::class => \Application\Model\Repository\HandbookRelatedProductRepository::class,
-
             \Laminas\Authentication\AuthenticationServiceInterface::class => \Laminas\Authentication\AuthenticationService::class,
-            //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
-
-            
-            //'my_auth_service' => \Laminas\Authentication\AuthenticationService::class,
+        //\Application\Service\ServiceInterface\HtmlProviderServiceInterface::class => \Application\Service\HtmlProviderService::class,
+        //'my_auth_service' => \Laminas\Authentication\AuthenticationService::class,
 //            \Laminas\Authentication\AuthenticationService\AuthenticationService::class => 'my_auth_service',
         ],
         'factories' => [
@@ -1357,7 +1316,7 @@ return [
             \Application\Model\Repository\CategoryRepository::class => \Application\Model\Factory\CategoryRepositoryFactory::class,
             \Application\Model\Repository\ProviderRepository::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Repository\StoreRepository::class => \Application\Model\Factory\StoreRepositoryFactory::class,
-            \Application\Model\Repository\StockBalance::class => \Application\Model\Factory\StockBalanceFactory::class,            
+            \Application\Model\Repository\StockBalance::class => \Application\Model\Factory\StockBalanceFactory::class,
             \Application\Model\Repository\ProviderRelatedStoreRepository::class => \Application\Model\Factory\ProviderRelatedStoreRepositoryFactory::class,
             \Application\Model\Repository\ProductRepository::class => \Application\Model\Factory\ProductRepositoryFactory::class,
             \Application\Model\Repository\FilteredProductRepository::class => \Application\Model\Factory\FilteredProductRepositoryFactory::class,
@@ -1389,15 +1348,11 @@ return [
             \Application\Service\HtmlFormProviderService::class => \Application\Service\Factory\HtmlFormProviderServiceFactory::class,
             \Application\Service\ExternalCommunicationService::class => \Application\Service\Factory\ExternalCommunicationServiceFactory::class,
             \Application\Service\AcquiringCommunicationService::class => \Application\Service\Factory\AcquiringCommunicationServiceFactory::class,
-
             \Application\Command\FetchImagesCommand::class => \Application\Command\Factory\FetchImagesCommandFactory::class,
-            
             \Laminas\Authentication\AuthenticationService::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Adapter\Auth\UserAuthAdapter::class => Adapter\Auth\Factory\UserAuthAdapterFactory::class,
-            
             \Application\Service\CommonHelperFunctionsService::class => \Application\Service\Factory\CommonHelperFunctionsServiceFactory::class,
             \Application\Service\ImageHelperFunctionsService::class => \Application\Service\Factory\ImageHelperFunctionsServiceFactory::class,
-            
             //'Laminas\Session\Config\ConfigInterface' => 'Laminas\Session\Service\SessionConfigFactory',
             //\Laminas\Session\Config\ConfigInterface::class => \Laminas\Session\Service\SessionConfigFactory::class,
 
@@ -1414,7 +1369,6 @@ return [
             \Application\Model\Entity\UserPaycard::class => \Application\Model\Factory\UserPaycardRepositoryFactory::class,
             \Application\Model\Entity\Color::class => \Application\Model\Factory\ColorRepositoryFactory::class,
             \Application\Model\Entity\Price::class => \Application\Model\Factory\PriceRepositoryFactory::class,
-
             \Application\Model\Entity\Basket::class => \Application\Model\Factory\BasketRepositoryFactory::class,
             \Application\Model\Entity\Review::class => \Application\Model\Factory\ReviewRepositoryFactory::class,
             \Application\Model\Entity\ReviewImage::class => \Application\Model\Factory\ReviewImageRepositoryFactory::class,
@@ -1424,13 +1378,11 @@ return [
             \Application\Model\Entity\ProductHistory::class => \Application\Model\Factory\ProductHistoryRepositoryFactory::class,
             \Application\Model\Entity\ProductFavorites::class => \Application\Model\Factory\ProductFavoritesRepositoryFactory::class,
             //\Application\Model\Entity\ProductCharacteristic::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
-
             \Application\Model\Entity\Provider::class => \Application\Model\Factory\ProviderRepositoryFactory::class,
             \Application\Model\Entity\CharacteristicValue::class => \Application\Model\Factory\CharacteristicValueRepositoryFactory::class,
             \Application\Model\Entity\HandbookRelatedProduct::class => \Application\Model\Factory\HandbookRelatedProductRepositoryFactory::class,
             \Application\Model\Entity\Characteristic::class => \Application\Model\Factory\CharacteristicRepositoryFactory::class,
             \Application\Model\Entity\ProductCharacteristic::class => \Application\Model\Factory\ProductCharacteristicRepositoryFactory::class,
-
         ],
         'invokables' => [
             \Laminas\View\HelperPluginManager::class => ReflectionBasedAbstractFactory::class,
@@ -1438,20 +1390,19 @@ return [
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'not-authorized'           => 'error/403',
-        'exception_template'       => 'error/index',
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'not-authorized' => 'error/403',
+        'exception_template' => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'layout/error'           => __DIR__ . '/../view/layout/errorLayout.phtml',
-            'layout/preview'          => __DIR__ . '/../view/layout/menu.phtml',
-            'layout/mainpagenew'      => __DIR__ . '/../view/layout/mainpagenew.phtml',
-            
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/error' => __DIR__ . '/../view/layout/errorLayout.phtml',
+            'layout/preview' => __DIR__ . '/../view/layout/menu.phtml',
+            'layout/mainpagenew' => __DIR__ . '/../view/layout/mainpagenew.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
@@ -1460,7 +1411,7 @@ return [
     ],
     'view_helpers' => [
         'invokables' => [
-           'catalog' => \Application\View\Helper\CatalogHelper::class,
+            'catalog' => \Application\View\Helper\CatalogHelper::class,
         ],
         'factories' => [
             View\Helper\ImagePath::class => View\Helper\Factory\ImagePathFactory::class,
@@ -1469,24 +1420,23 @@ return [
             'imagePath' => View\Helper\ImagePath::class,
         ],
     ],
-    
     'parameters' => [
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
         ],
-        'TinkoffMerchantAPI'=> [
-            'terminal' => '1629956533317DEMO',  //наш
+        'TinkoffMerchantAPI' => [
+            'terminal' => '1629956533317DEMO', //наш
             //'terminal' => '1629729309127DEMO',  //мишин
-            'token' => '9mfca0gpenpfi4rb',   //наш 
+            'token' => '9mfca0gpenpfi4rb', //наш
             //'token' => 'z62eq0aa900wvaku',   // мишин
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
-            'time_order_live' => 900,// время для оплаты заказа в сек.
-            'success_url' => 'https://z.saychas.ru/tinkoff/success', 
-            'fail_url' =>    'https://z.saychas.ru/tinkoff/error',
-            //'vat' => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
+            'time_order_live' => 900, // время для оплаты заказа в сек.
+            'success_url' => 'https://z.saychas.ru/tinkoff/success',
+            'fail_url' => 'https://z.saychas.ru/tinkoff/error',
+        //'vat' => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
 //        '1c_request_links' => [
 //            'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
@@ -1500,7 +1450,7 @@ return [
 //            //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
 //            'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
 //            'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
-//            
+//
 //        ],
         'image_path' => [
             'base_url' => '/images',
@@ -1513,16 +1463,16 @@ return [
                 'review_thumbnails' => 'user-images/review-images/thumbnails',
             ],
         ],
-        'catalog_to_save_images' => __DIR__.'/../../../public/images/product',
+        'catalog_to_save_images' => __DIR__ . '/../../../public/images/product',
         'local_catalog' => [
             'product' => [
-                'path' => __DIR__.'/../../../public/images/product',
+                'path' => __DIR__ . '/../../../public/images/product',
             ],
             'brand' => [
-                'path' => __DIR__.'/../../../public/images/brand',
+                'path' => __DIR__ . '/../../../public/images/brand',
             ],
             'provider' => [
-                'path' => __DIR__.'/../../../public/images/provider',
+                'path' => __DIR__ . '/../../../public/images/provider',
             ],
         ],
         'server_catalog' => [
@@ -1541,12 +1491,9 @@ return [
             "username" => "1C",
             "password" => "ree7EC2A",
         ],
-
     ],
-
     /** Correct configuration for doctrine migrations; */
     'doctrine' => [
-
         'driver' => [
             __NAMESPACE__ . '_driver' => [
                 'class' => AnnotationDriver::class,
@@ -1559,21 +1506,19 @@ return [
                 ],
             ],
         ],
-
         'connection' => [
             // default connection name
             'orm_default' => [
                 'driverClass' => \Doctrine\DBAL\Driver\PDOMySql\Driver::class,
                 'params' => [
-                    'host'     => 'localhost',
-                    'port'     => '3306',
-                    'user'     => 'saychas_z',
+                    'host' => 'localhost',
+                    'port' => '3306',
+                    'user' => 'saychas_z',
                     'password' => 'saychas_z',
-                    'dbname'   => 'saychas_z',
+                    'dbname' => 'saychas_z',
                 ],
             ],
         ],
-        
         'migrations_configuration' => [
             'orm_default' => [
                 'table_storage' => [
@@ -1595,8 +1540,7 @@ return [
             ],
         ],
     ],
-    /** Doctrine migrations configuration ends here */
-
+        /** Doctrine migrations configuration ends here */
 //    'session_manager' => [
 //        'config' => [
 //            'class' => \Session\Config\SessionConfig::class,
@@ -1609,7 +1553,7 @@ return [
 //            \Session\Validator\RemoteAddr::class,
 //            \Session\Validator\HttpUserAgent::class,
 //        ],
-//    ],    
+//    ],
 //    'session_containers' => [
 //        Resource::SESSION_NAMESPACE,
 //    ],

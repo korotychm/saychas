@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Json\Json;
 use Laminas\View\Model\JsonModel;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
@@ -41,7 +42,7 @@ class ReviewController extends AbstractActionController
             //ProductRatingRepositoryInterface $productRatingRepository,
             ProductRepositoryInterface $productRepository, /**/
             //HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, AuthenticationService $authService, 
+            $entityManager, $config, AuthenticationService $authService,
             CommonHelperFunctionsService $commonHelperFuncions,
             ImageHelperFunctionsService $imageHelperFuncions,
             ExternalCommunicationService $externalCommunicationService)
@@ -70,19 +71,30 @@ class ReviewController extends AbstractActionController
      */
     public function setProductRatingAction()
     {
-        if (empty($param['user_id'] = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
+
+        $reviewId = substr(md5(uniqid() . time()), 0, 36);
+
+        $return = ["time_created" => time(), 'id' => $reviewId];
+
+        if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
+            return $this->getResponse()->setStatusCode(404);
+        }
+
+        if (empty($user_id = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }
 
-       $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $param['user_id']]));
 
-        if (empty($userInfo['phone'])) {
+        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $user_id]));
+
+        if (empty($return["user_name"] = $userInfo['name']) or empty($return["user_id"] = $userInfo['userid'])) {
             return $this->getResponse()->setStatusCode(403);
         }
- 
-        $param['rating'] = $this->getValidRating($this->getRequest()->getPost()->rating);
 
-        return new JsonModel($this->productRepository->setProductRating($param));
+        $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
+        $return['answer1c'] = $this->externalCommunicationService->sendReview($return);
+
+        return new JsonModel($return);
     }
 
     /**
@@ -93,8 +105,8 @@ class ReviewController extends AbstractActionController
      */
     public function setProductReviewAction()
     {
-        $reviewId = substr(md5(uniqid().time()), 0 , 36);
-        $return = [ "seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => null, 'id' => $reviewId ];
+        $reviewId = substr(md5(uniqid() . time()), 0, 36);
+        $return = ["seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => null, 'id' => $reviewId];
         $escaper = new Escaper();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
@@ -105,27 +117,30 @@ class ReviewController extends AbstractActionController
             return $this->getResponse()->setStatusCode(403);
         }
 
-        if (empty($return["user_message"] = $escaper->escapeHtml(trim($this->getRequest()->getPost()->reviewMessage))) or strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
-            return new JsonModel(["result" => false, "description" => Resource::REVIEW_MESSAGE_VALID_ERROR ]);
+        if (!empty($return["user_message"] = $escaper->escapeHtml(trim($this->getRequest()->getPost()->reviewMessage))) and strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
+            return new JsonModel(["result" => false, "description" => Resource::REVIEW_MESSAGE_VALID_ERROR]);
         }
 
-        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $user_id ]));
+        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $user_id]));
 
         if (empty($return["user_name"] = $userInfo['name']) or empty($return["user_id"] = $userInfo['userid'])) {
             return $this->getResponse()->setStatusCode(403);
         }
-        
+
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
-        //$return['id'] = $reviewId = $this->addReview($return);
         $files = $this->getRequest()->getFiles();
 
         if (!empty($files['files'])) {
+
+            if (empty($return["user_message"] = $escaper->escapeHtml(trim($this->getRequest()->getPost()->reviewMessage))) or strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
+                return new JsonModel(["result" => false, "description" => Resource::REVIEW_MESSAGE_VALID_ERROR]);
+            }
 
             if (!$this->imageHelperFuncions->getValidPostImage($files['files'])) {
                 return new JsonModel(["result" => false, "description" => Resource::LEGAL_IMAGE_NOTICE . ": " . join(", ", Resource::LEGAL_IMAGE_TYPES)]);
             }
 
-            $return['images'] = $this->addReviewImage($files['files'], $reviewId);
+            $return['images'] = $this->addReviewImage($files['files']);
         }
 
         $return['answer1c'] = $this->externalCommunicationService->sendReview($return);
@@ -148,57 +163,25 @@ class ReviewController extends AbstractActionController
         if (empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
             return ['result' => false, 'description' => "product_id not set"];
         }
-  
-        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => "10" ])->toArray();
-        $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
-        $reviews['overage_rating'] = ProductRating::findFirstOrDefault(['product_id'=>$param['product_id']])->getRating();
+
+        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => "10"])->toArray();
+        // $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
+        $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
+        $reviews = ['overage_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews()];
+        $reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
         $reviews['images_path'] = $this->imagePath("review_images");
         $reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
         $reviews["reviews"] = [];
-        
+
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
             $review['images'] = $this->getReviewImages($review['id']);
             $reviews["reviews"][] = $review;
         }
-        
+
         return new JsonModel($reviews);
     }
 
-    /**
-     * receive product reviews from 1c
-     *
-     * @param input JSON
-     * @return JSON
-     */
-    public function receiveReviewAction ()
-    {
-        $json = file_get_contents('php://input');
-        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-        
-         mail("d.sizov@saychas.ru", "1C.Review.log", print_r($return, true)); // лог на почту*/
-        
-        return new JsonModel($return);
-    }
-    
-    /**
-     * receive product rating from 1c
-     *
-     * @param input JSON
-     * @return JSON
-     */
-    public function receiveRatingAction ()
-    {
-        $json = file_get_contents('php://input');
-        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-        
-         mail("d.sizov@saychas.ru", "1C.Rating.log", print_r($return, true)); // лог на почту*/
-        
-        return new JsonModel($return);
-    }
-    
-    
-    
     /**
      * get images of review
      *
@@ -222,29 +205,8 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
-        //$rating = $this->getRequest()->getPost()->rating;
         return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
     }
-
-    /**
-     * check valid post image files
-     *
-     * @param array $files
-     * @return boolean
-     */
-//    
-//   /***  moved to ImagesHelperService */
-//    
-//    private function getValidPostImage($files)
-//    {
-//        foreach ($files as $file) {
-//            if (!in_array($file['type'], Resource::LEGAL_IMAGE_TYPES)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//    
 
     /**
      *
@@ -252,26 +214,26 @@ class ReviewController extends AbstractActionController
      * @param int $reviewId
      * @return array
      */
-    private function addReviewImage($files, $reviewId)
+    private function addReviewImage($files)
     {
         $images = [];
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
         $uploadPathThumbs = "public" . $this->imagePath("review_thumbnails") . "/";
-        $resizeParams = Resource::REVIEW_IMAGE_RESIZE;  
-        $thumpParams = Resource::REVIEW_IMAGE_THUMBNAILS;  
+        $resizeParams = Resource::REVIEW_IMAGE_RESIZE;
+        $thumpParams = Resource::REVIEW_IMAGE_THUMBNAILS;
         $funcView = ($resizeParams["crop"]) ? "cropImage" : "resizeImage";
         $funcThumb = ($thumpParams["crop"]) ? "cropImage" : "resizeImage";
         foreach ($files as $file) {
             $uuid = uniqid($this->identity() . "_" . time(), false);
-            $filename = $uuid ;
-             
+            $filename = $uuid;
+
             //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
-            if ($this->imageHelperFuncions->$funcView($file['tmp_name'],  $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['type'],)){
-                $this->imageHelperFuncions->$funcThumb($file['tmp_name'],  $uploadPathThumbs . $filename, $thumpParams['width'], $thumpParams['height'], $thumpParams['type'],);
+            if ($this->imageHelperFuncions->$funcView($file['tmp_name'], $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['type'],)) {
+                $this->imageHelperFuncions->$funcThumb($file['tmp_name'], $uploadPathThumbs . $filename, $thumpParams['width'], $thumpParams['height'], $thumpParams['type'],);
 //                $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
 //                $reviewImage->setReviewId($reviewId)->setFilename($filename.".".$resizeParams['type'])->persist(["id" => null]);
-                $images['view'][] = $this->imagePath("review_images") . "/". $filename.".".$resizeParams['type'];
-                $images['thumbs'][] = $this->imagePath("review_thumbnails") . "/". $filename.".".$thumpParams['type'];
+                $images['view'][] = $this->imagePath("review_images") . "/" . $filename . "." . $resizeParams['type'];
+                $images['thumbs'][] = $this->imagePath("review_thumbnails") . "/" . $filename . "." . $thumpParams['type'];
             }
         }
 
@@ -284,22 +246,20 @@ class ReviewController extends AbstractActionController
      * @param array $param
      * @return int
      */
-    private function addReview($param)
-    {
-        $review = Review::findFirstOrDefault(["id" => $param['id']]);
-        
-        return $review->setProductId($param['productId'])
-                        ->setRating($param["rating"])
-                        ->setUserId($param['user_id'])
-                        ->setReviewId($param['review_id'])
-                        ->setUserName($param["user_name"])
-                        ->setUserMessage($param['user_message'])
-                        ->setSellerName($param["seller_name"])
-                        ->setSellerMessage($param['seller_message'])
-                        ->setTimeCreated($param['time_created'])
-                        ->setTimeModified($param['time_modified'])
-                        ->persist(["id" => $param['id']]);
-    }
-
+//    private function addReview($param)
+//    {
+//        $review = Review::findFirstOrDefault(["id" => $param['id']]);
+//
+//        return $review->setProductId($param['productId'])
+//                        ->setRating($param["rating"])
+//                        ->setUserId($param['user_id'])
+//                        ->setReviewId($param['review_id'])
+//                        ->setUserName($param["user_name"])
+//                        ->setUserMessage($param['user_message'])
+//                        ->setSellerName($param["seller_name"])
+//                        ->setSellerMessage($param['seller_message'])
+//                        ->setTimeCreated($param['time_created'])
+//                        ->setTimeModified($param['time_modified'])
+//                        ->persist(["id" => $param['id']]);
+//    }
 }
- 

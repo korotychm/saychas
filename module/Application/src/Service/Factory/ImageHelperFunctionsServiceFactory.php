@@ -20,8 +20,9 @@ class ImageHelperFunctionsServiceFactory implements FactoryInterface
         }
 
         $config = $container->get('Config');
+        $entityManager = $container->get('laminas.entity.manager');
     
-        return new ImageHelperFunctionsService($config);
+        return new ImageHelperFunctionsService($config, $entityManager);
     }
 
 }
