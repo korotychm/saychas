@@ -237,10 +237,10 @@ $(function () {
             }
         });
     };
-    
+
     var sendProductReview = function (params) {
         var data = params ;
-        
+
         $.ajax({
             type: "POST",
             url: "/ajax-set-product-review",
@@ -259,9 +259,9 @@ $(function () {
         });
         return false;
     };
-    
+
     $('#productReviewForm').submit(function () {
-        
+
         var data = new FormData();
        $.each($('#file')[0].files, function(i, file) {
             data.append('files['+i+']', file);
@@ -271,7 +271,7 @@ $(function () {
         sendProductReview(data);
         return false;
     });
-    
+
     $('#userDataFormId').click(function () {
         sendSms($('#inputSomeDataId').val());
     });
@@ -287,7 +287,7 @@ $(function () {
         getProductReview(data);
         return false;
     });
-   
+
     $('#productUserRating').click(function () {
         var data = $('#productRatingForm').serialize();
         getProductUserRating(data);

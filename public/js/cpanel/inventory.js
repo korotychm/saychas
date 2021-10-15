@@ -4,13 +4,14 @@ const Inventory = {
       <div v-if="htmlContent" v-html="htmlContent"></div>
       <div v-else>
         <!-- фильтр -->
+        <span class="store-title"></span>
         <div class="filter">
           <div class="filter__select" style="width: 400px; margin: 0 10px 0 0;">
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Выберите магазин</div>
               <div class="custom-select__dropdown">
                 <div class="custom-select__dropdown-inner">
-                  <label v-for="store in stores" class="custom-select__option">
+                  <label v-for="store in stores" class="custom-select__option" @click="setTitle(store.title)">
                     <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="category_filter" v-model="selectedFilters.store_id" @change="loadPage()" />
                     <span>{{store.title}}</span>
                   </label>
@@ -110,6 +111,11 @@ const Inventory = {
       }
   },
   methods: {
+    setTitle(title){
+      $('.store-title').html('');
+      $('.store-title').html(' - ' + title);
+      console.log(this.$route.meta.h1);
+    },
     saveProduct(index) {
       let requestUrl = '/control-panel/update-stock-balance';
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
@@ -138,6 +144,7 @@ const Inventory = {
             .then(response => {
               console.log('Ответ на сохранение остатков', response.data);
               if (response.data.result){
+                showMessage('Остатки товара изменены!');
                 $('.inventory__item').removeClass('active');
               }
             })

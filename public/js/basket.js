@@ -525,7 +525,7 @@ $(function () {
     });
 
 
-    $(document).on('change', '.timepoint__option', function () {
+    $(document).on('change', '#basketordermerge .custom-select__option input', function () {
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 

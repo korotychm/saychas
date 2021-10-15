@@ -69,10 +69,10 @@ const PriceList = {
                     <div class="pricelist__popup-inputs">
                       <div class="pricelist__popup-input-group">
                         <div class="pricelist__popup-sale">
-                          <input type="number" max="100" min="0" v-model.lazy="product.discount" />
+                          <input type="number" max="100" min="0" v-model.lazy="product.discount" @change="checkDiscount(index)" />
                         </div>
                         <div class="pricelist__popup-price">
-                          <input type="number" min="0" max="999999" v-model.lazy="product.price" @change="checkPrice(index)" />
+                          <input type="number" min="0" max="999999" length="6" v-model.lazy="product.price" @change="checkPrice(index)" />
                         </div>
                       </div>
                       <p>Изменение цен и скидок происходит раз в сутки - в 03:00</p>
@@ -80,8 +80,8 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3 v-if="product.discount">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</h3>
-                        <h3 v-else> {{ product.price.toLocaleString() }} ₽</h3>
+                        <h3 v-if="product.discount">{{ (+product.price * (100 - +product.discount) / 100).toLocaleString() }} ₽</h3>
+                        <h3 v-else> {{ +product.price.toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
@@ -112,8 +112,23 @@ const PriceList = {
       }
   },
   methods: {
+    checkDiscount(index) {
+      if (this.products[index].discount === ''){
+        this.products[index].discount = 0;
+      }
+      this.products[index].discount = parseInt(this.products[index].discount);
+      if (this.products[index].discount > 100){
+        this.products[index].discount = 100;
+      }
+    },
     checkPrice(index) {
+      if (this.products[index].price === ''){
+        this.products[index].price = 0;
+      }
       this.products[index].price = parseInt(this.products[index].price);
+      if (this.products[index].price > 999999){
+        this.products[index].price = 999999;
+      }
     },
     setRubPrice() {
       for (product of this.products) {
@@ -142,6 +157,7 @@ const PriceList = {
             .then(response => {
               console.log('Ответ на сохранение цены', response.data);
               if (response.data.result){
+                showMessage('Цена товара изменена и обновится на сайте сегодня ночью!');
                 $('.pricelist__item').removeClass('active');
               }
             })
