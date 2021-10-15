@@ -209,14 +209,21 @@ class ReviewController extends AbstractActionController
         return $return;
     }
     
+    /**
+     * get images of product reviews
+     * 
+     * @param string $productId
+     * @return array
+     */
     private function getProductReviewImages($productId)
     {
         $reviews = Review::findAll(["where" => ["product_id" => $productId ], "columns"=>["id"] ])->toArray();
         $reviewsId = ArrayHelper::extractId($reviews, "id");
-        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId]]);
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId], "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
         foreach ($images as $image) {
             $return[] = $image->getFilename();
         }
+        
         return $return;
     }
 
