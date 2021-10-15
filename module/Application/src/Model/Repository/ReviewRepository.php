@@ -113,7 +113,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
             $this->db->query($selectStringImages, $this->db::QUERY_MODE_EXECUTE);
             return ['result' => true, 'description' => '', 'statusCode' => 200];
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "$e error executing $sql ", 'statusCode' => 418];
+            return ['result' => false, 'description' => "error executing $sql ", 'statusCode' => 418];
         }
     }
 
