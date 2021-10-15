@@ -82,6 +82,44 @@ body
         background var(--black)
         border-color var(--black)
         color #fff
+  &.disabled
+    pointer-events none
+    filter grayscale(1)
+    opacity .5
+
+.button-with-info
+  position relative
+  padding-bottom 15px
+  margin-bottom -15px
+  &__info
+    position absolute
+    bottom 0
+    left 50%
+    transform translate(-50%, 100%)
+    background #fff
+    padding 30px 35px
+    border-radius 20px
+    box-shadow: 0px 5px 35px 0px rgba(66, 66, 66, 0.2)
+    z-index 10
+    opacity 0
+    pointer-events none
+    font-size 18px
+    min-width 100%
+    &::before
+      content ''
+      width 20px
+      height 20px
+      display block
+      background #fff
+      position absolute
+      left 50%
+      top -10px
+      transform translateX(-50%) rotate(45deg)
+    a
+      cursor pointer
+  &:hover .button-with-info__info
+    opacity 1
+    pointer-events auto
 
 input[type="number"]
   -moz-appearance textfield

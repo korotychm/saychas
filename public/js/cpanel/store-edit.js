@@ -9,7 +9,7 @@ const StoreEdit = {
                       </div>
                       <div class="product__attribute product__attribute--short">
                         <h2 :class="{'input-error' : (!store.title && errors)}">Название магазина <span class="required">*</span></h2>
-                        <input type="text" class="input" v-model="store.title" />
+                        <input type="text" class="input" v-model="store.title" @input="checkText('title')" />
                       </div>
                       <div class="product__attribute">
                         <h2 :class="{'input-error' : (!store.address && errors)}">Адрес <span class="required">*</span></h2>
@@ -24,14 +24,14 @@ const StoreEdit = {
                       <div class="product__attribute">
                         <h2>Комментарий</h2>
                         <div>
-                          <input type="text" class="input" v-model="store.description" />
+                          <input type="text" class="input" v-model="store.description" maxlength="200" @input="checkText('description')" />
                           <p>Комментарий для курьера — что бы легче находить и быстрее приезжать</p>
                         </div>
                       </div>
                       <div class="product__attribute">
                         <h2 :class="{'input-error' : (!store.contact_name && errors)}">Контактное лицо <span class="required">*</span></h2>
                         <div>
-                          <input type="text" v-model="store.contact_name" class="input" />
+                          <input type="text" v-model="store.contact_name" class="input" @input="checkText('contact_name')" />
                         </div>
                       </div>
                       <div class="product__attribute product__attribute--short">
@@ -231,6 +231,17 @@ const StoreEdit = {
     }
   },
   methods: {
+    checkText(target){
+      let input = this.store[target];
+      let output = input;
+      for (var i = 0; i < input.length; i++) {
+            let c = input.charCodeAt(i);
+            if (c < 32 || c == 39 || c == 96 || (c > 255 && c < 1040) || c > 1103) {
+                output = output.replace(input[i],'');
+            }
+      }
+      this.store[target] = output;
+    },
     checkAddress() {
       setTimeout(() => {
         let dadata = '';
@@ -373,6 +384,7 @@ const StoreEdit = {
             }),{headers})
             .then(response => {
               if (response.data.result){
+                showMessage('Информация о магазине сохранена');
                 router.replace('/stores');
               }
             })

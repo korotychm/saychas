@@ -70,6 +70,7 @@ const Products = {
                     </div>
                   </div>
                   <div class="td products__category">
+                      <div>{{ product.mother_categories[1][1] }}</div>
                       <div>{{ product.category_name }}</div>
                   </div>
                   <div class="td">{{ product.brand_name }}</div>
