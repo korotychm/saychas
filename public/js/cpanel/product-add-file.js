@@ -13,12 +13,25 @@ const ProductAddFile = {
                 </div>
                 <div class="cp-container product product-add-file">
                   <div class="product__category">
-                      <h2>Категория</h2>
+                      <h2 :class="{'input-error' : (!selectedCategoryName && errors)}">Категория <span class="required">*</span></h2>
                       <div class="search-select">
-                          <input class="input search-select__input" type="text" value="" />
+                          <input class="input search-select__input" type="text" value="selectedCategoryName" v-model="categorySearch" @focusout="checkCategory()" />
+                          <div class="search-select__suggestions">
+                              <div v-if="!categorySearch" class="search-select__empty">Начните вводить название категории для поиска</div>
+                              <div v-if="(categorySearch && !filteredCategories.length)" class="search-select__empty">Ничего не найдено</div>
+                              <div v-if="(categorySearch && filteredCategories.length)">
+                                <label v-for="category in filteredCategories">
+                                  <input type="radio" name="suggest" :checked="(category.id == selectedCategoryId)" />
+                                  <span class="search-select__suggestion" @mousedown="selectCategory(category.id, category.name)">
+                                    <span class="search-select__suggestion-category--parent">{{category.parent}}</span>
+                                    <span class="search-select__suggestion-category">{{category.name}}</span>
+                                  </span>
+                                </label>
+                              </div>
+                          </div>
                       </div>
                   </div>
-                  <div class="product-add-file__files">
+                  <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
                       <a href="#">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
@@ -33,7 +46,88 @@ const ProductAddFile = {
                   </div>
                 </div>
             </div>`,
-  mounted: function(){
+  data: function () {
+    return {
+      categories: [],
+      categoriesFlat: [],
+      categorySearch: '',
+      selectedCategoryId: '',
+      selectedCategoryName: '',
+    }
+  },
+  computed: {
+    filteredCategories(){
+      if (this.categorySearch == '') return false;
+      let categories = this.categoriesFlat;
+      categories = categories.filter((category) => {
+        return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
+      })
+      return categories;
+    }
+  },
+  methods: {
+    flatCategories() {
+      let categoriesFlat = [];
+      function iterateArray(array, parent) {
+        for (category of array){
+          if (parent){
+            category.parent = parent;
+          }
+          if (category.children){
+            let newParent = category.title;
+            if (parent) {
+              newParent = category.parent + ' > ' + category.title;
+            }
+            iterateArray(category.children, newParent);
+          } else {
+            categoriesFlat.push({
+              id: category.id,
+              name: category.title,
+              parent: category.parent
+            })
+          }
+        }
+      }
+      iterateArray(this.categories, false);
+      this.categoriesFlat = categoriesFlat;
+    },
+    getCategories() {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let requestUrl = '/control-panel/add-product';
+      axios
+        .post(requestUrl,'',{headers})
+          .then(response => {
+            if (response.data.data === true) {
+              location.reload();
+            } else {
+              this.categories = response.data.category_tree;
+              console.log(this.categories);
+              this.flatCategories();
+              $('.main__loader').hide();
+            }
+          });
+    },
+    checkCategory() {
+      setTimeout(() => {
+        if (this.categorySearch != this.selectedCategoryName){
+          this.categorySearch = this.selectedCategoryName;
+        }
+      }, 100);
+    },
+    selectCategory(id,value) {
+      if (id != this.selectedCategoryId){
+        this.selectedCategoryId = id;
+        this.categorySearch = value;
+        this.selectedCategoryName = value;
+        //this.getCharacteristics(id);
+      }
+    }
+  },
+  created: function(){
+    $('.main__loader').show();
+    this.getCategories();
+  },
+  updated: function(){
     $('.main__loader').hide();
   }
 }
