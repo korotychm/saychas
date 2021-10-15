@@ -268,6 +268,7 @@ $(function () {
         });
         data.append('productId', $("#productReviewId").val()) ;
         data.append('reviewMessage', $("#reviewMessage").val()) ;
+        data.append('rating', $("#productRatingReview").val()) ;
         sendProductReview(data);
         return false;
     });

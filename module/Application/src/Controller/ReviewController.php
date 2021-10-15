@@ -107,6 +107,7 @@ class ReviewController extends AbstractActionController
     {
         $reviewId = substr(md5(uniqid() . time()), 0, 36);
         $return = ["seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => null, 'id' => $reviewId];
+        
         $escaper = new Escaper();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
@@ -128,7 +129,10 @@ class ReviewController extends AbstractActionController
         }
 
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
+        //return new JsonModel($this->getRequest()->getPost());
+        
         $files = $this->getRequest()->getFiles();
+        
 
         if (!empty($files['files'])) {
 
@@ -205,6 +209,7 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
+        $rating = (int)$rating;
         return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
     }
 
