@@ -396,11 +396,9 @@ class ProductController extends AbstractActionController
         
         if(false == $result['result']) {
             return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
-        }elseif(true == $result['result']){
-            return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
         }
         
-        throw new \Exception('Unexpected error');
+        return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
     }
 
 }
