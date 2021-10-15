@@ -129,7 +129,8 @@ const ProductAddFile = {
       axios
         .post(requestUrl,Qs.stringify({
           data: {
-            category_id: this.selectedCategoryId
+            category_id: this.selectedCategoryId,
+            query_type: 'product'
           }
         }),{headers})
           .then(response => {
