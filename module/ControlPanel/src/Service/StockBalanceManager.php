@@ -93,7 +93,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         foreach ($cursor['body'] as &$c) {
             // find product by product_id
             $products = $c['products'];
-            foreach ($products as $product) {
+            foreach ($products as &$product) {
                 $productId = $product['product_id'];
                 $quantity = $product['quantity'];
                 $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
@@ -108,6 +108,7 @@ class StockBalanceManager extends ListManager implements LoadableInterface
                 if (($flag && $flag2)) {
                     $result[] = $arr;
                 }
+                $product['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
             }
         }
         $cursor['body'] = $result;
