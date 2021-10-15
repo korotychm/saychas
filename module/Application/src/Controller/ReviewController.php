@@ -72,19 +72,19 @@ class ReviewController extends AbstractActionController
     {
         
         return new JsonModel(["sevice disabled"]);
-        if (empty($param['user_id'] = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
-            return $this->getResponse()->setStatusCode(403);
-        }
-
-       $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $param['user_id']]));
-
-        if (empty($userInfo['phone'])) {
-            return $this->getResponse()->setStatusCode(403);
-        }
- 
-        $param['rating'] = $this->getValidRating($this->getRequest()->getPost()->rating);
-
-        return new JsonModel($this->productRepository->setProductRating($param));
+//        if (empty($param['user_id'] = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
+//            return $this->getResponse()->setStatusCode(403);
+//        }
+//
+//       $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $param['user_id']]));
+//
+//        if (empty($userInfo['phone'])) {
+//            return $this->getResponse()->setStatusCode(403);
+//        }
+// 
+//        $param['rating'] = $this->getValidRating($this->getRequest()->getPost()->rating);
+//
+//        return new JsonModel($this->productRepository->setProductRating($param));
     }
 
     /**
@@ -166,41 +166,7 @@ class ReviewController extends AbstractActionController
         return new JsonModel($reviews);
     }
 
-    /**
-     * receive product reviews from 1c
-     *
-     * @param input JSON
-     * @return JSON
-     */
-//    public function receiveReviewAction ()
-//    {
-//        $json = file_get_contents('php://input');
-//        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-//        
-//         mail("d.sizov@saychas.ru", "1C.Review.log", print_r($return, true)); // лог на почту*/
-//        
-//        return new JsonModel($return);
-//    }
-//    
-//    /**
-//     * receive product rating from 1c
-//     *
-//     * @param input JSON
-//     * @return JSON
-//     */
-//    public function receiveRatingAction ()
-//    {
-//        $json = file_get_contents('php://input');
-//        $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
-//        
-//         mail("d.sizov@saychas.ru", "1C.Rating.log", print_r($return, true)); // лог на почту*/
-//        
-//        return new JsonModel($return);
-//    }
-    
-    
-    
-    /**
+     /**
      * get images of review
      *
      * @param int $reviewId
@@ -223,29 +189,8 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
-        //$rating = $this->getRequest()->getPost()->rating;
         return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
     }
-
-    /**
-     * check valid post image files
-     *
-     * @param array $files
-     * @return boolean
-     */
-//    
-//   /***  moved to ImagesHelperService */
-//    
-//    private function getValidPostImage($files)
-//    {
-//        foreach ($files as $file) {
-//            if (!in_array($file['type'], Resource::LEGAL_IMAGE_TYPES)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//    
 
     /**
      *
@@ -285,22 +230,22 @@ class ReviewController extends AbstractActionController
      * @param array $param
      * @return int
      */
-    private function addReview($param)
-    {
-        $review = Review::findFirstOrDefault(["id" => $param['id']]);
-        
-        return $review->setProductId($param['productId'])
-                        ->setRating($param["rating"])
-                        ->setUserId($param['user_id'])
-                        ->setReviewId($param['review_id'])
-                        ->setUserName($param["user_name"])
-                        ->setUserMessage($param['user_message'])
-                        ->setSellerName($param["seller_name"])
-                        ->setSellerMessage($param['seller_message'])
-                        ->setTimeCreated($param['time_created'])
-                        ->setTimeModified($param['time_modified'])
-                        ->persist(["id" => $param['id']]);
-    }
+//    private function addReview($param)
+//    {
+//        $review = Review::findFirstOrDefault(["id" => $param['id']]);
+//        
+//        return $review->setProductId($param['productId'])
+//                        ->setRating($param["rating"])
+//                        ->setUserId($param['user_id'])
+//                        ->setReviewId($param['review_id'])
+//                        ->setUserName($param["user_name"])
+//                        ->setUserMessage($param['user_message'])
+//                        ->setSellerName($param["seller_name"])
+//                        ->setSellerMessage($param['seller_message'])
+//                        ->setTimeCreated($param['time_created'])
+//                        ->setTimeModified($param['time_modified'])
+//                        ->persist(["id" => $param['id']]);
+//    }
 
 }
  
