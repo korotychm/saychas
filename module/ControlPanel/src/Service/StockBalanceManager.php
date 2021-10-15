@@ -92,8 +92,8 @@ class StockBalanceManager extends ListManager implements LoadableInterface
         $result = [];
         foreach ($cursor['body'] as &$c) {
             // find product by product_id
-            $products = $c['products'];
-            foreach ($products as &$product) {
+            //$products = $c['products'];
+            foreach ($c['products'] as &$product) {
                 $productId = $product['product_id'];
                 $quantity = $product['quantity'];
                 $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
@@ -106,9 +106,9 @@ class StockBalanceManager extends ListManager implements LoadableInterface
                 $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
 
                 if (($flag && $flag2)) {
+                    $arr['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
                     $result[] = $arr;
                 }
-                $product['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
             }
         }
         $cursor['body'] = $result;
