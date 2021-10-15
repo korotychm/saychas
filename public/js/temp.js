@@ -55,6 +55,7 @@ $(document).ready(function(){
       },
       created() {
           this.product_id = $('#testimonials').data('id'),
+          console.log('productId',this.product_id);
           axios
             .post('/ajax-get-product-review',
               Qs.stringify({
