@@ -186,7 +186,8 @@ class ReviewController extends AbstractActionController
        //$reviews[;
         
         foreach ($res as $review) {
-            $review = ['time_created' => date("Y-m-d H:i:s", (int) $review['time_created']), 'images' => $this->getReviewImages($review['id'])];
+            $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
+            $review['images'] = $this->getReviewImages($review['id']);
             $reviews["reviews"][] = $review;
         }
 
