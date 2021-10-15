@@ -133,11 +133,7 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            if (response.data.data === true) {
-              location.reload();
-            } else {
-              console.log('Файл',response);
-            }
+            console.log('Файл',response);
           })
           .catch(error => {
             if (error.response.status == '403'){
