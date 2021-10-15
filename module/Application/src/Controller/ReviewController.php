@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Json\Json;
 use Laminas\View\Model\JsonModel;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
@@ -151,8 +152,10 @@ class ReviewController extends AbstractActionController
         }
   
         $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => "10" ])->toArray();
-        $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
-        $reviews['overage_rating'] = ProductRating::findFirstOrDefault(['product_id'=>$param['product_id']])->getRating();
+       // $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
+        $productRating = ProductRating::findFirstOrDefault(['product_id'=>$param['product_id']]);
+        $reviews = ['overage_rating' => $productRating->getRating(), "rewiews_count" => $productRating->getReviews()] ;
+        $reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
         $reviews['images_path'] = $this->imagePath("review_images");
         $reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
         $reviews["reviews"] = [];

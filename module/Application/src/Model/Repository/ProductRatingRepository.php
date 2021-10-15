@@ -74,7 +74,7 @@ class ProductRatingRepository extends Repository implements ProductRatingReposit
     /**
      * return error message 
      * 
-     * @param json $json
+     * @param JSON $json
      * @return array
      */
     public function delete($json)
