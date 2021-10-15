@@ -53,6 +53,7 @@ const ProductAddFile = {
       categorySearch: '',
       selectedCategoryId: '',
       selectedCategoryName: '',
+      file: false
     }
   },
   computed: {
@@ -119,8 +120,31 @@ const ProductAddFile = {
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        //this.getCharacteristics(id);
+        this.getFile(id);
       }
+    },
+    getFile(id) {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let requestUrl = '/control-panel/';
+      // axios
+      //   .post(requestUrl,Qs.stringify({
+      //     data: {
+      //       category_id: this.selectedCategoryId
+      //     }
+      //   }),{headers})
+      //     .then(response => {
+      //       if (response.data.data === true) {
+      //         location.reload();
+      //       } else {
+      //         console.log(response);
+      //       }
+      //     })
+      //     .catch(error => {
+      //       if (error.response.status == '403'){
+      //         location.reload();
+      //       }
+      //     });
+      this.file = true;
     }
   },
   created: function(){
