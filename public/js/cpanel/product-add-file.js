@@ -7,7 +7,7 @@ const ProductAddFile = {
                   <div class="filter__btn">
                       <a class="btn btn--primary">Массой товаров</a>
                   </div>
-                  <div class="filter__btn">
+                  <div class="filter__btn" style="display: none;">
                       <router-link to="/product-add-api" class="btn btn--secondary">Загрузка по API</router-link>
                   </div>
                 </div>
