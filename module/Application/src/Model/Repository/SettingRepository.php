@@ -10,7 +10,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Laminas\Db\Sql\Sql;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
+//use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Setting;
 use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 

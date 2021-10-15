@@ -8,8 +8,8 @@ namespace Application\Model\Repository;
 use Laminas\Hydrator\HydratorInterface;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Json\Json;
-//use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Laminas\Db\Sql\Sql;
+use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
+use Laminas\Db\Sql\Sql;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Review;
 use Application\Model\RepositoryInterface\ReviewRepositoryInterface;
@@ -58,8 +58,8 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
     public function replace($content)
     {
         try {
-            $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
-        } catch (\Laminas\Json\Exception\RuntimeException $e) {
+            $result = Json::decode($content, Json::TYPE_ARRAY);
+        } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
 
@@ -89,6 +89,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
      */
     public function delete($json)
     {
+      // parent::delete($json);
         try {
             $result = Json::decode($json, Json::TYPE_ARRAY);
         } catch (LaminasJsonRuntimeException $e) {
@@ -112,7 +113,7 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
             $this->db->query($selectStringImages, $this->db::QUERY_MODE_EXECUTE);
             return ['result' => true, 'description' => '', 'statusCode' => 200];
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "$e error executing $sql ", 'statusCode' => 418];
+            return ['result' => false, 'description' => "error executing $sql ", 'statusCode' => 418];
         }
     }
 

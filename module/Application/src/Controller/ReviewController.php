@@ -12,6 +12,14 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Json\Json;
 use Laminas\View\Model\JsonModel;
+use Laminas\Session\Container; // as SessionContainer;
+use Laminas\Authentication\AuthenticationService;
+use Application\Resource\Resource;
+use Application\Helper\ArrayHelper;
+use Laminas\Escaper\Escaper;
+use Application\Service\CommonHelperFunctionsService;
+use Application\Service\ImageHelperFunctionsService;
+use Application\Service\ExternalCommunicationService;
 use Application\Model\Entity\Setting;
 use Application\Model\Entity\Review;
 use Application\Model\Entity\ReviewImage;
@@ -19,12 +27,7 @@ use Application\Model\Entity\User;
 use Application\Model\Entity\ProductRating;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 //use Laminas\Filter\StripTags;
-use Laminas\Escaper\Escaper;
-use Application\Service\CommonHelperFunctionsService;
-use Application\Service\ImageHelperFunctionsService;
-use Application\Service\ExternalCommunicationService;
-use Laminas\Authentication\AuthenticationService;
-use Application\Resource\Resource;
+
 
 class ReviewController extends AbstractActionController
 {
@@ -107,6 +110,7 @@ class ReviewController extends AbstractActionController
     {
         $reviewId = substr(md5(uniqid() . time()), 0, 36);
         $return = ["seller_name" => "", "seller_message" => "", "time_created" => time(), "time_modified" => null, 'id' => $reviewId];
+        
         $escaper = new Escaper();
 
         if (empty($return['productId'] = $this->getRequest()->getPost()->productId)) {
@@ -128,7 +132,10 @@ class ReviewController extends AbstractActionController
         }
 
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
+        //return new JsonModel($this->getRequest()->getPost());
+        
         $files = $this->getRequest()->getFiles();
+        
 
         if (!empty($files['files'])) {
 
@@ -156,23 +163,28 @@ class ReviewController extends AbstractActionController
      */
     public function getProductReviewAction()
     {
-        if (empty($this->identity())) {
+        if (empty($userId = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }
 
         if (empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
             return ['result' => false, 'description' => "product_id not set"];
         }
-
-        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => "10"])->toArray();
-        // $reviews['statistic'] = $this->productRepository->getCountsProductRating($param['product_id']);
+        
+        $offset = (int)$this->getRequest()->getPost()->page * Resource::REVIEWS_PAGING_LIMIT;
+        $limit = $offset + Resource::REVIEWS_PAGING_LIMIT;
+        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => $limit, "offset" => $offset])->toArray();
+        $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
+        $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
-        $reviews = ['overage_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews()];
-        $reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
-        $reviews['images_path'] = $this->imagePath("review_images");
-        $reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
-        $reviews["reviews"] = [];
-
+        $r = ['average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
+        $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "limit" => ["limit" => $limit, "offset" => $offset], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
+        //$reviews[;
+        //$reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
+        //$reviews['images_path'] = $this->imagePath("review_images");
+        //$reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
+       //$reviews[;
+        
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
             $review['images'] = $this->getReviewImages($review['id']);
@@ -196,6 +208,24 @@ class ReviewController extends AbstractActionController
         }
         return $return;
     }
+    
+    /**
+     * get images of product reviews
+     * 
+     * @param string $productId
+     * @return array
+     */
+    private function getProductReviewImages($productId)
+    {
+        $reviews = Review::findAll(["where" => ["product_id" => $productId ], "columns"=>["id"] ])->toArray();
+        $reviewsId = ArrayHelper::extractId($reviews, "id");
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId], "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
+        foreach ($images as $image) {
+            $return[] = $image->getFilename();
+        }
+        
+        return $return;
+    }
 
     /**
      *
@@ -205,6 +235,7 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
+        //$rating = (int)$rating;
         return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
     }
 

@@ -49,15 +49,26 @@ class ExternalCommunicationService
     
     /**
      * 
-     * @param type $phone
-     * @param type $code
-     * @return type
+     * @param array $param
+     * @return array
      */
     public function sendReview($param)
     {
         $url = $this->config['parameters']['1c_request_links']['set_review'];
         return $this->sendCurlRequest($url, $param);
     }
+    
+    /**
+     * 
+     * @param array $param
+     * @return array
+     */
+    public function getReviewer($param)
+    {
+        $url = $this->config['parameters']['1c_request_links']['get_reviewer'];
+        return $this->sendCurlRequest($url, $param);
+    }
+    
     
     
     

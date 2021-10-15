@@ -166,6 +166,9 @@ class Resource
     const LEGAL_IMAGE_NOTICE = "Допустимые форматы загружаемых файлов: ";
     const REVIEW_IMAGE_RESIZE = [ "width" => 1500,  "height" => 1500, "crop" => false, "type" => "jpeg" ];
     const REVIEW_IMAGE_THUMBNAILS = [ "width" => 100,  "height" => 100, "crop" => true, "type" => "jpeg" ];
+    const REVIEWS_PAGING_LIMIT = 10;
+    const REVIEWS_IMAGE_GALLARY_LIMIT = 24;
+    
     
     
     const DEFAULT_IMAGE = "nophoto.jpeg";
