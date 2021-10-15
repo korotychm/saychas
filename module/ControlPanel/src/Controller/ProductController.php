@@ -367,5 +367,13 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['answer' => $answer]);
     }
+    
+    public function getProductFileAction()
+    {
+        $this->getResponse()->setStatusCode(200);
+        echo 'adsf';
+        exit;
+        return new JsonModel(['result' => '200']);
+    }
 
 }
