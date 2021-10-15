@@ -13,7 +13,7 @@ const ProductAddFile = {
                 </div>
                 <div class="cp-container product product-add-file">
                   <div class="product__category">
-                      <h2 :class="{'input-error' : (!selectedCategoryName && errors)}">Категория <span class="required">*</span></h2>
+                      <h2>Категория <span class="required">*</span></h2>
                       <div class="search-select">
                           <input class="input search-select__input" type="text" value="selectedCategoryName" v-model="categorySearch" @focusout="checkCategory()" />
                           <div class="search-select__suggestions">
