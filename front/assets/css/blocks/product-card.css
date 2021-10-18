@@ -782,6 +782,7 @@
 .review-form__photos {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 .review-form__photos-preview {
   width: 55px;
@@ -791,7 +792,6 @@
   display: flex;
   position: relative;
   margin-right: 20px;
-  margin-bottom: 20px;
 }
 .review-form__photos-preview img {
   width: 100%;
