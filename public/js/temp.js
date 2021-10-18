@@ -95,7 +95,7 @@ $(document).ready(function(){
           var newImg = '';
           var reader = new FileReader();
           reader.onload = (e) => {
-            this.reviewFormImages[index] = e.target.result;
+            this.$set(this.reviewFormImages, index, e.target.result);
             console.log(this.reviewFormImages);
           }
           reader.readAsDataURL(file);
