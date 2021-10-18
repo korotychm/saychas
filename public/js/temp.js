@@ -91,7 +91,21 @@ $(document).ready(function(){
           this.reviewFormGrade = grade;
         },
         addFormImage(index){
-          return true;
+          let file = $('.review-form__photos-file').eq(index).files[0];
+          let reader = new FileReader();
+          let newImg = '';
+          reader.onloaded = function() {
+            newImg = reader.result;
+          }
+          if (file) {
+            reader.readAsDataURL(file);
+          } else {
+            newImg = reader.result;
+          }
+          this.reviewFormImages[index];
+          if (this.reviewFormImages.length < this.reviewFormImagesLimit){
+            this.reviewFormImage.push('');
+          }
         },
         dellFormImage(index){
           return true;
