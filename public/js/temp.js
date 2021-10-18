@@ -34,7 +34,8 @@ $(document).ready(function(){
         reviewFormGrade: 0,
         reviewFormText: '',
         reviewFormError: '',
-        reviewFormImages: ['']
+        reviewFormImages: [''],
+        reviewFormImagesLimit: 5
       },
       computed: {
         reviewsUnit(){
