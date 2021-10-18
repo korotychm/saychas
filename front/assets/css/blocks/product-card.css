@@ -755,3 +755,22 @@
   background: url("../img/ui/wave.png") repeat-x;
   background-size: contain;
 }
+.review-form .testimonials__grade {
+  margin-bottom: 30px;
+}
+.review-form .testimonials__grade > div {
+  cursor: pointer;
+}
+.review-form .textarea {
+  width: 100%;
+  display: block;
+  resize: vertical;
+  border-radius: 20px;
+  border: 2px solid var(--gray);
+  font-size: 18px;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+.review-form .textarea:focus {
+  border-color: var(--red);
+}
