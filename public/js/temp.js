@@ -95,7 +95,7 @@ $(document).ready(function(){
         dellFormImage(index){
           return true;
         },
-        sendFormReview() {
+        sendReviewForm() {
           $('#reviewPopup').fadeOut();
         },
         sortReviews() {
