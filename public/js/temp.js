@@ -44,7 +44,7 @@ $(document).ready(function(){
       methods: {
         addReviews() {
           this.currentPage++;
-          console.log(this.currentPage * this.limit.limit, this.reviews_count);
+          console.log(this.currentPage * this.limit.limit, this.reviews_count, ((this.currentPage * this.limit.limit) < this.reviews_count));
           axios
             .post('/ajax-get-product-review',
               Qs.stringify({
