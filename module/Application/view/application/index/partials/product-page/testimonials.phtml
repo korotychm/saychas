@@ -222,7 +222,7 @@
                       </div>
                       <div class="review-form__photos-btns">
                         <div class="review-form__photos-add" v-for="(item, index) in reviewFormImages">
-                          <input type="file" :id="'addImg' + index" @change="addFormImage(index-1)" />
+                          <input type="file" :id="'addImg' + index" @change="addFormImage(index-1)" class="review-form__photos-file" />
                           <label :for="'addImg' + index"></label>
                         </div>
                       </div>
