@@ -92,6 +92,7 @@ $(document).ready(function(){
         },
         addFormImage(index){
           var selector = '#addImg' + index;
+          console.log(document.querySelector(selector));
           var file = document.querySelector(selector).files[0];
 
           var reader = new FileReader();
