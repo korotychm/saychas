@@ -92,16 +92,12 @@ $(document).ready(function(){
         },
         addFormImage(index){
           var file = document.querySelector('#addImg' + index).files[0];
-          var reader = new FileReader();
           var newImg = '';
-          reader.onloadend = function() {
-            newImg = reader.result;
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            newImg = e.target.result;
           }
-          if (file) {
-            reader.readAsDataURL(file);
-          } else {
-            newImg = reader.result;
-          }
+          reader.readAsDataURL(file);
           this.reviewFormImages[index] = newImg;
           if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
             this.reviewFormImages.push('');
