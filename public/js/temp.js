@@ -29,7 +29,10 @@ $(document).ready(function(){
         currentPage: 1,
         reviews_count: 0,
         reviewsImages: false,
-        reviewer: null
+        reviewer: null,
+        reviewGrade: 0,
+        reviewText: '',
+        reviewError: ''
       },
       computed: {
         reviewsUnit(){
@@ -76,6 +79,9 @@ $(document).ready(function(){
               this.reviews_count = response.data.reviews_count;
               this.reviews = response.data.reviews;
             });
+        },
+        setGrade(grade){
+          this.reviewGrade = grade;
         },
         sortReviews() {
           this.currentPage = 1;
