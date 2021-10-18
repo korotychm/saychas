@@ -216,13 +216,13 @@
                         <div v-for="(item, index) in reviewFormImages">
                           <div v-if="item" class="review-form__photos-preview">
                             <img :src="item" />
-                            <div class="review-form__photos-del" @click="delFormImage(index-1)"></div>
+                            <div class="review-form__photos-del" @click="delFormImage(index)"></div>
                           </div>
                         </div>
                       </div>
                       <div class="review-form__photos-btns">
                         <div class="review-form__photos-add" v-for="(item, index) in reviewFormImages">
-                          <input type="file" :id="'addImg' + index" @change="addFormImage(+index-1)" class="review-form__photos-file" />
+                          <input type="file" :id="'addImg' + index" @change="addFormImage(index)" class="review-form__photos-file" />
                           <label :for="'addImg' + index"></label>
                         </div>
                       </div>
