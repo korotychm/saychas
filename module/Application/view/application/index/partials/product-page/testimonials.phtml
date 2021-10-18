@@ -100,7 +100,7 @@
                   </div>
               </div>
           </div>
-          <button class="btn btn--secondary" v-if="reviews && (currentPage * +limit.limit) < +reviews_count" @click="addReviews">Показать еще отзывы</button>
+          <button class="btn btn--secondary" v-if="reviews && ((currentPage * limit.limit) < +reviews_count)" @click="addReviews">Показать еще отзывы</button>
       </div>
     </div>
     <div v-else class="testimonials__empty">У этого товара еще нет ни одного отзыва. Будьте первым!</div>
