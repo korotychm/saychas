@@ -138,7 +138,7 @@
                 </div><span>{{ statisticsPercent('one') }} %</span>
             </div>
         </div>
-        <div v-if="reviewer.errorCode">
+        <div v-if="reviewer">
             <button class="btn btn--secondary" v-if="reviewer.valid" @click="showReviewForm">Оставить отзыв</button>
             <div class="button-with-info" v-else>
               <button class="btn btn--secondary disabled">Оставить отзыв</button>
