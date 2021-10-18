@@ -102,7 +102,7 @@ $(document).ready(function(){
           } else {
             newImg = reader.result;
           }
-          this.reviewFormImages[index];
+          this.reviewFormImages[index] = newImg;
           if (this.reviewFormImages.length < this.reviewFormImagesLimit){
             this.reviewFormImage.push('');
           }
