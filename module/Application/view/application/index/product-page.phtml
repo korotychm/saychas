@@ -16,7 +16,6 @@ $this->headTitle($this->title, 'PREPEND');
         <div class="product-card__code">Код товара: <?= $this->id ?><?php // = $this->append['vendorCode'] ?></div>
     </div>
     <div class="product-card__main">
-        <?="" //.print_r($this->images, true); ?>
         <?= $this->partial("/application/index/partials/product-page/product-images", ["images" => $this->images, "image_path" => $this->imagePath('product')]) ?>
         <div class="product-card__info">
             <?= $this->partial("/application/index/partials/product-page/options") ?>

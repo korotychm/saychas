@@ -23,11 +23,17 @@ $(document).ready(function(){
         average_rating: 0,
         images_path: '',
         statistic: {},
-        reviewsPhotos: []
+        images: [],
+        limit: {},
+        sortBy: 0,
+        currentPage: 1,
+        reviews_count: 0,
+        reviewsImages: false,
+        reviewer: null
       },
       computed: {
         reviewsUnit(){
-          let length = this.reviews.length.toString()
+          let length = this.reviews_count.toString()
           if (length.slice(-1) == '1' && length.slice(-2) != '11'){
             return 'отзыв';
           } else if (+length.slice(-1) > 1 && +length.slice(-1) < 5 && length.slice(-2) != '12' && length.slice(-2) != '13' && length.slice(-2) != '14'){
@@ -37,51 +43,70 @@ $(document).ready(function(){
         }
       },
       methods: {
-        statisticsPercent(grade){
-          let cumulative = 0;
-          for (item in this.statistic){
-            cumulative += +this.statistic[item]
-          }
-          return this.statistic[grade] / cumulative * 100;
-        },
-        getImages(){
-          for (review of this.reviews){
-            console.log('review',review);
-            for (image of review.images){
-              this.reviewsPhotos.push(image);
-            }
-          }
-        }
-      },
-      created() {
-          this.product_id = $('#testimonials').data('id'),
-          console.log('productId',this.product_id);
+        addReviews() {
+          this.currentPage++;
+          console.log(this.currentPage * this.limit.limit, this.reviews_count, ((this.currentPage * this.limit.limit) < this.reviews_count));
           axios
             .post('/ajax-get-product-review',
               Qs.stringify({
-                productId : this.product_id
+                productId : this.product_id,
+                page : this.currentPage - 1,
+                sort: this.sortBy
+              }))
+            .then(response => {
+              this.reviews.concat(response.data.reviews);
+            });
+        },
+        getReviews() {
+          axios
+            .post('/ajax-get-product-review',
+              Qs.stringify({
+                productId : this.product_id,
+                page : this.currentPage - 1,
+                sort: this.sortBy
               }))
             .then(response => {
               console.log(response);
               this.statistic = response.data.statistic;
               this.average_rating = response.data.average_rating;
               this.images_path = response.data.images_path;
+              this.images = response.data.images;
+              this.limit = response.data.limit;
+              this.reviewer = response.data.reviewer;
+              this.reviews_count = response.data.reviews_count;
               this.reviews = response.data.reviews;
-              this.getImages();
-              console.log(this.reviews);
             });
+        },
+        sortReviews() {
+          this.currentPage = 1;
+          this.getReviews();
+        },
+        statisticsPercent(grade){
+          let cumulative = 0;
+          for (item in this.statistic){
+            cumulative += +this.statistic[item]
+          }
+          return Math.round(this.statistic[grade] / cumulative * 100);
+        }
+      },
+      created() {
+        this.product_id = $('#testimonials').data('id')
+        this.getReviews()
       },
       mounted() {
         zoomImg();
       },
       updated() {
-        $('.testimonials__photos--carousel').slick(
-          {
-            infinite: false,
-            slidesToShow: 10,
-            slidesToScroll: 1
-          }
-        );
+        if (!this.reviewsImages){
+          this.reviewsImages = true;
+          $('.testimonials__photos--carousel').slick(
+            {
+              infinite: false,
+              slidesToShow: 10,
+              slidesToScroll: 1
+            }
+          );
+        }
       }
     });
 
