@@ -1415,9 +1415,11 @@ return [
         ],
         'factories' => [
             View\Helper\ImagePath::class => View\Helper\Factory\ImagePathFactory::class,
+            //View\Helper\DocumentPath::class => View\Helper\Factory\DocumentPathFactory::class,
         ],
         'aliases' => [
             'imagePath' => View\Helper\ImagePath::class,
+            //'documentPath' => View\Helper\DocumentPath::class,
         ],
     ],
     'parameters' => [
@@ -1462,6 +1464,9 @@ return [
                 'review_images' => 'user-images/review-images',
                 'review_thumbnails' => 'user-images/review-images/thumbnails',
             ],
+        ],
+        'document_path' => [
+            'base_url' => '/documents',
         ],
         'catalog_to_save_images' => __DIR__ . '/../../../public/images/product',
         'local_catalog' => [

@@ -14,7 +14,7 @@
           <div class="custom-select__dropdown">
             <div class="custom-select__dropdown-inner">
               <label class="custom-select__option">
-                <input type="radio" checked="checked" value="2" name="sort" v-model="sortBy" @change="sortReviews" />
+                <input type="radio" checked="checked" value="0" name="sort" v-model="sortBy" @change="sortReviews" />
                 <span>Сначала свежие</span>
               </label>
               <label class="custom-select__option">
@@ -22,7 +22,7 @@
                 <span>Сначала хорошие</span>
               </label>
               <label class="custom-select__option">
-                <input type="radio" value="0" name="sort" v-model="sortBy" @change="sortReviews" />
+                <input type="radio" value="2" name="sort" v-model="sortBy" @change="sortReviews" />
                 <span>Сначала отрицательные</span>
               </label>
             </div>
@@ -100,7 +100,7 @@
                   </div>
               </div>
           </div>
-          <button class="btn btn--secondary" v-if="reviews && (currentPage * limit.limit) < reviews_count" @click="loadMore">Показать еще отзывы</button>
+          <button class="btn btn--secondary" v-if="(currentPage * limit.limit) < reviews_count" @click="addReviews">Показать еще отзывы</button>
       </div>
     </div>
     <div v-else class="testimonials__empty">У этого товара еще нет ни одного отзыва. Будьте первым!</div>
@@ -108,46 +108,45 @@
 <div>
     <div class="testimonials-panel">
         <div v-if="average_rating" class="testimonials-panel__info">
-          <div class="testimonials-panel__grade">
-              <div class="testimonials-panel__grade-val">{{ average_rating / 10 }}</div>
-              <div class="testimonials-panel__grade-count"><span>{{ reviews_count }}</span> {{ reviewsUnit }}</div>
-          </div>
-          <div class="testimonials-panel__item"><span>5</span>
-              <div class="testimonials-panel__graph">
-                  <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('five') + '%'}"></div>
-              </div><span>{{ statisticsPercent('five') }} %</span>
-          </div>
-          <div class="testimonials-panel__item"><span>4</span>
-              <div class="testimonials-panel__graph">
-                  <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('four') + '%'}"></div>
-              </div><span>{{ statisticsPercent('four') }} %</span>
-          </div>
-          <div class="testimonials-panel__item"><span>3</span>
-              <div class="testimonials-panel__graph">
-                  <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('three') + '%'}"></div>
-              </div><span>{{ statisticsPercent('three') }} %</span>
-          </div>
-          <div class="testimonials-panel__item"><span>2</span>
-              <div class="testimonials-panel__graph">
-                  <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('two') + '%'}"></div>
-              </div><span>{{ statisticsPercent('two') }} %</span>
-          </div>
-          <div class="testimonials-panel__item"><span>1</span>
-              <div class="testimonials-panel__graph">
-                  <div class="testimonials-panel__graph-current"  :style="{width: statisticsPercent('one') + '%'}"></div>
-              </div><span>{{ statisticsPercent('one') }} %</span>
-          </div>
-        </div>
-        <?php if ($userLegal):?>
-          <button class="btn btn--secondary">Оставить отзыв</button>
-        <?php else:?>
-          <div class="button-with-info">
-            <button class="btn btn--secondary disabled">Оставить отзыв</button>
-            <div class="button-with-info__info">
-              <a class="user-modal-open">Войдите или зарегистрируйтесь, чтобы оставить отзыв.</a>
+            <div class="testimonials-panel__grade">
+                <div class="testimonials-panel__grade-val">{{ average_rating / 10 }}</div>
+                <div class="testimonials-panel__grade-count"><span>{{ reviews_count }}</span> {{ reviewsUnit }}</div>
             </div>
-          </div>
-        <?php endif;?>
-          <a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
+            <div class="testimonials-panel__item"><span>5</span>
+                <div class="testimonials-panel__graph">
+                    <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('five') + '%'}"></div>
+                </div><span>{{ statisticsPercent('five') }} %</span>
+            </div>
+            <div class="testimonials-panel__item"><span>4</span>
+                <div class="testimonials-panel__graph">
+                    <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('four') + '%'}"></div>
+                </div><span>{{ statisticsPercent('four') }} %</span>
+            </div>
+            <div class="testimonials-panel__item"><span>3</span>
+                <div class="testimonials-panel__graph">
+                    <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('three') + '%'}"></div>
+                </div><span>{{ statisticsPercent('three') }} %</span>
+            </div>
+            <div class="testimonials-panel__item"><span>2</span>
+                <div class="testimonials-panel__graph">
+                    <div class="testimonials-panel__graph-current" :style="{width: statisticsPercent('two') + '%'}"></div>
+                </div><span>{{ statisticsPercent('two') }} %</span>
+            </div>
+            <div class="testimonials-panel__item"><span>1</span>
+                <div class="testimonials-panel__graph">
+                    <div class="testimonials-panel__graph-current"  :style="{width: statisticsPercent('one') + '%'}"></div>
+                </div><span>{{ statisticsPercent('one') }} %</span>
+            </div>
+        </div>
+        <div v-if="reviewer">
+            <button class="btn btn--secondary" v-if="reviewer.result">Оставить отзыв</button>
+            <div class="button-with-info" v-else>
+              <button class="btn btn--secondary disabled">Оставить отзыв</button>
+              <div class="button-with-info__info">
+                <a :class="{'user-modal-open':(reviewer.errorCode == 403)}">{{ reviewer.errorDescription }}</a>
+              </div>
+            </div>
+            <a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
+        </div>
     </div>
 </div>
