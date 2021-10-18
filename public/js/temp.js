@@ -91,7 +91,9 @@ $(document).ready(function(){
           this.reviewFormGrade = grade;
         },
         addFormImage(index){
-          let file = $('.review-form__photos-file').eq(index).files[0];
+          let inputFile = $('#addImg'+index);
+          let file = inputFile.files[0];
+          
           let reader = new FileReader();
           let newImg = '';
           reader.onloaded = function() {
