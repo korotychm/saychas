@@ -35,7 +35,7 @@ $(document).ready(function(){
         reviewFormText: '',
         reviewFormError: '',
         reviewFormImages: [''],
-        reviewFormImagesLimit: 5,
+        reviewFormImagesLimit: 6,
         showReviewFormAddImg: true
       },
       computed: {
@@ -106,7 +106,7 @@ $(document).ready(function(){
           reader.readAsDataURL(file);
         },
         dellFormImage(index){
-          return true;
+          this.reviewFormImages.splice(index, 1);
         },
         sendReviewForm() {
           $('#reviewPopup').fadeOut();
