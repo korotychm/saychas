@@ -762,7 +762,7 @@
   cursor: pointer;
 }
 .review-form .textarea {
-  width: 100%;
+  width: 450px;
   display: block;
   resize: vertical;
   border-radius: 20px;
@@ -770,6 +770,7 @@
   font-size: 18px;
   padding: 25px;
   margin-bottom: 30px;
+  height: 180px;
 }
 .review-form .textarea:focus {
   border-color: var(--red);
