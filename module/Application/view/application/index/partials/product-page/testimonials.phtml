@@ -143,7 +143,7 @@
             <div class="button-with-info" v-else>
               <button class="btn btn--secondary disabled">Оставить отзыв</button>
               <div class="button-with-info__info">
-                <a v-if="reviewer.errorCode == 403" class="user-modal-open">Войдите или щарегистрируйтесь, чтобы оставить отзыв.</a>
+                <a v-if="reviewer.errorCode == 403" class="user-modal-open">Войдите или зарегистрируйтесь, чтобы оставить отзыв.</a>
                 <a v-else>{{ reviewer.errorDescription }}</a>
               </div>
             </div>
