@@ -95,14 +95,13 @@ $(document).ready(function(){
           var newImg = '';
           var reader = new FileReader();
           reader.onload = function(e) {
-            newImg = e.target.result;
+            this.reviewFormImages[index] = e.target.result;
+            console.log(this.reviewFormImages);
           }
           reader.readAsDataURL(file);
-          this.reviewFormImages[index] = newImg;
           if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
             this.reviewFormImages.push('');
           }
-          console.log(this.reviewFormImages);
         },
         dellFormImage(index){
           return true;
