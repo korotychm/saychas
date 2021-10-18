@@ -144,7 +144,8 @@
               <button class="btn btn--secondary disabled">Оставить отзыв</button>
               <div class="button-with-info__info">
                 <a v-if="reviewer.errorCode == 403" class="user-modal-open">Войдите или зарегистрируйтесь, чтобы оставить отзыв.</a>
-                <a v-else>{{ reviewer.errorDescription }}</a>
+                <a v-else-if="reviewer.errorCode == 400">Вы должны купить товар, чтобы оставить отзыв к нему</a>
+                <a v-else>{{ reviewer.description }}</a>
               </div>
             </div>
             <a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
