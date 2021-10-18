@@ -139,7 +139,7 @@
             </div>
         </div>
         <div v-if="reviewer">
-            <button class="btn btn--secondary" v-if="reviewer.valid">Оставить отзыв</button>
+            <button class="btn btn--secondary" v-if="reviewer.valid" @click="reviewShow">Оставить отзыв</button>
             <div class="button-with-info" v-else>
               <button class="btn btn--secondary disabled">Оставить отзыв</button>
               <div class="button-with-info__info">
@@ -149,7 +149,7 @@
             </div>
             <a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
         </div>
-        <div v-if="reviewer.result" class="popup" id="reviewPopup">
+        <div v-if="reviewer.valid" class="popup" id="reviewPopup">
             <div class="popup__inner">
                 <div class="popup__close"></div>
                 <div class="popup__content">
