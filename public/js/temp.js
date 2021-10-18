@@ -25,7 +25,7 @@ $(document).ready(function(){
         statistic: {},
         images: [],
         limit: {},
-        sortBy: 2,
+        sortBy: 0,
         currentPage: 1,
         reviews_count: 0
       },

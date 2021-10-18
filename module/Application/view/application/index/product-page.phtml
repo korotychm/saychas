@@ -36,7 +36,6 @@ $this->headTitle($this->title, 'PREPEND');
                     'delivery_price' => $this->delivery_price,
                 ]) : ""
         ?>
-        userlegal <?=  $this->userLegal ?>
         <?= $this->partial("/application/index/partials/product-page/description", ["description" => $this->description, "id" => $this->id]) ?>
         <?= $this->partial("/application/index/partials/product-page/characteristics", ["characteristics" => $this->characteristics]) ?>
         <?= $this->partial("/application/index/partials/product-page/append-info", ["params" => $this->append]) ?>
