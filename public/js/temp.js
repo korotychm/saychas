@@ -91,7 +91,7 @@ $(document).ready(function(){
           this.reviewFormGrade = grade;
         },
         addFormImage(index){
-          let file = $('.review-form__photos-file').eq(index).files[0];
+          let file = '';
           let reader = new FileReader();
           let newImg = '';
           reader.onloaded = function() {
@@ -103,7 +103,7 @@ $(document).ready(function(){
             newImg = reader.result;
           }
           this.reviewFormImages[index] = newImg;
-          if (this.reviewFormImages.length < this.reviewFormImagesLimit){
+          if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
             this.reviewFormImage.push('');
           }
         },
