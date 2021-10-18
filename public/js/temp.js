@@ -23,7 +23,8 @@ $(document).ready(function(){
         average_rating: 0,
         images_path: '',
         statistic: {},
-        reviewsPhotos: []
+        images: [],
+        limit: {}
       },
       computed: {
         reviewsUnit(){
@@ -43,14 +44,6 @@ $(document).ready(function(){
             cumulative += +this.statistic[item]
           }
           return this.statistic[grade] / cumulative * 100;
-        },
-        getImages(){
-          for (review of this.reviews){
-            console.log('review',review);
-            for (image of review.images){
-              this.reviewsPhotos.push(image);
-            }
-          }
         }
       },
       created() {
@@ -66,6 +59,8 @@ $(document).ready(function(){
               this.statistic = response.data.statistic;
               this.average_rating = response.data.average_rating;
               this.images_path = response.data.images_path;
+              this.images = response.data.images;
+              this.limit = response.data.limit;
               this.reviews = response.data.reviews;
               this.getImages();
               console.log(this.reviews);
