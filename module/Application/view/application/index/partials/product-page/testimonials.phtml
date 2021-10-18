@@ -1,8 +1,8 @@
 <div id="testimonials" class="testimonials" data-id="<?=$id?>">
     <h2 class="product-card__section-heading">Отзывы о товаре </h2>
-    <div v-if="reviews.length">
-      <div v-if="reviewsPhotos.length" class="testimonials__photos testimonials__photos--carousel">
-          <div class="testimonials__photo" v-for="photo in reviewsPhotos">
+    <div v-if="images">
+      <div v-if="images.length" class="testimonials__photos testimonials__photos--carousel">
+          <div class="testimonials__photo" v-for="photo in images">
             <a :href="images_path + '/' + photo" data-fancybox="gallery">
               <img :src="images_path + '/' + photo" />
             </a>
@@ -14,20 +14,16 @@
           <div class="custom-select__dropdown">
             <div class="custom-select__dropdown-inner">
               <label class="custom-select__option">
-                <input type="radio" checked="checked" value="" name="sort" />
+                <input type="radio" checked="checked" value="2" name="sort" v-model="sortBy" @change="sortReviews" />
                 <span>Сначала свежие</span>
               </label>
               <label class="custom-select__option">
-                <input type="radio" value="" name="sort" />
-                <span>Сначала популярные</span>
+                <input type="radio" value="1" name="sort" v-model="sortBy" @change="sortReviews" />
+                <span>Сначала хорошие</span>
               </label>
               <label class="custom-select__option">
-                <input type="radio" value="" name="sort" />
-                <span>Сначала дешевые</span>
-              </label>
-              <label class="custom-select__option">
-                <input type="radio" value="" name="sort" />
-                <span>Сначала дорогие</span>
+                <input type="radio" value="0" name="sort" v-model="sortBy" @change="sortReviews" />
+                <span>Сначала отрицательные</span>
               </label>
             </div>
           </div>
@@ -104,17 +100,17 @@
                   </div>
               </div>
           </div>
-          <button class="btn btn--secondary">Показать еще отзывы</button>
+          <button class="btn btn--secondary" v-if="reviews && (currentPage * limit.limit) < reviews_count" @click="loadMore">Показать еще отзывы</button>
       </div>
     </div>
     <div v-else class="testimonials__empty">У этого товара еще нет ни одного отзыва. Будьте первым!</div>
 </div>
 <div>
     <div class="testimonials-panel">
-        <div v-if="overage_rating" class="testimonials-panel__info">
+        <div v-if="average_rating" class="testimonials-panel__info">
           <div class="testimonials-panel__grade">
-              <div class="testimonials-panel__grade-val">{{ overage_rating / 10 }}</div>
-              <div class="testimonials-panel__grade-count"><span>{{ reviews.length }}</span> {{ reviewsUnit }}</div>
+              <div class="testimonials-panel__grade-val">{{ average_rating / 10 }}</div>
+              <div class="testimonials-panel__grade-count"><span>{{ reviews_count }}</span> {{ reviewsUnit }}</div>
           </div>
           <div class="testimonials-panel__item"><span>5</span>
               <div class="testimonials-panel__graph">
