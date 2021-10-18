@@ -19,6 +19,13 @@ class ImagePath extends AbstractHelper
         $this->imagePath = $imagePath;
     }
 
+    /**
+     * Gets path to an image
+     *
+     * @param string $pathFragment
+     * @param type $params
+     * @return string
+     */
     public function __invoke(string $pathFragment, $params = [])
     {
         $baseUrl = $this->imagePath['base_url'];

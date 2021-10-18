@@ -2,12 +2,12 @@
 
 // /module/src/View/Helper/Factory/DocumentPathFactory.php
 
-namespace Application\View\Helper\Factory;
+namespace ControlPanel\View\Helper\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 //use Laminas\Authentication\AuthenticationService;
-use Application\View\Helper\DocumentPath;
+use ControlPanel\View\Helper\DocumentPath;
 
 /**
  * This is the factory for ImagePath view helper. Its purpose is to instantiate the helper
@@ -22,8 +22,10 @@ class DocumentPathFactory implements FactoryInterface
         $authService = $container->get('my_auth_service');
 
         $identity = $authService->getIdentity();
+        $config = $container->get('Config');
+        $documentPath = $config['parameters']['document_path']['base_url'];
 
-        return new DocumentPath($identity['provider_id']);
+        return new DocumentPath($identity['provider_id'], $documentPath);
     }
 
 }
