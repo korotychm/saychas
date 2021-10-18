@@ -853,6 +853,6 @@
 .review-form__photos-add:last-child {
   display: block;
 }
-.review-form__photos-add:nth-child(5) {
+.review-form__photos-add:nth-child(6) {
   display: none !important;
 }
