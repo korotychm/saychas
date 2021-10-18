@@ -4,7 +4,7 @@
       <div v-if="images.length" class="testimonials__photos testimonials__photos--carousel">
           <div class="testimonials__photo" v-for="photo in images">
             <a :href="images_path + '/' + photo" data-fancybox="gallery">
-              <img :src="images_path + '/' + photo" />
+              <img :src="thumbnails_path + '/' + photo" />
             </a>
           </div>
       </div>
@@ -88,6 +88,13 @@
                   </div>
                   <div class="testimonials__text">
                       {{ review.user_message }}
+                      <div class="testimonials__photos" v-if="review.images">
+                        <div v-for="photo in review.images" class="testimonials__photo">
+                          <a :href="images_path + '/' + photo" :data-fancybox="review.id">
+                            <img src="thumbnails_path + '/' + photo">
+                          </a>
+                        </div>
+                      </div>
                   </div>
                   <div class="testimonials__answer" v-if="review.seller_message">
                       <div class="testimonials__answer-heading">
