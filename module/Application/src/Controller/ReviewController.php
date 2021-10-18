@@ -171,18 +171,23 @@ class ReviewController extends AbstractActionController
             return ['result' => false, 'description' => "product_id not set"];
         }
         
-        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
-        $offset = $page * Resource::REVIEWS_PAGING_LIMIT;
-        $limit = $offset + Resource::REVIEWS_PAGING_LIMIT;
-        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
-        $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
-        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
-        $res = Review::findAll(['where' => $param,  "order" => [$sort , "time_created desc"], "limit" => $limit, "offset" => $offset])->toArray();
+//        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
+//        $offset = $page * Resource::REVIEWS_PAGING_LIMIT;
+//        $limit = $offset + Resource::REVIEWS_PAGING_LIMIT;
+//        
+//        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
+//        $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
+//        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
+        $reviewParams = $this->setReviewParams($param);
+        
+        //return new JsonModel($reviewPaging);
+        //$res = Review::findAll(['where' => $param,  "order" => [$reviewParams['order'][0] , "time_created desc"], "limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']])->toArray();
+        $res = Review::findAll($reviewParams)->toArray();
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
         $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
-        $r = ["sort" => $sort, 'average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
-        $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "limit" => ["limit" => $limit, "offset" => $offset], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
+        $r = ["sort" => $reviewParams['order'], 'average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
+        $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "limit" => ["limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
  
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
@@ -193,6 +198,24 @@ class ReviewController extends AbstractActionController
         return new JsonModel($reviews);
     }
 
+    /**
+     * return parameters for SQL query 
+     * 
+     * @return array
+     */
+    private function setReviewParams ($param)
+    {
+        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
+        $offset = $page * Resource::REVIEWS_PAGING_LIMIT;
+        $limit = Resource::REVIEWS_PAGING_LIMIT;
+        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
+        $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
+        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
+        
+        return ['where' => $param, "order" => [$sort , "time_created desc"] , "offset" => $offset, "limit" => $limit ];
+        
+    }
+            
     /**
      * get images of review
      *
