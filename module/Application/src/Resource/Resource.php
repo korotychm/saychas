@@ -167,7 +167,7 @@ class Resource
     const REVIEW_IMAGE_RESIZE = [ "width" => 1500,  "height" => 1500, "crop" => false, "type" => "jpeg" ];
     const REVIEW_IMAGE_THUMBNAILS = [ "width" => 100,  "height" => 100, "crop" => true, "type" => "jpeg" ];
     const REVIEWS_PAGING_LIMIT = 10;
-    const REVIEWS_SORT_ORDER_RATING = [0 => "rating asc", 1 => "rating desc",  2 => "time_created desc" ] ;
+    const REVIEWS_SORT_ORDER_RATING = [ 0 => "time_created desc", 1 => "rating desc", 2 => "rating asc" ] ;
     const REVIEWS_IMAGE_GALLARY_LIMIT = 24;
     
     
