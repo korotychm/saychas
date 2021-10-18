@@ -80,7 +80,7 @@ $(document).ready(function(){
               this.reviews = response.data.reviews;
             });
         },
-        showReview() {
+        showReviewForm() {
           $('#reviewPopup').fadeIn();
         },
         setGrade(grade){
