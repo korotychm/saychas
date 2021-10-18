@@ -74,7 +74,6 @@ $(document).ready(function(){
               this.reviewer = response.data.reviewer;
               this.reviews_count = response.data.reviews_count;
               this.reviews = response.data.reviews;
-              this.getImages();
               console.log(this.reviews);
             });
         },
