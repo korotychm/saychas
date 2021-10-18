@@ -150,7 +150,7 @@
             </div>
             <a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
         </div>
-        <div v-if="reviewer.valid" class="popup" id="reviewPopup">
+        <div v-if="reviewer && reviewer.valid" class="popup" id="reviewPopup">
             <div class="popup__inner">
                 <div class="popup__close"></div>
                 <div class="popup__content">
