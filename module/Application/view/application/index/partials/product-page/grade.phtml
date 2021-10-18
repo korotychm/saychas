@@ -47,6 +47,6 @@
                 </div>
      </div>
      <div class="product-card__grade-val" v-if="+average_rating">{{ average_rating / 10 }}</div>
-     <a class="anchor product-card__reviews-link" href="#testimonials" v-if="reviews.length">{{reviews.length}} {{reviewsUnit}}</a>
+     <a class="anchor product-card__reviews-link" href="#testimonials" v-if="reviews.length">{{reviews_count}} {{reviewsUnit}}</a>
      <a class="anchor product-card__reviews-link" href="#testimonials" v-else>Нет отзывов</a>
 </div>
