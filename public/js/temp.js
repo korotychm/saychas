@@ -34,7 +34,7 @@ $(document).ready(function(){
         reviewFormGrade: 0,
         reviewFormText: '',
         reviewFormError: '',
-        reviewFormImages: []
+        reviewFormImages: ['']
       },
       computed: {
         reviewsUnit(){
