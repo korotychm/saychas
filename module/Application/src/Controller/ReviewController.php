@@ -173,11 +173,17 @@ class ReviewController extends AbstractActionController
         
         $offset = (int)$this->getRequest()->getPost()->page * Resource::REVIEWS_PAGING_LIMIT;
         $limit = $offset + Resource::REVIEWS_PAGING_LIMIT;
-        $res = Review::findAll(['where' => $param, 'order' => 'time_created desc', "limit" => $limit, "offset" => $offset])->toArray();
+        //$review['sort'] = 
+        $sortPost = ($this->getRequest()->getPost()->sort) ?  $this->getRequest()->getPost()->sort : 0;
+        //$sortPost = (int)$this->getRequest()->getPost()->sort;
+        $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
+        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$this->getRequest()->getPost()->sort] : end($sortOrder);
+        
+        $res = Review::findAll(['where' => $param,  "order" => ["time_created desc"], "limit" => $limit, "offset" => $offset])->toArray();
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
         $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
-        $r = ['average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
+        $r = ["sort" => $sort, 'average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
         $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "limit" => ["limit" => $limit, "offset" => $offset], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
         //$reviews[;
         //$reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
