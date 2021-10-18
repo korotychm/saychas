@@ -755,6 +755,9 @@
   background: url("../img/ui/wave.png") repeat-x;
   background-size: contain;
 }
+.review-form {
+  text-align: left;
+}
 .review-form .testimonials__grade {
   margin-bottom: 30px;
 }
