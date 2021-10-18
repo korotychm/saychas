@@ -106,6 +106,7 @@ $(document).ready(function(){
           if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
             this.reviewFormImages.push('');
           }
+          console.log(this.reviewFormImages);
         },
         dellFormImage(index){
           return true;
