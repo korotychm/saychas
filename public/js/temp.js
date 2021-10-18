@@ -54,9 +54,7 @@ $(document).ready(function(){
                 sort: this.sortBy
               }))
             .then(response => {
-              this.limit = response.data.limit;
               this.reviews.concat(response.data.reviews);
-              console.log(this.reviews);
             });
         },
         getReviews() {
@@ -77,7 +75,6 @@ $(document).ready(function(){
               this.reviewer = response.data.reviewer;
               this.reviews_count = response.data.reviews_count;
               this.reviews = response.data.reviews;
-              console.log(this.reviews);
             });
         },
         sortReviews() {
