@@ -96,12 +96,11 @@ $(document).ready(function(){
           var reader = new FileReader();
           reader.onload = (e) => {
             this.$set(this.reviewFormImages, index, e.target.result);
-            console.log(this.reviewFormImages);
+            if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
+              this.reviewFormImages.push('');
+            }
           }
           reader.readAsDataURL(file);
-          if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
-            this.reviewFormImages.push('');
-          }
         },
         dellFormImage(index){
           return true;
