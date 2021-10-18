@@ -819,9 +819,11 @@ return [
     'view_helpers' => [
         'factories' => [
             View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
+            View\Helper\DocumentPath::class => View\Helper\Factory\DocumentPathFactory::class,
         ],
         'aliases' => [
             'access' => View\Helper\Access::class,
+            'documentPath' => View\Helper\DocumentPath::class,            
         ],
     ],
     

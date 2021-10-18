@@ -171,26 +171,19 @@ class ReviewController extends AbstractActionController
             return ['result' => false, 'description' => "product_id not set"];
         }
         
-        $offset = (int)$this->getRequest()->getPost()->page * Resource::REVIEWS_PAGING_LIMIT;
+        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
+        $offset = $page * Resource::REVIEWS_PAGING_LIMIT;
         $limit = $offset + Resource::REVIEWS_PAGING_LIMIT;
-        //$review['sort'] = 
-        $sortPost = ($this->getRequest()->getPost()->sort) ?  $this->getRequest()->getPost()->sort : 0;
-        //$sortPost = (int)$this->getRequest()->getPost()->sort;
+        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
         $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
-        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$this->getRequest()->getPost()->sort] : end($sortOrder);
-        
-        $res = Review::findAll(['where' => $param,  "order" => ["time_created desc"], "limit" => $limit, "offset" => $offset])->toArray();
+        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
+        $res = Review::findAll(['where' => $param,  "order" => [$sort , "time_created desc"], "limit" => $limit, "offset" => $offset])->toArray();
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
         $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
         $r = ["sort" => $sort, 'average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
         $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "limit" => ["limit" => $limit, "offset" => $offset], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
-        //$reviews[;
-        //$reviews['statistic'] = (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [];
-        //$reviews['images_path'] = $this->imagePath("review_images");
-        //$reviews['thumbnails_path'] = $this->imagePath("review_thumbnails");
-       //$reviews[;
-        
+ 
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
             $review['images'] = $this->getReviewImages($review['id']);
@@ -246,7 +239,8 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     *
+     * Add user images for review.
+     * 
      * @param array $files
      * @param int $reviewId
      * @return array
@@ -260,11 +254,11 @@ class ReviewController extends AbstractActionController
         $thumpParams = Resource::REVIEW_IMAGE_THUMBNAILS;
         $funcView = ($resizeParams["crop"]) ? "cropImage" : "resizeImage";
         $funcThumb = ($thumpParams["crop"]) ? "cropImage" : "resizeImage";
+       
         foreach ($files as $file) {
             $uuid = uniqid($this->identity() . "_" . time(), false);
             $filename = $uuid;
 
-            //if (move_uploaded_file($file['tmp_name'], $uploadPath . $filename)) {
             if ($this->imageHelperFuncions->$funcView($file['tmp_name'], $uploadPath . $filename, $resizeParams['width'], $resizeParams['height'], $resizeParams['type'],)) {
                 $this->imageHelperFuncions->$funcThumb($file['tmp_name'], $uploadPathThumbs . $filename, $thumpParams['width'], $thumpParams['height'], $thumpParams['type'],);
 //                $reviewImage = ReviewImage::findFirstOrDefault(["id" => null]);
