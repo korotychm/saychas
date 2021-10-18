@@ -31,9 +31,10 @@ $(document).ready(function(){
         reviews_count: 0,
         reviewsImages: false,
         reviewer: null,
-        reviewGrade: 0,
-        reviewText: '',
-        reviewError: ''
+        reviewFormGrade: 0,
+        reviewFormText: '',
+        reviewFormError: '',
+        reviewFormImages: []
       },
       computed: {
         reviewsUnit(){
@@ -85,10 +86,16 @@ $(document).ready(function(){
         showReviewForm() {
           $('#reviewPopup').fadeIn();
         },
-        setGrade(grade){
-          this.reviewGrade = grade;
+        setFormGrade(grade){
+          this.reviewFormGrade = grade;
         },
-        sendReview() {
+        addFormImage(index){
+          return true;
+        },
+        dellFormImage(index){
+          return true;
+        },
+        sendFormReview() {
           $('#reviewPopup').fadeOut();
         },
         sortReviews() {
