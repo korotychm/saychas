@@ -139,11 +139,12 @@
             </div>
         </div>
         <div v-if="reviewer">
-            <button class="btn btn--secondary" v-if="reviewer.result">Оставить отзыв</button>
+            <button class="btn btn--secondary" v-if="reviewer.valid">Оставить отзыв</button>
             <div class="button-with-info" v-else>
               <button class="btn btn--secondary disabled">Оставить отзыв</button>
               <div class="button-with-info__info">
-                <a :class="{'user-modal-open':(reviewer.errorCode == 403)}">{{ reviewer.errorDescription }}</a>
+                <a v-if="reviewer.errorCode == 403" class="user-modal-open">Войдите или щарегистрируйтесь, чтобы оставить отзыв.</a>
+                <a v-else>{{ reviewer.errorDescription }}</a>
               </div>
             </div>
             <a class="testimonials-panel__link" href="#">Правила оформления отзывов →</a>
