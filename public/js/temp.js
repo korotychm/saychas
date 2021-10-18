@@ -88,6 +88,9 @@ $(document).ready(function(){
         setGrade(grade){
           this.reviewGrade = grade;
         },
+        sendReview() {
+          $('#reviewPopup').fadeOut();
+        },
         sortReviews() {
           this.currentPage = 1;
           this.getReviews();
