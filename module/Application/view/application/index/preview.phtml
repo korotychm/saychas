@@ -120,15 +120,33 @@
         <div class="card-body">  
             <form id="productRatingForm" >
                 
-                <p><input   name='productId' val=""  id="productId"  placeholder="id продукта" value="000000000001" required ></p>
+                <p><input   name='productId' val=""  id="productId"  placeholder="id продукта" value="000000000017" required ></p>
                 <p>
                     <select   name='rating'  id="productRating" >
+                        <option value="0" >&#9733;</option>
                         <option value="4" >&#9733;&#9733;&#9733;&#9733;&#9733;</option>
                         <option value="3" >&#9733;&#9733;&#9733;&#9733;</option>
                         <option value="2" >&#9733;&#9733;&#9733;</option>
                         <option value="1" >&#9733;&#9733;</option>
-                        <option value="0" >&#9733;</option>
+                       
                     </select>
+                    <select   name='page'  id="reviewPaging" >
+                         <option value="0" >Page 0</option>
+                        <option value="1" >Page 1</option>
+                        <option value="2" >Page 2</option>
+                        <option value="3" >Page 3</option>
+                        
+                    </select>
+                     <select   name='sort'  id="reviewSortOrder" >
+                        <option value="0" >Сначала свежие</option>
+                        <option value="1" selected >Сначала хорошие</option> 
+                        <option value="2" >Сначала отрицательные</option>
+                         
+                        
+                        
+                        
+                    </select>
+                    
                 </p>
                 <button id='productRatingButton' >Отправить рейтинг</button>
                 <button id='productReview' >Получить отзывы</button>
@@ -144,9 +162,9 @@
         <div class="card-body">  
             <form id="productReviewForm" <?php /*enctype='multipart/form-data'*/?> >
                 
-                <p><input   name='productId' val=""  id="productReviewId"  placeholder="id продукта" value="000000000001" required ></p>
+                <p><input   name='productId' val=""  id="productReviewId"  placeholder="id продукта" value="000000000017" required ></p>
                 <p>
-                    <select   name='rating'  class="productRating" >
+                    <select   name='rating'  id="productRatingReview" >
                         <option value="4" >&#9733;&#9733;&#9733;&#9733;&#9733;</option>
                         <option value="3" >&#9733;&#9733;&#9733;&#9733;</option>
                         <option value="2" >&#9733;&#9733;&#9733;</option>
@@ -155,7 +173,7 @@
                     </select>
                 </p>
                 <p>
-                    <textarea name="reviewMessage" id="reviewMessage" placeholder="тзыв о товаре"></textarea>
+                    <textarea name="reviewMessage" id="reviewMessage" placeholder="отзыв о товаре"></textarea>
                 </p>
                 <input type="file" id="file" multiple="true" name="file" >
                 

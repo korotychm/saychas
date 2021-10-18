@@ -77,6 +77,7 @@ return [
                 ['actions' => ['categoryTree', ], 'allow' => '+administrator'],
                 ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+administrator'],
                 ['actions' => ['updatePriceAndDiscount', ], 'allow' => '+administrator'],
+                ['actions' => ['getProductFile', ], 'allow' => '+administrator'],
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
@@ -369,6 +370,18 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'get-product-file'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get-product-file',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'get-product-file',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
                     'save-newly-added-store'  => [
                         'type' => Literal::class,
                         'options' => [
@@ -806,9 +819,11 @@ return [
     'view_helpers' => [
         'factories' => [
             View\Helper\Access::class => View\Helper\Factory\AccessFactory::class,
+            View\Helper\DocumentPath::class => View\Helper\Factory\DocumentPathFactory::class,
         ],
         'aliases' => [
             'access' => View\Helper\Access::class,
+            'documentPath' => View\Helper\DocumentPath::class,            
         ],
     ],
     

@@ -11,6 +11,7 @@
  *
  * This should be an array of module namespaces used in the application.
  */
+//$x = '';
 return [
     'Laminas\Serializer',
     'Laminas\Log',
@@ -32,4 +33,5 @@ return [
     'Laminas\Diactoros',
     'Application',
     'ControlPanel',
+    //'General',
 ];

@@ -19,13 +19,3 @@ $(document).on('click','.product-card__small-img',function(){
 $(document).on('click','.product-card__description-toggle',function(){
   $(this).parent().toggleClass('active');
 });
-
-$(document).ready(function(){
-  $('.testimonials__photos--carousel').slick(
-    {
-      infinite: false,
-      slidesToShow: 10,
-      slidesToScroll: 1
-    }
-  );
-});

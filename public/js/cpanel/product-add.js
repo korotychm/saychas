@@ -5,7 +5,7 @@ const ProductAdd = {
                       <a class="btn btn--primary">По одному товару</a>
                   </div>
                   <div class="filter__btn">
-                      <router-link to="/product-add-file" class="btn btn--secondary disabled">Массой товаров</router-link>
+                      <router-link to="/product-add-file" class="btn btn--secondary">Массой товаров</router-link>
                   </div>
                   <div class="filter__btn" style="display: none;">
                       <router-link to="/product-add-api" class="btn btn--secondary">Загрузка по API</router-link>
@@ -36,7 +36,7 @@ const ProductAdd = {
                                   <div class="product__main-attributes">
                                     <div class="product__attribute  product__attribute--short">
                                         <h2 :class="{'input-error' : (!product.vendor_code && errors)}">Артикул <span class="required">*</span></h2>
-                                        <input class="input" type="text" v-model="product.vendor_code" />
+                                        <input class="input" type="text" v-model="product.vendor_code" @input="checkText('vendor_code')" />
                                     </div>
                                     <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
                                         <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
@@ -76,7 +76,7 @@ const ProductAdd = {
                                     </div>
                                     <div class="product__attribute">
                                         <h2 :class="{'input-error' : (!product.title && errors)}">Название товара <span class="required">*</span></h2>
-                                        <input class="input" type="text" v-model="product.title" />
+                                        <input class="input" type="text" v-model="product.title" @input="checkText('title')" />
                                     </div>
                                     <div v-if="(product.color_id !== undefined && showColor != -1)" class="product__attribute">
                                         <h2>Цвет</h2>
@@ -91,7 +91,7 @@ const ProductAdd = {
                                     </div>
                                     <div class="product__attribute">
                                         <h2 :class="{'input-error' : (!product.description && errors)}">Описание товара <span class="required">*</span></h2>
-                                        <textarea class="textarea" v-model="product.description"></textarea>
+                                        <textarea class="textarea" v-model="product.description" @input="checkText('description')"></textarea>
                                     </div>
                                     <div class="product__attribute">
                                         <h2>Вес с упаковкой</h2>
@@ -198,7 +198,7 @@ const ProductAdd = {
                                           </div>
                                           <!-- Тип 1 - текст (обычный) -->
                                           <div>
-                                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
+                                            <input v-if="characteristic.type == 1 && !Array.isArray(characteristic.value)" type="text" class="input" @input="checkText(index,true)" v-model="characteristic.value" :maxlength="characteristic.line_length ? characteristic.line_length : ''"/>
                                           </div>
                                           <!-- Тип 1 - текст (мульти)-->
                                           <div v-if="characteristic.type == 1 && Array.isArray(characteristic.value)" class="multiple-input">
@@ -356,6 +356,26 @@ const ProductAdd = {
     }
   },
   methods: {
+    checkText(target, characteristics = false){
+      let input = '';
+      if (characteristics){
+        input = this.product.characteristics[target].value;
+      } else {
+        input = this.product[target];
+      }
+      let output = input;
+      for (var i = 0; i < input.length; i++) {
+            let c = input.charCodeAt(i);
+            if (c < 32 || c == 39 || c == 96 || (c > 255 && c < 1040) || c > 1103) {
+                output = output.replace(input[i],'');
+            }
+      }
+      if (characteristics){
+        this.product.characteristics[target].value = output;
+      } else {
+        this.product[target] = output;
+      }
+    },
     checkRequired(){
       if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
         return true;
@@ -603,6 +623,7 @@ const ProductAdd = {
             .then(response => {
                 console.log(response.data);
                 if (response.data.result){
+                  showMessage('Товар добавлен и отправлен на модерацию.');
                   router.replace('/products');
                 }
             })

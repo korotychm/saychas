@@ -326,6 +326,12 @@
   margin-top: -7px;
   margin-right: 4px;
 }
+.product-card__full-table td.table__heading {
+  width: 100%;
+}
+.product-card__full-table td.table__heading::after {
+  display: none !important;
+}
 .product-card__file {
   display: flex;
   align-items: center;
@@ -401,6 +407,7 @@
 .testimonials__sort {
   margin: 50px 0 40px;
   height: 55px;
+  width: 350px;
 }
 .testimonials__photo {
   position: relative;
@@ -483,6 +490,10 @@
   color: var(--gray2);
   font-size: 18px;
 }
+.testimonials__text {
+  font-size: 18px;
+  line-height: 1.55;
+}
 .testimonials__text p {
   margin: 0 0 10px;
   font-size: 18px;
@@ -549,6 +560,9 @@
   border-radius: 20px;
   text-align: center;
 }
+.testimonials-panel__info {
+  margin-bottom: 40px;
+}
 .testimonials-panel__grade {
   display: flex;
   align-items: center;
@@ -571,7 +585,6 @@
 }
 .testimonials-panel .btn {
   width: 100%;
-  margin-top: 40px;
 }
 .testimonials-panel__item {
   margin-bottom: 24px;

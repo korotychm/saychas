@@ -272,6 +272,10 @@
           width 100%
           margin-top -7px
           margin-right 4px
+      &.table__heading
+        width 100%
+        &::after
+          display none !important
 
   &__file
     display flex
@@ -337,6 +341,7 @@
   &__sort
     margin 50px 0 40px
     height 55px
+    width 350px
   &__photo
     position relative
     &::before
@@ -403,6 +408,8 @@
     color var(--gray2)
     font-size 18px
   &__text
+    font-size 18px
+    line-height 1.55
     p
       margin 0 0 10px
       font-size 18px
@@ -459,6 +466,8 @@
   box-shadow 0px 5px 30px 0px rgba(66, 66, 66, 0.2)
   border-radius 20px
   text-align center
+  &__info
+    margin-bottom 40px
   &__grade
     display flex
     align-items center
@@ -477,7 +486,6 @@
         border-radius 20px
   .btn
     width 100%
-    margin-top 40px
   &__item
     margin-bottom 24px
     display flex

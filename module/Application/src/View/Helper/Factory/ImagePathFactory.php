@@ -1,5 +1,7 @@
 <?php
 
+// /module/src/View/Helper/Factory/ImagePathFactory.php
+
 namespace Application\View\Helper\Factory;
 
 use Interop\Container\ContainerInterface;

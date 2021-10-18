@@ -104,7 +104,9 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
             if (($flag && $flag2)) {
                 $category = $this->categoryRepo->findCategory(['id' => $c['category_id']]);
                 $c['category_name'] = (null == $category) ? '' : $category->getTitle();
-                $categories[] = [$c['category_id'], $c['category_name'],];
+                $c['mother_categories'] = $this->categoryRepo->findAllMatherCategories($c['category_id']);
+                $categories[] = [$c['category_id'], $c['category_name'], ];
+
                 $result[] = $c;
                 continue;
             }

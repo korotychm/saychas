@@ -1,26 +1,26 @@
 <section class="product-card__full-table" id="attributes">
     <?php if (!empty($characteristics[0])):?>
         <h2 class="product-card__section-heading">Характеристики</h2>
-        <?php
-        $i=0;
-        foreach ($characteristics[0] as $characteristic) : ?>
-            <?php if ($characteristic['type'] == 0) :?>
-              <?php if ($characteristics[0][$i+1]['type']):?>
-                <?php if ($i!=0): ?>
-                    </table>
-                <?php endif;?>
-                <h3><?= $characteristic['title'] ?></h3>
-                <table>
+        <table class="table">
+          <?php
+          $i=0;
+          foreach ($characteristics[0] as $characteristic) :
+            if (!($characteristic['type'] == 0 && $characteristics[0][$i+1]['type'] == 0)):
+          ?>
+            <tr>
+              <?php if ($characteristic['type'] == 0) :?>
+                <td class="table__heading" colspan="2">
+                  <h3><?= $characteristic['title'] ?></h3>
+                </td>
+              <?php else : ?>
+                <td><span><?= $characteristic['title'] ?></span></td>
+                <td><?= $characteristic['value'] ?><?php if ($characteristic['unit']):?><span class="unit"> <?=$characteristic['unit']?></span><?php endif;?></td>
               <?php endif; ?>
-            <?php else : ?>
-                <tr>
-                   <td><span><?= $characteristic['title'] ?></span></td>
-                   <td><?= $characteristic['value'] ?><?php if ($characteristic['unit']):?><span class="unit"> <?=$characteristic['unit']?></span><?php endif;?></td>
-                </tr>
-            <?php endif; ?>
-        <?php
-        $i++;
-      endforeach;  ?>
+            </tr>
+          <?php
+            endif;
+          $i++;
+          endforeach; ?>
         </table>
     <?php endif; ?>
 </section>

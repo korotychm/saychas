@@ -22,7 +22,7 @@
               </svg>
               <span>{{ product.rating / 10 }}</span>
           </div>
-          <a v-if="product.reviews" class="product__reviews-link" href="#">
+          <a v-if="+product.reviews" class="product__reviews-link" href="#">
             {{ product.reviews }}
             <span v-if="product.reviews.slice(-1) == '1' && product.reviews.slice(-2) != '11'"> отзыв</span>
             <span v-else-if="+product.reviews.slice(-1) > 1 && +product.reviews.slice(-1) < 5 && product.reviews.slice(-2) != '12' && product.reviews.slice(-2) != '13' && product.reviews.slice(-2) != '14'"> отзыва</span>
