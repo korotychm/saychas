@@ -47,7 +47,8 @@ $(document).ready(function(){
             .post('/ajax-get-product-review',
               Qs.stringify({
                 productId : this.product_id,
-                page : this.currentPage - 1
+                page : this.currentPage - 1,
+                sort: this.sortBy
               }))
             .then(response => {
               this.limit = response.data.limit;
@@ -60,7 +61,8 @@ $(document).ready(function(){
             .post('/ajax-get-product-review',
               Qs.stringify({
                 productId : this.product_id,
-                page : this.currentPage - 1
+                page : this.currentPage - 1,
+                sort: this.sortBy
               }))
             .then(response => {
               console.log(response);
