@@ -105,7 +105,7 @@ $(document).ready(function(){
           }
           reader.readAsDataURL(file);
         },
-        dellFormImage(index){
+        delFormImage(index){
           this.reviewFormImages.splice(index, 1);
         },
         sendReviewForm() {
