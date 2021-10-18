@@ -27,7 +27,8 @@ $(document).ready(function(){
         limit: {},
         sortBy: 0,
         currentPage: 1,
-        reviews_count: 0
+        reviews_count: 0,
+        reviewsImages: false
       },
       computed: {
         reviewsUnit(){
@@ -97,13 +98,16 @@ $(document).ready(function(){
         zoomImg();
       },
       updated() {
-        $('.testimonials__photos--carousel').slick(
-          {
-            infinite: false,
-            slidesToShow: 10,
-            slidesToScroll: 1
-          }
-        );
+        if (!this.reviewsImages){
+          this.reviewsImages = true;
+          $('.testimonials__photos--carousel').slick(
+            {
+              infinite: false,
+              slidesToShow: 10,
+              slidesToScroll: 1
+            }
+          );
+        }
       }
     });
 
