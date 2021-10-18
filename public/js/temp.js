@@ -35,7 +35,8 @@ $(document).ready(function(){
         reviewFormText: '',
         reviewFormError: '',
         reviewFormImages: [''],
-        reviewFormImagesLimit: 5
+        reviewFormImagesLimit: 5,
+        showReviewFormAddImg: true
       },
       computed: {
         reviewsUnit(){
@@ -98,6 +99,8 @@ $(document).ready(function(){
             this.$set(this.reviewFormImages, index, e.target.result);
             if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
               this.reviewFormImages.push('');
+            } else {
+              this.showReviewFormAddImg = false;
             }
           }
           reader.readAsDataURL(file);
