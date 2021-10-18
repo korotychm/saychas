@@ -774,7 +774,8 @@
   padding: 25px;
   margin-bottom: 30px;
   height: 180px;
+  outline: none;
 }
 .review-form .textarea:focus {
-  border-color: var(--red);
+  border-color: var(--red) !important;
 }
