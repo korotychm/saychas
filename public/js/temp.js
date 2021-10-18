@@ -22,6 +22,7 @@ $(document).ready(function(){
         reviews: [],
         average_rating: 0,
         images_path: '',
+        thumbnails_path: '',
         statistic: {},
         images: [],
         limit: {},
@@ -73,6 +74,7 @@ $(document).ready(function(){
               this.statistic = response.data.statistic;
               this.average_rating = response.data.average_rating;
               this.images_path = response.data.images_path;
+              this.thumbnails_path = response.data.thumbnails_path;
               this.images = response.data.images;
               this.limit = response.data.limit;
               this.reviewer = response.data.reviewer;
