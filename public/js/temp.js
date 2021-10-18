@@ -28,7 +28,8 @@ $(document).ready(function(){
         sortBy: 0,
         currentPage: 1,
         reviews_count: 0,
-        reviewsImages: false
+        reviewsImages: false,
+        reviewer: null
       },
       computed: {
         reviewsUnit(){
