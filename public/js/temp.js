@@ -85,7 +85,7 @@ $(document).ready(function(){
           for (item in this.statistic){
             cumulative += +this.statistic[item]
           }
-          return round(this.statistic[grade] / cumulative * 100);
+          return Math.round(this.statistic[grade] / cumulative * 100);
         }
       },
       created() {
