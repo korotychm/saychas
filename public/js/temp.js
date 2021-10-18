@@ -94,7 +94,7 @@ $(document).ready(function(){
           var file = document.querySelector('#addImg' + index).files[0];
           var newImg = '';
           var reader = new FileReader();
-          reader.onload = function(e) {
+          reader.onload = (e) => {
             this.reviewFormImages[index] = e.target.result;
             console.log(this.reviewFormImages);
           }
