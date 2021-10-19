@@ -91,7 +91,7 @@
                       <div class="testimonials__photos" v-if="review.images">
                         <div v-for="photo in review.images" class="testimonials__photo">
                           <a :href="images_path + '/' + photo" :data-fancybox="review.id">
-                            <img src="thumbnails_path + '/' + photo">
+                            <img :src="thumbnails_path + '/' + photo">
                           </a>
                         </div>
                       </div>
