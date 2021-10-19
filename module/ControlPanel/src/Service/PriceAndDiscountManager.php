@@ -36,7 +36,6 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
      * @var Laminas\Config\Config
      */
     protected $config;
-    
     protected $entityManager;
 
     /**
@@ -67,20 +66,20 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
         $collection = $this->db->{$this->collectionName};
         $results = $collection->distinct('category_id', $params['where']);
         $accumulator = [];
-        foreach($results as &$c) {
+        foreach ($results as &$c) {
             //$c1 = $c;
-            if(!empty($c)) {
+            if (!empty($c)) {
                 $category = $this->categoryRepo->findCategory(['id' => $c]);
                 $category_name = (null == $category) ? '' : $category->getTitle();
-                $accumulator[] = [$c, $category_name, ];
+                $accumulator[] = [$c, $category_name,];
             }
         }
         return $accumulator;
     }
-    
+
     /**
      * Find store documents for specified provider
-     * 
+     *
      * @param array $params
      * @return array
      */
@@ -107,6 +106,7 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
                 $c['category_name'] = (null == $category) ? '' : $category->getTitle();
                 $c['mother_categories'] = $this->categoryRepo->findAllMatherCategories($c['category_id']);
                 $categories[] = [$c['category_id'], $c['category_name'], ];
+
                 $result[] = $c;
                 continue;
             }
@@ -115,9 +115,9 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
 //                $c['title'] = null != $entity ? $entity->getTitle() : '';
 //            }
         }
-        
+
         $cursor['body'] = $result;
-        
+
         $cursor['filters']['categories'] = $this->findCategories($params);
         return $cursor;
     }
@@ -128,14 +128,14 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }
-    
+
 //    public function addServerDocument($headers, $content = [])
 //    {
 //        $url = $this->config['parameters']['1c_provider_links']['lk_add_price_and_discount'];
 //        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
 //        return $result;
 //    }
-    
+
     public function replacePriceAndDiscount($priceAndDiscount)
     {
         $collection = $this->db->{$this->collectionName};
@@ -146,7 +146,5 @@ class PriceAndDiscountManager extends ListManager implements LoadableInterface
         $updateResult = $collection->insertOne($priceAndDiscount);
         return $updateResult;
     }
-    
-    
-}
 
+}
