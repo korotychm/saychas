@@ -37,7 +37,8 @@ $(document).ready(function(){
         reviewFormImages: [''],
         reviewFormImagesLimit: 6,
         showReviewFormAddImg: true,
-        reviewData: new FormData()
+        reviewData: new FormData(),
+        reviewSent: false
       },
       computed: {
         reviewsUnit(){
@@ -127,8 +128,8 @@ $(document).ready(function(){
                   }
             })
             .then(response => {
-              console.log(response);
               $('#reviewPopup').fadeOut();
+              this.reviewSent = true;
             })
             .catch(error => {
               console.log(error.response)
