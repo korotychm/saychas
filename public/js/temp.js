@@ -115,7 +115,7 @@ $(document).ready(function(){
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
-          const files = this.reviewData.getAll('file[]');
+          var files = this.reviewData.getAll('file[]');
           this.reviewData.delete('file[]');
           files.splice(index,1);
           this.reviewData.set('file[]',files);
