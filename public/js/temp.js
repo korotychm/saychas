@@ -107,7 +107,7 @@ $(document).ready(function(){
           }
           reader.readAsDataURL(file);
           this.reviewData.append('file[]', file);
-          console.log('123');
+          console.log('+++++++++++++++');
           for (var pair of this.reviewData.entries()) {
               console.log(pair[0]+ ', ' + pair[1].name);
           }
@@ -115,7 +115,11 @@ $(document).ready(function(){
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
-          this.reviewData.delete('file[' + index + ']');
+          const files = this.reviewData.getAll('file[]');
+          this.reviewData.delete('file[]');
+          files.splice(index,1);
+          this.reviewData.set('file[]',files);
+          console.log('-----------------');
           for (var pair of this.reviewData.entries()) {
               console.log(pair[0]+ ', ' + pair[1].name);
           }
