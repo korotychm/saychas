@@ -115,6 +115,10 @@ $(document).ready(function(){
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
+          this.reviewData.delete('file[' + index + ']');
+          for (var pair of this.reviewData.entries()) {
+              console.log(pair[0]+ ', ' + pair[1].name);
+          }
         },
         sendReviewForm() {
           $('#reviewPopup').fadeOut();
