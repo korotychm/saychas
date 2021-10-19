@@ -107,7 +107,7 @@ $(document).ready(function(){
           }
           reader.readAsDataURL(file);
           this.reviewData.append('file[]', file);
-
+          console.log('123');
           for (var pair of this.reviewData.entries()) {
               console.log(pair[0]+ ', ' + pair[1].name);
           }
