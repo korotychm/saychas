@@ -36,7 +36,8 @@ $(document).ready(function(){
         reviewFormError: '',
         reviewFormImages: [''],
         reviewFormImagesLimit: 6,
-        showReviewFormAddImg: true
+        showReviewFormAddImg: true,
+        reviewData: new FormData()
       },
       computed: {
         reviewsUnit(){
@@ -92,7 +93,7 @@ $(document).ready(function(){
           this.reviewFormGrade = grade;
         },
         addFormImage(index){
-          var file = document.querySelector('#addImg' + index).files[0];
+          var file = document.querySelector('#addImgBtn').files[0];
           var newImg = '';
           var reader = new FileReader();
           reader.onload = (e) => {
@@ -104,6 +105,8 @@ $(document).ready(function(){
             }
           }
           reader.readAsDataURL(file);
+          reviewData.append('file[' + index + ']', file);
+          console.log(reviewData);
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
