@@ -130,6 +130,7 @@ $(document).ready(function(){
             .then(response => {
               $('#reviewPopup').fadeOut();
               this.reviewSent = true;
+              console.log('Ответ после добавления отзыва',response);
             })
             .catch(error => {
               console.log(error.response)
