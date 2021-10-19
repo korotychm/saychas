@@ -478,5 +478,26 @@ class ProductCardsController extends AbstractActionController
 
         return $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
     }
+    
+    /**
+     * return limit and offset for SQL query
+     * @retrn array
+     */
+    private function getProductCardLimit()
+    {
+        $return["limit"] = Resource::SQL_LIMIT_PRODUCTCARD_IN_PAGE;
+        $return["offset"] = 0;
+       
+        return $return;
+    }
+    
+    /**
+     * return order  for SQL query
+     * @retrn array
+     */
+    private function getProductCardsSortOrder()
+    {
+        
+    }
 
 }
