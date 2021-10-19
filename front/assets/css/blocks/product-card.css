@@ -758,6 +758,12 @@
 .review-form {
   text-align: left;
 }
+.review-form__error {
+  font-size: 20px;
+  margin-top: 20px;
+  text-align: center;
+  color: var(--red);
+}
 .review-form .testimonials__grade {
   margin-bottom: 30px;
 }
@@ -852,7 +858,4 @@
 }
 .review-form__photos-add:last-child {
   display: block;
-}
-.review-form__photos-add:nth-child(6) {
-  display: none !important;
 }
