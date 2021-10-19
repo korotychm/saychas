@@ -152,7 +152,7 @@ $(document).ready(function(){
         }
       },
       created() {
-        this.product_id = $('#testimonials').data('id')
+        this.product_id = $('#testimonials').data('id');
         this.getReviews()
       },
       mounted() {
