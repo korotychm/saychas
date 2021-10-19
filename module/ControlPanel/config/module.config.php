@@ -336,6 +336,36 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-reviews' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-reviews',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
+                                'url' => 'show-reviews',
+                            ],
+                            'repository' => \ControlPanel\Service\ReviewManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-reviews-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-reviews-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                                'url' => 'show-reviews-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\ReviewManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     
                     'edit-product' => [
                         'type' => Literal::class,
@@ -734,6 +764,8 @@ return [
             \ControlPanel\Service\PriceAndDiscountManager::class => \ControlPanel\Service\Factory\PriceAndDiscountManagerFactory::class,
             /** Stock Balance Manager */
             \ControlPanel\Service\StockBalanceManager::class => \ControlPanel\Service\Factory\StockBalanceManagerFactory::class,
+            /** Review Manager */
+            \ControlPanel\Service\ReviewManager::class => \ControlPanel\Service\Factory\ReviewManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
             /** Auth Adapter */
