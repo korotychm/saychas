@@ -117,8 +117,8 @@ $(document).ready(function(){
           this.reviewFormImages.splice(index, 1);
           var files = this.reviewData.getAll('file[]');
           files.splice(index,1);
-          console.log('filesArr',files);
-          this.reviewData.set('file[]',files);
+          this.reviewData.delete('file[]');
+          files.forEach(file => this.reviewData.append('file[]', file));
           console.log('-----------------');
           for (var pair of this.reviewData.entries()) {
               console.log(pair[0]+ ', ' + pair[1]);
