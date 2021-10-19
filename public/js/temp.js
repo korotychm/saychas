@@ -117,11 +117,11 @@ $(document).ready(function(){
           this.reviewFormImages.splice(index, 1);
           var files = this.reviewData.getAll('file[]');
           files.splice(index,1);
-          console.log(files);
+          console.log('filesArr',files);
           this.reviewData.set('file[]',files);
           console.log('-----------------');
           for (var pair of this.reviewData.entries()) {
-              console.log(pair[0]+ ', ' + pair[1].name);
+              console.log(pair[0]+ ', ' + pair[1]);
           }
         },
         sendReviewForm() {
