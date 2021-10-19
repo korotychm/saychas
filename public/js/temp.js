@@ -107,7 +107,11 @@ $(document).ready(function(){
           }
           reader.readAsDataURL(file);
           this.reviewData.append('file[' + index + ']', file);
-          console.log(this.reviewData);
+
+          for (var pair of this.reviewData.entries()) {
+              console.log(pair[0]+ ', ' + pair[1]);
+          }
+
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
