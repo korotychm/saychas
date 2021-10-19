@@ -107,11 +107,6 @@ $(document).ready(function(){
           }
           reader.readAsDataURL(file);
           this.reviewData.append('file[]', file);
-          console.log('+++++++++++++++');
-          for (var pair of this.reviewData.entries()) {
-              console.log(pair[0]+ ', ' + pair[1].name);
-          }
-
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
@@ -119,13 +114,28 @@ $(document).ready(function(){
           files.splice(index,1);
           this.reviewData.delete('file[]');
           files.forEach(file => this.reviewData.append('file[]', file));
-          console.log('-----------------');
-          for (var pair of this.reviewData.entries()) {
-              console.log(pair[0]+ ', ' + pair[1].name);
-          }
+          this.showReviewFormAddImg = true;
         },
         sendReviewForm() {
-          $('#reviewPopup').fadeOut();
+          if (this.reviewFormGrade){
+            this.reviewData.append('productId', this.product_id);
+            this.reviewData.append('rating', this.reviewFormGrade - 1);
+            this.reviewData.append('reviewMessage', this.reviewFormText);
+            axios.post('/ajax-set-product-review', this.reviewData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+            })
+            .then(response => {
+              console.log(response);
+              $('#reviewPopup').fadeOut();
+            })
+            .catch(error => {
+              console.log(error.response)
+            })
+          } else {
+            this.reviewFormError = 'Пожалуйста, поставьте оценку товару.'
+          }
         },
         sortReviews() {
           this.currentPage = 1;
