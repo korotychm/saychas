@@ -187,7 +187,7 @@ class ReviewController extends AbstractActionController
         $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
         $r = ["sort" => $reviewParams['order'], 'average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
-        $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "leagaImageType" => Resource::LEGAL_IMAGE_TYPES,   "limit" => ["limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
+        $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "legaImageType" => Resource::LEGAL_IMAGE_TYPES,   "limit" => ["limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
  
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
