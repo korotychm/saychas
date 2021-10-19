@@ -92,7 +92,8 @@ $(document).ready(function(){
         setFormGrade(grade){
           this.reviewFormGrade = grade;
         },
-        addFormImage(index){
+        addFormImage(){
+          var index = this.reviewFormImages.length - 1;
           var file = document.querySelector('#addImgBtn').files[0];
           var newImg = '';
           var reader = new FileReader();
@@ -105,8 +106,8 @@ $(document).ready(function(){
             }
           }
           reader.readAsDataURL(file);
-          reviewData.append('file[' + index + ']', file);
-          console.log(reviewData);
+          this.reviewData.append('file[' + index + ']', file);
+          console.log(this.reviewData);
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
