@@ -107,14 +107,14 @@ $(document).ready(function(){
             }
           }
           reader.readAsDataURL(file);
-          this.reviewData.append('file[]', file);
+          this.reviewData.append('files[]', file);
         },
         delFormImage(index){
           this.reviewFormImages.splice(index, 1);
-          var files = this.reviewData.getAll('file[]');
+          var files = this.reviewData.getAll('files[]');
           files.splice(index,1);
-          this.reviewData.delete('file[]');
-          files.forEach(file => this.reviewData.append('file[]', file));
+          this.reviewData.delete('files[]');
+          files.forEach(file => this.reviewData.append('files[]', file));
           this.showReviewFormAddImg = true;
         },
         sendReviewForm() {
@@ -130,6 +130,7 @@ $(document).ready(function(){
             .then(response => {
               $('#reviewPopup').fadeOut();
               this.reviewSent = true;
+              console.log('Ответ после добавления отзыва',response);
             })
             .catch(error => {
               console.log(error.response)
@@ -151,7 +152,7 @@ $(document).ready(function(){
         }
       },
       created() {
-        this.product_id = $('#testimonials').data('id')
+        this.product_id = $('#testimonials').data('id');
         this.getReviews()
       },
       mounted() {
