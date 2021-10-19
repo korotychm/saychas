@@ -121,7 +121,7 @@ $(document).ready(function(){
           files.forEach(file => this.reviewData.append('file[]', file));
           console.log('-----------------');
           for (var pair of this.reviewData.entries()) {
-              console.log(pair[0]+ ', ' + pair[1]);
+              console.log(pair[0]+ ', ' + pair[1].name);
           }
         },
         sendReviewForm() {
