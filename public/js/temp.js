@@ -109,7 +109,7 @@ $(document).ready(function(){
           this.reviewData.append('file[' + index + ']', file);
 
           for (var pair of this.reviewData.entries()) {
-              console.log(pair[0]+ ', ' + pair[1]);
+              console.log(pair[0]+ ', ' + pair[1].name);
           }
 
         },
