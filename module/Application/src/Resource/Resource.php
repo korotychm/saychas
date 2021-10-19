@@ -9,7 +9,6 @@ class Resource
     /*
      * common
      */
-
     const FOR_EXAMPLE_TEXT = "Например: ";
     const THE_BASKET = "Корзина ";
     const THE_CATALOG = "Каталог ";
@@ -30,7 +29,6 @@ class Resource
     const USER_MENU_POST = "Мои оповещения";
     const USER_MENU_EXIT = "Выход";
     
-
     /*
      * Поиск
      */
@@ -40,8 +38,6 @@ class Resource
     /*
      * Товары
      */
-   
-   
     const REMOVE_FROM_FAVORITES = "Убрать из избранного";
     const FAVORITES_TITLE = "Избранные товары";
     const HISTORY_TITLE = "Просмотренные товары";
@@ -65,9 +61,7 @@ class Resource
     const BASKET_SAYCHAS_short = "за час";
     const BASKET_SAYCHAS3_short = "за три часа";
     const ERROR_MESSAGE = "Ошибка! ";
-    
-    
-
+ 
     /*
      * авторизация
      */
@@ -132,6 +126,7 @@ class Resource
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
     const SQL_LIMIT_PRODUCTCARD_IN_SLIDER = 12; //максимальное количество карточек товара в сладере
     const SQL_LIMIT_BRAND_SLIDER = 40; //максимальное количество брендов в сладере
+    const SQL_LIMIT_PRODUCTCARD_IN_PAGE = 32; //максимальное карточек товаров на странице
     
 
     /*
