@@ -755,3 +755,104 @@
   background: url("../img/ui/wave.png") repeat-x;
   background-size: contain;
 }
+.review-form {
+  text-align: left;
+}
+.review-form .testimonials__grade {
+  margin-bottom: 30px;
+}
+.review-form .testimonials__grade > div {
+  cursor: pointer;
+}
+.review-form .textarea {
+  width: 450px;
+  display: block;
+  resize: vertical;
+  border-radius: 20px;
+  border: 2px solid var(--gray);
+  font-size: 18px;
+  padding: 25px;
+  margin-bottom: 30px;
+  height: 180px;
+  outline: none;
+}
+.review-form .textarea:focus {
+  border-color: var(--red) !important;
+}
+.review-form__photos {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.review-form__photos-previews {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.review-form__photos-preview {
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  position: relative;
+  margin-right: 20px;
+}
+.review-form__photos-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.review-form__photos-del {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.6);
+  opacity: 0;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.review-form__photos-del::before,
+.review-form__photos-del::after {
+  content: '';
+  display: block;
+  width: 25px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  position: absolute;
+  top: 27px;
+  left: 15px;
+  transform: rotate(45deg);
+}
+.review-form__photos-del::after {
+  transform: rotate(-45deg);
+}
+.review-form__photos-del:hover {
+  opacity: 1;
+}
+.review-form__photos-add {
+  display: none;
+}
+.review-form__photos-add input {
+  display: none;
+}
+.review-form__photos-add label {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 2px solid var(--red);
+  background: url("/img/ui/nophoto.jpg") no-repeat center;
+  background-size: cover;
+  cursor: pointer;
+  display: block;
+}
+.review-form__photos-add:last-child {
+  display: block;
+}
+.review-form__photos-add:nth-child(6) {
+  display: none !important;
+}
