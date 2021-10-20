@@ -89,6 +89,7 @@ const Testimonials = {
   methods: {
     getDate(date) {
       let localedDate = new Date(date * 1000).toLocaleDateString("ru-RU");
+      return localedDate;
     },
     getReviews() {
       $('.main__loader').show();
