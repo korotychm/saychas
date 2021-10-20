@@ -48,7 +48,13 @@ const Testimonials = {
               <div class="td reviews__date">{{ getDate(review.date_created) }}</div>
               <div class="td reviews__text">
                 {{ review.reviewText }}
-                <div class="reviews__images"></div>
+                <div class="reviews__images" v-if="review.images.thumbs.length">
+                  <div class="reviews__photo" v-for="(photo, index) in review.images.thumbs">
+                    <a :href="review.images.view[index]" data-fancybox="gallery">
+                      <img :src="photo" />
+                    </a>
+                  </div>
+                </div>
               </div>
               <div class="reviews__popup">
                 <textarea class="textarea" placeholder="Ваш ответ"></textarea>
