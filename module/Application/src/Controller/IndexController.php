@@ -257,6 +257,11 @@ class IndexController extends AbstractActionController
 
     public function clientOrdersAction()
     {
+        
+        $w = null;
+        $r = $w ?? "bbb";
+        exit ($r);
+        
         $container = new Container();
         if ($container->signedUp != true) {
             return $this->redirect()->toUrl('/my-login');
