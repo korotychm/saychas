@@ -86,6 +86,7 @@ $(document).ready(function(){
         getProducts() {
           let formData = $("#filter-form").serialize();
           formData += '&sort=' + this.sort;
+          formData += '&page=' + this.currentPage;
           console.log('Request',formData),
           axios
             .post('/ajax-fltr-json',formData)
