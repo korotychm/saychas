@@ -56,7 +56,7 @@ const Testimonials = {
                   </div>
                 </div>
               </div>
-              <div class="reviews__popup">
+              <div class="reviews__add-answer">
                 <textarea class="textarea" placeholder="Ваш ответ"></textarea>
                 <div class="reviews__btns">
                   <button class="btn btn--secondary">
@@ -69,6 +69,7 @@ const Testimonials = {
                   <button class="btn btn--primary" @click="addAnswer">Ответить на отзыв</button>
                 </div>
               </div>
+              <div class="reviews__popup"></div>
           </div>
         </div>
       </div>
@@ -157,3 +158,17 @@ const Testimonials = {
     $('.main__loader').hide();
   }
 }
+
+$(document).on('click','.reviews__item',function(){
+  $('.pricelist__item, .inventory__item, .reviews__item').removeClass('active');
+  $(this).addClass('active');
+});
+
+$(document).mouseup(function(e)
+{
+    var container = $(".reviews__popup");
+    if (!container.is(e.target) && container.has(e.target).length === 0)
+    {
+        container.parent().removeClass('active');
+    }
+});
