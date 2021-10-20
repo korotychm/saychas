@@ -13,6 +13,7 @@ $(document).ready(function(){
         sort: 0,
         productsCount: 0,
         productsCountUnit: 'товаров',
+        productsLimit: 0,
         currentPage: 0
       },
       watch: {
