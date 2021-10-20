@@ -68,14 +68,12 @@ class ProductCardsController extends AbstractActionController
             $this->getResponse()->setStatusCode(Response::STATUS_CODE_403);
             return;
         }
+        
         $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
+       
         return new JsonModel(  $this->getProducts(["where" => ["id" => $productsId]], $this->getProductCardLimitAndOrder(Resource::SQL_LIMIT_PRODUCTCARD_FAVORITES)));
         
-//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-//
-//        //return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
-//        return new JsonModel( $this->commonHelperFuncions->getProductCardArray($product, $userId));
     }
 
     /**
@@ -91,7 +89,7 @@ class ProductCardsController extends AbstractActionController
         }
         $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
-        return new JsonModel($this->getProducts(["where" => ["id" => $productsId]]));
+        return new JsonModel($this->getProducts(["where" => ["id" => $productsId]],["limit" => Resource::SQL_LIMIT_PRODUCTCARD_HISTORY]));
         
 //        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
 //
