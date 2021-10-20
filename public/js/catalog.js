@@ -12,10 +12,12 @@ $(document).ready(function(){
         filterUpdated: false,
         sort: 0,
         productsCount: 0,
-        productsCountUnit: 'товаров'
+        productsCountUnit: 'товаров',
+        currentPage: 0
       },
       watch: {
         sort() {
+          this.currentPage = 0;
           this.getProducts();
         }
       },
@@ -76,6 +78,10 @@ $(document).ready(function(){
             this.productsCountUnit = 'товаров';
           }
         },
+        countPages() {
+          let pages = this.productsCount / this.productsLimit;
+          this.productsPages = Math.ceil(pages);
+        },
         getProducts() {
           let formData = $("#filter-form").serialize();
           formData += '&sort=' + this.sort;
@@ -89,7 +95,16 @@ $(document).ready(function(){
               this.productsCount = response.data.count;
               this.productsLimit = response.data.limit;
               this.setUnit();
+              this.countPages();
             });
+        },
+        getFilteredProducts() {
+          this.currentPage = 0;
+          this.getProducts();
+        },
+        loadPage(index) {
+          this.currentPage = index;
+          this.getProducts();
         }
       },
       created() {
