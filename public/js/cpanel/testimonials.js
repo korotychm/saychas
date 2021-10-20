@@ -37,13 +37,13 @@ const Testimonials = {
           <div v-for="(review, index) in reviews" class="tr reviews__item">
               <div class="td td--hover review__title">
                 <div class="products__title">
-                  {{ review.title }}
+                  {{ review.productTitle }}
                 </div>
               </div>
-              <div class="td reviews__rating"></div>
-              <div class="td reviews__date">{{ reviews.date }}</div>
+              <div class="td reviews__rating">{{ reviews.rating }}</div>
+              <div class="td reviews__date">{{ reviews.date_created }}</div>
               <div class="td reviews__text">
-                {{ reviews.text }}
+                {{ reviews.reviewText }}
                 <div class="reviews__images"></div>
               </div>
               <div class="reviews__popup">
@@ -130,6 +130,9 @@ const Testimonials = {
     },
     setArchive(status) {
       this.selectedFilters.is_archive = status;
+    },
+    addAnswer() {
+      return true;
     }
   },
   created: function(){
