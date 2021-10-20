@@ -161,7 +161,7 @@ const Testimonials = {
 
 $(document).on('click','.reviews__btns .btn--secondary', function(){
   e.stopPropagation();
-  $(this).parent().parent().removeClass('active');
+  $(this).parent().parent().parent().removeClass('active');
 });
 
 $(document).on('click','.reviews__item',function(e){
@@ -174,6 +174,6 @@ $(document).mouseup(function(e)
     var container = $(".reviews__item.active");
     if (!container.is(e.target) && container.has(e.target).length === 0)
     {
-        $(this).removeClass('active');
+        container.removeClass('active');
     }
 });
