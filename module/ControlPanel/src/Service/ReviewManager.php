@@ -85,35 +85,35 @@ class ReviewManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
-        $storeId = $params['where']['store_id'];
+        $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['store_id' => $storeId]]);
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId]]);
         //$cursor = $this->findAll($params);
-        $result = [];
-        foreach ($cursor['body'] as &$c) {
-            // find product by product_id
-            //$products = $c['products'];
-            foreach ($c['products'] as &$product) {
-                $productId = $product['product_id'];
-                $quantity = $product['quantity'];
-                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
-//                $arr = $arr[0];
-                unset($arr['_id']);
-                $arr['quantity'] = $quantity;
-
-                $flag = substr_count($arr['title'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
-                $flag |= substr_count($arr['vendor_code'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
-                $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
-
-                if (($flag && $flag2)) {
-                    $arr['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
-                    $result[] = $arr;
-                }
-            }
-        }
-        $cursor['body'] = $result;
-        unset($params['where']['store_id']);
-        $cursor['filters']['categories'] = $this->findCategories($params);
+//        $result = [];
+//        foreach ($cursor['body'] as &$c) {
+//            // find product by product_id
+//            //$products = $c['products'];
+//            foreach ($c['products'] as &$product) {
+//                $productId = $product['product_id'];
+//                $quantity = $product['quantity'];
+//                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
+////                $arr = $arr[0];
+//                unset($arr['_id']);
+//                $arr['quantity'] = $quantity;
+//
+//                $flag = substr_count($arr['title'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
+//                $flag |= substr_count($arr['vendor_code'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
+//                $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
+//
+//                if (($flag && $flag2)) {
+//                    $arr['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
+//                    $result[] = $arr;
+//                }
+//            }
+//        }
+//        $cursor['body'] = $result;
+//        unset($params['where']['store_id']);
+//        $cursor['filters']['categories'] = $this->findCategories($params);
 
         return $cursor;
     }
