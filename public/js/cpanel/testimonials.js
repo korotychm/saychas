@@ -160,7 +160,7 @@ const Testimonials = {
 }
 
 $(document).on('click','.reviews__btns .btn--secondary', function(){
-  $(this).parent().parent().parent().removeClass('active');
+  $('.reviews__item').removeClass('active');
 });
 
 $(document).on('click','.reviews__item',function(e){
