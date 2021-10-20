@@ -83,7 +83,7 @@ class CommonHelperFunctionsService
      * @param int $userId
      * @return array
      */
-    public function getProductCardArray($products, $userId, $count = null )
+    public function getProductCardArray($products, $userId, $count = null, $limit = null )
     {
         if (empty($products)) {
             return [];
@@ -119,7 +119,7 @@ class CommonHelperFunctionsService
             $return[$product->getId()] = $item;
        }
        //$return["count"] = $count;
-       return ["count" => $count, "products" => $return];
+       return ["count" => $count,  "limit" => $limit,  "products" => $return];
     }
 
     /**

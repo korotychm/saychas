@@ -227,12 +227,43 @@ class ProductCardsController extends AbstractActionController
         $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
         //$groupChars = [0];
         while (list($key, $value) = each($characteristics)) {
+           
             if (empty($value) or empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {
                 continue;
             }
+            $filterWhere = $this->getWhereForCharType($key, $value, $found);          
+//            $filterWhere = new Where();
+//            $type = $found->getType();
+//            $filterWhere->equalTo('characteristic_id', $found->getCharacteristicId($key));
+//            
+//            if ($type == CharacteristicRepository::INTEGER_TYPE) {
+//                list($min, $max) = explode(';', current($value));
+//                $filterWhere->between('value', $min * 1, $max * 1);
+//            } elseif ($type == CharacteristicRepository::BOOL_TYPE) {
+//                $filterWhere->equalTo('value', $value);
+//            } else {
+//                $filterWhere->in('value', $value);
+//                //$groupChars[] = $key;
+//            }
+            
+            $groupChars[] = $key;
+            $legalProducts = array_intersect($legalProducts, $this->getFiltredProductsId($filterWhere));
+        }
+        
+        $subWhere = new Where();
+        $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
+        $nest = $where->nest();
+        $nest->in('id', $legalProducts)->or->notIn('id', $productsFiltred)->unnest();
+
+        return $where;
+    }
+    
+    private function getWhereForCharType($key, $value, $found)
+    {
             $filterWhere = new Where();
             $type = $found->getType();
             $filterWhere->equalTo('characteristic_id', $found->getCharacteristicId($key));
+            
             if ($type == CharacteristicRepository::INTEGER_TYPE) {
                 list($min, $max) = explode(';', current($value));
                 $filterWhere->between('value', $min * 1, $max * 1);
@@ -242,17 +273,10 @@ class ProductCardsController extends AbstractActionController
                 $filterWhere->in('value', $value);
                 //$groupChars[] = $key;
             }
-            $groupChars[] = $key;
-            $legalProducts = array_intersect($legalProducts, $this->getFiltredProductsId($filterWhere));
-        }
-        $subWhere = new Where();
-        $productsFiltred = $this->getFiltredProductsId($subWhere->in('characteristic_id', $groupChars));
-        $nest = $where->nest();
-        $nest->in('id', $legalProducts)->or->notIn('id', $productsFiltred)->unnest();
-
-        return $where;
+            
+            return $filterWhere;
     }
-
+    
     /**
      * Return  filtered products id
      *
@@ -480,8 +504,8 @@ class ProductCardsController extends AbstractActionController
         $count =  $this->handBookRelatedProductRepository->findAll($param)->count();
         $params = array_merge($param, $appendParam);
         $products = $this->handBookRelatedProductRepository->findAll($params);
-     
-        return $this->commonHelperFuncions->getProductCardArray($products, $this->identity(), $count);
+        $limit = $appendParam['limit'];
+        return $this->commonHelperFuncions->getProductCardArray($products, $this->identity(), $count, $limit );
     }
     
     /**
@@ -496,8 +520,8 @@ class ProductCardsController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $page = !empty($post->page) ? (int)$post->page : 0;
         $return["offset"] = $page * $return["limit"];
-        $sortPost = !empty($post->sort) ?  (int)$post->sort : 0;
-        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : current($sortOrder);
+        $sortPost = $post->sort ?? 0;
+        $sort = $sortOrder[$sortPost] ?? current($sortOrder);
         $return ["order"] = [$sort , "id desc"];
      
         return $return;
