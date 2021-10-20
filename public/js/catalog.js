@@ -61,7 +61,7 @@ $(document).ready(function(){
           this.filterUpdated = true;
         },
         sortProducts() {
-          getProducts();
+          this.getProducts();
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
