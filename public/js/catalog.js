@@ -10,7 +10,9 @@ $(document).ready(function(){
         filters: [],
         products: [],
         filterUpdated: false,
-        sort: 0
+        sort: 0,
+        productsCount: 0,
+        productsCountUnit: 'товаров'
       },
       watch: {
         sort() {
@@ -65,6 +67,15 @@ $(document).ready(function(){
           }
           this.filterUpdated = true;
         },
+        setUnit() {
+          if (this.productsCount.toString().slice(-1) == '1' && this.productsCount.toString().slice(-2) != '11'){
+            this.productsCountUnit = 'товар';
+          } else if (+this.productsCount.toString().slice(-1) > 1 && this.productsCount.toString().slice(-1) < 5 && this.productsCount.toString().slice(-2) != '12')  && this.productsCount.toString().slice(-2) != '13')  && this.productsCount.toString().slice(-2) != '14') {
+            this.productsCountUnit = 'товара';
+          } else {
+            this.productsCountUnit = 'товаров';
+          }
+        },
         getProducts() {
           let formData = $("#filter-form").serialize();
           formData += '&sort=' + this.sort;
@@ -75,6 +86,8 @@ $(document).ready(function(){
               console.log('Response',response.data);
               this.filterUpdated = false;
               this.products = response.data.products;
+              this.productsCount = response.data.count;
+              this.setUnit();
             });
         }
       },

@@ -5,7 +5,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?>
 <section class="catalog" id="catalog">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?> <span style="display:none;">312 515 товаров</span></h1>
+      <h1 class="h1"><?= $this->title ?> <span v-if="productsCount">{{ productsCount.toLocaleString() }} {{ productsCountUnit }}</span></h1>
       <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
   </div>
   <div class="catalog__wrap">
