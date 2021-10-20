@@ -159,15 +159,13 @@ const Testimonials = {
   }
 }
 
-$(document).on('click','.reviews__item',function(e){
-  if (!$(this).hasClass('active')){
-    console.log('active');
+$(document).on('click','.reviews__item:not(.active)',function(e){
     $('.reviews__item').removeClass('active');
     $(this).addClass('active');
-  }
 });
 
-$(document).on('click','.reviews__back', function(){
+$(document).on('click','.reviews__back', function(e){
+  e.stopPropagation();
   console.log('back');
   $('.reviews__item').removeClass('active');
 });
