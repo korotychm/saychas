@@ -35,7 +35,7 @@ const Testimonials = {
         </div>
         <div class="tbody">
           <div v-for="(review, index) in reviews" class="tr reviews__item">
-              <div class="td td--hover review__title">
+              <div class="td td--hover reviews__title">
                 <div class="products__title">
                   {{ review.productTitle }}
                 </div>
