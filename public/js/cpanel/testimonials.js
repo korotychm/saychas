@@ -160,13 +160,14 @@ const Testimonials = {
 }
 
 $(document).on('click','.reviews__btns .btn--secondary', function(){
-  e.stopPropagation();
   $(this).parent().parent().parent().removeClass('active');
 });
 
 $(document).on('click','.reviews__item',function(e){
-  $('.reviews__item').removeClass('active');
-  $(this).addClass('active');
+  if (!$(this).hasClass('active')){
+    $('.reviews__item').removeClass('active');
+    $(this).addClass('active');
+  }
 });
 
 $(document).mouseup(function(e)
