@@ -12,6 +12,11 @@ $(document).ready(function(){
         filterUpdated: false,
         sort: 0
       },
+      watch: {
+        sort() {
+            this.getProducts();
+        }
+      },
       methods: {
         setRangesValues() {
           this.rangeprice.currentMin = this.rangeprice.minprice / 100;
@@ -59,9 +64,6 @@ $(document).ready(function(){
             }
           }
           this.filterUpdated = true;
-        },
-        sortProducts() {
-          this.getProducts();
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
