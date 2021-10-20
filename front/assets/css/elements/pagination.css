@@ -1,12 +1,12 @@
 .pagination {
-  margin-top: 30px;
+  margin-top: 50px;
   display: flex;
 }
 .pagination a {
   text-decoration: none;
   color: inherit;
-  width: 30px;
-  height: 30px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -25,4 +25,5 @@
 .pagination a.active {
   background: var(--red);
   color: #fff;
+  border-color: var(--red);
 }
