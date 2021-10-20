@@ -160,15 +160,15 @@ const Testimonials = {
 }
 
 $(document).on('click','.reviews__item',function(){
-  $('.pricelist__item, .inventory__item, .reviews__item').removeClass('active');
+  $('.reviews__item').removeClass('active');
   $(this).addClass('active');
 });
 
 $(document).mouseup(function(e)
 {
-    var container = $(".reviews__popup");
+    var container = $(".reviews__item");
     if (!container.is(e.target) && container.has(e.target).length === 0)
     {
-        container.parent().removeClass('active');
+        $(this).removeClass('active');
     }
 });

@@ -229,7 +229,7 @@ const PriceList = {
 }
 
 $(document).on('click','.pricelist__item, .inventory__item',function(){
-  $('.pricelist__item, .inventory__item, .reviews__item').removeClass('active');
+  $('.pricelist__item, .inventory__item').removeClass('active');
   $(this).addClass('active');
 });
 
