@@ -70,9 +70,12 @@ class ProductCardsController extends AbstractActionController
         }
         $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
-        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-
-        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
+        return new JsonModel(  $this->getProducts(["where" => ["id" => $productsId]]));
+        
+//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
+//
+//        //return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
+//        return new JsonModel( $this->commonHelperFuncions->getProductCardArray($product, $userId));
     }
 
     /**
@@ -88,9 +91,11 @@ class ProductCardsController extends AbstractActionController
         }
         $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
-        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-
-        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
+        return new JsonModel($this->getProducts(["where" => ["id" => $productsId]]));
+        
+//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
+//
+//        return new JsonModel($this->commonHelperFuncions->getProductCardArray($product, $userId));
     }
 
     /**
@@ -111,7 +116,7 @@ class ProductCardsController extends AbstractActionController
             $param[] = $item["id"];
         }
 
-        return new JsonModel(["products" => $this->getProductsCategories($param)]);
+        return new JsonModel($this->getProductsCategories($param));
     }
 
     /**
@@ -121,7 +126,7 @@ class ProductCardsController extends AbstractActionController
      */
     public function getProductsTopAction()
     {
-        return new JsonModel(["products" => $this->getProductsTop()]);
+        return new JsonModel($this->getProductsTop());
     }
 
     /**
@@ -136,7 +141,7 @@ class ProductCardsController extends AbstractActionController
             return new JsonModel([]);
         }
 
-        return new JsonModel(["products" => $this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId])]);
+        return new JsonModel($this->getProductsBrand(['brand_id' => $post->brandId, 'category_id' => $post->categoryId]));
     }
 
     /**
@@ -151,7 +156,7 @@ class ProductCardsController extends AbstractActionController
             return new JsonModel([]);
         }
 
-        return new JsonModel(["products" => $this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId])]);
+        return new JsonModel($this->getProductsStore(['store_id' => $post->storeId, 'category_id' => $post->categoryId]));
     }
 
     /**
@@ -166,7 +171,7 @@ class ProductCardsController extends AbstractActionController
             return new JsonModel([]);
         }
 
-        return new JsonModel(["products" => $this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId])]);
+        return new JsonModel($this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId]));
     }
 
     /**
@@ -177,7 +182,7 @@ class ProductCardsController extends AbstractActionController
     public function getProductsCatalogAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        return new JsonModel(["products" => $this->getProductsCatalog($post)]);
+        return new JsonModel($this->getProductsCatalog($post));
     }
 
     /**
@@ -188,7 +193,7 @@ class ProductCardsController extends AbstractActionController
     public function getProductsSaleAction()
     {
 
-        return new JsonModel(["products" => $this->getProductsSale()]);
+        return new JsonModel($this->getProductsSale());
     }
 
     /**
@@ -376,6 +381,8 @@ class ProductCardsController extends AbstractActionController
         unset($params['offset'], $params['limit']);
         $params['where'] = $this->getWhereCatalog($params);
 
+        
+        
         return $this->getProducts($params);
     }
 
@@ -446,7 +453,7 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereTop();
 
-        return $this->getProducts($params);
+        return $this->getProducts($params, ['limit' => Resource::SQL_LIMIT_PRODUCTCARD_TOP ]);
     }
 
     /**
@@ -460,9 +467,9 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereSale();
         $params['order'] = ['discount desc'];
-        $params['limit'] = Resource::SQL_LIMIT_PRODUCTCARD_IN_SLIDER;
+       // $params
 
-        return $this->getProducts($params);
+        return $this->getProducts($params, ['limit' => Resource::SQL_LIMIT_PRODUCTCARD_IN_SLIDER ]);
     }
 
     /**
@@ -472,11 +479,14 @@ class ProductCardsController extends AbstractActionController
      * @return HandbookRelatedProduct[]
      *
      */
-    private function getProducts($params)
+    private function getProducts($params, $appendParams = [])
     {
-        $products = $this->handBookRelatedProductRepository->findAll($params);
+        $count =  $this->handBookRelatedProductRepository->findAll($params)->count();
+        $param = array_merge($params, $appendParams);
+        $products = $this->handBookRelatedProductRepository->findAll($param);
+                
 
-        return $this->commonHelperFuncions->getProductCardArray($products, $this->identity());
+        return $this->commonHelperFuncions->getProductCardArray($products, $this->identity(), $count);
     }
     
     /**
@@ -486,17 +496,27 @@ class ProductCardsController extends AbstractActionController
     private function getProductCardLimit()
     {
         $return["limit"] = Resource::SQL_LIMIT_PRODUCTCARD_IN_PAGE;
-        $return["offset"] = 0;
-       
+        //$return["offset"] = 0;
+        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
+        $return["offset"] = $page * $return["limit"];
+        //return ["offset" => $offset, "limit" => $limit ];
+     
         return $return;
     }
     
     /**
-     * return order  for SQL query
+     * return order for SQL query
      * @retrn array
      */
     private function getProductCardsSortOrder()
     {
+        
+        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
+        $sortOrder = Resource::PRODUCTCARD_SORT_ORDER;
+        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
+
+        return ["order" => [$sort , "id desc"]];
+
         
     }
 

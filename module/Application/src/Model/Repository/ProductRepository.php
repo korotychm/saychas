@@ -20,7 +20,7 @@ use Application\Model\RepositoryInterface\CharacteristicValueRepositoryInterface
 use Application\Model\RepositoryInterface\CharacteristicValue2RepositoryInterface;
 use Application\Model\RepositoryInterface\CharacteristicRepositoryInterface;
 use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
-use Ramsey\Uuid\Uuid;
+//use Ramsey\Uuid\Uuid;
 use Laminas\Escaper\Escaper;
 
 class ProductRepository extends Repository implements ProductRepositoryInterface
