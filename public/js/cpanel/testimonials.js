@@ -43,7 +43,7 @@ const Testimonials = {
               <div class="td reviews__rating">{{ reviews.rating }}</div>
               <div class="td reviews__date">{{ reviews.date_created }}</div>
               <div class="td reviews__text">
-                {{ reviews.reviewText }}
+                {{ review.reviewText }}
                 <div class="reviews__images"></div>
               </div>
               <div class="reviews__popup">
