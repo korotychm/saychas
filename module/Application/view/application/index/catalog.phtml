@@ -19,6 +19,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
         <div class="products-grid products-grid--3">
           <?= $this->partial("/application/common/product") ?>
         </div>
+        <div class="pagination" v-if="productsCount > productsLimit">
+          <a v-for="(n,index) in productsPages" @click="loadPage(index)" :class="{'active' : index == currentPage}">{{ index + 1 }}</a>
+        </div>
       </section>
     </div>
   </div>

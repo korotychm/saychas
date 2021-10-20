@@ -87,6 +87,7 @@ $(document).ready(function(){
               this.filterUpdated = false;
               this.products = response.data.products;
               this.productsCount = response.data.count;
+              this.productsLimit = response.data.limit;
               this.setUnit();
             });
         }
