@@ -50,7 +50,7 @@ const Testimonials = {
                 {{ review.reviewText }}
                 <div class="reviews__images" v-if="review.images.thumbs.length">
                   <div class="reviews__photo" v-for="(photo, index) in review.images.thumbs">
-                    <a :href="review.images.view[index]" data-fancybox="gallery">
+                    <a :href="review.images.view[index]" :data-fancybox="'gallery' + review.id">
                       <img :src="photo" />
                     </a>
                   </div>
