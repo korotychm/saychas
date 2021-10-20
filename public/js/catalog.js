@@ -1,15 +1,16 @@
 $(document).ready(function(){
 
-  if ($('#catalog-wrap').length){
+  if ($('#catalog').length){
 
     var catalog = new Vue({
-      el: '#catalog-wrap',
+      el: '#catalog',
       data: {
         category_id: '',
         rangeprice: {},
         filters: [],
         products: [],
-        filterUpdated: false
+        filterUpdated: false,
+        sort: 0
       },
       methods: {
         setRangesValues() {
@@ -58,6 +59,9 @@ $(document).ready(function(){
             }
           }
           this.filterUpdated = true;
+        },
+        sortProducts() {
+          getProducts();
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
