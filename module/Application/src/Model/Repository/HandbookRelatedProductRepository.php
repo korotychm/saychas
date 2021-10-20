@@ -100,6 +100,17 @@ class HandbookRelatedProductRepository extends Repository implements HandbookRel
         return parent::findAll($params);
     }
     
+    
+    public function countFindAll($params)
+    {
+        $join = new Join();
+        $join->join(['pri' => 'price'], "{$this->tableName}.id = pri.product_id", [], Select::JOIN_LEFT);
+        //$join->join(['product_rating' => 'product_rating'], "{$this->tableName}.id = product_rating.product_id", [], Select::JOIN_LEFT);
+        $params['joins'] = $join;
+        $params["columns"] = [new \Laminas\Db\Sql\Expression("count(`id`) as count ")] ;
+        return parent::findAll($params);
+    }
+    
     /**
      * Adds given handbookRelatedProduct into it's repository
      *

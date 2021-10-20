@@ -216,7 +216,7 @@ class ProductCardsController extends AbstractActionController
     }
 
     /**
-     * Return where clause filter products by selected characteristics
+     * Return where condition filter products by selected characteristics
      *
      * @param array $characteristics, object Where
      * @return object Where
@@ -258,6 +258,14 @@ class ProductCardsController extends AbstractActionController
         return $where;
     }
     
+    /**
+     * return where conditions for different types of characteristics
+     * 
+     * @param string $key
+     * @param string $value
+     * @param object $found
+     * @return Where
+     */
     private function getWhereForCharType($key, $value, $found)
     {
             $filterWhere = new Where();
@@ -501,7 +509,12 @@ class ProductCardsController extends AbstractActionController
      */
     private function getProducts($param, $appendParam = [])
     {
-        $count =  $this->handBookRelatedProductRepository->findAll($param)->count();
+        $find =  $this->handBookRelatedProductRepository->countFindAll($param);
+       
+        foreach ($find as $cnt) {
+            $count = $cnt->getCount(); 
+        }
+        
         $params = array_merge($param, $appendParam);
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $limit = $appendParam['limit'];
@@ -518,7 +531,7 @@ class ProductCardsController extends AbstractActionController
         $return["limit"] = $limit;
         $sortOrder = Resource::PRODUCTCARD_SORT_ORDER;
         $post = $this->getRequest()->getPost();
-        $page = !empty($post->page) ? (int)$post->page : 0;
+        $page = $post->page ?? 0;
         $return["offset"] = $page * $return["limit"];
         $sortPost = $post->sort ?? 0;
         $sort = $sortOrder[$sortPost] ?? current($sortOrder);

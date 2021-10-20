@@ -268,6 +268,14 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $rating;
+
+     /**
+     * count
+     *
+     * @var int
+     */
+    protected $count;
+
     
     /**
      * Reviews
@@ -277,6 +285,29 @@ class HandbookRelatedProduct extends Entity
     protected $reviews;
 
     /**
+     * Get count 
+     *
+     * @return int
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Set count. Needed when hydrating;
+     *
+     * @param type $count
+     * @return $this
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
+        return $this;
+    }
+
+    
+     /**
      * Get price from one-to-one joined price table
      *
      * @return int
