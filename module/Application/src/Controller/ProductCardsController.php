@@ -70,7 +70,7 @@ class ProductCardsController extends AbstractActionController
         }
         $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
-        return new JsonModel(  $this->getProducts(["where" => ["id" => $productsId]]));
+        return new JsonModel(  $this->getProducts(["where" => ["id" => $productsId]], $this->getProductCardLimitAndOrder(Resource::SQL_LIMIT_PRODUCTCARD_FAVORITES)));
         
 //        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
 //
@@ -380,10 +380,9 @@ class ProductCardsController extends AbstractActionController
         }
         unset($params['offset'], $params['limit']);
         $params['where'] = $this->getWhereCatalog($params);
-
         
         
-        return $this->getProducts($params);
+        return $this->getProducts($params, $this->getProductCardLimitAndOrder());
     }
 
     /**
@@ -397,7 +396,7 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereCategories($params);
 
-        return $this->getProducts($params);
+        return $this->getProducts($params, $this->getProductCardLimitAndOrder());
     }
 
     /**
@@ -411,7 +410,7 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereBrand($params);
 
-        return $this->getProducts($params);
+        return $this->getProducts($params, $this->getProductCardLimitAndOrder());
     }
 
     /**
@@ -425,7 +424,7 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereStore($params);
 
-        return $this->getProducts($params);
+        return $this->getProducts($params, $this->getProductCardLimitAndOrder());
     }
 
     /**
@@ -439,7 +438,7 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereProvider($params);
 
-        return $this->getProducts($params);
+        return $this->getProducts($params, $this->getProductCardLimitAndOrder());
     }
 
     /**
@@ -467,8 +466,7 @@ class ProductCardsController extends AbstractActionController
     {
         $params['where'] = $this->getWhereSale();
         $params['order'] = ['discount desc'];
-       // $params
-
+      
         return $this->getProducts($params, ['limit' => Resource::SQL_LIMIT_PRODUCTCARD_IN_SLIDER ]);
     }
 
@@ -479,27 +477,30 @@ class ProductCardsController extends AbstractActionController
      * @return HandbookRelatedProduct[]
      *
      */
-    private function getProducts($params, $appendParams = [])
+    private function getProducts($param, $appendParam = [])
     {
-        $count =  $this->handBookRelatedProductRepository->findAll($params)->count();
-        $param = array_merge($params, $appendParams);
-        $products = $this->handBookRelatedProductRepository->findAll($param);
-                
-
+        $count =  $this->handBookRelatedProductRepository->findAll($param)->count();
+        $params = array_merge($param, $appendParam);
+        $products = $this->handBookRelatedProductRepository->findAll($params);
+     
         return $this->commonHelperFuncions->getProductCardArray($products, $this->identity(), $count);
     }
     
     /**
-     * return limit and offset for SQL query
+     * Setting limit, offset and order for SQL query
+     * 
      * @retrn array
      */
-    private function getProductCardLimit()
+    private function getProductCardLimitAndOrder($limit = Resource::SQL_LIMIT_PRODUCTCARD_IN_PAGE)
     {
-        $return["limit"] = Resource::SQL_LIMIT_PRODUCTCARD_IN_PAGE;
-        //$return["offset"] = 0;
-        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
+        $return["limit"] = $limit;
+        $sortOrder = Resource::PRODUCTCARD_SORT_ORDER;
+        $post = $this->getRequest()->getPost();
+        $page = !empty($post->page) ? (int)$post->page : 0;
         $return["offset"] = $page * $return["limit"];
-        //return ["offset" => $offset, "limit" => $limit ];
+        $sortPost = !empty($post->sort) ?  (int)$post->sort : 0;
+        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : current($sortOrder);
+        $return ["order"] = [$sort , "id desc"];
      
         return $return;
     }
@@ -508,16 +509,16 @@ class ProductCardsController extends AbstractActionController
      * return order for SQL query
      * @retrn array
      */
-    private function getProductCardsSortOrder()
-    {
-        
-        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
-        $sortOrder = Resource::PRODUCTCARD_SORT_ORDER;
-        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
-
-        return ["order" => [$sort , "id desc"]];
-
-        
-    }
+//    private function getProductCardsSortOrder()
+//    {
+//        
+//        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
+//        $sortOrder = Resource::PRODUCTCARD_SORT_ORDER;
+//        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
+//
+//        return ["order" => [$sort , "id desc"]];
+//
+//        
+//    }
 
 }
