@@ -70,7 +70,7 @@ $(document).ready(function(){
         setUnit() {
           if (this.productsCount.toString().slice(-1) == '1' && this.productsCount.toString().slice(-2) != '11'){
             this.productsCountUnit = 'товар';
-          } else if (+this.productsCount.toString().slice(-1) > 1 && this.productsCount.toString().slice(-1) < 5 && this.productsCount.toString().slice(-2) != '12')  && this.productsCount.toString().slice(-2) != '13')  && this.productsCount.toString().slice(-2) != '14') {
+          } else if (+this.productsCount.toString().slice(-1) > 1 && +this.productsCount.toString().slice(-1) < 5 && +this.productsCount.toString().slice(-2) != '12') && this.productsCount.toString().slice(-2) != '13') && this.productsCount.toString().slice(-2) != '14') {
             this.productsCountUnit = 'товара';
           } else {
             this.productsCountUnit = 'товаров';
