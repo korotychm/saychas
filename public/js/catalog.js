@@ -14,7 +14,7 @@ $(document).ready(function(){
       },
       watch: {
         sort() {
-            this.getProducts();
+          this.getProducts();
         }
       },
       methods: {
@@ -67,6 +67,7 @@ $(document).ready(function(){
         },
         getProducts() {
           let formData = $("#filter-form").serialize();
+          formData += '&sort=' + this.sort;
           console.log('Request',formData),
           axios
             .post('/ajax-fltr-json',formData)

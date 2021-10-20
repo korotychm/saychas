@@ -1,6 +1,5 @@
 <div class="filter">
     <form id="filter-form" @submit.prevent="getProducts">
-        <input type="hidden" name="sort" v-model="sort">
         <input type="hidden" name="category_id" :value="category_id">
         <!--Фильтр по цене-->
         <div class="filter__item" v-if="rangeprice.minprice != rangeprice.maxprice">
