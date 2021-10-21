@@ -17,7 +17,7 @@ const Testimonials = {
                 <div class="custom-select__dropdown">
                   <div class="custom-select__dropdown-inner">
                     <label class="custom-select__option">
-                      <input type="radio" checked="checked" value="" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <input type="radio" checked="checked" value="0" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
                       <span>Все оценки</span>
                     </label>
                     <label class="custom-select__option">
@@ -110,7 +110,7 @@ const Testimonials = {
       pages: 1,
       filters: {},
       selectedFilters: {
-        rating: '',
+        rating: 0,
         is_archive: false
       },
       filtersCreated: false
