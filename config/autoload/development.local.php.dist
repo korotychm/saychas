@@ -40,6 +40,8 @@ return [
             /** ReviewManager */
             'lk_get_reviews' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_reviews',
             \ControlPanel\Service\ReviewManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_reviews',
+            'lk_update_review' => 'http://SRV02:8000/SayChasDev/hs/site/lk_update_review',
+            
 
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',

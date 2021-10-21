@@ -120,7 +120,7 @@ class ReviewManager extends ListManager implements LoadableInterface
 
     public function updateServerDocument($headers, $content = [])
     {
-        $url = $this->config['parameters']['1c_provider_links']['lk_update_balance'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_review'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }

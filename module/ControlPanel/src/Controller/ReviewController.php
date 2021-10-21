@@ -96,9 +96,10 @@ class ReviewController extends AbstractActionController
         //$product = json_decode($post['data']['product'], true);
         //unset($product['_id']);
         $identity = $this->authService->getIdentity();
-        foreach($post['data'] as &$p) {
-            $p['provider_id'] = $identity['provider_id'];
-        }
+//        $post['provider_id'] = $identity['provider_id'];
+//        foreach($post['data'] as &$p) {
+//            $p['provider_id'] = $identity['provider_id'];
+//        }
         if ($this->canUpdateReview($post)) {
             $result = $this->reviewManager->replaceReview($post);
             return new JsonModel(['result' => true]);
