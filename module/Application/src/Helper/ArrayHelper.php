@@ -170,11 +170,11 @@ class ArrayHelper
 //    }
     public static function extractId($products, $key = "product_id")
     {
-        $filtredProducts = [];
+        //$filtredProducts = [];
         foreach ($products as $p) {
             $filtredProducts[] = $p[$key];
         }
-        return $filtredProducts;
+        return $filtredProducts ?? [];
     }
 
 }

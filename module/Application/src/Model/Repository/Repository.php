@@ -21,6 +21,7 @@ use Laminas\Log\Logger;
 //use Laminas\Log\Writer\Stream as StreamWriter;
 use Application\Model\RepositoryInterface\RepositoryInterface;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use ControlPanel\Helper\ArrayHelper;
 
 /**
  * Description of Repository
@@ -389,10 +390,12 @@ abstract class Repository implements RepositoryInterface
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        $total = [];
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
+         $total = ArrayHelper::extractId($result, "id");  
+        
+//        $total = [];
+//        foreach ($result as $item) {
+//            array_push($total, $item['id']);
+//        }
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
 

@@ -415,14 +415,14 @@ class IndexController extends AbstractActionController
      */
     private function getProductImages($product_id)
     {
-        $productImages = [];
+        //$productImages = [];
         $images = ProductImage::findAll(["where" => ['product_id' => $product_id]])->toArray();
         
         foreach ($images as $image){
             $productImages[] = $image['http_url'];//->getHttpUrl();
         } 
         //exit (print_r($productImages));
-        return $productImages;
+        return $productImages ?? [];
     }
 
     public function catalogAction()
@@ -440,12 +440,12 @@ class IndexController extends AbstractActionController
 
         $breadCrumbs = ((!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id)))) ? array_reverse($matherCategories) : [];
         $categoryTitle = $category->getTitle();
-        $childCategories = [];
+        //$childCategories = [];
         $categoryTree = $this->categoryRepository->categoryFilteredTree($category_id);
         foreach ($categoryTree as $category) {
             $childCategories[] = [$category['id'], $category['title']];
         }
-        return new ViewModel(["catalog" => $childCategories /* $categories */, "title" => $categoryTitle, "id" => $category_id, "breadCrumbs" => $breadCrumbs,]);
+        return new ViewModel(["catalog" => $childCategories ?? [] /* $categories */, "title" => $categoryTitle, "id" => $category_id, "breadCrumbs" => $breadCrumbs,]);
     }
 
     public function categoryAction($category_id = false)
