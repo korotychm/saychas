@@ -6,10 +6,10 @@ const Testimonials = {
         <div style="display: flex; justify-content: space-between; width: 100%">
           <div style="display: flex;">
             <div class="filter__btn archive-toggle">
-              <a class="btn" :class="selectedFilters.is_archive?'btn--secondary':'btn--primary'" @click="setArchive(false)" style="border: 2px solid var(--red)">Новые</a>
+              <a class="btn" :class="selectedFilters.is_archive?'btn--secondary':'btn--primary'" @click="setArchive(false)">Новые</a>
             </div>
             <div class="filter__btn archive-toggle">
-              <a class="btn" :class="selectedFilters.is_archive?'btn--primary':'btn--secondary'" @click="setArchive(true)" style="border: 2px solid var(--red)">Архив</a>
+              <a class="btn" :class="selectedFilters.is_archive?'btn--primary':'btn--secondary'" @click="setArchive(true)">Архив</a>
             </div>
             <div class="filter__select  filter__select--status">
               <div class="custom-select custom-select--radio">
@@ -223,9 +223,9 @@ const Testimonials = {
             uid: this.reviews[index].uid
           }),{headers})
           .then(response => {
+            console.log('Response после ответа на отзыв', response);
             if (respose.data.result) {
               showMessage('Ответ на отзыв опубликован!');
-              console.log('Response после ответа на отзыв', response);
               $('.reviews__item').removeClass('active');
               this.reviews.splice(index, 1);
             }
