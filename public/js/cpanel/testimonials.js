@@ -225,9 +225,9 @@ const Testimonials = {
           .then(response => {
             console.log('Response после ответа на отзыв', response, response.data.result);
             if (respose.data.result) {
+              console.log('remove');
               showMessage('Ответ на отзыв опубликован!');
-              $('.reviews__item').removeClass('active');
-              this.reviews.splice(index, 1);
+              this.$delete(this.reviews,index);
             }
           })
           .catch(error => {
