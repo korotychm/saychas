@@ -223,7 +223,7 @@ const Testimonials = {
             uid: this.reviews[index].uid
           }),{headers})
           .then(response => {
-            console.log('Response после ответа на отзыв', response);
+            console.log('Response после ответа на отзыв', response, response.data.result);
             if (respose.data.result) {
               showMessage('Ответ на отзыв опубликован!');
               $('.reviews__item').removeClass('active');
