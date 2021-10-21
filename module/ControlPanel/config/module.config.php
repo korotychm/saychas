@@ -11,6 +11,7 @@ use ControlPanel\Controller\Factory\AuthControllerFactory;
 use ControlPanel\Controller\Factory\ProductControllerFactory;
 use ControlPanel\Controller\Factory\StoreControllerFactory;
 use ControlPanel\Controller\Factory\StockBalanceControllerFactory;
+use ControlPanel\Controller\Factory\ReviewControllerFactory;
 use ControlPanel\Controller\Factory\ListControllerFactory;
 use ControlPanel\Controller\Factory\ApiControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
@@ -25,6 +26,7 @@ return [
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
             \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
             \ControlPanel\Controller\StockBalanceController::class => StockBalanceControllerFactory::class,
+            \ControlPanel\Controller\ReviewController::class => ReviewControllerFactory::class,
             \ControlPanel\Controller\ListController::class => ListControllerFactory::class,
             \ControlPanel\Controller\ApiController::class => ApiControllerFactory::class,
         ],        
@@ -95,6 +97,10 @@ return [
             \ControlPanel\Controller\StockBalanceController::class => [
                 ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
                 ['actions' => ['updateStockBalance',], 'allow' => '+administrator'],
+            ],
+            \ControlPanel\Controller\ReviewController::class => [
+                ['actions' => ['showReview',], 'allow' => '+administrator'],
+                ['actions' => ['updateReview',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',], /*'urls' => ['show-products',], */ 'allow' => '+administrator'],
@@ -238,6 +244,20 @@ return [
                                 'url' => 'update-stock-balance',
                             ],
                             'repository' => \ControlPanel\Service\StockBalanceManager::class,
+                            'is_test' => 'false',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'update-review' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-review',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ReviewController::class,
+                                'action' => 'update-review',
+                                'url' => 'update-review',
+                            ],
+                            'repository' => \ControlPanel\Service\ReviewManager::class,
                             'is_test' => 'false',
                         ],
                         // 'may_terminate' => true,

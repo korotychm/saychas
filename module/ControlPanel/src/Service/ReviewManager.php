@@ -125,15 +125,15 @@ class ReviewManager extends ListManager implements LoadableInterface
         return $result;
     }
 
-    public function replaceReview($stockBalance)
+    public function replaceReview($review)
     {
         $collection = $this->db->{$this->collectionName};
         $updateResult = null;
-        foreach ($stockBalance['data'] as $balance) {
-            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
-                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
-                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
-        }
+//        foreach ($stockBalance['data'] as $balance) {
+//            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
+//                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
+//                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
+//        }
 
         return $updateResult;
     }
