@@ -210,7 +210,7 @@ const Testimonials = {
     },
     setArchive(status) {
       this.selectedFilters.is_archive = status;
-      this.getReviews();
+      this.loadPage();
     },
     addAnswer(index) {
       let requestUrl = '/control-panel/update-review';
