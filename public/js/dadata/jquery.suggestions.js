@@ -697,6 +697,7 @@ var DEFAULT_OPTIONS = {
     scrollOnFocus: false,
     // основной url, может быть переопределен
     serviceUrl: "https://suggestions.dadata.ru/suggestions/api/4_1/rs",
+    //serviceUrl: "/dadata/get-hints",
     tabDisabled: false,
     timeout: 3000,
     triggerSelectOnBlur: true,

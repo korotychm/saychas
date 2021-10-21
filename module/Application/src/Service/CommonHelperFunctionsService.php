@@ -118,7 +118,7 @@ class CommonHelperFunctionsService
             $item['reviews'] = $product->getReviews();
             $return[$product->getId()] = $item;
        }
-       //$return["count"] = $count;
+       //$return["count"] = $count; 
        return ["count" => $count,  "limit" => $limit,  "products" => $return];
     }
 

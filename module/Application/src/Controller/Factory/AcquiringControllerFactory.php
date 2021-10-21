@@ -8,9 +8,9 @@ use Interop\Container\ContainerInterface;
 //use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Authentication\AuthenticationService;
-use Laminas\Session\Container;// as SessionContainer;
+//use Laminas\Session\Container;// as SessionContainer;
 use Laminas\Session\SessionManager;
-use Application\Model\TestRepositoryInterface;
+//use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
@@ -45,7 +45,7 @@ class AcquiringControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestName, array $options = null)
     {
         // Instantiate the controller and inject dependencies
-        $test = $container->get(/*                 * \Application\Model\ */TestRepositoryInterface::class);
+//        $test = $container->get(/*                 * \Application\Model\ */TestRepositoryInterface::class);
         $category = $container->get(CategoryRepositoryInterface::class);
         $provider = $container->get(ProviderRepositoryInterface::class);
         $store = $container->get(StoreRepositoryInterface::class);
@@ -76,7 +76,7 @@ class AcquiringControllerFactory implements FactoryInterface
         //$sessionContainer = $container->get(SessionContainer::class);
         $sessionManager = $container->get(SessionManager::class);
         
-        return new AcquiringController($test, $category, $provider, $store, $product, $filteredProduct/*, $brand*/, $colorRepository, $setting, $characteristic,
+        return new AcquiringController(/*$test,*/ $category, $provider, $store, $product, $filteredProduct/*, $brand*/, $colorRepository, $setting, $characteristic,
                 $price, $stockBalance, $handBookProduct, $entityManager, $config, /*$htmlProvider,*/ $externalCommunication, $acquiringCommunication, $userRepository, $authService, $productCharacteristic,
                 $basketRepository/*, $sessionContainer*/, $sessionManager, $commonHelperFuncions);
     }
