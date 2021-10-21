@@ -153,7 +153,8 @@ const Testimonials = {
         .post(requestUrl,
           Qs.stringify({
             id : this.reviews[index].id,
-            response : this.reviews[index].response
+            response : this.reviews[index].response,
+            uid: this.reviews[index].uid
           }),{headers})
           .then(response => {
             showMessage('Запрос на ответ на отзыв отправлен на update-review, ответ в консоли.');
