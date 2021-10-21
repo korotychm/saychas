@@ -57,7 +57,7 @@ const Testimonials = {
                 </div>
               </div>
               <div class="reviews__add-answer">
-                <textarea class="textarea" placeholder="Ваш ответ"></textarea>
+                <textarea class="textarea" placeholder="Ваш ответ" v-model="review.response"></textarea>
                 <div class="reviews__btns">
                   <button class="btn btn--secondary reviews__back">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8px" height="13px">
@@ -66,7 +66,7 @@ const Testimonials = {
                     </svg>
                     <span>Вернуться</span>
                   </button>
-                  <button class="btn btn--primary" @click="addAnswer">Ответить на отзыв</button>
+                  <button class="btn btn--primary" @click="addAnswer(index)">Ответить на отзыв</button>
                 </div>
               </div>
               <div class="reviews__popup"></div>
@@ -146,8 +146,22 @@ const Testimonials = {
     setArchive(status) {
       this.selectedFilters.is_archive = status;
     },
-    addAnswer() {
-      return true;
+    addAnswer(index) {
+      let requestUrl = '/control-panel/update-review';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            id : this.reviews[index].id,
+            response : this.reviews[index].response
+          }),{headers})
+          .then(response => {
+            showMessage('Запрос на ответ на отзыв отправлен на update-review, ответ в консоли.');
+            console.log('Response после ответа на отзыв', response);
+          })
+          .catch(error => {
+            $('.main__loader').hide();
+          });
     }
   },
   created: function(){
