@@ -117,7 +117,7 @@ const Testimonials = {
                     </a>
                   </div>
                 </div>
-                <div v-if="review.response" class="reviews__response" style="margin-top: 20px; padding-left: 30px;">
+                <div v-if="review.response && selectedFilters.is_archive" class="reviews__response" style="margin-top: 20px; padding-left: 30px;">
                   {{ review.response }}
                 </div>
               </div>
