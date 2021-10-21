@@ -26,6 +26,7 @@ use Application\Model\Entity\ReviewImage;
 use Application\Model\Entity\User;
 use Application\Model\Entity\ProductRating;
 use Application\Model\RepositoryInterface\ProductRepositoryInterface;
+
 //use Laminas\Filter\StripTags;
 
 
@@ -136,7 +137,6 @@ class ReviewController extends AbstractActionController
 
         $files = $this->getRequest()->getFiles();
 
-
         if (!empty($files['files'])) {
 
             if (empty($return["user_message"] = $escaper->escapeHtml(trim($this->getRequest()->getPost()->reviewMessage))) or strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
@@ -187,7 +187,7 @@ class ReviewController extends AbstractActionController
         $param['user_id'] = $userInfo['userid'];
         $productRating = ProductRating::findFirstOrDefault(['product_id' => $param['product_id']]);
         $r = ["sort" => $reviewParams['order'], 'average_rating' => $productRating->getRating(), "reviews_count" => $productRating->getReviews(), 'images_path' => $this->imagePath("review_images"), 'thumbnails_path' => $this->imagePath("review_thumbnails")];
-        $reviews = array_merge($r , [ "images"=> $this->getProductReviewImages($param['product_id']), "legalImageType" => Resource::LEGAL_IMAGE_TYPES,   "limit" => ["limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
+        $reviews = array_merge($r, ["images" => $this->getProductReviewImages($param['product_id']), "legalImageType" => Resource::LEGAL_IMAGE_TYPES, "limit" => ["limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']], "reviewer" => $this->externalCommunicationService->getReviewer($param), 'statistic' => (!empty($productRating->getStatistic())) ? Json::decode($productRating->getStatistic()) : [], "reviews" => []]);
 
         foreach ($res as $review) {
             $review['time_created'] = date("Y-m-d H:i:s", (int) $review['time_created']);
@@ -203,17 +203,17 @@ class ReviewController extends AbstractActionController
      *
      * @return array
      */
-    private function setReviewParams ($param)
+    private function setReviewParams($param)
     {
-        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
-        $offset = $page * Resource::REVIEWS_PAGING_LIMIT;
         $limit = Resource::REVIEWS_PAGING_LIMIT;
-        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
         $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
-        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
+        $post = $this->getRequest()->getPost();
+        $page = $post->page ?? 0;
+        $offset = $page * $limit;
+        $sortPost = $post->sort ?? 0;
+        $sort = $sortOrder[$sortPost] ?? current($sortOrder);
 
-        return ['where' => $param, "order" => [$sort , "time_created desc"] , "offset" => $offset, "limit" => $limit ];
-
+        return ['where' => $param, "order" => [$sort, "time_created desc"], "offset" => $offset, "limit" => $limit];
     }
 
     /**
@@ -224,7 +224,7 @@ class ReviewController extends AbstractActionController
      */
     private function getReviewImages($reviewId)
     {
-        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewId], "order" => ["id desc"] ]);
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewId], "order" => ["id desc"]]);
         foreach ($images as $image) {
             $return[] = $image->getFilename();
         }
@@ -239,7 +239,7 @@ class ReviewController extends AbstractActionController
      */
     private function getProductReviewImages($productId)
     {
-        $reviews = Review::findAll(["where" => ["product_id" => $productId ], "columns"=>["id"] ])->toArray();
+        $reviews = Review::findAll(["where" => ["product_id" => $productId], "columns" => ["id"]])->toArray();
         $reviewsId = ArrayHelper::extractId($reviews, "id");
         $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId], "order" => ["id desc"], "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
 

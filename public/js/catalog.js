@@ -1,15 +1,26 @@
 $(document).ready(function(){
 
-  if ($('#catalog-wrap').length){
+  if ($('#catalog').length){
 
     var catalog = new Vue({
-      el: '#catalog-wrap',
+      el: '#catalog',
       data: {
         category_id: '',
         rangeprice: {},
         filters: [],
         products: [],
-        filterUpdated: false
+        filterUpdated: false,
+        sort: 0,
+        productsCount: 0,
+        productsCountUnit: 'товаров',
+        productsLimit: 0,
+        currentPage: 0
+      },
+      watch: {
+        sort() {
+          this.currentPage = 0;
+          this.getProducts();
+        }
       },
       methods: {
         setRangesValues() {
@@ -59,8 +70,23 @@ $(document).ready(function(){
           }
           this.filterUpdated = true;
         },
+        setUnit() {
+          if (this.productsCount.toString().slice(-1) == '1' && this.productsCount.toString().slice(-2) != '11'){
+            this.productsCountUnit = 'товар';
+          } else if (+this.productsCount.toString().slice(-1) > 1 && +this.productsCount.toString().slice(-1) < 5 && +this.productsCount.toString().slice(-2) != '12' && this.productsCount.toString().slice(-2) != '13' && this.productsCount.toString().slice(-2) != '14') {
+            this.productsCountUnit = 'товара';
+          } else {
+            this.productsCountUnit = 'товаров';
+          }
+        },
+        countPages() {
+          let pages = this.productsCount / this.productsLimit;
+          this.productsPages = Math.ceil(pages);
+        },
         getProducts() {
           let formData = $("#filter-form").serialize();
+          formData += '&sort=' + this.sort;
+          formData += '&page=' + this.currentPage;
           console.log('Request',formData),
           axios
             .post('/ajax-fltr-json',formData)
@@ -68,7 +94,19 @@ $(document).ready(function(){
               console.log('Response',response.data);
               this.filterUpdated = false;
               this.products = response.data.products;
+              this.productsCount = response.data.count;
+              this.productsLimit = response.data.limit;
+              this.setUnit();
+              this.countPages();
             });
+        },
+        getFilteredProducts() {
+          this.currentPage = 0;
+          this.getProducts();
+        },
+        loadPage(index) {
+          this.currentPage = index;
+          this.getProducts();
         }
       },
       created() {

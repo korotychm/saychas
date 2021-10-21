@@ -3,6 +3,8 @@
 // src/Model/Entity/Product.php
 
 namespace Application\Model\Entity;
+use Application\Model\Repository\ProductRepository;
+use Application\Model\Traits\Searchable;
 
 //use Doctrine\ORM\Mapping as ORM;
 
@@ -12,8 +14,19 @@ namespace Application\Model\Entity;
  * @ORM\Table(name="product")
  * @ORM\Entity
  */
-class Product extends Entity {
+class Product extends Entity 
+{
 
+    /**
+     * Behavior
+     */
+    use Searchable;
+
+    /**
+     * @var ProductRepository
+     */
+    //public static ProductRepository $repository;
+    
     /**
      * @var string
      */

@@ -3,12 +3,12 @@ $this->headTitle(Application\Resource\Resource::THE_CATALOG_OF_PRODUCTS, 'PREPEN
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?>
-<section class="catalog">
+<section class="catalog" id="catalog">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?> <span style="display:none;">312 515 товаров</span></h1>
+      <h1 class="h1"><?= $this->title ?> <span v-if="productsCount">{{ productsCount.toLocaleString() }} {{ productsCountUnit }}</span></h1>
       <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
   </div>
-  <div class="catalog__wrap" id="catalog-wrap">
+  <div class="catalog__wrap">
     <aside class="catalog__sidebar">
       <?= $this->partial("/application/index/partials/catalog/bread-crumbs-menu", ["breadCrumbs" => $this->breadCrumbs, "id" => $this->id]) ?>
       <?= $this->partial("/application/index/partials/catalog/categories-menu", ["categories" => $this->catalog, "id" => $this->id]) ?>
@@ -18,6 +18,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
       <section class="section">
         <div class="products-grid products-grid--3">
           <?= $this->partial("/application/common/product") ?>
+        </div>
+        <div class="pagination" v-if="productsCount > productsLimit">
+          <a v-for="(n,index) in productsPages" @click="loadPage(index)" :class="{'active' : index == currentPage}">{{ index + 1 }}</a>
         </div>
       </section>
     </div>

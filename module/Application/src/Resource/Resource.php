@@ -61,6 +61,7 @@ class Resource
     const BASKET_SAYCHAS_short = "за час";
     const BASKET_SAYCHAS3_short = "за три часа";
     const ERROR_MESSAGE = "Ошибка! ";
+    const PRODUCTCARD_SORT_ORDER = [ 0 => "id desc", 1 => "rating desc", 2 => "price asc", 3 => "price desc" ] ;
  
     /*
      * авторизация
@@ -124,9 +125,12 @@ class Resource
      * Числовые данные
      */
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
+    const SQL_LIMIT_PRODUCTCARD_TOP = 24; //максимально количество отображаемых ТОП товаров на глвной
     const SQL_LIMIT_PRODUCTCARD_IN_SLIDER = 12; //максимальное количество карточек товара в сладере
     const SQL_LIMIT_BRAND_SLIDER = 40; //максимальное количество брендов в сладере
-    const SQL_LIMIT_PRODUCTCARD_IN_PAGE = 32; //максимальное карточек товаров на странице
+    const SQL_LIMIT_PRODUCTCARD_IN_PAGE = 24; //максимальное карточек товаров на странице
+    const SQL_LIMIT_PRODUCTCARD_HISTORY = 12; //максимальное карточек товаров в истории просмотров
+    const SQL_LIMIT_PRODUCTCARD_FAVORITES = 24; //максимальное карточек товаров в избранном
     
 
     /*

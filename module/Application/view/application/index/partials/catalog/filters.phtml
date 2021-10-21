@@ -1,7 +1,5 @@
 <div class="filter">
-    <form id="filter-form" @submit.prevent="getProducts">
-        <input type="hidden" name="offset" value="72" id="sqlOutline">
-        <input type="hidden" name="limit" value="72">
+    <form id="filter-form" @submit.prevent="getFilteredProducts">
         <input type="hidden" name="category_id" :value="category_id">
         <!--Фильтр по цене-->
         <div class="filter__item" v-if="rangeprice.minprice != rangeprice.maxprice">
