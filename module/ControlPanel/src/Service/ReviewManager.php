@@ -87,33 +87,13 @@ class ReviewManager extends ListManager implements LoadableInterface
     {
         $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId]]);
-        //$cursor = $this->findAll($params);
-//        $result = [];
-//        foreach ($cursor['body'] as &$c) {
-//            // find product by product_id
-//            //$products = $c['products'];
-//            foreach ($c['products'] as &$product) {
-//                $productId = $product['product_id'];
-//                $quantity = $product['quantity'];
-//                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
-////                $arr = $arr[0];
-//                unset($arr['_id']);
-//                $arr['quantity'] = $quantity;
-//
-//                $flag = substr_count($arr['title'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
-//                $flag |= substr_count($arr['vendor_code'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
-//                $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
-//
-//                if (($flag && $flag2)) {
-//                    $arr['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
-//                    $result[] = $arr;
-//                }
-//            }
-//        }
-//        $cursor['body'] = $result;
-//        unset($params['where']['store_id']);
-//        $cursor['filters']['categories'] = $this->findCategories($params);
+        $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
+//        if('true' === $params['where']['is_archive']) {
+        if($isActive) {
+            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$ne' => ''] ]]);
+        }else{
+            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$eq' => ''] ]]);
+        }
 
         return $cursor;
     }
@@ -122,6 +102,7 @@ class ReviewManager extends ListManager implements LoadableInterface
     {
         $url = $this->config['parameters']['1c_provider_links']['lk_update_review'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+        
         return $result;
     }
 
