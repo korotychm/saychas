@@ -55,6 +55,9 @@ const Testimonials = {
                     </a>
                   </div>
                 </div>
+                <div v-if="review.response" class="reviews__response" style="margin-top: 20px; padding-left: 30px;">
+                  {{ review.response }}
+                </div>
               </div>
               <div class="reviews__add-answer">
                 <textarea class="textarea" placeholder="Ваш ответ" v-model="review.response"></textarea>
@@ -145,6 +148,7 @@ const Testimonials = {
     },
     setArchive(status) {
       this.selectedFilters.is_archive = status;
+      this.getReviews();
     },
     addAnswer(index) {
       let requestUrl = '/control-panel/update-review';
@@ -157,8 +161,12 @@ const Testimonials = {
             uid: this.reviews[index].uid
           }),{headers})
           .then(response => {
-            showMessage('Запрос на ответ на отзыв отправлен на update-review, ответ в консоли.');
-            console.log('Response после ответа на отзыв', response);
+            if (respose.data.result) {
+              showMessage('Ответ на отзыв опубликован!');
+              console.log('Response после ответа на отзыв', response);
+              $('.reviews__item').removeClass('active');
+              this.reviews.splice(index, 1);
+            }
           })
           .catch(error => {
             $('.main__loader').hide();
