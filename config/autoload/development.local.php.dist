@@ -34,7 +34,13 @@ return [
             'lk_product_info' => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',
             'lk_get_info_by_category' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_info_by_category',
             'lk_get_template' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_template',
+
             'lk_upload_file' => 'http://SRV02:8000/SayChasDev/hs/site/lk_upload_file',
+
+            /** ReviewManager */
+            'lk_get_reviews' => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_reviews',
+            \ControlPanel\Service\ReviewManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_get_reviews',
+
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SayChasDev/hs/site/lk_product_info',
             /** ProductManager; Edit product */

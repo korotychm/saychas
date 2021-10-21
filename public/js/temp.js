@@ -22,6 +22,7 @@ $(document).ready(function(){
         reviews: [],
         average_rating: 0,
         images_path: '',
+        thumbnails_path: '',
         statistic: {},
         images: [],
         limit: {},
@@ -29,7 +30,15 @@ $(document).ready(function(){
         currentPage: 1,
         reviews_count: 0,
         reviewsImages: false,
-        reviewer: null
+        reviewer: null,
+        reviewFormGrade: 0,
+        reviewFormText: '',
+        reviewFormError: '',
+        reviewFormImages: [''],
+        reviewFormImagesLimit: 6,
+        showReviewFormAddImg: true,
+        reviewData: new FormData(),
+        reviewSent: false
       },
       computed: {
         reviewsUnit(){
@@ -45,7 +54,7 @@ $(document).ready(function(){
       methods: {
         addReviews() {
           this.currentPage++;
-          console.log(this.currentPage * this.limit.limit, this.reviews_count, ((this.currentPage * this.limit.limit) < this.reviews_count));
+          console.log(this.currentPage);
           axios
             .post('/ajax-get-product-review',
               Qs.stringify({
@@ -55,6 +64,7 @@ $(document).ready(function(){
               }))
             .then(response => {
               this.reviews.concat(response.data.reviews);
+              console.log(this.reviews);
             });
         },
         getReviews() {
@@ -70,12 +80,65 @@ $(document).ready(function(){
               this.statistic = response.data.statistic;
               this.average_rating = response.data.average_rating;
               this.images_path = response.data.images_path;
+              this.thumbnails_path = response.data.thumbnails_path;
               this.images = response.data.images;
               this.limit = response.data.limit;
               this.reviewer = response.data.reviewer;
               this.reviews_count = response.data.reviews_count;
               this.reviews = response.data.reviews;
             });
+        },
+        showReviewForm() {
+          $('#reviewPopup').fadeIn();
+        },
+        setFormGrade(grade){
+          this.reviewFormGrade = grade;
+        },
+        addFormImage(){
+          var index = this.reviewFormImages.length - 1;
+          var file = document.querySelector('#addImgBtn').files[0];
+          var newImg = '';
+          var reader = new FileReader();
+          reader.onload = (e) => {
+            this.$set(this.reviewFormImages, index, e.target.result);
+            if (this.reviewFormImages.length < this.reviewFormImagesLimit) {
+              this.reviewFormImages.push('');
+            } else {
+              this.showReviewFormAddImg = false;
+            }
+          }
+          reader.readAsDataURL(file);
+          this.reviewData.append('files[]', file);
+        },
+        delFormImage(index){
+          this.reviewFormImages.splice(index, 1);
+          var files = this.reviewData.getAll('files[]');
+          files.splice(index,1);
+          this.reviewData.delete('files[]');
+          files.forEach(file => this.reviewData.append('files[]', file));
+          this.showReviewFormAddImg = true;
+        },
+        sendReviewForm() {
+          if (this.reviewFormGrade){
+            this.reviewData.append('productId', this.product_id);
+            this.reviewData.append('rating', this.reviewFormGrade - 1);
+            this.reviewData.append('reviewMessage', this.reviewFormText);
+            axios.post('/ajax-set-product-review', this.reviewData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+            })
+            .then(response => {
+              $('#reviewPopup').fadeOut();
+              this.reviewSent = true;
+              console.log('Ответ после добавления отзыва',response);
+            })
+            .catch(error => {
+              console.log(error.response)
+            })
+          } else {
+            this.reviewFormError = 'Пожалуйста, поставьте оценку товару.'
+          }
         },
         sortReviews() {
           this.currentPage = 1;
@@ -90,7 +153,7 @@ $(document).ready(function(){
         }
       },
       created() {
-        this.product_id = $('#testimonials').data('id')
+        this.product_id = $('#testimonials').data('id');
         this.getReviews()
       },
       mounted() {
