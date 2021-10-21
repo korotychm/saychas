@@ -88,12 +88,25 @@ class ReviewManager extends ListManager implements LoadableInterface
         $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
         $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
+        $rating = (int) $params['where']['rating'];
 //        if('true' === $params['where']['is_archive']) {
         if($isActive) {
-            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$ne' => ''] ]]);
+            $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
         }else{
-            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$eq' => ''] ]]);
+            $filter = ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ];
         }
+        
+        if(0 == $rating) {
+            unset($filter['rating']);
+        }
+        
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $filter]);
+        
+//        if($isActive) {
+//            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ]]);
+//        }else{
+//            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ]]);
+//        }
 
         return $cursor;
     }
