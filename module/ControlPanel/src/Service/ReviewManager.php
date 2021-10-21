@@ -120,7 +120,7 @@ class ReviewManager extends ListManager implements LoadableInterface
 
     public function updateServerDocument($headers, $content = [])
     {
-        $url = $this->config['parameters']['1c_provider_links']['lk_update_balance'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_review'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         return $result;
     }
@@ -128,7 +128,8 @@ class ReviewManager extends ListManager implements LoadableInterface
     public function replaceReview($review)
     {
         $collection = $this->db->{$this->collectionName};
-        $updateResult = null;
+        $updateResult = $collection->updateOne(['id' => $review['id'], 'uid' => $review['uid']],
+                ['$set' => ['response' => $review['response'], 'date_responsed' => $review['date_responsed']]]);
 //        foreach ($stockBalance['data'] as $balance) {
 //            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
 //                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
