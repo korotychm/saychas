@@ -78,6 +78,7 @@ return [
                 ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+administrator'],
                 ['actions' => ['updatePriceAndDiscount', ], 'allow' => '+administrator'],
                 ['actions' => ['getProductFile', ], 'allow' => '+administrator'],
+                ['actions' => ['sendProductFile', ], 'allow' => '+administrator'],
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
@@ -377,6 +378,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'get-product-file',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'send-product-file'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/send-product-file',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'send-product-file',
                             ],
                         ],
                         // 'may_terminate' => true,
