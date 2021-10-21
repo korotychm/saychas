@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
+//use Laminas\View\Model\ViewModel;
 use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Authentication\AuthenticationService;
@@ -41,14 +41,14 @@ use Application\Service\ExternalCommunicationService;
 use Application\Service\AcquiringCommunicationService;
 use Application\Resource\Resource;
 use Laminas\Session\Container; // as SessionContainer;
-use Laminas\Session\SessionManager;
+//use Laminas\Session\SessionManager;
 use Application\Adapter\Auth\UserAuthAdapter;
-use Laminas\Db\Sql\Where;
+//use Laminas\Db\Sql\Where;
 use Application\Model\Entity\User;
-use Application\Model\Entity\UserData;
-use Application\Helper\StringHelper;
-use Application\Model\Entity\ProductFavorites;
-use Application\Model\Entity\ProductHistory;
+//use Application\Model\Entity\UserData;
+//use Application\Helper\StringHelper;
+//use Application\Model\Entity\ProductFavorites;
+//use Application\Model\Entity\ProductHistory;
 use Application\Service\CommonHelperFunctionsService;
 
 class AcquiringController extends AbstractActionController
@@ -297,14 +297,14 @@ class AcquiringController extends AbstractActionController
     public function tinkoffCallbackAction()
     {
         $jsonData = file_get_contents('php://input');
-        mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
-        $postData = [];
+       // mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
+        //$postData = [];
         if (!empty($jsonData)) {
             try {
                 $postData = Json::decode($jsonData, Json::TYPE_ARRAY);
             } catch (\Throwable $ex) {
-                $postData = ["result" => false, 'error' => $ex->getMessage()];
-                return $this->returnResponseOk($postData);
+                
+                return $this->returnResponseOk(["result" => false, 'error' => $ex->getMessage()]);
             }
         }
 
@@ -312,29 +312,21 @@ class AcquiringController extends AbstractActionController
             try {
                 $order = ClientOrder::find(["order_id" => $postData["OrderId"]]);
                 if (!empty($order)) {
-                    $order->setPaymentInfo($jsonData);
-                    $order->persist(["order_id" => $postData["OrderId"]]);
+                    $order->setPaymentInfo($jsonData)->persist(["order_id" => $postData["OrderId"]]);
                 }
-                if (!empty($postData["CardId"])
-                        and!empty($postData["OrderId"])
-                        and!empty($postData["Pan"])
-                        and!empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))
-                ) {
-
+                if (!empty($postData["CardId"]) and !empty($postData["OrderId"]) and !empty($postData["Pan"]) and !empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))) {
                     $postData['user'] = $userId = $clientOrder->getUserId();
                     //if (!empty($postData["CardId"] ))) {
                     UserPaycard::remove(['card_id' => $postData["CardId"], "user_id" => $userId]);
                     $userPaycard = UserPaycard::findFirstOrDefault(['card_id' => $postData["CardId"], "user_id" => $userId]);
-                    $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time());
-                    $userPaycard->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);
+                    $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time())->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);
                     //}
                 }
             } catch (\Throwable $ex) {
                 $postData = ["result" => false, 'error' => $ex->getMessage()];
                 return $this->returnResponseOk($postData);
             }
-            /**/
-
+            
             $postData['answer_1с'] = $this->externalCommunication->sendOrderPaymentInfo($postData);
         }
         return $this->returnResponseOk($postData);

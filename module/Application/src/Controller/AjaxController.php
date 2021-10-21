@@ -513,7 +513,7 @@ class AjaxController extends AbstractActionController {
         }
         $post = $this->getRequest()->getPost();
         $timepoint = $post->timepoint;
-        $selectedtimepoint = [];
+        //$selectedtimepoint = [];
         $selectedtimepoint[0][$timepoint[0]] = " checked ";
         $selectedtimepoint[1][$timepoint[1]] = " checked ";
         

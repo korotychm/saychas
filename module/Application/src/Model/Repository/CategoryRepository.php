@@ -489,10 +489,12 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        $total = [];
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
+        
+        $total = ArrayHelper::extractId($result, "id");  
+//        //$total = [];
+//        foreach ($result as $item) {
+//            $total[] = $item['id'];
+//        }
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from('category')->where(['id' => $total]);
 

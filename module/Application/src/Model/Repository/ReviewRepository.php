@@ -14,6 +14,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Review;
 use Application\Model\RepositoryInterface\ReviewRepositoryInterface;
 use Application\Service\ImageHelperFunctionsService;
+use ControlPanel\Helper\ArrayHelper;
 
 class ReviewRepository extends Repository implements ReviewRepositoryInterface
 {
@@ -96,12 +97,13 @@ class ReviewRepository extends Repository implements ReviewRepositoryInterface
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
-        $total = [];
-        
-        foreach ($result as $item) {
-            array_push($total, $item['id']);
-        }
-        
+        $total = ArrayHelper::extractId($result, "id");  
+//        $total = [];
+//        
+//        foreach ($result as $item) {
+//            array_push($total, $item['id']);
+//        }
+//        
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from($this->tableName)->where(['id' => $total]);
         $deleteImages = $sql->delete()->from("review_image")->where(['review_id' => $total]);

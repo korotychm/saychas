@@ -57,8 +57,12 @@ class SettingRepository extends Repository implements SettingRepositoryInterface
         }
 
         if ((bool) $result['truncate']) {
-            $this->db->query("truncate table {$this->tableName}")->execute();
+           // $this->db->query("truncate table {$this->tableName}")->execute();
+          return ['result' => false, 'description' => 'option truncate unavailble', 'statusCode' => 405];
+            
         }
+
+
         
         $data = $result['data'];
         

@@ -271,7 +271,7 @@ class ReviewController extends AbstractActionController
      */
     private function addReviewImage($files)
     {
-        $images = [];
+        
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
         $uploadPathThumbs = "public" . $this->imagePath("review_thumbnails") . "/";
         $resizeParams = Resource::REVIEW_IMAGE_RESIZE;
@@ -292,7 +292,7 @@ class ReviewController extends AbstractActionController
             }
         }
 
-        return $images;
+        return $images ?? [];
     }
 
     /**
