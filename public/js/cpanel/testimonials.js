@@ -17,8 +17,28 @@ const Testimonials = {
                 <div class="custom-select__dropdown">
                   <div class="custom-select__dropdown-inner">
                     <label class="custom-select__option">
-                      <input type="radio" checked="checked" value="" name="rating_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <input type="radio" checked="checked" value="" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
                       <span>Все оценки</span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="1" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>1</span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="2" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>2</span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="3" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>3</span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="4" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>4</span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="5" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>5</span>
                     </label>
                   </div>
                 </div>
