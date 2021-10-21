@@ -259,6 +259,31 @@ $(function () {
         });
         return false;
     };
+    
+    var getDadataHints = function (params) {
+        
+        $.ajax({
+            type: "POST",
+            url: "/dadata/get-hints",
+            method: 'post',
+           // contentType: 'multipart/form-data',
+            data: params,
+            success: function (result, status, xhr) {
+                console.log('result = ', result);
+                $("#answerDadata").html(JSON.stringify(result, null, "   "));
+            },
+            error: function (xhr, status, error) {
+                $("#answerDadata").html('Send Dadata failed ' + xhr + status);
+            }
+        });
+        return false;
+    };
+    
+    $('#sendDadata').click(function () {
+        var param = {"address":$("#addressDadata").val(), "limit":$("#limitDadata").val() };
+        getDadataHints(param);
+        return false;
+    });
 
     $('#productReviewForm').submit(function () {
 
