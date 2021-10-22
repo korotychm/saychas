@@ -137,8 +137,8 @@ const Testimonials = {
               <div class="reviews__popup" v-if="!selectedFilters.is_archive"></div>
           </div>
         </div>
+        <div v-else>Никто еще не оставил отзывов к вашим товарам</div>
       </div>
-      <div v-else>Никто еще не оставил отзывов к вашим товарам</div>
       <div class="pagination">
         <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
       </div>
