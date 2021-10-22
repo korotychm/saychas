@@ -260,7 +260,7 @@ $(function () {
         return false;
     };
     
-    var getDadataHints = function (params) {
+    function getDadataHints(params) {
         
         $.ajax({
             type: "POST",
