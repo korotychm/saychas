@@ -145,8 +145,8 @@ class AjaxController extends AbstractActionController {
         $productWhere->in("id", $productsId);
         $products = $this->productRepository->findAll(["where" => $productWhere, "columns" => ["brand_id"], "group" => "brand_id"])->toArray();
         $brandsId = ArrayHelper::extractId($products, "brand_id");
-        //return new JsonModel($brandsId);
         $brands = Brand::findAll(["where" => ["id" => $brandsId], 'limit' => Resource::SQL_LIMIT_BRAND_SLIDER])->toArray();
+       
         foreach ($brands as $brand) {
             $return[] = $brand;
         }
@@ -154,19 +154,27 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
+    /**
+     * 
+     * @return JsonModel
+     */
     public function ajaxGetBasketJsonAction() 
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
+       
         if (empty($return['userId'])) {
             return $this->getResponse()->setStatusCode(403);
             //return;
         }
+        
         $return['basket'] = [];
         $basket = Basket::findAll(['user_id' => $userId, 'order_id' => "0"]);
+        
         if (empty($basket)) {
             return new JsonModel($return);
         }
+        
         foreach ($basket as $basketItem) {
             $return['basket'][$basketItem->getProductId()] = ["id" => $basketItem->getProductId(), "total" => $basketItem->getTotal(), "price" => $basketItem->getPrice(), "discount" => $basketItem->getDiscount(),];
         }
@@ -700,15 +708,17 @@ class AjaxController extends AbstractActionController {
      */
     public function setProductRatingAction() 
     {
-        if (empty($param['user_id']  = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
-            return $this->getResponse()->setStatusCode(403);
-        }
+        return new JsonModel(["result" => false, "description" => "Service unavailble" ]);
         
-        $patternRating = Resource::PRODUCT_RATING_VALUES;
-        $rating =  $this->getRequest()->getPost()->rating;
-        $param['rating'] = !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
-        
-        return new JsonModel($this->productRepository->setProductRating($param));
+//        if (empty($param['user_id']  = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
+//            return $this->getResponse()->setStatusCode(403);
+//        }
+//        
+//        $patternRating = Resource::PRODUCT_RATING_VALUES;
+//        $rating =  $this->getRequest()->getPost()->rating;
+//        $param['rating'] = !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+//        
+//        return new JsonModel($this->productRepository->setProductRating($param));
     }
 
 }
