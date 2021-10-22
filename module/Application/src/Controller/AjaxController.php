@@ -716,7 +716,7 @@ class AjaxController extends AbstractActionController {
 //        
 //        $patternRating = Resource::PRODUCT_RATING_VALUES;
 //        $rating =  $this->getRequest()->getPost()->rating;
-//        $param['rating'] = !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+//        $param['rating'] = $patternRating[$rating]) ?? end($patternRating);
 //        
 //        return new JsonModel($this->productRepository->setProductRating($param));
     }
