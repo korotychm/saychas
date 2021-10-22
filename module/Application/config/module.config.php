@@ -1455,8 +1455,8 @@ return [
         //'vat'Tinkoff => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
         'dadataApiParams' => [
-            'token' => '3e20e3f5d02f304085bfe70f9bb3d059b50aef0d', 
-            'secret' => '38fa57a1f47636382f82e7fe824101a2fed8b658',
+            'token' => '0185ad50bda7eb82a471b9721dfdfc90f263b6b2l', 
+            'secret' => '71a1c483e952cebb7f6a9e212838e4bb5fbc57d0',
             'url' => 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
             'limit' => 10 ,
         ],
