@@ -46,8 +46,8 @@ $(document).ready(function(){
   });
 
   $("#useraddress").suggestions({
-      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-      type: "ADDRESS",
+//      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+//      type: "ADDRESS",
       onSelect: function (suggestion) {
           $("#adesserror").hide();
           //console.log(suggestion.data);

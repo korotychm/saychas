@@ -1401,17 +1401,17 @@ var ADDRESS_TYPE = {
                 formattedHistoryValues;
 
             // добавляем исторические значения
-            if (historyValues && historyValues.length > 0) {
-                tokens = text_util.tokenize(currentValue, unformattableTokens);
-                unusedTokens = this.type.findUnusedTokens(tokens, value);
-                formattedHistoryValues = this.type.getFormattedHistoryValues(
-                    unusedTokens,
-                    historyValues
-                );
-                if (formattedHistoryValues) {
-                    value += formattedHistoryValues;
-                }
-            }
+//            if (historyValues && historyValues.length > 0) {
+//                tokens = text_util.tokenize(currentValue, unformattableTokens);
+//                unusedTokens = this.type.findUnusedTokens(tokens, value);
+//                formattedHistoryValues = this.type.getFormattedHistoryValues(
+//                    unusedTokens,
+//                    historyValues
+//                );
+//                if (formattedHistoryValues) {
+//                    value += formattedHistoryValues;
+//                }
+//            }
 
             value = that.highlightMatches(
                 value,
@@ -2224,7 +2224,7 @@ var BANK_TYPE = {
 };
 
 function Outward(name) {
-    this.urlSuffix = name.toLowerCase();
+    this.urlSuffix = ""; //name.toLowerCase();
     this.noSuggestionsHint = "Неизвестное значение";
     this.matchers = [
         matchers.matchByNormalizedQuery(),
