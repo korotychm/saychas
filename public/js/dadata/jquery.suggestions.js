@@ -570,6 +570,7 @@ var ajax = {
      */
     getDefaultType: function() {
         return jqapi.supportsCors() ? "POST" : "GET";
+        //return "POST";
     },
 
     /**
@@ -696,19 +697,22 @@ var DEFAULT_OPTIONS = {
     requestMode: "suggest",
     scrollOnFocus: false,
     // основной url, может быть переопределен
-    serviceUrl: "https://suggestions.dadata.ru/suggestions/api/4_1/rs",
-    //serviceUrl: "/dadata/get-hints",
+    //serviceUrl: "https://suggestions.dadata.ru/suggestions/api/4_1/rs",
+    serviceUrl: "/dadata/get-hints",
     tabDisabled: false,
     timeout: 3000,
     triggerSelectOnBlur: true,
     triggerSelectOnEnter: true,
     triggerSelectOnSpace: false,
-    type: null,
+    //type: null,
+    
     // url, который заменяет serviceUrl + method + type
     // то есть, если он задан, то для всех запросов будет использоваться именно он
     // если не поддерживается cors то к url будут добавлены параметры ?token=...&version=...
     // и заменен протокол на протокол текущей страницы
-    url: null
+    //url: null
+    //type: "POST",
+    url: "/dadata/get-hints",
 };
 
 /**

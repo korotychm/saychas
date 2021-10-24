@@ -16,7 +16,6 @@ use Laminas\Filter\StripTags;
 class DadataController extends AbstractActionController
 {
 
-    //privat
     private $config;
 
     public function __construct($config, AuthenticationService $authService, DadataService $dadata)
@@ -37,17 +36,25 @@ class DadataController extends AbstractActionController
         if (empty($userId = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }
+        $json = file_get_contents('php://input');
+         try {
+            $post = Json::decode($json);
+        } catch (\Throwable $ex) {
 
+            return new JsonModel(["result" => false, 'error' => $ex->getMessage(), [$json]]);
+        }
+        
         $striptags = new StripTags();
-        $post = $this->getRequest()->getPost();
-        $address = $striptags->filter($post->address) ?? "";
+        //$post = $this->getRequest()->getPost();
+        //return new JsonModel([$post]);
+        $address = $striptags->filter($post->query) ?? "";
 
         if (strlen($address) < 3) {
             return new JsonModel(["result" => false, 'error' => "address is very short"]);
         }
 
         $dadataApiParams = $this->config['parameters']['dadataApiParams'];
-        $limit = $post->limit ?? $dadataApiParams['limit'];
+        $limit = $post->count ?? $dadataApiParams['limit'];
         $dadata = new DadataService($dadataApiParams['url'], $dadataApiParams['token'], $dadataApiParams['secret']);
         $answer = $dadata->getDadata(["query" => $address, "count" => $limit]) ?? "[]";
 
