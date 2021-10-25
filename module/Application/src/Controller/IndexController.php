@@ -143,10 +143,6 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        
-        exit (print_r($this->categoryRepository->categoryFilteredTree()));
-        
-        
         $container = new Container();
         
         if ($container->signedUp != true) {
