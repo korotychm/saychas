@@ -1429,11 +1429,11 @@ return [
         ],
         'factories' => [
             View\Helper\ImagePath::class => View\Helper\Factory\ImagePathFactory::class,
-            //View\Helper\DocumentPath::class => View\Helper\Factory\DocumentPathFactory::class,
+        //View\Helper\DocumentPath::class => View\Helper\Factory\DocumentPathFactory::class,
         ],
         'aliases' => [
             'imagePath' => View\Helper\ImagePath::class,
-            //'documentPath' => View\Helper\DocumentPath::class,
+        //'documentPath' => View\Helper\DocumentPath::class,
         ],
     ],
     'parameters' => [
@@ -1443,22 +1443,21 @@ return [
         ],
         'TinkoffMerchantAPI' => [
             'terminal' => '1629956533317DEMO', //наш
-            //'terminal' => '1629729309127DEMO',  //мишин
             'token' => '9mfca0gpenpfi4rb', //наш
-            //'token' => 'z62eq0aa900wvaku',   // мишин
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
             'time_order_live' => 900, // время для оплаты заказа в сек.
             'success_url' => 'https://z.saychas.ru/tinkoff/success',
             'fail_url' => 'https://z.saychas.ru/tinkoff/error',
-        //'vat'Tinkoff => [-1 => "none", 0 => 'vat0', 10 => "vat10", 20 => "vat20", 110 => "vat110", 120 => "vat120" ]
         ],
         'dadataApiParams' => [
-            'token' => '3e20e3f5d02f304085bfe70f9bb3d059b50aef0d', 
-            'secret' => '38fa57a1f47636382f82e7fe824101a2fed8b658',
+//            'token' => '3e20e3f5d02f304085bfe70f9bb3d059b50aef0d',
+//            'secret' => '38fa57a1f47636382f82e7fe824101a2fed8b658',
+            'token' => '0185ad50bda7eb82a471b9721dfdfc90f263b6b2',
+            'secret' => '71a1c483e952cebb7f6a9e212838e4bb5fbc57d0',
             'url' => 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
-            'limit' => 10 ,
+            'limit' => 10,
         ],
 //        '1c_request_links' => [
 //            'get_product' => 'http://SRV02:8000/SC/hs/site/get_product',
