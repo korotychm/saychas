@@ -168,7 +168,6 @@ class IndexController extends AbstractActionController
         $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
         $addressLegal = ($userInfo["userAddress"]) ? true : false;
         $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
-
         // Return the response
         $this->layout()->setVariables([
             'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
@@ -434,27 +433,28 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toUrl('/my-login');
         }
 
-        $category_id = $this->params()->fromRoute('id', '');
-        if (empty($category_id = $this->params()->fromRoute('id', '')) or empty($category = $this->categoryRepository->findCategory(['id' => $category_id]))) {
+        $category_url = $this->params()->fromRoute('id', '');
+        if (empty($category_url) or empty($category = $this->categoryRepository->findCategory(['url' => $category_url]))) {
+            exit (print_r(['url' => $category_url]));
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
-
+        $category_id = $category->getId();
         $breadCrumbs = ((!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id)))) ? array_reverse($matherCategories) : [];
         $categoryTitle = $category->getTitle();
         $categoryTree = $this->categoryRepository->categoryFilteredTree($category_id);
         foreach ($categoryTree as $category) {
-            $childCategories[] = [$category['id'], $category['title']];
+            $childCategories[] = [$category['url'],  $category['title']];
         }
         return new ViewModel(["catalog" => $childCategories ?? [] /* $categories */, "title" => $categoryTitle, "id" => $category_id, "breadCrumbs" => $breadCrumbs,]);
     }
 
     public function categoryAction($category_id = false)
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         if (empty($category_id)) {
             $category_id = $this->params()->fromRoute('id', '');
         }
@@ -488,11 +488,11 @@ class IndexController extends AbstractActionController
     
         foreach ($categories as $category) {
         
-            if ($category->getId() == $category_id) {
+            if ($category->getUrl() == $category_id) {
                 $categoryTitle = $category->getTitle();
             }
 
-            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+            $breadCrumbs[] = [$category->getUrl(), $category->getTitle()];
         }
         
         if (!empty($category_id) and empty($categoryTitle)) {
@@ -520,10 +520,10 @@ class IndexController extends AbstractActionController
         //$categoryTitle = Resource::THE_ALL_PRODUCTS;
         $breadCrumbs[] = [null, $providerTitle];
         foreach ($categories as $category) {
-            if ($category->getId() == $category_id) {
+            if ($category->getUrl() == $category_id) {
                 $categoryTitle = $category->getTitle();
             }
-            $breadCrumbs[] = [$category->getId(), $category->getTitle()];
+            $breadCrumbs[] = [$category->getUrl(), $category->getTitle()];
         }
 
         if (!empty($category_id) and empty($categoryTitle)) {

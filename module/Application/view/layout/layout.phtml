@@ -66,7 +66,7 @@
                             <nav class="cats" id="cats">
                               <div class="cats__left">
                                 <div v-for="(category, idx) in categoryTree" class="cats__item" :class="{active: (idx == currentCat)}">
-                                  <a :href="'/catalog/' + category.id" class="cats__parent" @mouseover="currentCat = idx">{{ category.title }}</a>
+                                  <a :href="'/catalog/' + category.url" class="cats__parent" @mouseover="currentCat = idx">{{ category.title }}</a>
                                 </div>
                               </div>
                               <div class="cats__right">
@@ -74,15 +74,15 @@
                                   <div v-show="idx == currentCat" class="cats__children">
                                     <ul v-for="categoryChild in category.children">
                                       <li>
-                                        <a :href="'/catalog/' + categoryChild.id">{{ categoryChild.title }}</a>
+                                        <a :href="'/catalog/' + categoryChild.url">{{ categoryChild.title }}</a>
                                       </li>
                                       <div v-if="categoryChild.children">
                                         <li v-for="categoryChildChild in categoryChild.children.slice(0, 5)">
-                                          <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
+                                          <a :href="'/catalog/' + categoryChildChild.url">{{ categoryChildChild.title }}</a>
                                         </li>
                                       </div>
                                       <li v-if="categoryChild.children && categoryChild.children.length > 6">
-                                        <a class="cats__all" :href="'/catalog/' + categoryChild.id">Все товары</a>
+                                        <a class="cats__all" :href="'/catalog/' + categoryChild.url">Все товары</a>
                                       </li>
                                     </ul>
                                   </div>

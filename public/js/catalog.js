@@ -110,7 +110,7 @@ $(document).ready(function(){
         }
       },
       created() {
-          this.category_id = window.location.href.split("/").slice(-1)[0],
+          this.category_id = category_id,
           axios
             .post('/ajax-get-category-filters',
               Qs.stringify({
