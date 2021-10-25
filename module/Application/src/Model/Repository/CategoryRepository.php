@@ -181,7 +181,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         foreach ($res as $row) {
             $return[$row->getId()] = true;
         }
-        return (empty($return)) ? [] : $return;
+        //return (empty($return)) ? [] : $return;
+        return $return ?? [];
     }
         
     /**
@@ -361,10 +362,12 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $select = $sql->select()->from($this->tableName); //->columns(['*']
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();//-toArray();
+        
         foreach ($results as $result) {
             $tree[$result['parent_id']][] = $result;
         }
         $this->cache->setItem(Resource::CATEGORY_TREE_CACHE_NAMESPACE, $tree);
+        
         return $tree;
     }        
     
@@ -465,8 +468,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u)",
-                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order']);
+            $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`, `url`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u, %s )",
+                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order'], $row['url']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
