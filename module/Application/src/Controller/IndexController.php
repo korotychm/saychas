@@ -143,13 +143,26 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        
+        exit (print_r($this->categoryRepository->categoryFilteredTree()));
+        
+        
+        $container = new Container();
+        
+        if ($container->signedUp != true) {
+            if (!in_array($this->getRequest()->getUri()->getPath(), ['/signup', '/my-login']) ){
+                return $this->redirect()->toUrl('/my-login');
+            }    
+        }
+        
         $userAuthAdapter = new UserAuthAdapter(/* $this->userRepository *//* $this->sessionContainer */);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
+     
         if ($code != \Application\Adapter\Auth\UserAuthResult::SUCCESS) {
             throw new \Exception('Unknown error in IndexController');
         }
-        // Call the base class' onDispatch() first and grab the response
+        
         $response = parent::onDispatch($e);
         $userId = $this->identity();
         $user = $this->userRepository->find(['id' => $userId]);
@@ -162,15 +175,7 @@ class IndexController extends AbstractActionController
 
         // Return the response
         $this->layout()->setVariables([
-            //'headerText' => $this->htmlProvider->testHtml(),
-            //'footerText' => 'banzaii',
-            //'catalogCategoties' => $this->categoryRepository->findAllCategories("", 0, $this->params()->fromRoute('id', '')),
-            //'categoryTree' => $this->categoryRepository->categoryTree("", 0, $this->params()->fromRoute('id', '')),
-            //  'userAddressHtml' => $userAddressHtml,
-
             'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
-            //'categoryTree' => $this->categoryRepository->categoryTree("",0,0),
-            //'userAddressHtml' => $userAddressHtml,
             'addressLegal' => $addressLegal,
             'addresses' => $userAddressArray,
             'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
@@ -179,6 +184,7 @@ class IndexController extends AbstractActionController
             'mainMenu' => $mainMenu,
             'basketProductsCount' => $this->commonHelperFuncions->basketProductsCount($userId),
         ]);
+        
         return $response;
     }
 
@@ -268,15 +274,14 @@ class IndexController extends AbstractActionController
         }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        //$userData = $user->getUserData();
-        $userPhone = $user->getPhone();
+        $userPhone = (!empty($user)) ? $user->getPhone() : false ;
+        
         if (!$userPhone) {
             return $this->unauthorizedLocation();
         }
-
+        
         return new ViewModel([
             'title' => Resource::ORDER_TITLE, //  $container->item
-            //'orders'=> $orderList,
             "auth" => $userPhone,
         ]);
     }
@@ -289,7 +294,7 @@ class IndexController extends AbstractActionController
         }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        $userPhone = $user->getPhone();
+        $userPhone = (!empty($user)) ? $user->getPhone() : false ;
         if (!$userPhone) {
             return $this->unauthorizedLocation();
         }
@@ -319,10 +324,10 @@ class IndexController extends AbstractActionController
 
     public function basketAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $userId = $this->identity();
         $where = new Where();
         $where->equalTo('user_id', $userId)->equalTo('order_id', 0);
@@ -335,10 +340,12 @@ class IndexController extends AbstractActionController
         $content["basketUser"] = ['id' => $userId, 'userId' => $user->getUserId(), 'phone' => $user->getPhone(), 'phoneformated' => StringHelper::phoneFromNum($user->getPhone()), 'name' => $user->getName(),];
         $userData = $user->getUserData();
         //$count = $userData->count();
+        
         if (!empty($userData) and $userData->count()) {
             $content["basketUser"]['address'] = $userData->current()->getAddress();
             $content["basketUser"]['geodata'] = $userData->current()->getGeoData();
         }
+        
         $content["legalUser"] = (!$content["basketUser"]['phone'] or!$content["basketUser"]['name']) ? false : true;
         $content['textdefault'] = Resource::BASKET_SAYCHAS_do . ", ";
         $content["register_title"] = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
@@ -349,10 +356,10 @@ class IndexController extends AbstractActionController
 
     public function previewAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         return new ViewModel([
             'menu' => null,
@@ -380,10 +387,10 @@ class IndexController extends AbstractActionController
 
     public function productPageAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
@@ -415,13 +422,12 @@ class IndexController extends AbstractActionController
      */
     private function getProductImages($product_id)
     {
-        //$productImages = [];
         $images = ProductImage::findAll(["where" => ['product_id' => $product_id]])->toArray();
         
         foreach ($images as $image){
             $productImages[] = $image['http_url'];//->getHttpUrl();
         } 
-        //exit (print_r($productImages));
+      
         return $productImages ?? [];
     }
 
@@ -440,7 +446,6 @@ class IndexController extends AbstractActionController
 
         $breadCrumbs = ((!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id)))) ? array_reverse($matherCategories) : [];
         $categoryTitle = $category->getTitle();
-        //$childCategories = [];
         $categoryTree = $this->categoryRepository->categoryFilteredTree($category_id);
         foreach ($categoryTree as $category) {
             $childCategories[] = [$category['id'], $category['title']];
@@ -483,15 +488,17 @@ class IndexController extends AbstractActionController
         $brandTitle = $brand->getTitle();
         $categories = $this->getBrandCategories($brand_id);
         $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';
-        //$categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';
         $breadCrumbs[] = [null, $brandTitle];
+    
         foreach ($categories as $category) {
+        
             if ($category->getId() == $category_id) {
                 $categoryTitle = $category->getTitle();
             }
 
             $breadCrumbs[] = [$category->getId(), $category->getTitle()];
         }
+        
         if (!empty($category_id) and empty($categoryTitle)) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toUrl('/brand/' . $brand_id);

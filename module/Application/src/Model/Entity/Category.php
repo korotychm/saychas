@@ -27,6 +27,11 @@ class Category
      * @var string
      */
     private $id;
+    
+    /**
+     * @var string
+     */
+    private $url;
 
     /**
      * @var string
@@ -75,7 +80,15 @@ class Category
     {
         return $this->id;
     }
-
+    
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    
     /**
      * @return string
      */
