@@ -168,6 +168,8 @@ class ProductCardsController extends AbstractActionController
         if (empty($post->providerId)) {
             return new JsonModel([]);
         }
+        if (!empty($category_url = $post->categoryId));
+        
 
         return new JsonModel($this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId]));
     }
