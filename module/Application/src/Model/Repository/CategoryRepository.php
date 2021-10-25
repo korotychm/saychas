@@ -352,10 +352,10 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     public function getAllCategoriesAsTree ()
     {   
 
-//        $tree = $this->cache->getItem( Resource::CATEGORY_TREE_CACHE_NAMESPACE, $success);
-//        if($success) {
-//            return $tree;
-//        }
+        $tree = $this->cache->getItem( Resource::CATEGORY_TREE_CACHE_NAMESPACE, $success);
+        if($success) {
+            return $tree;
+        }
         $tree=[];
         $sql = new Sql($this->db);
         $select = $sql->select()->from($this->tableName); //->columns(['*']
