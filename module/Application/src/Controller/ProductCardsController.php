@@ -512,7 +512,7 @@ class ProductCardsController extends AbstractActionController
         $find =  $this->handBookRelatedProductRepository->countFindAll($param);
        
         foreach ($find as $cnt) {
-            $count = $cnt->getCount(); 
+            $count = (int)$cnt->getCount(); 
         }
         
         $params = array_merge($param, $appendParam);

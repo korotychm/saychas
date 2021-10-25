@@ -8,14 +8,14 @@
 /* echo '<br/>';
   echo $this->menu; */
 ?>
- <div class="container">
+<div class="container">
 
 
 
-  </div>
+</div>
 
-<div class="container" >	
-    <div class="card-deck"> 
+<div class="container" >
+    <div class="card-deck">
         <div class="card">
             <h2 class="card-header">типы характеристик (characteristic_type)</h2>
             <div class="card-body">
@@ -32,7 +32,7 @@
                         <li>8 - СправочникСсылка.Страна</li>
                     </ul>
                 </div>
-            </div>   
+            </div>
         </div>
         <div class="card">
             <h2 class="card-header">User Data Form</h2>
@@ -41,7 +41,7 @@
                     <div id="image_div"></div>
                     <input type="text" placeholder="Input some data" id="inputSomeDataId" value="000000004"/>
                     <input type="button" id="userDataFormId" class="btn btn-primary" value="Send SMS"/>
-                    <input type="button" id="codeFeedbackId" class="btn btn-primary" value="Send back"/> 
+                    <input type="button" id="codeFeedbackId" class="btn btn-primary" value="Send back"/>
                     <input type="button" id="getClientInfoId" class="btn btn-primary" value="Get Client Info"/>
                     <input type="button" id="setClientInfoId" class="btn btn-primary" value="Set Client Info"/>
                     <input type="button" id="updateClientInfoId" class="btn btn-primary" value="Update Client Info"/>
@@ -50,17 +50,17 @@
                     <input type="button" id="clientLogin" class="btn btn-primary" value="Client Login"/>
                     <input type="button" id="sendTinkoff" class="btn btn-primary" value="Tinkoff callback"/>
                     <input type="button" id="sendAveragePrice" class="btn btn-primary" value="setAveragePrice callback"/>
-                    
-                    
-                    
+
+
+
                 </div>
-            </div>   
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container">	
-    <div class="card-deck"> 
+<div class="container">
+    <div class="card-deck">
         <div class="card">
             <h2 class="card-header">Запрос магазинов по адресу</h2>
             <div class="card-body">
@@ -68,58 +68,45 @@
                     <input id="address" name="suggestions"  placeholder="укажи адрес доставки"/>
                     <div id="adesserror" class="errorblock none"></div>
                     <div id="dadataanswer" style="font-size:12px; "></div>
-                    <div id="dadataask" style="font-size:12px; color:#ccc"></div>                 
-                </div>  
+                    <div id="dadataask" style="font-size:12px; color:#ccc"></div>
+                </div>
             </div>
-        </div> 
-        <div class="card" id="ycard" style="display:none;">
-            <!-- div style='min-heignt:300px;' -->
-            <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&mode=debug" type="text/javascript"></script>
-            <script type="text/javascript">
-                ymaps.ready(init);
-                function init() {
-                    myMap = new ymaps.Map("map", {
-                        center: [55.71, 37.68],
-                        zoom: 7
-                    });
-                }
-            </script>   
+        </div>
 
-            <div class="card-body" id="map">
-                <!-- 'geo_lat' => "55.7132713"  'geo_lon' => "37.6860004" -->
-                <div id="geocoords"></div>
-            </div>
-            <!-- /div --> 
-        </div> 
-    </div>        
+    </div>
     <p><hr/></p>
-<div class="card-deck">        
+<div class="card-deck">
+    <div class="card">
+        <h2 class="card-header">Подсказки Dadata по адресу</h2>
 
-    
+        <input id="addressDadata"  placeholder="укажи адрес "  value="Ургешская 2 3" />
+        лимит: <input type="number" min=1 max=10 step=1 id="limitDadata"   value="3" />
+        <p><button  id="sendDadata" >Запросить подсказки</button></p>
+        <pre id="answerDadata"></pre>
 
-
+    </div>
 </div>
-<div class="card-deck"> 	
+<div class="card-deck">
 
     <div class="card">
         <h2 class="card-header">Телефон</h2>
-        <div class="card-body">  
+        <div class="card-body">
             <div class="container">
                 <p><input name=phonesend  val=""  id="phonesend" class="phoneInput" placeholder="+7-999-999-9999" style="margin:5px 0;padding:4px" ></p>
 
-            </div>  
-        </div> 
-    </div> 
+            </div>
+        </div>
+    </div>
 
 
 </div>
-<div class="card-deck"> 	
+<div class="card-deck">
 
     <div class="card">
         <h2 class="card-header">Рейтинг товара</h2>
-        <div class="card-body">  
+        <div class="card-body">
             <form id="productRatingForm" >
-                
+
                 <p><input   name='productId' val=""  id="productId"  placeholder="id продукта" value="000000000017" required ></p>
                 <p>
                     <select   name='rating'  id="productRating" >
@@ -128,40 +115,40 @@
                         <option value="3" >&#9733;&#9733;&#9733;&#9733;</option>
                         <option value="2" >&#9733;&#9733;&#9733;</option>
                         <option value="1" >&#9733;&#9733;</option>
-                       
+
                     </select>
                     <select   name='page'  id="reviewPaging" >
-                         <option value="0" >Page 0</option>
+                        <option value="0" >Page 0</option>
                         <option value="1" >Page 1</option>
                         <option value="2" >Page 2</option>
                         <option value="3" >Page 3</option>
-                        
+
                     </select>
-                     <select   name='sort'  id="reviewSortOrder" >
+                    <select   name='sort'  id="reviewSortOrder" >
                         <option value="0" >Сначала свежие</option>
-                        <option value="1" selected >Сначала хорошие</option> 
+                        <option value="1" selected >Сначала хорошие</option>
                         <option value="2" >Сначала отрицательные</option>
-                         
-                        
-                        
-                        
+
+
+
+
                     </select>
-                    
+
                 </p>
                 <button id='productRatingButton' >Отправить рейтинг</button>
                 <button id='productReview' >Получить отзывы</button>
-                
-                <pre id="productRatingAnswer"></pre>
-                
 
-            </form>  
-        </div> 
-    </div> 
+                <pre id="productRatingAnswer"></pre>
+
+
+            </form>
+        </div>
+    </div>
     <div class="card">
         <h2 class="card-header">Оставить отзыв</h2>
-        <div class="card-body">  
-            <form id="productReviewForm" <?php /*enctype='multipart/form-data'*/?> >
-                
+        <div class="card-body">
+            <form id="productReviewForm" <?php /* enctype='multipart/form-data' */ ?> >
+
                 <p><input   name='productId' val=""  id="productReviewId"  placeholder="id продукта" value="000000000017" required ></p>
                 <p>
                     <select   name='rating'  id="productRatingReview" >
@@ -176,17 +163,17 @@
                     <textarea name="reviewMessage" id="reviewMessage" placeholder="отзыв о товаре"></textarea>
                 </p>
                 <input type="file" id="file" multiple="true" name="file" >
-                
+
                 <button id='productReiewButton' >Отправить отзыв</button>
                 <input type="reset" value="сбросить" >
-            
-                <pre id="productReviewAnswer"></pre>
-                
 
-            </form>  
-        </div> 
-    </div> 
+                <pre id="productReviewAnswer"></pre>
+
+
+            </form>
+        </div>
+    </div>
 
 
 </div>
-</div>    
+</div>

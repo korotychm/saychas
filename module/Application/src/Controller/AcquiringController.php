@@ -10,7 +10,7 @@ use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
-use Application\Model\TestRepositoryInterface;
+//use Application\Model\TestRepositoryInterface;
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 use Application\Model\RepositoryInterface\ProviderRepositoryInterface;
 use Application\Model\RepositoryInterface\StoreRepositoryInterface;
@@ -57,7 +57,7 @@ class AcquiringController extends AbstractActionController
     /**
      * @var TestRepositoryInterface
      */
-    private $testRepository;
+    //private $testRepository;
     private $categoryRepository;
     private $providerRepository;
     private $storeRepository;
@@ -83,7 +83,7 @@ class AcquiringController extends AbstractActionController
     private $sessionManager;
     private $commonHelperFuncions;
 
-    public function __construct(TestRepositoryInterface $testRepository, CategoryRepositoryInterface $categoryRepository,
+    public function __construct(/*TestRepositoryInterface $testRepository,*/ CategoryRepositoryInterface $categoryRepository,
             ProviderRepositoryInterface $providerRepository, StoreRepositoryInterface $storeRepository,
             ProductRepositoryInterface $productRepository, FilteredProductRepositoryInterface $filteredProductRepository,
             /* BrandRepositoryInterface $brandRepository, */ ColorRepositoryInterface $colorRepository, SettingRepositoryInterface $settingRepository,
@@ -94,7 +94,7 @@ class AcquiringController extends AbstractActionController
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository/* , $sessionContainer */, $sessionManager,
             CommonHelperFunctionsService $commonHelperFuncions)
     {
-        $this->testRepository = $testRepository;
+        //$this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
         $this->storeRepository = $storeRepository;

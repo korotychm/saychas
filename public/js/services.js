@@ -246,6 +246,7 @@ $(function () {
             url: "/ajax-set-product-review",
             method: 'post',
            // contentType: 'multipart/form-data',
+            dataType: "jsonp", 
             data: data,
             processData: false,
             contentType: false,
@@ -259,6 +260,33 @@ $(function () {
         });
         return false;
     };
+    
+    function getDadataHints(params) {
+        
+        $.ajax({
+            type: "POST",
+            url: "/dadata/get-hints",
+            //method: 'post',
+            //contentType: 'application/json',
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify(params),
+            success: function (result, status, xhr) {
+                console.log('result = ', result);
+                $("#answerDadata").html(JSON.stringify(result, null, "   "));
+            },
+            error: function (xhr, status, error) {
+                $("#answerDadata").html('Send Dadata failed ' + xhr + status + error);
+            }
+        });
+        return false;
+    };
+    
+    $('#sendDadata').click(function () {
+        var param = {"query":$("#addressDadata").val(), "count":$("#limitDadata").val() };
+        getDadataHints(param);
+        return false;
+    });
 
     $('#productReviewForm').submit(function () {
 

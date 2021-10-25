@@ -56,6 +56,14 @@ class ArrayHelper
         return $return;
     }
 
+    /**
+     *
+     * @param array $elements
+     * @param string $parentId
+     * @param array $categoriesHasProduct
+     * @param bulean $return
+     * @return boolean
+     */
     private function LegalTree(array $elements, $parentId, array $categoriesHasProduct, $return = false)
     {
 //        if ($return) {
@@ -74,12 +82,12 @@ class ArrayHelper
 
     /**
      * Build tree out of a flat array
-     * @author Kraskov
+     * 
      * @param array $elements
-     * @param mixed $parentId
+     * @param string $parentId
      * @return array
      */
-    public static function buildTree(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
+    public static function buildTree(array $elements, $parentId = '0', $parentKey = 'parent_id', $key = 'id')
     {
         $branch = [];
         if (!empty($elements[$parentId])) {
@@ -93,7 +101,14 @@ class ArrayHelper
         }
         return $branch;
     }
-
+    
+    /**
+     * Build tree out of a flat array
+     * 
+     * @param array $elements
+     * @param mixed $parentId
+     * @return array
+     */
     public static function buildTreeAlex(array $elements, $parentId = 0, $parentKey = 'parent_id', $key = 'id')
     {
         $branch = [];
@@ -160,20 +175,18 @@ class ArrayHelper
         return $allParentsId;
     }
 
-//    public static function extractProdictsId ($products, $key = "product_id")
-//    {
-//        $filtredProducts = [];
-//        foreach ($products as $p) {
-//            $filtredProducts[] = $p[$key];
-//        }
-//        return $filtredProducts;
-//    }
+    /**
+     * 
+     * @param array $products
+     * @param string $key
+     * @return array
+     */
     public static function extractId($products, $key = "product_id")
     {
-        //$filtredProducts = [];
         foreach ($products as $p) {
             $filtredProducts[] = $p[$key];
         }
+     
         return $filtredProducts ?? [];
     }
 
