@@ -1,3 +1,6 @@
+<?php 
+    use Application\Resource\Resource;
+?>
 <?= $this->doctype() ?>
 <html lang="ru">
     <head>
@@ -61,7 +64,7 @@
                                     <span></span>
                                     <span></span>
                                 </span>
-                                <span><?= Application\Resource\Resource::THE_CATALOG ?></span>
+                                <span><?=Resource::THE_CATALOG ?></span>
                             </label>
                             <nav class="cats" id="cats">
                               <div class="cats__left">
@@ -82,7 +85,7 @@
                                         </li>
                                       </div>
                                       <li v-if="categoryChild.children && categoryChild.children.length > 6">
-                                        <a class="cats__all" :href="'/catalog/' + categoryChild.url">Все товары</a>
+                                          <a class="cats__all" :href="'/catalog/' + categoryChild.url"><?=Resource::THE_ALL_PRODUCTS ?></a>
                                       </li>
                                     </ul>
                                   </div>
