@@ -399,7 +399,7 @@ const StoreAdd = {
             }),{headers})
             .then(response => {
               console.log('Добавление магазина',response);
-              if (response.data.result){
+              if (response.data.data.result){
                 showMessage('Магазин добавлен!');
                 router.replace('/stores');
               } else {
