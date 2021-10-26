@@ -9,7 +9,11 @@ $('#accept-doc-form').submit(function(e){
         data: msg,
         success: function (data) {
           console.log('ответ на подтверждение оферты',data);
-          $('.popup--doc').remove();
+          if (data.result){
+            $('.popup--doc').remove();
+          } else {
+            showServicePopupWindow('Ошибка', data.error_description_for_user);
+          }
         }
     });
   } else {
