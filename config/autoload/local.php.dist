@@ -42,6 +42,11 @@ return [
             \ControlPanel\Service\ReviewManager::class => 'http://SRV02:8000/SC/hs/site/lk_get_reviews',
             'lk_update_review' => 'http://SRV02:8000/SC/hs/site/lk_update_review',
 
+            /** RequisitionManager */
+            'lk_get_requisitions' => 'http://SRV02:8000/SC/hs/site/lk_get_requisitions',
+            \ControlPanel\Service\RequisitionManager::class => 'http://SRV02:8000/SC/hs/site/lk_get_requisitions',
+            'lk_update_requisition' => 'http://SRV02:8000/SC/hs/site/lk_update_requisition',
+            
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             'lk_get_info_by_category' => 'http://SRV02:8000/SC/hs/site/lk_get_info_by_category',
