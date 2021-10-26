@@ -425,7 +425,7 @@ class UserDataController extends AbstractActionController
             return $this->userModalSendSms($return);
         }
 
-        if (!empty($post->userSmsCode) and $userAutSession['smscode'] != $post->userSmsCode) {
+        if ($userAutSession['smscode'] != $post->userSmsCode) {
             if(!empty($post->userSmsCode)) {
                 $return['error']['sms'] = Resource::ERROR_SEND_SMS_CODE_MESSAGE;
             }
@@ -456,8 +456,11 @@ class UserDataController extends AbstractActionController
             return $this->userModalView($return);
         }
 
-        $userAutSession['username'] = null == $post->userName ? '' : $post->userName;
-        $userAutSession['usermail'] = null == $post->userName ? '' : $post->userMail;
+//        $userAutSession['username'] = null == $post->userName ? '' : $post->userName;
+//        $userAutSession['usermail'] = null == $post->userName ? '' : $post->userMail;
+        $userAutSession['username'] = $post->userName ?? '';
+        $userAutSession['usermail'] = $post->userMail ?? '';
+        
         $container->userAutSession = $userAutSession;
 
         if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3 ) {
@@ -472,7 +475,8 @@ class UserDataController extends AbstractActionController
 
         $params = ['name' => $userAutSession['username'], 'phone' => $return['sendingPhone'], 'email' => $userAutSession['usermail'],];
         $response = $this->externalCommunicationService->setClientInfo($params);
-        $answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
+        //$answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
+        $answer = $response ?? ["result" => false, "errorDescription" => "no connection"];
         if (!$answer["result"]) {
             $return["error"]["1c"] = $answer['errorDescription'];
             return $this->userModalView($return);
