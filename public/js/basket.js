@@ -372,7 +372,7 @@ function waitingOrderStatusVerification(orderId, idInterval = false) {
     $.ajax({
         beforeSend: function () {
         },
-        url: "/ajax-chek-order-status",
+        url: "/ajax-check-order-status",
         type: 'POST',
         cache: false,
         data: {"orderId": orderId},

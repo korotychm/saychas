@@ -28,7 +28,7 @@ class Resource
     const USER_MENU_ORDERS = "Мои заказы";
     const USER_MENU_POST = "Мои оповещения";
     const USER_MENU_EXIT = "Выход";
-    
+
     /*
      * Поиск
      */
@@ -62,7 +62,7 @@ class Resource
     const BASKET_SAYCHAS3_short = "за три часа";
     const ERROR_MESSAGE = "Ошибка! ";
     const PRODUCTCARD_SORT_ORDER = [ 0 => "id desc", 1 => "rating desc", 2 => "price asc", 3 => "price desc" ] ;
- 
+
     /*
      * авторизация
      */
@@ -119,8 +119,14 @@ class Resource
     const ORDER_PAYMENT_BUTTON = "Перейти к оплате";
     const ORDER_AGGREMENT_NOTES = "Нажимая на кнопку, вы соглашаетесь с <a href=\"#\">Условиями обработки перс. данных</a>, а также с <a href=\"#\">Условиями продажи</a>";
     
-    
-    
+    /*
+     * доставка
+     */
+    const THE_DELIVERY_PROGRESS = "Сборка";
+    const THE_DELIVERY_READY = "Доставляется";
+    const THE_DELIVERY_DELIVERED = "Доставлен";
+    const THE_DELIVERY_CANCELED  = "Отменен";
+
     /*
      * Числовые данные
      */
@@ -131,7 +137,7 @@ class Resource
     const SQL_LIMIT_PRODUCTCARD_IN_PAGE = 24; //максимальное карточек товаров на странице
     const SQL_LIMIT_PRODUCTCARD_HISTORY = 12; //максимальное карточек товаров в истории просмотров
     const SQL_LIMIT_PRODUCTCARD_FAVORITES = 24; //максимальное карточек товаров в избранном
-    
+
 
     /*
      * Статусы заказов
@@ -154,7 +160,7 @@ class Resource
     const BRAND_REF = 6;
     const COLOR_REF = 7;
     const COUNTRY_REF = 8;
-    
+
     /**
      *  Rating & review
      */
@@ -168,9 +174,9 @@ class Resource
     const REVIEWS_PAGING_LIMIT = 10;
     const REVIEWS_SORT_ORDER_RATING = [ 0 => "time_created desc", 1 => "rating desc", 2 => "rating asc" ] ;
     const REVIEWS_IMAGE_GALLARY_LIMIT = 24;
-    
-    
-    
+
+
+
     const DEFAULT_IMAGE = "nophoto.jpeg";
 
 

@@ -60,7 +60,7 @@ class ProductCardsController extends AbstractActionController
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getClientFavoritesAction()
     {
@@ -79,7 +79,7 @@ class ProductCardsController extends AbstractActionController
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getClientHistoryAction()
     {
@@ -87,29 +87,31 @@ class ProductCardsController extends AbstractActionController
             $this->getResponse()->setStatusCode(Response::STATUS_CODE_403);
             return; //$this->redirect()->toRoute('home');
         }
+        
         $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
         $productsId = ArrayHelper::extractId($favProducts);
-        return new JsonModel($this->getProducts(["where" => ["id" => $productsId]],["limit" => Resource::SQL_LIMIT_PRODUCTCARD_HISTORY]));
         
-//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-//
-//        return new JsonModel($this->commonHelperFuncions->getProductCardArray($product, $userId));
+        return new JsonModel($this->getProducts(["where" => ["id" => $productsId]],["limit" => Resource::SQL_LIMIT_PRODUCTCARD_HISTORY]));
+
     }
 
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductCategoriesAction()
     {
         $post = $this->getRequest()->getPost();
         $categoryId = $post->categoryId;
+        
         if (empty($params = Setting::find(['id' => 'main_menu']))) {
             return new JsonModel([]);
         }
+        
         $categories = Json::decode($params->getValue(), Json::TYPE_ARRAY);
         $category = $categories[$categoryId]["categories"];
+        
         foreach ($category as $item) {
             $param[] = $item["id"];
         }
@@ -120,7 +122,7 @@ class ProductCardsController extends AbstractActionController
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductsTopAction()
     {
@@ -130,11 +132,12 @@ class ProductCardsController extends AbstractActionController
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductsBrandAction()
     {
         $post = $this->getRequest()->getPost();
+       
         if (empty($post->brandId)) {
             return new JsonModel([]);
         }
@@ -145,11 +148,12 @@ class ProductCardsController extends AbstractActionController
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductsStoreAction()
     {
         $post = $this->getRequest()->getPost();
+       
         if (empty($post->storeId)) {
             return new JsonModel([]);
         }
@@ -160,39 +164,38 @@ class ProductCardsController extends AbstractActionController
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductsProviderAction()
     {
         $post = $this->getRequest()->getPost();
+        
         if (empty($post->providerId)) {
             return new JsonModel([]);
         }
+        
         if (!empty($category_url = $post->categoryId));
         
-
         return new JsonModel($this->getProductsProvider(['provider_id' => $post->providerId, 'category_id' => $post->categoryId]));
     }
 
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductsCatalogAction()
     {
-        $post = $this->getRequest()->getPost()->toArray();
-        return new JsonModel($this->getProductsCatalog($post));
+        return new JsonModel($this->getProductsCatalog($this->getRequest()->getPost()->toArray()));
     }
 
     /**
      * return JSON product cards
      *
-     * @return Json model
+     * @return JsonModel
      */
     public function getProductsSaleAction()
     {
-
         return new JsonModel($this->getProductsSale());
     }
 
@@ -207,12 +210,15 @@ class ProductCardsController extends AbstractActionController
         $category_id = $params['category_id'];
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $where = new Where();
+       
         if (!empty($params['priceRange'])) {
             list($low, $high) = explode(';', $params['priceRange']);
             $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
         }
+        
         $where->in('category_id', $categoryTree);
-        $characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+        //$characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
+        $characteristics = $params['characteristics'] ?? [];
 
         return (!empty($characteristics)) ? $this->filterWhere($characteristics, $where) : $where;
     }
@@ -324,6 +330,7 @@ class ProductCardsController extends AbstractActionController
     {
         $where = new Where();
         $where->equalTo('brand_id', $params['brand_id']);
+       
         if (!empty($params['category_id'])) {
             $where->equalTo('category_id', $params['category_id']);
         }
@@ -361,6 +368,7 @@ class ProductCardsController extends AbstractActionController
         $products = ArrayHelper::extractId($storeProducts);
         $where = new Where();
         $where->in('id', $products);
+      
         if (!empty($params['category_id'])) {
             $where->equalTo('category_id', $params['category_id']);
         }
@@ -410,6 +418,7 @@ class ProductCardsController extends AbstractActionController
         if (empty($params['priceRange'])) {
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
+       
         unset($params['offset'], $params['limit']);
         $params['where'] = $this->getWhereCatalog($params);
         
@@ -520,6 +529,7 @@ class ProductCardsController extends AbstractActionController
         $params = array_merge($param, $appendParam);
         $products = $this->handBookRelatedProductRepository->findAll($params);
         $limit = $appendParam['limit'];
+        
         return $this->commonHelperFuncions->getProductCardArray($products, $this->identity(), $count, $limit );
     }
     

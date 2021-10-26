@@ -60,7 +60,8 @@ use Laminas\Db\Sql\Where;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
 
-class AjaxController extends AbstractActionController {
+class AjaxController extends AbstractActionController
+{
 
     private $testRepository;
     private $categoryRepository;
@@ -95,7 +96,8 @@ class AjaxController extends AbstractActionController {
             UserRepository $userRepository,
             AuthenticationService $authService,
             ProductCharacteristicRepositoryInterface $productCharacteristicRepository, BasketRepositoryInterface $basketRepository, ProductImageRepositoryInterface $productImageRepository/* ,
-              SessionContainer $sessionContainer */, CommonHelperFunctionsService $commonHelperFuncions) {
+              SessionContainer $sessionContainer */, CommonHelperFunctionsService $commonHelperFuncions)
+    {
         $this->testRepository = $testRepository;
         $this->categoryRepository = $categoryRepository;
         $this->providerRepository = $providerRepository;
@@ -134,9 +136,10 @@ class AjaxController extends AbstractActionController {
     /**
      * return Top brands
      *
+     * @route /ajax-get-brands-top
      * @return JSON
      */
-    public function getBrandsTopAction() 
+    public function getBrandsTopAction()
     {
         $count_columns = new \Laminas\Db\Sql\Expression("count(`product_id`) as `count`, `product_id` as product_id");
         $productsTop = ProductHistory::findAll(['columns' => [$count_columns], 'group' => ['product_id'], 'having' => ['count > 1'], 'group' => ['product_id'], 'limit' => $limit,])->toArray();
@@ -146,7 +149,7 @@ class AjaxController extends AbstractActionController {
         $products = $this->productRepository->findAll(["where" => $productWhere, "columns" => ["brand_id"], "group" => "brand_id"])->toArray();
         $brandsId = ArrayHelper::extractId($products, "brand_id");
         $brands = Brand::findAll(["where" => ["id" => $brandsId], 'limit' => Resource::SQL_LIMIT_BRAND_SLIDER])->toArray();
-       
+
         foreach ($brands as $brand) {
             $return[] = $brand;
         }
@@ -155,26 +158,26 @@ class AjaxController extends AbstractActionController {
     }
 
     /**
-     * 
+     * @route /ajax-get-basket-json
      * @return JsonModel
      */
-    public function ajaxGetBasketJsonAction() 
+    public function ajaxGetBasketJsonAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
-       
+
         if (empty($return['userId'])) {
             return $this->getResponse()->setStatusCode(403);
             //return;
         }
-        
+
         $return['basket'] = [];
         $basket = Basket::findAll(['user_id' => $userId, 'order_id' => "0"]);
-        
+
         if (empty($basket)) {
             return new JsonModel($return);
         }
-        
+
         foreach ($basket as $basketItem) {
             $return['basket'][$basketItem->getProductId()] = ["id" => $basketItem->getProductId(), "total" => $basketItem->getTotal(), "price" => $basketItem->getPrice(), "discount" => $basketItem->getDiscount(),];
         }
@@ -182,7 +185,11 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function delFromBasketAction() 
+    /**
+     * @route /ajax/del-from-basket
+     * @return JsonModel
+     */
+    public function delFromBasketAction()
     {
         $return = ["error" => true, "count" => 0];
         $post = $this->getRequest()->getPost();
@@ -194,13 +201,19 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function getJsonCategoryFiltersAction() 
+    /**
+     * @route /ajax-get-category-filters
+     * @return JsonModel
+     */
+    public function getJsonCategoryFiltersAction()
     {
         $post = $this->getRequest()->getPost();
         $return['category_id'] = $category_id = $post->categoryId;
+
         if (!$category_id or empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id))) {
             return new JsonModel($return);
         }
+
         $categoryTree = $this->categoryRepository->findCategoryTree($category_id, [$category_id]);
         $products = $this->productRepository->findAll(['where' => ['category_id' => $categoryTree], 'columns' => ['id'], "group" => ['id']])->toArray();
         $productsId = ArrayHelper::extractId($products, 'id');
@@ -211,35 +224,51 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function getUserOrderListAction() 
+    /**
+     * @route /ajax-get-order-list
+     * @return JsonModel
+     */
+    public function getUserOrderListAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = true;
         $orders = ClientOrder::findAll(["where" => ['user_id' => $userId]]);
+
         if ($orders->count() < 1) {
             return new JsonModel(["result" => false]);
         }
+
         $return["order_list"] = $this->htmlProvider->orderList($orders);
         $productMap = $this->getBasketProductMap($userId);
+
         if ($productMap['result'] == false) {
             return new JsonModel($productMap);
         }
+
         $return["productsMap"] = $productMap['products'];
 
         return new JsonModel($return);
     }
 
-    private function getBasketProductMap($userId, $orderId = 0) 
+    /**
+     *
+     * @param int $userId
+     * @param string $orderId
+     * @return array
+     */
+    private function getBasketProductMap($userId, $orderId = 0)
     {
         $products = [];
         $where = new Where();
         $where->equalTo('user_id', $userId);
+
         if ($orderId == 0) {
             $where->notEqualTo('order_id', $orderId);
         } else {
             $where->equalTo('order_id', $orderId);
         }
+
         $columns = ['product_id'];
         $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
 
@@ -255,37 +284,52 @@ class AjaxController extends AbstractActionController {
         return empty($products) ? ["result" => false, "error" => "order $orderId have not basket products " . Json::encode(['where' => $where, 'columns' => $columns])] : ["result" => true, "products" => $products];
     }
 
-    public function getUserOrderPageAction() 
+    /**
+     * @route /ajax-get-order-page
+     * @return JsonModel
+     */
+    public function getUserOrderPageAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
+
         if (!empty($return['order_id'] = $post->orderId)) {
             return new JsonModel($return);
         }
+
         $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
+
         if (empty($order)) {
             return new JsonModel($return);
         }
+
         $return["order_info"] = $this->htmlProvider->orderList([$order]);
         $productMap = $this->getBasketProductMap($userId, $return['order_id']);
+
         if ($productMap['result'] == false) {
             return new JsonModel($productMap);
         }
+
         $return["productsMap"] = $productMap['products'];
         $return["result"] = true;
 
         return new JsonModel($return);
     }
 
-    public function checkOrderStatusAction() 
+    /**
+     * @route /ajax-check-order-status
+     * @return JsonModel
+     */
+    public function checkOrderStatusAction()
     {
         $post = $this->getRequest()->getPost();
         $return['order_id'] = $orderId = $post->orderId;
         $return['order_status'] = false;
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
+
         if (!empty($order = ClientOrder::find(["order_id" => $orderId]))) {
             $return ['order_status'] = $order->getStatus();
             //$return ['order_status'] = 1;  //test mode switch
@@ -296,16 +340,22 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function ajaxUserDeleteAddressAction() 
+    /**
+     * @route /user-delete-address
+     * @return JsonModel
+     */
+    public function ajaxUserDeleteAddressAction()
     {
         $post = $this->getRequest()->getPost();
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
+
         if (empty($user) or empty($user->getPhone())) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
+
         $return['reload'] = $post->reload;
         $return['dataId'] = $post->dataId;
         $remove = UserData::remove(['where' => ['user_id' => $userId, 'id' => $return['dataId']]]);
@@ -314,22 +364,30 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function ajaxUserSetDefaultAddressAction() 
+    /**
+     * @route /user-set-default-address
+     * @return JsonModel
+     */
+    public function ajaxUserSetDefaultAddressAction()
     {
         $post = $this->getRequest()->getPost();
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return['userId'] = $userId = $container->userIdentity;
+
         if (!$return['userId']) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
+
         $return['reload'] = true;
         $return['dataId'] = $post->dataId;
         $userData = UserData::findAll(['where' => ['user_id' => $userId, 'id' => $return['dataId']]])->current();
-        if (null == $userData) {
+
+        if (empty($userData)) {
             $return['error'] = "adress not found";
             return new JsonModel($return);
         }
+
         $userGeoData = $userData->getGeodata();
         $userData->setTime(time());
         $userData->persist(['user_id' => $userId, 'id' => $return['dataId']]);
@@ -338,43 +396,53 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function ajaxBasketChangedAction() 
+    /**
+     * @route /ajax-basket-changed
+     * @return JsonModel
+     */
+    public function ajaxBasketChangedAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
         $whatHappened = $container->whatHappened;
+
         if (!empty($whatHappened['products'])) {
             $return = ["result" => true, "products" => $whatHappened['products'], "stores" => $whatHappened['stores']];
             $return ['updated'] = $this->htmlProvider->basketWhatHappenedUpdate($userId, $whatHappened['products']);
         } else {
             $return = ["result" => false];
         }
+
         unset($container->whatHappened);
 
         return new JsonModel($return);
     }
 
-    public function basketCheckBeforeSendAction() 
+    /**
+     * @route /ajax-basket-check-before-send
+     * @return JsonModel
+     */
+    public function basketCheckBeforeSendAction()
     {
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        //$userPhone = (empty($user)) ? false : $user->getPhone();
+
         if (empty($user) or empty($user->getPhone())) {
             return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/",]);
         }
+
         $userData = UserData::findAll(['where' => ['user_id' => $userId], 'order' => 'timestamp DESC'])->current();
+
         if (empty($userData)) {
             return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/"]);
         }
-        //$userGeoData = $userData->getGeodata();
         $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userData->getGeodata());
         $post = $this->getRequest()->getPost();
-        //$param = ['basketUserId' => $post->userIdentity, 'userId' => $userId, 'postedProducts' => $post->products];
-
         $where = new Where();
         $where->equalTo('user_id', $userId)->equalTo('order_id', 0);
         $columns = ['product_id', 'total', 'price'];
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
+
         if (!empty($basket)) {
             $return = $this->htmlProvider->basketCheckBeforeSendService(['basketUserId' => $post->userIdentity, 'userId' => $userId, 'postedProducts' => $post->products], $basket);
             return new JsonModel($return);
@@ -383,7 +451,31 @@ class AjaxController extends AbstractActionController {
         return new JsonModel(['result' => false, "reload" => true, "reloadUrl" => "/"]);
     }
 
-    public function addToFavoritesAction() 
+    /**
+     * @route /ajax/add-to-favorites
+     * @return JsonModel
+     */
+    public function addToFavoritesAction()
+    {
+        if (!$userId = $this->identity()) {
+            return $this->getResponse()->setStatusCode(403);
+        }
+
+        if (empty($productId = $this->getRequest()->getPost()->productId)) {
+            return new JsonModel(['result' => false, "description" => " product undefinded "]);
+        }
+
+        $favoritesItem = ProductFavorites::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
+        $favoritesItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
+
+        return new JsonModel(['result' => true, "description" => "product $productId added to favorites", 'lable' => Resource::REMOVE_FROM_FAVORITES]);
+    }
+
+    /**
+     * @route /ajax/remove-from-favorites
+     * @return JsonModel
+     */
+    public function removeFromFavoritesAction()
     {
         if (!$userId = $this->identity()) {
 
@@ -391,22 +483,6 @@ class AjaxController extends AbstractActionController {
         }
         if (empty($productId = $this->getRequest()->getPost()->productId)) {
 
-            return new JsonModel(['result' => false, "description" => " product undefinded "]);
-        }
-        $favoritesItem = ProductFavorites::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
-        $favoritesItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
-
-        return new JsonModel(['result' => true, "description" => "product $productId added to favorites", 'lable' => Resource::REMOVE_FROM_FAVORITES]);
-    }
-
-    public function removeFromFavoritesAction() 
-    {
-        if (!$userId = $this->identity()) {
-            
-            return   $this->getResponse()->setStatusCode(403);
-        }
-        if (empty($productId = $this->getRequest()->getPost()->productId)) {
-            
             return new JsonModel(['result' => false, "description" => " product undefinded "]);
         }
         ProductFavorites::remove(['where' => ['user_id' => $userId, 'product_id' => $productId]]);
@@ -440,7 +516,7 @@ class AjaxController extends AbstractActionController {
      *  промежуточный скрипт для http://api4.searchbooster.io
      * @return json
      */
-    public function searchBoosterApiAction() 
+    public function searchBoosterApiAction()
     {
         $json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io" . $_SERVER["REQUEST_URI"]));
         $return = (!empty($json)) ? Json::decode($json, Json::TYPE_ARRAY) : [];
@@ -448,10 +524,14 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function addToBasketAction() 
+    /**
+     * /ajax/add-to-basket
+     * @return JsonModel
+     */
+    public function addToBasketAction()
     {
         if (!$userId = $this->identity()) {
-            
+
             return $this->getResponse()->setStatusCode(403);
         }
         $return = ["error" => true, "count" => 0];
@@ -491,7 +571,11 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function calculateBasketItemAction() 
+    /**
+     * @route /ajax/calculate-basket-item
+     * @return JsonModel
+     */
+    public function calculateBasketItemAction()
     {
         $post = $this->getRequest()->getPost();
         if (!$userId = $this->identity()) {
@@ -512,11 +596,14 @@ class AjaxController extends AbstractActionController {
         return new JsonModel($return);
     }
 
-    public function basketOrderMergeAction() 
+    /**
+     * @route /ajax-basket-order-merge
+     * @return ViewModel
+     */
+    public function basketOrderMergeAction()
     {
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         if (!$userId = $this->identity()) {
-            
             return $this->getResponse()->setStatusCode(403);
         }
         $post = $this->getRequest()->getPost();
@@ -524,42 +611,32 @@ class AjaxController extends AbstractActionController {
         //$selectedtimepoint = [];
         $selectedtimepoint[0][$timepoint[0]] = " checked ";
         $selectedtimepoint[1][$timepoint[1]] = " checked ";
-        
+
         $return = $this->htmlProvider->basketMergeData($post, $param);
         $return['ordermerge'] = $post->ordermerge;
         $return['selectedtimepoint'] = $selectedtimepoint;
         $return['timepoint'] = $timepoint;
         $return['timepointtext1'] = $post->timepointtext1;
-        $return['timepointtext3'] = $post->timepointtext3;            
+        $return['timepointtext3'] = $post->timepointtext3;
         $view = new ViewModel($return);
-//        $view = new ViewModel([
-//            'ordermerge' => $post->ordermerge,
-//            'timeClose' => $return['timeClose'],
-//            'countStors' => $return["count"],
-//            'hourPrice' => $return["hourPrice"],
-//            'hour3Price' => $return["hour3Price"],
-//            'select1hour' => $return["select1hour"],
-//            'select3hour' => $return["select3hour"],
-//            'selectedtimepoint' => $selectedtimepoint,
-//            'timepoint' => $timepoint,
-//            'timepointtext1' => $post->timepointtext1,
-//            'timepointtext3' => $post->timepointtext3,
-//            'printr' => "<pre>" . print_r($post, true) . "</pre>",
-//        ]);
         $view->setTemplate('application/common/basket-order-merge');
 
         return $view->setTerminal(true);
     }
 
-    public function basketPayCardInfoAction() 
+    /**
+     * @route /ajax-basket-pay-card-info
+     * @return ViewModel
+     */
+    public function basketPayCardInfoAction()
     {
         if (!$userId = $this->identity()) {
-            return new JsonModel(["error" => true, "errorMessage" => "user not found"]);
+            return $this->getResponse()->setStatusCode(403);
         }
+
         $userPaycards = UserPaycard::findAll(['where' => ["user_id" => $userId], "order" => "timestamp desc"]);
         $paycards = ($userPaycards->count()) ? $userPaycards : null;
         $cardInfo = $this->htmlProvider->getUserPayCardInfoService($paycards);
-
         $post = $this->getRequest()->getPost();
         $paycard = $post->paycard;
         $view = new ViewModel([
@@ -572,7 +649,11 @@ class AjaxController extends AbstractActionController {
         return $view->setTerminal(true);
     }
 
-    public function basketPayInfoAction() 
+    /**
+     * @route /ajax-basket-pay-info
+     * @return ViewModel
+     */
+    public function basketPayInfoAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
@@ -607,7 +688,7 @@ class AjaxController extends AbstractActionController {
         $row["cardinfo"] = $cardInfo;
         $row['paycard'] = $post->paycard;
         $row['timeDelevery'] = $timeDelevery;
-        $view = new ViewModel($row) ;
+        $view = new ViewModel($row);
 
 //        $view = new ViewModel([
 //            "payEnable" => $row["payEnable"],
@@ -635,58 +716,81 @@ class AjaxController extends AbstractActionController {
         return $view->setTerminal(true);
     }
 
-    public function previewAction() 
-    {
-        $this->layout()->setTemplate('layout/preview');
+    /**
+     *
+     * @return ViewModel
+     */
+//    public function previewAction()
+//    {
+//        $this->layout()->setTemplate('layout/preview');
+//
+//        return new ViewModel(['menu' => '',]);
+//    }
 
-        return new ViewModel(['menu' => '',]);
-    }
-
-    public function ajaxGetLegalStoreAction() 
+    /**
+     * @route /ajax-get-legal-store
+     * @return JsonModel
+     */
+    public function ajaxGetLegalStoreAction()
     {
-        $post = $this->getRequest()->getPost();
-        if (!$json = $post->value) {
+        //$post = $;
+        if (!$json = $this->getRequest()->getPost()->value) {
             return new JsonModel(null);
         }
+
         try {
-            $TMP = Json::decode($json);
+            $decoded = Json::decode($json);
         } catch (LaminasJsonRuntimeException $e) {
             return new JsonModel(["result" => false, "error" => $e->getMessage()]);
         }
-        $ob = $TMP->data;
-        if (!$ob->house) {
-            return new JsonModel(["result" => false, "error" => Resource::USER_ADDREES_ERROR_MESSAGE]);
+        //$decoded->data;
+        if (!$decoded->data->house) {
+            return new JsonModel(["result" => false, "error" => Resource::USER_ADDREES_ERROR_MESSAGE . ""]);
         }
+
         $return = $this->commonHelperFuncions->updateLegalStores($json);
 
         return new JsonModel($return);
     }
 
-    public function ajaxAddUserAddressAction() 
+    /**
+     * @route /ajax-add-user-address
+     * @return JsonModel
+     */
+    public function ajaxAddUserAddressAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
+
         $user = $this->userRepository->find(['id' => $userId]);
         $post = $this->getRequest()->getPost();
         $return["user"] = $userId;
+
         if ($userId and $post->address and $post->dadata) {
             $return["error"] = "Successfull! ";
             $return["ok"] = "Address fixed as: {$post->address}";
             $userData = new UserData();
             $userData->setUserId($userId)->setAddress($post->address)->setGeodata($post->dadata)->setTime(time());
+
             try {
                 $user->setUserData([$userData]);
             } catch (InvalidQueryException $e) {
                 $return['error'] = $e->getMessage();
             }
-        return new JsonModel($return);
-        } 
+
+            return new JsonModel($return);
+        }
+
         return new JsonModel(["error" => "Error! "]);
     }
 
-    public function ajaxSetUserAddressAction() 
+    /**
+     * @route /ajax-set-user-address
+     * @return JsonModel
+     */
+    public function ajaxSetUserAddressAction()
     {
         if (!$userId = $this->identity()) {
             $this->getResponse()->setStatusCode(403);
@@ -699,25 +803,24 @@ class AjaxController extends AbstractActionController {
 
         return new JsonModel($return);
     }
-    
+
     /**
-     * set product_rating and product_user_rating
-     * 
-     * @param POST productId  rating
-     * @return JSON
+     * disabled
+     *
+     * @return  JsonModel
      */
-    public function setProductRatingAction() 
+    public function setProductRatingAction()
     {
-        return new JsonModel(["result" => false, "description" => "Service unavailble" ]);
-        
+        return new JsonModel(["result" => false, "description" => "Service unavailble"]);
+
 //        if (empty($param['user_id']  = $this->identity()) or empty($param['product_id'] = $this->getRequest()->getPost()->productId)) {
 //            return $this->getResponse()->setStatusCode(403);
 //        }
-//        
+//
 //        $patternRating = Resource::PRODUCT_RATING_VALUES;
 //        $rating =  $this->getRequest()->getPost()->rating;
 //        $param['rating'] = $patternRating[$rating]) ?? end($patternRating);
-//        
+//
 //        return new JsonModel($this->productRepository->setProductRating($param));
     }
 

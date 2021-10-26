@@ -27,8 +27,7 @@ class DadataController extends AbstractActionController
 
     /**
      * @route /dadata/get-hints
-     * @post string address
-     * @post int limit
+     * 
      * @return JsonModel
      */
     public function getDadataHintsAction()

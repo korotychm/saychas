@@ -271,6 +271,9 @@ return [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/catalog[/:id]',
+                'constraints' => [
+                        'id' => '.*?',
+                    ],
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action' => 'catalog',
@@ -1114,7 +1117,7 @@ return [
             'ajax-chek-order-status' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route' => '/ajax-chek-order-status',
+                    'route' => '/ajax-check-order-status',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action' => 'checkOrderStatus',

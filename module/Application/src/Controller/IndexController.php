@@ -143,6 +143,7 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        /**/
         $container = new Container();
         
         if ($container->signedUp != true) {
@@ -150,8 +151,8 @@ class IndexController extends AbstractActionController
                 return $this->redirect()->toUrl('/my-login');
             }    
         }
-        
-        $userAuthAdapter = new UserAuthAdapter(/* $this->userRepository *//* $this->sessionContainer */);
+        /**/
+        $userAuthAdapter = new UserAuthAdapter();
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
      
@@ -183,12 +184,35 @@ class IndexController extends AbstractActionController
         return $response;
     }
 
+     /**
+     * @route /
+     * @return ViewModel
+     */
+    public function indexAction()
+    {
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
+        return new ViewModel([
+        ]);
+    }
+    
+    /**
+     * Show login page
+     * 
+     * @return ViewModel
+     */
     public function myLoginAction()
     {
         $this->layout()->setTemplate('layout/my-layout');
         return new ViewModel([]);
     }
 
+    /**
+     * 
+     * @return HTTP redirect
+     */
     public function signupAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
@@ -202,71 +226,18 @@ class IndexController extends AbstractActionController
         return $this->redirect()->toUrl('/my-login');
     }
 
-//    private function matchProduct(HandbookRelatedProduct $product, $characteristics)
-//    {
-//        $flags = [];
-//        foreach ($characteristics as $key => $value) {
-//            $found = $this->productCharacteristicRepository->find(['characteristic_id' => $key, 'product_id' => $product->getId()]);
-//            if (null == $found) {
-//                $flags[$key] = false;
-//                continue;
-//            }
-//            $type = $found->getType();
-//            switch ($type) {
-//                case CharacteristicRepository::INTEGER_TYPE:
-//                    list($left, $right) = explode(';', $value[0]);
-//                    $flags[$key] = !($found->getValue() < $left || $found->getValue() > $right);
-//                    break;
-//                case CharacteristicRepository::BOOL_TYPE:
-//                    $flags[$key] = ($found->getValue() == $value);
-//                    break;
-//                default:
-//                    $flags[$key] = in_array($found->getValue(), $value);
-//                    break;
-//            }
-//        }
-//        foreach ($flags as $f) {
-//            if (!$f) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    private function getProducts($params)
-//    {
-//        $where = new \Laminas\Db\Sql\Where();
-//        list($low, $high) = explode(';', $params['priceRange']);
-//        $where->lessThanOrEqualTo('price', $high)->greaterThanOrEqualTo('price', $low);
-//        $where->equalTo('category_id', $params['category_id']);
-//        //$where->in('category_id', $params['category_id']);
-//
-//        unset($params['offset']);
-//        unset($params['limit']);
-//        $params['where'] = $where;
-//
-//        $products = $this->handBookRelatedProductRepository->findAll($params);
-//        $filteredProducts = [];
-//        foreach ($products as $product) {
-//            $matchResult = $this->matchProduct($product, $params['characteristics']);
-//            if ($matchResult) {
-//                $filteredProducts[] = $product;
-//            }
-//        }
-//        return $filteredProducts;
-//    }
-
+    /**
+     * Client orders page
+     * 
+     * @route  /user/orders
+     * @return ViewModel
+     */
     public function clientOrdersAction()
     {
-        
-        $w = null;
-        $r = $w ?? "bbb";
-        exit ($r);
-        
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userPhone = (!empty($user)) ? $user->getPhone() : false ;
@@ -281,42 +252,42 @@ class IndexController extends AbstractActionController
         ]);
     }
 
+    /**
+     * Client orders page
+     * 
+     * @route  /user/order[/:id]
+     * @return ViewModel
+     */
     public function clientOrderPageAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userPhone = (!empty($user)) ? $user->getPhone() : false ;
+        
         if (!$userPhone) {
             return $this->unauthorizedLocation();
         }
+        
         if (empty($orderId = $this->params()->fromRoute('id', '')) or null == $order = ClientOrder::find(['user_id' => $userId, 'order_id' => $orderId])) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('/user/orders');
         }
+        
         $orderInfo = $this->htmlProvider->orderList([$order]);
 
-        return new ViewModel([
-            'title' => "Заказ №" . $orderInfo[0]['orderId'] . "", //. Resource::ORDER_TITLE, //  $container->item
-            'orderDate' => strftime('%c', (int) $orderInfo[0]['orderDate']),
-            //'orders'=> $orderList,
-            "orderInfo" => $this->htmlProvider->orderList([$order])[0],
-        ]);
+        return new ViewModel(['title' => "Заказ №" . $orderInfo[0]['orderId'] . "", 'orderDate' => strftime('%c', (int) $orderInfo[0]['orderDate']), "orderInfo" => $this->htmlProvider->orderList([$order])[0],]);
     }
 
-    public function indexAction()
-    {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
-        return new ViewModel([
-        ]);
-    }
-
+   /**
+     * Basket page
+     * 
+     * @route  /basket
+     * @return ViewModel
+     */
     public function basketAction()
     {
 //        $container = new Container();
@@ -349,6 +320,12 @@ class IndexController extends AbstractActionController
         return new ViewModel($content);
     }
 
+    /**
+     * Page for test
+     * 
+     * @route preview
+     * @return ViewModel
+     */
     public function previewAction()
     {
 //        $container = new Container();
@@ -361,13 +338,17 @@ class IndexController extends AbstractActionController
         ]);
     }
 
+    /**
+     * 
+     * @route  /user/favorites
+     * @return ViewModel
+     */
     public function clientFavoritesPageAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
-
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
         $userInfo = $this->commonHelperFuncions->getUserInfo($user);
@@ -380,6 +361,12 @@ class IndexController extends AbstractActionController
         ]);
     }
 
+    /**
+     * Product page
+     * 
+     * @route /product[/:id]
+     * @return ViewModel
+     */
     public function productPageAction()
     {
 //        $container = new Container();
@@ -393,19 +380,15 @@ class IndexController extends AbstractActionController
             return $this->responseError404();
         }
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
-        //exit (print_r($param));
-        
         $productPage = $this->htmlProvider->productPageService($products);
         $productPage['breadCrumbs'] = ($productPage['categoryId'] and!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) ? array_reverse($matherCategories) : [];
-
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId);
         $this->addProductToHistory($product_id);
         $productPage['category'] = (!empty($productPage['categoryId'])) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
         $productPage['id'] = $product_id;
         $productPage['images'] = $this->getProductImages($product_id); 
         $productPage['delivery_price'] = $param ['hourPrice'];
-        //exit (print_r($productPage['images']));
-
+        
         return new ViewModel($productPage);
     }
     
@@ -426,29 +409,45 @@ class IndexController extends AbstractActionController
         return $productImages ?? [];
     }
 
+    /**
+     * Category page
+     * 
+     * @route /catalog[/:id]
+     * @return ViewModel
+     */
     public function catalogAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         $category_url = $this->params()->fromRoute('id', '');
+        
         if (empty($category_url) or empty($category = $this->categoryRepository->findCategory(['url' => $category_url]))) {
-            exit (print_r(['url' => $category_url]));
+            //exit (print_r(['url' => $category_url]));
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
         }
+        
         $category_id = $category->getId();
         $breadCrumbs = ((!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($category_id)))) ? array_reverse($matherCategories) : [];
         $categoryTitle = $category->getTitle();
         $categoryTree = $this->categoryRepository->categoryFilteredTree($category_id);
+        
         foreach ($categoryTree as $category) {
             $childCategories[] = [$category['url'],  $category['title']];
         }
+        
         return new ViewModel(["catalog" => $childCategories ?? [] /* $categories */, "title" => $categoryTitle, "id" => $category_id, "breadCrumbs" => $breadCrumbs,]);
     }
 
+     /**
+     * Mixed categories page
+     * 
+     * @route /category[/:id]
+     * @return ViewModel
+     */
     public function categoryAction($category_id = false)
     {
 //        $container = new Container();
@@ -458,9 +457,11 @@ class IndexController extends AbstractActionController
         if (empty($category_id)) {
             $category_id = $this->params()->fromRoute('id', '');
         }
+        
         if (empty($params = Setting::find(['id' => 'main_menu']))) {
             return $this->responseError404();
         }
+        
         $categories = Json::decode($params->getValue(), Json::TYPE_ARRAY);
 
         if (empty($category = $categories[$category_id])) {
@@ -470,17 +471,25 @@ class IndexController extends AbstractActionController
         return new ViewModel(["title" => $category["title"],]);
     }
 
+    /**
+     * products of brand
+     * 
+     * @route /brand[/:id][/:category_id]
+     * @return ViewModel
+     */
     public function brandProductsAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $brand_id = $this->params()->fromRoute('brand_id', '');
         $category_url = $this->params()->fromRoute('category_id', '');
+  
         if (empty($brand = Brand::find(["id" => $brand_id]))) {
             return $this->responseError404();
         }
+        
         $brandTitle = $brand->getTitle();
         $categories = $this->getBrandCategories($brand_id);
         $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';
@@ -504,27 +513,38 @@ class IndexController extends AbstractActionController
         return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $brand->getImage(), 'id' => $brand_id, 'category_id' => $category_id, "title" => $brandTitle, 'category_title' => $categoryTitle,]);
     }
 
+    /**
+     * products of seller
+     * 
+     * @route /seller[/:id][/:category_id]
+     * @return ViewModel
+     */
     public function providerProductsAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
+        
         $provider_id = $this->params()->fromRoute('provider_id', '');
         $category_url = $this->params()->fromRoute('category_id', '');
+      
         if (empty($provider = Provider::find(["id" => $provider_id]))) {
             return $this->responseError404();
         }
+        
         $providerTitle = $provider->getTitle();
         $categories = $this->getProviderCategories($provider_id);
         $categoryTitle = (empty($category_url)) ? Resource::THE_ALL_PRODUCTS : '';
-        //$categoryTitle = Resource::THE_ALL_PRODUCTS;
         $breadCrumbs[] = [null, $providerTitle];
+    
         foreach ($categories as $category) {
+          
             if ($category->getUrl() == $category_url) {
                 $categoryTitle = $category->getTitle();
                 $category_id = $category->getId();
             }
+            
             $breadCrumbs[] = [$category->getUrl(), $category->getTitle()];
         }
 
@@ -532,28 +552,38 @@ class IndexController extends AbstractActionController
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toUrl('/seller/' . $provider_id);
         }
+        
         return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'id' => $provider_id, 'category_id' => $category_id, "title" => $providerTitle, 'category_title' => $categoryTitle,]);
     }
 
+    /**
+     * products of store
+     * 
+     * @route /store[/:id][/:category_id]
+     * @return ViewModel
+     */
     public function storeProductsAction()
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         $store_id = $this->params()->fromRoute('store_id', '');
         $category_url = $this->params()->fromRoute('category_id', '');
+      
         if (empty($store = Store::find(["id" => $store_id]))) {
             return $this->responseError404();
         }
+        
         $provider_id = $store->getProviderId();
+        
         if (empty($provider = Provider::find(["id" => $provider_id]))) {
             return $this->responseError404();
         }
-        $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';
+        
+        $categoryTitle = (empty($category_url)) ? Resource::THE_ALL_PRODUCTS : '';
         $storeTitle = $provider->getTitle();
-
         $categories = $this->getStoreCategories($store_id);
         $breadCrumbs[] = [null, $storeTitle];
 
@@ -576,14 +606,15 @@ class IndexController extends AbstractActionController
 
     private function getStoreCategories($store_id)
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         $storeProducts = StockBalance::findAll(["where" => ['store_id' => $store_id], 'columns' => ['product_id'], "group" => "product_id"])->toArray();
         $products = ArrayHelper::extractId($storeProducts);
         $storeProductsCategories = $this->productRepository->findAll(["where" => ["id" => $products], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+        
         foreach ($storeProductsCategories as $category) {
             $categoriesArray[] = $category->getCategoryId();
         }
@@ -591,9 +622,15 @@ class IndexController extends AbstractActionController
         return $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]); //->toArray();
     }
 
+    /**
+     * 
+     * @param string $brand_id
+     * @return mixed
+     */
     private function getBrandCategories($brand_id)
     {
         $brandProductsCategories = $this->productRepository->findAll(["where" => ["brand_id" => $brand_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+       
         foreach ($brandProductsCategories as $category) {
             $categoriesArray[] = $category->getCategoryId();
         }
@@ -603,10 +640,10 @@ class IndexController extends AbstractActionController
 
     private function getProviderCategories($provider_id)
     {
-        $container = new Container();
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
         $brandProductsCategories = $this->productRepository->findAll(["where" => ["provider_id" => $provider_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
         foreach ($brandProductsCategories as $category) {
             $categoriesArray[] = $category->getCategoryId();
@@ -615,13 +652,19 @@ class IndexController extends AbstractActionController
         return $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]); //->toArray();
     }
 
+    /**
+     * User profile page 
+     * 
+     * @route /user
+     * @return ViewModel
+     */
     public function userAction()
     {
-        $container = new Container();
-
-        if ($container->signedUp != true) {
-            return $this->redirect()->toUrl('/my-login');
-        }
+//        $container = new Container();
+//
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
 
         $userId = $this->identity(); //authService->getIdentity();//
         $user = User::find(['id' => $userId]);
@@ -640,6 +683,11 @@ class IndexController extends AbstractActionController
         return new ViewModel(["user" => $user, "userData" => $user->getUserData(), "userPhone" => $userPhone, "title" => $title, "id" => "userid: " . $userId, "bread" => "bread ", "auth" => ($user->getPhone()), "paycards" => $cardInfo,]);
     }
 
+    /**
+     * 
+     * @param array $params
+     * @return string
+     */
     private function packParams($params)
     {
         $a = [];
@@ -654,23 +702,24 @@ class IndexController extends AbstractActionController
         return $res;
     }
 
-    private function unauthorizedLocation()
-    {
-        $this->getResponse()->setStatusCode(403);
-        $vm = new ViewModel();
-
-        return $vm->setTemplate('error/403.phtml');
-    }
-
+    /**
+     *  
+     * @param string $productId
+     */
     private function addProductToHistory($productId)
     {
         $userId = $this->identity();
         //ProductHistory::remove(['user_id' => $userId, 'product_id' => $productId]);
         $historyItem = ProductHistory::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId]);
-
         $historyItem->setUserId($userId)->setProductId($productId)->setTime(time())->persist(['user_id' => $userId, 'product_id' => $productId]);
     }
 
+    /**
+     * 
+     * @param string $productId
+     * @param string $userId
+     * @return boolean
+     */
     private function isInFavorites($productId, $userId)
     {
         if (!empty($userId)) {
@@ -681,12 +730,29 @@ class IndexController extends AbstractActionController
 
         return false;
     }
+    
+    /*
+     * HTTP Error 403
+     * 
+     * @return ViewModel
+     */
+    private function unauthorizedLocation()
+    {
+        $this->getResponse()->setStatusCode(Response::STATUS_CODE_403);
+        $vm = new ViewModel();
 
+        return $vm->setTemplate('error/403.phtml');
+    }
+    
+    /*
+     * HTTP Error 404
+     * 
+     * @return ViewModel
+     */
     private function responseError404()
     {
-        $response = new Response();
-        $response->setStatusCode(Response::STATUS_CODE_404);
-
+        //$response = new Response();
+        $this->getResponse()->setStatusCode(Response::STATUS_CODE_404);
         //$this->layout('error/404');
         $view = new ViewModel();
 
