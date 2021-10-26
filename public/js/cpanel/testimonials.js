@@ -90,12 +90,12 @@ const Testimonials = {
         </div>
       </div>
       <div class="cp-container list reviews">
-        <div class="thead">
+        <div class="thead" v-if="reviews.length">
           <div class="td">Отзыв</div>
           <div class="td">Оценка</div>
           <div class="td">Дата</div>
         </div>
-        <div class="tbody">
+        <div class="tbody" v-if="reviews.length">
           <div v-for="(review, index) in reviews" class="tr reviews__item">
               <div class="td td--hover reviews__title">
                 <div class="products__title">
@@ -137,6 +137,8 @@ const Testimonials = {
               <div class="reviews__popup" v-if="!selectedFilters.is_archive"></div>
           </div>
         </div>
+        <div v-if="!reviews.length && !selectedFilters.is_archive">Нет новых отзывов к вашим товарам</div>
+        <div v-if="!reviews.length && selectedFilters.is_archive">Нет отвеченных отзывов к вашим товарам</div>
       </div>
       <div class="pagination">
         <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
