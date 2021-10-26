@@ -387,6 +387,36 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-orders' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-orders',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
+                                'url' => 'show-orders',
+                            ],
+                            'repository' => \ControlPanel\Service\OrderManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-orders-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-orders-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                                'url' => 'show-orders-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\OrderManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     
                     'edit-product' => [
                         'type' => Literal::class,
