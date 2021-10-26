@@ -387,31 +387,31 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
-                    'show-orders' => [
+                    'show-requisitions' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/show-orders',
+                            'route' => '/show-requisitions',
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list',
-                                'url' => 'show-orders',
+                                'url' => 'show-requisitions',
                             ],
-                            'repository' => \ControlPanel\Service\OrderManager::class,
+                            'repository' => \ControlPanel\Service\RequisitionManager::class,
                             'is_test' => 'false',
                             'prefix' => '',
                         ],
                         // 'may_terminate' => true,
                     ],
-                    'show-orders-from-cache' => [
+                    'show-requisitions-from-cache' => [
                         'type' => Literal::class,
                         'options' => [
-                            'route' => '/show-orders-from-cache',
+                            'route' => '/show-requisitions-from-cache',
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ListController::class,
                                 'action' => 'show-list-from-cache',
-                                'url' => 'show-orders-from-cache',
+                                'url' => 'show-requisitions-from-cache',
                             ],
-                            'repository' => \ControlPanel\Service\OrderManager::class,
+                            'repository' => \ControlPanel\Service\RequisitionManager::class,
                             'is_test' => 'false',
                             'prefix' => '',
                         ],
@@ -828,6 +828,8 @@ return [
             \ControlPanel\Service\StockBalanceManager::class => \ControlPanel\Service\Factory\StockBalanceManagerFactory::class,
             /** Review Manager */
             \ControlPanel\Service\ReviewManager::class => \ControlPanel\Service\Factory\ReviewManagerFactory::class,
+            /** Requisition Manager */
+            \ControlPanel\Service\RequisitionManager::class => \ControlPanel\Service\Factory\RequisitionManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
             /** Auth Adapter */

@@ -72,7 +72,7 @@ class CurlRequestManager
         
         try {
             $arr = Json::decode($response, Json::TYPE_ARRAY);
-            return ['http_code' => $info['http_code'], 'data' => $arr];
+            return ['http_code' => $info['http_code'], $arr /* 'data' => $arr */];
             //return array_merge(['http_code' => $info['http_code']], $arr);
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => $info['http_code'], 'message' => $e->getMessage()];
