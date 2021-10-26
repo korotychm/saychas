@@ -384,7 +384,7 @@ const StoreEdit = {
             }),{headers})
             .then(response => {
               console.log(response);
-              if (response.data.data.result){
+              if (response.data.result){
                 showMessage('Информация о магазине сохранена');
                 router.replace('/stores');
               } else {
