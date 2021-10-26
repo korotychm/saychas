@@ -127,15 +127,15 @@ class StoreController extends AbstractActionController
         return new JsonModel(['result' => false]);
     }
 
-    private function canAddStore(array &$store): bool
+    private function canAddStore(array &$store): array // bool
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
         $result = $this->storeManager->addServerDocument($credentials, $store);
         $store = $result['data']['data'];
-        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
-        return $res;
+        //$res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        return $result;// $res;
     }
 
     public function saveNewlyAddedStoreAction()
@@ -143,11 +143,15 @@ class StoreController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
         $store = $post['data']['store'];
         $store['address'] = json_decode($store['address'], true);
-        if ($this->canAddStore($store)) {
-            $result = $this->storeManager->replaceStore($store);
+        $result = $this->canAddStore($store);
+        $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+        //if ($this->canAddStore($store)) {
+        if($res) {
+            $this->storeManager->replaceStore($store);
             return new JsonModel(['result' => true, 'data' => $store]);
         }
-        return new JsonModel(['result' => false]);
+        return new JsonModel($result);
+        //return new JsonModel(['result' => false]);
     }
 
     /**
