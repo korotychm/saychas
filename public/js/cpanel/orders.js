@@ -69,7 +69,7 @@ const Orders = {
           filtersCreated: false
         }
     },
-    methods: function(){
+    methods: {
       getOrders() {
         let requestUrl = '/control-panel/show-orders';
         if (this.filtersCreated) {
