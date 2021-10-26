@@ -383,11 +383,11 @@ const StoreEdit = {
               }
             }),{headers})
             .then(response => {
-              if (response.data.result){
+              if (response.data.data.result){
                 showMessage('Информация о магазине сохранена');
                 router.replace('/stores');
               } else {
-                showServicePopupWindow('Невозможно сохранить магазин', response.data.error_description_for_user);
+                showServicePopupWindow('Невозможно сохранить магазин', response.data.data.error_description_for_user);
               }
             })
             .catch(error => {

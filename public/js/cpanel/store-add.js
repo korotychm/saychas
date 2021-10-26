@@ -399,11 +399,11 @@ const StoreAdd = {
             }),{headers})
             .then(response => {
               console.log('Добавление магазина',response);
-              if (response.data.result){
+              if (response.data.data.result){
                 showMessage('Магазин добавлен!');
                 router.replace('/stores');
               } else {
-                showServicePopupWindow('Невозможно добавить магазин', response.data.error_description_for_user);
+                showServicePopupWindow('Невозможно добавить магазин', response.data.data.error_description_for_user);
               }
             })
             .catch(error => {
