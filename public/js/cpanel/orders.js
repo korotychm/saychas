@@ -55,6 +55,7 @@ const Orders = {
     </div>`,
     data: function () {
         return {
+          orders2: false,
           htmlContent: '',
           page_no: 1,
           rows_per_page: 10,
