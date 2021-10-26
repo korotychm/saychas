@@ -30,11 +30,11 @@
         <aside class="sidebar" id="controlPanelMenu">
           <?php //$this->partial('partials/sidebar-menu-items', ['menuItems' => $this->sidebarMenuItems]); ?>
           <div class="sidebar__logo">
-            <router-link to="/orders"><img src="/img/cp-logo.png" /></router-link>
+            <router-link to="/products"><img src="/img/cp-logo.png" /></router-link>
           </div>
           <nav class="sidebar__nav">
               <div class="sidebar__section">
-                <router-link to="/orders" class="sidebar__link" :class="{ active: ($route.name == 'orders') }">
+                <router-link to="/orders" class="sidebar__link disabled" :class="{ active: ($route.name == 'orders') }">
                   <svg
                    xmlns="http://www.w3.org/2000/svg"
                    xmlns:xlink="http://www.w3.org/1999/xlink"
