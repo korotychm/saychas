@@ -398,6 +398,7 @@ const StoreAdd = {
               }
             }),{headers})
             .then(response => {
+              console.log('Добавление магазина',response);
               if (response.data.result){
                 showMessage('Магазин добавлен!');
                 router.replace('/stores');
