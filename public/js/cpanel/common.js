@@ -3,7 +3,7 @@ const routes = [
     name: 'orders',
     path: '/orders',
     meta: {
-      h1: 'Заказы и возвраты'
+      h1: 'Поток заказов'
     },
     component: Orders
   },
@@ -167,7 +167,7 @@ const router = new VueRouter({
 const cp = new Vue({
   router,
   mounted: function(){
-    if(!this.$route.name) router.replace('/stores');
+    if(!this.$route.name) router.replace('/orders');
   }
 }).$mount('#cp')
 
