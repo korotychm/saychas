@@ -400,8 +400,8 @@ const StoreAdd = {
             .then(response => {
               console.log('Добавление магазина',response);
               if (response.data.result){
-                showMessage('Магазин добавлен!');
-                router.replace('/stores');
+                //showMessage('Магазин добавлен!');
+                //router.replace('/stores');
               } else {
                 showServicePopupWindow('Невозможно добавить магазин', response.data.data.error_description_for_user);
               }
