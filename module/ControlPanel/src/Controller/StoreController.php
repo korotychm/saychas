@@ -125,11 +125,21 @@ class StoreController extends AbstractActionController
         //if ($this->canUpdateStore($store)) {
         if ($res) {
             $this->storeManager->replaceStore($store);
-            return new JsonModel(['result' => $result, 'data' => $store]);
+//            $answer = ['http_code' => $result['http_code'], 'result' => $result['data']['result'], 'error_description' => $result['error_description'], 'error_description_for_user' => $result['error_description_for_user'] ];
+//            return new JsonModel($answer);
+            //return new JsonModel(['result' => $result, 'data' => $store]);
             //return new JsonModel(['result' => true]);
         }
         
-        return new JsonModel(['result' => $result, 'data' => $store]);
+        $answer = [
+            'http_code' => $result['http_code'],
+            'result' => $result['data']['result'],
+            'error_description' => $result['data']['error_description'],
+            'error_description_for_user' => $result['data']['error_description_for_user'],
+        ];
+
+        return new JsonModel($answer);
+//        return new JsonModel(['result' => $result, 'data' => $store]);
         // return new JsonModel($result);
         // return new JsonModel(['result' => false]);
     }
@@ -155,11 +165,19 @@ class StoreController extends AbstractActionController
         //if ($this->canAddStore($store)) {
         if($res) {
             $this->storeManager->replaceStore($store);
-            return new JsonModel(['result' => $result, 'data' => $store]);
+            //return new JsonModel(['result' => $result, 'data' => $store]);
             //return new JsonModel(['result' => true, 'data' => $store]);
         }
-        return new JsonModel(['result' => $result, 'data' => $store]);
+        //return new JsonModel(['result' => $result, 'data' => $store]);
         //return new JsonModel(['result' => false]);
+        $answer = [
+            'http_code' => $result['http_code'],
+            'result' => $result['data']['result'],
+            'error_description' => $result['data']['error_description'],
+            'error_description_for_user' => $result['data']['error_description_for_user'],
+        ];
+
+        return new JsonModel($answer);
     }
 
     /**
