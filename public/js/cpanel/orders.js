@@ -72,9 +72,9 @@ const Orders = {
     },
     methods: {
       getOrders() {
-        let requestUrl = '/control-panel/show-orders';
+        let requestUrl = '/control-panel/show-requisitions';
         if (this.filtersCreated) {
-         requestUrl = '/control-panel/show-orders-from-cache';
+         requestUrl = '/control-panel/show-requisitions-from-cache';
         }
         const headers = { 'X-Requested-With': 'XMLHttpRequest' }
         axios
