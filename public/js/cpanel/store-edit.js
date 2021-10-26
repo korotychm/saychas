@@ -383,6 +383,7 @@ const StoreEdit = {
               }
             }),{headers})
             .then(response => {
+              console.log(response);
               if (response.data.data.result){
                 showMessage('Информация о магазине сохранена');
                 router.replace('/stores');
