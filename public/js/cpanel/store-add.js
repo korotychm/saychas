@@ -402,6 +402,8 @@ const StoreAdd = {
               if (response.data.result){
                 showMessage('Магазин добавлен!');
                 router.replace('/stores');
+              } else {
+                showServicePopupWindow('Невозможно добавить магазин', response.data.error_description_for_user);
               }
             })
             .catch(error => {
