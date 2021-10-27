@@ -7,7 +7,6 @@ $(document).ready(function(){
       data: {
         category_id: '',
         products: [],
-        length: 0,
         sort: 0,
         productsCount: 0,
         productsCountUnit: 'товаров',
@@ -45,7 +44,8 @@ $(document).ready(function(){
             .then(response => {
               console.log(response);
               this.products = response.data.products;
-              this.length = Object.keys(this.products).length
+              this.productsCount = response.data.count;
+              this.productsLimit = response.data.limit;
               console.log('Products', this.products);
               this.setUnit();
               this.countPages();
