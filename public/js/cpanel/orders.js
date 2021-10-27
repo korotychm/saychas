@@ -33,7 +33,7 @@ const Orders = {
                   <div class="td">Статус</div>
               </div>
               <div class="tbody">
-                <div class="tr orders__item" v-for="order in orders">
+                <div class="tr orders__item" v-for="(index,order) in orders">
                     <div class="td orders__store">{{ order.store }}</div>
                     <div class="td orders__order">{{ +order.requisition_id }}</div>
                     <div class="td orders__date">{{ order.date }}</div>
@@ -44,7 +44,7 @@ const Orders = {
                               <img :src="product.image" />
                             </div>
                         </div>
-                        <div class="orders__count"><b>{{ order.items.length }}</b> товара</div>
+                        <div class="orders__count"><b>{{ order.items.length }}</b> {{ getUnit(order.items.length) }}</div>
                         <div class="orders__sum">на сумму<span>{{ (order.requisition_sum / 100).toLocaleString() }} ₽</span></div>
                     </div>
                     <div class="td orders__btn"><button class="btn btn--primary">Приступить к сборке<span>00:00</span></button></div>
@@ -71,6 +71,15 @@ const Orders = {
         }
     },
     methods: {
+      getUnit(value) {
+        if (value.toString().slice(-1) == '1' && value.toString().slice(-2) != '11'){
+          return 'товар';
+        } else if (+value.toString().slice(-1) > 1 && +value.toString().slice(-1) < 5 && +value.toString().slice(-2) != '12' && value.toString().slice(-2) != '13' && value.toString().slice(-2) != '14') {
+          return 'товара';
+        } else {
+          return 'товаров';
+        }
+      },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
         if (this.filtersCreated) {
