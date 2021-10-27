@@ -50,6 +50,10 @@ $(document).ready(function(){
               this.setUnit();
               this.countPages();
             });
+        },
+        loadPage(index) {
+          this.currentPage = index;
+          this.getProducts();
         }
       },
       created() {
