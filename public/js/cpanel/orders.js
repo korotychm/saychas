@@ -44,7 +44,7 @@ const Orders = {
                               <img :src="product.image" />
                             </div>
                         </div>
-                        <div class="orders__count"><b>{{ order.items.length }}</b> {{ getUnit(order.items.length) }}</div>
+                        <div class="orders__count"><b>{{ order.items.length }}</b> </div>
                         <div class="orders__sum">на сумму<span>{{ (order.requisition_sum / 100).toLocaleString() }} ₽</span></div>
                     </div>
                     <div class="td orders__btn"><button class="btn btn--primary">Приступить к сборке<span>00:00</span></button></div>
@@ -72,9 +72,10 @@ const Orders = {
     },
     methods: {
       getUnit(value) {
-        if (value.toString().slice(-1) == '1' && value.toString().slice(-2) != '11'){
+        value = value.toString();
+        if (value.slice(-1) == '1' && value.slice(-2) != '11'){
           return 'товар';
-        } else if (+value.toString().slice(-1) > 1 && +value.toString().slice(-1) < 5 && +value.toString().slice(-2) != '12' && value.toString().slice(-2) != '13' && value.toString().slice(-2) != '14') {
+        } else if (+value.slice(-1) > 1 && +value.slice(-1) < 5 && +value.slice(-2) != '12' && value.slice(-2) != '13' && value.slice(-2) != '14') {
           return 'товара';
         } else {
           return 'товаров';
