@@ -21,7 +21,7 @@ use Laminas\Log\Logger;
 //use Laminas\Log\Writer\Stream as StreamWriter;
 use Application\Model\RepositoryInterface\RepositoryInterface;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
-use ControlPanel\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 
 /**
  * Description of Repository

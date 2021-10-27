@@ -87,6 +87,9 @@ return [
             //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
             'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
+             /** sendReview  link*/
+            'set_review' => 'http://SRV02:8000/SC/hs/site/set_review',
+            'get_reviewer' => 'http://SRV02:8000/SC/hs/site/get_reviewer',
             
         ],
         
