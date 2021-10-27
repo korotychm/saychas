@@ -16,8 +16,8 @@ const Orders = {
                                   <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" /><span>Все магазины</span>
                                 </label>
                                 <label v-for="store in filters.stores" class="custom-select__option">
-                                  <input type="radio" :checked="(store[0] === selectedFilters.store_id)" :value="store[0]" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
-                                  <span>{{store[1]}}</span>
+                                  <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
+                                  <span>{{store.title}}</span>
                                 </label>
                               </div>
                           </div>
@@ -67,7 +67,7 @@ const Orders = {
                         </div>
                         <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
-                    <div class="td orders__full" v-show="activeOrder === index || order.status_id == '02'">
+                    <div class="td orders__full" v-show="activeOrder === order.requisition_id || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
                             <div class="orders__product-image">
                               <img v-if="product.image" src="product.image" />
