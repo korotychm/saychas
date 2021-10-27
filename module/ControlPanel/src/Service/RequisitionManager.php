@@ -1,6 +1,6 @@
 <?php
 
-// ControlPanel\src\Service\ReviewManager.php
+// ControlPanel\src\Service\RequisitionManager.php
 
 namespace ControlPanel\Service;
 
@@ -11,16 +11,16 @@ use Application\Model\Repository\CategoryRepository;
 use Application\Model\Entity\HandbookRelatedProduct as Product;
 
 /**
- * Description of ReviewManager
+ * Description of RequisitionManager
  *
  * @author alex
  */
-class ReviewManager extends ListManager implements LoadableInterface
+class RequisitionManager extends ListManager implements LoadableInterface
 {
 
 //    use Loadable;
 
-    protected $collectionName = 'reviews';
+    protected $collectionName = 'requisitions';
 
     /**
      * @var string
@@ -89,7 +89,6 @@ class ReviewManager extends ListManager implements LoadableInterface
         $pageNo = $params['pageNo'];
         $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
         $rating = (int) $params['where']['rating'];
-//        if('true' === $params['where']['is_archive']) {
         if($isActive) {
             $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
         }else{
@@ -102,28 +101,22 @@ class ReviewManager extends ListManager implements LoadableInterface
         
         $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $filter]);
         
-//        if($isActive) {
-//            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ]]);
-//        }else{
-//            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ]]);
-//        }
-
         return $cursor;
     }
 
     public function updateServerDocument($headers, $content = [])
     {
-        $url = $this->config['parameters']['1c_provider_links']['lk_update_review'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_requisition'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         
         return $result;
     }
 
-    public function replaceReview($review)
+    public function replaceRequisition($requisition)
     {
         $collection = $this->db->{$this->collectionName};
-        $updateResult = $collection->updateOne(['id' => $review['id'], 'uid' => $review['uid']],
-                ['$set' => ['response' => $review['response'], 'date_responsed' => $review['date_responsed']]]);
+        $updateResult = $collection->updateOne(['id' => $requisition['id'], 'uid' => $requisition['uid']],
+                ['$set' => ['response' => $requisition['response'], 'date_responsed' => $requisition['date_responsed']]]);
 //        foreach ($stockBalance['data'] as $balance) {
 //            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
 //                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],

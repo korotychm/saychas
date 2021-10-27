@@ -556,6 +556,19 @@ class ProductManager extends ListManager implements LoadableInterface
         return ['result' => $result];
     }
     
+    public function copyProductFile($content)
+    {
+        $baseUrl = $this->config['parameters']['document_path']['base_url'];
+        $productUrl = 'public'.$baseUrl;//.'/'.$this->config['parameters']['document_path']['base_url'];
+        $productUrl = $productUrl.'/P_'.$content['provider_id'].'/';
+        $descProductUrl = 'public'.$baseUrl.'/'.$this->config['parameters']['document_path']['product'];
+        $descProductUrl = $descProductUrl.'/'.$content['source_file'];
+        exit;
+        //$result = exec ("cp " . $productUrl . " " . $descProductUrl);
+        return $result;
+    }
+    
+    
     /**
      * 
      * Example
@@ -573,6 +586,13 @@ class ProductManager extends ListManager implements LoadableInterface
     public function getProductFile($content)
     {
         $url = $this->config['parameters']['1c_provider_links']['lk_get_template'];
+        $result = $this->curlRequestManager->sendCurlRequest($url, $content);
+        return $result;
+    }
+
+    public function sendProductInfo($content)
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_upload_file'];
         $result = $this->curlRequestManager->sendCurlRequest($url, $content);
         return $result;
     }

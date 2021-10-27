@@ -165,14 +165,20 @@ trait Loadable
         
         $result = $this->deleteMany($this->collectionName/*self::COLLECTION_NAME*/, ['provider_id' => $cred['partner_id']]);
 
-        if(null == $answer['data']) {
-            $answer['data'] = [];
+        if(200 != $answer['http_code']) {
+            // throw new \Exception("http_code: {$answer['http_code']}; error_description: {$answer['data']['error_description']}; error_description_for_user: {$answer['data']['error_description_for_user']}");
+            return $answer;
         }
+//        if(null == $answer['data']) {
+//            $answer['data'] = [];
+//        }
+
         $this->insertManyInto(/*$this->collectionName*/ /*self::COLLECTION_NAME,*/ $answer['data']);
 
         $this->collectionSize = $this->countCollection();
         
         return $answer;
+//        return $answer['data'];
     }
     
     /**

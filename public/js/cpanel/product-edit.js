@@ -367,7 +367,7 @@ const ProductEdit = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            if (c < 32 || c == 39 || c == 96 || (c > 255 && c < 1040) || c > 1103) {
+            if (c < 32 || c == 96 || (c > 255 && c < 1040) || (c > 1103 && c != 8470)) {
                 output = output.replace(input[i],'');
             }
       }
@@ -783,7 +783,7 @@ $(document).on('click','.product__images-arrow',function(){
 
 
 function setCustomSelectLabels(el) {
-  let textValue = el.find('input:checked + span').text();
+  let textValue = el.find('input:checked + span').html();
   el.find('.custom-select__label').html('<span class="select-selected-value">'+textValue+'</span>');
 }
 

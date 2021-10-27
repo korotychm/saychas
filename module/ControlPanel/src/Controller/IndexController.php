@@ -185,8 +185,17 @@ class IndexController extends AbstractActionController
     {
         $identity = $this->authService->getIdentity();
         $credentials = ['credentials' => ['partner_id' => $identity['provider_id'], 'login' => $identity['login']]];
-        $answer = $this->userManager->confirmOffer($credentials);
-        return new JsonModel(['show_popup' => $answer['result']]);
+        $result = $this->userManager->confirmOffer($credentials);
+        //return new JsonModel(['show_popup' => $answer['result']]);
+        $answer = [
+            'http_code' => $result['http_code'],
+            'result' => $result['result'],
+            'error_description' => $result['error_description'],
+            'error_description_for_user' => $result['error_description_for_user'],
+        ];
+        
+        return new JsonModel($answer);
+        // return new JsonModel(['show_popup' => $answer['result']]);
     }
 
 }

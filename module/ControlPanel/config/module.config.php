@@ -11,6 +11,7 @@ use ControlPanel\Controller\Factory\AuthControllerFactory;
 use ControlPanel\Controller\Factory\ProductControllerFactory;
 use ControlPanel\Controller\Factory\StoreControllerFactory;
 use ControlPanel\Controller\Factory\StockBalanceControllerFactory;
+use ControlPanel\Controller\Factory\ReviewControllerFactory;
 use ControlPanel\Controller\Factory\ListControllerFactory;
 use ControlPanel\Controller\Factory\ApiControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
@@ -25,6 +26,7 @@ return [
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
             \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
             \ControlPanel\Controller\StockBalanceController::class => StockBalanceControllerFactory::class,
+            \ControlPanel\Controller\ReviewController::class => ReviewControllerFactory::class,
             \ControlPanel\Controller\ListController::class => ListControllerFactory::class,
             \ControlPanel\Controller\ApiController::class => ApiControllerFactory::class,
         ],        
@@ -78,6 +80,7 @@ return [
                 ['actions' => ['saveNewlyAddedProduct', ], 'allow' => '+administrator'],
                 ['actions' => ['updatePriceAndDiscount', ], 'allow' => '+administrator'],
                 ['actions' => ['getProductFile', ], 'allow' => '+administrator'],
+                ['actions' => ['sendProductFile', ], 'allow' => '+administrator'],
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
@@ -94,6 +97,10 @@ return [
             \ControlPanel\Controller\StockBalanceController::class => [
                 ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
                 ['actions' => ['updateStockBalance',], 'allow' => '+administrator'],
+            ],
+            \ControlPanel\Controller\ReviewController::class => [
+                ['actions' => ['showReview',], 'allow' => '+administrator'],
+                ['actions' => ['updateReview',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\ListController::class => [
                 ['actions' => ['showList',], /*'urls' => ['show-products',], */ 'allow' => '+administrator'],
@@ -241,6 +248,20 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'update-review' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-review',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ReviewController::class,
+                                'action' => 'update-review',
+                                'url' => 'update-review',
+                            ],
+                            'repository' => \ControlPanel\Service\ReviewManager::class,
+                            'is_test' => 'false',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
 //                    'show-one-store' => [
 //                        'type' => Segment::class,
 //                        'options' => [
@@ -366,6 +387,36 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'show-requisitions' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-requisitions',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list',
+                                'url' => 'show-requisitions',
+                            ],
+                            'repository' => \ControlPanel\Service\RequisitionManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'show-requisitions-from-cache' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/show-requisitions-from-cache',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ListController::class,
+                                'action' => 'show-list-from-cache',
+                                'url' => 'show-requisitions-from-cache',
+                            ],
+                            'repository' => \ControlPanel\Service\RequisitionManager::class,
+                            'is_test' => 'false',
+                            'prefix' => '',
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     
                     'edit-product' => [
                         'type' => Literal::class,
@@ -407,6 +458,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'get-product-file',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'send-product-file'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/send-product-file',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'send-product-file',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -766,6 +828,8 @@ return [
             \ControlPanel\Service\StockBalanceManager::class => \ControlPanel\Service\Factory\StockBalanceManagerFactory::class,
             /** Review Manager */
             \ControlPanel\Service\ReviewManager::class => \ControlPanel\Service\Factory\ReviewManagerFactory::class,
+            /** Requisition Manager */
+            \ControlPanel\Service\RequisitionManager::class => \ControlPanel\Service\Factory\RequisitionManagerFactory::class,
             /** Auth Manager */
             \ControlPanel\Service\AuthManager::class => \ControlPanel\Service\Factory\AuthManagerFactory::class,
             /** Auth Adapter */

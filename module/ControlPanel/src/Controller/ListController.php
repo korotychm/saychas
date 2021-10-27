@@ -142,6 +142,10 @@ class ListController extends AbstractControlPanelActionController
         $answer['http_code'] = '200';
         if (true /* != $useCache */) {
             $answer = $manager->loadAll($url, $credentials);
+            if(200 != $answer['http_code']) {
+                $this->getResponse()->setStatusCode($answer['http_code']);
+                return new JsonModel(['data' => $answer['data'], 'http_code' => $answer['http_code']]);
+            }
         }
         $pageNo = isset($post['page_no']) ? $post['page_no'] : 1;
         $cursor = $manager->findDocuments(['pageNo' => $pageNo, 'where' => $where, 'sort' => ['id' => -1],]);
