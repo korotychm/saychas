@@ -215,11 +215,10 @@ class HtmlProviderService
         if (!$v or!is_array($v)) {
             return;
         }
+        $chType = (int)$chType;
         $value = [];
         foreach ($v as $val) {
-            if (!$val) {
-                continue;
-            } elseif ($chType == Resource::BOOLEAN) {
+            if ($chType == Resource::BOOLEAN) {
                 $value[] = $val == 0 ? Resource::NO : Resource::YES;
             } elseif ($chType == Resource::COUNTRY_REF) {
                 $value[] = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();
@@ -231,7 +230,7 @@ class HtmlProviderService
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                 $value[] = "<div class='iblok relative'  ><div class='cirkul iblok relative' style='background-color:{$color->getValue()};'></div>{$color->getTitle()}</div>";
             } else {
-                $value = $v;
+                $value = $val;
             }
         }
 
@@ -288,16 +287,18 @@ class HtmlProviderService
         //$characteristicsArray = array_diff($characteristicsArray, array(''));
         if (!empty($characteristicsArray)) {
             
+            //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
             foreach ($characteristicsArray as $char) {
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                 $chArray = $ch->getIsList();
                 $chType = $ch->getType();
-
-                if ($char['value']) {
+                unset($value, $v);    
+                //if ($char['value']) {
+                    unset($v);
                     ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
                     $value = $this->valueParce($v, $chType);
-                    unset($v);
-                }
+                    
+                //}
 
                 $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
                 $return["characteristics"][0][] = $char;

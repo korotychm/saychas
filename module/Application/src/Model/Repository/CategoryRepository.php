@@ -22,7 +22,7 @@ use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Sql;
 use Application\Helper\ArrayHelper;
 use Application\Resource\Resource;
-
+use Application\Model\Entity\HandbookRelatedProduct;
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
 
@@ -169,7 +169,14 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         return $tree;
     }
     
-    private function categoriesHasProduct ()
+    /**
+     * Disabled.
+     * NO DELETE!
+     * 
+     * @return type
+     * @throws \Exception
+     */
+    private function categoriesHasProduct2 ()
     {
         $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT a.`category_id` FROM `product` as a INNER JOIN  `price` as b on( a.id = b.product_id)  WHERE 1 group by `category_id`)";
         $result = $this->db->query($query)->execute();
@@ -184,8 +191,25 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         //return (empty($return)) ? [] : $return;
         return $return ?? [];
     }
-        
+    
     /**
+     * 
+     * @return array
+     */
+    private function categoriesHasProduct()
+    {
+       $param["columns"] = ["category_id"];
+       //$param["group"] = ["category_id"];
+       $category = HandbookRelatedProduct::findAll($param)->toArray();
+       $categoryesId = ArrayHelper::extractId($category, "category_id");
+        foreach ($categoryesId as $row) {
+            $return[$row] = true;
+        }
+        //return (empty($return)) ? [] : $return;
+        return $return ?? [];
+    }
+    
+     /**
      * Return a string that contains html ul list
      *
      * @return string
