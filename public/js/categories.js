@@ -37,14 +37,21 @@ $(document).ready(function(){
       data: {
         category_id: '',
         products: [],
-        length: 0
+        length: 0,
+        sort: 0,
+        productsCount: 0,
+        productsCountUnit: 'товаров',
+        productsLimit: 0,
+        currentPage: 0
       },
       created() {
           this.category_id = window.location.href.split("/").slice(-1)[0],
           axios
             .post('/ajax-get-products-categories',
               Qs.stringify({
-                categoryId : this.category_id
+                categoryId : this.category_id,
+                sort: this.sort,
+                page: this.currentPage
               }))
             .then(response => {
               console.log(response);
