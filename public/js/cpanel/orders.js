@@ -36,7 +36,7 @@ const Orders = {
                 <div class="tr orders__item" v-for="(order,index) in orders">
                     <div class="td orders__store">{{ order.store }}</div>
                     <div class="td orders__order">{{ +order.requisition_id }}</div>
-                    <div class="td orders__date">{{ order.date }}</div>
+                    <div class="td orders__date">{{ localeDate(order.date) }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
                     <div class="td orders__short">
                         <div class="orders__images" v-if="order.items.length">
@@ -80,6 +80,10 @@ const Orders = {
         } else {
           return 'товаров';
         }
+      },
+      localeDate(ms) {
+        let dateObject = new Date(ms);
+        return dateObject.toLocaleString();
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
