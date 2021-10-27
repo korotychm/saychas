@@ -25,7 +25,7 @@ const Orders = {
                   </div>
               </div>
           </div>
-          <div class="cp-container list orders" v-if="orders2">
+          <div class="cp-container list orders" v-if="orders">
               <div class="thead">
                   <div class="td">Название магазина</div>
                   <div class="td">Номер заказа</div>
@@ -34,18 +34,18 @@ const Orders = {
               </div>
               <div class="tbody">
                 <div class="tr orders__item" v-for="order in orders">
-                    <div class="td orders__store">{{ order.shop }}</div>
-                    <div class="td orders__order">{{ order.order_id }}</div>
+                    <div class="td orders__store">{{ order.store }}</div>
+                    <div class="td orders__order">{{ order.requisition_id }}</div>
                     <div class="td orders__date">{{ order.date }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
                     <div class="td orders__short">
-                        <div class="orders__images">
+                        <div class="orders__images" v-if="order.items.length">
                             <div class="orders__image" v-for="product in order.items">
                               <img :src="product.image" />
                             </div>
                         </div>
                         <div class="orders__count"><b>{{ order.items.length }}</b> товара</div>
-                        <div class="orders__sum">на сумму<span>{{ (order.order_sum / 100).toLocaleString() }} ₽</span></div>
+                        <div class="orders__sum">на сумму<span>{{ (order.requisition_sum / 100).toLocaleString() }} ₽</span></div>
                     </div>
                     <div class="td orders__btn"><button class="btn btn--primary">Приступить к сборке<span>00:00</span></button></div>
                 </div>
@@ -89,7 +89,7 @@ const Orders = {
               if (response.data.data === true) {
                 location.reload();
               } else {
-                console.log('Response from show-orders',response.data);
+                console.log('Response from show-requisitions',response.data);
                 this.pages = response.data.data.limits.total;
                 this.orders = response.data.data.body;
                 if (!this.filtersCreated){
