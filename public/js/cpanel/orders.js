@@ -35,7 +35,7 @@ const Orders = {
               <div class="tbody">
                 <div class="tr orders__item" v-for="order in orders">
                     <div class="td orders__store">{{ order.store }}</div>
-                    <div class="td orders__order">{{ order.requisition_id }}</div>
+                    <div class="td orders__order">{{ +order.requisition_id }}</div>
                     <div class="td orders__date">{{ order.date }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
                     <div class="td orders__short">
