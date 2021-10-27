@@ -55,7 +55,7 @@ const Orders = {
                     <div class="td orders__order">{{ +order.requisition_id }}</div>
                     <div class="td orders__date">{{ localeDate(order.date) }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
-                    <div class="td orders__short" v-show="activeOrder !== index">
+                    <div class="td orders__short" v-show="activeOrder !== index && order.status_id != '02'">
                         <div class="orders__images" v-if="order.items.length">
                             <div class="orders__image" :class="{'orders__image--disabled': product.qty_partner == 0}" v-for="product in order.items">
                               <img :src="product.image" />
@@ -63,11 +63,11 @@ const Orders = {
                         </div>
                         <div class="orders__count">
                           <div class="orders__count-initial" v-if="order.items.length > countProducts(index)"><b>{{ order.items.length }}</b></div>
-                          <div class="orders__count-actual"><b>{{ countProducts(index) }}</b> товара</div>
+                          <div class="orders__count-actual"><b>{{ countProducts(index) }}</b> {{ getUnit(countProducts(index)) }}</div>
                         </div>
                         <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
-                    <div class="td orders__full" v-show="activeOrder === index">
+                    <div class="td orders__full" v-show="activeOrder === index || order.status_id == '02'>
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
                             <div class="orders__product-image">
                               <img v-if="product.image" src="product.image" />
