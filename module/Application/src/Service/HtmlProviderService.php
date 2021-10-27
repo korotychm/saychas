@@ -215,7 +215,7 @@ class HtmlProviderService
         if (!$v or!is_array($v)) {
             return;
         }
-        $chType = (int)$chType;
+        //$chType = (int)$chType;
         $value = [];
         foreach ($v as $val) {
             if ($chType == Resource::BOOLEAN) {
@@ -230,7 +230,7 @@ class HtmlProviderService
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                 $value[] = "<div class='iblok relative'  ><div class='cirkul iblok relative' style='background-color:{$color->getValue()};'></div>{$color->getTitle()}</div>";
             } else {
-                $value = $val;
+                $value = $v;
             }
         }
 
