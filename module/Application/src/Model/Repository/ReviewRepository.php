@@ -14,7 +14,7 @@ use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Application\Model\Entity\Review;
 use Application\Model\RepositoryInterface\ReviewRepositoryInterface;
 use Application\Service\ImageHelperFunctionsService;
-use ControlPanel\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 
 class ReviewRepository extends Repository implements ReviewRepositoryInterface
 {
