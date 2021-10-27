@@ -15,7 +15,7 @@ const Orders = {
                                 <label class="custom-select__option">
                                   <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" /><span>Все магазины</span>
                                 </label>
-                                <label v-for="store in filters.statuses" class="custom-select__option">
+                                <label v-for="store in filters.stores" class="custom-select__option">
                                   <input type="radio" :checked="(store[0] === selectedFilters.store_id)" :value="store[0]" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
                                   <span>{{store[1]}}</span>
                                 </label>
@@ -141,7 +141,7 @@ const Orders = {
     },
     methods: {
       countProducts(index) {
-        return this.orders.items.filter(item => item.qty_partner > 0).length;
+        return this.orders[index].items.filter(item => item.qty_partner > 0).length;
       },
       calculatePrice(price,discount) {
         return price - (price * discount / 100)
