@@ -58,7 +58,7 @@ const Orders = {
                                 <div class="orders__product-count-initial" v-if="product.qty_partner < product.qty"><b>{{ product.qty }}</b> шт</div>
                                 <div class="orders__product-count-actual"><b>{{ product.qty_partner }}</b> шт</div>
                                 <div class="orders__product-count-edit" v-show="product.product_id === activeItem">
-                                  <input type="number" v-model="currentQuantity">
+                                  <input type="number" v-model="currentQuantity" @input="if (currentQuantity > product.qty) currentQuantity = product.qty">
                                 </div>
                             </div>
                             <div class="orders__product-sum">{{ calculatePrice(product.price, product.discount).toLocaleString() }} ₽</div>
