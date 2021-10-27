@@ -157,9 +157,7 @@ const Orders = {
         if (+value.slice(-1) > 1 && +value.slice(-1) < 5 && +value.slice(-2) != '12' && value.slice(-2) != '13' && value.slice(-2) != '14') {
           return 'товара';
         }
-        if {
-          return 'товаров';
-        }
+        return 'товаров';
       },
       localeDate(ms) {
         let dateObject = new Date(+ms);
