@@ -67,7 +67,7 @@ const Orders = {
                         </div>
                         <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
-                    <div class="td orders__full" v-show="activeOrder === index || order.status_id == '02'>
+                    <div class="td orders__full" v-show="activeOrder === index || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
                             <div class="orders__product-image">
                               <img v-if="product.image" src="product.image" />
