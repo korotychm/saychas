@@ -148,7 +148,9 @@ const Orders = {
       },
       getUnit(value) {
         value = value.toString();
-        if (value.slice(-1) == '1' && value.slice(-2) != '11'){
+        if (value == 0) {
+          return 'товаров';
+        } else if (value.slice(-1) == '1' && value.slice(-2) != '11') {
           return 'товар';
         } else if (+value.slice(-1) > 1 && +value.slice(-1) < 5 && +value.slice(-2) != '12' && value.slice(-2) != '13' && value.slice(-2) != '14') {
           return 'товара';
