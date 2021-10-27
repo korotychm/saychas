@@ -11,15 +11,32 @@ const Orders = {
               <div class="filter__select filter__select--store">
                   <div class="custom-select custom-select--radio">
                       <div class="custom-select__label input">Все магазины<div class="custom-select__dropdown">
-                              <div class="custom-select__dropdown-inner"><label class="custom-select__option"><input type="radio" checked="checked" value="" name="filter-store" /><span>Все магазины</span></label></div>
+                              <div class="custom-select__dropdown-inner">
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" /><span>Все магазины</span>
+                                </label>
+                                <label v-for="store in filters.statuses" class="custom-select__option">
+                                  <input type="radio" :checked="(store[0] === selectedFilters.store_id)" :value="store[0]" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
+                                  <span>{{store[1]}}</span>
+                                </label>
+                              </div>
                           </div>
                       </div>
+
                   </div>
               </div>
               <div class="filter__select filter__select--status">
                   <div class="custom-select custom-select--radio">
                       <div class="custom-select__label input">Все статусы<div class="custom-select__dropdown">
-                              <div class="custom-select__dropdown-inner"><label class="custom-select__option"><input type="radio" checked="checked" value="" name="filter-status" /><span>Все статусы</span></label></div>
+                              <div class="custom-select__dropdown-inner">
+                                <label class="custom-select__option">
+                                  <input type="radio" :checked="(selectedFilters.status_id === '')" value="" name="filter-status" /><span>Все статусы</span>
+                                </label>
+                                <label v-for="status in filters.statuses" class="custom-select__option">
+                                  <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="filter-status" v-model="selectedFilters.status_id" @change="loadPage()" />
+                                  <span>{{status[1]}}</span>
+                                </label>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -44,7 +61,10 @@ const Orders = {
                               <img :src="product.image" />
                             </div>
                         </div>
-                        <div class="orders__count"><b>{{ order.items.length }}</b> {{ getUnit(order.items.length) }}</div>
+                        <div class="orders__count">
+                          <div class="orders__count-initial" v-if="order.items.length > countProducts(index)"><b>{{ order.items.length }}</b></div>
+                          <div class="orders__count-actual"><b>{{ countProducts(index) }}</b> товара</div>
+                        </div>
                         <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
                     <div class="td orders__full" v-show="activeOrder === index">
@@ -54,15 +74,21 @@ const Orders = {
                             </div>
                             <div class="orders__product-title">{{ product.product }}</div>
                             <div class="orders__product-id">{{ product.product_id }}</div>
-                            <div class="orders__product-count">
+                            <div class="orders__product-count" v-if="order.status_id == '01'">
                                 <div class="orders__product-count-initial" v-if="product.qty_partner < product.qty"><b>{{ product.qty }}</b> шт</div>
                                 <div class="orders__product-count-actual"><b>{{ product.qty_partner }}</b> шт</div>
                                 <div class="orders__product-count-edit" v-show="product.product_id === activeItem">
                                   <input type="number" v-model="currentQuantity" @input="if (currentQuantity > product.qty) currentQuantity = product.qty">
                                 </div>
                             </div>
+
+                            <div class="orders__product-count" v-if="order.status_id != '01'">
+                              <div class="orders__product-count-initial"><b>{{ product.qty }}</b> шт</div>
+                            </div>
+                            <div class="orders__product-actual" v-if="order.status_id != '01' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
+
                             <div class="orders__product-sum">{{ calculatePrice(product.price, product.discount).toLocaleString() }} ₽</div>
-                            <div class="orders__product-edit">
+                            <div class="orders__product-edit" v-if="order.status_id == '01'">
                               <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M13.352,4.166 L12.750,4.778 C12.591,4.938 12.334,4.938 12.175,4.778 L9.291,1.858 C9.133,1.699 9.133,1.440 9.291,1.280 L9.291,1.280 L9.901,0.663 C10.766,0.214 12.173,0.221 13.46,0.648 C13.51,0.653 13.56,0.659 13.61,0.663 L13.64,0.663 L13.352,0.955 C14.225,1.845 14.225,3.277 13.352,4.166 ZM11.312,6.241 L5.123,12.523 C4.715,12.938 4.199,13.226 3.635,13.355 L0.735,14.12 C0.404,14.83 0.78,13.871 0.7,13.537 C0.13,13.438 0.10,13.335 0.17,13.237 L0.842,10.394 C0.986,9.900 1.250,9.449 1.610,9.83 L7.860,2.741 C8.19,2.581 8.276,2.581 8.435,2.741 L11.312,5.662 C11.469,5.822 11.469,6.80 11.312,6.241 Z" />
@@ -77,11 +103,16 @@ const Orders = {
                             </div>
                         </div>
                     </div>
-                    <div class="td orders__btn" v-if="activeOrder !== index">
-                      <button class="btn btn--primary" @click="activeOrder = index;">Приступить к сборке<span>00:00</span></button>
+                    <div class="td orders__btn" v-if="order.status_id == '01'">
+                      <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span>00:00</span></button>
                     </div>
-                    <div class="td orders__btn" v-else-if="activeOrder === index">
-                      <button class="btn btn--primary">Собран<span>00:00</span></button>
+                    <div class="td orders__btn" v-else-if="order.status_id == '02'">
+                      <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span>00:00</span></button>
+                    </div>
+                    <div class="td orders__btn" v-else>
+                      <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
+                      <button class="btn btn--gray" v-if="activeItem !== order.requisition_id" @click="activeItem = order.requisition_id">Подробнее</button>
+                      <button class="btn btn--gray active" v-if="activeItem === order.requisition_id" @click="activeItem = null">Скрыть</button>
                     </div>
                 </div>
               </div>
@@ -109,6 +140,9 @@ const Orders = {
         }
     },
     methods: {
+      countProducts(index) {
+        return this.orders.items.filter(item => item.qty_partner > 0).length;
+      },
       calculatePrice(price,discount) {
         return price - (price * discount / 100)
       },
@@ -125,6 +159,11 @@ const Orders = {
       localeDate(ms) {
         let dateObject = new Date(+ms);
         return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
+      },
+      saveOrder(index,status) {
+        //Тут запрос
+        this.orders[index].status_id = status;
+        this.orders[index].status = this.filters.statuses.find(status => status[0] === status)[1];
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
@@ -166,6 +205,10 @@ const Orders = {
               }
               $('.main__loader').hide();
             });
+      },
+      loadPage(index = 1) {
+        this.page_no = index;
+        this.getOrders();
       }
     },
     created: function(){
