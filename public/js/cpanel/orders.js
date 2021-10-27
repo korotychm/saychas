@@ -83,7 +83,7 @@ const Orders = {
       },
       localeDate(ms) {
         let dateObject = new Date(+ms);
-        return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'});
+        return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
