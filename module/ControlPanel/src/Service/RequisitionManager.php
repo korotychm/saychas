@@ -77,6 +77,11 @@ class RequisitionManager extends ListManager implements LoadableInterface
         return $accumulator;
     }
 
+    private function findStatuses()
+    {
+        return $this->config['parameters']['requisition_statuses'];
+    }
+
     /**
      * Find store documents for specified provider
      *
@@ -85,21 +90,24 @@ class RequisitionManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
-//        $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
-//        $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
-//        $rating = (int) $params['where']['rating'];
-//        if($isActive) {
-//            $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
-//        }else{
-//            $filter = ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ];
-//        }
-//        
-//        if(0 == $rating) {
-//            unset($filter['rating']);
-//        }
         
         $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']]);
+        
+        $collection = $this->db->stores;
+        
+        $stores = $collection->find(
+        ['provider_id' => $params['where']['provider_id']],
+        [
+//            'skip' => 0 >= $limits['min'] ? 0 : $limits['min'] - 1,
+//            'limit' => $this->pageSize,
+//            'sort' => $params['sort'],
+            'projection' => ['id' => 1, 'title' =>1, '_id' => 0 ],
+        ])->toArray();
+        
+
+        $cursor['filters']['statuses'] = $this->findStatuses();
+        $cursor['filters']['stores'] = $stores;
         
         return $cursor;
     }
