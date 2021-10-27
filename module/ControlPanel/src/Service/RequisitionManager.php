@@ -85,21 +85,21 @@ class RequisitionManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
-        $providerId = $params['where']['provider_id'];
+//        $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
-        $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
-        $rating = (int) $params['where']['rating'];
-        if($isActive) {
-            $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
-        }else{
-            $filter = ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ];
-        }
+//        $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
+//        $rating = (int) $params['where']['rating'];
+//        if($isActive) {
+//            $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
+//        }else{
+//            $filter = ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ];
+//        }
+//        
+//        if(0 == $rating) {
+//            unset($filter['rating']);
+//        }
         
-        if(0 == $rating) {
-            unset($filter['rating']);
-        }
-        
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $filter]);
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']]);
         
         return $cursor;
     }
