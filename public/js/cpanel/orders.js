@@ -58,7 +58,7 @@ const Orders = {
                                 <div class="orders__product-count-initial" v-if="product.qty_partner < product.qty"><b>{{ product.qty }}</b> шт</div>
                                 <div class="orders__product-count-actual"><b>{{ product.qty_partner }}</b> шт</div>
                             </div>
-                            <div class="orders__product-sum">{{ calculatePrice(product.price, discount).toLocaleString() }} ₽</div>
+                            <div class="orders__product-sum">{{ calculatePrice(product.price, product.discount).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit">
                               <button>
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
@@ -72,7 +72,7 @@ const Orders = {
                       <button class="btn btn--primary" @click="activeOrder = index;">Приступить к сборке<span>00:00</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="activeOrder === index">
-                      <button class="btn btn--primary" @click=activeOrder = null;">Приступить к сборке<span>00:00</span></button>
+                      <button class="btn btn--primary" @click=activeOrder = null;">Собран<span>00:00</span></button>
                     </div>
                 </div>
               </div>
@@ -134,6 +134,7 @@ const Orders = {
                 location.reload();
               } else {
                 console.log('Response from show-requisitions',response.data);
+                this.activeOrder = null;
                 this.pages = response.data.data.limits.total;
                 this.orders = response.data.data.body;
                 if (!this.filtersCreated){
