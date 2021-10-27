@@ -148,6 +148,7 @@ const Orders = {
       },
       getUnit(value) {
         value = value.toString();
+        console.log('val',value);
         if (value == 0) {
           return 'товаров';
         } else if (value.slice(-1) == '1' && value.slice(-2) != '11') {
