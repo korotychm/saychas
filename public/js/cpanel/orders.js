@@ -45,7 +45,7 @@ const Orders = {
                             </div>
                         </div>
                         <div class="orders__count"><b>{{ order.items.length }}</b> {{ getUnit(order.items.length) }}</div>
-                        <div class="orders__sum">на сумму<span>{{ (order.requisition_sum / 100).toLocaleString() }} ₽</span></div>
+                        <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
                     <div class="td orders__btn"><button class="btn btn--primary">Приступить к сборке<span>00:00</span></button></div>
                 </div>
