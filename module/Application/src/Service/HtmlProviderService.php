@@ -242,6 +242,7 @@ class HtmlProviderService
         $productImages = $return = $filters = [];
         //foreach ($filteredProducts as $product) {
         $product = $filteredProducts->current();
+        
         $return['oldPrice'] = 0;
         $return['price'] = (int) $product->getPrice();
         $return['discont'] = (int) $product->getDiscount();
@@ -283,39 +284,66 @@ class HtmlProviderService
             $return['description']['if_spoiler'] = ((strlen($description) < 501));
             $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
         }
-
+        $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $categoryId );
         //$characteristicsArray = array_diff($characteristicsArray, array(''));
-        if (!empty($characteristicsArray)) {
-            
-            //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
-            foreach ($characteristicsArray as $char) {
-                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
-                $chArray = $ch->getIsList();
-                $chType = $ch->getType();
-                unset($value, $v);    
-                //if ($char['value']) {
-                    unset($v);
-                    ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
-                    $value = $this->valueParce($v, $chType);
-                    
-                //}
-
-                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
-                $return["characteristics"][0][] = $char;
-                
-                if ($ch->getIsMain()) {
-                    $return["characteristics"][1][] = $char;
-                }
-            }
-        } else {
-            $return["characteristics"] = [];
-        }
+//        if (!empty($characteristicsArray)) {
+//            
+//            //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
+//            foreach ($characteristicsArray as $char) {
+//                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
+//                $chArray = $ch->getIsList();
+//                $chType = $ch->getType();
+//                unset($value, $v);    
+//                //if ($char['value']) {
+//                    unset($v);
+//                    ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
+//                    $value = $this->valueParce($v, $chType);
+//                    
+//                //}
+//
+//                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
+//                $return["characteristics"][0][] = $char;
+//                
+//                if ($ch->getIsMain()) {
+//                    $return["characteristics"][1][] = $char;
+//                }
+//            }
+//        } else {
+//            $return["characteristics"] = [];
+//        }
         
         $return['categoryId'] = $categoryId;
         $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
 
         return $return;
     }
+    private function getCharsProductPage ($characteristicsArray, $categoryId )
+    {
+        if (!empty($characteristicsArray)) {
+            
+            $value = $v = ""; //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
+            foreach ($characteristicsArray as $char) {
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
+                $chArray = $ch->getIsList();
+                $chType = $ch->getType();
+                unset($value, $v);    
+                ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
+                $value = $this->valueParce($v, $chType);
+                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
+                $return[0][] = $char;
+                
+                if ($ch->getIsMain()) {
+                    $return[1][] = $char;
+                }
+            }
+        } else {
+            $return = [];
+        }
+        
+        return $return;
+    }
+    
+    
 
     public function getUserAddresses($user = null, $limit)
     {
