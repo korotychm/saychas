@@ -376,16 +376,18 @@ class IndexController extends AbstractActionController
         $userId = $this->identity();
         $product_id = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_id;
+        
         if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
             return $this->responseError404();
         }
+        
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $productPage = $this->htmlProvider->productPageService($products);
-        $productPage['breadCrumbs'] = ($productPage['categoryId'] and!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['categoryId']))) ? array_reverse($matherCategories) : [];
+        $productPage['breadCrumbs'] = ($productPage['category_id'] and!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['category_id']))) ? array_reverse($matherCategories) : [];
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId);
         $this->addProductToHistory($product_id);
-        $productPage['category'] = (!empty($productPage['categoryId'])) ? $this->categoryRepository->findCategory(['id' => $productPage['categoryId']])->getTitle() : "";
-        $productPage['id'] = $product_id;
+        $productPage['category'] = (!empty($productPage['category_id'])) ? $this->categoryRepository->findCategory(['id' => $productPage['category_id']])->getTitle() : "";
+        //$productPage['id'] = $product_id;
         $productPage['images'] = $this->getProductImages($product_id); 
         $productPage['delivery_price'] = $param ['hourPrice'];
         
@@ -604,6 +606,11 @@ class IndexController extends AbstractActionController
         return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'address' => StringHelper::cutAddress($store->getAddress()), 'id' => $store_id, 'category_id' => $category_id, "title" => $storeTitle, 'category_title' => $categoryTitle,]);
     }
 
+    /**
+     * 
+     * @param string $store_id
+     * @return object
+     */
     private function getStoreCategories($store_id)
     {
 //        $container = new Container();
@@ -625,7 +632,7 @@ class IndexController extends AbstractActionController
     /**
      * 
      * @param string $brand_id
-     * @return mixed
+     * @return object
      */
     private function getBrandCategories($brand_id)
     {
@@ -638,6 +645,11 @@ class IndexController extends AbstractActionController
         return $this->categoryRepository->findAll(["where" => ["id" => $categoriesArray]]); //->toArray();
     }
 
+    /**
+     * 
+     * @param string $provider_id
+     * @return object
+     */
     private function getProviderCategories($provider_id)
     {
 //        $container = new Container();

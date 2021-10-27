@@ -239,52 +239,54 @@ class HtmlProviderService
 
     public function productPageService($filteredProducts)
     {
-        $productImages = $return = $filters = [];
+        //$productImages = $return = $filters = [];
         //foreach ($filteredProducts as $product) {
-        $product = $filteredProducts->current();
+        //$product = $filteredProducts->current();
+        $return = current($filteredProducts->toArray());
+        //$return = 
+       //exit(print_r($return));
         
-        $return['oldPrice'] = 0;
-        $return['price'] = (int) $product->getPrice();
-        $return['discont'] = (int) $product->getDiscount();
+        //$return['oldPrice'] = 0;
+        //$return['price'] = (int) $product->getPrice();
+       // $return['discont'] = (int) $product->getDiscount();
 
         if ($return['discont'] > 0) {
             $return['oldPrice'] = $return['price'];
             $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discont'] / 100);
         }
 
-        $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
-        $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-        $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
-        $return['product_id'] = $id = $product->getId();
-        $return['title'] = $product->getTitle();
-        $parentCategoryId = $product->getParentCategoryId();
-        $categoryId = $product->getCategoryId();
+       $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
+       $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $return["id"], 'store_id=?' => $return['store_id']]);
+       $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
+      //  $return['product_id'] = $id = $product->getId();
+        //$return['title'] = $product->getTitle();
+//        $parentCategoryId = $product->getParentCategoryId();
+//        $categoryId = $product->getCategoryId();
+//        category_id] => 000000006
+//        [parent_category_id] => 000000006
+//        
         
-        if (!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
-            $categoryId = $parentCategoryId;
-        }
+        //if () {
+            $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
+        //}
         
-        $return['category_id'] = $categoryId;
-        $charNew = $product->getParamVariableList();
-        $characteristicsArray = !empty($charNew) ? Json::decode($charNew, Json::TYPE_ARRAY) : [];
-        $productImages[] = $product->getHttpUrl();
-        $vendor = $product->getVendorCode();
-        $productId = $product->getId();
-        $return["brand"]["title"] = $product->getBrandTitle();
-        $return["brand"]["id"] = $product->getBrandId();
-        $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
-        $return["provider"]["id"] = $product->getProviderId();
-        $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
-        $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
-        $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
-        $description = $product->getDescription();
+        //$return['category_id'] = $categoryId;
+        //$charNew = $product->getParamVariableList();
+        $characteristicsArray = !empty($return['param_variable_list']) ? Json::decode($return['param_variable_list'], Json::TYPE_ARRAY) : [];
+        //$productImages[] = $product->getHttpUrl();
+//        $vendor = $product->getVendorCode();
+//        $productId = $product->getId();
+        $provider = $this->providerRepository->findFirstOrDefault(['id' => $return['provider_id']]);
+        $return["brand"] = ["title" => $return['brand_title'], "id" => $return['brand_id'], "image" => $this->brandRepository->findFirstOrDefault(['id' => $return["brand_id"]])->getImage(),];
+        $return["provider"] =  ["id" => $provider->getId(), "image" => $provider->getImage(), "title" =>  $provider->getTitle(),];
+      
 
-        if (!empty($description)) {
-            $return['description']["text"] = StringHelper::eolFormating($description);
-            $return['description']['if_spoiler'] = ((strlen($description) < 501));
-            $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
+        if (!empty($return['description'])) {
+            //unset ($return['description']);
+            $return['description'] = ["text" => StringHelper::eolFormating($return['description']), 'if_spoiler' => ((strlen($return['description']) < 501)),]; 
+            
         }
-        $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $categoryId );
+        $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $return['category_id'] );
         //$characteristicsArray = array_diff($characteristicsArray, array(''));
 //        if (!empty($characteristicsArray)) {
 //            
@@ -312,9 +314,9 @@ class HtmlProviderService
 //            $return["characteristics"] = [];
 //        }
         
-        $return['categoryId'] = $categoryId;
-        $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
-
+//        $return['categoryId'] = $categoryId;
+//        $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
+//exit(print_r($return));
         return $return;
     }
     private function getCharsProductPage ($characteristicsArray, $categoryId )

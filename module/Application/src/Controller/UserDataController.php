@@ -425,12 +425,20 @@ class UserDataController extends AbstractActionController
             return $this->userModalSendSms($return);
         }
 
-        if (!empty($post->userSmsCode) and $userAutSession['smscode'] != $post->userSmsCode) {
-            if(!empty($post->userSmsCode)) {
-                $return['error']['sms'] = Resource::ERROR_SEND_SMS_CODE_MESSAGE;
+        if (empty($userAutSession['phoneValid'])){ 
+            
+            if($userAutSession['smscode'] != $post->userSmsCode) {
+                $return['error']['sms'] = !empty($post->userSmsCode) ? Resource::ERROR_SEND_SMS_CODE_MESSAGE : "";
+                return $this->userModalView($return);
+            } 
+            else  {
+                $userAutSession['phoneValid'] = true;
+                $container->userAutSession = $userAutSession;
             }
-            return $this->userModalView($return);
-        }
+            //return $this->userModalView($return);
+        }  
+        
+        
         
         return (!empty($userId)) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
 
