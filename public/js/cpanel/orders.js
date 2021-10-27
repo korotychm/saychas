@@ -111,8 +111,8 @@ const Orders = {
                     </div>
                     <div class="td orders__btn" v-else>
                       <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
-                      <button class="btn btn--gray" v-if="activeItem !== order.requisition_id" @click="activeItem = order.requisition_id">Подробнее</button>
-                      <button class="btn btn--gray active" v-if="activeItem === order.requisition_id" @click="activeItem = null">Скрыть</button>
+                      <button class="btn btn--gray" v-if="activeItem !== order.requisition_id" @click="activeOrder = order.requisition_id">Подробнее</button>
+                      <button class="btn btn--gray active" v-if="activeItem === order.requisition_id" @click="activeOrder = null">Скрыть</button>
                     </div>
                 </div>
               </div>
