@@ -40,7 +40,7 @@ const Orders = {
                     <div class="td orders__status">{{ order.status }}</div>
                     <div class="td orders__short" v-show="activeOrder !== index">
                         <div class="orders__images" v-if="order.items.length">
-                            <div class="orders__image" v-for="product in order.items">
+                            <div class="orders__image" :class="{'orders__image--disabled: product.qty_partner == 0'}" v-for="product in order.items">
                               <img :src="product.image" />
                             </div>
                         </div>
@@ -104,7 +104,8 @@ const Orders = {
           },
           filtersCreated: false,
           activeOrder: null,
-          activeItem: null
+          activeItem: null,
+          currentQuantity: null
         }
     },
     methods: {
