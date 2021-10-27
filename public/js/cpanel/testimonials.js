@@ -17,8 +17,70 @@ const Testimonials = {
                 <div class="custom-select__dropdown">
                   <div class="custom-select__dropdown-inner">
                     <label class="custom-select__option">
-                      <input type="radio" checked="checked" value="" name="rating_filter" v-model="selectedFilters.status_id" @change="loadPage()" />
+                      <input type="radio" checked="checked" value="0" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
                       <span>Все оценки</span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="1" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>
+                        <div class="reviews__rating">
+                          <div v-for="(n, index) in 4" class="reviews__star">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                          <div class="reviews__star active">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                        </div>
+                      </span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="2" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>
+                        <div class="reviews__rating">
+                          <div v-for="(n, index) in 3" class="reviews__star">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                          <div v-for="(n, index) in 2" class="reviews__star active">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                        </div>
+                      </span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="3" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>
+                        <div class="reviews__rating">
+                          <div v-for="(n, index) in 2" class="reviews__star">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                          <div v-for="(n, index) in 3" class="reviews__star active">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                        </div>
+                      </span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="4" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>
+                        <div class="reviews__rating">
+                          <div class="reviews__star">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                          <div v-for="(n, index) in 4" class="reviews__star active">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                        </div>
+                      </span>
+                    </label>
+                    <label class="custom-select__option">
+                      <input type="radio" checked="checked" value="5" name="rating_filter" v-model="selectedFilters.rating" @change="loadPage()" />
+                      <span>
+                        <div class="reviews__rating">
+                          <div v-for="(n, index) in 5" class="reviews__star active">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px"><path fill-rule="evenodd" fill="currentColor" d="M3.788,16.998 C3.764,16.998 3.740,16.997 3.716,16.995 C3.230,16.947 2.869,16.488 2.916,15.973 L3.351,11.50 L0.224,7.340 C0.102,6.950 0.65,6.355 0.307,6.13 C0.419,5.910 0.557,5.837 0.703,5.803 L5.316,4.709 L7.739,0.457 C7.902,0.171 8.188,0.1 8.506,0.1 C8.664,0.1 8.820,0.46 8.958,0.131 C9.86,0.211 9.194,0.323 9.270,0.457 L11.693,4.720 L16.304,5.803 C16.784,5.917 17.86,6.421 16.977,6.926 C16.944,7.79 16.874,7.222 16.774,7.340 L13.658,11.40 L14.93,15.971 C14.136,16.485 13.773,16.942 13.283,16.987 C13.257,16.990 13.230,16.991 13.204,16.991 C13.84,16.991 12.967,16.966 12.856,16.917 L8.504,14.968 L4.152,16.917 C4.34,16.971 3.913,16.998 3.788,16.998 Z"></path></svg>
+                          </div>
+                        </div>
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -28,12 +90,12 @@ const Testimonials = {
         </div>
       </div>
       <div class="cp-container list reviews">
-        <div class="thead">
+        <div class="thead" v-if="reviews.length">
           <div class="td">Отзыв</div>
           <div class="td">Оценка</div>
           <div class="td">Дата</div>
         </div>
-        <div class="tbody">
+        <div class="tbody" v-if="reviews.length">
           <div v-for="(review, index) in reviews" class="tr reviews__item">
               <div class="td td--hover reviews__title">
                 <div class="products__title">
@@ -55,9 +117,12 @@ const Testimonials = {
                     </a>
                   </div>
                 </div>
+                <div v-if="review.response && selectedFilters.is_archive" class="reviews__response" style="margin-top: 20px; padding-left: 30px;">
+                  {{ review.response }}
+                </div>
               </div>
-              <div class="reviews__add-answer">
-                <textarea class="textarea" placeholder="Ваш ответ"></textarea>
+              <div class="reviews__add-answer" v-if="!selectedFilters.is_archive">
+                <textarea class="textarea" placeholder="Ваш ответ" v-model="review.response"></textarea>
                 <div class="reviews__btns">
                   <button class="btn btn--secondary reviews__back">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="8px" height="13px">
@@ -66,12 +131,14 @@ const Testimonials = {
                     </svg>
                     <span>Вернуться</span>
                   </button>
-                  <button class="btn btn--primary" @click="addAnswer">Ответить на отзыв</button>
+                  <button class="btn btn--primary" @click="addAnswer(index)">Ответить на отзыв</button>
                 </div>
               </div>
-              <div class="reviews__popup"></div>
+              <div class="reviews__popup" v-if="!selectedFilters.is_archive"></div>
           </div>
         </div>
+        <div v-if="!reviews.length && !selectedFilters.is_archive">Нет новых отзывов к вашим товарам</div>
+        <div v-if="!reviews.length && selectedFilters.is_archive">Нет отвеченных отзывов к вашим товарам</div>
       </div>
       <div class="pagination">
         <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
@@ -87,7 +154,7 @@ const Testimonials = {
       pages: 1,
       filters: {},
       selectedFilters: {
-        rating: '',
+        rating: 0,
         is_archive: false
       },
       filtersCreated: false
@@ -145,9 +212,30 @@ const Testimonials = {
     },
     setArchive(status) {
       this.selectedFilters.is_archive = status;
+      this.loadPage();
     },
-    addAnswer() {
-      return true;
+    addAnswer(index) {
+      let requestUrl = '/control-panel/update-review';
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      axios
+        .post(requestUrl,
+          Qs.stringify({
+            id : this.reviews[index].id,
+            response : this.reviews[index].response,
+            uid: this.reviews[index].uid
+          }),{headers})
+          .then(response => {
+            console.log('Response после ответа на отзыв', response, response.data.result);
+            if (response.data.result) {
+              console.log('remove');
+              $('.reviews__item').removeClass('active');
+              showMessage('Ответ на отзыв опубликован!');
+              this.$delete(this.reviews,index);
+            }
+          })
+          .catch(error => {
+            $('.main__loader').hide();
+          });
     }
   },
   created: function(){

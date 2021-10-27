@@ -8,8 +8,12 @@ $('#accept-doc-form').submit(function(e){
         cache: false,
         data: msg,
         success: function (data) {
-          console.log(data);
-          $('.popup--doc').remove();
+          console.log('ответ на подтверждение оферты',data);
+          if (data.result){
+            $('.popup--doc').remove();
+          } else {
+            showServicePopupWindow('Ошибка', data.error_description_for_user);
+          }
         }
     });
   } else {

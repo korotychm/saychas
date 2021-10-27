@@ -238,6 +238,7 @@ class ProductController extends AbstractActionController
             //move_uploaded_file($tmpName, "$uploadsDir/$fileName");
             $result = move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
         }
+
         return new JsonModel(['image_file_name' => $newFileName]);
     }
 
@@ -265,6 +266,7 @@ class ProductController extends AbstractActionController
             }
             return new JsonModel(['result' => true]);
         }
+
         return new JsonModel(['result' => false]);
     }
 
@@ -282,6 +284,7 @@ class ProductController extends AbstractActionController
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true]);
         }
+
         return new JsonModel(['result' => false]);
     }
 
@@ -298,6 +301,7 @@ class ProductController extends AbstractActionController
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
         $result = $this->productManager->updateServerPriceAndDiscount($credentials, $product);
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+
         return $res;
     }
 
@@ -318,6 +322,7 @@ class ProductController extends AbstractActionController
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true, 'data' => $product]);
         }
+
         return new JsonModel(['result' => false]);
     }
 
@@ -367,7 +372,7 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['answer' => $answer]);
     }
-    
+
     /**
      * Example
      *  $content => [
@@ -376,7 +381,7 @@ class ProductController extends AbstractActionController
      *    "category_id": "000000527",
      *    "query_type": "product"
      *  ]
-     * 
+     *
      * @return JsonModel
      */
     public function getProductFileAction()
@@ -384,21 +389,52 @@ class ProductController extends AbstractActionController
         $post = $this->getRequest()->getPost()->toArray();
 
         $identity = $this->authService->getIdentity();
-        
+
         $content = [
           "provider_id" => $identity['provider_id'],
           "store_id" => '',
           "category_id" => $post['data']['category_id'],
           "query_type" => $post['data']['query_type'],
         ];
-        
+
         $result = $this->productManager->getProductFile($content);
-        
+
         if(false == $result['result']) {
             return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
         }
-        
+
         return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
     }
 
+    /**
+     *  Example
+     *  $content = [
+     *    "source_file" => "string",
+     *    "result_file" => "string",
+     *    "provider_id" => "string",
+     *    "query_type" => "item"
+     *  ];
+     *
+     * @return JsonModel
+     */
+    public function sendProductFileAction()
+    {
+        $request = $this->getRequest();
+        $post = $request->getPost()->toArray();
+        $files = $request->getFiles();
+        $count = count($files);
+        $identity = $this->authService->getIdentity();
+
+        $content = [
+          "source_file" => 'смартфоны.xls',// 'bl_product_000000006.xls',
+          "result_file" => '',
+          "provider_id" => $identity['provider_id'],
+          "query_type" => 'new_product', // $post['data']['query_type'],
+        ];
+
+        $this->productManager->copyProductFile($content);
+        $result = $this->productManager->sendProductInfo($content);
+
+        return new JsonModel(['result' => $result['result'],]);
+    }
 }
