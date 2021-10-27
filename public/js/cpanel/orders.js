@@ -39,7 +39,7 @@ const Orders = {
                     <div class="td orders__date">{{ order.date }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
                     <div class="td orders__short">
-                        <div class="orders__images" v-if="order.items.length">
+                        <div class="orders__images" v-if="order.items">
                             <div class="orders__image" v-for="product in order.items">
                               <img :src="product.image" />
                             </div>
