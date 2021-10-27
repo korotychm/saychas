@@ -171,7 +171,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     
     private function categoriesHasProduct ()
     {
-        $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT `category_id` FROM `product` WHERE 1 group by `category_id`)";
+        $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT a.`category_id` FROM `product` as a INNER JOIN  `price` as b on( a.id = b.product_id)  WHERE 1 group by `category_id`)";
         $result = $this->db->query($query)->execute();
         if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             throw new \Exception('no legal categories');

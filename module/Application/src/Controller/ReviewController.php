@@ -286,7 +286,8 @@ class ReviewController extends AbstractActionController
 
     /**
      * return insert id
-     *
+     * NO DELETE!
+     * 
      * @param array $param
      * @return int
      */
