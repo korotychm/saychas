@@ -82,7 +82,7 @@ const Orders = {
         }
       },
       localeDate(ms) {
-        let dateObject = new Date(ms);
+        let dateObject = new Date(ms * 100);
         return dateObject.toLocaleString();
       },
       getOrders() {
