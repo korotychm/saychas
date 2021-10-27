@@ -72,7 +72,7 @@ const Orders = {
                       <button class="btn btn--primary" @click="activeOrder = index;">Приступить к сборке<span>00:00</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="activeOrder === index">
-                      <button class="btn btn--primary" @click=activeOrder = null;">Собран<span>00:00</span></button>
+                      <button class="btn btn--primary" @click="activeOrder = null;">Собран<span>00:00</span></button>
                     </div>
                 </div>
               </div>
