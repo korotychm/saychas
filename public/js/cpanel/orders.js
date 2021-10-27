@@ -147,15 +147,17 @@ const Orders = {
         return price - (price * discount / 100)
       },
       getUnit(value) {
-        value = value.toString();
-        console.log('val',value);
         if (value == 0) {
           return 'товаров';
-        } else if (value.slice(-1) == '1' && value.slice(-2) != '11') {
+        }
+        value = value.toString();
+        if (value.slice(-1) == '1' && value.slice(-2) != '11') {
           return 'товар';
-        } else if (+value.slice(-1) > 1 && +value.slice(-1) < 5 && +value.slice(-2) != '12' && value.slice(-2) != '13' && value.slice(-2) != '14') {
+        }
+        if (+value.slice(-1) > 1 && +value.slice(-1) < 5 && +value.slice(-2) != '12' && value.slice(-2) != '13' && value.slice(-2) != '14') {
           return 'товара';
-        } else {
+        }
+        if {
           return 'товаров';
         }
       },
