@@ -12,6 +12,7 @@ use ControlPanel\Controller\Factory\ProductControllerFactory;
 use ControlPanel\Controller\Factory\StoreControllerFactory;
 use ControlPanel\Controller\Factory\StockBalanceControllerFactory;
 use ControlPanel\Controller\Factory\ReviewControllerFactory;
+use ControlPanel\Controller\Factory\RequisitionControllerFactory;
 use ControlPanel\Controller\Factory\ListControllerFactory;
 use ControlPanel\Controller\Factory\ApiControllerFactory;
 //use ControlPanel\Controller\Factory\StandardControllerFactory;
@@ -25,6 +26,7 @@ return [
             \ControlPanel\Controller\AuthController::class => AuthControllerFactory::class,
             \ControlPanel\Controller\ProductController::class => ProductControllerFactory::class,
             \ControlPanel\Controller\StoreController::class => StoreControllerFactory::class,
+            \ControlPanel\Controller\RequisitionController::class => RequisitionControllerFactory::class,
             \ControlPanel\Controller\StockBalanceController::class => StockBalanceControllerFactory::class,
             \ControlPanel\Controller\ReviewController::class => ReviewControllerFactory::class,
             \ControlPanel\Controller\ListController::class => ListControllerFactory::class,
@@ -93,6 +95,10 @@ return [
                 ['actions' => ['updateStore',], 'allow' => '+administrator'],
                 ['actions' => ['saveNewlyAddedStore',], 'allow' => '+administrator'],
                 //['actions' => ['showStoresFromCache', ], 'allow' => '+developer'],
+            ],
+            \ControlPanel\Controller\RequisitionController::class => [
+                ['actions' => ['editRequisition',], 'allow' => '+administrator'],
+                ['actions' => ['updateRequisition',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\StockBalanceController::class => [
                 ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
@@ -537,6 +543,28 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'update-price-and-discount',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'edit-requisition' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/edit-requisition',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\RequisitionController::class,
+                                'action' => 'edit-requisition',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'update-requisition' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-requisition',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\RequisitionController::class,
+                                'action' => 'update-requisition',
                             ],
                         ],
                         // 'may_terminate' => true,
