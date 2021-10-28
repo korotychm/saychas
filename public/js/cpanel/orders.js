@@ -51,7 +51,7 @@ const Orders = {
               <div class="tbody">
                 <div class="tr orders__item" v-for="(order,index) in orders">
                     <div class="td orders__store">{{ order.store }}</div>
-                    <div class="td orders__order">{{ +order.requisition_id }}</div>
+                    <div class="td orders__order">{{ +order.id }}</div>
                     <div class="td orders__date">{{ localeDate(order.date) }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
                     <div class="td orders__short" v-show="activeOrder !== index && order.status_id != '02'">
@@ -66,7 +66,7 @@ const Orders = {
                         </div>
                         <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
-                    <div class="td orders__full" v-show="activeOrder === order.requisition_id || order.status_id == '02'">
+                    <div class="td orders__full" v-show="activeOrder === order.id || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
                             <div class="orders__product-image">
                               <img :src="imgPath + product.image_id" />
@@ -110,8 +110,8 @@ const Orders = {
                     </div>
                     <div class="td orders__btn" v-else>
                       <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
-                      <button class="btn btn--gray" v-if="activeOrder !== order.requisition_id" @click="activeOrder = order.requisition_id">Подробнее</button>
-                      <button class="btn btn--gray active" v-if="activeOrder === order.requisition_id" @click="activeOrder = null">Скрыть</button>
+                      <button class="btn btn--gray" v-if="activeOrder !== order.id" @click="activeOrder = order.id">Подробнее</button>
+                      <button class="btn btn--gray active" v-if="activeOrder === order.id" @click="activeOrder = null">Скрыть</button>
                     </div>
                 </div>
               </div>
@@ -174,7 +174,7 @@ const Orders = {
           }
         }
 
-        let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]).replace('requisition_id', 'id'));
+        let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]).replace('id', 'id'));
         console.log(orderRequestData);
 
         let requestUrl = '/control-panel/update-requisition';
