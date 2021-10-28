@@ -70,7 +70,7 @@ const Orders = {
                     <div class="td orders__full" v-show="activeOrder === order.requisition_id || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
                             <div class="orders__product-image">
-                              <img v-if="product.image" src="imgPath + product.image_id" />
+                              <img src="imgPath + product.image_id" />
                             </div>
                             <div class="orders__product-title">{{ product.product }}</div>
                             <div class="orders__product-id">{{ product.product_id }}</div>
