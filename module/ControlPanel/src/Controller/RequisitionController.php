@@ -96,19 +96,18 @@ class RequisitionController extends AbstractActionController
         return new JsonModel(['requisition' => $requisition]);
     }
 
-    private function canUpdateRequisition(array $requisition): array //  bool
+    private function canUpdateRequisition(array $data): array //  bool
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
-        $result = $this->requisitionManager->updateServerDocument($credentials, $requisition);
+        $result = $this->requisitionManager->updateServerDocument($credentials, ['data' => $data] );
         return $result;
     }
 
     public function updateRequisitionAction()
     {
-        $post = $this->getRequest()->getPost()->toArray();
-        $requisition = $post['data']['requisition'];
+        $requisition = $this->getRequest()->getPost()->toArray();
         $result = $this->canUpdateRequisition($requisition);
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         unset($requisition['_id']);
