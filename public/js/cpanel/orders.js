@@ -37,7 +37,7 @@ const Orders = {
                               <span>{{status[1]}}</span>
                             </label>
                           </div>
-                      </div>    
+                      </div>
                   </div>
               </div>
           </div>
@@ -166,9 +166,34 @@ const Orders = {
         return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
       },
       saveOrder(index,status) {
-        //Тут запрос
         this.orders[index].status_id = status;
-        this.orders[index].status = this.filters.statuses.find(status => status[0] === status)[1];
+        let newStatus = this.filters.statuses.find(status => status[0] == status)[1];
+        console.log('newStatus',newStatus);
+
+        // let requestUrl = '/control-panel/update-requisition';
+        // const headers = { 'X-Requested-With': 'XMLHttpRequest' }
+        // axios
+        //   .post(requestUrl,
+        //     Qs.stringify(this.orders[index]), {headers})
+        //     .then(response => {
+        //       if (response.data.data === true) {
+        //         location.reload();
+        //       } else {
+        //         console.log('Response from update-requisition',response.data);
+        //       }
+        //     })
+        //     .catch(error => {
+        //       if (error.response.status == '403'){
+        //         this.htmlContent = error403template;
+        //       }
+        //       if (error.response.status == '404'){
+        //         this.htmlContent = error404template;
+        //       }
+        //       if (error.response.status == '500'){
+        //         this.htmlContent = error500template;
+        //       }
+        //       $('.main__loader').hide();
+        //     });
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
