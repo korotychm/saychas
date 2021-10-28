@@ -102,12 +102,37 @@ class RequisitionController extends AbstractActionController
         $isTest = 'false';
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
         $result = $this->requisitionManager->updateServerDocument($credentials, ['data' => $data] );
+        
+        return $result;
+    }
+    
+    private function updateStatus(array $data)
+    {
+        $identity = $this->authService->getIdentity();
+        $isTest = 'false';
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: ' . $isTest/* , 'is_test: true' */];
+        $result = $this->requisitionManager->updateRequisitionStatus($credentials, ['data' => $data] );
+        
         return $result;
     }
 
     public function updateRequisitionAction()
     {
         $requisition = $this->getRequest()->getPost()->toArray();
+        $status = ['requisition_id' =>$requisition['id'], 'status' => $requisition['status'], 'status_id' => $requisition['status_id'] ];
+        $statusResult = $this->updateStatus($status);
+        $statusRes = $statusResult['http_code'] === 200 && $statusResult['data']['result'] === true;
+        if(false == $statusRes) {
+            $answer = [
+                'http_code' => '400',
+                'result' => $statusResult['result'],
+                'error_description' => $statusResult['error_description'],
+                'error_description_for_user' => $statusResult['error_description'],
+            ];
+            
+            return JsonModel($answer);
+        }
+        
         $result = $this->canUpdateRequisition($requisition);
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         unset($requisition['_id']);

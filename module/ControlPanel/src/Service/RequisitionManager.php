@@ -119,17 +119,20 @@ class RequisitionManager extends ListManager implements LoadableInterface
         
         return $result;
     }
+    
+    public function updateRequisitionStatus($headers, $content = [])
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_requisition_status'];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+        
+        return $result;
+    }
 
     public function replaceRequisition($requisition)
     {
         $collection = $this->db->{$this->collectionName};
-        $updateResult = $collection->updateOne(['id' => $requisition['id'], 'uid' => $requisition['uid']],
-                ['$set' => ['response' => $requisition['response'], 'date_responsed' => $requisition['date_responsed']]]);
-//        foreach ($stockBalance['data'] as $balance) {
-//            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
-//                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
-//                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
-//        }
+        $updateResult = $collection->updateOne(['id' => $requisition['id']],
+                ['$set' => ['status_id' => $requisition['status_id'], 'status' => $requisition['status'], 'items' => $requisition['items'] ]]);
 
         return $updateResult;
     }
