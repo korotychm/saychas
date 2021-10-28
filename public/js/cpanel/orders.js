@@ -128,7 +128,7 @@ const Orders = {
           orders: {},
           pages: 1,
           filters: {},
-          imgPath: productImgPath,
+          imgPath: productImgPathModerated,
           selectedFilters: {
             status_id: '',
             store_id: ''
