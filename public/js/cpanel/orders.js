@@ -177,6 +177,7 @@ const Orders = {
         let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]));
         orderRequestData.id = orderRequestData.requisition_id;
         delete orderRequestData.requisition_id;
+        console.log(orderRequestData);
 
         let requestUrl = '/control-panel/update-requisition';
         const headers = { 'X-Requested-With': 'XMLHttpRequest' }
