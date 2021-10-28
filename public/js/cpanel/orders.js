@@ -168,34 +168,38 @@ const Orders = {
       saveOrder(index,status) {
         this.orders[index].status_id = status;
         let statuses = this.filters.statuses;
-        let newStatus = statuses.find(status => status[0] == status);
-        console.log('Statuses',statuses);
-        console.log('newStatus',newStatus);
+        for (item of statuses){
+          if (item[0]==status) {
+            this.orders[index].status = item[1];
+          }
+        }
+        console.log('newStatus',this.orders[index].status);
 
-        // let requestUrl = '/control-panel/update-requisition';
-        // const headers = { 'X-Requested-With': 'XMLHttpRequest' }
-        // axios
-        //   .post(requestUrl,
-        //     Qs.stringify(this.orders[index]), {headers})
-        //     .then(response => {
-        //       if (response.data.data === true) {
-        //         location.reload();
-        //       } else {
-        //         console.log('Response from update-requisition',response.data);
-        //       }
-        //     })
-        //     .catch(error => {
-        //       if (error.response.status == '403'){
-        //         this.htmlContent = error403template;
-        //       }
-        //       if (error.response.status == '404'){
-        //         this.htmlContent = error404template;
-        //       }
-        //       if (error.response.status == '500'){
-        //         this.htmlContent = error500template;
-        //       }
-        //       $('.main__loader').hide();
-        //     });
+        let requestUrl = '/control-panel/update-requisition';
+        const headers = { 'X-Requested-With': 'XMLHttpRequest' }
+        axios
+          .post(requestUrl,
+            Qs.stringify(this.orders[index]), {headers})
+            .then(response => {
+              if (response.data.data === true) {
+                location.reload();
+              } else {
+                console.log('Response from update-requisition',response.data);
+              }
+            })
+            .catch(error => {
+              if (error.response.status == '403'){
+                this.htmlContent = error403template;
+              }
+              if (error.response.status == '404'){
+                this.htmlContent = error404template;
+              }
+              if (error.response.status == '500'){
+                this.htmlContent = error500template;
+              }
+              $('.main__loader').hide();
+            });
+            
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
