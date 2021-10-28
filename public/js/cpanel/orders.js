@@ -10,35 +10,34 @@ const Orders = {
               </div>
               <div class="filter__select filter__select--store">
                   <div class="custom-select custom-select--radio">
-                      <div class="custom-select__label input">Все магазины<div class="custom-select__dropdown">
-                              <div class="custom-select__dropdown-inner">
-                                <label class="custom-select__option">
-                                  <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" /><span>Все магазины</span>
-                                </label>
-                                <label v-for="store in filters.stores" class="custom-select__option">
-                                  <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
-                                  <span>{{store.title}}</span>
-                                </label>
-                              </div>
+                      <div class="custom-select__label input">Все магазины</div>
+                      <div class="custom-select__dropdown">
+                          <div class="custom-select__dropdown-inner">
+                            <label class="custom-select__option">
+                              <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" /><span>Все магазины</span>
+                            </label>
+                            <label v-for="store in filters.stores" class="custom-select__option">
+                              <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
+                              <span>{{store.title}}</span>
+                            </label>
                           </div>
                       </div>
-
                   </div>
               </div>
               <div class="filter__select filter__select--status">
                   <div class="custom-select custom-select--radio">
-                      <div class="custom-select__label input">Все статусы<div class="custom-select__dropdown">
-                              <div class="custom-select__dropdown-inner">
-                                <label class="custom-select__option">
-                                  <input type="radio" :checked="(selectedFilters.status_id === '')" value="" name="filter-status" /><span>Все статусы</span>
-                                </label>
-                                <label v-for="status in filters.statuses" class="custom-select__option">
-                                  <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="filter-status" v-model="selectedFilters.status_id" @change="loadPage()" />
-                                  <span>{{status[1]}}</span>
-                                </label>
-                              </div>
+                      <div class="custom-select__label input">Все статусы</div>
+                      <div class="custom-select__dropdown">
+                          <div class="custom-select__dropdown-inner">
+                            <label class="custom-select__option">
+                              <input type="radio" :checked="(selectedFilters.status_id === '')" value="" name="filter-status" /><span>Все статусы</span>
+                            </label>
+                            <label v-for="status in filters.statuses" class="custom-select__option">
+                              <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="filter-status" v-model="selectedFilters.status_id" @change="loadPage()" />
+                              <span>{{status[1]}}</span>
+                            </label>
                           </div>
-                      </div>
+                      </div>    
                   </div>
               </div>
           </div>
