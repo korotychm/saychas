@@ -167,7 +167,9 @@ const Orders = {
       },
       saveOrder(index,status) {
         this.orders[index].status_id = status;
-        let newStatus = this.filters.statuses.find(status => status[0] == status);
+        let statuses = this.filters.statuses;
+        let newStatus = statuses.find(status => status[0] == status);
+        console.log('Statuses',statuses);
         console.log('newStatus',newStatus);
 
         // let requestUrl = '/control-panel/update-requisition';
