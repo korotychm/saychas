@@ -58,7 +58,7 @@ const Orders = {
                     <div class="td orders__short" v-show="activeOrder !== index && order.status_id != '02'">
                         <div class="orders__images" v-if="order.items.length">
                             <div class="orders__image" :class="{'orders__image--disabled': product.qty_partner == 0}" v-for="product in order.items">
-                              <img :src="product.image" />
+                              <img :src="imgPath + '/' + product.image_id" />
                             </div>
                         </div>
                         <div class="orders__count">
@@ -70,7 +70,7 @@ const Orders = {
                     <div class="td orders__full" v-show="activeOrder === order.requisition_id || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
                             <div class="orders__product-image">
-                              <img v-if="product.image" src="product.image" />
+                              <img v-if="product.image" src="imgPath + '/' + product.image_id" />
                             </div>
                             <div class="orders__product-title">{{ product.product }}</div>
                             <div class="orders__product-id">{{ product.product_id }}</div>
