@@ -173,7 +173,6 @@ const Orders = {
             this.orders[index].status = item[1];
           }
         }
-        console.log('newStatus',this.orders[index].status);
 
         let requestUrl = '/control-panel/update-requisition';
         const headers = { 'X-Requested-With': 'XMLHttpRequest' }
@@ -188,18 +187,13 @@ const Orders = {
               }
             })
             .catch(error => {
+              console.log(error.response)
               if (error.response.status == '403'){
-                this.htmlContent = error403template;
-              }
-              if (error.response.status == '404'){
-                this.htmlContent = error404template;
-              }
-              if (error.response.status == '500'){
-                this.htmlContent = error500template;
+                location.reload();
               }
               $('.main__loader').hide();
             });
-            
+
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
