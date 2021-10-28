@@ -174,11 +174,15 @@ const Orders = {
           }
         }
 
+        let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]));
+        orderRequestData.id = orderRequestData.requisition_id;
+        delete orderRequestData.requisition_id;
+
         let requestUrl = '/control-panel/update-requisition';
         const headers = { 'X-Requested-With': 'XMLHttpRequest' }
         axios
           .post(requestUrl,
-            Qs.stringify(this.orders[index]), {headers})
+            Qs.stringify(orderRequestData), {headers})
             .then(response => {
               if (response.data.data === true) {
                 location.reload();
