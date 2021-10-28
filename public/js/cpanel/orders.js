@@ -174,9 +174,7 @@ const Orders = {
           }
         }
 
-        let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]));
-        orderRequestData.id = orderRequestData.requisition_id;
-        delete orderRequestData.requisition_id;
+        let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]).replace('requisition_id', 'id'));
         console.log(orderRequestData);
 
         let requestUrl = '/control-panel/update-requisition';
