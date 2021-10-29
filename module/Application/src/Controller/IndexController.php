@@ -598,6 +598,7 @@ class IndexController extends AbstractActionController
             
             $breadCrumbs[] = [$category->getUrl(), $category->getTitle()];
         }
+        
         if (!empty($category_id) and empty($categoryTitle)) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toUrl('/store/' . $store_id);
@@ -700,19 +701,19 @@ class IndexController extends AbstractActionController
      * @param array $params
      * @return string
      */
-    private function packParams($params)
-    {
-        $a = [];
-        foreach ($params['filter'] as $p) {
-            $a[] = "find_in_set('$p', param_value_list)";
-        }
-        $res = ' 1';
-        if (count($a) > 0) {
-            $res = '(' . implode(' OR ', $a) . ')';
-        }
-
-        return $res;
-    }
+//    private function packParams($params)
+//    {
+//        $a = [];
+//        foreach ($params['filter'] as $p) {
+//            $a[] = "find_in_set('$p', param_value_list)";
+//        }
+//        $res = ' 1';
+//        if (count($a) > 0) {
+//            $res = '(' . implode(' OR ', $a) . ')';
+//        }
+//
+//        return $res;
+//    }
 
     /**
      *  
