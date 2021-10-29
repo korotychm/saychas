@@ -152,11 +152,11 @@ const Orders = {
             seconds = ((ms % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
-      calulateTime(first,last){
+      calulateTime(date,first,last){
         let current = new Date();
-        let deadline = order.date + (first * 60 * 1000);
+        let deadline = date + (first * 60 * 1000);
         if (+current > deadline){
-          let new_deadline = order.date + ((first + last) * 60 * 1000);
+          let new_deadline = date + ((first + last) * 60 * 1000);
           if (+current > new_deadline){
             return false;
           } else {
@@ -169,11 +169,12 @@ const Orders = {
         }
       },
       checkTime(){
+        console.log('123');
         for (order in this.orders){
           if (+order.status_id == '01'){
-            order.deadline = this.calulateTime(this.deadline_new,this.deadline_new_last);
+            order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
           } else if (+order.status_id == '02'){
-            order.deadline = this.calulateTime(this.deadline_collect,this.deadline_collect_last);
+            order.deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
             if (!order.deadline){
               //Сделать дополнительный запрос?
               order.status_id = '05';
