@@ -148,14 +148,16 @@ const Orders = {
     },
     methods: {
       localedTime(ms){
+        console.log(ms);
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
+        console.log(minutes + ":" + (seconds < 10 ? '0' : '') + seconds);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
         let current = new Date();
         let deadline = +date + (first * 60 * 1000);
-        console.log(+current,deadline,+current - deadline);
+        //console.log(+current,deadline,+current - deadline);
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60 * 1000);
           if (+current > new_deadline){
