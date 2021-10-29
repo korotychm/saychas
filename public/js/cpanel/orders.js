@@ -49,7 +49,7 @@ const Orders = {
                   <div class="td">Статус</div>
               </div>
               <div class="tbody">
-                <div class="tr orders__item" v-for="(order,index) in orders">
+                <div class="tr orders__item" v-for="(order,index) in orders" :key="currentTime">
                     <div class="td orders__store">{{ order.store }}</div>
                     <div class="td orders__order">{{ +order.id }}</div>
                     <div class="td orders__date">{{ localeDate(order.date) }}</div>
