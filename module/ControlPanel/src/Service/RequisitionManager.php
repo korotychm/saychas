@@ -127,6 +127,17 @@ class RequisitionManager extends ListManager implements LoadableInterface
         
         return $result;
     }
+    
+    public function setRequisitionStatus($id, $statusId)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $si = str_pad($statusId, 2, "0", STR_PAD_LEFT);
+        $statuses = $this->findStatuses();
+        $updateResult = $collection->updateOne(['id' => $id],
+                ['$set' => ['status_id' => $si, 'status' => $statuses[$si] ]]);
+        
+        return $updateResult;
+    }
 
     public function replaceRequisition($requisition)
     {
