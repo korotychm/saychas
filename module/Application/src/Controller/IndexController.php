@@ -494,7 +494,7 @@ class IndexController extends AbstractActionController
         
         $brandTitle = $brand->getTitle();
         $categories = $this->getBrandCategories($brand_id);
-        $categoryTitle = (empty($category_id)) ? Resource::THE_ALL_PRODUCTS : '';
+        $categoryTitle = (empty($category_url)) ? Resource::THE_ALL_PRODUCTS : '';
         $breadCrumbs[] = [null, $brandTitle];
     
         foreach ($categories as $category) {

@@ -158,8 +158,8 @@ class UserDataController extends AbstractActionController
      * Generate random code to send
      * to use along with the phone number
      *
-     * @param int $phone
-     * @return int
+     * @param string $email
+     * @return bool
      */
     private function testEmail($email)
     {
@@ -173,18 +173,13 @@ class UserDataController extends AbstractActionController
         if (!$pass or!trim($pass)){
             return false;
         }
+      
         if (strlen($pass) < 6){
             return false;
         }
 
-        //$validator = new \Laminas\Validator\Regex(['pattern' => '/^(?=.*\d)(?=.*[a-Z])[0-9a-Z]{6,}$/']);
         $validator = new \Laminas\Validator\Regex(['pattern' => '/^[a-zA-Z0-9]*$/']);
-        /* (/^
-          (?=.*\d)                //should contain at least one digit
-          (?=.*[a-z])             //should contain at least one lower case
-          (?=.*[A-Z])             //should contain at least one upper case
-          [a-zA-Z0-9]{6,}         //should contain at least 6 from the mentioned characters
-          $/) */
+      
         return $validator->isValid($pass);
     }
 
@@ -232,12 +227,10 @@ class UserDataController extends AbstractActionController
     public function sendRegistrationSmsAction()
     {
         $post = $this->getRequest()->getPost();
-
         $code = $this->generateRegistrationCode($post->phone);
-
         $answer = $this->externalCommunicationService->sendRegistrationSms($post->phone, $code);
-
         $response = $this->getResponse();
+
         if (true != $answer['result']) {
             $response->setStatusCode(Response::STATUS_CODE_400);
         } else {
@@ -500,7 +493,11 @@ class UserDataController extends AbstractActionController
         unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
     }
-
+    
+   /**
+    * 
+    * @param object $user
+    */
     private function userModalUpdateGeo ($user)
     {
         $userdata = $user->getUserData();
@@ -510,6 +507,11 @@ class UserDataController extends AbstractActionController
         }
     }
 
+    /**
+     * 
+     * @param array $return
+     * @return ViewModel
+     */
     private function userModalSendSms($return)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -526,6 +528,11 @@ class UserDataController extends AbstractActionController
         return $this->userModalView($return);
     }
 
+    /**
+     * 
+     * @param array $return
+     * @return ViewModel
+     */
     private function userModalView($return)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
