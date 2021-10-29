@@ -49,7 +49,7 @@ const Orders = {
                   <div class="td">Статус</div>
               </div>
               <div class="tbody">
-                <div class="tr orders__item" v-for="(order,index) in orders" :key="currentTime">
+                <div class="tr orders__item" v-for="(order,index) in orders">
                     <div class="td orders__store">{{ order.store }}</div>
                     <div class="td orders__order">{{ +order.id }}</div>
                     <div class="td orders__date">{{ localeDate(order.date) }}</div>
@@ -186,9 +186,7 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
-              //Сделать дополнительный запрос?
-              order.status_id = '04';
-              order.status = 'Отменен';
+              this.getOrderStatus(order.id,i);
             }
           }
           i++;
@@ -224,6 +222,29 @@ const Orders = {
       localeDate(ms) {
         let dateObject = new Date(+ms);
         return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
+      },
+      getOrderStatus(id,index){
+        let requestUrl = '/control-panel/get-requisition-status';
+        const headers = { 'X-Requested-With': 'XMLHttpRequest' }
+        axios
+          .post(requestUrl,
+            Qs.stringify({
+              id: id
+            }), {headers})
+            .then(response => {
+              if (response.data.result === true) {
+                console.log('Response from get-requisition-status',response.data);
+                this.orders[index].status = response.data.status;
+                this.orders[index].status_id = response.data.status_id;
+              }
+            })
+            .catch(error => {
+              console.log(error.response)
+              if (error.response.status == '403'){
+                location.reload();
+              }
+              $('.main__loader').hide();
+            });
       },
       saveOrder(index,status) {
         let dateObject = new Date();
