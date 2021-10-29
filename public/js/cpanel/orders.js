@@ -226,6 +226,8 @@ const Orders = {
         return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
       },
       saveOrder(index,status) {
+        let dateObject = new Date();
+        this.orders[index].status_date = +dateObject;
         this.orders[index].status_id = status;
         let statuses = this.filters.statuses;
         for (item of statuses){
