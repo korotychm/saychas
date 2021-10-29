@@ -169,7 +169,7 @@ const Orders = {
         }
       },
       checkTime(){
-        console.log('123');
+        console.log(this.$route.name);
         for (order in this.orders){
           if (+order.status_id == '01'){
             order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
