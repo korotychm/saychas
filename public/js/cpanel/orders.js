@@ -175,8 +175,10 @@ const Orders = {
         for (order in this.orders){
           if (+order.status_id == '01'){
             order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            console.log(order.date,this.deadline_new,this.deadline_new_last,order.deadline);
           } else if (+order.status_id == '02'){
             order.deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
+            console.log(order.date,this.deadline_new,this.deadline_new_last,order.deadline);
             if (!order.deadline){
               //Сделать дополнительный запрос?
               order.status_id = '05';
