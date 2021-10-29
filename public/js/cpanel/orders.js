@@ -54,7 +54,7 @@ const Orders = {
                     <div class="td orders__order">{{ +order.id }}</div>
                     <div class="td orders__date">{{ localeDate(order.date) }}</div>
                     <div class="td orders__status">{{ order.status }}</div>
-                    <div class="td orders__short" v-show="activeOrder !== index && order.status_id != '02'">
+                    <div class="td orders__short" v-show="activeOrder !== order.id && order.status_id != '02'">
                         <div class="orders__images" v-if="order.items.length">
                             <div class="orders__image" :class="{'orders__image--disabled': product.qty_partner == 0}" v-for="product in order.items">
                               <img :src="imgPath + product.image_id" />
