@@ -172,12 +172,15 @@ const Orders = {
         if (this.$route.name != 'orders'){
           clearInterval(this.timer);
         }
+        let i = 0;
         for (order of this.orders){
           if (+order.status_id == '00'){
-            order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            Vue.set(this.orders[i],'deadline',deadline);
             console.log(order.deadline);
           } else if (+order.status_id == '01'){
-            order.deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
+            let deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
+            Vue.set(this.orders[i],'deadline',deadline);
             console.log(order.deadline);
             if (!order.deadline){
               //Сделать дополнительный запрос?
@@ -185,6 +188,7 @@ const Orders = {
               order.status = 'Отменен';
             }
           }
+          i++;
         }
       },
       setTime(){
