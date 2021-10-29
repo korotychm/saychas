@@ -14,7 +14,7 @@ const Orders = {
                       <div class="custom-select__dropdown">
                           <div class="custom-select__dropdown-inner">
                             <label class="custom-select__option">
-                              <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" @change="loadPage()" /><span>Все магазины</span>
+                              <input type="radio" :checked="(selectedFilters.store_id === '')" value="" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" /><span>Все магазины</span>
                             </label>
                             <label v-for="store in filters.stores" class="custom-select__option">
                               <input type="radio" :checked="(store.id === selectedFilters.store_id)" :value="store.id" name="filter-store" v-model="selectedFilters.store_id" @change="loadPage()" />
@@ -30,7 +30,7 @@ const Orders = {
                       <div class="custom-select__dropdown">
                           <div class="custom-select__dropdown-inner">
                             <label class="custom-select__option">
-                              <input type="radio" :checked="(selectedFilters.status_id === '')" value="" name="filter-status" @change="loadPage()" /><span>Все статусы</span>
+                              <input type="radio" :checked="(selectedFilters.status_id === '')" value="" name="filter-status" v-model="selectedFilters.status_id" @change="loadPage()" /><span>Все статусы</span>
                             </label>
                             <label v-for="status in filters.statuses" class="custom-select__option">
                               <input type="radio" :checked="(status[0] === selectedFilters.status_id)" :value="status[0]" name="filter-status" v-model="selectedFilters.status_id" @change="loadPage()" />
