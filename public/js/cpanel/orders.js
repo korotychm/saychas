@@ -177,8 +177,8 @@ const Orders = {
             order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             console.log(order.deadline);
           } else if (+order.status_id == '01'){
-            console.log('checkTime01');
             order.deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
+            console.log(order.deadline);
             if (!order.deadline){
               //Сделать дополнительный запрос?
               order.status_id = '04';
