@@ -19,6 +19,7 @@ use Application\Model\Entity\ClientOrder;
 use Application\Model\Repository\Repository;
 use Application\Resource\Resource;
 use Application\Service\AcquiringCommunicationService;
+use ControlPanel\Service\RequisitionManager;
 
 class ClientOrderRepository extends Repository
 {
@@ -39,6 +40,8 @@ class ClientOrderRepository extends Repository
     protected ClientOrder $prototype;
     
     protected AcquiringCommunicationService $acquiringService;
+    
+    protected RequisitionManager $requisitionManager;
 
     /**
      * @param AdapterInterface $db
@@ -49,13 +52,15 @@ class ClientOrderRepository extends Repository
             AdapterInterface $db,
             HydratorInterface $hydrator,
             ClientOrder $prototype,
-            AcquiringCommunicationService $acquiringService
+            AcquiringCommunicationService $acquiringService,
+            RequisitionManager $requisitionManager
     )
     {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
         $this->acquiringService = $acquiringService;
+        $this->requisitionManager = $requisitionManager;
 
         parent::__construct();
     }
@@ -275,6 +280,7 @@ class ClientOrderRepository extends Repository
                 if($d['delivery_id'] == $deliveryId) {
                     if($r['requisition_id'] == $requisitionId) {
                         $r['requisition_status'] = $requisitionStatus;
+                        $this->requisitionManager->setRequisitionStatus($requisitionId, $requisitionStatus);
                     }
                 }
             }

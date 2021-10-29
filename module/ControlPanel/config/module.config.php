@@ -99,6 +99,7 @@ return [
             \ControlPanel\Controller\RequisitionController::class => [
                 ['actions' => ['editRequisition',], 'allow' => '+administrator'],
                 ['actions' => ['updateRequisition',], 'allow' => '+administrator'],
+                ['actions' => ['getRequisitionStatus',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\StockBalanceController::class => [
                 ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
@@ -569,6 +570,17 @@ return [
                         ],
                         // 'may_terminate' => true,
                     ],
+                    'get-requisition-status' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get-requisition-status',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\RequisitionController::class,
+                                'action' => 'get-requisition-status',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
                     
                     'category-tree' => [
                         'type' => Literal::class,
@@ -914,11 +926,11 @@ return [
             [ '2', 'Закрыт' ],
         ],
         'requisition_statuses' => [
-            ['01', 'Новый'],
-            ['02', 'Зарегистрирован'],
-            ['03', 'Собран'],
-            ['04', 'Отгружен'],
-            ['05', 'Отменен'],
+            ['00', 'Новый'],
+            ['01', 'Зарегистрирован'],
+            ['02', 'Собран'],
+            ['03', 'Отгружен'],
+            ['04', 'Отменен'],
         ],
     ],
     'view_manager' => [

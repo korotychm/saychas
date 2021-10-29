@@ -81,6 +81,16 @@ class RequisitionManager extends ListManager implements LoadableInterface
     {
         return $this->config['parameters']['requisition_statuses'];
     }
+    
+    private function statusesToKeyValue(array $statuses)
+    {
+        $result = [];
+        foreach($statuses as $st) {
+            $result[$st[0]] = $st[1];
+        }
+        
+        return $result;
+    }
 
     /**
      * Find store documents for specified provider
@@ -126,6 +136,30 @@ class RequisitionManager extends ListManager implements LoadableInterface
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
         
         return $result;
+    }
+    
+    public function setRequisitionStatus($id, $statusId)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $si = str_pad($statusId, 2, "0", STR_PAD_LEFT);
+        $statuses = $this->statusesToKeyValue($this->findStatuses());
+        //error_log(print_r($statuses, true), 1, 'alex@localhost');
+        $updateResult = $collection->updateOne(['id' => $id],
+                ['$set' => ['status_id' => $si, 'status' => $statuses[$si] ]]);
+        
+        return $updateResult;
+    }
+    
+    public function getRequisitionStatus($id)
+    {
+        $requisition = $this->find(['id' => $id]);
+        if(null == $requisition) {
+            return [
+                'result' => false,
+                'error_description' => 'requisition with given number not found',
+            ];
+        }
+        return ['result' => true, 'status' => $requisition['status'], 'status_id' => $requisition['status_id']];
     }
 
     public function replaceRequisition($requisition)
