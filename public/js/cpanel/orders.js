@@ -81,10 +81,11 @@ const Orders = {
                                 </div>
                             </div>
 
-                            <div class="orders__product-count" v-if="order.status_id != '02'">
+                            <div class="orders__product-count" v-if="order.status_id != '02' && product.qty_partner < product.qty">
                               <div class="orders__product-count-initial"><b>{{ product.qty }}</b> шт</div>
                             </div>
                             <div class="orders__product-actual" v-if="order.status_id != '02' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
+                            <div v-if="order.status_id != '02' && product.qty_partner == product.qty"><b>{{ product.qty_partner }}</b> шт</div>
 
                             <div class="orders__product-sum">{{ calculatePrice(product.price, product.discount).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
