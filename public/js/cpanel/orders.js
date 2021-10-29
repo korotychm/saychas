@@ -155,7 +155,6 @@ const Orders = {
       calulateTime(date,first,last){
         let current = new Date().getTime();
         let deadline = +date + (first * 60 * 1000);
-        console.log(+current,deadline,+current - deadline);
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60 * 1000);
           if (+current > new_deadline){
@@ -176,6 +175,7 @@ const Orders = {
         for (order of this.orders){
           if (+order.status_id == '01'){
             order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            console.log(order.deadline);
           } else if (+order.status_id == '02'){
             order.deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
             if (!order.deadline){
