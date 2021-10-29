@@ -149,5 +149,30 @@ class RequisitionController extends AbstractActionController
 
         return new JsonModel($answer);
     }
+    
+    public function getRequisitionStatusAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $status = $this->requisitionManager->getRequisitionStatus($post['id']);
+        
+        if(false == $status['result']) {
+            $answer = [
+                'http_code' => '400',
+                'result' => $status['result'],
+                'error_description' => 'requisition with given id not found',
+                'error_description_for_user' => 'requisition with given id not found',
+            ];
+            
+            return new JsonModel($answer);
+        }
+        
+        $answer = [
+            'http_code' => '200',
+            'result' => true,
+            'status' => $status['status'],
+            'status_id' => $status['status_id'],
+        ];
+        return new JsonModel($answer);
+    }
 
 }

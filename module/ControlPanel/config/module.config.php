@@ -99,6 +99,7 @@ return [
             \ControlPanel\Controller\RequisitionController::class => [
                 ['actions' => ['editRequisition',], 'allow' => '+administrator'],
                 ['actions' => ['updateRequisition',], 'allow' => '+administrator'],
+                ['actions' => ['getRequisitionStatus',], 'allow' => '+administrator'],
             ],
             \ControlPanel\Controller\StockBalanceController::class => [
                 ['actions' => ['showStockBalance',], 'allow' => '+administrator'],
@@ -565,6 +566,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\RequisitionController::class,
                                 'action' => 'update-requisition',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'get-requisition-status' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get-requisition-status',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\RequisitionController::class,
+                                'action' => 'get-requisition-status',
                             ],
                         ],
                         // 'may_terminate' => true,
