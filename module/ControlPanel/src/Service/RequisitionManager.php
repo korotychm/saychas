@@ -81,6 +81,16 @@ class RequisitionManager extends ListManager implements LoadableInterface
     {
         return $this->config['parameters']['requisition_statuses'];
     }
+    
+    private function statusesToKeyValue(array $statuses)
+    {
+        $result = [];
+        foreach($statuses as $st) {
+            $result[$st[0]] = $st[1];
+        }
+        
+        return $result;
+    }
 
     /**
      * Find store documents for specified provider
@@ -132,7 +142,8 @@ class RequisitionManager extends ListManager implements LoadableInterface
     {
         $collection = $this->db->{$this->collectionName};
         $si = str_pad($statusId, 2, "0", STR_PAD_LEFT);
-        $statuses = $this->findStatuses();
+        $statuses = $this->statusesToKeyValue($this->findStatuses());
+        error_log(print_r($statuses, true), 1, 'alex@localhost');
         $updateResult = $collection->updateOne(['id' => $id],
                 ['$set' => ['status_id' => $si, 'status' => $statuses[$si] ]]);
         
