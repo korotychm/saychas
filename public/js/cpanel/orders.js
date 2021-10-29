@@ -173,6 +173,7 @@ const Orders = {
           clearInterval(this.timer);
         }
         for (order in this.orders){
+          console.log(order);
           if (+order.status_id == '01'){
             order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             console.log(order.date,this.deadline_new,this.deadline_new_last,order.deadline);
