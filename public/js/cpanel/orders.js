@@ -188,6 +188,9 @@ const Orders = {
         }
       },
       setTime(){
+        for (order of this.orders){
+          order.deadline = '00:00';
+        }
         this.timer = setInterval(() => {
           this.checkTime();
         }, 1000);
