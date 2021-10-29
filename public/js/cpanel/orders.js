@@ -154,6 +154,7 @@ const Orders = {
       },
       calulateTime(date,first,last){
         let current = new Date().getTime();
+        console.log(current);
         let deadline = +date + (first * 60 * 1000);
         //console.log(+current,deadline,+current - deadline);
         if (+current > deadline){
