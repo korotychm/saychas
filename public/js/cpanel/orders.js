@@ -154,19 +154,20 @@ const Orders = {
       },
       calulateTime(date,first,last){
         let current = new Date();
+        current = +current * 1000;
         let deadline = date + (first * 60 * 1000);
-        console.log(+current,deadline,+current - deadline);
+        console.log(current,deadline,current - deadline);
         if (+current > deadline){
           let new_deadline = date + ((first + last) * 60 * 1000);
-          if (+current > new_deadline){
+          if (current > new_deadline){
             return false;
           } else {
             //Вывод дополнительных минут
-            return '-' + this.localedTime(+current - deadline);
+            return '-' + this.localedTime(current - deadline);
           }
         } else {
           //Вывод первых минут
-          return this.localedTime(deadline - +current);
+          return this.localedTime(deadline - current);
         }
       },
       checkTime(){
