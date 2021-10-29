@@ -104,10 +104,10 @@ const Orders = {
                         </div>
                     </div>
                     <div class="td orders__btn" v-if="order.status_id == '01'">
-                      <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span>00:00</span></button>
+                      <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="order.status_id == '02'">
-                      <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span>00:00</span></button>
+                      <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else>
                       <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
@@ -139,10 +139,54 @@ const Orders = {
           filtersCreated: false,
           activeOrder: null,
           activeItem: null,
-          currentQuantity: null
+          currentQuantity: null,
+          deadline_new: 10,
+          deadline_new_last: 5,
+          deadline_collect: 20,
+          deadline_collect_last: 15,
         }
     },
     methods: {
+      localedTime(ms){
+        let minutes = Math.floor(ms / 60000),
+            seconds = ((ms % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+      },
+      calulateTime(first,last){
+        let current = new Date();
+        let deadline = order.date + (first * 60 * 1000);
+        if (+current > deadline){
+          let new_deadline = order.date + ((first + last) * 60 * 1000);
+          if (+current > new_deadline){
+            return false;
+          } else {
+            //Вывод дополнительных минут
+            return '-' + this.localedTime(current - deadline);
+          }
+        } else {
+          //Вывод первых минут
+          return this.localedTime(deadline - current);
+        }
+      },
+      checkTime(){
+        for (order in this.orders){
+          if (+order.status_id == '01'){
+            order.deadline = this.calulateTime(this.deadline_new,this.deadline_new_last);
+          } else if (+order.status_id == '02'){
+            order.deadline = this.calulateTime(this.deadline_collect,this.deadline_collect_last);
+            if (!order.deadline){
+              //Сделать дополнительный запрос?
+              order.status_id = '05';
+              order.status = 'Отменен';
+            }
+          }
+        }
+      },
+      setTime(){
+        this.timer = setInterval(() => {
+          this.checkTime();
+        }, 1000);
+      },
       countProducts(index) {
         return this.orders[index].items.filter(item => item.qty_partner > 0).length;
       },
@@ -225,6 +269,7 @@ const Orders = {
                   this.filters = response.data.data.filters;
                   this.filtersCreated = true;
                 }
+                this.setTime();
               }
             })
             .catch(error => {
