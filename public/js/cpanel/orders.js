@@ -179,7 +179,7 @@ const Orders = {
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             blabla = +blabla;
-            //Vue.set(this.orders[i],'store',blabla);
+            Vue.set(this.orders[i],'store',blabla);
             console.log(order.deadline);
           } else if (+order.status_id == '01'){
             let deadline = this.calulateTime(order.date,this.deadline_collect,this.deadline_collect_last);
