@@ -154,7 +154,6 @@ function getLocalStores(dataString, obj = "#ajaxanswer2") {
 }
 
 function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
-    console.log('getLegalStores',dataString,obj,wrelaoad);
     $.ajax({
         //url: "/ajax/getstore",
         url: "/ajax-get-legal-store",
@@ -168,7 +167,7 @@ function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
                 $("#searchpanel").stop().css({top: "-100px"});
                 $("#uadress").show();
                 if (wrelaoad) {
-                    //location = location.href;
+                    location = location.href;
                     return false;
                 }
             } else {

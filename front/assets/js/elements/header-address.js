@@ -6,8 +6,7 @@ function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadre
         dataType: 'json',
         cache: false,
         success: function (data) {
-            console.log(address);
-            //location = location.href;
+            location = location.href;
             return true;
         },
         error: function (xhr, ajaxOptions, thrownError) {
