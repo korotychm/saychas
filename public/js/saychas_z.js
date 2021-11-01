@@ -154,6 +154,35 @@ function getLocalStores(dataString, obj = "#ajaxanswer2") {
     });
 }
 
+function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
+    $.ajax({
+        //url: "/ajax/getstore",
+        url: "/ajax-get-legal-store",
+        type: 'POST',
+        cache: false,
+        data: {"value": dataString},
+        success: function (data) {
+            if (data.result) {
+                //console.log(data.message);
+                $(".errorblock").hide();
+                $("#searchpanel").stop().css({top: "-100px"});
+                $("#uadress").show();
+                if (wrelaoad) {
+                    location = location.href;
+                    return false;
+                }
+            } else {
+                $(obj).html(data.error);
+                return true;
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $(obj).html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+            return true;
+        }
+    });
+}
+
 function print_r(arr, level) {
     var print_red_text = "";
     if (!level)

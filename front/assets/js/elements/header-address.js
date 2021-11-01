@@ -1,4 +1,4 @@
-
+$(document).ready(function(){
   $(".searchpanelclose").click(function () {
       $("#searchpanel").stop().css({top: "-200px"});
       $("#uadress").show();
@@ -63,35 +63,6 @@
       }
   });
 
-  function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
-      $.ajax({
-          //url: "/ajax/getstore",
-          url: "/ajax-get-legal-store",
-          type: 'POST',
-          cache: false,
-          data: {"value": dataString},
-          success: function (data) {
-              if (data.result) {
-                  //console.log(data.message);
-                  $(".errorblock").hide();
-                  $("#searchpanel").stop().css({top: "-100px"});
-                  $("#uadress").show();
-                  if (wrelaoad) {
-                      location = location.href;
-                      return false;
-                  }
-              } else {
-                  $(obj).html(data.error);
-                  return true;
-              }
-          },
-          error: function (xhr, ajaxOptions, thrownError) {
-              $(obj).html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-              return true;
-          }
-      });
-  }
-
   function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
       $.ajax({
           url: "/ajax-add-user-address",
@@ -149,3 +120,4 @@
           }
       });
   });
+});
