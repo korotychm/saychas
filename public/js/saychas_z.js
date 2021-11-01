@@ -7,6 +7,7 @@ $(document).ready(function () {
         token: "",
         type: "",
         onSelect: function (suggestion) {
+            console.log('suggestion',suggestion);
             $("#adesserror").hide();
             if (!suggestion.data.house)
             {
@@ -17,7 +18,7 @@ $(document).ready(function () {
             var dataString = JSON.stringify(suggestion);
             //var jsondata=JSON.parse(suggestion);
             // $("#dadataask").html("<h4>Посланный запрос:</h4><pre>" + print_r(suggestion)/* dataString*/).stop().slideDown();
-            getLocalStores(dataString, "#dadataanswer");
+            //getLocalStores(dataString, "#dadataanswer");
             $("#dadataanswer").stop().slideDown();
             // $("#geocoords").html("<h3>GPS: " + suggestion.data.geo_lat + "," + suggestion.data.geo_lon + "</h3>");
             /*myMap.setCenter([suggestion.data.geo_lat, suggestion.data.geo_lon], 16)
