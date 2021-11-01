@@ -1,4 +1,4 @@
-$(document).ready(function(){
+
   $(".searchpanelclose").click(function () {
       $("#searchpanel").stop().css({top: "-200px"});
       $("#uadress").show();
@@ -149,4 +149,3 @@ $(document).ready(function(){
           }
       });
   });
-});
