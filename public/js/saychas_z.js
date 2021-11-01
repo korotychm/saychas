@@ -10,7 +10,7 @@ $(document).ready(function () {
             $("#adesserror").hide();
             if (!suggestion.data.house)
             {
-                $("#adesserror").html("Необходимо указать адрес до номера дома!").show();
+                $("#adesserror").html("Укажите адрес до номера дома!").show();
             }
 
             //$("#yca rd").show();
