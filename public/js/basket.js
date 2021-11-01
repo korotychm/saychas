@@ -329,7 +329,7 @@ function whatHappened(noclose = false) {
                     $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
                 }
 
-                $("#ServiceModalWindow").modal("show");
+                // $("#ServiceModalWindow").modal("show");
 
             }
             return false;
