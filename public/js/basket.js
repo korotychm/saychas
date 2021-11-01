@@ -5,6 +5,7 @@ function setTimepointText(loadinfo = false) {
         if (!settext){
           settext =  $(this).find('.timepoint__option').eq(1).attr('rel');
         }
+        console.log(settext);
         $("#" + rel).val(settext + ", ");
     });
     if (loadinfo)
