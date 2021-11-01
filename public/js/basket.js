@@ -548,7 +548,7 @@ $(function () {
 
     $(document).on('change', '.cart__radio-group > input', function () {
         console.log('123');
-        loadPayInfo();
+        calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
 });
