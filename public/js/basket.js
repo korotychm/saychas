@@ -3,7 +3,6 @@ function setTimepointText(loadinfo = false) {
         var rel = $(this).attr("rel");
         var settext = $(this).find('.timepoint__option:checked').attr('rel');
         $("#" + rel).val(settext + ", ");
-        console.log($("#" + rel).val());
     });
     if (loadinfo)
         loadPayInfo();
