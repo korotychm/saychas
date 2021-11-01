@@ -64,7 +64,7 @@ $(document).ready(function(){
   });
 
   function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
-      console.log('Смена адреса',dadata,address);
+      console.log('addUserAddrees',dadata,address);
       $.ajax({
           url: "/ajax-add-user-address",
           type: 'POST',
