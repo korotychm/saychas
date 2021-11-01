@@ -17,6 +17,21 @@ class Resource
     const THE_ORDER_NUM = "Заказ № ";
     const THE_PICKUP = "Самовывоз";
     const DEFAULT_IMAGE = "nophoto.jpeg";
+    
+    /*
+     * Cripting options
+     */
+    const CRYPT_TOKEN = "!@Banzaii!~!&!";
+    const CRYPT_TYPE = "AES-128-CTR";
+    
+    /*
+     * Session & Cookie
+     */
+    const SESSION_NAMESPACE = "session_namespace";
+    const CODE_CONFIRMATION_SESSION_NAMESPACE = "code_confirmation_session_namespace";
+    const CATEGORY_TREE_CACHE_NAMESPACE = "category_tree_array";
+    const USER_COOKIE_NAME = "_schuid";
+    const USER_COOKIE_TIME_LIVE = 2592000; //60*60*24*30
 
     /*
      *  user
@@ -49,9 +64,6 @@ class Resource
     const USER_ADDREES_ERROR_MESSAGE = "Необходимо указать адрес до номера дома!";
     const PRODUCT_FAILURE_MESSAGE = "Объект product не&nbsp;получен";
     const PRODUCT_SUCCESS_MESSAGE = "Объект product &nbsp;получен";
-    const SESSION_NAMESPACE = "session_namespace";
-    const CODE_CONFIRMATION_SESSION_NAMESPACE = "code_confirmation_session_namespace";
-    const CATEGORY_TREE_CACHE_NAMESPACE = "category_tree_array";
     const BASKET_SAYCHAS_title = "сейчас за час";
     const BASKET_SAYCHAS3_title = "сейчас за три часа";
     const BASKET_SAYCHAS_do = "в течение часа";
@@ -107,7 +119,7 @@ class Resource
     const ORDER_TITLE = "Мои заказы";
     const ORDER_EMPTY = "Заказов не найдено";
     const ORDER_PAYMENT_DESCRIPTION = "Оплата заказа <OrderId/>. Saychas.ru "; // описание оплаты для платежной системы
-    const ORDER_PAYMENT_DELIVERY = "Стоимость доставки "; // описание оплаты для платежной системы
+    const ORDER_PAYMENT_DELIVERY = "Стоимость доставки "; // описание оплаты доставки для платежной системы
     const ORDER_NEW_PAYCARD_TEXT = "Расплачивайтесь — мы запомним данные вашей карты, что бы не вводить её в следущий раз";
     const ORDER_NEW_PAYCARD_TITLE = "Оплата новой картой";
     const ORDER_MEMBER_PAYCARD_TITLE = "Оплата с привязанной карты";
@@ -171,5 +183,5 @@ class Resource
     const REVIEWS_PAGING_LIMIT = 10;
     const REVIEWS_SORT_ORDER_RATING = [ 0 => "time_created desc", 1 => "rating desc", 2 => "rating asc" ] ;
     const REVIEWS_IMAGE_GALLARY_LIMIT = 24;
-
+    
 }

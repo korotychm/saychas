@@ -189,5 +189,37 @@ class ArrayHelper
      
         return $filtredProducts ?? [];
     }
+    
+    /**
+     * 
+     * @param string $strHeaders
+     * @return array
+     */
+    public function parseCookies($strHeaders)
+    {
+        $result = array();
+        $aPairs = explode(';', $strHeaders);
+        foreach ($aPairs as $pair) {
+            $aKeyValues = explode('=', trim($pair), 2);
+            if (count($aKeyValues) == 2) {
+                switch ($aKeyValues[0]) {
+                    case 'path':
+                    case 'domain':
+                        $aTmp[trim($aKeyValues[0])] = urldecode(trim($aKeyValues[1]));
+                        break;
+                    case 'expires':
+                        $aTmp[trim($aKeyValues[0])] = strtotime(urldecode(trim($aKeyValues[1])));
+                        break;
+                    default:
+                        $aTmp['name'] = trim($aKeyValues[0]);
+                        $aTmp['value'] = trim($aKeyValues[1]);
+                        $cookies[$aKeyValues[0]] = trim($aKeyValues[1]);
+                        break;
+                }
+            }
+            $result[] = $aTmp;
+        }
+        return ["cookies"=> $cookies,  "fullparams"=>$result ] ;
+    }
 
 }

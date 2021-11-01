@@ -24,7 +24,8 @@ use ControlPanel\Service\EntityManager;
 use Application\Model\Entity\Setting;
 use Laminas\View\Model\JsonModel;
 use Laminas\Http\Response;
-use Application\Helper\ArrayHelper;
+//use Application\Helper\ArrayHelper;
+use Application\Helper\CryptHelper;
 use Application\Helper\StringHelper;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Sql\Sql;
@@ -442,6 +443,7 @@ class UserDataController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         $container->userIdentity = $user->getId();
         $this->userModalUpdateGeo($user);
+        setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($user->getPhone()), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
         unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
     }
@@ -489,6 +491,7 @@ class UserDataController extends AbstractActionController
         $newUser->setId($userId)->setName($userAutSession['username'])->setEmail($userAutSession['usermail'])->setUserId($answer['id'])->setPhone($return['sendingPhone']);
         $newUser->persist(['id' => $userId]);
         $this->userModalUpdateGeo($user);
+        setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($return['sendingPhone']), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
 
         unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
