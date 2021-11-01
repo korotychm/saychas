@@ -5,8 +5,8 @@ function setTimepointText(loadinfo = false) {
         if (!settext){
           settext =  $(this).find('.timepoint__option').eq(1).attr('rel');
         }
-        console.log(settext);
         $("#" + rel).val(settext + ", ");
+        console.log($("#" + rel).val());
     });
     if (loadinfo)
         loadPayInfo();
