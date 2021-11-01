@@ -53,7 +53,7 @@ $(document).ready(function(){
           //console.log(suggestion.data);
           if (!suggestion.data.house)
           {
-              $("#useradesserror").html("Укажите адрес до номера дома!").show();
+              $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
               return false;
           }
           var dataString = JSON.stringify(suggestion);

@@ -329,7 +329,7 @@ function whatHappened(noclose = false) {
                     $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
                 }
 
-                // $("#ServiceModalWindow").modal("show");
+                $("#ServiceModalWindow").modal("show");
 
             }
             return false;
@@ -501,40 +501,22 @@ $(function () {
     whatHappened();
     loadPayInfo();
 
-//     $("#basketuseradress").suggestions({
-// //        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-// //        type: "ADDRESS",
-//         onSelect: function (suggestion) {
-//             $("#basketuseradresserror").hide();
-//             if (!suggestion.data.house)
-//             {
-//                 $("#basketuseradresserror").html("Необходимо указать адрес до номера дома!").show();
-//                 return false;
-//             }
-//             var dataString = JSON.stringify(suggestion);
-//             $("#geodatadadata").val(dataString);
-//
-//             getLegalStores(dataString, '#basketuseradresserror');
-//             addUserAddrees(dataString, $("#basketuseradress").val());
-//
-//         }
-//     });
-
     $("#basketuseradress").suggestions({
-    //      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-    //      type: "ADDRESS",
+//        token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+//        type: "ADDRESS",
         onSelect: function (suggestion) {
             $("#basketuseradresserror").hide();
-            //console.log(suggestion.data);
             if (!suggestion.data.house)
             {
-                $("#basketuseradresserror").html("Укажите адрес до номера дома!").show();
+                $("#basketuseradresserror").html("Необходимо указать адрес до номера дома!").show();
                 return false;
             }
             var dataString = JSON.stringify(suggestion);
             $("#geodatadadata").val(dataString);
+
             getLegalStores(dataString, '#basketuseradresserror');
             addUserAddrees(dataString, $("#basketuseradress").val());
+
         }
     });
 
