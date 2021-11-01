@@ -426,6 +426,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  outline: none;
 }
 .testimonials__photo a img {
   width: 100%;

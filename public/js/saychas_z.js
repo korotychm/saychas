@@ -18,7 +18,7 @@ $(document).ready(function () {
             var dataString = JSON.stringify(suggestion);
             //var jsondata=JSON.parse(suggestion);
             // $("#dadataask").html("<h4>Посланный запрос:</h4><pre>" + print_r(suggestion)/* dataString*/).stop().slideDown();
-            //getLocalStores(dataString, "#dadataanswer");
+            getLocalStores(dataString, "#dadataanswer");
             $("#dadataanswer").stop().slideDown();
             // $("#geocoords").html("<h3>GPS: " + suggestion.data.geo_lat + "," + suggestion.data.geo_lon + "</h3>");
             /*myMap.setCenter([suggestion.data.geo_lat, suggestion.data.geo_lon], 16)
@@ -149,35 +149,6 @@ function getLocalStores(dataString, obj = "#ajaxanswer2") {
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#ajaxanswer2").html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-            return true;
-        }
-    });
-}
-
-function getLegalStores(dataString, obj = "#ajaxanswer2", wrelaoad = true) {
-    $.ajax({
-        //url: "/ajax/getstore",
-        url: "/ajax-get-legal-store",
-        type: 'POST',
-        cache: false,
-        data: {"value": dataString},
-        success: function (data) {
-            if (data.result) {
-                //console.log(data.message);
-                $(".errorblock").hide();
-                $("#searchpanel").stop().css({top: "-100px"});
-                $("#uadress").show();
-                if (wrelaoad) {
-                    location = location.href;
-                    return false;
-                }
-            } else {
-                $(obj).html(data.error);
-                return true;
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            $(obj).html("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
             return true;
         }
     });
