@@ -539,8 +539,7 @@ $(function () {
     });
 
 
-    $(document).on('change', '.cart__radio-group input', function () {
-        console.log('radio');
+    $(document).on('change', '.cart__radio-group > input', function () {
         loadPayInfo();
     });
 
