@@ -534,7 +534,7 @@ $(function () {
             $("#geodatadadata").val(dataString);
 
             getLocalStores(dataString, "#dadataanswer");
-            addUserAddrees(dataString, $("#basketuseradress").val());
+            // addUserAddrees(dataString, $("#basketuseradress").val());
         }
     });
 
