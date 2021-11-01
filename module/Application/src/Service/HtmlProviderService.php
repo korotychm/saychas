@@ -159,8 +159,8 @@ class HtmlProviderService
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['orderDate'] = $order->getDateCreated(); //date_created
-            $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
-            unset($return['basketInfo']['userGeoLocation']['data']);
+//            $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
+//            unset($return['basketInfo']['userGeoLocation']['data']);
 
             $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
             $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
@@ -206,7 +206,7 @@ class HtmlProviderService
             }
             $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit(), "options" => $chars];
         }
-        return !empty($return) ? $return : [];
+        return $return ?? [];
     }
 
     private function valueParce(array $v = [], $chType)
@@ -319,6 +319,13 @@ class HtmlProviderService
 //exit(print_r($return));
         return $return;
     }
+    
+    /**
+     * 
+     * @param array $characteristicsArray
+     * @param string $categoryId
+     * @return array
+     */
     private function getCharsProductPage ($characteristicsArray, $categoryId )
     {
         if (!empty($characteristicsArray)) {
@@ -345,8 +352,12 @@ class HtmlProviderService
         return $return;
     }
     
-    
-
+    /**
+     * 
+     * @param object $user
+     * @param type $limit
+     * @return array
+     */
     public function getUserAddresses($user = null, $limit)
     {
         $return = ['address' => [], 'addresses' => []];
@@ -371,6 +382,11 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     * 
+     * @param object $user
+     * @return array
+     */
     public function getUserInfo($user)
     {
         if (null == $user) {
@@ -390,6 +406,12 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     * 
+     * @param object $post
+     * @param array $param
+     * @return array
+     */
     public function basketPayInfoData($post, $param)
     {
         $products = $post->products;
@@ -448,6 +470,12 @@ class HtmlProviderService
 //            'producttotal' => $row['total'],
     }
 
+    /**
+     * 
+     * @param object $post
+     * @param array $param
+     * @return array
+     */
     public function basketMergeData($post, $param)
     {
         $return = [];
@@ -524,6 +552,12 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     * 
+     * @param string $userId
+     * @param array $products
+     * @return string
+     */
     public function basketWhatHappenedUpdate($userId, $products)
     {
         $j = 0;
@@ -548,6 +582,12 @@ class HtmlProviderService
         //return $product_id;
     }
 
+    /**
+     * 
+     * @param object $basket
+     * @param string $userId
+     * @return array
+     */
     public function basketData($basket, $userId)
     {
         $countproducts = 0;
@@ -699,6 +739,12 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     * 
+     * @param string $productId
+     * @param string $userId
+     * @return boolean
+     */
     private function isInFavorites($productId, $userId)
     {
         if (!empty($userId) && !empty($productId)) {
