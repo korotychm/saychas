@@ -435,7 +435,7 @@ class UserDataController extends AbstractActionController
                 $userAutSession['phoneValid'] = true;
                 $container->userAutSession = $userAutSession;
             }
-            //return $this->userModalView($return);
+           return $this->userModalView($return);
         }  
         
         

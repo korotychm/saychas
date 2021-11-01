@@ -238,21 +238,8 @@ class ProductCardsController extends AbstractActionController
             if (empty($value) or empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {
                 continue;
             }
+            
             $filterWhere = $this->getWhereForCharType($key, $value, $found);
-//            $filterWhere = new Where();
-//            $type = $found->getType();
-//            $filterWhere->equalTo('characteristic_id', $found->getCharacteristicId($key));
-//
-//            if ($type == CharacteristicRepository::INTEGER_TYPE) {
-//                list($min, $max) = explode(';', current($value));
-//                $filterWhere->between('value', $min * 1, $max * 1);
-//            } elseif ($type == CharacteristicRepository::BOOL_TYPE) {
-//                $filterWhere->equalTo('value', $value);
-//            } else {
-//                $filterWhere->in('value', $value);
-//                //$groupChars[] = $key;
-//            }
-
             $groupChars[] = $key;
             $legalProducts = array_intersect($legalProducts, $this->getFiltredProductsId($filterWhere));
         }
@@ -286,7 +273,6 @@ class ProductCardsController extends AbstractActionController
             $filterWhere->equalTo('value', $value);
         } else {
             $filterWhere->in('value', $value);
-            //$groupChars[] = $key;
         }
 
         return $filterWhere;
@@ -412,7 +398,6 @@ class ProductCardsController extends AbstractActionController
      */
     private function getProductsCatalog($params)
     {
-        //$this->prepareCharacteristics($params['characteristics']);
         if (empty($params['priceRange'])) {
             $params['priceRange'] = '0;' . PHP_INT_MAX;
         }
@@ -542,19 +527,4 @@ class ProductCardsController extends AbstractActionController
         return $return;
     }
 
-    /**
-     * return order for SQL query
-     * @retrn array
-     */
-//    private function getProductCardsSortOrder()
-//    {
-//
-//        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
-//        $sortOrder = Resource::PRODUCTCARD_SORT_ORDER;
-//        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
-//
-//        return ["order" => [$sort , "id desc"]];
-//
-//
-//    }
 }

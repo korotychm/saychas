@@ -6,9 +6,6 @@ namespace Application\Resource;
 
 class Resource
 {
-    /*
-     * common
-     */
     const FOR_EXAMPLE_TEXT = "Например: ";
     const THE_BASKET = "Корзина ";
     const THE_CATALOG = "Каталог ";
@@ -19,6 +16,7 @@ class Resource
     const THE_CATEGORY_OF_PRODUCTS = "Категории товаров ";
     const THE_ORDER_NUM = "Заказ № ";
     const THE_PICKUP = "Самовывоз";
+    const DEFAULT_IMAGE = "nophoto.jpeg";
 
     /*
      *  user
@@ -120,33 +118,32 @@ class Resource
     const ORDER_AGGREMENT_NOTES = "Нажимая на кнопку, вы соглашаетесь с <a href=\"#\">Условиями обработки перс. данных</a>, а также с <a href=\"#\">Условиями продажи</a>";
     
     /*
-     * доставка
-     */
-    const THE_DELIVERY_PROGRESS = "Сборка";
-    const THE_DELIVERY_READY = "Доставляется";
-    const THE_DELIVERY_DELIVERED = "Доставлен";
-    const THE_DELIVERY_CANCELED  = "Отменен";
-
-    /*
      * Числовые данные
      */
     const LIMIT_USER_ADDRESS_LIST = 5;  // лимит отображение введенных адресов в layout
     const SQL_LIMIT_PRODUCTCARD_TOP = 24; //максимально количество отображаемых ТОП товаров на глвной
     const SQL_LIMIT_PRODUCTCARD_IN_SLIDER = 12; //максимальное количество карточек товара в сладере
-    const SQL_LIMIT_BRAND_SLIDER = 40; //максимальное количество брендов в сладере
+    const SQL_LIMIT_BRAND_SLIDER = 36; //максимальное количество брендов в сладере
     const SQL_LIMIT_PRODUCTCARD_IN_PAGE = 24; //максимальное карточек товаров на странице
     const SQL_LIMIT_PRODUCTCARD_HISTORY = 12; //максимальное карточек товаров в истории просмотров
     const SQL_LIMIT_PRODUCTCARD_FAVORITES = 24; //максимальное карточек товаров в избранном
 
-
     /*
-     * Статусы заказов
+     * Статус заказа
      */
     const ORDER_STATUS_CODE_NEW         = ["id" => 0, "description" => "новый" ];
     const ORDER_STATUS_CODE_REGISTRED   = ["id" => 1, "description" => "зарегистрирован" ];
     const ORDER_STATUS_CODE_DELIVERY    = ["id" => 2, "description" => "доставляется" ];
     const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 3, "description" => "доставлен" ];
     const ORDER_STATUS_CODE_CANCELED    = ["id" => 4, "description" => "отменен" ];
+
+    /*
+     * Статус доставки
+     */
+    const THE_DELIVERY_PROGRESS = "Сборка";
+    const THE_DELIVERY_READY = "Доставляется";
+    const THE_DELIVERY_DELIVERED = "Доставлен";
+    const THE_DELIVERY_CANCELED  = "Отменен";
 
     /**
      * Characteristic types
@@ -174,10 +171,5 @@ class Resource
     const REVIEWS_PAGING_LIMIT = 10;
     const REVIEWS_SORT_ORDER_RATING = [ 0 => "time_created desc", 1 => "rating desc", 2 => "rating asc" ] ;
     const REVIEWS_IMAGE_GALLARY_LIMIT = 24;
-
-
-
-    const DEFAULT_IMAGE = "nophoto.jpeg";
-
 
 }
