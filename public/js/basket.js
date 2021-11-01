@@ -1,11 +1,10 @@
-function setTimepointText(loadinfo = false) {
+function setTimepointText() {
     $.each($(".timepoint"), function (index, value) {
         var rel = $(this).attr("rel");
         var settext = $(this).find('.timepoint__option:checked').attr('rel');
         $("#" + rel).val(settext + ", ");
     });
-    if (loadinfo)
-        loadPayInfo();
+    loadPayInfo();
 }
 
 // Изменение количества товара в корзине
@@ -543,8 +542,7 @@ $(function () {
     });
 
     $(document).on('change', '.cart__radio-group > input', function () {
-        console.log('123');
-        loadPayInfo();
+        setTimepointText();
     });
 
 });
