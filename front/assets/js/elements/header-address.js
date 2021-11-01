@@ -1,4 +1,4 @@
-$(document).ready(function(){
+
   $(".searchpanelclose").click(function () {
       $("#searchpanel").stop().css({top: "-200px"});
       $("#uadress").show();
@@ -43,24 +43,6 @@ $(document).ready(function(){
       $("#dadataanswer").slideUp();
       $("#dadataask").delay(500).slideUp();
       $("#ycard").fadeOut();
-  });
-
-  $("#useraddress").suggestions({
-//      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-//      type: "ADDRESS",
-      onSelect: function (suggestion) {
-          $("#adesserror").hide();
-          //console.log(suggestion.data);
-          if (!suggestion.data.house)
-          {
-              $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
-              return false;
-          }
-          var dataString = JSON.stringify(suggestion);
-          $("#geodatadadata").val(dataString);
-          getLegalStores(dataString, '#useradesserror');
-          addUserAddrees(dataString, $("#useraddress").val());
-      }
   });
 
   function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
@@ -121,4 +103,25 @@ $(document).ready(function(){
           }
       });
   });
+
+$(function () {
+
+  $("#useraddress").suggestions({
+//      token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
+//      type: "ADDRESS",
+      onSelect: function (suggestion) {
+          $("#adesserror").hide();
+          //console.log(suggestion.data);
+          if (!suggestion.data.house)
+          {
+              $("#useradesserror").html("Необходимо указать адрес до номера дома!").show();
+              return false;
+          }
+          var dataString = JSON.stringify(suggestion);
+          $("#geodatadadata").val(dataString);
+          getLegalStores(dataString, '#useradesserror');
+          addUserAddrees(dataString, $("#useraddress").val());
+      }
+  });
+
 });
