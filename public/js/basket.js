@@ -542,7 +542,7 @@ $(function () {
     });
 
     $(document).on('click', '.cart__radio', function () {
-        $(this).prev().prop('checked',true);
+        $(this).prev().prop('checked',true).change();
         setTimepointText();
     });
 
