@@ -4,7 +4,6 @@ function setTimepointText() {
         var settext = $(this).find('.timepoint__option:checked').attr('rel');
         $("#" + rel).val(settext + ", ");
     });
-    loadPayInfo();
 }
 
 // Изменение количества товара в корзине
@@ -543,6 +542,7 @@ $(function () {
 
     $(document).on('change', '.cart__radio-group > input', function () {
         setTimepointText();
+        loadPayInfo();
     });
 
 });
