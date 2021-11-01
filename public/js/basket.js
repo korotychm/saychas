@@ -540,6 +540,7 @@ $(function () {
 
     $(document).on('click', '.cart__radio', function () {
         $(this).prev().prop('checked',true);
+        setTimepointText();
     });
 
     $(document).on('change', '.cart__radio-group > input', function () {
