@@ -541,10 +541,10 @@ $(function () {
         checkBasketDataBeforeSend();
     });
 
-    $(document).on('click', '.cart__radio', function () {
-        $(this).prev().prop('checked',true).change();
-        setTimepointText();
-    });
+    // $(document).on('click', '.cart__radio', function () {
+    //     $(this).prev().prop('checked',true).change();
+    //     setTimepointText();
+    // });
 
     $(document).on('change', '.cart__radio-group > input', function () {
         console.log('123');
