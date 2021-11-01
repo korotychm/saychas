@@ -527,6 +527,7 @@ $(function () {
 
 
     $(document).on('change', '#basketordermerge .custom-select__option input', function () {
+        $(this).
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
@@ -538,6 +539,9 @@ $(function () {
         checkBasketDataBeforeSend();
     });
 
+    $(document).on('click', '.cart__radio', function () {
+        $(this).prev().prop('checked',true);
+    });
 
     $(document).on('change', '.cart__radio-group > input', function () {
         loadPayInfo();
