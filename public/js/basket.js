@@ -3,7 +3,7 @@ function setTimepointText(loadinfo = false) {
         var rel = $(this).attr("rel");
         var settext = $(this).find('.timepoint__option:checked').attr('rel');
         if (!settext){
-          settext =  $(this).find('.timepoint__option').eq(0).attr('rel');
+          settext =  $(this).find('.timepoint__option').eq(1).attr('rel');
         }
         $("#" + rel).val(settext + ", ");
     });
