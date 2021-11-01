@@ -1,7 +1,7 @@
 function setTimepointText(loadinfo = false) {
     $.each($(".timepoint"), function (index, value) {
         var rel = $(this).attr("rel");
-        var settext = $('option:selected', this).attr('rel');
+        var settext = $(this).find('.timepoint__option:checked').attr('rel');
         $("#" + rel).val(settext + ", ");
     });
     if (loadinfo)
@@ -526,7 +526,6 @@ $(function () {
 
 
     $(document).on('change', '#basketordermerge .custom-select__option input', function () {
-        console.log('timepoint selected');
         calculateBasketMerge($("#user-basket-form").serialize(), true);
     });
 
