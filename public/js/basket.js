@@ -1,9 +1,11 @@
-function setTimepointText() {
+function setTimepointText(loadinfo = false) {
     $.each($(".timepoint"), function (index, value) {
         var rel = $(this).attr("rel");
         var settext = $(this).find('.timepoint__option:checked').attr('rel');
         $("#" + rel).val(settext + ", ");
     });
+    if (loadinfo)
+        loadPayInfo();
 }
 
 // Изменение количества товара в корзине
@@ -535,13 +537,13 @@ $(function () {
         checkBasketDataBeforeSend();
     });
 
-    $(document).on('click', '.cart__radio', function () {
-        $(this).prev().prop('checked',true);
-        setTimepointText();
-    });
+    // $(document).on('click', '.cart__radio', function () {
+    //     $(this).prev().prop('checked',true);
+    //     setTimepointText();
+    // });
 
     $(document).on('change', '.cart__radio-group > input', function () {
-        setTimepointText();
+        console.log('123');
         loadPayInfo();
     });
 
