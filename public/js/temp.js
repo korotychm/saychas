@@ -65,6 +65,7 @@ $(document).ready(function(){
             .then(response => {
               reviews.concat(response.data.reviews);
               this.reviews = JSON.parse(JSON.stringify(reviews));
+              console.log(this.reviews);
             });
         },
         getReviews() {
