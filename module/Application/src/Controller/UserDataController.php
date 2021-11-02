@@ -148,6 +148,7 @@ class UserDataController extends AbstractActionController
         //$container = $this->sessionContainer;// new Container(Resource::SESSION_NAMESPACE);
         $container = new Container(Resource::SESSION_NAMESPACE);
         unset($container->userIdentity);
+        setcookie(Resource::USER_COOKIE_NAME, "", time() - Resource::USER_COOKIE_TIME_LIVE, "/");
         if ($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
         }
