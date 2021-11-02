@@ -239,108 +239,52 @@ class HtmlProviderService
 
     public function productPageService($filteredProducts)
     {
-        //$productImages = $return = $filters = [];
-        //foreach ($filteredProducts as $product) {
-        //$product = $filteredProducts->current();
         $return = current($filteredProducts->toArray());
-        //$return = 
-       //exit(print_r($return));
         
-        //$return['oldPrice'] = 0;
-        //$return['price'] = (int) $product->getPrice();
-       // $return['discont'] = (int) $product->getDiscount();
-
-        if ($return['discont'] > 0) {
+        if ($return['discount'] > 0) {
             $return['oldPrice'] = $return['price'];
-            $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discont'] / 100);
+            $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discount'] / 100);
         }
 
-       $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
-       $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $return["id"], 'store_id=?' => $return['store_id']]);
-       $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
-      //  $return['product_id'] = $id = $product->getId();
-        //$return['title'] = $product->getTitle();
-//        $parentCategoryId = $product->getParentCategoryId();
-//        $categoryId = $product->getCategoryId();
-//        category_id] => 000000006
-//        [parent_category_id] => 000000006
-//        
-        
-        //if () {
-            $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
-        //}
-        
-        //$return['category_id'] = $categoryId;
-        //$charNew = $product->getParamVariableList();
-        $characteristicsArray = !empty($return['param_variable_list']) ? Json::decode($return['param_variable_list'], Json::TYPE_ARRAY) : [];
-        //$productImages[] = $product->getHttpUrl();
-//        $vendor = $product->getVendorCode();
-//        $productId = $product->getId();
+        $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
+        $return['oldPrice'] = number_format(($return['oldPrice'] / 100), 0, "", "&nbsp;");
+        $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $return["id"], 'store_id=?' => $return['store_id']]);
+        $return['rest'] = $rest->getRest() ?? 0;
+        $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
         $provider = $this->providerRepository->findFirstOrDefault(['id' => $return['provider_id']]);
         $return["brand"] = ["title" => $return['brand_title'], "id" => $return['brand_id'], "image" => $this->brandRepository->findFirstOrDefault(['id' => $return["brand_id"]])->getImage(),];
-        $return["provider"] =  ["id" => $provider->getId(), "image" => $provider->getImage(), "title" =>  $provider->getTitle(),];
-      
+        $return["provider"] = ["id" => $provider->getId(), "image" => $provider->getImage(), "title" => $provider->getTitle(),];
+        $characteristicsArray = !empty($return['param_variable_list']) ? Json::decode($return['param_variable_list'], Json::TYPE_ARRAY) : [];
+        $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $return['category_id']);
 
         if (!empty($return['description'])) {
-            //unset ($return['description']);
-            $return['description'] = ["text" => StringHelper::eolFormating($return['description']), 'if_spoiler' => ((strlen($return['description']) < 501)),]; 
-            
+            $return['description'] = ["text" => StringHelper::eolFormating($return['description']), 'if_spoiler' => ((strlen($return['description']) < 501)),];
         }
-        $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $return['category_id'] );
-        //$characteristicsArray = array_diff($characteristicsArray, array(''));
-//        if (!empty($characteristicsArray)) {
-//            
-//            //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
-//            foreach ($characteristicsArray as $char) {
-//                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
-//                $chArray = $ch->getIsList();
-//                $chType = $ch->getType();
-//                unset($value, $v);    
-//                //if ($char['value']) {
-//                    unset($v);
-//                    ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
-//                    $value = $this->valueParce($v, $chType);
-//                    
-//                //}
-//
-//                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
-//                $return["characteristics"][0][] = $char;
-//                
-//                if ($ch->getIsMain()) {
-//                    $return["characteristics"][1][] = $char;
-//                }
-//            }
-//        } else {
-//            $return["characteristics"] = [];
-//        }
-        
-//        $return['categoryId'] = $categoryId;
-//        $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
-//exit(print_r($return));
+
         return $return;
     }
-    
+
     /**
-     * 
+     *
      * @param array $characteristicsArray
      * @param string $categoryId
      * @return array
      */
-    private function getCharsProductPage ($characteristicsArray, $categoryId )
+    private function getCharsProductPage($characteristicsArray, $categoryId)
     {
         if (!empty($characteristicsArray)) {
-            
+
             $value = $v = ""; //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
             foreach ($characteristicsArray as $char) {
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                 $chArray = $ch->getIsList();
                 $chType = $ch->getType();
-                unset($value, $v);    
+                unset($value, $v);
                 ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
                 $value = $this->valueParce($v, $chType);
                 $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
                 $return[0][] = $char;
-                
+
                 if ($ch->getIsMain()) {
                     $return[1][] = $char;
                 }
@@ -348,12 +292,12 @@ class HtmlProviderService
         } else {
             $return = [];
         }
-        
+
         return $return;
     }
-    
+
     /**
-     * 
+     *
      * @param object $user
      * @param type $limit
      * @return array
@@ -383,7 +327,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param object $user
      * @return array
      */
@@ -407,7 +351,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param object $post
      * @param array $param
      * @return array
@@ -471,7 +415,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param object $post
      * @param array $param
      * @return array
@@ -553,7 +497,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param string $userId
      * @param array $products
      * @return string
@@ -583,7 +527,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param object $basket
      * @param string $userId
      * @return array
@@ -740,7 +684,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param string $productId
      * @param string $userId
      * @return boolean

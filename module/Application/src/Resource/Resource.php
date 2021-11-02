@@ -17,6 +17,10 @@ class Resource
     const THE_ORDER_NUM = "Заказ № ";
     const THE_PICKUP = "Самовывоз";
     const DEFAULT_IMAGE = "nophoto.jpeg";
+    const ONE_HOUR_SLOGAN = "Доставим за 1 час!";
+    const PICKUP_FROM_STORE = "Самовывоз из магазина";
+    const PICKUP_FROM_STORE_NOTICE = "Можете забрать самостоятельно из ближайшего к вам магазина";
+    //const THE_ALL_PRODUCTS = "Все товары";
     
     /*
      * Cripting options
@@ -72,6 +76,7 @@ class Resource
     const BASKET_SAYCHAS3_short = "за три часа";
     const ERROR_MESSAGE = "Ошибка! ";
     const PRODUCTCARD_SORT_ORDER = [ 0 => "id desc", 1 => "rating desc", 2 => "price asc", 3 => "price desc" ] ;
+    const ONE_HOUR_SLOGAN_NOTES = "При заказе товаров из одного магазина";
 
     /*
      * авторизация
@@ -173,8 +178,17 @@ class Resource
     /**
      *  Rating & review
      */
-    const PRODUCT_RATING_VALUES = [0 => 10, 1 => 20, 2 => 30, 3 => 40, 4 => 50];
+    const REVIEWS_TITLE = "Отзывы о товаре";
+    const PRODUCT_RATING_VALUES = [0 => 10, 1 => 20, 2 => 30, 3 => 40, 4 => 50, ];
     const REVIEW_MESSAGE_VALID_MIN_LENGHT = 4;
+    const REVIEW_EMPTY_MEASSAGES_LIST = "У этого товара еще нет ни одного отзыва. Будьте первым!";
+    const REVIEW_ADD_MEASSAGE_BUTTON =  "Оставить отзыв";
+    const REVIEW_THANKS =  "Спасибо, за отзыв!";
+    const REVIEW_MANUAL_LINK_TEXT = "Правила оформления отзывов →";
+    const REVIEW_SORT_OPTIONS = [ 0=> "Сначала свежие", 1 => "Сначала хорошие", 2 => "Сначала отрицательные" ];
+    const REVIEWER_VALID_ERROR_404 = "Войдите или зарегистрируйтесь, чтобы оставить отзыв";
+    const REVIEWER_VALID_ERROR_400 = "Вы должны купить товар, чтобы оставить отзыв к нему";
+    const REVIEW_PAGING_BUTTON = "Показать еще отзывы";
     const REVIEW_MESSAGE_VALID_ERROR = "Отзыв должен быть более подробным ";
     const LEGAL_IMAGE_TYPES = ["image/jpeg", "image/png"];
     const LEGAL_IMAGE_NOTICE = "Допустимые форматы загружаемых файлов: ";

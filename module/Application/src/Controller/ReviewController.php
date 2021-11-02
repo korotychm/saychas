@@ -162,45 +162,6 @@ class ReviewController extends AbstractActionController
      */
     public function getProductReviewAction()
     {
-        //return new JsonModel([CryptHelper::encrypt("79132146666")]);
-        //$cookies = new Cookies();
-        //$cookies//->setName(Resource::USER_COOKIE_NAME)
-                //->setValue("SLvfSTyp69hcbKDiMwzzjg==")
-                //->setExparies(time() + Resource::USER_COOKIE_TIME_LIVE)
-                //->setPath("/")->addCookie();
-        
-//        $cookie = [
-//            Resource::USER_COOKIE_NAME => "SLvfSTyp69hcbKDiMwzzjg==", 
-//            "expires" => time() + Resource::USER_COOKIE_TIME_LIVE, 
-//            "path" => "/", 
-//            ];
-//        
-//        $cookies->addCookie("set-cookie:".Resource::USER_COOKIE_NAME.":"."SLvfSTyp69hcbKDiMwzzjg==");
-//        //$cookies->addCookie($cookie);
-       
-        //$cookies = new Cookies();
-//        $cookies = new Cookies();
-//        $response = new \Laminas\Http\Response();
-          
-        
-        
-//        $response = $client;
-//        $cookies->addCookiesFromResponse($response, $client["Uri"]);
-//        
-////      $coo = $cookies->addCookie($cookie, $refUri)
-//        //$coo = $cookies->getCookie($q['Origin'] ?? "", Resource::USER_COOKIE_NAME);
-//        $coo = $cookies->get(Resource::USER_COOKIE_NAME);
-//            $q = $this->params()->fromHeader();  
-//            $cookiesArray = ArrayHelper::parseCookies($q['Cookie']);
-//            $cookies = $cookiesArray['cookies'];
-//            $phone = ($cookies[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($cookies[Resource::USER_COOKIE_NAME])) : "";
-//            return new JsonModel([$phone]);                
-//        
-                
-        //return new JsonModel([$cookies, ]);                
-        
-        //return new JsonModel([CryptHelper::decrypt("SLvfSTyp69hcbKDiMwzzjg==")]);
-        
         if (empty($userId = $this->identity())) {
             return $this->getResponse()->setStatusCode(403);
         }

@@ -11,12 +11,12 @@ use Laminas\Mvc\MvcEvent;
 //use Laminas\Db\Adapter\Exception\InvalidQueryException;
 //use Laminas\Authentication\AuthenticationService;
 use Application\Model\Repository\UserRepository;
-use Application\Adapter\Auth\UserAuthAdapter;
+//use Application\Adapter\Auth\UserAuthAdapter;
 use Application\Resource\Resource;
 use Laminas\Log\Logger;
 use Laminas\Log\Writer\Stream as StreamWriter;
 use Laminas\Session\Container; // as SessionContainer;
-use Application\Service\ExternalCommunicationService;
+//use Application\Service\ExternalCommunicationService;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\User;
 use ControlPanel\Service\EntityManager;
@@ -28,7 +28,7 @@ use Laminas\Http\Response;
 use Application\Helper\CryptHelper;
 use Application\Helper\StringHelper;
 use Laminas\View\Model\ViewModel;
-use Laminas\Db\Sql\Sql;
+//use Laminas\Db\Sql\Sql;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 
@@ -430,7 +430,7 @@ class UserDataController extends AbstractActionController
                 $userAutSession['phoneValid'] = true;
                 $container->userAutSession = $userAutSession;
             }
-           return $this->userModalView($return);
+           //return $this->userModalView($return);
         }  
         
         
