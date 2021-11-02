@@ -1,6 +1,6 @@
 <div id="testimonials" class="testimonials" data-id="<?=$id?>">
     <h2 class="product-card__section-heading">Отзывы о товаре </h2>
-    <div v-if="reviews">
+    <div v-if="reviews && reviews.length">
       <div v-if="images && images.length" class="testimonials__photos testimonials__photos--carousel">
           <div class="testimonials__photo" v-for="photo in images">
             <a :href="images_path + '/' + photo" data-fancybox="gallery">
