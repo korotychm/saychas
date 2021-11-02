@@ -6,6 +6,8 @@ namespace Application\Adapter\Auth;
 
 use Laminas\Authentication\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
+//use Laminas\Mvc\Controller\AbstractActionController;
+//use Laminas\Mvc\Controller\Plugin\Params;
 //use Laminas\Authentication\Adapter\Exception\ExceptionInterface;
 //use Laminas\Authentication\Result;
 use Application\Adapter\Auth\UserAuthResult;
@@ -13,11 +15,13 @@ use Application\Resource\Resource;
 //use Application\Model\Repository\UserRepository;
 //use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
-//use Application\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 use Application\Helper\CryptHelper;
-//use Laminas\Http\Client;
+use Laminas\Http\Response;
+use Laminas\Http\Client;
+
 //use Laminas\Http\Request;
-//use Laminas\Http\Cookies;
+use Laminas\Http\Cookies;
 //use Application\Model\Entity\UserData;
 //use Application\Model\Entity\Basket;
 use Laminas\Session\Container; // as SessionContainer;
@@ -46,7 +50,7 @@ class UserAuthAdapter implements AdapterInterface
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
-//        $this->sessionContainer = $sessionContainer;
+
     }
 
     /**
@@ -130,7 +134,7 @@ class UserAuthAdapter implements AdapterInterface
     public function authenticate()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
-
+return $this->findUserCookie($container);
         if (!isset($container->userIdentity)) {
             return $this->findUserCookie($container);
         }
@@ -145,7 +149,14 @@ class UserAuthAdapter implements AdapterInterface
      */
     private function findUserCookie($container)
     {
-        //$userPhone = $_COOKIE[Resource::USER_COOKIE_NAME];
+//        $q = $this->params()->fromHeader();  
+//            $cookiesArray = ArrayHelper::parseCookies($q['Cookie']);
+//            $cookies = $cookiesArray['cookies'];
+//            $phone = ($cookies[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($cookies[Resource::USER_COOKIE_NAME])) : "";
+//            return new JsonModel([$phone]);               
+//        
+        //$ss = \Laminas\Http\Header\Cookie::fromString($headerLine);
+        
         $phone = ($_COOKIE[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($_COOKIE[Resource::USER_COOKIE_NAME])) : null;
         $user = (!empty($phone)) ? User::find(['phone' => $phone]) : null;
 
