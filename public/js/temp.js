@@ -54,7 +54,7 @@ $(document).ready(function(){
       methods: {
         addReviews() {
           this.currentPage++;
-          console.log(this.currentPage);
+          let reviews = JSON.parse(JSON.stringify(this.reviews));
           axios
             .post('/ajax-get-product-review',
               Qs.stringify({
@@ -63,8 +63,8 @@ $(document).ready(function(){
                 sort: this.sortBy
               }))
             .then(response => {
-              this.reviews.concat(response.data.reviews);
-              console.log(response.data.reviews);
+              reviews.concat(response.data.reviews);
+              this.reviews = JSON.parse(JSON.stringify(reviews));
             });
         },
         getReviews() {
