@@ -39,12 +39,15 @@ class CryptHelper
             $encryptType = "RC2-64-CBC";
         }
         
+        $ivlen = openssl_cipher_iv_length($encryptType );
+        $iv = str_repeat("z", $ivlen);
+//         
+        
         if ($encryptIt) {
-            $ivlen = openssl_cipher_iv_length($encryptType );
-            $iv = openssl_random_pseudo_bytes($ivlen);
-            $newText = openssl_encrypt($text, $encryptType, $password, $options=0, $iv);
+            
+            $newText = openssl_encrypt($text, $encryptType, $password, OPENSSL_RAW_DATA,  $iv );
         } else {
-            $newText = openssl_decrypt($text, $encryptType, $password);
+            $newText = openssl_decrypt($text, $encryptType, $password, OPENSSL_RAW_DATA,  $iv );
         }
 
         return $newText;

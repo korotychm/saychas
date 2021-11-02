@@ -133,6 +133,11 @@ class UserAuthAdapter implements AdapterInterface
     {
         
         
+//        setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt("79132146666"), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
+//        $cookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT);
+//        exit (CryptHelper::decrypt(urldecode($userCookie)). " /  $cookie " );
+        
+        
         $container = new Container(Resource::SESSION_NAMESPACE);
             
         if (!isset($container->userIdentity)) {
@@ -149,26 +154,15 @@ class UserAuthAdapter implements AdapterInterface
      */
     private function findUserCookie($container)
     {
-        
-   
-//            $q = $this->params()->fromHeader();  
-//            $cookiesArray = ArrayHelper::parseCookies($q['Cookie']);
-//            $cookies = $cookiesArray['cookies'];
-//            $phone = ($cookies[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($cookies[Resource::USER_COOKIE_NAME])) : "";
-//            return new JsonModel([$phone]);               
-//        
-        //$ss = \Laminas\Http\Header\Cookie::fromString($headerLine);
-        
-        
-        $phone = !empty($userCookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT)) ? CryptHelper::decrypt($userCookie) : null;
-        $user = (!empty($phone)) ? User::find(['phone' => $phone]) : null;
+        $userPhone = !empty($userCookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT)) ? CryptHelper::decrypt(urldecode($userCookie)) : null;   
+        $user = (!empty($userPhone )) ? User::find(['phone' => $userPhone ]) : null;
 
         if (!empty($user) and!empty($userId = $user->getId())) {
             $container->userIdentity = $userId;
             $container->userOldIdentity = $userId;
             $this->identity = $userId;
             $code = UserAuthResult::SUCCESS;
-            setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($phone), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
+            setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($userPhone), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
 
             return new UserAuthResult($code, $this->identity);
         }
