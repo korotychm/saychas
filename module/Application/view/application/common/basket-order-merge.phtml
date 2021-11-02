@@ -21,8 +21,8 @@ if ($countStors < 2) {
                   <div class="custom-select__label input">Выберите время доставки</div>
                   <div class="custom-select__dropdown">
                     <div class="custom-select__dropdown-inner">
-                      <label class="custom-select__option" style="display: none;">
-                        <input value="" checked type="radio" value="'0'" name="timepoint[0]" class="timepoint__option" />
+                      <label class="custom-select__option">
+                        <input value="" checked type="radio" value="<?= $select1hour[0]['value'] ?>" name="timepoint[0]" class="timepoint__option" />
                         <span>Выберите время доставки</span>
                       </label>
                       <?php foreach ($select1hour as $option): ?>
