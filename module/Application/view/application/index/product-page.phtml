@@ -13,7 +13,7 @@ $this->headTitle($this->title, 'PREPEND');
     </div>
     <div class="product-card__top">
         <?= $this->partial("/application/index/partials/product-page/grade") ?>
-        <div class="product-card__code">Код товара: <?= $this->id ?><?php // = $this->append['vendorCode'] ?></div>
+        <div class="product-card__code"><?= Resource::PRODUCT_CODE ?>: <?= $this->id ?><?php // = $this->append['vendorCode'] ?></div>
     </div>
     <div class="product-card__main">
         <?= $this->partial("/application/index/partials/product-page/product-images", ["images" => $this->images, "image_path" => $this->imagePath('product')]) ?>

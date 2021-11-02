@@ -6,15 +6,20 @@ namespace Application\Resource;
 
 class Resource
 {
+    const YES = 'да';
+    const NO = 'нет';
     const FOR_EXAMPLE_TEXT = "Например: ";
     const THE_BASKET = "Корзина ";
     const THE_CATALOG = "Каталог ";
+    const THE_CHARACTERISTICS = "Характеристики";
+    const THE_DESCRIPTION = "Описание";
     const THE_CATALOG_OF_PRODUCTS = "Каталог товаров ";
     const THE_ALL_PRODUCTS = "Все товары ";
     const THE_CATEGORY = "Категории ";
     const THE_BRANDS = "Торговые марки ";
     const THE_CATEGORY_OF_PRODUCTS = "Категории товаров ";
     const THE_ORDER_NUM = "Заказ № ";
+    const THE_DELIVERY = "Доставка";
     const THE_PICKUP = "Самовывоз";
     const DEFAULT_IMAGE = "nophoto.jpeg";
     const ONE_HOUR_SLOGAN = "Доставим за 1 час!";
@@ -55,6 +60,7 @@ class Resource
     /*
      * Товары
      */
+    const PRODUCT_CODE = "Код товара";
     const REMOVE_FROM_FAVORITES = "Убрать из избранного";
     const FAVORITES_TITLE = "Избранные товары";
     const HISTORY_TITLE = "Просмотренные товары";
@@ -62,8 +68,6 @@ class Resource
     const BUTTON_LABLE_PAY_NOW = "Купить сейчас";
     const ADD_TO_FAVORITES = "Добавить в избранное";
     const CURRENCY_RUBL = "&nbsp;&#8381; ";
-    const YES = 'да';
-    const NO = 'нет';
     const USER_ADDREES_PLASEHOLDER = "Укажи адрес доставки";
     const USER_ADDREES_ERROR_MESSAGE = "Необходимо указать адрес до номера дома!";
     const PRODUCT_FAILURE_MESSAGE = "Объект product не&nbsp;получен";
@@ -131,6 +135,7 @@ class Resource
     const ORDER_DELIVERY_TITLE = "Доставка";
     const ORDER_PICKUP_TITLE = "Самовывоз";
     const ORDER_PAYMENT_TITLE = "Оплата";
+    const ORDER_MORE_INFO = "Подробности заказа";
     const ORDER_PAYMENT_BUTTON = "Перейти к оплате";
     const ORDER_AGGREMENT_NOTES = "Нажимая на кнопку, вы соглашаетесь с <a href=\"#\">Условиями обработки перс. данных</a>, а также с <a href=\"#\">Условиями продажи</a>";
     
