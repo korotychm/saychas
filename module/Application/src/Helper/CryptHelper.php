@@ -38,9 +38,11 @@ class CryptHelper
         if (!$foundEncType) {
             $encryptType = "RC2-64-CBC";
         }
-
+        
         if ($encryptIt) {
-            $newText = openssl_encrypt($text, $encryptType, $password);
+            $ivlen = openssl_cipher_iv_length($encryptType );
+            $iv = openssl_random_pseudo_bytes($ivlen);
+            $newText = openssl_encrypt($text, $encryptType, $password, $options=0, $iv);
         } else {
             $newText = openssl_decrypt($text, $encryptType, $password);
         }

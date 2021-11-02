@@ -19,8 +19,6 @@ use Application\Helper\ArrayHelper;
 use Application\Helper\CryptHelper;
 use Laminas\Http\Response;
 use Laminas\Http\Client;
-
-//use Laminas\Http\Request;
 use Laminas\Http\Cookies;
 //use Application\Model\Entity\UserData;
 //use Application\Model\Entity\Basket;
@@ -133,8 +131,10 @@ class UserAuthAdapter implements AdapterInterface
      */
     public function authenticate()
     {
+        
+        
         $container = new Container(Resource::SESSION_NAMESPACE);
-return $this->findUserCookie($container);
+            
         if (!isset($container->userIdentity)) {
             return $this->findUserCookie($container);
         }
@@ -149,7 +149,9 @@ return $this->findUserCookie($container);
      */
     private function findUserCookie($container)
     {
-//        $q = $this->params()->fromHeader();  
+        
+   
+//            $q = $this->params()->fromHeader();  
 //            $cookiesArray = ArrayHelper::parseCookies($q['Cookie']);
 //            $cookies = $cookiesArray['cookies'];
 //            $phone = ($cookies[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($cookies[Resource::USER_COOKIE_NAME])) : "";
@@ -157,7 +159,8 @@ return $this->findUserCookie($container);
 //        
         //$ss = \Laminas\Http\Header\Cookie::fromString($headerLine);
         
-        $phone = ($_COOKIE[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($_COOKIE[Resource::USER_COOKIE_NAME])) : null;
+        
+        $phone = !empty($userCookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT)) ? CryptHelper::decrypt($userCookie) : null;
         $user = (!empty($phone)) ? User::find(['phone' => $phone]) : null;
 
         if (!empty($user) and!empty($userId = $user->getId())) {
@@ -165,16 +168,10 @@ return $this->findUserCookie($container);
             $container->userOldIdentity = $userId;
             $this->identity = $userId;
             $code = UserAuthResult::SUCCESS;
+            setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($phone), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
 
             return new UserAuthResult($code, $this->identity);
         }
-//$cookies = new Cookies();
-//        $requestHeaders  = $this->getRequest()->getHeaders();
-//        exit(print_r($requestHeaders/*->get('cookie')*/));
-////        $cookiesArray = ArrayHelper::parseCookies($q['Cookie']);
-//        $cookies = $cookiesArray['cookies'];
-//        $phone = ($cookies[Resource::USER_COOKIE_NAME]) ? CryptHelper::decrypt(urldecode($cookies[Resource::USER_COOKIE_NAME])) : "";
-//        exit(print_r($phone));
 
         return $this->createUser($container);
     }
