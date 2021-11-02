@@ -64,7 +64,7 @@ $(document).ready(function(){
               }))
             .then(response => {
               this.reviews.concat(response.data.reviews);
-              console.log(this.reviews);
+              console.log(response.data.reviews);
             });
         },
         getReviews() {
