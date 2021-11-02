@@ -46,6 +46,7 @@ return [
             'lk_get_requisitions' => 'http://SRV02:8000/SC/hs/site/lk_get_requisitions',
             \ControlPanel\Service\RequisitionManager::class => 'http://SRV02:8000/SC/hs/site/lk_get_requisitions',
             'lk_update_requisition' => 'http://SRV02:8000/SC/hs/site/lk_update_requisition',
+            'lk_update_requisition_status' => 'http://SRV02:8000/SC/hs/site/lk_update_requisition_status',            
             
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',

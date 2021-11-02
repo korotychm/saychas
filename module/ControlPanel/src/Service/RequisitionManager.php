@@ -77,6 +77,21 @@ class RequisitionManager extends ListManager implements LoadableInterface
         return $accumulator;
     }
 
+    private function findStatuses()
+    {
+        return $this->config['parameters']['requisition_statuses'];
+    }
+    
+    private function statusesToKeyValue(array $statuses)
+    {
+        $result = [];
+        foreach($statuses as $st) {
+            $result[$st[0]] = $st[1];
+        }
+        
+        return $result;
+    }
+
     /**
      * Find store documents for specified provider
      *
@@ -85,21 +100,24 @@ class RequisitionManager extends ListManager implements LoadableInterface
      */
     public function findDocuments($params)
     {
-        $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
-        $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
-        $rating = (int) $params['where']['rating'];
-        if($isActive) {
-            $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
-        }else{
-            $filter = ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ];
-        }
         
-        if(0 == $rating) {
-            unset($filter['rating']);
-        }
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']]);
         
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $filter]);
+        $collection = $this->db->stores;
+        
+        $stores = $collection->find(
+        ['provider_id' => $params['where']['provider_id']],
+        [
+//            'skip' => 0 >= $limits['min'] ? 0 : $limits['min'] - 1,
+//            'limit' => $this->pageSize,
+//            'sort' => $params['sort'],
+            'projection' => ['id' => 1, 'title' =>1, '_id' => 0 ],
+        ])->toArray();
+        
+
+        $cursor['filters']['statuses'] = $this->findStatuses();
+        $cursor['filters']['stores'] = $stores;
         
         return $cursor;
     }
@@ -111,17 +129,44 @@ class RequisitionManager extends ListManager implements LoadableInterface
         
         return $result;
     }
+    
+    public function updateRequisitionStatus($headers, $content = [])
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_requisition_status'];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+        
+        return $result;
+    }
+    
+    public function setRequisitionStatus($id, $statusId)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $si = str_pad($statusId, 2, "0", STR_PAD_LEFT);
+        $statuses = $this->statusesToKeyValue($this->findStatuses());
+        //error_log(print_r($statuses, true), 1, 'alex@localhost');
+        $updateResult = $collection->updateOne(['id' => $id],
+                ['$set' => ['status_id' => $si, 'status' => $statuses[$si] ]]);
+        
+        return $updateResult;
+    }
+    
+    public function getRequisitionStatus($id)
+    {
+        $requisition = $this->find(['id' => $id]);
+        if(null == $requisition) {
+            return [
+                'result' => false,
+                'error_description' => 'requisition with given number not found',
+            ];
+        }
+        return ['result' => true, 'status' => $requisition['status'], 'status_id' => $requisition['status_id']];
+    }
 
     public function replaceRequisition($requisition)
     {
         $collection = $this->db->{$this->collectionName};
-        $updateResult = $collection->updateOne(['id' => $requisition['id'], 'uid' => $requisition['uid']],
-                ['$set' => ['response' => $requisition['response'], 'date_responsed' => $requisition['date_responsed']]]);
-//        foreach ($stockBalance['data'] as $balance) {
-//            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
-//                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
-//                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
-//        }
+        $updateResult = $collection->updateOne(['id' => $requisition['id']],
+                ['$set' => ['status_id' => $requisition['status_id'], 'status' => $requisition['status'], 'items' => $requisition['items'] ]]);
 
         return $updateResult;
     }

@@ -1,8 +1,12 @@
 function setTimepointText(loadinfo = false) {
     $.each($(".timepoint"), function (index, value) {
         var rel = $(this).attr("rel");
-        var settext = $('option:selected', this).attr('rel');
+        var settext = $(this).find('.timepoint__option:checked').attr('rel');
+        if (!settext){
+          settext =  $(this).find('.timepoint__option').eq(1).attr('rel');
+        }
         $("#" + rel).val(settext + ", ");
+        console.log($("#" + rel).val());
     });
     if (loadinfo)
         loadPayInfo();
@@ -221,8 +225,8 @@ function calculateBasketMerge(dataString, loadinfo = false)
         success: function (data) {
             $("#basketordermerge").html(data);
             $("#basket-ordermerge-cover").hide();
-            setTimepointText();
             setAllCustomSelects();
+            setTimepointText();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $("#basketordermerge").html("<span class='iblok contentpadding'>Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError + "</span>");
@@ -537,9 +541,13 @@ $(function () {
         checkBasketDataBeforeSend();
     });
 
+    // $(document).on('click', '.cart__radio', function () {
+    //     $(this).prev().prop('checked',true).change();
+    //     setTimepointText();
+    // });
 
-    $(document).on('change', '.cart__radio-group input', function () {
-        console.log('radio');
+    $(document).on('change', '.cart__radio-group > input', function () {
+        console.log('123');
         loadPayInfo();
     });
 

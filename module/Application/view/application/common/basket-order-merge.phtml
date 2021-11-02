@@ -17,7 +17,7 @@ if ($countStors < 2) {
         <div class="cart__radio-content">
               <p>Для каждого магазина мы назначим отдельного курьера, тем самым за час вы получите все свои товары в <?=$countStors?><?= ($countStors == 1) ? " доставке" : " доставках" ?>.</p>
               <?php if ($select1hour && !empty($select1hour)) : ?>
-                <div class="custom-select custom-select--radio">
+                <div class="custom-select custom-select--radio timepoint" rel="timepointtext1">
                   <div class="custom-select__label input">Выберите время доставки</div>
                   <div class="custom-select__dropdown">
                     <div class="custom-select__dropdown-inner">
@@ -49,7 +49,7 @@ if ($countStors < 2) {
             <div class="cart__radio-content">
                 <p>На каждые 4 магазина мы назначим по курьеру, тем самым вы получите все свои товары в 2 доставках (правда это будет дольше).</p>
                 <?php if ($select3hour && !empty($select3hour)): ?>
-                  <div class="custom-select custom-select--radio">
+                  <div class="custom-select custom-select--radio timepoint"  rel="timepointtext3">
                     <div class="custom-select__label input">Выберите время доставки</div>
                     <div class="custom-select__dropdown">
                       <div class="custom-select__dropdown-inner">

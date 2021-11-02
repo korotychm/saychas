@@ -5,7 +5,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
 ?>
 <section class="catalog" id="category-page">
   <div class="page-heading">
-      <h1 class="h1"><?= $this->title ?> <span v-if="length">{{ length }} товаров</span></h1>
+      <h1 class="h1"><?= $this->title ?> <span v-if="productsCount">{{ productsCount }} {{ productsCountUnit }}</span></h1>
       <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
   </div>
   <div class="catalog__wrap" style="display: block;">
@@ -13,6 +13,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/categories.js'));
       <section class="section">
         <div class="products-grid products-grid--4">
           <?= $this->partial("/application/common/product") ?>
+        </div>
+        <div class="pagination" v-if="productsCount > productsLimit">
+          <a v-for="(n,index) in productsPages" @click="loadPage(index)" :class="{'active' : index == currentPage}">{{ index + 1 }}</a>
         </div>
       </section>
     </div>
