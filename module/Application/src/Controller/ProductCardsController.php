@@ -216,7 +216,6 @@ class ProductCardsController extends AbstractActionController
         }
 
         $where->in('category_id', $categoryTree);
-        //$characteristics = null == $params['characteristics'] ? [] : $params['characteristics'];
         $characteristics = $params['characteristics'] ?? [];
 
         return (!empty($characteristics)) ? $this->filterWhere($characteristics, $where) : $where;
@@ -232,7 +231,7 @@ class ProductCardsController extends AbstractActionController
     {
         $inChars = array_keys($characteristics);
         $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
-        //$groupChars = [0];
+        
         while (list($key, $value) = each($characteristics)) {
 
             if (empty($value) or empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {

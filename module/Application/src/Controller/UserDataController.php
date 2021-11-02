@@ -433,10 +433,7 @@ class UserDataController extends AbstractActionController
            //return $this->userModalView($return);
         }  
         
-        
-        
-        return (!empty($userId)) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
-
+        return !empty($userId) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
     }
 
     private function userModalAuthorisation($user)

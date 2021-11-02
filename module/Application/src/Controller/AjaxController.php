@@ -264,7 +264,7 @@ class AjaxController extends AbstractActionController
         $where->equalTo('user_id', $userId);
 
         if ($orderId == 0) {
-            $where->notEqualTo('order_id', $orderId);
+            //$where->notEqualTo('order_id', $orderId);
         } else {
             $where->equalTo('order_id', $orderId);
         }

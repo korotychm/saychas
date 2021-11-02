@@ -251,8 +251,8 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
-        //$rating = (int)$rating;
-        return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+        
+        return $patternRating[$rating] ?? end($patternRating);
     }
 
     /**
