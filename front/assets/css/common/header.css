@@ -389,6 +389,11 @@
   font-size: 16px;
   font-weight: bold;
 }
+@media (max-width: 1599px) {
+  .header__cart-count {
+    right: 24px;
+  }
+}
 .header__bottom {
   background: var(--gray);
   display: flex;
