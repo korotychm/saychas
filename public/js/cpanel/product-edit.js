@@ -14,11 +14,14 @@ const ProductEdit = {
                               <span class="product__status-circle product__status-circle--2"></span>
                               Товар не прошел модерацию. Измените товар и сохраните снова.
                           </p>
-                          <div class="failure-message" style="color: var(--red)">
-                            <p v-for="string in moderation_failure_message">{{ string }}</p>
-                          </div>
                         </div>
                         <p class="product__status" v-if="!product.moderated && !product.processed"><span class="product__status-circle product__status-circle--1"></span>Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
+                    </div>
+                    <div class="product__attribute" v-if="!product.moderated && product.processed" style="align-items: flex-start;">
+                        <h2>Причина отклонения</h2>
+                        <div class="failure-message" style="color: var(--red)">
+                            <p v-for="string in moderation_failure_message">{{ string }}</p>
+                        </div>
                     </div>
                   </div>
                   <div class="product__category">
