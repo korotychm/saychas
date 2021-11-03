@@ -1,35 +1,93 @@
+function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
+    $.ajax({
+        url: "/ajax-add-user-address",
+        type: 'POST',
+        data: {'dadata': dadata, "address": address},
+        dataType: 'json',
+        cache: false,
+        success: function (data) {
+            location = location.href;
+            return true;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+            return true;
+        }
+    });
+}
+
+function setUserAddrees() {
+    var dadata = $("#geodatadadata").text();
+    var address = $("#uadress").text();
+
+    $.ajax({
+        url: "/ajax-set-user-address",
+        type: 'POST',
+        dataType: 'json',
+        cache: false,
+        success: function (html) {
+            $(".user_address_set").html(html.userAddress);
+            return true;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
+            return true;
+        }
+    });
+}
+
+$(".deleteuseraddress").click(function () {
+    var rel = $(this).attr("rel");
+    $.ajax({
+        beforeSend: function () {},
+        url: "/user-delete-address",
+        type: 'POST',
+        cache: false,
+        data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
+        success: function (data) {
+            //if(data.result == 1)
+            $("#useradress-" + rel).fadeOut();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            showAjaxErrorPopupWindow (xhr.status, thrownError);
+            return false;
+        }
+    });
+});
+
+$(".setuseraddress").click(function () {
+    var rel = $(this).attr("rel");
+    $.ajax({
+        beforeSend: function () {},
+        url: "/user-set-default-address",
+        type: 'POST',
+        cache: false,
+        data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
+        success: function (data) {
+            //console.log(data);
+            //if(data.result == 1)
+            //    $("#useradress-" + rel ).fadeOut();
+            location = location.href;
+            return false;
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            if (xhr.status !== 0) {
+                showServicePopupWindow(
+                        "Ошибка " + xhr.status,
+                        "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
+                        );
+            }
+            return false;
+        }
+    });
+    return false;
+});
+
 $(document).ready(function(){
+
   $(".searchpanelclose").click(function () {
       $("#searchpanel").stop().css({top: "-200px"});
       $("#uadress").show();
-  });
-
-  $(".setuseraddress").click(function () {
-      var rel = $(this).attr("rel");
-      $.ajax({
-          beforeSend: function () {},
-          url: "/user-set-default-address",
-          type: 'POST',
-          cache: false,
-          data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
-          success: function (data) {
-              //console.log(data);
-              //if(data.result == 1)
-              //    $("#useradress-" + rel ).fadeOut();
-              location = location.href;
-              return false;
-          },
-          error: function (xhr, ajaxOptions, thrownError) {
-              if (xhr.status !== 0) {
-                  showServicePopupWindow(
-                          "Ошибка " + xhr.status,
-                          "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
-                          );
-              }
-              return false;
-          }
-      });
-      return false;
   });
 
   $(".open-user-address-form").click(function () {
@@ -63,61 +121,4 @@ $(document).ready(function(){
       }
   });
 
-  function addUserAddrees(dadata = $("#geodatadadata").text(), address = $("#uadress span").text()) {
-      $.ajax({
-          url: "/ajax-add-user-address",
-          type: 'POST',
-          data: {'dadata': dadata, "address": address},
-          dataType: 'json',
-          cache: false,
-          success: function (data) {
-              //console.log(html);
-              location = location.href;
-              return true;
-          },
-          error: function (xhr, ajaxOptions, thrownError) {
-              console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-              return true;
-          }
-      });
-  }
-
-  function setUserAddrees() {
-      var dadata = $("#geodatadadata").text();
-      var address = $("#uadress").text();
-
-      $.ajax({
-          url: "/ajax-set-user-address",
-          type: 'POST',
-          dataType: 'json',
-          cache: false,
-          success: function (html) {
-              $(".user_address_set").html(html.userAddress);
-              return true;
-          },
-          error: function (xhr, ajaxOptions, thrownError) {
-              console.log("Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError);
-              return true;
-          }
-      });
-  }
-
-  $(".deleteuseraddress").click(function () {
-      var rel = $(this).attr("rel");
-      $.ajax({
-          beforeSend: function () {},
-          url: "/user-delete-address",
-          type: 'POST',
-          cache: false,
-          data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
-          success: function (data) {
-              //if(data.result == 1)
-              $("#useradress-" + rel).fadeOut();
-          },
-          error: function (xhr, ajaxOptions, thrownError) {
-              showAjaxErrorPopupWindow (xhr.status, thrownError);
-              return false;
-          }
-      });
-  });
 });

@@ -6,9 +6,6 @@ $(document).ready(function(){
       data: {
         categoryTree: categoryTree,
         currentCat: 0
-      },
-      created() {
-        console.log(this.categoryTree);
       }
     });
   }
@@ -54,7 +51,6 @@ $(document).ready(function(){
       methods: {
         addReviews() {
           this.currentPage++;
-          console.log(this.currentPage);
           axios
             .post('/ajax-get-product-review',
               Qs.stringify({
@@ -63,8 +59,8 @@ $(document).ready(function(){
                 sort: this.sortBy
               }))
             .then(response => {
-              this.reviews.concat(response.data.reviews);
-              console.log(this.reviews);
+              const mergedReviews = [...this.reviews, ...response.data.reviews];
+              this.reviews = mergedReviews;
             });
         },
         getReviews() {
@@ -76,7 +72,6 @@ $(document).ready(function(){
                 sort: this.sortBy
               }))
             .then(response => {
-              console.log(response);
               this.statistic = response.data.statistic;
               this.average_rating = response.data.average_rating;
               this.images_path = response.data.images_path;
@@ -131,7 +126,6 @@ $(document).ready(function(){
             .then(response => {
               $('#reviewPopup').fadeOut();
               this.reviewSent = true;
-              console.log('Ответ после добавления отзыва',response);
             })
             .catch(error => {
               console.log(error.response)
@@ -186,7 +180,6 @@ function addProductToFavorites (productId, callback) {
             type: 'POST',
             data: {'productId': productId},
             success: function (data) {
-                console.log(data);
                 if (!data.result) {showAjaxErrorPopupWindow("", data.description ); return;}
                 callback.addClass("active");
                 callback.children("span").text(data.lable);
@@ -204,7 +197,6 @@ function addProductToFavorites (productId, callback) {
             type: 'POST',
             data: {'productId': productId},
             success: function (data) {
-                console.log(data);
                 if (!data.result) {showAjaxErrorPopupWindow("", data.description ); return;}
                 callback.removeClass("active");
                 callback.children("span").text(data.lable);
