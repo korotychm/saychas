@@ -537,7 +537,7 @@ class UserDataController extends AbstractActionController
     private function userModalView($return)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
-        $return["user"] = $container->userAutSession;
+        $return["user"] = $container->userAutSession ?? [];
         $view = new ViewModel($return);
         $view->setTemplate('application/common/auth-form-in-modal');
         return $view->setTerminal(true);
