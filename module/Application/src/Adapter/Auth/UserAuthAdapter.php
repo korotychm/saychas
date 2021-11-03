@@ -48,7 +48,6 @@ class UserAuthAdapter implements AdapterInterface
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
-
     }
 
     /**
@@ -126,20 +125,13 @@ class UserAuthAdapter implements AdapterInterface
 
     /**
      * Performs an authentication attempt
-     * 
+     *
      * @return UserAuthResult
      */
     public function authenticate()
     {
-        
-        
-//        setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt("79132146666"), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
-//        $cookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT);
-//        exit (CryptHelper::decrypt(urldecode($userCookie)). " /  $cookie " );
-        
-        
         $container = new Container(Resource::SESSION_NAMESPACE);
-            
+
         if (!isset($container->userIdentity)) {
             return $this->findUserCookie($container);
         }
@@ -148,14 +140,14 @@ class UserAuthAdapter implements AdapterInterface
     }
 
     /**
-     * 
+     *
      * @param object $container
      * @return UserAuthResult
      */
     private function findUserCookie($container)
     {
-        $userPhone = !empty($userCookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT)) ? CryptHelper::decrypt(urldecode($userCookie)) : null;   
-        $user = (!empty($userPhone )) ? User::find(['phone' => $userPhone ]) : null;
+        $userPhone = !empty($userCookie = filter_input(INPUT_COOKIE, Resource::USER_COOKIE_NAME, FILTER_DEFAULT)) ? CryptHelper::decrypt(urldecode($userCookie)) : null;
+        $user = (!empty($userPhone)) ? User::find(['phone' => $userPhone]) : null;
 
         if (!empty($user) and!empty($userId = $user->getId())) {
             $container->userIdentity = $userId;
@@ -171,7 +163,7 @@ class UserAuthAdapter implements AdapterInterface
     }
 
     /**
-     * 
+     *
      * @param object $container
      * @return UserAuthResult
      */
@@ -191,7 +183,7 @@ class UserAuthAdapter implements AdapterInterface
     }
 
     /**
-     * 
+     *
      * @param object $container
      * @return UserAuthResult
      * @throws \Exception
