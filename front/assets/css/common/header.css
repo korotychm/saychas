@@ -368,12 +368,6 @@
   position: relative;
   text-align: center;
 }
-@media (max-width: 1599px) {
-  .header__icon svg {
-    width: 55px;
-    height: 55px;
-  }
-}
 .header__cart-count {
   position: absolute;
   top: 24px;
