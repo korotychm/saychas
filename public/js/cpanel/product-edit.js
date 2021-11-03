@@ -340,7 +340,8 @@ const ProductEdit = {
   },
   computed: {
     moderation_failure_message(){
-      return this.product.split(/\r\n|\n|\r/);
+      if (!this.product.moderation_failure_messagesplit) return '';
+      return this.product.moderation_failure_messagesplit(/\r\n|\n|\r/);
     },
     filteredCategories(){
       if (this.categorySearch == '') return false;
