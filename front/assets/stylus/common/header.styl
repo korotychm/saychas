@@ -145,6 +145,8 @@
       position absolute
       right 17px
       top 13px
+      @media (max-width: 1599px)
+        top 10px
       &::before
       &::after
         content ''
@@ -165,6 +167,10 @@
       width calc(100% + 95px)
       margin-top 4px
       z-index 2
+      @media (max-width: 1599px)
+        margin-top 0
+        width calc(100% + 40px)
+        left -30px
       input
         padding-right 60px
     &-error
