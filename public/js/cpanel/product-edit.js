@@ -15,7 +15,7 @@ const ProductEdit = {
                               Товар не прошел модерацию. Измените товар и сохраните снова.
                           </p>
                           <div class="failure-message" style="color: var(--red)">
-                            <p v-for="string in product.moderation_failure_message.split(',')">{{ string }}</p>
+                            <p v-for="string in product.moderation_failure_message.split('/\r?\n/')">{{ string }}</p>
                           </div>
                         </div>
                         <p class="product__status" v-if="!product.moderated && !product.processed"><span class="product__status-circle product__status-circle--1"></span>Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
