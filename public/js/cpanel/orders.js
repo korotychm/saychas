@@ -103,11 +103,11 @@ const Orders = {
                             </div>
                         </div>
                     </div>
-                    <div class="td orders__btn" v-if="order.status_id == '01'" :key="currentTime">
-                      <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span v-if="order.deadline">{{ order.deadline }}</span></button>
+                    <div class="td orders__btn" v-if="order.status_id == '01'">
+                      <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
-                    <div class="td orders__btn" v-else-if="order.status_id == '02'" :key="currentTime">
-                      <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span v-if="order.deadline">{{ order.deadline }}</span></button>
+                    <div class="td orders__btn" v-else-if="order.status_id == '02'">
+                      <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else>
                       <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
