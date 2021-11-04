@@ -146,9 +146,11 @@ class RequisitionManager extends ListManager implements LoadableInterface
     {
         $pageNo = $params['pageNo'];
         
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']]);
+        /** We added sort key here */
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where'], 'sort' => $params['sort']]);
         
-        $cursor['body'] = $this->filter($cursor['body']);
+        /** The following code is temporarily commented out as we need to check filter method prior to using it */
+        //$cursor['body'] = $this->filter($cursor['body']);
         
         $collection = $this->db->stores;
         
