@@ -239,7 +239,7 @@ class ReviewController extends AbstractActionController
             $return[] = $image->getFilename();
         }
 
-        return $return;
+        return $return ?? null;
     }
 
     /**

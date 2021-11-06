@@ -555,7 +555,7 @@ class IndexController extends AbstractActionController
             return $this->redirect()->toUrl('/seller/' . $provider_id);
         }
         
-        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'id' => $provider_id, 'category_id' => $category_id, "title" => $providerTitle, 'category_title' => $categoryTitle,]);
+        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'id' => $provider_id, 'category_id' => $category_id ?? 0, "title" => $providerTitle, 'category_title' => $categoryTitle,]);
     }
 
     /**

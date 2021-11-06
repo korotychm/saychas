@@ -142,7 +142,7 @@ class AjaxController extends AbstractActionController
     public function getBrandsTopAction()
     {
         $count_columns = new \Laminas\Db\Sql\Expression("count(`product_id`) as `count`, `product_id` as product_id");
-        $productsTop = ProductHistory::findAll(['columns' => [$count_columns], 'group' => ['product_id'], 'having' => ['count > 1'], 'group' => ['product_id'], 'limit' => $limit,])->toArray();
+        $productsTop = ProductHistory::findAll(['columns' => [$count_columns], 'group' => ['product_id'], 'having' => ['count > 1'], 'group' => ['product_id'], 'limit' => Resource::SQL_LIMIT_PRODUCTCARD_TOP,])->toArray();
         $productsId = ArrayHelper::extractId($productsTop);
         $productWhere = new Where();
         $productWhere->in("id", $productsId);
@@ -393,6 +393,10 @@ class AjaxController extends AbstractActionController
         $userData->persist(['user_id' => $userId, 'id' => $return['dataId']]);
         $return['updatelegalstore'] = $this->commonHelperFuncions->updateLegalStores($userGeoData);
 
+        if (empty($return['updatelegalstore']["result"])) {
+            return $this->getResponse()->setStatusCode(401);
+        }
+        
         return new JsonModel($return);
     }
 
@@ -749,6 +753,11 @@ class AjaxController extends AbstractActionController
         }
 
         $return = $this->commonHelperFuncions->updateLegalStores($json);
+        
+        if (empty($return["result"])) {
+            return $this->getResponse()->setStatusCode(504);
+        }
+        
 
         return new JsonModel($return);
     }

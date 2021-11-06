@@ -215,10 +215,10 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     {
         $sql = new Sql($this->db);
 
-        $whereAppend = ($params['equal']) ? 'and pr.id = "' . $params['equal'] . '"' : '';
+        $whereAppend = !empty($params['equal']) ? 'and pr.id = "' . $params['equal'] . '"' : '';
 
         $w = new Where();
-        if ($params['in']) {
+        if (!empty($params['in'])) {
             $w->in('s.id', $params['in']);
         }
 
@@ -272,13 +272,13 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $select->where($params['where']);
         }
 
-        if ($params['order']) {
+        if (!empty($params['order'])) {
             $select->order($params['order']);
         }
-        if ($params['limit']) {
+        if (!empty($params['limit'])) {
             $select->limit($params['limit']);
         }
-        if ($params['offset']) {
+        if (!empty($params['offset'])) {
             $select->offset($params['offset']);
         }
 

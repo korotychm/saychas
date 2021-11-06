@@ -42,7 +42,7 @@ class ArrayHelper
     public static function filterTree(array $elements, $parentId = 0, $categoriesHasProduct = [])
     {
         $return = [];
-        if ($elements[$parentId]) {
+        if (isset($elements[$parentId])) {
             foreach ($elements[$parentId] as $element) {
                 //exit (print_r($element['id']));
                 $LegalTree = self::LegalTree($elements, $element['id'], $categoriesHasProduct);

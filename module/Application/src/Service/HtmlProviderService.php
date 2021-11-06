@@ -247,7 +247,7 @@ class HtmlProviderService
         }
 
         $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
-        $return['oldPrice'] = number_format(($return['oldPrice'] / 100), 0, "", "&nbsp;");
+        $return['oldPrice'] = ($return['oldPrice']) ? number_format(($return['oldPrice'] / 100), 0, "", "&nbsp;") : "";
         $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $return["id"], 'store_id=?' => $return['store_id']]);
         $return['rest'] = $rest->getRest() ?? 0;
         $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
