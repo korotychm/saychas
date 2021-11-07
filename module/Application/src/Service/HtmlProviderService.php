@@ -178,7 +178,7 @@ class HtmlProviderService
             $row['val'] = array_unique($row['val']);
             //$getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
-            $chars = $this->categoryFilterQueryParce($row["val"]);
+            $chars = $this->categoryFilterQueryParce($row);
 //            $chars = [];
 //            foreach ($row['val'] as $val) {
 //                //$j++;
@@ -213,7 +213,7 @@ class HtmlProviderService
      */
     private function categoryFilterQueryParce ($row)
     {
-            foreach ($row as $val) {
+            foreach ($row['val'] as $val) {
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
                 $valuetext = $val;
                 if ($row['type'] == Resource:: CHAR_VALUE_REF) {
@@ -265,7 +265,7 @@ class HtmlProviderService
             }
         }
 
-        return  join(", ", $value);
+        return  !empty($value) ? join(", ", $value) : "";
     }
 
     public function productPageService($filteredProducts)
