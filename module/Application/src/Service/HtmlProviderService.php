@@ -153,23 +153,19 @@ class HtmlProviderService
 
     public function orderList($orders)
     {
-        $returns = [];
         foreach ($orders as $order) {
 
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['orderDate'] = $order->getDateCreated(); //date_created
             $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
-//            unset($return['basketInfo']['userGeoLocation']['data']);
-
             $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
             $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
             $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
-            $return['date'] = $order->getDateCreated();
             $returns[] = $return;
         }
-        //json_encode($return)
-        return $returns;
+
+        return $returns ?? [];
     }
 
     public function getCategoryFilterJson($filters)
@@ -182,9 +178,42 @@ class HtmlProviderService
             $row['val'] = array_unique($row['val']);
             //$getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
-            $chars = [];
-            foreach ($row['val'] as $val) {
-                //$j++;
+            $chars = $this->categoryFilterQueryParce($row["val"]);
+//            $chars = [];
+//            foreach ($row['val'] as $val) {
+//                //$j++;
+//                $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
+//                $valuetext = $val;
+//                if ($row['type'] == Resource:: CHAR_VALUE_REF) {
+//                    $valuetext = $char->getTitle();
+//                } elseif ($row['type'] == Resource::PROVIDER_REF) {
+//                    $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
+//                } elseif ($row['type'] == Resource::BRAND_REF) {
+//                    $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+//                } elseif ($row['type'] == Resource::COLOR_REF) {
+//                    $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
+//                    $valuetext = [$color->getValue(), $color->getTitle()];
+//                } elseif ($row['type'] == Resource::COUNTRY_REF) {
+//                    $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
+//                }
+//                $chars[] = [
+//                    "valueCode" => $val,
+//                    "value" => $valuetext,
+//                ];
+//            }
+            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit(), "options" => $chars];
+        }
+        return $return ?? [];
+    }
+    
+    /**
+     * 
+     * @param array $row
+     * @return array
+     */
+    private function categoryFilterQueryParce ($row)
+    {
+            foreach ($row as $val) {
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
                 $valuetext = $val;
                 if ($row['type'] == Resource:: CHAR_VALUE_REF) {
@@ -199,24 +228,26 @@ class HtmlProviderService
                 } elseif ($row['type'] == Resource::COUNTRY_REF) {
                     $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
                 }
-                $chars[] = [
-                    "valueCode" => $val,
-                    "value" => $valuetext,
-                ];
+                $chars[] = ["valueCode" => $val, "value" => $valuetext,];
             }
-            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit(), "options" => $chars];
-        }
-        return $return ?? [];
+        return $chars ?? [];
     }
-
+    
+    /**
+     * 
+     * @param array $v
+     * @param int $chType
+     * @return string
+     */
     private function valueParce(array $v = [], $chType)
     {
         //$bool = [Resource::NO, Resource::YES];
-        if (!$v or!is_array($v)) {
+        if (empty($v) or!is_array($v)) {
             return;
         }
-        //$chType = (int)$chType;
+        
         $value = [];
+        
         foreach ($v as $val) {
             if ($chType == Resource::BOOLEAN) {
                 $value[] = $val == 0 ? Resource::NO : Resource::YES;
@@ -234,7 +265,7 @@ class HtmlProviderService
             }
         }
 
-        return !empty($value) ? join(", ", $value) : "";
+        return  join(", ", $value);
     }
 
     public function productPageService($filteredProducts)
@@ -289,11 +320,9 @@ class HtmlProviderService
                     $return[1][] = $char;
                 }
             }
-        } else {
-            $return = [];
-        }
+        } 
 
-        return $return;
+        return $return ?? [];
     }
 
     /**
@@ -336,6 +365,7 @@ class HtmlProviderService
         if (null == $user) {
             return [];
         }
+        
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
@@ -343,10 +373,12 @@ class HtmlProviderService
         $return['email'] = $user->getEmail();
         $userData = $user->getUserData();
         $usdat = $userData->current();
+        
         if (null != $usdat) {
             $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
             $return['userGeodata'] = $usdat->getGeoData();
         }
+        
         return $return;
     }
 
@@ -360,6 +392,7 @@ class HtmlProviderService
     {
         $products = $post->products;
         $storeAdress = [];
+       
         if (!empty($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery))) {
             foreach ($selfdelevery as $providerinfo) {
                 $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
@@ -367,7 +400,9 @@ class HtmlProviderService
                 $storeAdress[] = StringHelper::cutAddress($store->getAddress());
             }
         }
+        
         $j = 0;
+        
         if (!empty($products)) {
             while (list($p, $c) = each($products)) {
                 if ($c["count"] <= 0) {
@@ -387,10 +422,13 @@ class HtmlProviderService
                 }
             }
         }
+        
         if (!empty($provider)) {
             $countDelevery = count($provider);
         }
+        
         $countDelevery = (int) $countDelevery - $countSelfdelevery;
+        
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
         } else {
@@ -399,6 +437,7 @@ class HtmlProviderService
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
+        
         $return["basketpricetotalall"] = $return["producttotal"] = $total;
         $return["productcount"] = $j;
         $return["timeDelevery"] = $timeDelevery;
@@ -408,10 +447,8 @@ class HtmlProviderService
         $return["countDeleveryText"] = $countDelevery;
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress;
-        return $return;
 
-//         'productcount' => $row['count'],
-//            'producttotal' => $row['total'],
+        return $return;
     }
 
     /**
@@ -493,6 +530,7 @@ class HtmlProviderService
             $return["hourPrice"] = $return["countStors"] * $param["hourPrice"];
             $return["hour3Price"] = $return["countStors"] * $param['mergePrice'] + ceil($return["countStors"] / $param['mergecount']) * $param['mergePriceFirst'];
         }
+        
         return $return;
     }
 
