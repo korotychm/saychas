@@ -3,6 +3,8 @@
   position relative
   background #fff
   border-radius 20px
+  @media (max-width: 1599px)
+    padding 25px
   &:hover
     box-shadow 0px 5px 30px 0px rgba(66, 66, 66, 0.2)
     z-index 3
@@ -20,6 +22,8 @@
     border-radius 20px
     font-size 12px
     font-weight 700
+    @media (max-width: 1599px)
+      font-size 11px
   &__wishlist
     position absolute
     top 10px
@@ -45,6 +49,8 @@
     display block
     margin 25px 0 12px
     color inherit
+    @media (max-width: 1599px)
+      font-size 16px
   &__panel
     display flex
     align-items center
@@ -54,6 +60,8 @@
     display flex
     align-items center
     font-size 16px
+    @media (max-width: 1599px)
+      font-size: 14px
     &-grade
       display flex
       align-items center
@@ -71,10 +79,14 @@
       font-size 24px
       font-weight bold
       margin-right 15px
+      @media (max-width: 1599px)
+        font-size 20px
     &-old
       color var(--gray2)
       text-decoration line-through
       font-size 20px
+      @media (max-width: 1599px)
+        font-size 18px
   &__tocart
     position absolute
     left 0
@@ -86,6 +98,8 @@
     border-bottom-left-radius 20px
     border-bottom-right-radius 20px
     display none
+    @media (max-width: 1599px)
+      padding 0 25px 25px
     &::before
       content ''
       display block
