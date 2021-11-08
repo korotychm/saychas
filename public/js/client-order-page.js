@@ -24,7 +24,7 @@ $(document).ready(function () {
     //getClientOrder();
     if ($('#profile-order').length){
       var clientOrders = new Vue({
-        el: '#client-orders',
+        el: '#profile-order',
         data: {
           order: userOrder,
           products: []
@@ -36,6 +36,9 @@ $(document).ready(function () {
                 someDate.getMonth() == today.getMonth() &&
                 someDate.getFullYear() == today.getFullYear()
           }
+        },
+        mounted: {
+          console.log(this.order);
         }
       });
     }
