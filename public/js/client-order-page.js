@@ -75,7 +75,7 @@ $(document).ready(function () {
             }
             if (isPickup) return 'самовывозов';
               return 'доставок';
-          }
+          },
           isToday(someDate) {
               const today = new Date();
               return someDate.getDate() == today.getDate() &&
