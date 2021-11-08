@@ -55,7 +55,6 @@ $(document).ready(function () {
                 for (product of requisition.products) {
                   price += (product.price - product.price * product.discount / 100);
                   oldprice += +product.price;
-                  console.log(price/100,oldprice/100);
                 }
               }
             }
