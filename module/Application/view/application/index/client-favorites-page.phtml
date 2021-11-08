@@ -28,9 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js
     </div>
   </div>
 </div>
-<div class="profile-page">
-  <div></div>
-  <div>
+<section class="section">
     <div id="user-viewed-products">
       <section class="section" v-if="length > 0">
           <h2 class="h2 section__heading"><?=  Resource::HISTORY_TITLE ?></h2>
@@ -39,5 +37,4 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js
           </div>
       </section>
     </div>
-  </div>
-</div>
+</section>
