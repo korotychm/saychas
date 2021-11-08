@@ -294,7 +294,7 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
-        $return['order_id'] = $post->orderId;
+
 
         //$return['order_id'] = "000000006";
         $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
