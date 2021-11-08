@@ -37,7 +37,7 @@ $(document).ready(function () {
                 someDate.getFullYear() == today.getFullYear()
           }
         },
-        mounted: {
+        mounted() {
           console.log('Order',this.order);
         }
       });
