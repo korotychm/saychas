@@ -28,12 +28,16 @@ $(document).ready(function () {
         el: '#profile-order',
         data: {
           order: [],
-          products: []
+          products: [],
+          orderId: ''
         },
         methods: {
           getOrder(){
             axios
-              .post('/ajax-get-order-page')
+              .post('/ajax-get-order-page',
+                Qs.stringify({
+                  orderId : this.orderId
+              }))
               .then(response => {
                 console.log(response);
                 this.order = response.data;
@@ -48,6 +52,7 @@ $(document).ready(function () {
           }
         },
         created() {
+          this.orderId = window.location.href.split("/").slice(-1)[0];
           this.getOrder()
         }
       });
