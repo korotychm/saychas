@@ -87,7 +87,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                         </div>
                     </div>
                     <div v-if="order.deliveryInfo.deliveries.length" class="panel__tr">
-                        <div><b><?= Resource::THE_DELIVERY ?> <span v-if="order.basketInfo.ordermerge === '0'">за 1 час</span><span v-if="order.basketInfo.ordermerge === '1'">за 3 часа</span></b></div>
+                        <div><b><?= Resource::THE_DELIVERY ?> <span v-if="order.basketInfo.ordermerge === '0'"> за 1 час</span><span v-if="order.basketInfo.ordermerge === '1'"> за 3 часа</span></b></div>
                         <div><span v-if="order.basketInfo.delivery_price">{{ (order.basketInfo.delivery_price / 100).toLocaleString() }} <?=Resource::CURRENCY_RUBL?></span></div>
                     </div>
                     <div v-if="order.deliveryInfo.pickup.length" class="panel__tr">
