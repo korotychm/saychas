@@ -36,11 +36,12 @@ $(document).ready(function () {
                 pickupsTotal = 0
             for (delivery of this.order.deliveryInfo.deliveries){
               if (delivery.pickup){
-                pickupsTotalf++;
+                pickupsTotal++;
               } else {
                 deliveriesTotal++;
               }
             }
+            console.log(deliveriesTotal,pickupsTotal);
             return {
               deliveriesTotal,
               pickupsTotal
