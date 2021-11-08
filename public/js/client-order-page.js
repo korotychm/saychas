@@ -30,8 +30,7 @@ $(document).ready(function () {
           products: [],
           orderId: ''
         },
-        computed: {
-          totalDeliveries(){
+        computed: {alDeliveries(){
             let deliveriesTotal = 0,
                 pickupsTotal = 0
             for (delivery of this.order.deliveryInfo.deliveries){
@@ -41,7 +40,6 @@ $(document).ready(function () {
                 deliveriesTotal++;
               }
             }
-            console.log(deliveriesTotal,pickupsTotal);
             return {
               deliveriesTotal,
               pickupsTotal
@@ -65,6 +63,19 @@ $(document).ready(function () {
           },
         },
         methods: {
+          deliveriesUnit(q,isPickup = false){
+            q = q.toString();
+            if (+q.slice(-1) == 1 && q.slice(-2) != 11){
+              if (isPickup) return 'самовывоз';
+              return 'доставка';
+            }
+            if (+q.slice(-1) > 1 && +q.slice(-1) < 5 && q.slice(-2) != 12 && q.slice(-2) != 13 && q.slice(-2) != 14){
+              if (isPickup) return 'самовывоза';
+              return 'доставки';
+            }
+            if (isPickup) return 'самовывозов';
+              return 'доставок';
+          }
           isToday(someDate) {
               const today = new Date();
               return someDate.getDate() == today.getDate() &&
