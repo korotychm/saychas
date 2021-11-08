@@ -5,7 +5,7 @@ function getClientOrder(){
             url: "/ajax-get-order-page",
             type: 'POST',
             cache: false,
-            data:{"order_id":orderId},
+            data:{"orderId":orderId},
             success: function (data) {
                 //if(data.result == 1)
                 $("#client-order").html(JSON.stringify(data,  null, 2 ));
