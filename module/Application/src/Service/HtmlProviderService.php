@@ -437,16 +437,16 @@ class HtmlProviderService
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
-        
-        $return["basketpricetotalall"] = $return["producttotal"] = $total;
-        $return["productcount"] = $j;
-        $return["timeDelevery"] = $timeDelevery;
-        $return["countSelfdelevery"] = $countSelfdelevery;
-        $return["priceDelevery"] = $priceDelevery;
+        $return["producttotal"] = $total ?? 0;
+        $return["basketpricetotalall"] = $return["producttotal"];
+        $return["productcount"] = $j ?? 0;
+        $return["timeDelevery"] = $timeDelevery ?? 0;
+        $return["countSelfdelevery"] = $countSelfdelevery ?? 0;
+        $return["priceDelevery"] = $priceDelevery ?? 0;
         $return["countDelevery"] = $countDelevery;
         $return["countDeleveryText"] = $countDelevery;
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
-        $return["storeAdress"] = $storeAdress;
+        $return["storeAdress"] = $storeAdress ?? "";
 
         return $return;
     }
@@ -640,7 +640,7 @@ class HtmlProviderService
         }
 
 
-
+        $j=0;
         while (list($prov, $prod) = each($item)) {
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
@@ -688,9 +688,9 @@ class HtmlProviderService
                 $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
             }
             $return["product"][$returnprefix] = [
-                "provider_id" => $provider_store_id, //$prov,
+                "provider_id" => $provider_store_id ?? 0, //$prov,
                 "provider_main_id" => $prov,
-                "availblechek" => $availblechek[$prov],
+                "availblechek" => $availblechek[$prov] ?? 0,
                 "provider_disable" => $provider_disable,
                 "provider_name" => $provider->getTitle(),
                 "provider_logo" => $provider->getImage(),
