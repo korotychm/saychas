@@ -119,10 +119,4 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
         </div>
     </div>
 </div>
-<div id="client-order"></div>
-<script>
-   var userOrder = <?=json_encode($this->orderInfo)?>;
-</script>
-<pre>
-  <?= print_r($this->orderInfo); ?>
-</pre>
+<pre id="client-order"></pre>
