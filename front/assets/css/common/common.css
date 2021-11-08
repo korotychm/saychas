@@ -115,6 +115,7 @@ body {
 .btn--secondary {
   background: transparent;
   border: 2px solid var(--red);
+  color: var(--black);
 }
 @media (hover) {
   .btn--secondary:hover {
