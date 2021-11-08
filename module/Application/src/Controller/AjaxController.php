@@ -294,13 +294,13 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
-
+        $return['order_id'] = $post->orderId;
 
         //$return['order_id'] = "000000006";
         $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
 
         if (empty($order)) {
-            
+
             return new JsonModel($return);
         }
 
@@ -395,7 +395,7 @@ class AjaxController extends AbstractActionController
         if (empty($return['updatelegalstore']["result"])) {
             return $this->getResponse()->setStatusCode(401);
         }
-        
+
         return new JsonModel($return);
     }
 
@@ -752,11 +752,11 @@ class AjaxController extends AbstractActionController
         }
 
         $return = $this->commonHelperFuncions->updateLegalStores($json);
-        
+
         if (empty($return["result"])) {
             return $this->getResponse()->setStatusCode(504);
         }
-        
+
 
         return new JsonModel($return);
     }
