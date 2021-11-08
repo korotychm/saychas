@@ -3,6 +3,12 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 30px;
 }
+@media (max-width: 767px) {
+  .brands-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+  }
+}
 .brands-grid__logo {
   display: block;
   height: 108px;
@@ -12,6 +18,11 @@
   background: var(--gray);
   border-radius: 108px;
   padding: 25px;
+}
+@media (max-width: 767px) {
+  .brands-grid__logo {
+    padding: 20px;
+  }
 }
 .brands-grid__logo img {
   width: 100%;

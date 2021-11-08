@@ -70,7 +70,10 @@ header.header
               
               
         div.header__logo
-          include ../../img/logo.svg
+          picture
+            source(srcset="/img/logo-mobile.png",media="(max-width: 767px)")
+            source(srcset="/img/logo.png")
+            img(srcset="/img/logo.png",alt="Say:час логотип")
         div.header__search
           form.search
             input(type="text", placeholder="Быстрый поиск")
@@ -104,7 +107,7 @@ header.header
               span Выйти
         a(href="#")
           div.header__icon
-            include ../../img/icons/icon-big.svg
+            img(src="/img/icons/icon-cart.svg") 
             div.header__cart-count 2
           span Корзина
           

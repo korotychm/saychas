@@ -17,6 +17,11 @@ body {
 .main {
   min-height: calc(100vh - 600px);
 }
+@media (max-width: 767px) {
+  .main {
+    overflow-x: hidden;
+  }
+}
 .container {
   width: 1490px;
   margin: auto;
@@ -24,6 +29,12 @@ body {
 @media (max-width: 1599px) {
   .container {
     width: 1200px;
+  }
+}
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    padding: 0 15px;
   }
 }
 .h2 {
@@ -34,6 +45,11 @@ body {
 @media (max-width: 1599px) {
   .h2 {
     font-size: 36px;
+  }
+}
+@media (max-width: 767px) {
+  .h2 {
+    font-size: 28px;
   }
 }
 .section {
@@ -48,6 +64,11 @@ body {
   align-items: center;
   font-size: 46px;
   margin-bottom: 1em;
+}
+@media (max-width: 1599px) {
+  .page-heading {
+    font-size: 36px;
+  }
 }
 .page-heading .h1 {
   font-size: inherit;
@@ -77,6 +98,11 @@ body {
     height: 50px;
   }
 }
+@media (max-width: 767px) {
+  .btn {
+    font-size: 12px;
+  }
+}
 .btn--primary {
   background: var(--red);
   color: #fff;
@@ -89,6 +115,7 @@ body {
 .btn--secondary {
   background: transparent;
   border: 2px solid var(--red);
+  color: var(--black);
 }
 @media (hover) {
   .btn--secondary:hover {
