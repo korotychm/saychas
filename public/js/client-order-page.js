@@ -9,6 +9,7 @@ function getClientOrder(){
             success: function (data) {
                 //if(data.result == 1)
                 $("#client-order").html(JSON.stringify(data,  null, 2 ));
+                console.log(orderId,JSON.stringify(data,  null, 2 ));
             },
             error: function (xhr, ajaxOptions, thrownError) {
               showServicePopupWindow(
