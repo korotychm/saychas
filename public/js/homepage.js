@@ -102,15 +102,6 @@ $(document).ready(function(){
               this.length = this.brands.length;
               console.log('Brands',this.length,this.brands);
             });
-      },
-      updated() {
-        $('#viewed-products .products-carousel').slick(
-          {
-            infinite: true,
-            slidesToShow: 4,
-            slidesToScroll: 4
-          }
-        );
       }
     });
 
