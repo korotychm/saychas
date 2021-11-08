@@ -29,17 +29,24 @@ body
   font-family: 'Montserrat'
 .main
   min-height calc(100vh - 600px)
+  @media (max-width: 767px)
+    overflow-x: hidden
 .container
   width 1490px
   margin auto
   @media (max-width: 1599px)
     width 1200px
+  @media (max-width: 767px)
+    width 100%
+    padding 0 15px
 .h2
   font-size 46px
   font-weight bold
   line-height 1.2
   @media (max-width: 1599px)
     font-size: 36px
+  @media (max-width: 767px)
+    font-size: 28px
 .section
   padding 30px 0
   &__heading
@@ -51,6 +58,8 @@ body
   align-items center
   font-size 46px
   margin-bottom 1em
+  @media (max-width: 1599px)
+    font-size 36px
   .h1
     font-size inherit
     font-weight bold
@@ -75,6 +84,8 @@ body
   @media (max-width: 1599px)
     font-size 18px
     height 50px
+  @media (max-width: 767px)
+    font-size 12px
   &--primary
     background var(--red)
     color #fff
