@@ -38,7 +38,7 @@ $(document).ready(function () {
           }
         },
         mounted: {
-          console.log(this.order);
+          console.log('Order',this.order);
         }
       });
     }
