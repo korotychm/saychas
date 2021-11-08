@@ -31,7 +31,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js
   <div></div>
   <div>
     <div id="user-viewed-products">
-      <section class="section" v-if="length > 0">
+      <section class="section">
           <h2 class="h2 section__heading"><?=  Resource::HISTORY_TITLE ?></h2>
           <div class="products-carousel">
             <?= $this->partial("/application/common/product") ?>
