@@ -3,7 +3,7 @@ use Application\Resource\Resource;
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js'));
 ?>
-<div id="user-favorites">
+<div id="user-favorites" class="catalog">
 <div class="page-heading">
     <h1 class="h1"><?= Resource::FAVORITES_TITLE ?> <span v-if="productsCount">{{ productsCount }} {{ productsCountUnit }}</span></h1>
     <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
