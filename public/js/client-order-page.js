@@ -53,7 +53,8 @@ $(document).ready(function () {
         },
         created() {
           this.orderId = window.location.href.split("/").slice(-1)[0];
-          this.getOrder()
+          console.log('orderId',this.orderId);
+          this.getOrder();
         }
       });
     }
