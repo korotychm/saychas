@@ -11,7 +11,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 </svg>
             </a><span><?=$this->title?></span></h1>
     </div>
-    <div class="profile-order__wrap" v-if="order">
+    <div class="profile-order__wrap" v-if="order.basketInfo">
         <div class="profile-order__requisitions">
             <div class="profile-order__requisition">
                 <div class="profile-order__requisition-head"><span>Доставка из</span>
