@@ -380,6 +380,17 @@ return [
                     ],
                 ],
             ],
+            
+            'cancel-client-order' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/cancel-client-order',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'cancelClientOrder',
+                    ],
+                ],
+            ],
             'get-client-order-bill' => [
                 'type' => Segment::class,
                 'options' => [

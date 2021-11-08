@@ -19,6 +19,7 @@ use Laminas\Session\Container; // as SessionContainer;
 //use Application\Service\ExternalCommunicationService;
 use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\User;
+use Application\Model\Entity\Basket;
 use ControlPanel\Service\EntityManager;
 //use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\Entity\Setting;
@@ -88,6 +89,8 @@ class UserDataController extends AbstractActionController
      * @var CommonHelperFunctions
      */
     private $commonHelperFuncions;
+    
+    private $basketRepository;
 
 //    private SessionManager $sessionManager;
 //    private ServiceManager $serviceManager;
@@ -123,6 +126,7 @@ class UserDataController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(User::class);
+        $this->basketRepository = $this->entityManager->getRepository(Basket::class);
     }
 
     /**
@@ -285,7 +289,7 @@ class UserDataController extends AbstractActionController
         if (!$orderCreate['result']) {
             return new JsonModel(["result" => false, "description" => $orderCreate['description']]);
         }
-        $basketSet = \Application\Model\Entity\Basket::findAll(['where' => ['product_id' => $orderCreate['products'], 'user_id' => $userId, 'order_id' => 0]]);
+        $basketSet = $this->basketRepository->findAll(['where' => ['product_id' => $orderCreate['products'], 'user_id' => $userId, 'order_id' => 0]]);
         foreach ($basketSet as $basket) {
             $basket->setOrderId($orderId);
             $basket->persist(['product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0]);
@@ -301,13 +305,18 @@ class UserDataController extends AbstractActionController
             return new JsonModel(["result" => false, "error_description" => "error 403" ]);
         }
         
-        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)){
-            return new JsonModel(["result" => false, "error_description" => "empty order_id"]);
-        }
+//        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)){
+//            return new JsonModel(["result" => false, "error_description" => "empty order_id"]);
+//        }
+        $order_id = "000000006";
         
         if (empty($order = ClientOrder::find(["order_id" => $order_id]))){
             return new JsonModel(["result" => false, "error_description" => "order $order_id not found"]);
         }
+        
+        // $update = \Application\Model\Repository\BasketRepository::update(["set" => ["order_id" => 0],  "where" => ["order_id" => $order_id]]);
+        //$update = $this->basketRepository->update(["set" => ["order_id" => 0],  "where" => ["order_id" => $order_id]]);
+        //return new JsonModel([$update]);
         
         if ($order->getUserId() != $userId ){
             $this->getResponse()->setStatusCode(403);
@@ -318,7 +327,6 @@ class UserDataController extends AbstractActionController
         if (!$orderCancel['result']) {
             return new JsonModel($orderCancel);
         }
-        
         
         
         
