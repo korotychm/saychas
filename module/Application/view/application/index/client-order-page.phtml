@@ -51,7 +51,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                         </svg>
                         <div>
                             <h2>Заказ №{{ order.orderId }}</h2>
-                            <p>Создан 12 мая 2021 в 14:46</p>
+                            <p>Создан {{ getLocaledTime(order.deliveryInfo.orderDate) }}</p>
                         </div>
                     </div>
                     <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

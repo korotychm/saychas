@@ -31,6 +31,23 @@ $(document).ready(function () {
           orderId: ''
         },
         methods: {
+          isToday(someDate) {
+              const today = new Date();
+              return someDate.getDate() == today.getDate() &&
+                someDate.getMonth() == today.getMonth() &&
+                someDate.getFullYear() == today.getFullYear()
+          },
+          getLocaledTime(time){
+            let localedDate = '';
+            let orderDate = new Date(time * 1000);
+            if (this.isToday(orderDate)){
+              localedDate = 'сегодня';
+            } else {
+              localedDate = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
+            }
+            localedTime = ' в ' + orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
+            return localedDate + localedTime;
+          },
           getOrder(){
             axios
               .post('/ajax-get-order-page',
