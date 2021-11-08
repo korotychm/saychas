@@ -119,6 +119,11 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
         </div>
     </div>
 </div>
+<script>
+   var userOrder = <?=json_encode($this->orderInfo)?>;
+</script>
 <pre>
-   <?=json_encode($this->orderInfo)?>
+  <?= print_r($this->orderInfo); ?>
 </pre>
+<h3>Из аякса</h3>
+<div id="client-order"></div>
