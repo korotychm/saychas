@@ -271,14 +271,14 @@ class HtmlProviderService
     public function productPageService($filteredProducts)
     {
         $return = current($filteredProducts->toArray());
-        
+         
         if ($return['discount'] > 0) {
             $return['oldPrice'] = $return['price'];
             $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discount'] / 100);
         }
 
         $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
-        $return['oldPrice'] = ($return['oldPrice']) ? number_format(($return['oldPrice'] / 100), 0, "", "&nbsp;") : "";
+        $return['oldPrice'] = !empty($return['oldPrice']) ? number_format(($return['oldPrice'] / 100), 0, "", "&nbsp;") : "";
         $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $return["id"], 'store_id=?' => $return['store_id']]);
         $return['rest'] = $rest->getRest() ?? 0;
         $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
@@ -399,7 +399,7 @@ class HtmlProviderService
                 $store = $stores->current();
                 $storeAdress[] = StringHelper::cutAddress($store->getAddress());
             }
-        }
+        }   else  {$countSelfdelevery = 0; }
         
         $j = 0;
         
@@ -423,11 +423,11 @@ class HtmlProviderService
             }
         }
         
-        if (!empty($provider)) {
-            $countDelevery = count($provider);
-        }
         
-        $countDelevery = (int) $countDelevery - $countSelfdelevery;
+            $countAllDelevery = !empty($provider) ? count($provider) : 0 ;
+        
+        
+        $countDelevery =  $countAllDelevery - $countSelfdelevery;
         
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
@@ -627,7 +627,7 @@ class HtmlProviderService
                     // 'availble' => '1',
                     'availble' => $rest,
                     'count' => $count,
-                    'store' => $productStoreId,
+                    'store' => $productStoreId ?? 0,
                     'isFav' => $this->isInFavorites($pId, $userId),
                 ];
             }

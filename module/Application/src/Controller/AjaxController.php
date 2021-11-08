@@ -611,7 +611,7 @@ class AjaxController extends AbstractActionController
             return $this->getResponse()->setStatusCode(403);
         }
         $post = $this->getRequest()->getPost();
-        $timepoint = $post->timepoint;
+        $timepoint = $post->timepoint ?? [0,0];
         //$selectedtimepoint = [];
         $selectedtimepoint[0][$timepoint[0]] = " checked ";
         $selectedtimepoint[1][$timepoint[1]] = " checked ";

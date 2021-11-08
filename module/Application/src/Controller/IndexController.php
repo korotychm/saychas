@@ -167,7 +167,7 @@ class IndexController extends AbstractActionController
         $userAddressArray = $this->htmlProvider->getUserAddresses($user, Resource::LIMIT_USER_ADDRESS_LIST);
         $userInfo = $this->commonHelperFuncions->getUserInfo($user);
         $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
-        $addressLegal = ($userInfo["userAddress"]) ? true : false;
+        $addressLegal = $userInfo["userAddress"] ??  false;
         $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
         // Return the response
         $this->layout()->setVariables([
