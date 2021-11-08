@@ -241,6 +241,35 @@ class ProductController extends AbstractActionController
 
         return new JsonModel(['image_file_name' => $newFileName]);
     }
+    
+    public function uploadProductFileAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $productId = $post['product_id'];
+        $providerId = $post['provider_id'];
+
+        $identity = $this->authService->getIdentity();
+
+        $uploadsDir = $documentPath = $this->documentPath('product', ['provider_id' => $identity['provider_id'] ]);
+
+//        $baseUrl = $this->config['parameters']['document_path']['base_url'];
+//        $uploads = $this->config['parameters']['document_path']['subpath']['cpanel_product'];
+//        $uploadsDir = 'public' . $baseUrl . '/' . $uploads;
+        $error = $_FILES['file']['error'];
+        if (UPLOAD_ERR_OK == $error) {
+            //$fileName = basename($_FILES['file']['name']);
+            $uuid = uniqid("{$providerId}_{$productId}_", true);
+            list($type, $ext) = explode('/', $_FILES['file']['type']);
+            //$newFileName = "{$providerId}_{$productId}_$uuid.$ext";
+            $newFileName = "$uuid.$ext";
+            $tmpName = $_FILES['file']['tmp_name'];
+            //move_uploaded_file($tmpName, "$uploadsDir/$fileName");
+            $result = move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
+        }
+
+        return new JsonModel(['file_name' => $newFileName]);
+    }
+    
 
     /**
      * Update product
@@ -375,9 +404,9 @@ class ProductController extends AbstractActionController
 
     /**
      * Example
+     * $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
      *  $content => [
-     *    "partner_id": "00005",
-     *    "shop_id": "00002",
+     *    "shop_id": "",
      *    "category_id": "000000527",
      *    "query_type": "product"
      *  ]
@@ -396,8 +425,18 @@ class ProductController extends AbstractActionController
           "category_id" => $post['data']['category_id'],
           "query_type" => $post['data']['query_type'],
         ];
+        
+        /** To be removed */
+        $content = [
+//          "provider_id" => $identity['provider_id'],
+          "store_id" => '',
+          "category_id" => '000000006',
+          "query_type" => 'product',
+        ];
 
-        $result = $this->productManager->getProductFile($content);
+        $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
+        //$result = $this->productManager->getProductFile($content);
+        $result = $this->productManager->getProductFile($credentials, $content);
 
         if(false == $result['result']) {
             return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
