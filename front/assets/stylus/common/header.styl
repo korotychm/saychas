@@ -135,6 +135,9 @@
     margin-top 23px !important
     position relative
     z-index 2
+    @media (max-width: 1599px)
+      width 230px
+      margin-right 30px
     &-close
       width 30px
       height 30px
@@ -142,6 +145,8 @@
       position absolute
       right 17px
       top 13px
+      @media (max-width: 1599px)
+        top 10px
       &::before
       &::after
         content ''
@@ -162,6 +167,10 @@
       width calc(100% + 95px)
       margin-top 4px
       z-index 2
+      @media (max-width: 1599px)
+        margin-top 0
+        width calc(100% + 40px)
+        left -30px
       input
         padding-right 60px
     &-error
@@ -305,6 +314,8 @@
     justify-content center
     font-size 16px
     font-weight bold
+    @media (max-width: 1599px)
+      right 24px
   &__bottom
     background var(--gray)
     display flex
