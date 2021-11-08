@@ -153,7 +153,7 @@ $(document).ready(function () {
           .then(response => (
             this.orders = response.data.order_list,
             this.products = response.data.productsMap,
-            console.log(this.orders)
+            console.log('Список заказов', response)
           ));
       },
       isToday(someDate) {
