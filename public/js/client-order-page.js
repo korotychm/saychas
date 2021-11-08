@@ -37,7 +37,6 @@ $(document).ready(function () {
             for (delivery of this.order.deliveryInfo.deliveries){
               for (requisition of delivery.requisitions){
                 for (product of requisition.products) {
-                  console.log('price', product.price);
                   price += (product.price - product.price * product.discount);
                   oldprice += price;
                 }
