@@ -92,38 +92,39 @@ $(document).ready(function(){
 
   }
 
-});
 
-if ($('#user-viewed-products').length){
+  if ($('#user-viewed-products').length){
 
-  var categoryPage = new Vue({
-    el: '#user-viewed-products',
-    data: {
-      products: [],
-      length: 0
-    },
-    created() {
-        axios
-          .post('/ajax-get-client-history')
-          .then(response => {
-            if (response.data.products){
-              this.products = response.data.products;
-              this.length = Object.keys(this.products).length;
+    var categoryPage = new Vue({
+      el: '#user-viewed-products',
+      data: {
+        products: [],
+        length: 0
+      },
+      created() {
+          axios
+            .post('/ajax-get-client-history')
+            .then(response => {
+              if (response.data.products){
+                this.products = response.data.products;
+                this.length = Object.keys(this.products).length;
+              }
+              console.log('Истор',this.length,this.products);
+            });
+      },
+      updated() {
+        setTimeout(() => {
+          $('#viewed-products .products-carousel').slick(
+            {
+              infinite: true,
+              slidesToShow: 3,
+              slidesToScroll: 3
             }
-            console.log('Истор',this.length,this.products);
-          });
-    },
-    updated() {
-      setTimeout(() => {
-        $('#viewed-products .products-carousel').slick(
-          {
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 3
-          }
-        );
-      }, 200);
-    }
-  });
+          );
+        }, 200);
+      }
+    });
 
-}
+  }
+
+});

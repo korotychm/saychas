@@ -12,10 +12,6 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div>
       <div>
-        <div class="page-heading">
-            <h1 class="h1"><?= $this->title ?> <span v-if="productsCount">{{ productsCount }} {{ productsCountUnit }}</span></h1>
-            <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
-        </div>
         <div class="catalog__wrap" style="display: block;">
           <div class="catalog__content">
             <section class="section">
@@ -29,8 +25,6 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js
           </div>
         </div>
       </div>
-      <h1><?=  Resource::HISTORY_TITLE ?></h1>
-
   </div>
 </div>
 <div class="profile-page">
@@ -38,7 +32,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js
   <div>
     <div id="user-viewed-products">
       <section class="section" v-if="length > 0">
-          <h2 class="h2 section__heading">Вы смотрели</h2>
+          <h2 class="h2 section__heading"><?=  Resource::HISTORY_TITLE ?></h2>
           <div class="products-carousel">
             <?= $this->partial("/application/common/product") ?>
           </div>
