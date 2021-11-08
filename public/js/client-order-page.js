@@ -38,7 +38,7 @@ $(document).ready(function () {
                   orderId : this.orderId
               }))
               .then(response => {
-                //console.log(response);
+                console.log(response);
                 this.order = response.data.order_info[0];
                 console.log('заказ',this.order);
               });
