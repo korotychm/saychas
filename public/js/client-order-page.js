@@ -31,6 +31,21 @@ $(document).ready(function () {
           orderId: ''
         },
         computed: {
+          totalDeliveries(){
+            let deliveriesTotal = 0,
+                pickupsTotal = 0
+            for (delivery of this.order.deliveryInfo.deliveries){
+              if (delivery.pickup){
+                pickupsTotalf++;
+              } else {
+                deliveriesTotal++;
+              }
+            }
+            return {
+              deliveriesTotal,
+              pickupsTotal
+            }
+          },
           totalPrice(){
             let price = 0,
                 oldprice = 0;
