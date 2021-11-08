@@ -117,8 +117,8 @@ $(document).ready(function(){
           $('#user-viewed-products .products-carousel').slick(
             {
               infinite: true,
-              slidesToShow: 3,
-              slidesToScroll: 3
+              slidesToShow: 4,
+              slidesToScroll: 4
             }
           );
         }, 200);
