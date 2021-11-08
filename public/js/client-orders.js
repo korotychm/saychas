@@ -39,11 +39,11 @@ $(document).ready(function () {
           order.total = 0;
           order.oldtotal = 0;
           order.count = 0;
-          let orderDate = new Date(order.date);
+          let orderDate = new Date(order.orderDate * 1000);
           if (this.isToday(orderDate)){
-            order.dateLocaled = 'сегодня';
+            order.orderDateLocaled = 'сегодня';
           } else {
-            order.dateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
+            order.orderDateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
           }
           order.timeLocaled = orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
 
