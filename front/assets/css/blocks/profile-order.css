@@ -1,0 +1,60 @@
+.page-heading__back {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 2px solid var(--gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--red);
+  margin-right: 20px;
+  transition: 0.3s;
+}
+@media (hover) {
+  .page-heading__back:hover {
+    color: #fff;
+    background: var(--red);
+    border-color: var(--red);
+  }
+}
+.profile-order .page-heading h1 {
+  display: flex;
+  align-items: center;
+}
+.profile-order__wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 5fr);
+  grid-gap: 30px;
+  align-items: flex-start;
+}
+.profile-order__requisitions {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+}
+.profile-order__requisition {
+  padding: 50px 45px;
+  border-radius: 20px;
+  border: 2px solid var(--gray);
+}
+.profile-order__requisition-head {
+  font-size: 34px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.profile-order__requisition-head span {
+  margin-right: 30px;
+}
+.profile-order__requisition-logo {
+  margin-right: 30px;
+}
+.profile-order__requisition-logo img {
+  display: block;
+  width: 160px;
+  height: auto;
+}
+.profile-order__requisition-items {
+  margin-top: 30px;
+}

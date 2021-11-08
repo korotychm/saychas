@@ -1,0 +1,90 @@
+div.profile-order
+  div.page-heading
+    h1.h1
+      a(href="/user/orders").page-heading__back
+        include ../../img/icons/icon-back.svg
+      span Заказ №000023
+  div.profile-order__wrap
+    div.profile-order__requisitions
+      div.profile-order__requisition
+        div.profile-order__requisition-head
+          span Доставка из
+          div.profile-order__requisition-logo
+            img(src="/images/stores/store1.jpg")
+          div.orders-history__statuses
+            div.orders-history__status.orders-history__status--progress
+              span Собирается
+            div.orders-history__status.orders-history__status--ready Готов
+            div.orders-history__status.orders-history__status--deliveried Доставлен
+            div.orders-history__status.orders-history__status--canceled Отменен
+        div.profile-order__requisition-items
+          div.product-tr
+            div.product-tr__img.product-small-image
+              img(src="/images/products/product1.jpg")
+            div.product-tr__title Смартфон Huawei P Smart 2021 4+128GB Crush Green
+            div.product-tr__quantity 1 шт
+            div.product-tr__price
+              div.product-tr__price-actual 17 990 ₽
+              div.product-tr__price-old 21 990 ₽
+            div.product-tr__wishlist
+              include ../../img/icons/icon.svg
+          div.product-tr
+            div.product-tr__img.product-small-image
+              img(src="/images/products/product1.jpg")
+            div.product-tr__title Смартфон Huawei P Smart 2021 4+128GB Crush Green
+            div.product-tr__quantity 12 шт
+              span.product-tr__quantity-new 10 шт
+            div.product-tr__price
+              div.product-tr__price-actual 21 990 ₽
+            div.product-tr__wishlist
+              include ../../img/icons/icon.svg
+              
+            
+        
+    div.profile-order__info
+      div.panel.panel--cart.panel--history
+        input(type="checkbox", checked="checked").orders-history__detailed-trigger#orders-detailed
+        div.panel__delivery
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 Заказ №000234
+              p Создан 12 мая 2021 в 14:46
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 5 доставок
+              p Сегодня с 15 до 16
+              p Москва, Самая длинная угрешская улица, 2с34
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 2 самовывоза
+          div.panel__delivery-item
+            include ../../img/icons/icon.svg
+            div
+              h2 Оплачен
+              p Картой 5213 2487 **** 0817
+        div.panel__zip
+        div.panel__price
+          div.panel__price-current 394 990 ₽
+          div.panel__price-old 403 990 ₽
+        div.panel__bonuses
+          <span>+179</span> сейбонов
+          div.question
+            div.question__icon ?
+        div.panel__table
+          div.panel__tr
+            div Товары (13)
+            div.panel__tr-items-total
+              div 389 800 ₽
+              div 402 190 ₽
+          div.panel__tr
+            div 
+              b Доставка за час
+            div 899 ₽
+          div.panel__tr
+            div Самовывоз
+            div 0 ₽
+        button.btn.btn--secondary Отменить заказ
+        div.panel__notice Вы можете отменить заказ, пока он ещё не собран. Если возникли проблемы с заказом — просто позвоните нам +7 (495) 445-04-55
