@@ -30,7 +30,8 @@ $(document).ready(function () {
           products: [],
           orderId: ''
         },
-        computed: {alDeliveries(){
+        computed: {
+          totalDeliveries(){
             let deliveriesTotal = 0,
                 pickupsTotal = 0
             for (delivery of this.order.deliveryInfo.deliveries){
