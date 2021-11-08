@@ -30,6 +30,24 @@ $(document).ready(function () {
           products: [],
           orderId: ''
         },
+        computed: {
+          totalPrice(){
+            let price = 0,
+                oldprice = 0;
+            for (delivery in this.order.deliveryInfo){
+              for (requisition in delivery.requisitions){
+                for product in requisition.products {
+                  price += (product.price - product.price * product.discount);
+                  oldprice += price;
+                }
+              }
+            }
+            return {
+              price: price / 100,
+              oldprice: oldprice / 100
+            }
+          },
+        },
         methods: {
           isToday(someDate) {
               const today = new Date();
