@@ -39,7 +39,7 @@ $(document).ready(function () {
           order.total = 0;
           order.oldtotal = 0;
           order.count = 0;
-          let orderDate = new Date(order.orderDate);
+          let orderDate = new Date(+order.orderDate);
           if (this.isToday(orderDate)){
             order.dateLocaled = 'сегодня';
           } else {
