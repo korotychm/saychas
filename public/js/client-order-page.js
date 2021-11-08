@@ -22,6 +22,7 @@
 
 $(document).ready(function () {
     //getClientOrder();
+    console.log('Order', userOrder);
     if ($('#profile-order').length){
       var clientOrders = new Vue({
         el: '#profile-order',
