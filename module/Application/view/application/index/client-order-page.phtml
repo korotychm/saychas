@@ -119,9 +119,6 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
         </div>
     </div>
 </div>
-
-  <a href='#' onclick ="$('#printr').slideToggle(); return false;">Доступные php данные для View </a>
-  <pre>
-   <?=print_r($this->orderInfo)?>
-  </pre>
-  
+<pre>
+   <?=json_encode($this->orderInfo)?>
+</pre>
