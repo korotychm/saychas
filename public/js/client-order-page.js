@@ -22,9 +22,7 @@
 // }
 
 $(document).ready(function () {
-    //getClientOrder();
     if ($('#profile-order').length){
-      console.log('123');
       var clientOrders = new Vue({
         el: '#profile-order',
         data: {
@@ -54,7 +52,6 @@ $(document).ready(function () {
         },
         created() {
           this.orderId = window.location.href.split("/").slice(-1)[0];
-          console.log('orderId',this.orderId);
           this.getOrder();
         }
       });
