@@ -9,8 +9,19 @@ const ProductEdit = {
                     <div class="product__attribute">
                         <h2>Статус</h2>
                         <p class="product__status" v-if="product.moderated"><span class="product__status-circle product__status-circle--0"></span>Товар прошел модерацию и опубликован на сайте.</p>
-                        <p class="product__status" v-if="!product.moderated && product.processed"><span class="product__status-circle product__status-circle--2"></span>Товар не прошел модерацию. Измените товар и сохраните снова.</p>
+                        <div v-if="!product.moderated && product.processed">
+                          <p class="product__status">
+                              <span class="product__status-circle product__status-circle--2"></span>
+                              Товар не прошел модерацию. Измените товар и сохраните снова.
+                          </p>
+                        </div>
                         <p class="product__status" v-if="!product.moderated && !product.processed"><span class="product__status-circle product__status-circle--1"></span>Товар проходит модерацию, вы пока не можете изменять этот товар.</p>
+                    </div>
+                    <div class="product__attribute" v-if="!product.moderated && product.processed">
+                        <h2>Комментарий</h2>
+                        <div class="failure-message" style="color: var(--red)">
+                            <p v-for="string in moderation_failure_message">{{ string }}</p>
+                        </div>
                     </div>
                   </div>
                   <div class="product__category">
@@ -331,6 +342,10 @@ const ProductEdit = {
     }
   },
   computed: {
+    moderation_failure_message(){
+      if (!this.product.moderation_failure_message) return '';
+      return this.product.moderation_failure_message.split(/\r\n|\n|\r/);
+    },
     filteredCategories(){
       if (this.categorySearch == '') return false;
       let categories = this.categoriesFlat;

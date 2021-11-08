@@ -32,9 +32,9 @@ class DadataController extends AbstractActionController
      */
     public function getDadataHintsAction()
     {
-        if (empty($userId = $this->identity())) {
-            return $this->getResponse()->setStatusCode(403);
-        }
+//        if (empty($userId = $this->identity())) {
+//            return $this->getResponse()->setStatusCode(403);
+//        }
         $json = file_get_contents('php://input');
          try {
             $post = Json::decode($json);

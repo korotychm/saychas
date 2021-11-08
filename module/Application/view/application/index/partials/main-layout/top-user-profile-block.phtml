@@ -2,7 +2,7 @@
 use Application\Resource\Resource;
 ?>
 
-<div class="header__profile" style="pointer-events: none; opacity: .5; filter: grayscale(1);">
+<div class="header__profile">
     <a>
        <div class="header__icon">
           <svg
@@ -20,14 +20,14 @@ use Application\Resource\Resource;
     <?php if ($userLegal) : ?>
         <!-- profile links-->
        <div class="header__profile-popup header__profile-popup--links">
-            <a href="/user">
+            <a href="/user/orders">
                 <b><?= ($userinfo and is_array($userinfo)) ? $userinfo['name']: "" ?></b>
             </a>
             <a href="/user/orders"><?= Resource::USER_MENU_ORDERS ?></a>
             <a href="/user/favorites"><?= Resource::FAVORITES_TITLE ?></a>
             <a style="display: none;" href="#"><?= Resource::USER_MENU_POST ?></a>
             <a href="/clear-user-data">
-                <svg 
+                <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 width="16px" height="15px">

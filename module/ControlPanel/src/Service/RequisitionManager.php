@@ -92,6 +92,50 @@ class RequisitionManager extends ListManager implements LoadableInterface
         return $result;
     }
 
+    private function filter(array $cursor)
+    {
+        $haystack = ['01', '02', '03'];
+        $haystack2= ['04', '05'];
+        
+        $filter1 = array_filter($cursor, function($var) use ($haystack) {
+                if(in_array($var['status_id'], $haystack)) {
+                    return true;
+                }
+                return false;
+        });
+        $filter2 = array_filter($cursor, function($var) use ($haystack2) {
+                if(in_array($var['status_id'], $haystack2)) {
+                    return true;
+                }
+                return false;
+        });
+        
+        usort($filter1, function($a, $b) {
+                //if( $a['status_id'] == $b['status_id'] ) {
+                if( $a['date'] == $b['date'] ) {
+                        return 0;
+                }
+
+                //return ( (int) $a['status_id'] < (int) $b['status_id']) ? -1 : 1;
+                return ( (int) $a['date'] < (int) $b['date']) ? -1 : 1;
+        });
+
+        usort($filter2, function($a, $b) {
+                //if( $a['status_id'] == $b['status_id'] ) {
+                if( $a['date'] == $b['date'] ) {
+                        return 0;
+                }
+
+                //return ( (int) $a['status_id'] > (int) $b['status_id']) ? -1 : 1;
+                return ( (int) $a['date'] > (int) $b['date']) ? -1 : 1;
+        });
+
+        $filter = array_merge($filter1, $filter2);
+        
+        return $filter;
+        
+    }
+    
     /**
      * Find store documents for specified provider
      *
@@ -103,6 +147,8 @@ class RequisitionManager extends ListManager implements LoadableInterface
         $pageNo = $params['pageNo'];
         
         $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']]);
+        
+        $cursor['body'] = $this->filter($cursor['body']);
         
         $collection = $this->db->stores;
         

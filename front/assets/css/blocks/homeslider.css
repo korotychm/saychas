@@ -5,3 +5,7 @@
 .homeslider .slick-list {
   border-radius: 20px;
 }
+.homeslider img {
+  width: 100%;
+  height: auto;
+}
