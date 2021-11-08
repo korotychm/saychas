@@ -293,6 +293,37 @@ class UserDataController extends AbstractActionController
 
         return new JsonModel(["result" => true, "orderId" => $orderId]);
     }
+    
+    public function cancelClientOrderAction ()
+    {
+        if (empty($userId = $this->identity())){
+            $this->getResponse()->setStatusCode(403);
+            return new JsonModel(["result" => false, "error_description" => "error 403" ]);
+        }
+        
+        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)){
+            return new JsonModel(["result" => false, "error_description" => "empty order_id"]);
+        }
+        
+        if (empty($order = ClientOrder::find(["order_id" => $order_id]))){
+            return new JsonModel(["result" => false, "error_description" => "order $order_id not found"]);
+        }
+        
+        if ($order->getUserId() != $userId ){
+            $this->getResponse()->setStatusCode(403);
+            return new JsonModel(["result" => false, "error_description" => "error 403" ]);
+        }
+        
+        $orderCancel = $this->externalCommunicationService->cancelClientOrder($order_id);
+        if (!$orderCancel['result']) {
+            return new JsonModel($orderCancel);
+        }
+        
+        
+        
+        
+    }
+    
 
     /**
      * Compare feedback code with the generated one

@@ -294,21 +294,19 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
-
-
+        $return['order_id'] = $post->orderId;
         //$return['order_id'] = "000000006";
-        $order = ClientOrder::find(['user_id' => $return['userId'], 'order_id' => $return['order_id']]);
-
-        if (empty($order)) {
-            
-            return new JsonModel($return);
-        }
-
-        $return["order_info"] = $this->htmlProvider->orderList([$order]);
+        $order = ClientOrder::findAll(["where" => ['user_id' => $return['userId'], 'order_id' => $return['order_id']]]);
+//        if (empty($order)) {
+//            
+//            return new JsonModel($return);
+//        }
+        $return["order_info"] = $this->htmlProvider->orderList($order);
         $productMap = $this->getBasketProductMap($userId, $return['order_id']);
 
         if ($productMap['result'] == false) {
-            return new JsonModel($productMap);
+            //return new JsonModel($productMap);
+            $productMap['products'] = [];
         }
 
         $return["productsMap"] = $productMap['products'];
