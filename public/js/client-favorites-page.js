@@ -40,6 +40,19 @@ $(document).ready(function(){
         }
       },
       methods: {
+        countPages() {
+          let pages = this.productsCount / this.productsLimit;
+          this.productsPages = Math.ceil(pages);
+        },
+        setUnit() {
+          if (this.productsCount.toString().slice(-1) == '1' && this.productsCount.toString().slice(-2) != '11'){
+            this.productsCountUnit = 'товар';
+          } else if (+this.productsCount.toString().slice(-1) > 1 && +this.productsCount.toString().slice(-1) < 5 && +this.productsCount.toString().slice(-2) != '12' && this.productsCount.toString().slice(-2) != '13' && this.productsCount.toString().slice(-2) != '14') {
+            this.productsCountUnit = 'товара';
+          } else {
+            this.productsCountUnit = 'товаров';
+          }
+        },
         getProducts(){
           axios
             .post('/ajax-get-client-favorites',
@@ -80,3 +93,37 @@ $(document).ready(function(){
   }
 
 });
+
+if ($('#user-viewed-products').length){
+
+  var categoryPage = new Vue({
+    el: '#user-viewed-products',
+    data: {
+      products: [],
+      length: 0
+    },
+    created() {
+        axios
+          .post('/ajax-get-client-history')
+          .then(response => {
+            if (response.data.products){
+              this.products = response.data.products;
+              this.length = Object.keys(this.products).length;
+            }
+            console.log('Истор',this.length,this.products);
+          });
+    },
+    updated() {
+      setTimeout(() => {
+        $('#viewed-products .products-carousel').slick(
+          {
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 3
+          }
+        );
+      }, 200);
+    }
+  });
+
+}
