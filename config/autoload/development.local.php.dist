@@ -88,7 +88,7 @@ return [
              /** sendReview  link*/
             'set_review' => 'http://SRV02:8000/SayChasDev/hs/site/set_review',
             'get_reviewer' => 'http://SRV02:8000/SayChasDev/hs/site/get_reviewer',
-           
+            'cancel_order' => 'http://SRV02:8000/SayChasDev/hs/site/cancel_order',
             
         ],
         
