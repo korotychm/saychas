@@ -44,6 +44,7 @@ use Application\Model\Entity\ProductHistory;
 use Application\Model\Entity\ProductCharacteristic;
 use Application\Model\Entity\StockBalance;
 use Application\Model\Entity\Brand;
+use Application\Model\Entity\Provider;
 //use Application\Model\Entity\Provider;
 use Application\Model\Repository\UserRepository;
 //use Application\Adapter\Auth\UserAuthAdapter;
@@ -130,6 +131,7 @@ class AjaxController extends AbstractActionController
         $this->entityManager->initRepository(Brand::class);
         $this->entityManager->initRepository(ProductRating::class);
         $this->entityManager->initRepository(ProductUserRating::class);
+        $this->entityManager->initRepository(Provider::class);
         //$this->repoRating = $this->entityManager->getRepository(ProductUserRating::class);
     }
 
@@ -271,18 +273,34 @@ class AjaxController extends AbstractActionController
 
         $columns = ['product_id'];
         $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
-
+        $providers = [];
         foreach ($userBasketHistory as $basketItem) {
             $product_id = $basketItem->getProductId();
             try {
                 $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
                 $products[$product_id] = ["image" => $product->receiveProductImages()->current()->getHttpUrl(), "title" => $product->getTitle()];
+                $providers[] = $product->getProviderId();
             } catch (\Throwable $ex) {
                 return ["result" => false, 'error' => $ex->getMessage()];
             }
         }
-        return empty($products) ? ["result" => false, "error" => "order $orderId have not basket products " . Json::encode(['where' => $where, 'columns' => $columns])] : ["result" => true, "products" => $products];
+       
+        return empty($products) ? ["result" => false, "error" => "order $orderId have not basket products " . Json::encode(['where' => $where, 'columns' => $columns])] : ["result" => true, "products" => $products, "providers"=>$providers];
     }
+    
+    private function getProvidersMap($providersIdArray)
+    {
+        $providerMap = [];
+        if (!empty($providersIdArray)) {
+            $providers = Provider::findAll(["where" =>["id" => $providersIdArray]]);
+                foreach ($providers as $provider){
+                    $providerMap[$provider->getId()] =  $provider->getImage();
+                }
+        }
+        
+        return $providerMap;
+    }
+    
 
     /**
      * @route /ajax-get-order-page
@@ -307,8 +325,11 @@ class AjaxController extends AbstractActionController
         if ($productMap['result'] == false) {
             //return new JsonModel($productMap);
             $productMap['products'] = [];
+           // $productMap['providers'] = [];
         }
-
+        
+        $providersIdArray = $productMap['providers'] ?? [];
+        $return["providersMap"] = $this->getProvidersMap($providersIdArray);
         $return["productsMap"] = $productMap['products'];
         $return["result"] = true;
 
@@ -490,28 +511,6 @@ class AjaxController extends AbstractActionController
 
         return new JsonModel(['result' => true, "description" => "product $productId removed from favorites", 'lable' => Resource::ADD_TO_FAVORITES]);
     }
-
-//    public function getClientFavoritesAction() {
-//        if (!$userId = $this->identity()) {
-//            $this->getResponse()->setStatusCode(403);
-//            return;
-//        }
-//        $favProducts = ProductFavorites::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"]);
-//        $productsId = ArrayHelper::extractId($favProducts);
-//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-//        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
-//    }
-//
-//    public function getClientHistoryAction() {
-//        if (!$userId = $this->identity()) {
-//            $this->getResponse()->setStatusCode(403);
-//            return; //$this->redirect()->toRoute('home');
-//        }
-//        $favProducts = ProductHistory::findAll(["where" => ['user_id' => $userId], "order" => "timestamp desc"])->toArray();
-//        $productsId = ArrayHelper::extractId($favProducts);
-//        $product = $this->handBookRelatedProductRepository->findAll(["where" => ["id" => $productsId]]);
-//        return new JsonModel(["products" => $this->commonHelperFuncions->getProductCardArray($product, $userId)]);
-//    }
 
     /*
      *  промежуточный скрипт для http://api4.searchbooster.io
