@@ -34,7 +34,7 @@ $(document).ready(function () {
           totalPrice(){
             let price = 0,
                 oldprice = 0;
-            for (delivery of this.order.deliveryInfo){
+            for (delivery of this.order.deliveryInfo.deliveries){
               for (requisition of delivery.requisitions){
                 for (product of requisition.products) {
                   console.log('price', product.price);
