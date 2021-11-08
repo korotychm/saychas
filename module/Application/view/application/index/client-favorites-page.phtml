@@ -4,19 +4,32 @@ $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/client-favorites-page.js'));
 ?>
 <div class="page-heading">
-    <h1 class="h1"><?= Resource::FAVORITES_TITLE. " ". $this->userInfo['name']?></h1>
-
-
-
+    <h1 class="h1"><?= Resource::FAVORITES_TITLE ?></h1>
 </div>
 <div class="profile-page">
 
 
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
-    <div>
-        <pre id="client-favorites"></pre>
-    </div>
-   <div>
-       <h1><?=  Resource::HISTORY_TITLE ?></h1>
-       <pre id="client-history" ></pre>
-   </div>
+  <div>
+      <div id="user-favorites">
+        <div class="page-heading">
+            <h1 class="h1"><?= $this->title ?> <span v-if="productsCount">{{ productsCount }} {{ productsCountUnit }}</span></h1>
+            <?= $this->partial("/application/common/catalog-sort", ['data' => $this->data])?>
+        </div>
+        <div class="catalog__wrap" style="display: block;">
+          <div class="catalog__content">
+            <section class="section">
+              <div class="products-grid products-grid--3">
+                <?= $this->partial("/application/common/product") ?>
+              </div>
+              <div class="pagination" v-if="productsCount > productsLimit">
+                <a v-for="(n,index) in productsPages" @click="loadPage(index)" :class="{'active' : index == currentPage}">{{ index + 1 }}</a>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <pre id="client-favorites"></pre>
+      <h1><?=  Resource::HISTORY_TITLE ?></h1>
+      <pre id="client-history" ></pre>
+  </div>

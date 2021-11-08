@@ -7,7 +7,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
     <h1 class="h1">История заказов</h1>
 </div>
 <div class="profile-page">
-  <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth, "active" => "/user/orders"]) ?>
+  <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div id="client-orders">
     <div v-if="preparedOrders.length" class="orders-history">
         <div v-for="order in preparedOrders" class="orders-history__item">
