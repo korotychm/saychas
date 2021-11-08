@@ -65,7 +65,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                         </svg>
                         <div>
                             <h2><a :href="'/user/order/' + order.orderId "><?= Resource::THE_ORDER_NUM ?> {{ order.orderId }}</a></h2>
-                            <p>Создан {{ order.dateLocaled }}</p>
+                            <p>Создан {{ order.dateLocaled }} в {{ order.timeLocaled }}</p>
                         </div>
                     </div>
                 </div>
