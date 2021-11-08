@@ -28,7 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 <div class="profile-order__requisition-items">
                     <template v-for='requisition in delivery.requisitions'>
                       <div class="product-tr" v-for="product in requisition.products">
-                          <div class="product-tr__img product-small-image"><img :src="'/images/products/' + product[product.id].image " /></div>
+                          <div class="product-tr__img product-small-image"><img :src="'/images/product/' + products[product.id].image " /></div>
                           <div class="product-tr__title">{{ products[product.id].title }}</div>
                           <div class="product-tr__quantity">{{ product.count }} шт<span v-if="product.countActual" class="product-tr__quantity-new">{{ product.countActual }} шт</span></div>
                           <div class="product-tr__price">
