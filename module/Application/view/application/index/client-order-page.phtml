@@ -97,7 +97,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                         </div>
                     </div>
                     <div class="panel__tr">
-                        <div v-if="order.basketInfo.ordermerge"> <b>Доставка за три часа</b></div>
+                        <div v-if="+order.basketInfo.ordermerge"> <b>Доставка за три часа</b></div>
                         <div v-else> <b>Доставка за час</b></div>
                         <div>{{ (order.basketInfo.delivery_price / 100).toLocaleString() }} ₽</div>
                     </div>
