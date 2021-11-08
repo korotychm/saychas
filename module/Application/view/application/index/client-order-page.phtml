@@ -32,7 +32,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                           <div class="product-tr__title">{{ products[product.id].title }}</div>
                           <div class="product-tr__quantity">{{ product.count }} шт<span v-if="product.countActual" class="product-tr__quantity-new">{{ product.countActual }} шт</span></div>
                           <div class="product-tr__price">
-                              <div class="product-tr__price-actual">{{ ((product.price - product.price * product.discount) / 100).toLocaleString() }} ₽</div>
+                              <div class="product-tr__price-actual">{{ ((product.price - product.price * product.discount / 100) / 100).toLocaleString() }} ₽</div>
                               <div class="product-tr__price-old" v-if="+product.discount">{{ (product.price / 100).toLocaleString() }} ₽</div>
                           </div>
                           <div class="product-tr__wishlist">

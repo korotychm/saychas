@@ -37,8 +37,9 @@ $(document).ready(function () {
             for (delivery of this.order.deliveryInfo.deliveries){
               for (requisition of delivery.requisitions){
                 for (product of requisition.products) {
-                  price += (product.price - product.price * product.discount);
-                  oldprice += price;
+                  price += (product.price - product.price * product.discount / 100);
+                  oldprice += product.price;
+                  console.log(price/100,oldprice/100);
                 }
               }
             }
