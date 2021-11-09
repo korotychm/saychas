@@ -55,7 +55,8 @@ $(".deleteuseraddress").click(function () {
     });
 });
 
-$(".setuseraddress").click(function () {
+$(".setuseraddress").click(function (e) {
+    e.stopPropagation();
     var rel = $(this).attr("rel");
     $.ajax({
         beforeSend: function () {},

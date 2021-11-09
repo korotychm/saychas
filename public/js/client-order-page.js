@@ -69,9 +69,17 @@ $(document).ready(function () {
             let deliveryTime = 1; // если обычная доставка за час
             if (merged) deliveryTime = 3; // если объединенная доставка за три часа
 
-            if (timepoint == 0){
-              // считаем от даты заказа
-              //считаем и выдаем текст в виде Дата в время
+            if (timepoint == 0) {
+              let hours = new Date(created).getHours();
+              let minutes = new Date(created).getMinutes();
+                if (minutes === 0) {
+                  console.log(hours, ":", minutes)
+                  console.log('заказ приедет с', hours, 'до', hours + 1)
+                }
+                if (minutes > 0) {
+                  console.log(hours, ":", minutes)
+                  console.log('заказ приедет с', hours + 1, 'до', hours + 2)
+                }
             } else {
               //timepoint в виде '00', '01', '02'... Это часы начала доставки в сегодняшнюю дату
               //считаем и выдаем текст в виде Дата в время
@@ -89,12 +97,6 @@ $(document).ready(function () {
             }
             if (isPickup) return 'самовывозов';
               return 'доставок';
-          },
-          isToday(someDate) {
-              const today = new Date();
-              return someDate.getDate() == today.getDate() &&
-                someDate.getMonth() == today.getMonth() &&
-                someDate.getFullYear() == today.getFullYear()
           },
           getLocaledTime(time){
             let localedDate = '';
