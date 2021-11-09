@@ -659,25 +659,30 @@ class AjaxController extends AbstractActionController
             $this->getResponse()->setStatusCode(403);
             return;
         }
+        
         $user = $this->userRepository->find(['id' => $userId]);
         $basketUser['phone'] = $user->getPhone();
         $basketUser['name'] = $user->getName();
         $userData = $user->getUserData();
+        
         if ($userData->count() > 0) {
             $basketUser['address'] = $userData->current()->getAddress();
         }
+        
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
         $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
         $cardInfo = '';
+        
         if ($post->cardinfo) {
             $userPaycards = UserPaycard::findAll(["where" => ["user_id" => $userId, "card_id" => $post->cardinfo]]);
             $cardUpdate = $userPaycards->current();
             $cardInfo = $cardUpdate->getPan();
             $cardUpdate->setTime(time())->persist(["user_id" => $userId, "card_id" => $post->cardinfo]);
         }
+        
         $row['basketUser'] = $basketUser;
         $row['ordermerge'] = $post->ordermerge;
         $row['priceDelevery'] = $param['hourPrice'];
@@ -690,30 +695,7 @@ class AjaxController extends AbstractActionController
         $row['timeDelevery'] = $timeDelevery;
         $view = new ViewModel($row);
 
-//        $view = new ViewModel([
-//            "payEnable" => $row["payEnable"],
-//            "textDelevery" => $row["textDelevery"],
-//            'priceDelevery' => $param['hourPrice'],
-//            'ordermerge' => $post->ordermerge,
-//            'priceDeleveryMerge' => $param['mergePrice'],
-//            'priceDeleveryMergeFirst' => $param['mergePriceFirst'],
-//            'countDelevery' => $row["countDelevery"],
-//            'countDeleveryText' => $row["countDeleveryText"],
-//            'priceDelevery' => $row['priceDelevery'],
-//            'addressDelevery' => StringHelper::cutAddressCity($basketUser['address']),
-//            'priceSelfdelevery' => 0,
-//            'basketpricetotalall' => $row['basketpricetotalall'],
-//            'post' => $row['post'],
-//            'productcount' => $row['productcount'],
-//            'producttotal' => $row['producttotal'],
-//            'countSelfdelevery' => $row['countSelfdelevery'],
-//            'storeAdress' => $row["storeAdress"],
-//            "cardinfo" => $cardInfo,
-//            'paycard' => $post->paycard,
-//            'timeDelevery' => $timeDelevery,
-//        ]);
-        $view->setTemplate('application/common/basket-payinfo');
-        return $view->setTerminal(true);
+        return $view->setTemplate('application/common/basket-payinfo')->setTerminal(true);
     }
 
     /**

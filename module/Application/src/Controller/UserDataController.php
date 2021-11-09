@@ -154,11 +154,11 @@ class UserDataController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         unset($container->userIdentity);
         setcookie(Resource::USER_COOKIE_NAME, "", time() - Resource::USER_COOKIE_TIME_LIVE, "/");
-        
+
         if ($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
         }
-        
+
         $this->getResponse()->setStatusCode(301);
         return $this->redirect()->toRoute('home');
     }
@@ -225,7 +225,7 @@ class UserDataController extends AbstractActionController
     {
         $code = $this->generateRegistrationCode($phone);
         $answer = $this->externalCommunicationService->sendRegistrationSms($phone, $code);
-       
+
         return $answer;
     }
 
@@ -255,22 +255,22 @@ class UserDataController extends AbstractActionController
      *
      * @return Json
      */
-    public function getOrderBillAction()
-    {
-        //$post[] = $this->getRequest()->getPost()->toArray();
-        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);
-        $orderId = $post["OrderId"];
-        //$order = ClientOrder::find(['order_id' => $orderId]);
-//        $userId = $order->getUserId();
-//        $user = User::find(["id" => $userId]);
-        $post["User"] = $userInfo = $this->commonHelperFuncions->getUserInfo();
-        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_200);
-        $answer = ['result' => true, 'description' => 'ok'];
-
-        return new JsonModel($answer);
-    }
+//    public function getOrderBillAction()
+//    {
+//        //$post[] = $this->getRequest()->getPost()->toArray();
+//        $post["1C"] = Json::decode(file_get_contents('php://input'), Json::TYPE_ARRAY);
+//        $orderId = $post["OrderId"];
+//        //$order = ClientOrder::find(['order_id' => $orderId]);
+////        $userId = $order->getUserId();
+////        $user = User::find(["id" => $userId]);
+//        $post["User"] = $userInfo = $this->commonHelperFuncions->getUserInfo();
+//        mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
+//        $response = $this->getResponse();
+//        $response->setStatusCode(Response::STATUS_CODE_200);
+//        $answer = ['result' => true, 'description' => 'ok'];
+//
+//        return new JsonModel($answer);
+//    }
 
     /**
      * Send Basket Data Action
@@ -284,21 +284,21 @@ class UserDataController extends AbstractActionController
         $userId = $this->identity();
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $orderset = $this->externalCommunicationService->sendBasketData($content, $param);
-        
+
         if (!$orderset['response']['result']) {
             return new JsonModel(["result" => false, "description" => $orderset['response']['errorDescription']]);
         }
-        
+
         $orderId = $orderset['response']['order_id'];
         $order = ClientOrder::findFirstOrDefault(['order_id' => $orderId]);
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
-        
+
         if (!$orderCreate['result']) {
             return new JsonModel(["result" => false, "description" => $orderCreate['description']]);
         }
-        
+
         $basketSet = $this->basketRepository->findAll(['where' => ['product_id' => $orderCreate['products'], 'user_id' => $userId, 'order_id' => 0]]);
-        
+
         foreach ($basketSet as $basket) {
             $basket->setOrderId($orderId);
             $basket->persist(['product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0]);
@@ -309,7 +309,7 @@ class UserDataController extends AbstractActionController
 
     /**
      * Cancel Client Order
-     * 
+     *
      * @return JsonModel
      */
     public function cancelClientOrderAction()
@@ -319,7 +319,7 @@ class UserDataController extends AbstractActionController
             return new JsonModel(["result" => false, "error_description" => "error 403"]);
         }
         //$order_id = "000000006";
-        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)){
+        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)) {
             return new JsonModel(["result" => false, "error_description" => "empty order_id"]);
         }
 
@@ -337,45 +337,42 @@ class UserDataController extends AbstractActionController
         if (!$orderCancel['result']) {
             return new JsonModel($orderCancel);
         }
-        
+
         $this->returnProductsToBasket($order_id, $userId);
-        
+
         return new JsonModel($orderCancel);
-        
     }
-    
+
     /**
-     * 
+     *
      * @param string $order_id
      * @param int $userId
      * @return array
      */
     private function returnProductsToBasket($order_id, $userId)
     {
-       $orderProducts = $this->basketRepository->findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
-       $returnProduct = ArrayHelper::extractId($orderProducts);
+        $orderProducts = $this->basketRepository->findAll(["where" => ["order_id" => $order_id], "columns" => ["product_id"], "group" => ["product_id"]])->toArray();
+        $returnProduct = ArrayHelper::extractId($orderProducts);
 
-       foreach ($returnProduct as $productId){
-            
-            if (empty($productadd = HandbookRelatedProduct::findAll(['id' => $productId])->current())){
+        foreach ($returnProduct as $productId) {
+
+            if (empty($productadd = HandbookRelatedProduct::findAll(['id' => $productId])->current())) {
                 continue;
             }
-            
-            if (empty($productaddPrice = $productadd->getPrice())){
+
+            if (empty($productaddPrice = $productadd->getPrice())) {
                 continue;
             }
-           
+
             $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-            $basketItemTotal = (int) $basketItem->getTotal(); 
+            $basketItemTotal = (int) $basketItem->getTotal();
             $basketItem->setUserId($userId)->setProductId($productId)->setPrice($productaddPrice)->setTotal($basketItemTotal + 1);
             $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
             $returnedProduct[] = $productId;
-       }   
-        
-       return $returnedProduct ?? [];
+        }
+
+        return $returnedProduct ?? [];
     }
-    
-    
 
     /**
      * Compare feedback code with the generated one
@@ -466,6 +463,10 @@ class UserDataController extends AbstractActionController
         return new JsonModel($answer);
     }
 
+    /**
+     *
+     * @return ViewModel
+     */
     public function userAuthModalAction()
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -481,7 +482,6 @@ class UserDataController extends AbstractActionController
 
         if (!empty($goStepOne = $post->goStepOne)) {
             unset($container->userAutSession);
-            // unset($container->userPhoneIdentity);
             return $this->userModalView($return);
         }
 
@@ -492,6 +492,7 @@ class UserDataController extends AbstractActionController
             $return['error']['phone'] = Resource::ERROR_INPUT_PHONE_MESSAGE;
             return $this->userModalView($return);
         }
+
         $user = $this->userRepository->findFirstOrDefault(["phone" => $return['sendingPhone']]);
         $userId = $user->getUserId();
         $return['title'] = (!empty($userId)) ? $title = Resource::USER_LABLE_HELLO . $user->getName() : Resource::MESSAGE_REGISTER_TITLE;
@@ -512,12 +513,16 @@ class UserDataController extends AbstractActionController
                 $userAutSession['phoneValid'] = true;
                 $container->userAutSession = $userAutSession;
             }
-            //return $this->userModalView($return);
         }
 
         return !empty($userId) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
     }
 
+    /**
+     *
+     * @param object $user
+     * @return JsonModel
+     */
     private function userModalAuthorisation($user)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -525,9 +530,17 @@ class UserDataController extends AbstractActionController
         $this->userModalUpdateGeo($user);
         setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($user->getPhone()), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
         unset($container->userAutSession, $container->userPhoneIdentity);
+
         return new JsonModel(["reload" => true]);
     }
 
+    /**
+     *
+     * @param array $return
+     * @param object $user
+     * @param object $post
+     * @return mixed
+     */
     private function userModalRegistration($return, $user, $post)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
@@ -540,11 +553,8 @@ class UserDataController extends AbstractActionController
             return $this->userModalView($return);
         }
 
-//        $userAutSession['username'] = null == $post->userName ? '' : $post->userName;
-//        $userAutSession['usermail'] = null == $post->userName ? '' : $post->userMail;
         $userAutSession['username'] = $post->userName ?? '';
         $userAutSession['usermail'] = $post->userMail ?? '';
-
         $container->userAutSession = $userAutSession;
 
         if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3) {
@@ -559,8 +569,8 @@ class UserDataController extends AbstractActionController
 
         $params = ['name' => $userAutSession['username'], 'phone' => $return['sendingPhone'], 'email' => $userAutSession['usermail'],];
         $response = $this->externalCommunicationService->setClientInfo($params);
-        //$answer = !empty($response) ? $response : ["result" => false, "errorDescription" => "no connection"];
         $answer = $response ?? ["result" => false, "errorDescription" => "no connection"];
+
         if (!$answer["result"]) {
             $return["error"]["1c"] = $answer['errorDescription'];
             return $this->userModalView($return);
@@ -572,8 +582,8 @@ class UserDataController extends AbstractActionController
         $newUser->persist(['id' => $userId]);
         $this->userModalUpdateGeo($user);
         setcookie(Resource::USER_COOKIE_NAME, CryptHelper::encrypt($return['sendingPhone']), time() + Resource::USER_COOKIE_TIME_LIVE, "/");
-
         unset($container->userAutSession, $container->userPhoneIdentity);
+
         return new JsonModel(["reload" => true]);
     }
 
@@ -585,6 +595,7 @@ class UserDataController extends AbstractActionController
     {
         $userdata = $user->getUserData();
         $userGeodata = ($userdata->count() > 0 ) ? $userdata->current()->getGeodata() : null;
+
         if (!empty($userGeodata)) {
             $this->commonHelperFuncions->updateLegalStores($userGeodata);
         }
@@ -600,14 +611,15 @@ class UserDataController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
         $codeSendAnswer = $this->sendSms($return['sendingPhone']);
-        //$container->userPhoneIdentity['code'];
+
         if (!$codeSendAnswer['result']) {
             $return ['error']['sms'] = (!$codeSendAnswer['result']) ? (Resource::ERROR_SEND_SMS_MESSAGE . ":<br> " . $codeSendAnswer['errorDescription'] ) : "";
             return $this->userModalView($return);
         }
+
         $userAutSession['smscode'] = $container->userPhoneIdentity['code'];
         $container->userAutSession = $userAutSession;
-        //exit(print_r($container->userAutSession ));
+
         return $this->userModalView($return);
     }
 
@@ -621,8 +633,8 @@ class UserDataController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         $return["user"] = $container->userAutSession ?? [];
         $view = new ViewModel($return);
-        $view->setTemplate('application/common/auth-form-in-modal');
-        return $view->setTerminal(true);
+
+        return $view->setTemplate('application/common/auth-form-in-modal')->setTerminal(true);
     }
 
 }
