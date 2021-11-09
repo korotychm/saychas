@@ -244,26 +244,18 @@ class ProductController extends AbstractActionController
     
     public function uploadProductFileAction()
     {
-        $post = $this->getRequest()->getPost()->toArray();
-        $productId = $post['product_id'];
-        $providerId = $post['provider_id'];
+//        $post = $this->getRequest()->getPost()->toArray();
+//        $productId = $post['product_id'];
+//        $providerId = $post['provider_id'];
 
         $identity = $this->authService->getIdentity();
 
         $uploadsDir = $documentPath = $this->documentPath('product', ['provider_id' => $identity['provider_id'] ]);
 
-//        $baseUrl = $this->config['parameters']['document_path']['base_url'];
-//        $uploads = $this->config['parameters']['document_path']['subpath']['cpanel_product'];
-//        $uploadsDir = 'public' . $baseUrl . '/' . $uploads;
         $error = $_FILES['file']['error'];
         if (UPLOAD_ERR_OK == $error) {
-            //$fileName = basename($_FILES['file']['name']);
-            $uuid = uniqid("{$providerId}_{$productId}_", true);
-            list($type, $ext) = explode('/', $_FILES['file']['type']);
-            //$newFileName = "{$providerId}_{$productId}_$uuid.$ext";
-            $newFileName = "$uuid.$ext";
+            $newFileName = $_FILES['file']['name'];
             $tmpName = $_FILES['file']['tmp_name'];
-            //move_uploaded_file($tmpName, "$uploadsDir/$fileName");
             $result = move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
         }
 
