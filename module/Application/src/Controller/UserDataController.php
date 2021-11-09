@@ -21,11 +21,12 @@ use Application\Model\Entity\ClientOrder;
 use Application\Model\Entity\User;
 use Application\Model\Entity\Basket;
 use ControlPanel\Service\EntityManager;
+use Application\Model\Entity\HandbookRelatedProduct;
 //use Application\Model\RepositoryInterface\SettingRepositoryInterface;
 use Application\Model\Entity\Setting;
 use Laminas\View\Model\JsonModel;
 use Laminas\Http\Response;
-//use Application\Helper\ArrayHelper;
+use Application\Helper\ArrayHelper;
 use Application\Helper\CryptHelper;
 use Application\Helper\StringHelper;
 use Laminas\View\Model\ViewModel;
@@ -89,7 +90,6 @@ class UserDataController extends AbstractActionController
      * @var CommonHelperFunctions
      */
     private $commonHelperFuncions;
-    
     private $basketRepository;
 
 //    private SessionManager $sessionManager;
@@ -126,6 +126,7 @@ class UserDataController extends AbstractActionController
         $this->entityManager->initRepository(ClientOrder::class);
         $this->entityManager->initRepository(Setting::class);
         $this->entityManager->initRepository(User::class);
+        $this->entityManager->initRepository(HandbookRelatedProduct::class);
         $this->basketRepository = $this->entityManager->getRepository(Basket::class);
     }
 
@@ -153,9 +154,11 @@ class UserDataController extends AbstractActionController
         $container = new Container(Resource::SESSION_NAMESPACE);
         unset($container->userIdentity);
         setcookie(Resource::USER_COOKIE_NAME, "", time() - Resource::USER_COOKIE_TIME_LIVE, "/");
+        
         if ($this->authService->hasIdentity()) {
             $this->authService->clearIdentity();
         }
+        
         $this->getResponse()->setStatusCode(301);
         return $this->redirect()->toRoute('home');
     }
@@ -176,16 +179,16 @@ class UserDataController extends AbstractActionController
 
     private function testPassw($pass)
     {
-        if (!$pass or!trim($pass)){
+        if (!$pass or!trim($pass)) {
             return false;
         }
-      
-        if (strlen($pass) < 6){
+
+        if (strlen($pass) < 6) {
             return false;
         }
 
         $validator = new \Laminas\Validator\Regex(['pattern' => '/^[a-zA-Z0-9]*$/']);
-      
+
         return $validator->isValid($pass);
     }
 
@@ -222,6 +225,7 @@ class UserDataController extends AbstractActionController
     {
         $code = $this->generateRegistrationCode($phone);
         $answer = $this->externalCommunicationService->sendRegistrationSms($phone, $code);
+       
         return $answer;
     }
 
@@ -280,16 +284,21 @@ class UserDataController extends AbstractActionController
         $userId = $this->identity();
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $orderset = $this->externalCommunicationService->sendBasketData($content, $param);
+        
         if (!$orderset['response']['result']) {
             return new JsonModel(["result" => false, "description" => $orderset['response']['errorDescription']]);
         }
+        
         $orderId = $orderset['response']['order_id'];
         $order = ClientOrder::findFirstOrDefault(['order_id' => $orderId]);
         $orderCreate = $this->externalCommunicationService->createClientOrder($orderset, $order, $userId);
+        
         if (!$orderCreate['result']) {
             return new JsonModel(["result" => false, "description" => $orderCreate['description']]);
         }
+        
         $basketSet = $this->basketRepository->findAll(['where' => ['product_id' => $orderCreate['products'], 'user_id' => $userId, 'order_id' => 0]]);
+        
         foreach ($basketSet as $basket) {
             $basket->setOrderId($orderId);
             $basket->persist(['product_id' => $basket->getProductId(), 'user_id' => $basket->getUserId(), 'order_id' => 0]);
@@ -297,40 +306,75 @@ class UserDataController extends AbstractActionController
 
         return new JsonModel(["result" => true, "orderId" => $orderId]);
     }
-    
-    public function cancelClientOrderAction ()
+
+    /**
+     * Cancel Client Order
+     * 
+     * @return JsonModel
+     */
+    public function cancelClientOrderAction()
     {
-        if (empty($userId = $this->identity())){
+        if (empty($userId = $this->identity())) {
             $this->getResponse()->setStatusCode(403);
-            return new JsonModel(["result" => false, "error_description" => "error 403" ]);
+            return new JsonModel(["result" => false, "error_description" => "error 403"]);
         }
-        
-//        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)){
-//            return new JsonModel(["result" => false, "error_description" => "empty order_id"]);
-//        }
-        $order_id = "000000006";
-        
-        if (empty($order = ClientOrder::find(["order_id" => $order_id]))){
+        //$order_id = "000000006";
+        if (empty($order_id = $content = $this->getRequest()->getPost()->order_id)){
+            return new JsonModel(["result" => false, "error_description" => "empty order_id"]);
+        }
+
+        if (empty($order = ClientOrder::find(["order_id" => $order_id]))) {
             return new JsonModel(["result" => false, "error_description" => "order $order_id not found"]);
         }
-        
-        // $update = \Application\Model\Repository\BasketRepository::update(["set" => ["order_id" => 0],  "where" => ["order_id" => $order_id]]);
-        //$update = $this->basketRepository->update(["set" => ["order_id" => 0],  "where" => ["order_id" => $order_id]]);
-        //return new JsonModel([$update]);
-        
-        if ($order->getUserId() != $userId ){
+
+        if ($order->getUserId() != $userId) {
             $this->getResponse()->setStatusCode(403);
-            return new JsonModel(["result" => false, "error_description" => "error 403" ]);
+            return new JsonModel(["result" => false, "error_description" => "error 403"]);
         }
-        
+
         $orderCancel = $this->externalCommunicationService->cancelClientOrder($order_id);
+
         if (!$orderCancel['result']) {
             return new JsonModel($orderCancel);
         }
         
+        $this->returnProductsToBasket($order_id, $userId);
         
+        return new JsonModel($orderCancel);
         
     }
+    
+    /**
+     * 
+     * @param string $order_id
+     * @param int $userId
+     * @return array
+     */
+    private function returnProductsToBasket($order_id, $userId)
+    {
+       $orderProducts = $this->basketRepository->findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
+       $returnProduct = ArrayHelper::extractId($orderProducts);
+
+       foreach ($returnProduct as $productId){
+            
+            if (empty($productadd = HandbookRelatedProduct::findAll(['id' => $productId])->current())){
+                continue;
+            }
+            
+            if (empty($productaddPrice = $productadd->getPrice())){
+                continue;
+            }
+           
+            $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+            $basketItemTotal = (int) $basketItem->getTotal(); 
+            $basketItem->setUserId($userId)->setProductId($productId)->setPrice($productaddPrice)->setTotal($basketItemTotal + 1);
+            $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+            $returnedProduct[] = $productId;
+       }   
+        
+       return $returnedProduct ?? [];
+    }
+    
     
 
     /**
@@ -422,9 +466,9 @@ class UserDataController extends AbstractActionController
         return new JsonModel($answer);
     }
 
-     public function userAuthModalAction()
+    public function userAuthModalAction()
     {
-        $container = new Container (Resource::SESSION_NAMESPACE);
+        $container = new Container(Resource::SESSION_NAMESPACE);
         $userAutSession = (!empty($container->userAutSession)) ? $container->userAutSession : [];
         $return['title'] = $title = Resource::MESSAGE_ENTER_OR_REGISTER_TITLE;
         $return['buttonLable'] = $buttonLable = Resource::BUTTON_LABLE_CONTINUE;
@@ -444,13 +488,13 @@ class UserDataController extends AbstractActionController
         $return['sendingPhoneFormated'] = $return['phone'] = (!empty($post->userPhone)) ? $post->userPhone : $userAutSession['phone'];
         $return['sendingPhone'] = ($return['phone']) ? StringHelper::phoneToNum($return['phone']) : "";
 
-        if (!$userAutSession['phone']  and (empty($return['sendingPhone']) or strlen($return['sendingPhone']) < 11)) {
+        if (!$userAutSession['phone'] and (empty($return['sendingPhone']) or strlen($return['sendingPhone']) < 11)) {
             $return['error']['phone'] = Resource::ERROR_INPUT_PHONE_MESSAGE;
             return $this->userModalView($return);
         }
         $user = $this->userRepository->findFirstOrDefault(["phone" => $return['sendingPhone']]);
         $userId = $user->getUserId();
-        $return['title'] =  (!empty($userId)) ? $title = Resource::USER_LABLE_HELLO . $user->getName() : Resource::MESSAGE_REGISTER_TITLE;
+        $return['title'] = (!empty($userId)) ? $title = Resource::USER_LABLE_HELLO . $user->getName() : Resource::MESSAGE_REGISTER_TITLE;
         $userAutSession['phone'] = $return['sendingPhoneFormated'];
         $container->userAutSession = $userAutSession;
         $return['stepOne'] = $return['CodeBlock'] = true;
@@ -459,19 +503,18 @@ class UserDataController extends AbstractActionController
             return $this->userModalSendSms($return);
         }
 
-        if (empty($userAutSession['phoneValid'])){ 
-            
-            if($userAutSession['smscode'] != $post->userSmsCode) {
+        if (empty($userAutSession['phoneValid'])) {
+
+            if ($userAutSession['smscode'] != $post->userSmsCode) {
                 $return['error']['sms'] = !empty($post->userSmsCode) ? Resource::ERROR_SEND_SMS_CODE_MESSAGE : "";
                 return $this->userModalView($return);
-            } 
-            else  {
+            } else {
                 $userAutSession['phoneValid'] = true;
                 $container->userAutSession = $userAutSession;
             }
-           //return $this->userModalView($return);
-        }  
-        
+            //return $this->userModalView($return);
+        }
+
         return !empty($userId) ? $this->userModalAuthorisation($user) : $this->userModalRegistration($return, $user, $post);
     }
 
@@ -485,7 +528,7 @@ class UserDataController extends AbstractActionController
         return new JsonModel(["reload" => true]);
     }
 
-    private function userModalRegistration($return, $user,  $post)
+    private function userModalRegistration($return, $user, $post)
     {
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userAutSession = ($container->userAutSession) ? $container->userAutSession : [];
@@ -501,10 +544,10 @@ class UserDataController extends AbstractActionController
 //        $userAutSession['usermail'] = null == $post->userName ? '' : $post->userMail;
         $userAutSession['username'] = $post->userName ?? '';
         $userAutSession['usermail'] = $post->userMail ?? '';
-        
+
         $container->userAutSession = $userAutSession;
 
-        if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3 ) {
+        if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3) {
             $return['error']['username'] = Resource::ERROR_SEND_USERNAME_MESSAGE;
             return $this->userModalView($return);
         }
@@ -533,12 +576,12 @@ class UserDataController extends AbstractActionController
         unset($container->userAutSession, $container->userPhoneIdentity);
         return new JsonModel(["reload" => true]);
     }
-    
-   /**
-    * 
-    * @param object $user
-    */
-    private function userModalUpdateGeo ($user)
+
+    /**
+     *
+     * @param object $user
+     */
+    private function userModalUpdateGeo($user)
     {
         $userdata = $user->getUserData();
         $userGeodata = ($userdata->count() > 0 ) ? $userdata->current()->getGeodata() : null;
@@ -548,7 +591,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * 
+     *
      * @param array $return
      * @return ViewModel
      */
@@ -569,7 +612,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     * 
+     *
      * @param array $return
      * @return ViewModel
      */

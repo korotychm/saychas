@@ -621,6 +621,18 @@ return [
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
+            'receive-client-order-updates' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/receive-client-order-updates',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action' => 'receiveRepository',
+                    ],
+                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
+                    'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
             'receive-review' => [
                 'type' => Literal::class,
                 'options' => [
