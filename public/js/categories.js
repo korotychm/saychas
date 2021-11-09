@@ -33,10 +33,6 @@ $(document).ready(function(){
             this.productsCountUnit = 'товаров';
           }
         },
-        getTimePoint(created,timepoint,merged = false) {
-          let deliveryTime = 1;
-          if (merged) deliveryTime = 3;
-        },
         getProducts(){
           axios
             .post('/ajax-get-products-categories',

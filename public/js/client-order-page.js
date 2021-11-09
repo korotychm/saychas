@@ -64,6 +64,19 @@ $(document).ready(function () {
           },
         },
         methods: {
+          getTimePointText(created,timepoint,merged = false) {
+            //created - дата заказа
+            let deliveryTime = 1; // если обычная доставка за час
+            if (merged) deliveryTime = 3; // если объединенная доставка за три часа
+
+            if (timepoint == 0){
+              // считаем от даты заказа
+              //считаем и выдаем текст в виде Дата в время
+            } else {
+              //timepoint в виде '00', '01', '02'... Это часы начала доставки в сегодняшнюю дату
+              //считаем и выдаем текст в виде Дата в время
+            }
+          },
           deliveriesUnit(q,isPickup = false){
             q = q.toString();
             if (+q.slice(-1) == 1 && q.slice(-2) != 11){
