@@ -17,14 +17,17 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 <div class="profile-order__requisition-head">
                     <span v-if="delivery.pickup">Самовывоз из</span>
                     <span v-else>Доставка из</span>
-                    <div class="profile-order__requisition-logo"><img src="/img/ui/nophoto.jpg" /></div>
+                    <div class="profile-order__requisition-logo" v-if="delivery.requisition.length == 1"><img :src="'/images/stores/' + providers[delivery.requisitions[0].provider_id] " /></div>
                     <div class="orders-history__statuses">
-                        <div class="orders-history__status" v-if="delivery.delivery_status_id == 0"><span>Новый</span></div>
-                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 1"><span>Зарегистрирован</span></div>
+                        <div class="orders-history__status" v-if="delivery.delivery_status_id == 0">Новый</div>
+                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 1">Зарегистрирован</div>
+                        <div class="orders-history__status" v-else >{{ delivery.delivery_status }}</div>
+                        <!--
                         <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
                         <div class="orders-history__status orders-history__status--ready">Собран</div>
                         <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
                         <div class="orders-history__status orders-history__status--canceled">Отменен</div>
+                        -->
                     </div>
                 </div>
                 <div class="profile-order__requisition-items">

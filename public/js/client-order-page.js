@@ -27,7 +27,7 @@ $(document).ready(function () {
         el: '#profile-order',
         data: {
           order: [],
-          products: [],
+          providers: [],
           orderId: ''
         },
         computed: {
@@ -51,7 +51,7 @@ $(document).ready(function () {
                 oldprice = 0;
             for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               for (requisition of delivery.requisitions){
-                if (requisition.status_id != 5){ // Заявка не отмене
+                if (requisition.status_id != 5){ // Заявка не отменена
                   for (product of requisition.items) {
                     price += ((product.price - product.price * product.discount / 100) * product.qty_fact);
                     oldprice += (product.price * product.qty_fact);
@@ -136,7 +136,7 @@ $(document).ready(function () {
               .then(response => {
                 console.log(response);
                 this.order = response.data.order_info[0];
-                this.products = response.data.productsMap;
+                this.providers = response.data.providersMap;
                 console.log('заказ',this.order);
               });
           },
