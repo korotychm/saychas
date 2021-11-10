@@ -29,7 +29,7 @@ $(document).ready(function () {
           order: [],
           providers: [],
           orderId: '',
-          cancelling: false
+          cancellingOrder: false
         },
         computed: {
           totalDeliveries(){
@@ -129,12 +129,14 @@ $(document).ready(function () {
             return localedDate + localedTime;
           },
           cancelOrder(){
+            this.cancellingOrder = true;
             axios
               .post('/cancel-client-order',
                 Qs.stringify({
                   order_id : this.orderId
               }))
               .then(response => {
+                this.cancellingOrder = false;
                 if (response.data.result){
                   location.reload();
                 }

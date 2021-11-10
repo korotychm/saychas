@@ -122,7 +122,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 <div v-if="+order.orderStatus < 3">
                   <div class="order-btn-group">
                     <a class="btn btn--primary" :href="'/tinkoff/payment/'+order.orderId">Оплатить</a>
-                    <button class="btn btn--secondary" :class="{'disabled':(cancelling = true)}" @click="cancelOrder">Отменить</button>
+                    <button class="btn btn--secondary" :class="{'disabled' : cancellingOrder}" @click="cancelOrder">Отменить</button>
                   </div>
                   <div class="panel__notice">Вы можете отменить заказ, пока он ещё не собран. Если возникли проблемы с заказом — просто позвоните нам +7 (495) 445-04-55</div>
                 </div>
