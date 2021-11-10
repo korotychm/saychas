@@ -31,7 +31,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     <template v-for='requisition in delivery.requisitions'>
                       <div class="product-tr" v-for="product in requisition.items">
                           <div class="product-tr__img product-small-image"><img :src="'/images/product/' + product.image_id " /></div>
-                          <div class="product-tr__title">{{ products.product }}</div>
+                          <div class="product-tr__title">{{ product.product }}</div>
                           <div class="product-tr__quantity">{{ product.qty }} шт<span v-if="product.qty_fact != product.qty" class="product-tr__quantity-new">{{ product.qty_fact }} шт</span></div>
                           <div class="product-tr__price">
                               <div class="product-tr__price-actual">{{ ((product.price - product.price * product.discount / 100) / 100).toLocaleString() }} ₽</div>
