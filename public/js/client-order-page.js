@@ -34,7 +34,7 @@ $(document).ready(function () {
           totalDeliveries(){
             let deliveriesTotal = 0,
                 pickupsTotal = 0
-            for (delivery of this.order.deliveryInfo.deliveries){
+            for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               if (delivery.pickup){
                 pickupsTotal++;
               } else {
