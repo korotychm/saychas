@@ -13,7 +13,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
     </div>
     <div class="profile-order__wrap" v-if="order.basketInfo">
         <div class="profile-order__requisitions">
-            <div v-for="delivery in order.deliveryInfo.deliveries" class="profile-order__requisition">
+            <div v-for="delivery in order.deliveryInfo.delivery_info.deliveries" class="profile-order__requisition">
                 <div class="profile-order__requisition-head">
                     <span v-if="delivery.pickup">Самовывоз из</span>
                     <span v-else>Доставка из</span>
@@ -26,11 +26,11 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     </div>
                 </div>
                 <div class="profile-order__requisition-items">
-                    <template v-for='requisition in delivery.requisitions'>
-                      <div class="product-tr" v-for="product in requisition.products">
-                          <div class="product-tr__img product-small-image"><img :src="'/images/product/' + products[product.id].image " /></div>
-                          <div class="product-tr__title">{{ products[product.id].title }}</div>
-                          <div class="product-tr__quantity">{{ product.count }} шт<span v-if="product.countActual" class="product-tr__quantity-new">{{ product.countActual }} шт</span></div>
+                    <template v-for='requisition in delivery.requisitions.requisitions'>
+                      <div class="product-tr" v-for="product in requisition.items">
+                          <div class="product-tr__img product-small-image"><img :src="'/images/product/' + product.image_id " /></div>
+                          <div class="product-tr__title">{{ products.product }}</div>
+                          <div class="product-tr__quantity">{{ product.qnty }} шт<span v-if="product.qnty_fact != product.qnty" class="product-tr__quantity-new">{{ product.qnty_fact }} шт</span></div>
                           <div class="product-tr__price">
                               <div class="product-tr__price-actual">{{ ((product.price - product.price * product.discount / 100) / 100).toLocaleString() }} ₽</div>
                               <div class="product-tr__price-old" v-if="+product.discount">{{ (product.price / 100).toLocaleString() }} ₽</div>

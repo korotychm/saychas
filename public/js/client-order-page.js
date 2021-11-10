@@ -52,8 +52,8 @@ $(document).ready(function () {
             for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               for (requisition of delivery.requisitions.requisitions){
                 for (product of requisition.items) {
-                  price += (product.price - product.price * product.discount / 100);
-                  oldprice += +product.price;
+                  price += ((product.price - product.price * product.discount / 100) * product.qnty_fact);
+                  oldprice += (product.price * product.qnty_fact);
                 }
               }
             }
