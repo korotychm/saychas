@@ -19,8 +19,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     <span v-else>Доставка из</span>
                     <div class="profile-order__requisition-logo"><img src="/img/ui/nophoto.jpg" /></div>
                     <div class="orders-history__statuses">
+                        <div class="orders-history__status"><span>Новый</span></div>
+                        <div class="orders-history__status"><span>Зарегистрирован</span></div>
                         <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
-                        <div class="orders-history__status orders-history__status--ready">Готов</div>
+                        <div class="orders-history__status orders-history__status--ready">Собран</div>
                         <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
                         <div class="orders-history__status orders-history__status--canceled">Отменен</div>
                     </div>
