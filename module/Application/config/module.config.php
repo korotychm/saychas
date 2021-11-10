@@ -629,7 +629,6 @@ return [
                         'controller' => Controller\ReceivingController::class,
                         'action' => 'receiveRepository',
                     ],
-                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
