@@ -201,7 +201,8 @@ class ExternalCommunicationService
     {
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
-        $deliveries = Json::encode($content['response']['delivery_info']);
+        //$deliveries = Json::encode($content['response']['delivery_info']);
+        $deliveries = Json::encode($content['response']['content']);
         $jsonNull = Json::encode([]);
         $orderId = $content['response']['order_id'];
     //    $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);

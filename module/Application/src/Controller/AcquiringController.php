@@ -185,7 +185,7 @@ class AcquiringController extends AbstractActionController
         $tinkoffAnswer = $this->acquiringCommunication->initTinkoff($param);
         
         if ($tinkoffAnswer['answer']["ErrorCode"] === "0") {
-            $tinkoffAnswer['answer'] = (!empty($tinkoffAnswer['answer'])) ? $tinkoffAnswer['answer'] : Json::encode([]);
+            //$tinkoffAnswer['answer'] = (!empty($tinkoffAnswer['answer'])) ? $tinkoffAnswer['answer'] : Json::encode([]);
             $order->setPaymentInfo($tinkoffAnswer['answer']);
             $order->persist(["order_id" => $orderId, "status" => 1]);
             return new JsonModel(["result" => true, 'param' => $param, "answer" => $tinkoffAnswer['answer']]);
@@ -222,7 +222,6 @@ class AcquiringController extends AbstractActionController
      */
     public function tinkoffOrderBillAction()
     {
-        //$post[] = $this->getRequest()->getPost()->toArray();
         $amount = 0;
         $json = file_get_contents('php://input');
         $post["post1C"] = Json::decode($json, Json::TYPE_ARRAY);
@@ -236,7 +235,6 @@ class AcquiringController extends AbstractActionController
         foreach ($post["post1C"]["products"] as $item) {
             $item["Tax"] = ($item["Tax"] == null ) ? "none" : "vat" . $item["Tax"];
             $amount += $item["Amount"] = $item["Price"] * $item["Quantity"];
-
             $post["requestTinkoff"]["Receipt"]["Items"][] = $item;
         }
         
@@ -249,9 +247,9 @@ class AcquiringController extends AbstractActionController
         $order->setConfirmInfo($json);
         $order->persist(['order_id' => $orderId]);
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
-        
+        /**/
         mail("d.sizov@saychas.ru", "confirm_payment_$orderId.log", print_r($post, true)); // лог на почту
-       
+        /**/
         if (!empty($post["answerTinkoff"]['error'])) {
             return new JsonModel(['result' => false, 'description' => $post["answerTinkoff"]['error']]);
         }

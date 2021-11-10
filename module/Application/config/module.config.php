@@ -380,6 +380,17 @@ return [
                     ],
                 ],
             ],
+            
+            'cancel-client-order' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/cancel-client-order',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'cancelClientOrder',
+                    ],
+                ],
+            ],
             'get-client-order-bill' => [
                 'type' => Segment::class,
                 'options' => [
@@ -602,6 +613,18 @@ return [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/receive-client-order-statuses[/:id]',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action' => 'receiveRepository',
+                    ],
+                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
+                    'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
+            'receive-client-order-updates' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/receive-client-order-updates',
                     'defaults' => [
                         'controller' => Controller\ReceivingController::class,
                         'action' => 'receiveRepository',

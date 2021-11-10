@@ -423,10 +423,7 @@ class HtmlProviderService
             }
         }
         
-        
-            $countAllDelevery = !empty($provider) ? count($provider) : 0 ;
-        
-        
+        $countAllDelevery = !empty($provider) ? count($provider) : 0 ;
         $countDelevery =  $countAllDelevery - $countSelfdelevery;
         
         if (!$post->ordermerge) {
