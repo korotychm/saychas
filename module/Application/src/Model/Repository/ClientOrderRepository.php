@@ -29,7 +29,7 @@ class ClientOrderRepository extends Repository
     
     protected const REQUISITION = 2;
     
-     protected const ORDER_INFO = "update_order";
+     protected const ORDER_INFO = 3; //"update_order";
 
     /**
      * @var string
@@ -157,18 +157,16 @@ class ClientOrderRepository extends Repository
     
     private function cancelOrder($clientOrder)
     {
-        //mail('user@localhost', 'clientOrder = ', print_r($clientOrder->getPaymentInfo(), true));
-        //$this->acquiringService->addCustomerTinkoff($args);
         try {
             $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
-            //$deliveryInfo = Json::decode( $clientOrder->getDeliveryInfo(), Json::TYPE_ARRAY);
-            //mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
+            
             if (!empty($paymentInfo["PaymentId"])){
                     $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
                     $tinkoffData = $this->acquiringService->cancelTinkoff($args);
               //      mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
                     return true;
             }
+            
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
@@ -194,25 +192,28 @@ class ClientOrderRepository extends Repository
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
+        $description = "";
+        
         foreach($result['data'] as $item) {
-            
             $orderId = $item['order_id'];
-            
             if(empty($clientOrder = $this->find(['order_id' => $orderId]))) {
                 // throw new RuntimeException('Cannot find the order with given number');
-                return ['result' => true, 'description' => 'Cannot find the order with given number', 'statusCode' => 200];
+                $description .= "Cannot find the order with given number $orderId \r\n";
+                continue ;
             }
-            
+      
             $orderCancel = Resource::ORDER_STATUS_CODE_CANCELED; 
             
             switch($item['type']) {
                 case self::ORDER:
                 default:
                     $orderStatus = $item['status'];
+                    
                     if ($orderStatus == $orderCancel['id'] /**/) {
                         $this->cancelOrder($clientOrder);
                         $this->acquiringService->returnProductsToBasket($orderId, $clientOrder->getUserId());
                     }
+                    
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
                 case self::DELIVERY:
@@ -227,15 +228,20 @@ class ClientOrderRepository extends Repository
                     $this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
                     break;
                 case self::ORDER_INFO:
-                    $content = $item['content'];
+                    $content = Json::encode($item['content']);
                     $this->updateDeliveryInfo($orderId, $clientOrder, $content);
                     break;
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $description, 'statusCode' => 200];
     }
     
-    
+    /**
+     * 
+     * @param string $orderId
+     * @param object $clientOrder
+     * @param json $content
+     */
     private function updateDeliveryInfo($orderId, $clientOrder, $content)
     {
         $clientOrder->setDeliveryInfo($content);

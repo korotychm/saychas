@@ -154,7 +154,6 @@ class HtmlProviderService
     public function orderList($orders)
     {
         foreach ($orders as $order) {
-
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['orderDate'] = $order->getDateCreated(); //date_created
