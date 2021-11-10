@@ -193,16 +193,13 @@ class ClientOrderRepository extends Repository
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
         foreach($result['data'] as $item) {
-            
-            $orderId = $item['order_id'];
-            
+        $orderId = $item['order_id'];
             if(empty($clientOrder = $this->find(['order_id' => $orderId]))) {
                 // throw new RuntimeException('Cannot find the order with given number');
-                return ['result' => true, 'description' => 'Cannot find the order with given number '.print_r($item, true) , 'statusCode' => 200];
+                return ['result' => true, 'description' => 'Cannot find the order with given number '.$orderId , 'statusCode' => 200];
             }
-            
+      
             $orderCancel = Resource::ORDER_STATUS_CODE_CANCELED; 
             
             switch($item['type']) {
@@ -227,7 +224,7 @@ class ClientOrderRepository extends Repository
                     $this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
                     break;
                 case self::ORDER_INFO:
-                    $content = $item['content'];
+                    $content = Json::encode($item['content']);
                     $this->updateDeliveryInfo($orderId, $clientOrder, $content);
                     break;
             }
