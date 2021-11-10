@@ -16,7 +16,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
             <div v-for="delivery in order.deliveryInfo.delivery_info.deliveries" class="profile-order__requisition">
                 <div class="profile-order__requisition-head">
                     <span v-if="delivery.pickup">Самовывоз из</span>
-                    <span v-else>Доставка из</span>
+                    <span v-else>
+                      <span v-if="delivery.requisitions.length == 1">Доставка из</span>
+                      <span v-else>Сборная доставка из {{ delivery.requisitions.length }} магазинов</span>
+                    </span>
                     <div class="profile-order__requisition-logo" v-if="delivery.requisitions.length == 1">
                       <img v-if="providers[delivery.requisitions[0].provider_id].image" :src="'/images/provider/' + providers[delivery.requisitions[0].provider_id].image" />
                       <img v-else src="/img/ui/nophoto.jpg" />
