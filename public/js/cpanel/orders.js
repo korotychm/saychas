@@ -186,7 +186,7 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
-              this.getOrderStatus(order.id,i);
+              //this.getOrderStatus(order.id,i);
             }
           }
           i++;
@@ -220,7 +220,7 @@ const Orders = {
         return 'товаров';
       },
       localeDate(ms) {
-        let dateObject = new Date(+ms);
+        let dateObject = new Date(+ms * 1000);
         return dateObject.toLocaleString('ru-RU', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'});
       },
       getOrderStatus(id,index){
