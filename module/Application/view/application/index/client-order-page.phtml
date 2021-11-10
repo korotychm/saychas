@@ -19,8 +19,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     <span v-else>Доставка из</span>
                     <div class="profile-order__requisition-logo"><img src="/img/ui/nophoto.jpg" /></div>
                     <div class="orders-history__statuses">
-                        <div class="orders-history__status"><span>Новый</span></div>
-                        <div class="orders-history__status"><span>Зарегистрирован</span></div>
+                        <div class="orders-history__status" v-if="delivery.delivery_status_id == 0"><span>Новый</span></div>
+                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 1"><span>Зарегистрирован</span></div>
                         <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
                         <div class="orders-history__status orders-history__status--ready">Собран</div>
                         <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
@@ -28,7 +28,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     </div>
                 </div>
                 <div class="profile-order__requisition-items">
-                    <template v-for='requisition in delivery.requisitions.requisitions'>
+                    <template v-for='requisition in delivery.requisitions'>
                       <div class="product-tr" v-for="product in requisition.items">
                           <div class="product-tr__img product-small-image"><img :src="'/images/product/' + product.image_id " /></div>
                           <div class="product-tr__title">{{ products.product }}</div>

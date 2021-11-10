@@ -50,10 +50,12 @@ $(document).ready(function () {
             let price = 0,
                 oldprice = 0;
             for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
-              for (requisition of delivery.requisitions.requisitions){
-                for (product of requisition.items) {
-                  price += ((product.price - product.price * product.discount / 100) * product.qty_fact);
-                  oldprice += (product.price * product.qty_fact);
+              for (requisition of delivery.requisitions){
+                if (requisition.status_id != 5){ // Заявка не отменена
+                  for (product of requisition.items) {
+                    price += ((product.price - product.price * product.discount / 100) * product.qty_fact);
+                    oldprice += (product.price * product.qty_fact);
+                  }
                 }
               }
             }
