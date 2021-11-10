@@ -137,8 +137,9 @@ $(document).ready(function () {
               }))
               .then(response => {
                 this.cancellingOrder = false;
+                console.log(response);
                 if (response.data.result){
-                  location.reload();
+                  //location.reload();
                 }
               });
           },
