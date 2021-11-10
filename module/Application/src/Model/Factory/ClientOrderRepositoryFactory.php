@@ -11,6 +11,7 @@ use Application\Model\Repository\ClientOrderRepository;
 use Application\Service\AcquiringCommunicationService;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ClassMethodsHydrator;
+use ControlPanel\Service\RequisitionManager;
 
 /**
  * Description of ClientOrderRepositoryFactory
@@ -46,12 +47,15 @@ class ClientOrderRepositoryFactory implements FactoryInterface
         $prototype = new ClientOrder;
         
         $acquiringService = $container->get(AcquiringCommunicationService::class);
+        
+        $requisitionManager = $container->get(RequisitionManager::class);
 
         return new ClientOrderRepository(
                 $adapter,
                 $hydrator,
                 $prototype,
-                $acquiringService
+                $acquiringService,
+                $requisitionManager
         );
     }
 

@@ -166,16 +166,16 @@ return [
                     ],
                 ],
             ],
-            'preview' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route' => '/preview',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action' => 'preview',
-                    ],
-                ],
-            ],
+//            'preview' => [
+//                'type' => Literal::class,
+//                'options' => [
+//                    'route' => '/preview',
+//                    'defaults' => [
+//                        'controller' => Controller\IndexController::class,
+//                        'action' => 'preview',
+//                    ],
+//                ],
+//            ],
             'client-orders' => [
                 'type' => Literal::class,
                 'options' => [
@@ -271,6 +271,9 @@ return [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/catalog[/:id]',
+                'constraints' => [
+                        'id' => '.*?',
+                    ],
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action' => 'catalog',
@@ -374,6 +377,17 @@ return [
                     'defaults' => [
                         'controller' => Controller\UserDataController::class,
                         'action' => 'sendBasketData',
+                    ],
+                ],
+            ],
+            
+            'cancel-client-order' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/cancel-client-order',
+                    'defaults' => [
+                        'controller' => Controller\UserDataController::class,
+                        'action' => 'cancelClientOrder',
                     ],
                 ],
             ],
@@ -604,6 +618,17 @@ return [
                         'action' => 'receiveRepository',
                     ],
                     //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
+                    'repository' => \Application\Model\Entity\ClientOrder::class,
+                ],
+            ],
+            'receive-client-order-updates' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/receive-client-order-updates',
+                    'defaults' => [
+                        'controller' => Controller\ReceivingController::class,
+                        'action' => 'receiveRepository',
+                    ],
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
@@ -1114,7 +1139,7 @@ return [
             'ajax-chek-order-status' => [
                 'type' => Literal::class,
                 'options' => [
-                    'route' => '/ajax-chek-order-status',
+                    'route' => '/ajax-check-order-status',
                     'defaults' => [
                         'controller' => Controller\AjaxController::class,
                         'action' => 'checkOrderStatus',

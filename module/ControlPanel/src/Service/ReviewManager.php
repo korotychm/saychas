@@ -87,53 +87,48 @@ class ReviewManager extends ListManager implements LoadableInterface
     {
         $providerId = $params['where']['provider_id'];
         $pageNo = $params['pageNo'];
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId]]);
-        //$cursor = $this->findAll($params);
-//        $result = [];
-//        foreach ($cursor['body'] as &$c) {
-//            // find product by product_id
-//            //$products = $c['products'];
-//            foreach ($c['products'] as &$product) {
-//                $productId = $product['product_id'];
-//                $quantity = $product['quantity'];
-//                $arr = (array) $this->db->products->find(['id' => $productId]/* , ['_id' => 0] */)->toArray()[0];
-////                $arr = $arr[0];
-//                unset($arr['_id']);
-//                $arr['quantity'] = $quantity;
-//
-//                $flag = substr_count($arr['title'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
-//                $flag |= substr_count($arr['vendor_code'], $params['where']['title']['$regex']) || empty($params['where']['title']['$regex']);
-//                $flag2 = $arr['category_id'] == $params['where']['category_id'] || !isset($params['where']['category_id']);
-//
-//                if (($flag && $flag2)) {
-//                    $arr['mother_categories'] = $this->categoryRepo->findAllMatherCategories($product['category_id']);
-//                    $result[] = $arr;
-//                }
-//            }
+        $isActive = filter_var($params['where']['is_archive'], FILTER_VALIDATE_BOOLEAN);
+        $rating = (int) $params['where']['rating'];
+//        if('true' === $params['where']['is_archive']) {
+        if($isActive) {
+            $filter = ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ];
+        }else{
+            $filter = ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ];
+        }
+        
+        if(0 == $rating) {
+            unset($filter['rating']);
+        }
+        
+        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $filter]);
+        
+//        if($isActive) {
+//            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$ne' => ''], 'rating' => $rating ]]);
+//        }else{
+//            $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => ['provider_id' => $providerId, 'response' => ['$eq' => ''], 'rating' => $rating ]]);
 //        }
-//        $cursor['body'] = $result;
-//        unset($params['where']['store_id']);
-//        $cursor['filters']['categories'] = $this->findCategories($params);
 
         return $cursor;
     }
 
     public function updateServerDocument($headers, $content = [])
     {
-        $url = $this->config['parameters']['1c_provider_links']['lk_update_balance'];
+        $url = $this->config['parameters']['1c_provider_links']['lk_update_review'];
         $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, $content, $headers);
+        
         return $result;
     }
 
-    public function replaceReview($stockBalance)
+    public function replaceReview($review)
     {
         $collection = $this->db->{$this->collectionName};
-        $updateResult = null;
-        foreach ($stockBalance['data'] as $balance) {
-            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
-                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
-                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
-        }
+        $updateResult = $collection->updateOne(['id' => $review['id'], 'uid' => $review['uid']],
+                ['$set' => ['response' => $review['response'], 'date_responsed' => $review['date_responsed']]]);
+//        foreach ($stockBalance['data'] as $balance) {
+//            $updateResult = $collection->updateOne(['store_id' => $balance['store_id'], 'provider_id' => $balance['provider_id']],
+//                    ['$set' => ["products.$[element].quantity" => $balance['products'][0]['quantity']]],
+//                    ['arrayFilters' => [["element.product_id" => ['$eq' => $balance['products'][0]['product_id']]]]]);
+//        }
 
         return $updateResult;
     }

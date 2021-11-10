@@ -236,7 +236,7 @@ const StoreEdit = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            if (c < 32 || c == 39 || c == 96 || (c > 255 && c < 1040) || c > 1103) {
+            if (c < 32 || c == 96 || (c > 255 && c < 1040) || (c > 1103 && c != 8470)) {
                 output = output.replace(input[i],'');
             }
       }
@@ -383,9 +383,12 @@ const StoreEdit = {
               }
             }),{headers})
             .then(response => {
+              console.log(response);
               if (response.data.result){
                 showMessage('Информация о магазине сохранена');
                 router.replace('/stores');
+              } else {
+                showServicePopupWindow('Невозможно сохранить магазин', response.data.error_description_for_user);
               }
             })
             .catch(error => {
@@ -400,8 +403,8 @@ const StoreEdit = {
     },
     storeDaData(){
       $("#store-address").suggestions({
-          token: "af6d08975c483758059ab6f0bfff16e6fb92f595",
-          type: "ADDRESS",
+          token: "",
+          type: "",
           onSelect: function (suggestion) {
               $("#store-address-error").hide();
               if (!suggestion.data.house)

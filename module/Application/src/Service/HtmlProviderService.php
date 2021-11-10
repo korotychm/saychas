@@ -153,23 +153,19 @@ class HtmlProviderService
 
     public function orderList($orders)
     {
-        $returns = [];
         foreach ($orders as $order) {
 
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['orderDate'] = $order->getDateCreated(); //date_created
             $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
-            unset($return['basketInfo']['userGeoLocation']['data']);
-
             $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
             $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
             $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
-            $return['date'] = $order->getDateCreated();
             $returns[] = $return;
         }
-        //json_encode($return)
-        return $returns;
+
+        return $returns ?? [];
     }
 
     public function getCategoryFilterJson($filters)
@@ -182,9 +178,42 @@ class HtmlProviderService
             $row['val'] = array_unique($row['val']);
             //$getUnit = $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit();
             sort($row['val']);
-            $chars = [];
+            $chars = $this->categoryFilterQueryParce($row);
+//            $chars = [];
+//            foreach ($row['val'] as $val) {
+//                //$j++;
+//                $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
+//                $valuetext = $val;
+//                if ($row['type'] == Resource:: CHAR_VALUE_REF) {
+//                    $valuetext = $char->getTitle();
+//                } elseif ($row['type'] == Resource::PROVIDER_REF) {
+//                    $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
+//                } elseif ($row['type'] == Resource::BRAND_REF) {
+//                    $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+//                } elseif ($row['type'] == Resource::COLOR_REF) {
+//                    $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
+//                    $valuetext = [$color->getValue(), $color->getTitle()];
+//                } elseif ($row['type'] == Resource::COUNTRY_REF) {
+//                    $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
+//                }
+//                $chars[] = [
+//                    "valueCode" => $val,
+//                    "value" => $valuetext,
+//                ];
+//            }
+            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit(), "options" => $chars];
+        }
+        return $return ?? [];
+    }
+    
+    /**
+     * 
+     * @param array $row
+     * @return array
+     */
+    private function categoryFilterQueryParce ($row)
+    {
             foreach ($row['val'] as $val) {
-                //$j++;
                 $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
                 $valuetext = $val;
                 if ($row['type'] == Resource:: CHAR_VALUE_REF) {
@@ -199,27 +228,28 @@ class HtmlProviderService
                 } elseif ($row['type'] == Resource::COUNTRY_REF) {
                     $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
                 }
-                $chars[] = [
-                    "valueCode" => $val,
-                    "value" => $valuetext,
-                ];
+                $chars[] = ["valueCode" => $val, "value" => $valuetext,];
             }
-            $return[] = ["id" => $row['id'], "title" => $row['tit'], "type" => $row['type'], "unit" => $this->characteristicRepository->findFirstOrDefault(["id" => $row['id']])->getUnit(), "options" => $chars];
-        }
-        return !empty($return) ? $return : [];
+        return $chars ?? [];
     }
-
+    
+    /**
+     * 
+     * @param array $v
+     * @param int $chType
+     * @return string
+     */
     private function valueParce(array $v = [], $chType)
     {
         //$bool = [Resource::NO, Resource::YES];
-        if (!$v or!is_array($v)) {
+        if (empty($v) or!is_array($v)) {
             return;
         }
+        
         $value = [];
+        
         foreach ($v as $val) {
-            if (!$val) {
-                continue;
-            } elseif ($chType == Resource::BOOLEAN) {
+            if ($chType == Resource::BOOLEAN) {
                 $value[] = $val == 0 ? Resource::NO : Resource::YES;
             } elseif ($chType == Resource::COUNTRY_REF) {
                 $value[] = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle();
@@ -235,87 +265,72 @@ class HtmlProviderService
             }
         }
 
-        return !empty($value) ? join(", ", $value) : "";
+        return  !empty($value) ? join(", ", $value) : "";
     }
 
     public function productPageService($filteredProducts)
     {
-        $productImages = $return = $filters = [];
-        //foreach ($filteredProducts as $product) {
-        $product = $filteredProducts->current();
-        $return['oldPrice'] = 0;
-        $return['price'] = (int) $product->getPrice();
-        $return['discont'] = (int) $product->getDiscount();
-
-        if ($return['discont'] > 0) {
+        $return = current($filteredProducts->toArray());
+         
+        if ($return['discount'] > 0) {
             $return['oldPrice'] = $return['price'];
-            $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discont'] / 100);
+            $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discount'] / 100);
         }
 
         $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
-        $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $product->getId(), 'store_id=?' => $product->getStoreId()]);
-        $return['rest'] = ($rest) ? (int) $rest->getRest() : 0;
-        $return['product_id'] = $id = $product->getId();
-        $return['title'] = $product->getTitle();
-        $parentCategoryId = $product->getParentCategoryId();
-        $categoryId = $product->getCategoryId();
-        
-        if (!empty($parentCategoryId) && $categoryId != $parentCategoryId) {
-            $categoryId = $parentCategoryId;
+        $return['oldPrice'] = !empty($return['oldPrice']) ? number_format(($return['oldPrice'] / 100), 0, "", "&nbsp;") : "";
+        $rest = $this->stockBalanceRepository->findFirstOrDefault(['product_id=?' => $return["id"], 'store_id=?' => $return['store_id']]);
+        $return['rest'] = $rest->getRest() ?? 0;
+        $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
+        $provider = $this->providerRepository->findFirstOrDefault(['id' => $return['provider_id']]);
+        $return["brand"] = ["title" => $return['brand_title'], "id" => $return['brand_id'], "image" => $this->brandRepository->findFirstOrDefault(['id' => $return["brand_id"]])->getImage(),];
+        $return["provider"] = ["id" => $provider->getId(), "image" => $provider->getImage(), "title" => $provider->getTitle(),];
+        $characteristicsArray = !empty($return['param_variable_list']) ? Json::decode($return['param_variable_list'], Json::TYPE_ARRAY) : [];
+        $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $return['category_id']);
+
+        if (!empty($return['description'])) {
+            $return['description'] = ["text" => StringHelper::eolFormating($return['description']), 'if_spoiler' => ((strlen($return['description']) < 501)),];
         }
-        
-        $return['category_id'] = $categoryId;
-        $charNew = $product->getParamVariableList();
-        $characteristicsArray = !empty($charNew) ? Json::decode($charNew, Json::TYPE_ARRAY) : [];
-        $productImages[] = $product->getHttpUrl();
-        $vendor = $product->getVendorCode();
-        $productId = $product->getId();
-        $return["brand"]["title"] = $product->getBrandTitle();
-        $return["brand"]["id"] = $product->getBrandId();
-        $return["brand"]["image"] = $this->brandRepository->findFirstOrDefault(['id' => $return["brand"]["id"]])->getImage();
-        $return["provider"]["id"] = $product->getProviderId();
-        $provider = $this->providerRepository->findFirstOrDefault(['id' => $return["provider"]["id"]]);
-        $return["provider"]["image"] = (!empty($provider)) ? $provider->getImage() : "";
-        $return["provider"]["title"] = (!empty($provider)) ? $provider->getTitle() : "";
-        $description = $product->getDescription();
-
-        if (!empty($description)) {
-            $return['description']["text"] = StringHelper::eolFormating($description);
-            $return['description']['if_spoiler'] = ((strlen($description) < 501));
-            $return['description']['tinytext'] = StringHelper::eolFormating(mb_substr($description, 0, 500));
-        }
-
-        //$characteristicsArray = array_diff($characteristicsArray, array(''));
-        if (!empty($characteristicsArray)) {
-            
-            foreach ($characteristicsArray as $char) {
-                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
-                $chArray = $ch->getIsList();
-                $chType = $ch->getType();
-
-                if ($char['value']) {
-                    ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
-                    $value = $this->valueParce($v, $chType);
-                    unset($v);
-                }
-
-                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
-                $return["characteristics"][0][] = $char;
-                
-                if ($ch->getIsMain()) {
-                    $return["characteristics"][1][] = $char;
-                }
-            }
-        } else {
-            $return["characteristics"] = [];
-        }
-        
-        $return['categoryId'] = $categoryId;
-        $return['appendParams'] = ['vendorCode' => $vendor, 'productId' => $productId, 'rest' => $return['rest'], 'test' => "test",];
 
         return $return;
     }
 
+    /**
+     *
+     * @param array $characteristicsArray
+     * @param string $categoryId
+     * @return array
+     */
+    private function getCharsProductPage($characteristicsArray, $categoryId)
+    {
+        if (!empty($characteristicsArray)) {
+
+            $value = $v = ""; //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
+            foreach ($characteristicsArray as $char) {
+                $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
+                $chArray = $ch->getIsList();
+                $chType = $ch->getType();
+                unset($value, $v);
+                ($chArray) ? $v = $char['value'] : $v[] = $char['value'];
+                $value = $this->valueParce($v, $chType);
+                $char = ["id" => $char['id'], "title" => $ch->getTitle(), "type" => $chType, "array" => $chArray, "value" => $value, "unit" => $ch->getUnit(),];
+                $return[0][] = $char;
+
+                if ($ch->getIsMain()) {
+                    $return[1][] = $char;
+                }
+            }
+        } 
+
+        return $return ?? [];
+    }
+
+    /**
+     *
+     * @param object $user
+     * @param type $limit
+     * @return array
+     */
     public function getUserAddresses($user = null, $limit)
     {
         $return = ['address' => [], 'addresses' => []];
@@ -340,11 +355,17 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     *
+     * @param object $user
+     * @return array
+     */
     public function getUserInfo($user)
     {
         if (null == $user) {
             return [];
         }
+        
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
@@ -352,25 +373,36 @@ class HtmlProviderService
         $return['email'] = $user->getEmail();
         $userData = $user->getUserData();
         $usdat = $userData->current();
+        
         if (null != $usdat) {
             $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
             $return['userGeodata'] = $usdat->getGeoData();
         }
+        
         return $return;
     }
 
+    /**
+     *
+     * @param object $post
+     * @param array $param
+     * @return array
+     */
     public function basketPayInfoData($post, $param)
     {
         $products = $post->products;
         $storeAdress = [];
+       
         if (!empty($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery))) {
             foreach ($selfdelevery as $providerinfo) {
                 $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
                 $store = $stores->current();
                 $storeAdress[] = StringHelper::cutAddress($store->getAddress());
             }
-        }
+        }   else  {$countSelfdelevery = 0; }
+        
         $j = 0;
+        
         if (!empty($products)) {
             while (list($p, $c) = each($products)) {
                 if ($c["count"] <= 0) {
@@ -390,10 +422,10 @@ class HtmlProviderService
                 }
             }
         }
-        if (!empty($provider)) {
-            $countDelevery = count($provider);
-        }
-        $countDelevery = (int) $countDelevery - $countSelfdelevery;
+        
+        $countAllDelevery = !empty($provider) ? count($provider) : 0 ;
+        $countDelevery =  $countAllDelevery - $countSelfdelevery;
+        
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
         } else {
@@ -402,21 +434,26 @@ class HtmlProviderService
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
-        $return["basketpricetotalall"] = $return["producttotal"] = $total;
-        $return["productcount"] = $j;
-        $return["timeDelevery"] = $timeDelevery;
-        $return["countSelfdelevery"] = $countSelfdelevery;
-        $return["priceDelevery"] = $priceDelevery;
+        $return["producttotal"] = $total ?? 0;
+        $return["basketpricetotalall"] = $return["producttotal"];
+        $return["productcount"] = $j ?? 0;
+        $return["timeDelevery"] = $timeDelevery ?? 0;
+        $return["countSelfdelevery"] = $countSelfdelevery ?? 0;
+        $return["priceDelevery"] = $priceDelevery ?? 0;
         $return["countDelevery"] = $countDelevery;
         $return["countDeleveryText"] = $countDelevery;
         $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
-        $return["storeAdress"] = $storeAdress;
-        return $return;
+        $return["storeAdress"] = $storeAdress ?? "";
 
-//         'productcount' => $row['count'],
-//            'producttotal' => $row['total'],
+        return $return;
     }
 
+    /**
+     *
+     * @param object $post
+     * @param array $param
+     * @return array
+     */
     public function basketMergeData($post, $param)
     {
         $return = [];
@@ -490,9 +527,16 @@ class HtmlProviderService
             $return["hourPrice"] = $return["countStors"] * $param["hourPrice"];
             $return["hour3Price"] = $return["countStors"] * $param['mergePrice'] + ceil($return["countStors"] / $param['mergecount']) * $param['mergePriceFirst'];
         }
+        
         return $return;
     }
 
+    /**
+     *
+     * @param string $userId
+     * @param array $products
+     * @return string
+     */
     public function basketWhatHappenedUpdate($userId, $products)
     {
         $j = 0;
@@ -517,6 +561,12 @@ class HtmlProviderService
         //return $product_id;
     }
 
+    /**
+     *
+     * @param object $basket
+     * @param string $userId
+     * @return array
+     */
     public function basketData($basket, $userId)
     {
         $countproducts = 0;
@@ -574,7 +624,7 @@ class HtmlProviderService
                     // 'availble' => '1',
                     'availble' => $rest,
                     'count' => $count,
-                    'store' => $productStoreId,
+                    'store' => $productStoreId ?? 0,
                     'isFav' => $this->isInFavorites($pId, $userId),
                 ];
             }
@@ -587,7 +637,7 @@ class HtmlProviderService
         }
 
 
-
+        $j=0;
         while (list($prov, $prod) = each($item)) {
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
@@ -635,9 +685,9 @@ class HtmlProviderService
                 $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
             }
             $return["product"][$returnprefix] = [
-                "provider_id" => $provider_store_id, //$prov,
+                "provider_id" => $provider_store_id ?? 0, //$prov,
                 "provider_main_id" => $prov,
-                "availblechek" => $availblechek[$prov],
+                "availblechek" => $availblechek[$prov] ?? 0,
                 "provider_disable" => $provider_disable,
                 "provider_name" => $provider->getTitle(),
                 "provider_logo" => $provider->getImage(),
@@ -668,6 +718,12 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     *
+     * @param string $productId
+     * @param string $userId
+     * @return boolean
+     */
     private function isInFavorites($productId, $userId)
     {
         if (!empty($userId) && !empty($productId)) {

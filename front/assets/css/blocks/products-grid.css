@@ -6,3 +6,9 @@
 .products-grid--3 {
   grid-template-columns: 1fr 1fr 1fr;
 }
+@media (max-width: 767px) {
+  .products-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+  }
+}

@@ -22,7 +22,7 @@ use Application\Model\Entity\Category;
 use Laminas\Db\Sql\Sql;
 use Application\Helper\ArrayHelper;
 use Application\Resource\Resource;
-
+use Application\Model\Entity\HandbookRelatedProduct;
 //use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Laminas\Hydrator\DoctrineObject as DoctrineHydrator;
 
@@ -169,9 +169,16 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         return $tree;
     }
     
-    private function categoriesHasProduct ()
+    /**
+     * Disabled.
+     * NO DELETE!
+     * 
+     * @return type
+     * @throws \Exception
+     */
+    private function categoriesHasProduct2 ()
     {
-        $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT `category_id` FROM `product` WHERE 1 group by `category_id`)";
+        $query = "SELECT `id` FROM `category` WHERE `id` in (SELECT a.`category_id` FROM `product` as a INNER JOIN  `price` as b on( a.id = b.product_id)  WHERE 1 group by `category_id`)";
         $result = $this->db->query($query)->execute();
         if (!$result instanceof ResultInterface || !$result->isQueryResult()) {
             throw new \Exception('no legal categories');
@@ -184,8 +191,25 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         //return (empty($return)) ? [] : $return;
         return $return ?? [];
     }
-        
+    
     /**
+     * 
+     * @return array
+     */
+    private function categoriesHasProduct()
+    {
+       $param["columns"] = ["category_id"];
+       //$param["group"] = ["category_id"];
+       $category = HandbookRelatedProduct::findAll($param)->toArray();
+       $categoryesId = ArrayHelper::extractId($category, "category_id");
+        foreach ($categoryesId as $row) {
+            $return[$row] = true;
+        }
+        //return (empty($return)) ? [] : $return;
+        return $return ?? [];
+    }
+    
+     /**
      * Return a string that contains html ul list
      *
      * @return string
@@ -353,10 +377,10 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     public function getAllCategoriesAsTree ()
     {   
 
-        $tree = $this->cache->getItem( Resource::CATEGORY_TREE_CACHE_NAMESPACE, $success);
-        if($success) {
-            return $tree;
-        }
+//        $tree = $this->cache->getItem( Resource::CATEGORY_TREE_CACHE_NAMESPACE, $success);
+//        if($success) {
+//            return $tree;
+//        }
         $tree=[];
         $sql = new Sql($this->db);
         $select = $sql->select()->from($this->tableName); //->columns(['*']
@@ -404,7 +428,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $results = $statement->execute();
 
         foreach ($results as $result) {
-            $echo[] = [$result['id'], $result['title']];
+            $echo[] = [$result['id'], $result['title'], $result['url']];
             if ($result['parent_id']) {
                 $echo = $this->findAllMatherCategories($result['parent_id'], $echo);
             }
@@ -423,7 +447,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
-        $select->where(['id = ?' => $params['id']]);
+        $select->where($params);
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $result = $statement->execute();
@@ -459,10 +483,6 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
-//        $tableName = $this->tableName;
-//        $this->mclient->saychas->$tableName->drop();
-//        $this->mclient->saychas->$tableName->insertMany($result['data']);
-
         if ((bool) $result['truncate']) {
             $this->db->query("truncate table category")->execute();
         }
@@ -477,6 +497,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
                 return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
             }
         }
+        
         return ['result' => true, 'description' => '', 'statusCode' => 200];
     }
 
@@ -487,21 +508,18 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     public function delete($json)
     {
        $this->cache->removeItem(Resource::CATEGORY_TREE_CACHE_NAMESPACE);
-        try {
+       
+       try {
             $result = Json::decode($json, Json::TYPE_ARRAY);
         } catch (LaminasJsonRuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         
         $total = ArrayHelper::extractId($result, "id");  
-//        //$total = [];
-//        foreach ($result as $item) {
-//            $total[] = $item['id'];
-//        }
         $sql = new Sql($this->db);
         $delete = $sql->delete()->from('category')->where(['id' => $total]);
-
         $selectString = $sql->buildSqlString($delete);
+
         try {
             $this->db->query($selectString, $this->db::QUERY_MODE_EXECUTE);
             return ['result' => true, 'description' => '', 'statusCode' => 200];

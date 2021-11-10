@@ -43,7 +43,7 @@ $(document).ready(function(){
         categoryId: $("#categoryId").val()
       },
       created() {
-          this.category_id = window.location.href.split("/").slice(-1)[0],
+          this.category_id =  category_id; //window.location.href.split("/").slice(-1)[0],
           axios
             .post('/ajax-get-products-provider',
               Qs.stringify({

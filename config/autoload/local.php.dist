@@ -36,13 +36,22 @@ return [
             'lk_get_all_users' => 'http://SRV02:8000/SC/hs/site/lk_get_all_users',
             /** Confirm offer */
             'lk_confirm_offer' => 'http://SRV02:8000/SC/hs/site/lk_confirm_offer',
+
+            /** ReviewManager */
+            'lk_get_reviews' => 'http://SRV02:8000/SC/hs/site/lk_get_reviews',
+            \ControlPanel\Service\ReviewManager::class => 'http://SRV02:8000/SC/hs/site/lk_get_reviews',
+            'lk_update_review' => 'http://SRV02:8000/SC/hs/site/lk_update_review',
+
+            /** RequisitionManager */
+            'lk_get_requisitions' => 'http://SRV02:8000/SC/hs/site/lk_get_requisitions',
+            \ControlPanel\Service\RequisitionManager::class => 'http://SRV02:8000/SC/hs/site/lk_get_requisitions',
+            'lk_update_requisition' => 'http://SRV02:8000/SC/hs/site/lk_update_requisition',
+            'lk_update_requisition_status' => 'http://SRV02:8000/SC/hs/site/lk_update_requisition_status',            
+            
             /** ProductManager links */
             'lk_product_info' => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             'lk_get_info_by_category' => 'http://SRV02:8000/SC/hs/site/lk_get_info_by_category',
             'lk_get_template' => 'http://SRV02:8000/SC/hs/site/lk_get_template',
-            /** ReviewManager */
-            'lk_get_reviews' => 'http://SRV02:8000/SC/hs/site/lk_get_reviews',
-            \ControlPanel\Service\ReviewManager::class => 'http://SRV02:8000/SC/hs/site/lk_get_reviews',
             /** ProductManager link alias */
             \ControlPanel\Service\ProductManager::class => 'http://SRV02:8000/SC/hs/site/lk_product_info',
             /** ProductManager; Edit product */
@@ -79,6 +88,9 @@ return [
             //'send_basket' => 'http://SRV02:8000/SC/hs/site/create_order',
             'create_order' => 'http://SRV02:8000/SC/hs/site/create_order',
             'order_payment' => 'http://SRV02:8000/SC/hs/site/order_payment',
+             /** sendReview  link*/
+            'set_review' => 'http://SRV02:8000/SC/hs/site/set_review',
+            'get_reviewer' => 'http://SRV02:8000/SC/hs/site/get_reviewer',
             
         ],
         

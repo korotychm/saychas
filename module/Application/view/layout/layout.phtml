@@ -1,3 +1,6 @@
+<?php
+    use Application\Resource\Resource;
+?>
 <?= $this->doctype() ?>
 <html lang="ru">
     <head>
@@ -31,14 +34,14 @@
 
         <?=
                 $this->inlineScript()
-                ->prependFile($this->basePath('/js/useractions.js'))
-                ->prependFile($this->basePath('/js/services.js'))
+                ->prependFile($this->basePath('/js/useractions.js?' . time()))
+                ->prependFile($this->basePath('/js/services.js?' . time()))
                 ->prependFile($this->basePath('js/saychas_z.js?' . time()))
-                ->prependFile($this->basePath('js/dadata/jquery.suggestions.js'))
+                ->prependFile($this->basePath('js/dadata/jquery.suggestions.js?' . time()))
                 //->prependFile($this->basePath('js/bootstrap.min.js'))
-                ->prependFile($this->basePath('js/temp.js'))
-                ->prependFile($this->basePath('js/user-modal.js'))
-                ->prependFile($this->basePath('js/scripts.min.js'))
+                ->prependFile($this->basePath('js/temp.js?' . time()))
+                ->prependFile($this->basePath('js/user-modal.js?' . time()))
+                ->prependFile($this->basePath('js/scripts.min.js?' . time()))
                 // ->prependFile($this->basePath('js/jquery.js'))
         ?>
     </head>
@@ -61,12 +64,12 @@
                                     <span></span>
                                     <span></span>
                                 </span>
-                                <span><?= Application\Resource\Resource::THE_CATALOG ?></span>
+                                <span><?=Resource::THE_CATALOG ?></span>
                             </label>
                             <nav class="cats" id="cats">
                               <div class="cats__left">
                                 <div v-for="(category, idx) in categoryTree" class="cats__item" :class="{active: (idx == currentCat)}">
-                                  <a :href="'/catalog/' + category.id" class="cats__parent" @mouseover="currentCat = idx">{{ category.title }}</a>
+                                  <a :href="'/catalog/' + category.url" class="cats__parent" @mouseover="currentCat = idx">{{ category.title }}</a>
                                 </div>
                               </div>
                               <div class="cats__right">
@@ -74,15 +77,15 @@
                                   <div v-show="idx == currentCat" class="cats__children">
                                     <ul v-for="categoryChild in category.children">
                                       <li>
-                                        <a :href="'/catalog/' + categoryChild.id">{{ categoryChild.title }}</a>
+                                        <a :href="'/catalog/' + categoryChild.url">{{ categoryChild.title }}</a>
                                       </li>
                                       <div v-if="categoryChild.children">
                                         <li v-for="categoryChildChild in categoryChild.children.slice(0, 5)">
-                                          <a :href="'/catalog/' + categoryChildChild.id">{{ categoryChildChild.title }}</a>
+                                          <a :href="'/catalog/' + categoryChildChild.url">{{ categoryChildChild.title }}</a>
                                         </li>
                                       </div>
                                       <li v-if="categoryChild.children && categoryChild.children.length > 6">
-                                        <a class="cats__all" :href="'/catalog/' + categoryChild.id">Все товары</a>
+                                          <a class="cats__all" :href="'/catalog/' + categoryChild.url"><?=Resource::THE_ALL_PRODUCTS ?></a>
                                       </li>
                                     </ul>
                                   </div>

@@ -1,8 +1,12 @@
+<script>
+          var category_id = "<?=$this->id?>";
+</script>
 <?php
 $this->headTitle(Application\Resource\Resource::THE_CATALOG_OF_PRODUCTS, 'PREPEND');
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/catalog.js'));
 ?>
+ 
 <section class="catalog" id="catalog">
   <div class="page-heading">
       <h1 class="h1"><?= $this->title ?> <span v-if="productsCount">{{ productsCount.toLocaleString() }} {{ productsCountUnit }}</span></h1>

@@ -248,6 +248,13 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $old_price;
+    
+    /**
+     * Product rest
+     *
+     * @var int
+     */
+    protected $rest;
 
     /**
      * Product discount from joined price table

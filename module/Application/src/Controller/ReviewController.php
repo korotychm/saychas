@@ -11,11 +11,14 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Json\Json;
+use Laminas\Http\Cookies;
 use Laminas\View\Model\JsonModel;
 //use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Authentication\AuthenticationService;
 use Application\Resource\Resource;
 use Application\Helper\ArrayHelper;
+use Application\Helper\CryptHelper;
+use Laminas\Http\Headers;
 use Laminas\Escaper\Escaper;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Service\ImageHelperFunctionsService;
@@ -33,9 +36,7 @@ use Application\Model\RepositoryInterface\ProductRepositoryInterface;
 class ReviewController extends AbstractActionController
 {
 
-    //private $categoryRepository;
     private $productRepository;
-    //private $handBookRelatedProductRepository;
     private $entityManager;
     private $config;
     private $authService;
@@ -43,17 +44,16 @@ class ReviewController extends AbstractActionController
     private $imageHelperFuncions;
 
     public function __construct(
-            //ProductRatingRepositoryInterface $productRatingRepository,
-            ProductRepositoryInterface $productRepository, /**/
-            //HandbookRelatedProductRepositoryInterface $handBookProduct,
-            $entityManager, $config, AuthenticationService $authService,
+            ProductRepositoryInterface $productRepository,
+            $entityManager, 
+            $config, 
+            AuthenticationService $authService,
             CommonHelperFunctionsService $commonHelperFuncions,
             ImageHelperFunctionsService $imageHelperFuncions,
-            ExternalCommunicationService $externalCommunicationService)
+            ExternalCommunicationService $externalCommunicationService
+            )
     {
-        // $this->productRatingRepository = $productRatingRepository;
         $this->productRepository = $productRepository;
-        //  $this->handBookRelatedProductRepository = $handBookProduct;
         $this->entityManager = $entityManager;
         $this->config = $config;
         $this->authService = $authService;
@@ -68,7 +68,7 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     * set product_rating and product_user_rating
+     * Set product_rating and product_user_rating
      *
      * @param POST productId  rating
      * @return JSON
@@ -76,6 +76,7 @@ class ReviewController extends AbstractActionController
     public function setProductRatingAction()
     {
 
+        
         $reviewId = substr(md5(uniqid() . time()), 0, 36);
 
         $return = ["time_created" => time(), 'id' => $reviewId];
@@ -102,7 +103,7 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     * set product review
+     * Set product review
      *
      * @param POST and  FILES data
      * @return JSON
@@ -133,8 +134,6 @@ class ReviewController extends AbstractActionController
         }
 
         $return["rating"] = $this->getValidRating($this->getRequest()->getPost()->rating);
-        //return new JsonModel($this->getRequest()->getPost());
-
         $files = $this->getRequest()->getFiles();
 
         if (!empty($files['files'])) {
@@ -156,7 +155,7 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     * get product reviews
+     * Get product reviews
      *
      * @param POST productId
      * @return JSON
@@ -171,17 +170,7 @@ class ReviewController extends AbstractActionController
             return ['result' => false, 'description' => "product_id not set"];
         }
 
-//        $page = !empty($this->getRequest()->getPost()->page) ? (int)$this->getRequest()->getPost()->page : 0;
-//        $offset = $page * Resource::REVIEWS_PAGING_LIMIT;
-//        $limit = $offset + Resource::REVIEWS_PAGING_LIMIT;
-//
-//        $sortPost = !empty($this->getRequest()->getPost()->sort) ?  (int)$this->getRequest()->getPost()->sort : 0;
-//        $sortOrder = Resource::REVIEWS_SORT_ORDER_RATING;
-//        $sort = !empty($sortOrder[$sortPost]) ? $sortOrder[$sortPost] : end($sortOrder);
         $reviewParams = $this->setReviewParams($param);
-
-        //return new JsonModel($reviewPaging);
-        //$res = Review::findAll(['where' => $param,  "order" => [$reviewParams['order'][0] , "time_created desc"], "limit" => $reviewParams['limit'], "offset" => $reviewParams['offset']])->toArray();
         $res = Review::findAll($reviewParams)->toArray();
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
         $param['user_id'] = $userInfo['userid'];
@@ -199,8 +188,9 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     * return parameters for SQL query
+     * Get parameters for SQL query
      *
+     * @param array $param
      * @return array
      */
     private function setReviewParams($param)
@@ -217,7 +207,7 @@ class ReviewController extends AbstractActionController
     }
 
     /**
-     * get images of review
+     * Get images of review
      *
      * @param int $reviewId
      * @return array
@@ -225,14 +215,16 @@ class ReviewController extends AbstractActionController
     private function getReviewImages($reviewId)
     {
         $images = ReviewImage::findAll(['where' => ['review_id' => $reviewId], "order" => ["id desc"]]);
+       
         foreach ($images as $image) {
             $return[] = $image->getFilename();
         }
+        
         return $return;
     }
 
     /**
-     * get images of product reviews
+     * Get images of product reviews
      *
      * @param string $productId
      * @return array
@@ -241,16 +233,18 @@ class ReviewController extends AbstractActionController
     {
         $reviews = Review::findAll(["where" => ["product_id" => $productId], "columns" => ["id"]])->toArray();
         $reviewsId = ArrayHelper::extractId($reviews, "id");
-        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId], "order" => ["id desc"], "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId],  "columns"=> ["filename"], "group" =>   ["filename"],  "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
 
+        $return =[];
         foreach ($images as $image) {
             $return[] = $image->getFilename();
         }
 
-        return $return;
+        return array_unique($return);
     }
 
     /**
+     * Get valid value for rating
      *
      * @param int $rating
      * @return int
@@ -258,8 +252,8 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
-        //$rating = (int)$rating;
-        return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+        
+        return $patternRating[$rating] ?? end($patternRating);
     }
 
     /**
@@ -297,7 +291,8 @@ class ReviewController extends AbstractActionController
 
     /**
      * return insert id
-     *
+     * NO DELETE!
+     * 
      * @param array $param
      * @return int
      */

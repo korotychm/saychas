@@ -19,6 +19,7 @@ use Application\Model\Entity\ClientOrder;
 use Application\Model\Repository\Repository;
 use Application\Resource\Resource;
 use Application\Service\AcquiringCommunicationService;
+use ControlPanel\Service\RequisitionManager;
 
 class ClientOrderRepository extends Repository
 {
@@ -27,6 +28,8 @@ class ClientOrderRepository extends Repository
     protected const DELIVERY = 1;
     
     protected const REQUISITION = 2;
+    
+     protected const ORDER_INFO = "update_order";
 
     /**
      * @var string
@@ -39,6 +42,8 @@ class ClientOrderRepository extends Repository
     protected ClientOrder $prototype;
     
     protected AcquiringCommunicationService $acquiringService;
+    
+    protected RequisitionManager $requisitionManager;
 
     /**
      * @param AdapterInterface $db
@@ -49,13 +54,15 @@ class ClientOrderRepository extends Repository
             AdapterInterface $db,
             HydratorInterface $hydrator,
             ClientOrder $prototype,
-            AcquiringCommunicationService $acquiringService
+            AcquiringCommunicationService $acquiringService,
+            RequisitionManager $requisitionManager
     )
     {
         $this->db = $db;
         $this->hydrator = $hydrator;
         $this->prototype = $prototype;
         $this->acquiringService = $acquiringService;
+        $this->requisitionManager = $requisitionManager;
 
         parent::__construct();
     }
@@ -188,21 +195,23 @@ class ClientOrderRepository extends Repository
         }
         
         foreach($result['data'] as $item) {
-            $orderId = $item['order_id'];
-            $userId = $item['user_id'];
             
-            $clientOrder = $this->find(['order_id' => $orderId]);
-            if(null == $clientOrder) {
+            $orderId = $item['order_id'];
+            
+            if(empty($clientOrder = $this->find(['order_id' => $orderId]))) {
                 // throw new RuntimeException('Cannot find the order with given number');
                 return ['result' => true, 'description' => 'Cannot find the order with given number', 'statusCode' => 200];
             }
+            
+            $orderCancel = Resource::ORDER_STATUS_CODE_CANCELED; 
+            
             switch($item['type']) {
                 case self::ORDER:
                 default:
                     $orderStatus = $item['status'];
-                    if ($orderStatus == 4 /*Resource::ORDER_STATUS_CODE_CANCELED*/) {
+                    if ($orderStatus == $orderCancel['id'] /**/) {
                         $this->cancelOrder($clientOrder);
-                        $this->acquiringService->returnProductsToBasket($orderId, $userId);
+                        $this->acquiringService->returnProductsToBasket($orderId, $clientOrder->getUserId());
                     }
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
@@ -217,9 +226,20 @@ class ClientOrderRepository extends Repository
                     $requisitionStatus = $item['status'];
                     $this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
                     break;
+                case self::ORDER_INFO:
+                    $content = $item['content'];
+                    $this->updateDeliveryInfo($orderId, $clientOrder, $content);
+                    break;
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
+    }
+    
+    
+    private function updateDeliveryInfo($orderId, $clientOrder, $content)
+    {
+        $clientOrder->setDeliveryInfo($content);
+        $this->persist($clientOrder, ['order_id' => $orderId]);        
     }
     
     /**
@@ -275,6 +295,7 @@ class ClientOrderRepository extends Repository
                 if($d['delivery_id'] == $deliveryId) {
                     if($r['requisition_id'] == $requisitionId) {
                         $r['requisition_status'] = $requisitionStatus;
+                        $this->requisitionManager->setRequisitionStatus($requisitionId, $requisitionStatus);
                     }
                 }
             }
