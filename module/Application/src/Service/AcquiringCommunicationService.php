@@ -8,7 +8,7 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Application\Model\Entity;
+use Application\Helper\ArrayHelper;
 use Application\Model\Entity\Basket;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
