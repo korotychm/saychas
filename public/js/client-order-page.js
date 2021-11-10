@@ -64,26 +64,40 @@ $(document).ready(function () {
           },
         },
         methods: {
-          getTimePointText(created,timepoint,merged = false) {
-            //created - дата заказа
-            let deliveryTime = 1; // если обычная доставка за час
-            if (merged) deliveryTime = 3; // если объединенная доставка за три часа
+          getTimePointText(ms,timepoint,merged = false) {
+              //created - дата заказа
+              let deliveryTime = 1; // если обычная доставка за час
+              if (merged) deliveryTime = 3; // если объединенная доставка за три часа
 
-            if (timepoint == 0) {
-              let hours = new Date(created).getHours();
-              let minutes = new Date(created).getMinutes();
-                if (minutes === 0) {
-                  console.log(hours, ":", minutes)
-                  console.log('заказ приедет с', hours, 'до', hours + 1)
-                }
-                if (minutes > 0) {
-                  console.log(hours, ":", minutes)
-                  console.log('заказ приедет с', hours + 1, 'до', hours + 2)
-                }
-            } else {
-              //timepoint в виде '00', '01', '02'... Это часы начала доставки в сегодняшнюю дату
-              //считаем и выдаем текст в виде Дата в время
-            }
+              let orderDate = new Date(ms); // Дата заказа
+              let timepoints = [];
+
+              if (timepoint !== '0'){
+                timepoints = [+timepoint, +timepoint + deliveryTime];
+              } else {
+                timepoints = [orderDate.getHours() + 1, orderDate.getHours() + 1 + deliveryTime];
+              }
+              if (timepoints[1] > 24){
+                timepoints[1] = timepoints[1] - 24;
+                orderDate.setDate(orderDate.getDate() + 1);
+              }
+              else if (timepoints[1] == 24){
+                timepoints[1] = 0;
+                orderDate.setDate(orderDate.getDate() + 1);
+              }
+              if (timepoints[0] < 10){
+                timepoints[0] = '0' + timepoints[0];
+              }
+              if (timepoints[1] < 10){
+                timepoints[1] = '0' + timepoints[1];
+              }
+
+              if (this.isToday(orderDate)){
+                let dateLocaled = 'Сегодня';
+              } else {
+                let dateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
+              }
+              return dateLocaled + ' с ' + timepoints[0] + ' до ' + timepoints[1];
           },
           deliveriesUnit(q,isPickup = false){
             q = q.toString();

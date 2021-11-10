@@ -59,7 +59,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                         </svg>
                         <div>
                             <h2>{{ totalDeliveries.deliveriesTotal }} {{ deliveriesUnit(totalDeliveries.deliveriesTotal) }}</h2>
-                            <p>Сегодня с 15 до 16</p>
+                            <p>{{ getTimePointText(+order.orderDate,order.basketInfo.timepoint[+order.basketInfo.ordermerge],+order.basketInfo.ordermerge) }}</p>
                             <p>{{ order.basketInfo.userGeoLocation.value }}</p>
                         </div>
                     </div>
