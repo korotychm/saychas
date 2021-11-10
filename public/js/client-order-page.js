@@ -69,7 +69,7 @@ $(document).ready(function () {
               let deliveryTime = 1; // если обычная доставка за час
               if (merged) deliveryTime = 3; // если объединенная доставка за три часа
 
-              let orderDate = new Date(ms); // Дата заказа
+              let orderDate = new Date(ms * 1000); // Дата заказа
               let timepoints = [];
 
               if (timepoint !== '0'){
@@ -99,7 +99,7 @@ $(document).ready(function () {
               } else {
                 dateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
               }
-              return dateLocaled + ' с ' + timepoints[0] + ' до ' + timepoints[1];
+              return dateLocaled + ' с ' + timepoints[0] + ':00 до ' + timepoints[1] + ':00';
           },
           deliveriesUnit(q,isPickup = false){
             q = q.toString();
