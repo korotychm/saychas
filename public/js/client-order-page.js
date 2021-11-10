@@ -92,10 +92,12 @@ $(document).ready(function () {
                 timepoints[1] = '0' + timepoints[1];
               }
 
+              let dateLocaled = '';
+
               if (this.isToday(orderDate)){
-                let dateLocaled = 'Сегодня';
+                dateLocaled = 'Сегодня';
               } else {
-                let dateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
+                dateLocaled = orderDate.toLocaleDateString('ru-RU', {day: "numeric", month: "long", year: "numeric"});
               }
               return dateLocaled + ' с ' + timepoints[0] + ' до ' + timepoints[1];
           },
