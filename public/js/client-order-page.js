@@ -28,7 +28,8 @@ $(document).ready(function () {
         data: {
           order: [],
           providers: [],
-          orderId: ''
+          orderId: '',
+          cancelling: false
         },
         computed: {
           totalDeliveries(){
@@ -126,6 +127,18 @@ $(document).ready(function () {
             }
             localedTime = ' в ' + orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
             return localedDate + localedTime;
+          },
+          cancelOrder(){
+            axios
+              .post('/cancel-client-order',
+                Qs.stringify({
+                  order_id : this.orderId
+              }))
+              .then(response => {
+                if (response.data.result){
+                  location.reload();
+                }
+              });
           },
           getOrder(){
             axios
