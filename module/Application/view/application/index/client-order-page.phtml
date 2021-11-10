@@ -2,7 +2,7 @@
 $this->headTitle($this->title, 'PREPEND');
 $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
 ?>
-<div class="profile-order" id="#profile-order">
+<div class="profile-order" id="profile-order">
     <div class="page-heading">
         <h1 class="h1"><a class="page-heading__back" href="/user/orders"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="13px">
                     <path fill-rule="evenodd" fill="currentColor" d="M4.499,4.999 L14.499,4.999 C15.328,4.999 15.999,5.671 15.999,6.499 C15.999,7.328 15.328,7.999 14.499,7.999 L4.499,7.999 C3.671,7.999 2.999,7.328 2.999,6.499 C2.999,5.671 3.671,4.999 4.499,4.999 Z" />
@@ -11,44 +11,37 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 </svg>
             </a><span><?=$this->title?></span></h1>
     </div>
-    <div class="profile-order__wrap">
+    <div class="profile-order__wrap" v-if="order.basketInfo">
         <div class="profile-order__requisitions">
-            <div class="profile-order__requisition">
-                <div class="profile-order__requisition-head"><span>Доставка из</span>
-                    <div class="profile-order__requisition-logo"><img src="/images/stores/store1.jpg" /></div>
+            <div v-for="delivery in order.deliveryInfo.delivery_info.deliveries" class="profile-order__requisition">
+                <div class="profile-order__requisition-head">
+                    <span v-if="delivery.pickup">Самовывоз из</span>
+                    <span v-else>Доставка из</span>
+                    <div class="profile-order__requisition-logo"><img src="/img/ui/nophoto.jpg" /></div>
                     <div class="orders-history__statuses">
+                        <div class="orders-history__status" v-if="delivery.delivery_status_id == 0"><span>Новый</span></div>
+                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 1"><span>Зарегистрирован</span></div>
                         <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
-                        <div class="orders-history__status orders-history__status--ready">Готов</div>
+                        <div class="orders-history__status orders-history__status--ready">Собран</div>
                         <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
                         <div class="orders-history__status orders-history__status--canceled">Отменен</div>
                     </div>
                 </div>
                 <div class="profile-order__requisition-items">
-                    <div class="product-tr">
-                        <div class="product-tr__img product-small-image"><img src="/images/products/product1.jpg" /></div>
-                        <div class="product-tr__title">Смартфон Huawei P Smart 2021 4+128GB Crush Green</div>
-                        <div class="product-tr__quantity">1 шт</div>
-                        <div class="product-tr__price">
-                            <div class="product-tr__price-actual">17 990 ₽</div>
-                            <div class="product-tr__price-old">21 990 ₽</div>
-                        </div>
-                        <div class="product-tr__wishlist"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="product-tr">
-                        <div class="product-tr__img product-small-image"><img src="/images/products/product1.jpg" /></div>
-                        <div class="product-tr__title">Смартфон Huawei P Smart 2021 4+128GB Crush Green</div>
-                        <div class="product-tr__quantity">12 шт<span class="product-tr__quantity-new">10 шт</span></div>
-                        <div class="product-tr__price">
-                            <div class="product-tr__price-actual">21 990 ₽</div>
-                        </div>
-                        <div class="product-tr__wishlist"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
-                            </svg>
-                        </div>
-                    </div>
+                    <template v-for='requisition in delivery.requisitions'>
+                      <div class="product-tr" v-for="product in requisition.items">
+                          <div class="product-tr__img product-small-image"><img :src="'/images/product/' + product.image_id " /></div>
+                          <div class="product-tr__title">{{ products.product }}</div>
+                          <div class="product-tr__quantity">{{ product.qty }} шт<span v-if="product.qty_fact != product.qty" class="product-tr__quantity-new">{{ product.qty_fact }} шт</span></div>
+                          <div class="product-tr__price">
+                              <div class="product-tr__price-actual">{{ ((product.price - product.price * product.discount / 100) / 100).toLocaleString() }} ₽</div>
+                              <div class="product-tr__price-old" v-if="+product.discount">{{ (product.price / 100).toLocaleString() }} ₽</div>
+                          </div>
+                          <div class="product-tr__wishlist wishlist-icon" :data-id="product.id">
+                              <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.5465 1.98642C15.604 1.03344 14.3562 0.512582 13.0244 0.512582C11.6926 0.512582 10.441 1.0373 9.49841 1.99028L9.00615 2.48799L8.50626 1.98256C7.56371 1.02958 6.30826 0.501007 4.97648 0.501007C3.64852 0.501007 2.39688 1.02572 1.45815 1.97484C0.515605 2.92782 -0.00336783 4.19332 0.000448141 5.53983C0.000448141 6.88635 0.523237 8.14798 1.46578 9.10096L8.63219 16.3467C8.7314 16.447 8.86496 16.501 8.9947 16.501C9.12445 16.501 9.25801 16.4509 9.35722 16.3505L16.5389 9.11639C17.4814 8.16341 18.0004 6.89792 18.0004 5.5514C18.0042 4.20489 17.4891 2.9394 16.5465 1.98642ZM15.8139 8.37947L8.9947 15.2471L2.19082 8.3679C1.44289 7.61169 1.03076 6.60856 1.03076 5.53983C1.03076 4.47111 1.43907 3.46797 2.187 2.71562C2.93112 1.96327 3.92327 1.54658 4.97648 1.54658C6.03351 1.54658 7.02948 1.96327 7.77741 2.71948L8.63982 3.59143C8.84206 3.79592 9.16642 3.79592 9.36867 3.59143L10.2234 2.72719C10.9714 1.97099 11.9673 1.5543 13.0206 1.5543C14.0738 1.5543 15.0659 1.97099 15.8139 2.72334C16.5618 3.47955 16.9701 4.48268 16.9701 5.5514C16.9739 6.62013 16.5618 7.62326 15.8139 8.37947Z" fill="currentColor"></path></svg>
+                          </div>
+                      </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -60,40 +53,42 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                         </svg>
                         <div>
                             <h2>Заказ №{{ order.orderId }}</h2>
-                            <p>Создан 12 мая 2021 в 14:46</p>
+                            <p>Создан {{ getLocaledTime(order.orderDate) }}</p>
                         </div>
                     </div>
-                    <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="panel__delivery-item" v-if="totalDeliveries.deliveriesTotal"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
                         </svg>
                         <div>
-                            <h2>5 доставок</h2>
-                            <p>Сегодня с 15 до 16</p>
+                            <h2>{{ totalDeliveries.deliveriesTotal }} {{ deliveriesUnit(totalDeliveries.deliveriesTotal) }}</h2>
+                            <p>{{ getTimePointText(+order.orderDate,order.basketInfo.timepoint[+order.basketInfo.ordermerge],+order.basketInfo.ordermerge) }}</p>
                             <p>{{ order.basketInfo.userGeoLocation.value }}</p>
                         </div>
                     </div>
-                    <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="panel__delivery-item" v-if="totalDeliveries.pickupsTotal"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
                         </svg>
                         <div>
-                            <h2>2 самовывоза</h2>
+                            <h2>{{ totalDeliveries.pickupsTotal }} {{ deliveriesUnit(totalDeliveries.pickupsTotal,true)}} </h2>
                         </div>
                     </div>
-                    <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div v-if="order.basketInfo.paycard != 'none'" class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M8.999 0.999023C13.418 0.999023 16.999 4.58102 16.999 8.99902C16.999 13.418 13.418 16.999 8.999 16.999C4.581 16.999 0.999001 13.418 0.999001 8.99902C0.999001 4.58102 4.581 0.999023 8.999 0.999023Z" stroke="currentColor" stroke-width="2" />
                         </svg>
                         <div>
                             <h2>Оплачен</h2>
-                            <p>Картой 5213 2487 **** 0817</p>
+                            <p>Картой {{ order.basketInfo.paycard }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="panel__zip"></div>
                 <div class="panel__price">
-                    <div class="panel__price-current">394 990 ₽</div>
-                    <div class="panel__price-old">403 990 ₽</div>
+                    <div class="panel__price-current">{{ (totalPrice.price + +order.basketInfo.delivery_price / 100).toLocaleString() }} ₽</div>
+                    <div class="panel__price-old" v-if="totalPrice.price != totalPrice.oldprice">{{ (totalPrice.oldprice + order.basketInfo.delivery_price / 100).toLocaleString() }} ₽</div>
                 </div>
-                <div class="panel__bonuses"><span>+179</span> сейбонов<div class="question">
+                <div class="panel__bonuses" style="display: none;">
+                    <span>+179</span> сейбонов
+                    <div class="question">
                         <div class="question__icon">?</div>
                     </div>
                 </div>
@@ -101,15 +96,16 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     <div class="panel__tr">
                         <div>Товары (13)</div>
                         <div class="panel__tr-items-total">
-                            <div>389 800 ₽</div>
-                            <div>402 190 ₽</div>
+                          <div>{{ totalPrice.price.toLocaleString() }} ₽</div>
+                          <div v-if="totalPrice.price != totalPrice.oldprice">{{ totalPrice.oldprice.toLocaleString() }} ₽</div>
                         </div>
                     </div>
-                    <div class="panel__tr">
-                        <div> <b>Доставка за час</b></div>
-                        <div>899 ₽</div>
+                    <div class="panel__tr" v-if="totalDeliveries.deliveriesTotal">
+                        <div v-if="+order.basketInfo.ordermerge"> <b>Доставка за три часа</b></div>
+                        <div v-else> <b>Доставка за час</b></div>
+                        <div>{{ (order.basketInfo.delivery_price / 100).toLocaleString() }} ₽</div>
                     </div>
-                    <div class="panel__tr">
+                    <div class="panel__tr" v-if="totalDeliveries.pickupsTotal">
                         <div>Самовывоз</div>
                         <div>0 ₽</div>
                     </div>
@@ -119,10 +115,4 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
         </div>
     </div>
 </div>
-<div id="client-order"></div>
-<script>
-   var userOrder = <?=json_encode($this->orderInfo)?>;
-</script>
-<pre>
-  <?= print_r($this->orderInfo); ?>
-</pre>
+<pre id="client-order"></pre>

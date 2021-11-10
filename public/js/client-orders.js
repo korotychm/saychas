@@ -39,7 +39,7 @@ $(document).ready(function () {
           order.total = 0;
           order.oldtotal = 0;
           order.count = 0;
-          let orderDate = new Date(order.date * 1000);
+          let orderDate = new Date(+order.orderDate * 1000);
           if (this.isToday(orderDate)){
             order.dateLocaled = 'сегодня';
           } else {
@@ -153,7 +153,7 @@ $(document).ready(function () {
           .then(response => (
             this.orders = response.data.order_list,
             this.products = response.data.productsMap,
-            console.log(this.orders)
+            console.log('Список заказов', response)
           ));
       },
       isToday(someDate) {
