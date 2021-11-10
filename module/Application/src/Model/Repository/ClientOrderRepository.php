@@ -296,6 +296,7 @@ class ClientOrderRepository extends Repository
     {
         $deliveryInfo = $clientOrder->getDeliveryInfo();
         $di = json_decode($deliveryInfo, true);
+        
         foreach($di['deliveries'] as &$d) {
             foreach($d['requisitions'] as &$r) {
                 if($d['delivery_id'] == $deliveryId) {
@@ -306,6 +307,7 @@ class ClientOrderRepository extends Repository
                 }
             }
         }
+        
         $status = json_encode($di, true);
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
