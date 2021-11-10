@@ -86,7 +86,7 @@ cursor.forEach(printjson);
 */
 
 var cursor = db.requisitions.aggregate([
-        /*{
+        {
                 "$project": {
                         "_id": 0,
                         "provider_id": 1,
@@ -94,7 +94,7 @@ var cursor = db.requisitions.aggregate([
                         "date": 1
                 }
         },
-	*/
+	
 	{
 		"$addFields": {
 			//"maxDate": { "$max": "$date" },
