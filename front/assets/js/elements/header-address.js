@@ -59,7 +59,6 @@ $(document).ready(function(){
 
   $(".setuseraddress").click(function (e) {
       e.stopPropagation();
-      console.log('clicked');
       var rel = $(this).attr("rel");
       $.ajax({
           beforeSend: function () {},
