@@ -49,7 +49,7 @@ $(document).ready(function () {
           totalPrice(){
             let price = 0,
                 oldprice = 0;
-            for (delivery of this.order.deliveryInfo.deliveries){
+            for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               for (requisition of delivery.requisitions){
                 for (product of requisition.products) {
                   price += (product.price - product.price * product.discount / 100);
