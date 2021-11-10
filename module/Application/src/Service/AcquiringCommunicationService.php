@@ -164,7 +164,7 @@ class AcquiringCommunicationService
     
     public function returnProductsToBasket($order_id, $userId)
     {
-       $orderProducts = $this->basketRepository->findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
+       $orderProducts = Basket::findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
        $returnProduct = ArrayHelper::extractId($orderProducts);
 
        foreach ($returnProduct as $productId){
