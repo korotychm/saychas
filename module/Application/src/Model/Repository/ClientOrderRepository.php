@@ -200,7 +200,7 @@ class ClientOrderRepository extends Repository
             
             if(empty($clientOrder = $this->find(['order_id' => $orderId]))) {
                 // throw new RuntimeException('Cannot find the order with given number');
-                return ['result' => true, 'description' => 'Cannot find the order with given number', 'statusCode' => 200];
+                return ['result' => true, 'description' => 'Cannot find the order with given number '.(int) $orderId , 'statusCode' => 200];
             }
             
             $orderCancel = Resource::ORDER_STATUS_CODE_CANCELED; 
