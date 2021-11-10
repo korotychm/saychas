@@ -242,13 +242,13 @@ class AjaxController extends AbstractActionController
         }
 
         $return["order_list"] = $this->htmlProvider->orderList($orders);
-        $productMap = $this->getBasketProductMap($userId);
-
-        if ($productMap['result'] == false) {
-            return new JsonModel($productMap);
-        }
-
-        $return["productsMap"] = $productMap['products'];
+        
+//        $productMap = $this->getBasketProductMap($userId);
+//        if ($productMap['result'] == false) {
+//            return new JsonModel($productMap);
+//        }
+//
+//        $return["productsMap"] = $productMap['products'];
 
         return new JsonModel($return);
     }
@@ -313,28 +313,46 @@ class AjaxController extends AbstractActionController
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
         $return['order_id'] = $post->orderId;
-        //$return['order_id'] = "000000006";
+        $return['order_id'] = "000000006";
         $order = ClientOrder::findAll(["where" => ['user_id' => $return['userId'], 'order_id' => $return['order_id']]]);
 //        if (empty($order)) {
 //            
 //            return new JsonModel($return);
 //        }
         $return["order_info"] = $this->htmlProvider->orderList($order);
-        $productMap = $this->getBasketProductMap($userId, $return['order_id']);
-
-        if ($productMap['result'] == false) {
-            //return new JsonModel($productMap);
-            $productMap['products'] = [];
-           // $productMap['providers'] = [];
-        }
         
-        $providersIdArray = $productMap['providers'] ?? [];
-        $return["providersMap"] = $this->getProvidersMap($providersIdArray);
-        $return["productsMap"] = $productMap['products'];
+//        exit (print_r($return["order_info"][0]["deliveryInfo"]["delivery_info"]["deliveries"]));
+//        $products = $this->getClientOrderProducts($return["order_info"]["deliveryInfo"]["delivery_info"]["deliveries"]);
+//       exit (print_r($products));
+//        $productMap = $this->getBasketProductMap($userId, $return['order_id']);
+//
+//        if ($productMap['result'] == false) {
+//            //return new JsonModel($productMap);
+//            $productMap['products'] = [];
+//           // $productMap['providers'] = [];
+//        }
+//        
+//        $providersIdArray = $productMap['providers'] ?? [];
+//        $return["providersMap"] = $this->getProvidersMap($providersIdArray);
+//        $return["productsMap"] = $productMap['products'];
         $return["result"] = true;
 
         return new JsonModel($return);
     }
+    
+    private function  getClientOrderProducts ($del)
+    {
+        $deliveryes = Json::decode($del, Json::TYPE_ARRAY);
+        foreach ($deliveryes as $delivery){
+            //$requsition[] = $delivery[""];
+            exit (print_r($delivery));
+            
+        }
+                
+                
+        
+    }        
+    
 
     /**
      * @route /ajax-check-order-status
