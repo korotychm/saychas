@@ -36,54 +36,55 @@ function setUserAddrees() {
     });
 }
 
-$(".deleteuseraddress").click(function () {
-    var rel = $(this).attr("rel");
-    $.ajax({
-        beforeSend: function () {},
-        url: "/user-delete-address",
-        type: 'POST',
-        cache: false,
-        data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
-        success: function (data) {
-            //if(data.result == 1)
-            $("#useradress-" + rel).fadeOut();
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            showAjaxErrorPopupWindow (xhr.status, thrownError);
-            return false;
-        }
-    });
-});
-
-$(".setuseraddress").click(function () {
-    var rel = $(this).attr("rel");
-    $.ajax({
-        beforeSend: function () {},
-        url: "/user-set-default-address",
-        type: 'POST',
-        cache: false,
-        data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
-        success: function (data) {
-            //console.log(data);
-            //if(data.result == 1)
-            //    $("#useradress-" + rel ).fadeOut();
-            location = location.href;
-            return false;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status !== 0) {
-                showServicePopupWindow(
-                        "Ошибка " + xhr.status,
-                        "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
-                        );
-            }
-            return false;
-        }
-    });
-    return false;
-});
-
 $(document).ready(function(){
+
+  $(".deleteuseraddress").click(function () {
+      var rel = $(this).attr("rel");
+      $.ajax({
+          beforeSend: function () {},
+          url: "/user-delete-address",
+          type: 'POST',
+          cache: false,
+          data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
+          success: function (data) {
+              //if(data.result == 1)
+              $("#useradress-" + rel).fadeOut();
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+              showAjaxErrorPopupWindow (xhr.status, thrownError);
+              return false;
+          }
+      });
+  });
+
+  $(".setuseraddress").click(function (e) {
+      e.stopPropagation();
+      var rel = $(this).attr("rel");
+      $.ajax({
+          beforeSend: function () {},
+          url: "/user-set-default-address",
+          type: 'POST',
+          cache: false,
+          data: {'dataId': rel, 'reload': $(this).attr("data-reload")},
+          success: function (data) {
+              //console.log(data);
+              //if(data.result == 1)
+              //    $("#useradress-" + rel ).fadeOut();
+              location = location.href;
+              return false;
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+              if (xhr.status !== 0) {
+                  showServicePopupWindow(
+                          "Ошибка " + xhr.status,
+                          "Ошибка соединения, попробуйте повторить попытку позже." + "\r\n " + xhr.status + " " + thrownError
+                          );
+              }
+              return false;
+          }
+      });
+      return false;
+  });
 
   $(".searchpanelclose").click(function () {
       $("#searchpanel").stop().css({top: "-200px"});

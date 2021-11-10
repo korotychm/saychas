@@ -305,6 +305,7 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $return['order_id'] = $post->orderId;
         //$return['order_id'] = "000000006";
+
         $order = ClientOrder::findAll(["where" => ['user_id' => $return['userId'], 'order_id' => $return['order_id']]]);
 //        if (empty($order)) {
 //
@@ -312,20 +313,9 @@ class AjaxController extends AbstractActionController
 //        }
         $return["order_info"] = $this->htmlProvider->orderList($order);
         $providers = $this->getClientOrderProviders($return["order_info"][0]["deliveryInfo"]["delivery_info"]["deliveries"]);
-        //exit (print_r($products));
-//        $productMap = $this->getBasketProductMap($userId, $return['order_id']);
-//
-//        if ($productMap['result'] == false) {
-//            //return new JsonModel($productMap);
-//            $productMap['products'] = [];
-//           // $productMap['providers'] = [];
-//        }
-//
-//        $providersIdArray = $productMap['providers'] ?? [];
         $return["providersMap"] = $this->getProvidersMap($providers);
-//        $return["productsMap"] = $productMap['products'];
         $return["result"] = true;
-
+        
         return new JsonModel($return);
     }
 

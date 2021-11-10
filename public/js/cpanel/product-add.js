@@ -5,7 +5,7 @@ const ProductAdd = {
                       <a class="btn btn--primary">По одному товару</a>
                   </div>
                   <div class="filter__btn">
-                      <router-link to="/product-add-file" class="btn btn--secondary disabled">Массой товаров</router-link>
+                      <router-link to="/product-add-file" class="btn btn--secondary">Массой товаров</router-link>
                   </div>
                   <div class="filter__btn" style="display: none;">
                       <router-link to="/product-add-api" class="btn btn--secondary">Загрузка по API</router-link>
@@ -366,7 +366,7 @@ const ProductAdd = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            if (c < 32 || c == 96 || (c > 255 && c < 1040) || (c > 1103 && c != 8470)) {
+            if ((c < 32 && c != 10) || c == 96 || (c > 255 && c < 1040) || (c > 1103 && c != 8470)) {
                 output = output.replace(input[i],'');
             }
       }

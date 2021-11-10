@@ -20,6 +20,7 @@ body {
 @media (max-width: 767px) {
   .main {
     overflow-x: hidden;
+    margin-top: 20px;
   }
 }
 .container {
