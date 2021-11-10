@@ -29,7 +29,7 @@ class ClientOrderRepository extends Repository
     
     protected const REQUISITION = 2;
     
-     protected const ORDER_INFO = "update_order";
+     protected const ORDER_INFO = 3; //"update_order";
 
     /**
      * @var string
