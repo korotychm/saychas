@@ -136,30 +136,74 @@ class RequisitionManager extends ListManager implements LoadableInterface
         
     }
     
-    public function filter(array $cursor)
+//    public function filter(array $cursor)
+//    {
+//        $collection = $this->db->requisitions;
+//
+//        $filter = $collection->aggregate([
+//            [
+//                '$project' => [
+//                "_id" => 0,
+//                "provider_id" => 1,
+//                "status_id" => 1,
+//                "status" => 1,
+//                "order" => [ 
+//                    '$cond' => [
+//                            "if" => ['$eq' => ['$status_id', "06" ]  ],
+//                            "then" => 6666,
+//                            "else" => ['$cond' => ["if" => ['$eq' => ['$status_id', "03"]], "then" => 3333, "else" => 4444 ]],
+//                        ],
+//                    ],
+//            ] ],
+//            ['$sort' => ["order" => 1] ]//,
+//            //{ "$project" : { "_id" : 1, "provider_id" : 1, "status_id" : 1, "status": 1, "order": 1 } }
+//        ]);
+//        
+//        return $filter;
+//    }
+    
+
+    public function findAndSort(array $cursor)
     {
         $collection = $this->db->requisitions;
-
         $filter = $collection->aggregate([
+//            [
+//                    '$project' => [
+//                            '_id' => 0,
+//                            'provider_id' => 1,
+//                            'status_id' => 1,
+//                            'date' => 1
+//                    ]
+//            ],
             [
-                '$project' => [
-                "_id" => 0,
-                "provider_id" => 1,
-                "status_id" => 1,
-                "status" => 1,
-                "order" => [ 
-                    '$cond' => [
-                            "if" => ['$eq' => ['$status_id', "06" ]  ],
-                            "then" => 6666,
-                            "else" => ['$cond' => ["if" => ['$eq' => ['$status_id', "03"]], "then" => 3333, "else" => 4444 ]],
-                        ],
-                    ],
-            ] ],
-            ['$sort' => ["order" => 1] ]//,
-            //{ "$project" : { "_id" : 1, "provider_id" : 1, "status_id" : 1, "status": 1, "order": 1 } }
+                    '$addFields' => [
+                            'strdate' => ['$toDate' => ['$multiply' => [['$toLong' => '$date'], 1000]] ],
+
+                            'asc' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toInt' => '$status_id'],
+                                    'else' => ['$multiply' => [-1, ['$toInt' => '$status_id'] ] ]
+                                ]
+                            ],
+                            'order' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toLong' => '$date'],
+                                    'else' => ['$multiply' => [-1, ['$toLong' => '$date'] ] ]
+                                ]
+
+                            ],
+                    ]
+            ],
+            [
+                    '$sort' => [
+                            'order' => 1,
+                            'asc' => 1
+                    ]
+            ]
         ]);
         
         return $filter;
+        
     }
     
     /**
@@ -173,10 +217,11 @@ class RequisitionManager extends ListManager implements LoadableInterface
         $pageNo = $params['pageNo'];
         
         /** We added sort key here */
-        $cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']/*, 'sort' => $params['sort']*/]);
+        //$cursor = $this->findAll(['pageNo' => $pageNo, 'where' => $params['where']/*, 'sort' => $params['sort']*/]);
         
         /** The following code is temporarily commented out as we need to check filter method prior to using it */
         // $cursor['body'] = $this->filter($cursor['body'])->toArray();
+        $cursor = $this->findAndSort([])->toArray();
         
         $collection = $this->db->stores;
         

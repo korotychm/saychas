@@ -86,22 +86,21 @@ cursor.forEach(printjson);
 */
 
 var cursor = db.requisitions.aggregate([
-        {
+        /*{
                 "$project": {
                         "_id": 0,
                         "provider_id": 1,
                         "status_id": 1,
-                        //"status": 1,
-			//"yearMonthDayUTC": { "$dateToString": { format: "%Y-%m-%d", date: "$date" } },
-			//convertedDate: { $toDate: "$date" },
                         "date": 1
                 }
         },
+	*/
 	{
 		"$addFields": {
 			//"maxDate": { "$max": "$date" },
 			//"strdate": { "$toDate": {"$divide": [{"$toLong": "$date"}, 1]} },
-			"strdate": { "$toDate": {"$toLong": "$date"} },
+			"strdate": { "$toDate": {"$multiply": [{"$toLong": "$date"}, 1000]} },
+			//"strdate": { "$toDate": {"$toLong": "$date"} },
 
 		        "asc" : {
                             "$cond" : {
@@ -130,8 +129,6 @@ var cursor = db.requisitions.aggregate([
 	},
 	{
 		"$sort": {
-			//"asc": -1,
-			//"strdate": 1,
 			"order": 1,
 			"asc": 1
 		}
