@@ -51,7 +51,7 @@ $(document).ready(function () {
                 oldprice = 0;
             for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               for (requisition of delivery.requisitions.requisitions){
-                for (product of requisition.products) {
+                for (product of requisition.items) {
                   price += (product.price - product.price * product.discount / 100);
                   oldprice += +product.price;
                 }
