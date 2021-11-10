@@ -233,13 +233,14 @@ class ReviewController extends AbstractActionController
     {
         $reviews = Review::findAll(["where" => ["product_id" => $productId], "columns" => ["id"]])->toArray();
         $reviewsId = ArrayHelper::extractId($reviews, "id");
-        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId], "order" => ["id desc"], "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId],  "columns"=> ["filename"], "group" =>   ["filename"],  "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
 
+        $return =[];
         foreach ($images as $image) {
             $return[] = $image->getFilename();
         }
 
-        return $return ?? null;
+        return array_unique($return);
     }
 
     /**
