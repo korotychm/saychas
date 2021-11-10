@@ -194,7 +194,7 @@ class ClientOrderRepository extends Repository
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
         foreach($result['data'] as $item) {
-        $orderId = $item['order_id'];
+            $orderId = $item['order_id'];
             if(empty($clientOrder = $this->find(['order_id' => $orderId]))) {
                 // throw new RuntimeException('Cannot find the order with given number');
                 //return ['result' => true, 'description' => 'Cannot find the order with given number '.$orderId , 'statusCode' => 200];
