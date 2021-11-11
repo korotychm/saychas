@@ -119,7 +119,7 @@ $(document).ready(function () {
           for (delivery of order.deliveryInfo.pickup){
             if (delivery.requisitions){
               for (requisition of delivery.requisitions){
-                for (product of requisition.products){
+                for (product of requisition.items){
                   product.img = this.products[product.id].image;
                   product.title = this.products[product.id].title;
                   order.pickupProducts.push(product);
