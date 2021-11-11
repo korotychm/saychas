@@ -144,13 +144,9 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            console.log('до загрузки',this.filePath)
-            this.filePath = window.location.href + productsDocumentPath + response.data.filename;
+            this.filePath = productsDocumentPath + response.data.filename;
             this.fileName = response.data.fileName;
-            console.log('после загрузки',this.filePath)
-            console.log('Файл',response);
-            console.log(productsDocumentPath)
-
+            // console.log('Файл',response);
           })
           .catch(error => {
             if (error.response.status == '403'){
