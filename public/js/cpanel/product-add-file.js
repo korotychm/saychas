@@ -68,7 +68,7 @@ const ProductAddFile = {
       return categories;
     },
     removeSting() {
-      if(this.checkBrowser()) {
+      if(this.checkBrowser) {
         return this.filePath.replace(window.location.href, '')
       } else {
         return this.filePath ? this.filePath : ''
