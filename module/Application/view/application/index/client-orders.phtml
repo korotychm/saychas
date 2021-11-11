@@ -10,7 +10,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div id="client-orders">
     <div v-if="preparedOrders.length" class="orders-history">
-        <div v-for="order in preparedOrders" class="orders-history__item">
+        <div v-for="(order,orderIndex) in preparedOrders" class="orders-history__item">
           <div class="orders-history__left">
             <div v-if="order.deliveryInfo.delivery_info.deliveries.length" class="orders-history__delivery">
               <div class="orders-history__delivery-item">
@@ -93,7 +93,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                     <div class="panel__tr">
                         <div>Товары ({{order.count}})</div>
                         <div class="panel__tr-items-total">
-                            <div>{{ order.productsTotal.toLocaleString() }} <?=Resource::CURRENCY_RUBL?></div>
+                            <div>{{ totalItems(orderIndex).toLocaleString() }} <?=Resource::CURRENCY_RUBL?></div>
                             <div v-if="(order.productsTotal > order.oldProductsTotal)">{{ order.oldProductsTotal.toLocaleString() }} <?=Resource::CURRENCY_RUBL?></div>
                         </div>
                     </div>

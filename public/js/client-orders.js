@@ -147,6 +147,37 @@ $(document).ready(function () {
       }
     },
     methods: {
+      totalItems(index){
+        let itemsTotal = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          for (requisition of delivery){
+            for (product of reuisitions.items){
+              itemsTotal++;
+            }
+          }
+        }
+        return {
+          itemsTotal;
+        }
+      },
+      totalPrice(index){
+        let price = 0,
+            oldprice = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          for (requisition of delivery.requisitions){
+            if (requisition.status_id != 5){ // Заявка не отменена
+              for (product of requisition.items) {
+                price += ((product.price - product.price * product.discount / 100) * product.qty_fact);
+                oldprice += (product.price * product.qty_fact);
+              }
+            }
+          }
+        }
+        return {
+          price: price / 100,
+          oldprice: oldprice / 100
+        }
+      },
       getClientOrders() {
         axios
           .post('/ajax-get-order-list')
