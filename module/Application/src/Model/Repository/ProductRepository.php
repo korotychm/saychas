@@ -523,8 +523,8 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $this->saveProductCharacteristics($prods);
 
             $escaper = new Escaper('utf-8');
-            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `parent_category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, $escaper->escapeHtml($product->title), $escaper->escapeHtml($product->description), $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `parent_category_id`, `title`, `url`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+                    $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, $escaper->escapeHtml($product->title),   $escaper->escapeHtml($product->url), $escaper->escapeHtml($product->description), $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
             //if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
