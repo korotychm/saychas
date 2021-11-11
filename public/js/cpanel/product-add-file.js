@@ -144,8 +144,10 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
+            console.log('до загрузки',this.filePath)
             this.filePath = this.filePath + response.data.fileName;
             this.fileName = response.data.fileName;
+            console.log('после загрузки',this.filePath)
             console.log('Файл',response);
           })
           .catch(error => {
@@ -154,16 +156,6 @@ const ProductAddFile = {
             }
           });
       this.file = true;
-    },
-    downloadFile () {
-      const fileName = this.fileName;
-      const url = window.URL.createObjectURL(this.filePath)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = fileName
-      a.click()
-      window.URL.createObjectURL(url)
-      console.log(a)
     },
   },
   created: function(){
