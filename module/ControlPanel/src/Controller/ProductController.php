@@ -262,7 +262,7 @@ class ProductController extends AbstractActionController
             
             $identity = $this->authService->getIdentity();
             $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
-            $data = ['filename' => $newFileName];
+            $data = ['filename' => $newFileName, 'query_type' => 'product'];
             $result = $this->productManager->uploadProductFile($credentials, $data);
             $res = $result['http_code'] === 200 && $result['data']['result'] === true;
             
