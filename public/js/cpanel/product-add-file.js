@@ -140,15 +140,6 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
-    downloadFile(){
-      var link_url = document.createElement("a");
-      link_url.download = this.filePath.substring((this.filePath.lastIndexOf("/") + 1), this.filePath.length);
-      link_url.href = this.filePath;
-      document.body.appendChild(link_url);
-      link_url.click();
-      document.body.removeChild(link_url);
-      delete link_url;
-    },
     uploadFile () {
       let file  = document.querySelector("#upload-file").files
       let formData = new FormData()
