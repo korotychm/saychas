@@ -432,22 +432,22 @@ class ProductController extends AbstractActionController
         ];
         
         /** To be removed */
-        $content = [
-//          "provider_id" => $identity['provider_id'],
-          "store_id" => '',
-          "category_id" => '000000006',
-          "query_type" => 'product',
-        ];
+//        $content = [
+////          "provider_id" => $identity['provider_id'],
+//          "store_id" => '',
+//          "category_id" => '000000006',
+//          "query_type" => 'product',
+//        ];
 
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
         //$result = $this->productManager->getProductFile($content);
         $result = $this->productManager->getProductFile($credentials, $content);
 
-        if(false == $result['result']) {
-            return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
+        if(false == $result['data']['result']) {
+            return new JsonModel(['result' => $result['data']['result'], 'filename' => '', 'error_description' => $result['data']['error_description'], 'http_code' => $result['http_code']]);
         }
 
-        return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
+        return new JsonModel(['result' => $result['data']['result'], 'filename' => $result['data']['filename'], 'error_description' => '', 'http_code' => '200' ]);
     }
 
     /**
