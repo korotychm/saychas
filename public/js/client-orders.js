@@ -47,15 +47,16 @@ $(document).ready(function () {
           }
           order.timeLocaled = orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
 
-          order.deliveryInfo.pickup = JSON.parse(JSON.stringify(order.deliveryInfo.delivery_info.deliveries));
-          order.deliveryInfo.pickup = order.deliveryInfo.pickup.filter((delivery) => {
-            return (delivery.pickup == true)
-          })
-          
-          order.deliveryInfo.delivery_info.deliveries = JSON.parse(JSON.stringify(order.deliveryInfo.delivery_info.deliveries));
-          order.deliveryInfo.delivery_info.deliveries = order.deliveryInfo.delivery_info.deliveries.filter((delivery) => {
-            return (delivery.pickup == false)
-          })
+          // order.deliveryInfo.pickup = JSON.parse(JSON.stringify(order.deliveryInfo.delivery_info.deliveries));
+          // order.deliveryInfo.pickup = order.deliveryInfo.pickup.filter((delivery) => {
+          //   return (delivery.pickup == true)
+          // })
+
+
+          // order.deliveryInfo.delivery_info.deliveries = JSON.parse(JSON.stringify(order.deliveryInfo.delivery_info.deliveries));
+          // order.deliveryInfo.delivery_info.deliveries = order.deliveryInfo.delivery_info.deliveries.filter((delivery) => {
+          //   return (delivery.pickup == false)
+          // })
 
           let pickupCount = order.deliveryInfo.pickup.length;
           if (pickupCount == 1){
