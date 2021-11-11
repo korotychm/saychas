@@ -255,7 +255,9 @@ class HtmlProviderService
             } elseif ($chType == Resource::CHAR_VALUE_REF) {
                 $value[] = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val])->getTitle();
             } elseif ($chType == Resource::BRAND_REF) {
-                $value[] = "<a href='/brand/$val' >" . $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle() . "</a>";
+                $brand = $this->brandRepository->findFirstOrDefault(['id' => $val]);
+                $value[] = "<a href='/brand/{$brand->getUrl()}' >" . $brand->getTitle() . "</a>";
+//                $value[] = "<a href='/brand/$val' >" . $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle() . "</a>";
             } elseif ($chType == Resource::COLOR_REF) {
                 $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
                 $value[] = "<div class='iblok relative'  ><div class='cirkul iblok relative' style='background-color:{$color->getValue()};'></div>{$color->getTitle()}</div>";
@@ -283,7 +285,7 @@ class HtmlProviderService
         $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
         $provider = $this->providerRepository->findFirstOrDefault(['id' => $return['provider_id']]);
         $return["brand"] = ["title" => $return['brand_title'], "id" => $return['brand_id'], "image" => $this->brandRepository->findFirstOrDefault(['id' => $return["brand_id"]])->getImage(),];
-        $return["provider"] = ["id" => $provider->getId(), "image" => $provider->getImage(), "title" => $provider->getTitle(),];
+        $return["provider"] = ["id" => $provider->getId(), "image" => $provider->getImage(), "title" => $provider->getTitle(), 'url' => $provider->getUrl(), ];
         $characteristicsArray = !empty($return['param_variable_list']) ? Json::decode($return['param_variable_list'], Json::TYPE_ARRAY) : [];
         $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $return['category_id']);
 
