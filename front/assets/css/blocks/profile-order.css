@@ -61,7 +61,7 @@
   display: flex;
   align-items: center;
 }
-.profile-order__requisition-head span {
+.profile-order__requisition-head > span {
   margin-right: 30px;
 }
 .profile-order__requisition-logo {
