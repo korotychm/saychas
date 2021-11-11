@@ -374,15 +374,16 @@ class IndexController extends AbstractActionController
 //            return $this->redirect()->toUrl('/my-login');
 //        }
         $userId = $this->identity();
-        $product_id = $this->params()->fromRoute('id', '');
-        $params['equal'] = $product_id;
+        $product_url = $this->params()->fromRoute('id', '');
+        $params['equal'] = $product_url;
         
-        if (empty($product_id) or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
+        if (empty($product_url)  or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
             return $this->responseError404();
         }
         
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $productPage = $this->htmlProvider->productPageService($products);
+        $product_id = $productPage['id'];
         $productPage['breadCrumbs'] = ($productPage['category_id'] and!empty($matherCategories = $this->categoryRepository->findAllMatherCategories($productPage['category_id']))) ? array_reverse($matherCategories) : [];
         $productPage['isFav'] = $this->commonHelperFuncions->isInFavorites($product_id, $userId);
         $this->addProductToHistory($product_id);
