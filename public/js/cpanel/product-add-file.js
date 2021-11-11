@@ -145,10 +145,12 @@ const ProductAddFile = {
         }),{headers})
           .then(response => {
             console.log('до загрузки',this.filePath)
-            this.filePath = this.filePath + response.data.fileName;
+            this.filePath = productsDocumentPath + response.data.fileName;
             this.fileName = response.data.fileName;
             console.log('после загрузки',this.filePath)
             console.log('Файл',response);
+            console.log(productsDocumentPath)
+
           })
           .catch(error => {
             if (error.response.status == '403'){
@@ -159,8 +161,6 @@ const ProductAddFile = {
     },
   },
   created: function(){
-    var productsDocumentPath = "<?= $this->documentPath('product').'/' ?>";
-    console.log(productsDocumentPath)
     $('.main__loader').show();
     this.getCategories();
   },
