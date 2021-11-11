@@ -443,11 +443,11 @@ class ProductController extends AbstractActionController
         //$result = $this->productManager->getProductFile($content);
         $result = $this->productManager->getProductFile($credentials, $content);
 
-        if(false == $result['result']) {
-            return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
+        if(false == $result['data']['result']) {
+            return new JsonModel(['result' => $result['data']['result'], 'filename' => '', 'error_description' => $result['data']['error_description'], 'http_code' => $result['http_code']]);
         }
 
-        return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
+        return new JsonModel(['result' => $result['data']['result'], 'filename' => $result['data']['filename'], 'error_description' => '', 'http_code' => '200' ]);
     }
 
     /**
