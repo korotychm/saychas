@@ -68,10 +68,15 @@
   margin-right: 30px;
 }
 .profile-order__requisition-logo img {
-  display: block;
-  width: 160px;
-  height: auto;
+  width: auto;
+  height: 60px;
 }
 .profile-order__requisition-items {
   margin-top: 30px;
+}
+.profile-order__requisition .product-tr__wishlist {
+  display: none;
+}
+.profile-order__requisition .product-tr__price {
+  width: 160px;
 }
