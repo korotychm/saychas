@@ -156,9 +156,7 @@ $(document).ready(function () {
             }
           }
         }
-        return {
-          itemsTotal
-        }
+        return itemsTotal
       },
       totalPrice(index){
         let price = 0,
