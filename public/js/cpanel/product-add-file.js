@@ -144,7 +144,7 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            this.filePath = productsDocumentPath + response.data.filename;
+            this.filePath = window.location.href + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
             // console.log('Файл',response);
           })
