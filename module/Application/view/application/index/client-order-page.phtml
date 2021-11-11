@@ -26,8 +26,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                     </div>
                     <div class="orders-history__statuses">
                         <div class="orders-history__status orders-history__status--canceled"v-if="order.orderStatus == 5">Отменена</div>
-                        <div class="orders-history__status" v-if="delivery.delivery_status_id == 0">Новый</div>
-                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 1">Зарегистрирован</div>
+                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 0">Новая</div>
+                        <div class="orders-history__status" v-else-if="delivery.delivery_status_id == 1">В обработке</div>
                         <div class="orders-history__status" v-else >{{ delivery.delivery_status }}</div>
                         <!--
                         <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
