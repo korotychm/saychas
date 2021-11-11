@@ -339,6 +339,8 @@ class UserDataController extends AbstractActionController
         }
 
         $this->returnProductsToBasket($order_id, $userId);
+        $cancelFlag = Resource::ORDER_STATUS_CODE_CANCELED;
+        $order->setStatus($cancelFlag["id"])->persist(["order_id" => $order_id]);
 
         return new JsonModel($orderCancel);
     }
