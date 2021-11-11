@@ -486,13 +486,14 @@ class IndexController extends AbstractActionController
 //        if ($container->signedUp != true) {
 //            return $this->redirect()->toUrl('/my-login');
 //        }
-        $brand_id = $this->params()->fromRoute('brand_id', '');
+        $brand_url = $this->params()->fromRoute('brand_id', '');
         $category_url = $this->params()->fromRoute('category_id', '');
   
-        if (empty($brand = Brand::find(["id" => $brand_id]))) {
+        if (empty($brand = Brand::find(["url" => $brand_url]))) {
             return $this->responseError404();
         }
         
+        $brand_id = $brand->getId();
         $brandTitle = $brand->getTitle();
         $categories = $this->getBrandCategories($brand_id);
         $categoryTitle = (empty($category_url)) ? Resource::THE_ALL_PRODUCTS : '';
@@ -505,15 +506,15 @@ class IndexController extends AbstractActionController
                 $category_id = $category->getId();
             }
 
-            $breadCrumbs[] = [$category->getUrl(), $category->getTitle()];
+            $breadCrumbs[] = [$category->getUrl(), $category->getTitle(), $brand_url];
         }
         
         if (!empty($category_id) and empty($categoryTitle)) {
             $this->getResponse()->setStatusCode(301);
-            return $this->redirect()->toUrl('/brand/' . $brand_id);
+            return $this->redirect()->toUrl('/brand/' . $brand_url);
         }
 
-        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $brand->getImage(), 'id' => $brand_id, 'category_id' => $category_id, "title" => $brandTitle, 'category_title' => $categoryTitle,]);
+        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $brand->getImage(), 'id' => $brand_id,  'url' => $brand_url, 'category_id' => $category_id, "title" => $brandTitle, 'category_title' => $categoryTitle,]);
     }
 
     /**
@@ -529,13 +530,13 @@ class IndexController extends AbstractActionController
 //            return $this->redirect()->toUrl('/my-login');
 //        }
         
-        $provider_id = $this->params()->fromRoute('provider_id', '');
+        $provider_url = $this->params()->fromRoute('provider_id', '');
         $category_url = $this->params()->fromRoute('category_id', '');
       
-        if (empty($provider = Provider::find(["id" => $provider_id]))) {
+        if (empty($provider = Provider::find(["url" => $provider_url]))) {
             return $this->responseError404();
         }
-        
+        $provider_id = $provider->getId();
         $providerTitle = $provider->getTitle();
         $categories = $this->getProviderCategories($provider_id);
         $categoryTitle = (empty($category_url)) ? Resource::THE_ALL_PRODUCTS : '';
@@ -553,10 +554,10 @@ class IndexController extends AbstractActionController
 
         if (!empty($category_id) and empty($categoryTitle)) {
             $this->getResponse()->setStatusCode(301);
-            return $this->redirect()->toUrl('/seller/' . $provider_id);
+            return $this->redirect()->toUrl('/seller/' . $provider_url);
         }
         
-        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'id' => $provider_id, 'category_id' => $category_id ?? 0, "title" => $providerTitle, 'category_title' => $categoryTitle,]);
+        return new ViewModel(['breadCrumbs' => $breadCrumbs, 'logo' => $provider->getImage(), 'id' => $provider_id, 'url' => $provider_url, 'category_id' => $category_id ?? 0, "title" => $providerTitle, 'category_title' => $categoryTitle,]);
     }
 
     /**

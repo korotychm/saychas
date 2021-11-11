@@ -12,7 +12,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/brands.js'));
   </div>
   <div class="catalog__wrap">
     <aside class="catalog__sidebar">
-       <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", [ "url" => "brand", "breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "category_id" => $this->category_id]) ?>
+       <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", [ "url" => "brand", "breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "furl" => $this->url, "category_id" => $this->category_id]) ?>
     </aside>
     <div class="catalog__content" id="brand-page">
       <section class="section">
