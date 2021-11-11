@@ -41,6 +41,12 @@ class Brand extends Entity
     /**
      * @var string
      */
+    protected $url;
+
+
+    /**
+     * @var string
+     */
     protected $description;
 
     /**
@@ -92,6 +98,29 @@ class Brand extends Entity
     public function getTitle()
     {
         return $this->title;
+    }
+    /**
+     * Set friendly URL.
+     *
+     * @param string $url
+     *
+     * @return Brand
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get friendly URL.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**
