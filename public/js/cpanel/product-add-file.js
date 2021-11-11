@@ -38,7 +38,7 @@ const ProductAddFile = {
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
                     <div class="product-add-file__files-upload">
-                      <input type="file" id="upload-file"/>
+                      <input type="file" id="upload-file" @change="uploadFile"/>
                       <label for="upload-file">Загрузить файл</label>
                       <p>Загрузите заполненный файл.</p>
                       <p>Товары появятся на сайте после обработки.</p>
@@ -53,7 +53,8 @@ const ProductAddFile = {
       categorySearch: '',
       selectedCategoryId: '',
       selectedCategoryName: '',
-      file: false
+      file: false,
+      uploadedFiles: null
     }
   },
   computed: {
@@ -122,6 +123,14 @@ const ProductAddFile = {
         this.selectedCategoryName = value;
         this.getFile(id);
       }
+    },
+    async uploadFile () {
+     this.uploadedFiles = document.querySelector("#upload-file").files
+     let formData = new FormData()
+     formData.append('file', this.files[0]);
+     await axios.post('/control-panel/upload-product-file', formData, {
+       headers: {'Content-Type': 'multipart/form-data'}
+      }).then(response => console.log(response))
     },
     getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
