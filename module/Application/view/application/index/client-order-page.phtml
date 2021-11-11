@@ -57,12 +57,12 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
         <div class="profile-order__info">
             <div class="panel panel--cart panel--history"><input class="orders-history__detailed-trigger" type="checkbox" checked="checked" id="orders-detailed" />
                 <div class="panel__status">
-                  <div class="orders-history__status" v-if="+orderStatus == 0">Новый</div>
-                  <div class="orders-history__status" v-else-if="+orderStatus == 1">Готов к оплате</div>
-                  <div class="orders-history__status orders-history__status--progress" v-else-if="+orderStatus == 2"><span>Собирается</span></div>
-                  <div class="orders-history__status orders-history__status--ready" v-else-if="+orderStatus == 3">Собран</div>
-                  <div class="orders-history__status orders-history__status--deliveried" v-else-if="+orderStatus == 4">Доставлен</div>
-                  <div class="orders-history__status orders-history__status--canceled" v-else-if="+orderStatus == 5">Отменен</div>
+                  <div class="orders-history__status" v-if="+order.orderStatus == 0">Новый</div>
+                  <div class="orders-history__status" v-else-if="+order.orderStatus == 1">Готов к оплате</div>
+                  <div class="orders-history__status orders-history__status--progress" v-else-if="+order.orderStatus == 2"><span>Собирается</span></div>
+                  <div class="orders-history__status orders-history__status--ready" v-else-if="+order.orderStatus == 3">Собран</div>
+                  <div class="orders-history__status orders-history__status--deliveried" v-else-if="+order.orderStatus == 4">Доставлен</div>
+                  <div class="orders-history__status orders-history__status--canceled" v-else-if="+order.orderStatus == 5">Отменен</div>
                 </div>
                 <div class="panel__delivery">
                     <div class="panel__delivery-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
