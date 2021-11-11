@@ -57,11 +57,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
         </div>
         <div class="profile-order__info">
             <div class="panel panel--cart panel--history"><input class="orders-history__detailed-trigger" type="checkbox" checked="checked" id="orders-detailed" />
-                <div class="panel__status">
-                  <div class="orders-history__status" v-if="+order.orderStatus == 0">Новый</div>
+                <div class="panel__status" v-if="+order.orderStatus == 1 || +order.orderStatus > 3">
                   <div class="orders-history__status" v-else-if="+order.orderStatus == 1">Готов к оплате</div>
-                  <div class="orders-history__status orders-history__status--progress" v-else-if="+order.orderStatus == 2"><span>Собирается</span></div>
-                  <div class="orders-history__status orders-history__status--ready" v-else-if="+order.orderStatus == 3">Собран</div>
                   <div class="orders-history__status orders-history__status--deliveried" v-else-if="+order.orderStatus == 4">Доставлен</div>
                   <div class="orders-history__status orders-history__status--canceled" v-else-if="+order.orderStatus == 5">Отменен</div>
                 </div>
