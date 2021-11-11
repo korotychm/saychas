@@ -1,3 +1,12 @@
+.panel__status {
+  margin-bottom: 30px;
+}
+.panel__status .orders-history__status {
+  padding: 16px 20px;
+  font-size: 20px;
+  border-radius: 55px;
+  text-align: center;
+}
 .order-btn-group {
   display: flex;
 }
@@ -63,13 +72,4 @@
 }
 .profile-order__requisition-items {
   margin-top: 30px;
-}
-.panel__status {
-  margin-bottom: 30px;
-}
-.panel__status .orders-history__status {
-  padding: 16px 20px;
-  font-size: 20px;
-  border-radius: 55px;
-  text-align: center;
 }
