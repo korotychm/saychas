@@ -621,7 +621,6 @@ class HtmlProviderService
                     'url' => $product->getUrl(),
                     'price' => $price,
                     'oldprice' => $b->price,
-                    // 'availble' => '1',
                     'availble' => $rest,
                     'count' => $count,
                     'store' => $productStoreId ?? 0,
