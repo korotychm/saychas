@@ -33,7 +33,8 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" :download="fileName">Скачать файл</a>
+                      <a @click="downLoad">Скачать файл</a>
+<!--                      <a :href="filePath" :download="fileName">Скачать файл</a>-->
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -132,6 +133,15 @@ const ProductAddFile = {
       axios.post('/control-panel/upload-product-file', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => console.log(response))
+    },
+    downLoad () {
+      let downloadUrl = this.filePath
+      let fileName = this.fileName
+      let downloading =  browser.downloads.download({
+        url : downloadUrl,
+        filename : fileName,
+        conflictAction : 'uniquify'
+      });
     },
     getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
