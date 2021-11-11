@@ -145,7 +145,7 @@ const ProductAddFile = {
         }),{headers})
           .then(response => {
             console.log('до загрузки',this.filePath)
-            this.filePath = productsDocumentPath + response.data.fileName;
+            this.filePath = productsDocumentPath + response.data.filename;
             this.fileName = response.data.fileName;
             console.log('после загрузки',this.filePath)
             console.log('Файл',response);
