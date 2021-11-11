@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" download="filename" v-if="checkBrowser">Скачать файл</a>
+                      <button @click="downloadFile" v-if="checkBrowser">Скачать файл</button>
                       <a :href="filePath" :download="fileName" v-else>Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
@@ -138,6 +138,12 @@ const ProductAddFile = {
         this.selectedCategoryName = value;
         this.getFile(id);
       }
+    },
+    downloadFile(){
+      var link = document.createElement('a');
+      link.setAttribute('href',this.filePath);
+      link.setAttribute('download','download');
+      onload=link.click();
     },
     uploadFile () {
       let file  = document.querySelector("#upload-file").files
