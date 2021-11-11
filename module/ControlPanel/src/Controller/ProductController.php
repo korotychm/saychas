@@ -257,9 +257,22 @@ class ProductController extends AbstractActionController
             $newFileName = $_FILES['file']['name'];
             $tmpName = $_FILES['file']['tmp_name'];
             $result = move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
+            // file moved from tmp to permanent location
+            // we now need to inform 1C about uploading the file
+            
+            $identity = $this->authService->getIdentity();
+            $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
+            $data = ['filename' => $newFileName];
+            $result = $this->productManager->uploadProductFile($credentials, $data);
+            $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+            
+            $this->getResponse()->setStatusCode($result['http_code']);
+            return new JsonModel(['result' => true, 'error_description' => '', 'http_code' => $result['http_code']]);
         }
 
-        return new JsonModel(['file_name' => $newFileName]);
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel(['result' => false, 'error_description' => 'error uploading document file', 'http_code' => 400]);
+        // return new JsonModel(['file_name' => $newFileName]);
     }
     
 
