@@ -70,8 +70,8 @@
   color: #fff;
   background: #dbdbdb;
   font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 20px;
+  padding: 7px 10px;
+  border-radius: 25px;
   margin: 5px 5px 5px 0;
 }
 .orders-history__status--link {
@@ -79,6 +79,7 @@
   background: #fff;
   color: var(--black);
   transition: 0.3s;
+  cursor: pointer;
 }
 @media (hover) {
   .orders-history__status--link:hover {
