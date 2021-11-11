@@ -100,7 +100,7 @@ $(document).ready(function () {
           for (delivery of order.deliveryInfo.delivery_info.deliveries){
             if (delivery.requisitions){
               for (requisition of delivery.requisitions){
-                for (product of requisition.products){
+                for (product of requisition.items){
                   product.img = this.products[product.id].image;
                   product.title = this.products[product.id].title;
                   order.deliveryProducts.push(product);
