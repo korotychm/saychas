@@ -54,6 +54,7 @@ const ProductAddFile = {
       selectedCategoryId: '',
       selectedCategoryName: '',
       file: false,
+      filePath: productsDocumentPath
     }
   },
   computed: {
