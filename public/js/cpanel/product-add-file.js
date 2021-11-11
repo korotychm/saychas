@@ -54,7 +54,6 @@ const ProductAddFile = {
       selectedCategoryId: '',
       selectedCategoryName: '',
       file: false,
-      uploadedFiles: null
     }
   },
   computed: {
@@ -124,12 +123,12 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
-    async uploadFile () {
-     this.uploadedFiles = document.querySelector("#upload-file").files
-     let formData = new FormData()
-     formData.append('file', this.files[0]);
-     await axios.post('/control-panel/upload-product-file', formData, {
-       headers: {'Content-Type': 'multipart/form-data'}
+    uploadFile () {
+      let file  = document.querySelector("#upload-file").files
+      let formData = new FormData()
+      formData.append('file', file[0]);
+      axios.post('/control-panel/upload-product-file', formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => console.log(response))
     },
     getFile(id) {
