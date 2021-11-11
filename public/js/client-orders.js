@@ -148,12 +148,9 @@ $(document).ready(function () {
     },
     methods: {
       totalItems(index){
-        console.log('index',index);
         let itemsTotal = 0;
         for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
-          console.log('delivery',delivery);
           for (requisition of delivery.requisitions){
-            console.log('req',requisition);
             for (product of requisition.items){
               itemsTotal++;
             }
