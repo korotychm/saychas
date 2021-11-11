@@ -18,7 +18,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                   <div class="orders-history__statuses">
                       <div class="orders-history__status orders-history__status--canceled" v-if="+order.orderStatus == 5"><?=Resource::THE_DELIVERY_CANCELED ?></div>
                       <div class="orders-history__status" v-else-if="+order.orderStatus == 0"><span>новый</span></div>
-                      <div class="orders-history__status orders-history__status--progress" v-else-if="+order.orderStatus == 1"><span>ожидает оплаты</span></div>
+                      <a :href="'/tinkoff/payment/'+order.orderId" class="orders-history__status orders-history__status--link" v-else-if="+order.orderStatus == 1"><span>ожидает оплаты</span></a>
                       <div class="orders-history__status orders-history__status--progress" v-else-if="+order.orderStatus == 2"><span><?=Resource::THE_DELIVERY_PROGRESS ?></span></div>
                       <div class="orders-history__status orders-history__status--ready" v-else-if="+order.orderStatus == 3"><?=Resource::THE_DELIVERY_READY ?></div>
                       <div class="orders-history__status orders-history__status--deliveried" v-else-if="+order.orderStatus == 4"><?=Resource::THE_DELIVERY_DELIVERED ?></div>

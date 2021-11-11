@@ -74,6 +74,18 @@
   border-radius: 20px;
   margin: 5px 5px 5px 0;
 }
+.orders-history__status--link {
+  border: 2px solid var(--red);
+  background: #fff;
+  color: var(--black);
+  transition: 0.3s;
+}
+@media (hover) {
+  .orders-history__status--link:hover {
+    color: #fff;
+    background: var(--red);
+  }
+}
 .orders-history__status--canceled {
   background: var(--black);
 }
