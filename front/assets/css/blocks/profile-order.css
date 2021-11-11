@@ -6,6 +6,8 @@
   font-size: 20px;
   border-radius: 55px;
   text-align: center;
+  font-weight: normal;
+  text-transform: capitalize;
 }
 .order-btn-group {
   display: flex;
