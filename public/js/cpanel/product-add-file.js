@@ -170,7 +170,7 @@ const ProductAddFile = {
           .then(response => {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
-            this.filePath = '/' + productsDocumentPath + response.data.filename;
+            this.filePath = '/' + response.data.filename;
             // console.log('Файл',response);
           })
           .catch(error => {
