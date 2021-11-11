@@ -55,6 +55,11 @@ class Product extends Entity
     /**
      * @var string
      */
+    protected $url;
+
+    /**
+     * @var string
+     */
     protected $description;
 
     /**
@@ -318,6 +323,28 @@ class Product extends Entity
      */
     public function getTitle() {
         return $this->title;
+    }
+    
+    /**
+     * Set friendly URL.
+     *
+     * @param string $url
+     *
+     * @return Product
+     */
+    public function setUrl($url) {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get URL.
+     *
+     * @return string
+     */
+    public function getUrl() {
+        return $this->url;
     }
 
     /**
