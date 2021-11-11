@@ -140,10 +140,13 @@ const ProductAddFile = {
       }
     },
     downloadFile(){
-      var link = document.createElement('a');
-      link.setAttribute('href',this.filePath);
-      link.setAttribute('download','download');
-      onload=link.click();
+      var link_url = document.createElement("a");
+      link_url.download = url.substring((this.filePath.lastIndexOf("/") + 1), this.filePath.length);
+      link_url.href = this.filePath;
+      document.body.appendChild(link_url);
+      link_url.click();
+      document.body.removeChild(link_url);
+      delete link_url;
     },
     uploadFile () {
       let file  = document.querySelector("#upload-file").files
