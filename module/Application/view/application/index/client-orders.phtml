@@ -27,11 +27,15 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                 <p>{{order.basketInfo.userGeoLocation.value}}</p>
               </div>
               <div class="orders-history__products">
-                <a v-for="product in order.deliveryProducts" :href="'/product/' + product.id">
-                  <div class="product-small-img">
-                    <img :src="'<?= $this->imagePath('product').'/' ?>' + product.img" :alt="product.title" />
-                  </div>
-                </a>
+                <template v-for="delivery in order.deliveryInfo.delivery_info.deliveries">
+                  <template v-for="requisition in delivery.requisitions">
+                    <a v-for="product in requisition.items" :href="'/product/' + product.id" :class="{disabled:(+product.qty_fact<1)}">
+                      <div class="product-small-img">
+                        <img :src="'<?= $this->imagePath('product').'/' ?>' + product.image_id" :alt="product.title" />
+                      </div>
+                    </a>
+                  </template>
+                </template>
               </div>
             </div>
             <!--
