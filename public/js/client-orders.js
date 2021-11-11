@@ -142,7 +142,7 @@ $(document).ready(function () {
             order.oldtotal += (order.basketInfo.delivery_price / 100);
           }
         }
-        console.log(orders);
+        console.log('prepared', orders);
         return orders;
       }
     },
