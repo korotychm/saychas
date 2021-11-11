@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" :download="fileName">Скачать файл</a>
+                      <a :href="removeSting" :download="fileName">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -66,7 +66,20 @@ const ProductAddFile = {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
       })
       return categories;
-    }
+    },
+    removeSting() {
+      if(this.checkBrowser()) {
+        return this.filePath.replace(window.location.href, '')
+      } else {
+        return this.filePath ? this.filePath : ''
+      }
+    },
+    checkBrowser () {
+      if (navigator.userAgent.toLowerCase().includes('firefox')) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     flatCategories() {
