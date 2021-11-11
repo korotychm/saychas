@@ -618,6 +618,7 @@ class HtmlProviderService
                     'id' => $pId,
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
                     'title' => $product->getTitle(),
+                    'url' => $product->getUrl(),
                     'price' => $price,
                     'oldprice' => $b->price,
                     // 'availble' => '1',
