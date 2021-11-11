@@ -8,7 +8,7 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Application\Model\Entity;
+use Application\Helper\ArrayHelper;
 use Application\Model\Entity\Basket;
 use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
@@ -164,7 +164,7 @@ class AcquiringCommunicationService
     
     public function returnProductsToBasket($order_id, $userId)
     {
-       $orderProducts = $this->basketRepository->findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
+       $orderProducts = Basket::findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
        $returnProduct = ArrayHelper::extractId($orderProducts);
 
        foreach ($returnProduct as $productId){
