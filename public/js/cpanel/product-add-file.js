@@ -33,7 +33,8 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a href="" :download="filePath">Скачать файл</a>
+                      <a href="" :download="filePath" v-if="checkBrowser">Скачать файл</a>
+                      <a :href="filePath" :download="fileName" v-else>Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -55,6 +56,7 @@ const ProductAddFile = {
       selectedCategoryName: '',
       file: false,
       filePath: '',
+      filePathMoz: '',
       fileName: ''
     }
   },
@@ -66,7 +68,20 @@ const ProductAddFile = {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
       })
       return categories;
-    }
+    },
+    removeSting() {
+      if(this.checkBrowser) {
+        return this.filePath.replace(window.location.href, '')
+      } else {
+        return this.filePath ? this.filePath : ''
+      }
+    },
+    checkBrowser () {
+      if (navigator.userAgent.toLowerCase().includes('firefox')) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     flatCategories() {
@@ -125,6 +140,15 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
+    downloadFile(){
+      var link_url = document.createElement("a");
+      link_url.download = this.filePath.substring((this.filePath.lastIndexOf("/") + 1), this.filePath.length);
+      link_url.href = this.filePath;
+      document.body.appendChild(link_url);
+      link_url.click();
+      document.body.removeChild(link_url);
+      delete link_url;
+    },
     uploadFile () {
       let file  = document.querySelector("#upload-file").files
       let formData = new FormData()
@@ -144,8 +168,9 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            this.filePath = productsDocumentPath + response.data.filename;
-            this.fileName = response.data.fileName;
+            // this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
+            this.fileName = response.data.filename;
+            this.filePath = '/' + response.data.filename.substr(1);
             // console.log('Файл',response);
           })
           .catch(error => {
