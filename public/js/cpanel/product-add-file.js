@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" download="fileName">Скачать файл</a>
+                      <a :href="filePath" :download="fileName">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -145,7 +145,7 @@ const ProductAddFile = {
         }),{headers})
           .then(response => {
             this.filePath = productsDocumentPath + response.data.filename;
-            this.fileName = response.data.fileName;
+            this.fileName = response.data.filename;
             // console.log('Файл',response);
           })
           .catch(error => {
