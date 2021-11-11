@@ -12,7 +12,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
     <div v-if="preparedOrders.length" class="orders-history">
         <div v-for="order in preparedOrders" class="orders-history__item">
           <div class="orders-history__left">
-            <div v-if="order.deliveryInfo.deliveries.length" class="orders-history__delivery">
+            <div v-if="order.deliveryInfo.delivery_info.deliveries.length" class="orders-history__delivery">
               <div class="orders-history__delivery-item">
                   <h2><?=Resource::THE_DELIVERY ?></h2>
                   <div class="orders-history__statuses">
@@ -23,7 +23,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                   </div>
               </div>
               <div class="orders-history__text">
-                <p>{{order.deliveryInfo.deliveries.length}} {{order.deliveryUnit}}<span v-if="order.timepoint">, {{ order.dateLocaled }} с {{order.timepoint[0]}}:00 до {{order.timepoint[1]}}:00</span></p>
+                <p>{{order.deliveryInfo.delivery_info.deliveries.length}} {{order.deliveryUnit}}<span v-if="order.timepoint">, {{ order.dateLocaled }} с {{order.timepoint[0]}}:00 до {{order.timepoint[1]}}:00</span></p>
                 <p>{{order.basketInfo.userGeoLocation.value}}</p>
               </div>
               <div class="orders-history__products">
