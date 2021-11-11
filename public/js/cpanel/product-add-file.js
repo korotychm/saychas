@@ -159,6 +159,8 @@ const ProductAddFile = {
     },
   },
   created: function(){
+    var productsDocumentPath = "<?= $this->documentPath('product').'/' ?>";
+    console.log(productsDocumentPath)
     $('.main__loader').show();
     this.getCategories();
   },
