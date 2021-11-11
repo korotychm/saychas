@@ -97,43 +97,43 @@ $(document).ready(function () {
             }
           }
 
-          for (delivery of order.deliveryInfo.delivery_info.deliveries){
-            if (delivery.requisitions){
-              for (requisition of delivery.requisitions){
-                for (product of requisition.items){
-                  product.img = this.products[product.id].image;
-                  product.title = this.products[product.id].title;
-                  order.deliveryProducts.push(product);
-                  order.total += (product.price / 100);
-                  if (+product.discount > 0) {
-                    order.oldtotal += (product.price / (100 - product.discount));
-                  } else {
-                    order.oldtotal += (product.price / 100);
-                  }
-                  order.count++;
-                }
-              }
-            }
-          }
-
-          for (delivery of order.deliveryInfo.pickup){
-            if (delivery.requisitions){
-              for (requisition of delivery.requisitions){
-                for (product of requisition.items){
-                  product.img = this.products[product.id].image;
-                  product.title = this.products[product.id].title;
-                  order.pickupProducts.push(product);
-                  order.total += (product.price / 100);
-                  if (+product.discount > 0) {
-                    order.oldtotal += (product.price / (100 - product.discount));
-                  } else {
-                    order.oldtotal += (product.price / 100);
-                  }
-                  order.count++;
-                }
-              }
-            }
-          }
+          // for (delivery of order.deliveryInfo.delivery_info.deliveries){
+          //   if (delivery.requisitions){
+          //     for (requisition of delivery.requisitions){
+          //       for (product of requisition.items){
+          //         product.img = this.products[product.id].image;
+          //         product.title = this.products[product.id].title;
+          //         order.deliveryProducts.push(product);
+          //         order.total += (product.price / 100);
+          //         if (+product.discount > 0) {
+          //           order.oldtotal += (product.price / (100 - product.discount));
+          //         } else {
+          //           order.oldtotal += (product.price / 100);
+          //         }
+          //         order.count++;
+          //       }
+          //     }
+          //   }
+          // }
+          //
+          // for (delivery of order.deliveryInfo.pickup){
+          //   if (delivery.requisitions){
+          //     for (requisition of delivery.requisitions){
+          //       for (product of requisition.items){
+          //         product.img = this.products[product.id].image;
+          //         product.title = this.products[product.id].title;
+          //         order.pickupProducts.push(product);
+          //         order.total += (product.price / 100);
+          //         if (+product.discount > 0) {
+          //           order.oldtotal += (product.price / (100 - product.discount));
+          //         } else {
+          //           order.oldtotal += (product.price / 100);
+          //         }
+          //         order.count++;
+          //       }
+          //     }
+          //   }
+          // }
 
           order.productsTotal = order.total;
           order.oldProductsTotal = order.oldtotal;
