@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" download>Скачать файл</a>
+                      <a href="#" :download="filePath">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
