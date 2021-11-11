@@ -157,7 +157,7 @@ $(document).ready(function () {
           }
         }
         return {
-          itemsTotal;
+          itemsTotal
         }
       },
       totalPrice(index){
