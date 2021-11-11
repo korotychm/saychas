@@ -58,12 +58,12 @@ $(document).ready(function () {
           //   return (delivery.pickup == false)
           // })
 
-          let pickupCount = order.deliveryInfo.pickup.length;
-          if (pickupCount == 1){
-            order.pickupUnit = 'магазина';
-          } else {
-            order.pickupUnit = 'магазинов';
-          }
+          // let pickupCount = order.deliveryInfo.pickup.length;
+          // if (pickupCount == 1){
+          //   order.pickupUnit = 'магазина';
+          // } else {
+          //   order.pickupUnit = 'магазинов';
+          // }
 
           let deliveryCount = order.deliveryInfo.delivery_info.deliveries.length;
           if (deliveryCount == 1){
