@@ -47,12 +47,12 @@ $(document).ready(function () {
           }
           order.timeLocaled = orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
 
-          order.deliveryInfo.pickup = order.deliveryInfo.deliveries;
+          order.deliveryInfo.pickup = order.deliveryInfo.delivery_info.deliveries;
           order.deliveryInfo.pickup = order.deliveryInfo.pickup.filter((delivery) => {
             return (delivery.pickup == true)
           })
 
-          order.deliveryInfo.deliveries = order.deliveryInfo.deliveries.filter((delivery) => {
+          order.deliveryInfo.delivery_info.deliveries = order.deliveryInfo.delivery_info.deliveries.filter((delivery) => {
             return (delivery.pickup == false)
           })
 
@@ -63,7 +63,7 @@ $(document).ready(function () {
             order.pickupUnit = 'магазинов';
           }
 
-          let deliveryCount = order.deliveryInfo.deliveries.length;
+          let deliveryCount = order.deliveryInfo.delivery_info.deliveries.length;
           if (deliveryCount == 1){
             order.deliveryUnit = 'доставка';
           } else if (deliveryCount > 1 && deliveryCount < 5) {
@@ -97,43 +97,43 @@ $(document).ready(function () {
             }
           }
 
-          for (delivery of order.deliveryInfo.deliveries){
-            if (delivery.requisitions){
-              for (requisition of delivery.requisitions){
-                for (product of requisition.products){
-                  product.img = this.products[product.id].image;
-                  product.title = this.products[product.id].title;
-                  order.deliveryProducts.push(product);
-                  order.total += (product.price / 100);
-                  if (+product.discount > 0) {
-                    order.oldtotal += (product.price / (100 - product.discount));
-                  } else {
-                    order.oldtotal += (product.price / 100);
-                  }
-                  order.count++;
-                }
-              }
-            }
-          }
-
-          for (delivery of order.deliveryInfo.pickup){
-            if (delivery.requisitions){
-              for (requisition of delivery.requisitions){
-                for (product of requisition.products){
-                  product.img = this.products[product.id].image;
-                  product.title = this.products[product.id].title;
-                  order.pickupProducts.push(product);
-                  order.total += (product.price / 100);
-                  if (+product.discount > 0) {
-                    order.oldtotal += (product.price / (100 - product.discount));
-                  } else {
-                    order.oldtotal += (product.price / 100);
-                  }
-                  order.count++;
-                }
-              }
-            }
-          }
+          // for (delivery of order.deliveryInfo.delivery_info.deliveries){
+          //   if (delivery.requisitions){
+          //     for (requisition of delivery.requisitions){
+          //       for (product of requisition.items){
+          //         product.img = this.products[product.id].image;
+          //         product.title = this.products[product.id].title;
+          //         order.deliveryProducts.push(product);
+          //         order.total += (product.price / 100);
+          //         if (+product.discount > 0) {
+          //           order.oldtotal += (product.price / (100 - product.discount));
+          //         } else {
+          //           order.oldtotal += (product.price / 100);
+          //         }
+          //         order.count++;
+          //       }
+          //     }
+          //   }
+          // }
+          //
+          // for (delivery of order.deliveryInfo.pickup){
+          //   if (delivery.requisitions){
+          //     for (requisition of delivery.requisitions){
+          //       for (product of requisition.items){
+          //         product.img = this.products[product.id].image;
+          //         product.title = this.products[product.id].title;
+          //         order.pickupProducts.push(product);
+          //         order.total += (product.price / 100);
+          //         if (+product.discount > 0) {
+          //           order.oldtotal += (product.price / (100 - product.discount));
+          //         } else {
+          //           order.oldtotal += (product.price / 100);
+          //         }
+          //         order.count++;
+          //       }
+          //     }
+          //   }
+          // }
 
           order.productsTotal = order.total;
           order.oldProductsTotal = order.oldtotal;
@@ -142,7 +142,7 @@ $(document).ready(function () {
             order.oldtotal += (order.basketInfo.delivery_price / 100);
           }
         }
-        console.log(orders);
+        console.log('prepared', orders);
         return orders;
       }
     },

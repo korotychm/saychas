@@ -1,3 +1,9 @@
+.order-btn-group {
+  display: flex;
+}
+.order-btn-group .btn:nth-child(2) {
+  margin-left: 15px;
+}
 .page-heading__back {
   width: 55px;
   height: 55px;
