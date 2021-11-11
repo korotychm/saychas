@@ -44,7 +44,18 @@ class Module
 //        $moduleRouteListener = new ModuleRouteListener();
 //        $moduleRouteListener->attach($eventManager);
 //        $this->bootstrapSession($e);
+        
+//        $app = $e->getApplication();
+//        $evt = $app->getEventManager();
+//        $evt->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this,'onDispatchError'), 100); 
+
     }
+    
+//    public function onDispatchError(MvcEvent $e) {
+//      $vm = $e->getViewModel();
+//      $vm->setTemplate('layout/blank');
+//    }
+
 
 //    public function bootstrapSession(MvcEvent $e)
 //    {
