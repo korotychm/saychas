@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <button @click="getFile">Скачать файл</button>
+                      <button @click="downloadFile">Скачать файл</button>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -54,7 +54,8 @@ const ProductAddFile = {
       selectedCategoryId: '',
       selectedCategoryName: '',
       file: false,
-      filePath: productsDocumentPath
+      filePath: '',
+      fileName: ''
     }
   },
   computed: {
@@ -121,6 +122,7 @@ const ProductAddFile = {
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
+        this.getFile(id);
       }
     },
     uploadFile () {
@@ -131,7 +133,7 @@ const ProductAddFile = {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => console.log(response))
     },
-    getFile() {
+    getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/get-product-file';
       axios
@@ -142,14 +144,8 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            const fileName = response.data.fileName
-            const url = window.URL.createObjectURL(this.filePath + fileName)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = fileName
-            a.click()
-            window.URL.createObjectURL(url)
-            console.log(a)
+            this.filePath = this.filePath + response.data.fileName;
+            this.fileName = response.data.fileName;
             console.log('Файл',response);
           })
           .catch(error => {
@@ -158,7 +154,17 @@ const ProductAddFile = {
             }
           });
       this.file = true;
-    }
+    },
+    downloadFile () {
+      const fileName = this.fileName;
+      const url = window.URL.createObjectURL(this.filePath)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = fileName
+      a.click()
+      window.URL.createObjectURL(url)
+      console.log(a)
+    },
   },
   created: function(){
     $('.main__loader').show();
