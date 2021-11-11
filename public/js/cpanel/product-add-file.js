@@ -168,9 +168,9 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
+            // this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
-            this.filePath = '/' + response.data.filename;
+            this.filePath = '/' + response.data.filename.substr(1);
             // console.log('Файл',response);
           })
           .catch(error => {
