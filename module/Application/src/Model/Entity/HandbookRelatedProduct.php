@@ -22,7 +22,7 @@ use Application\Model\Traits\Searchable;
  */
 class HandbookRelatedProduct extends Entity
 {
-    
+
     use Searchable;
 
     /**
@@ -199,7 +199,7 @@ class HandbookRelatedProduct extends Entity
      * @var string
      */
     protected $category_id;
-    
+
     /**
      * @var string
      */
@@ -209,6 +209,11 @@ class HandbookRelatedProduct extends Entity
      * @var string
      */
     protected $title;
+
+    /**
+     * @var string
+     */
+    protected $url;
 
     /**
      * @var string
@@ -248,7 +253,7 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $old_price;
-    
+
     /**
      * Product rest
      *
@@ -268,7 +273,7 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $vat;
-    
+
     /**
      * Rating
      *
@@ -276,14 +281,13 @@ class HandbookRelatedProduct extends Entity
      */
     protected $rating;
 
-     /**
+    /**
      * count
      *
      * @var int
      */
     protected $count;
 
-    
     /**
      * Reviews
      *
@@ -292,7 +296,7 @@ class HandbookRelatedProduct extends Entity
     protected $reviews;
 
     /**
-     * Get count 
+     * Get count
      *
      * @return int
      */
@@ -313,8 +317,7 @@ class HandbookRelatedProduct extends Entity
         return $this;
     }
 
-    
-     /**
+    /**
      * Get price from one-to-one joined price table
      *
      * @return int
@@ -495,6 +498,30 @@ class HandbookRelatedProduct extends Entity
     }
 
     /**
+     * Set friendly URL.
+     *
+     * @param string $url
+     *
+     * @return Brand
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get friendly URL.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
      * Set description.
      *
      * @param string $description
@@ -655,8 +682,8 @@ class HandbookRelatedProduct extends Entity
         $this->vat = $vat;
         return $this;
     }
-    
-     /**
+
+    /**
      * Get rating from one-to-one joined product_rating table
      *
      * @return int
