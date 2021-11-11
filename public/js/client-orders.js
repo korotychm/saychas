@@ -151,7 +151,7 @@ $(document).ready(function () {
         let itemsTotal = 0;
         for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
           for (requisition of delivery.requisitions){
-            for (product of reuisitions.items){
+            for (product of requisition.items){
               itemsTotal++;
             }
           }
