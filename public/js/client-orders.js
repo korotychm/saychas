@@ -34,8 +34,6 @@ $(document).ready(function () {
       preparedOrders() {
         let orders = this.orders;
         for (order of orders){
-          order.deliveryProducts = [];
-          order.pickupProducts = [];
           order.total = 0;
           order.oldtotal = 0;
           order.count = 0;
