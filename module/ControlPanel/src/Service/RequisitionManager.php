@@ -162,8 +162,8 @@ class RequisitionManager extends ListManager implements LoadableInterface
 //        return $filter;
 //    }
     
-
-    public function findAndSort(array $cursor)
+    
+    public function findAndSort3(array $cursor)
     {
         $collection = $this->db->requisitions;
         $filter = $collection->aggregate([
@@ -196,16 +196,157 @@ class RequisitionManager extends ListManager implements LoadableInterface
             ],
             [
                     '$sort' => [
+                            //'asc' => 1,
                             'order' => 1,
-                            'asc' => 1
                     ]
             ]
-        ]);
+        ])->toArray();
         
         return $filter;
         
     }
     
+    public function findAndSort2(array $cursor)
+    {
+        $collection = $this->db->requisitions;
+        $filter = $collection->aggregate([
+//            [
+//                    '$project' => [
+//                            '_id' => 0,
+//                            'provider_id' => 1,
+//                            'status_id' => 1,
+//                            'date' => 1
+//                    ]
+//            ],
+            [
+                    '$addFields' => [
+                            'strdate' => ['$toDate' => ['$multiply' => [['$toLong' => '$date'], 1000]] ],
+
+                            'asc' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toInt' => '$status_id'],
+                                    'else' => ['$multiply' => [-1, ['$toInt' => '$status_id'] ] ]
+                                ]
+                            ],
+                            'order' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toLong' => '$date'],
+                                    'else' => ['$multiply' => [-1, ['$toLong' => '$date'] ] ]
+                                ]
+
+                            ],
+                    ]
+            ],
+            [
+                    '$match' => [
+                            "status_id" => ['$in' => ['01', '02', '03'] ],
+                    ]
+            ],
+            [
+                    '$sort' => [
+                            'date' => 1,
+                    ]
+            ]
+        ])->toArray();
+        
+        $filter2 = $collection->aggregate([
+//            [
+//                    '$project' => [
+//                            '_id' => 0,
+//                            'provider_id' => 1,
+//                            'status_id' => 1,
+//                            'date' => 1
+//                    ]
+//            ],
+            [
+                    '$addFields' => [
+                            'strdate' => ['$toDate' => ['$multiply' => [['$toLong' => '$date'], 1000]] ],
+
+//                            'asc' => [
+//                                '$cond' => [
+//                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toInt' => '$status_id'],
+//                                    'else' => ['$multiply' => [-1, ['$toInt' => '$status_id'] ] ]
+//                                ]
+//                            ],
+                            'order' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toLong' => '$date'],
+                                    'else' => ['$multiply' => [-1, ['$toLong' => '$date'] ] ]
+                                ]
+
+                            ],
+                    ]
+            ],
+            [
+                    '$match' => [
+                            "status_id" => ['$in' => ['04', '05', '06'] ],
+                    ]
+            ],
+            [
+                    '$sort' => [
+                            'date' => -1,
+                    ]
+            ]
+        ])->toArray();
+
+        return array_merge($filter, $filter2);
+        
+    }
+    
+    
+    public function findAndSort(array $cursor)
+    {
+        $collection = $this->db->requisitions;
+        $filter = $collection->aggregate([
+//            [
+//                    '$project' => [
+//                            '_id' => 0,
+//                            'provider_id' => 1,
+//                            'status_id' => 1,
+//                            'date' => 1
+//                    ]
+//            ],
+            [
+                    '$addFields' => [
+                            'strdate' => ['$toDate' => ['$multiply' => [['$toLong' => '$date'], 1000]] ],
+
+                            'asc' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => 1,
+                                    'else' => 2
+                                ]
+                            ],
+                            'order' => [
+                                '$cond' => [
+                                        'if' => ['$in' => ['$status_id', ["01", "02", "03"]] ], 'then' => ['$toLong' => '$date'],
+                                    'else' => ['$multiply' => [-1, ['$toLong' => '$date'] ] ]
+                                ]
+
+                            ],
+                    ]
+            ],
+            [
+                    '$sort' => [
+                            'order' => -1,
+                    ]
+            ],
+            [
+                    '$match' => [
+                        "status_id" => ['$in' => ['01', '02', '03', '04', '05', '06'] ],
+                    ]
+
+            ],
+            [
+                    '$sort' => [
+                            'asc' => 1,
+                    ]
+            ]
+        ])->toArray();
+        
+        return $filter;
+        
+    }
+
     /**
      * Find store documents for specified provider
      *
@@ -221,7 +362,7 @@ class RequisitionManager extends ListManager implements LoadableInterface
         
         /** The following code is temporarily commented out as we need to check filter method prior to using it */
         // $cursor['body'] = $this->filter($cursor['body'])->toArray();
-        $cursor['body'] = $this->findAndSort([])->toArray();
+        $cursor['body'] = $this->findAndSort([]);//->toArray();
         
         $collection = $this->db->stores;
         
