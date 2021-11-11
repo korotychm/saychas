@@ -11,8 +11,51 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
   <div id="client-orders">
     <div v-if="preparedOrders.length" class="orders-history">
         <div v-for="order in preparedOrders" class="orders-history__item">
-
-          
+          <div class="orders-history__left">
+            <div v-if="order.deliveryInfo.deliveries.length" class="orders-history__delivery">
+              <div class="orders-history__delivery-item">
+                  <h2><?=Resource::THE_DELIVERY ?></h2>
+                  <div class="orders-history__statuses">
+                      <div class="orders-history__status orders-history__status--progress"><span><?=Resource::THE_DELIVERY_PROGRESS ?></span></div>
+                      <div class="orders-history__status orders-history__status--ready"><?=Resource::THE_DELIVERY_READY ?></div>
+                      <div class="orders-history__status orders-history__status--deliveried"><?=Resource::THE_DELIVERY_DELIVERED ?></div>
+                      <div class="orders-history__status orders-history__status--canceled"><?=Resource::THE_DELIVERY_CANCELED ?></div>
+                  </div>
+              </div>
+              <div class="orders-history__text">
+                <p>{{order.deliveryInfo.deliveries.length}} {{order.deliveryUnit}}<span v-if="order.timepoint">, {{ order.dateLocaled }} с {{order.timepoint[0]}}:00 до {{order.timepoint[1]}}:00</span></p>
+                <p>{{order.basketInfo.userGeoLocation.value}}</p>
+              </div>
+              <div class="orders-history__products">
+                <a v-for="product in order.deliveryProducts" :href="'/product/' + product.id">
+                  <div class="product-small-img">
+                    <img :src="'<?= $this->imagePath('product').'/' ?>' + product.img" :alt="product.title" />
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div v-if="order.deliveryInfo.pickup.length" class="orders-history__delivery">
+              <div class="orders-history__delivery-item">
+                  <h2><?= Resource::THE_PICKUP ?></h2>
+                  <div class="orders-history__statuses">
+                      <div class="orders-history__status orders-history__status--progress"><span><?= Resource::THE_DELIVERY_PROGRESS ?> </span></div>
+                      <div class="orders-history__status orders-history__status--ready"><?= Resource::THE_DELIVERY_READY?></div>
+                      <div class="orders-history__status orders-history__status--deliveried"><?= Resource::THE_DELIVERY_DELIVERED ?> </div>
+                      <div class="orders-history__status orders-history__status--canceled"><?= Resource::THE_DELIVERY_CANCELED ?> </div>
+                  </div>
+              </div>
+              <div class="orders-history__text">
+                <p>Из {{order.deliveryInfo.pickup.length}} {{order.pickupUnit}}</p>
+              </div>
+              <div class="orders-history__products">
+                <a v-for="product in order.pickupProducts" :href="'/product/' + product.id">
+                  <div class="product-small-img">
+                    <img :src="'<?= $this->imagePath('product').'/' ?>' + product.img" :alt="product.title" />
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
   </div>
