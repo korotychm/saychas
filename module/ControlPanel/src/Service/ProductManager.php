@@ -598,6 +598,13 @@ class ProductManager extends ListManager implements LoadableInterface
         return $result;
     }
 
+    public function uploadProductFile($headers, $content)
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_upload_file'];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, ['data' => $content], $headers);
+        return $result;
+    }
+
     public function findTest()
     {
         //$query = array('$text' => array('$search'=> 'vivo'));
