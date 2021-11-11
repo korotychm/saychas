@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" download>Скачать файл</a>
+                      <button @click="getFile">Скачать файл</button>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -121,7 +121,6 @@ const ProductAddFile = {
         this.selectedCategoryId = id;
         this.categorySearch = value;
         this.selectedCategoryName = value;
-        this.getFile(id);
       }
     },
     uploadFile () {
@@ -132,7 +131,7 @@ const ProductAddFile = {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => console.log(response))
     },
-    getFile(id) {
+    getFile() {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/get-product-file';
       axios
@@ -143,6 +142,14 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
+            const fileName = response.data.fileName
+            const url = window.URL.createObjectURL(this.filePath + fileName)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = fileName
+            a.click()
+            window.URL.createObjectURL(url)
+            console.log(a)
             console.log('Файл',response);
           })
           .catch(error => {
