@@ -33,12 +33,13 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a href="#">Скачать файл</a>
+                      <a href="" :download="filePathMoz" v-if="checkBrowser">Скачать файл</a>
+                      <a :href="filePath" :download="fileName" v-else>Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
                     <div class="product-add-file__files-upload">
-                      <input type="file" id="upload-file"/>
+                      <input type="file" id="upload-file" @change="uploadFile"/>
                       <label for="upload-file">Загрузить файл</label>
                       <p>Загрузите заполненный файл.</p>
                       <p>Товары появятся на сайте после обработки.</p>
@@ -53,7 +54,10 @@ const ProductAddFile = {
       categorySearch: '',
       selectedCategoryId: '',
       selectedCategoryName: '',
-      file: false
+      file: false,
+      filePath: '',
+      filePathMoz: '',
+      fileName: ''
     }
   },
   computed: {
@@ -64,7 +68,20 @@ const ProductAddFile = {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
       })
       return categories;
-    }
+    },
+    removeSting() {
+      if(this.checkBrowser) {
+        return this.filePath.replace(window.location.href, '')
+      } else {
+        return this.filePath ? this.filePath : ''
+      }
+    },
+    checkBrowser () {
+      if (navigator.userAgent.toLowerCase().includes('firefox')) {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     flatCategories() {
@@ -123,6 +140,23 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
+    downloadFile(){
+      var link_url = document.createElement("a");
+      link_url.download = this.filePath.substring((this.filePath.lastIndexOf("/") + 1), this.filePath.length);
+      link_url.href = this.filePath;
+      document.body.appendChild(link_url);
+      link_url.click();
+      document.body.removeChild(link_url);
+      delete link_url;
+    },
+    uploadFile () {
+      let file  = document.querySelector("#upload-file").files
+      let formData = new FormData()
+      formData.append('file', file[0]);
+      axios.post('/control-panel/upload-product-file', formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(response => console.log(response))
+    },
     getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/get-product-file';
@@ -134,7 +168,10 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            console.log('Файл',response);
+            this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
+            this.fileName = response.data.filename;
+            this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
+            // console.log('Файл',response);
           })
           .catch(error => {
             if (error.response.status == '403'){
@@ -142,7 +179,7 @@ const ProductAddFile = {
             }
           });
       this.file = true;
-    }
+    },
   },
   created: function(){
     $('.main__loader').show();
