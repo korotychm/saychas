@@ -346,8 +346,7 @@ class UserDataController extends AbstractActionController
     }
 
     /**
-     *
-     * @param string $order_id
+     *  @param string $order_id
      * @param int $userId
      * @return array
      */
