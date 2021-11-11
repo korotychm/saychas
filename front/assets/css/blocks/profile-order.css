@@ -1,3 +1,14 @@
+.panel__status {
+  margin-bottom: 30px;
+}
+.panel__status .orders-history__status {
+  padding: 16px 20px;
+  font-size: 20px;
+  border-radius: 55px;
+  text-align: center;
+  font-weight: 500;
+  text-transform: capitalize;
+}
 .order-btn-group {
   display: flex;
 }
@@ -50,17 +61,23 @@
   display: flex;
   align-items: center;
 }
-.profile-order__requisition-head span {
+.profile-order__requisition-head > span {
   margin-right: 30px;
 }
 .profile-order__requisition-logo {
   margin-right: 30px;
 }
 .profile-order__requisition-logo img {
-  display: block;
-  width: 160px;
-  height: auto;
+  width: auto;
+  height: 60px;
 }
 .profile-order__requisition-items {
   margin-top: 30px;
+}
+.profile-order__requisition .product-tr__wishlist {
+  display: none;
+}
+.profile-order__requisition .product-tr__price {
+  width: 150px;
+  margin-right: 0;
 }
