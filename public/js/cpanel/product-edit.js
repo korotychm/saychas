@@ -327,10 +327,39 @@ const ProductEdit = {
       cloneImages: [],
       errors: false,
       showBrand: -1,
-      showColor: -1
+      showColor: -1,
+      originalData: null,
+      originalCategorySearch: null,
+      originalSelectedCategoryId: null,
+      originalSelectedCategoryName: null,
+      originalVendorCode: null,
+      originalCountrySearch: null,
+      originalSelectedCountryName: null,
+      originalProductDescription: null,
+      originalProductWeight: null,
+      originalProductLength: null,
+      originalProductWidth: null,
+      originalProductHeigth: null,
+      originalProductVat: null,
+      originalProductCharactristic: null,
     }
   },
   computed: {
+    isChanged () {
+      if (JSON.stringify(this.product) !== this.originalData) return true;
+      if (JSON.stringify(this.product.vendor_code) !== this.originalVendorCode) return true;
+      if (JSON.stringify(this.countrySearch) !== this.originalCountrySearch) return true;
+      if (JSON.stringify(this.selectedCountryName) !== this.originalSelectedCountryName) return true;
+      if (JSON.stringify(this.brandSearch) !== this.originalBrandSearch) return true;
+      if (JSON.stringify(this.product.description) !== this.originalProductDescription) return true;
+      if (JSON.stringify(this.product.weight) !== this.originalProductWeight) return true;
+      if (JSON.stringify(this.product.length) !== this.originalProductLength) return true;
+      if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
+      if (JSON.stringify(this.product.heigth) !== this.originalProductHeigth) return true;
+      if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
+      if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
+      return false;
+    },
     filteredCategories(){
       if (this.categorySearch == '') return false;
       let categories = this.categoriesFlat;
@@ -632,6 +661,17 @@ const ProductEdit = {
               this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
               this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
+              this.originalVendorCode = JSON.stringify(response.data.product.vendor_code)
+              this.originalCountrySearch = JSON.stringify(response.data.product.country_name)
+              this.originalSelectedCountryName = JSON.stringify(response.data.product.country_name)
+              this.originalBrandSearch = JSON.stringify(response.data.product.brand_name)
+              this.originalProductDescription = JSON.stringify(response.data.product.description)
+              this.originalProductWeight = JSON.stringify(response.data.product.weight)
+              this.originalProductLength = JSON.stringify(response.data.product.length)
+              this.originalProductWidth = JSON.stringify(response.data.product.width)
+              this.originalProductHeigth = JSON.stringify(response.data.product.heigth)
+              this.originalProductVat = JSON.stringify(response.data.product.vat)
+              this.originalProductCharactristic = JSON.stringify(...response.data.product.characteristics)
               console.log(this.product);
             }
           })
