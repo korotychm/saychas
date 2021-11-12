@@ -340,7 +340,7 @@ const ProductAdd = {
       originalProductWidth: null,
       originalProductHeigth: null,
       originalProductVat: null,
-      originalProductCharactristic: null
+      originalProductCharactristic: null,
     }
   },
   computed: {
