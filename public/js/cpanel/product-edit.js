@@ -528,6 +528,7 @@ const ProductEdit = {
       this.categoriesFlat = categoriesFlat;
       this.categorySearch = this.categoriesFlat.find(x => x.id === this.product.category_id).name;
       this.selectedCategoryName = this.categorySearch;
+      this.originalCategorySearch = JSON.stringify(this.categoriesFlat.find(x => x.id === this.product.category_id).name)
       this.selectedCategoryId = this.product.category_id;
     },
     saveProduct(categoryChange = false, oldCategory = null) {
