@@ -297,7 +297,7 @@ const ProductEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary" :class="{disabled: (!product.moderated && !product.processed)}" :disabled="!isChanged" @click="saveProduct(false)">Сохранить и отправить на модерацию</button>
+                      <button class="btn btn--primary" :class="{disabled: (!product.moderated && !product.processed)}" :disabled="isChanged" @click="saveProduct(false)">Сохранить и отправить на модерацию</button>
                     </div>
                   </div>
                 </div>
