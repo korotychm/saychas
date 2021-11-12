@@ -734,7 +734,7 @@ const ProductEdit = {
       this.product.characteristics[characteristicIndex].value.push('');
     }
   },
-  created: function(){
+  created () {
     $('.main__loader').show();
     this.getProduct();
   },
