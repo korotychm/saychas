@@ -358,7 +358,7 @@ const ProductEdit = {
       // if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
       // if (JSON.stringify(this.product.height) !== this.originalProductHeigth) return true;
       // if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
-      if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
+      // if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
       return false;
     },
     filteredCategories(){
