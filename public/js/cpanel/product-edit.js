@@ -352,7 +352,8 @@ const ProductEdit = {
       if (lastImageInProductImage !== this.product.images[this.product.images.length - 1]) {
         console.log('все работае')
         console.log('LastImage LET',lastImageInProductImage)
-        console.log('ПРОТУК', this.product.images[this.product.images.length - 1])
+        console.log('ПРОТУК', this.product.images[this.product.images.length - 1].replace('/images/product/', ''))
+        console.log(lastImageInProductImage === this.product.images[this.product.images.length - 1].replace('/images/product/', ''))
         return true;
       }
       if (JSON.stringify(this.product) !== this.originalData) {
