@@ -642,7 +642,7 @@ const ProductEdit = {
             product_id : this.$route.params.id
           }),{headers})
           .then(response => {
-            if (response.data.data === true) {
+            if (response.data.data) {
               location.reload();
             } else {
               this.originalVendorCode = JSON.stringify(response.data.product.vendor_code)
