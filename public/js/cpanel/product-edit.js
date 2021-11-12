@@ -343,6 +343,7 @@ const ProductEdit = {
       originalProductHeigth: null,
       originalProductVat: null,
       originalProductCharactristic: null,
+      originalProductColor: null
     }
   },
   computed: {
@@ -352,6 +353,9 @@ const ProductEdit = {
       let lastImageInProductImages = this.product.images[this.product.images.length - 1]
       if (lastImageInProductImages) {
         if (lastImageInParsedOriginalData !== lastImageInProductImages.replace('/images/product/', '')) {
+          return true;
+        }
+        if (JSON.stringify(this.product.color_id) !== this.originalProductColor) {
           return true;
         }
       } else {
@@ -704,6 +708,7 @@ const ProductEdit = {
               this.originalProductWidth = JSON.stringify(response.data.product.width)
               this.originalProductHeigth = JSON.stringify(response.data.product.height)
               this.originalProductVat = JSON.stringify(response.data.product.vat)
+              this.originalProductColor = JSON.stringify(reponse.data.product.color_id)
               this.originalProductCharactristic = JSON.stringify(...response.data.product.characteristics)
               this.categories = response.data.category_tree;
               this.product = response.data.product;
