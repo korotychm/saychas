@@ -357,6 +357,7 @@ const ProductEdit = {
         if (JSON.stringify(this.product.color_id) !== this.originalProductColor) return true;
         if (JSON.stringify(this.product.title) !== this.originalProductTitle) return true;
         if (JSON.stringify(this.product.vat) !== this.originalProductVat) return true;
+        if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
         } else {
         if (JSON.stringify(this.product) !== this.originalData) return true;
         }
