@@ -347,12 +347,18 @@ const ProductEdit = {
   },
   computed: {
     isChanged () {
-      // if (JSON.stringify(this.product) !== this.originalData) {
-      //   console.log('зис продук',this.product)
-      //   console.log('оригинал продукт', JSON.parse(this.originalData))
-      //   console.log('оригинал дата сработала')
-      //   return true;
-      // }
+      let parsedOriginalData = JSON.parse(this.originalData)
+      let lastImageInProductImage = parsedOriginalData.images[parsedOriginalData.images.length - 1]
+      if (lastImageInProductImage !== this.product.images[this.product.images.length - 1]) {
+        console.log('все работае')
+        return true;
+      }
+      if (JSON.stringify(this.product) !== this.originalData) {
+        console.log('зис продук',this.product)
+        console.log('оригинал продукт', JSON.parse(this.originalData))
+        console.log('оригинал дата сработала')
+        return true;
+      }
       if (JSON.stringify(this.product.vendor_code) !== this.originalVendorCode) {
         console.log('оригинал вендор код')
         return true;
