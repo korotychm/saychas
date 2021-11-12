@@ -356,7 +356,7 @@ const ProductEdit = {
       if (JSON.stringify(this.product.weight) !== this.originalProductWeight) return true;
       if (JSON.stringify(this.product.length) !== this.originalProductLength) return true;
       if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
-      if (JSON.stringify(this.product.heigth) !== this.originalProductHeigth) return true;
+      if (JSON.stringify(this.product.height) !== this.originalProductHeigth) return true;
       if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
       if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
       return false;
@@ -645,6 +645,17 @@ const ProductEdit = {
             if (response.data.data === true) {
               location.reload();
             } else {
+              this.originalVendorCode = JSON.stringify(response.data.product.vendor_code)
+              this.originalCountrySearch = JSON.stringify(response.data.product.country_name)
+              this.originalSelectedCountryName = JSON.stringify(response.data.product.country_name)
+              this.originalBrandSearch = JSON.stringify(response.data.product.brand_name)
+              this.originalProductDescription = JSON.stringify(response.data.product.description)
+              this.originalProductWeight = JSON.stringify(response.data.product.weight)
+              this.originalProductLength = JSON.stringify(response.data.product.length)
+              this.originalProductWidth = JSON.stringify(response.data.product.width)
+              this.originalProductHeigth = JSON.stringify(response.data.product.height)
+              this.originalProductVat = JSON.stringify(response.data.product.vat)
+              this.originalProductCharactristic = JSON.stringify(...response.data.product.characteristics)
               this.categories = response.data.category_tree;
               this.product = response.data.product;
               this.addImagesPath();
@@ -662,17 +673,6 @@ const ProductEdit = {
               this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
               this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               this.flatCategories();
-              this.originalVendorCode = JSON.stringify(response.data.product.vendor_code)
-              this.originalCountrySearch = JSON.stringify(response.data.product.country_name)
-              this.originalSelectedCountryName = JSON.stringify(response.data.product.country_name)
-              this.originalBrandSearch = JSON.stringify(response.data.product.brand_name)
-              this.originalProductDescription = JSON.stringify(response.data.product.description)
-              this.originalProductWeight = JSON.stringify(response.data.product.weight)
-              this.originalProductLength = JSON.stringify(response.data.product.length)
-              this.originalProductWidth = JSON.stringify(response.data.product.width)
-              this.originalProductHeigth = JSON.stringify(response.data.product.height)
-              this.originalProductVat = JSON.stringify(response.data.product.vat)
-              this.originalProductCharactristic = JSON.stringify(...response.data.product.characteristics)
               console.log(this.product);
             }
           })
