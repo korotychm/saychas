@@ -669,7 +669,7 @@ const ProductEdit = {
               this.originalProductWeight = JSON.stringify(response.data.product.weight)
               this.originalProductLength = JSON.stringify(response.data.product.length)
               this.originalProductWidth = JSON.stringify(response.data.product.width)
-              this.originalProductHeigth = JSON.stringify(response.data.product.heigth)
+              this.originalProductHeigth = JSON.stringify(response.data.product.height)
               this.originalProductVat = JSON.stringify(response.data.product.vat)
               this.originalProductCharactristic = JSON.stringify(...response.data.product.characteristics)
               console.log(this.product);
