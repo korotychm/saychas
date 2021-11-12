@@ -667,6 +667,7 @@ const ProductEdit = {
               this.selectedCountryId = this.product.country_id;
               this.selectedCountryName = this.product.country_name;
               this.countries = this.product.countries;
+              console.table(['описание жсон', this.originalProductDescription], ['описание текущее', this.product.description])
               if (this.product.images.length){
                 this.currentImg = this.product.images[0];
               }
