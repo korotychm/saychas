@@ -681,6 +681,7 @@ const ProductEdit = {
             if (response.data.data) {
               location.reload();
             } else {
+              this.originalData = JSON.stringify(response.data.product)
               this.originalVendorCode = JSON.stringify(response.data.product.vendor_code)
               this.originalCountrySearch = JSON.stringify(response.data.product.country_name)
               this.originalSelectedCountryName = JSON.stringify(response.data.product.country_name)
