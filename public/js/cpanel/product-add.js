@@ -297,7 +297,7 @@ const ProductAdd = {
                                       </svg>
                                       <span>Вернуться</span>
                                     </router-link>
-                                    <button class="btn btn--primary" @click="addProduct" :disabled="isChanged">Сохранить изменения</button>
+                                    <button class="btn btn--primary" @click="addProduct">Сохранить изменения</button>
                                   </div>
                                 </div>
                               </div>
