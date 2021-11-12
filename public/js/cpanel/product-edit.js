@@ -353,66 +353,24 @@ const ProductEdit = {
       let lastImageInParsedOriginalData = parsedOriginalData.images[parsedOriginalData.images.length - 1]
       let lastImageInProductImages = this.product.images[this.product.images.length - 1]
       if (lastImageInProductImages) {
-        if (lastImageInParsedOriginalData !== lastImageInProductImages.replace('/images/product/', '')) {
-          return true;
-        }
-        if (JSON.stringify(this.product.color_id) !== this.originalProductColor) {
-          return true;
-        }
+        if (lastImageInParsedOriginalData !== lastImageInProductImages.replace('/images/product/', '')) return true;
+        if (JSON.stringify(this.product.color_id) !== this.originalProductColor) return true;
         if (JSON.stringify(this.product.title) !== this.originalProductTitle) return true;
         if (JSON.stringify(this.product.vat) !== this.originalProductVat) return true;
         } else {
-        if (JSON.stringify(this.product) !== this.originalData) {
-          console.log('зис продук',this.product)
-          console.log('оригинал продукт', JSON.parse(this.originalData))
-          console.log('оригинал дата сработала')
-          return true;
+        if (JSON.stringify(this.product) !== this.originalData) return true;
         }
-      }
-      if (JSON.stringify(this.product.vendor_code) !== this.originalVendorCode) {
-        console.log('оригинал вендор код')
-        return true;
-      }
-      if (JSON.stringify(this.countrySearch) !== this.originalCountrySearch) {
-        console.log('оригинал кантри серч')
-        return true;
-      }
-      if (JSON.stringify(this.selectedCountryName) !== this.originalSelectedCountryName) {
-        console.log('оригинал селектед кантри нейм ')
-        return true;
-      }
-      if (JSON.stringify(this.brandSearch) !== this.originalBrandSearch) {
-        console.log('ригинал бренд серч')
-        return true;
-      }
-      if (JSON.stringify(this.product.description) !== this.originalProductDescription) {
-        console.log('оригинал продукт дескрипшен')
-        return true;
-      }
-      if (JSON.stringify(this.product.weight) !== this.originalProductWeight) {
-        console.log('оригинал вей')
-        return true;
-      }
-      if (JSON.stringify(this.product.length) !== this.originalProductLength) {
-        console.log('Оригинал ленгхт')
-        return true;
-      }
-      if (JSON.stringify(this.product.width) !== this.originalProductWidth) {
-        console.log('ригинал видс')
-        return true;
-      }
-      if (JSON.stringify(this.product.height) !== this.originalProductHeigth) {
-        console.log('оригинал хейгхт')
-        return true;
-      }
-      if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) {
-        console.log('оригинал Продукт Характеристик')
-        return true;
-      }
-      if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) {
-        console.log('оригинал Категори серч')
-        return true;
-      }
+      if (JSON.stringify(this.product.vendor_code) !== this.originalVendorCode) return true;
+      if (JSON.stringify(this.countrySearch) !== this.originalCountrySearch) return true;
+      if (JSON.stringify(this.selectedCountryName) !== this.originalSelectedCountryName) return true;
+      if (JSON.stringify(this.brandSearch) !== this.originalBrandSearch) return true;
+      if (JSON.stringify(this.product.description) !== this.originalProductDescription) return true;
+      if (JSON.stringify(this.product.weight) !== this.originalProductWeight) return true;
+      if (JSON.stringify(this.product.length) !== this.originalProductLength) return true;
+      if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
+      if (JSON.stringify(this.product.height) !== this.originalProductHeigth) return true;
+      if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
+      if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
       return false;
     },
     filteredCategories(){
