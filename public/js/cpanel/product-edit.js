@@ -343,7 +343,8 @@ const ProductEdit = {
       originalProductHeigth: null,
       originalProductVat: null,
       originalProductCharactristic: null,
-      originalProductColor: null
+      originalProductColor: null,
+      originalProductTitle: null
     }
   },
   computed: {
@@ -358,7 +359,8 @@ const ProductEdit = {
         if (JSON.stringify(this.product.color_id) !== this.originalProductColor) {
           return true;
         }
-      } else {
+        if (JSON.stringify(this.product.title) !== this.originalProductTitle) return true;
+       else {
         if (JSON.stringify(this.product) !== this.originalData) {
           console.log('зис продук',this.product)
           console.log('оригинал продукт', JSON.parse(this.originalData))
@@ -709,6 +711,7 @@ const ProductEdit = {
               this.originalProductHeigth = JSON.stringify(response.data.product.height)
               this.originalProductVat = JSON.stringify(response.data.product.vat)
               this.originalProductColor = JSON.stringify(response.data?.product?.color_id)
+              this.originalProductTitle = JSON.stringify(response.data.product.title)
               this.originalProductCharactristic = JSON.stringify(...response.data.product.characteristics)
               this.categories = response.data.category_tree;
               this.product = response.data.product;
