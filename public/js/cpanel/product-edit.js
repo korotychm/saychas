@@ -360,6 +360,7 @@ const ProductEdit = {
           return true;
         }
         if (JSON.stringify(this.product.title) !== this.originalProductTitle) return true;
+        if (JSON.stringify(this.product.vat) !== this.originalProductVat) return true;
         } else {
         if (JSON.stringify(this.product) !== this.originalData) {
           console.log('зис продук',this.product)
