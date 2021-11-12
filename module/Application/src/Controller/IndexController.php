@@ -242,7 +242,7 @@ class IndexController extends AbstractActionController
         $user = User::find(['id' => $userId]);
         $userPhone = (!empty($user)) ? $user->getPhone() : false ;
         
-        if (!$userPhone) {
+        if (!empty($userPhone)) {
             return $this->unauthorizedLocation();
         }
         
@@ -536,6 +536,7 @@ class IndexController extends AbstractActionController
         if (empty($provider = Provider::find(["url" => $provider_url]))) {
             return $this->responseError404();
         }
+        
         $provider_id = $provider->getId();
         $providerTitle = $provider->getTitle();
         $categories = $this->getProviderCategories($provider_id);
@@ -660,6 +661,7 @@ class IndexController extends AbstractActionController
 //            return $this->redirect()->toUrl('/my-login');
 //        }
         $brandProductsCategories = $this->productRepository->findAll(["where" => ["provider_id" => $provider_id], 'columns' => ["category_id"], 'group' => ["category_id"]]);
+       
         foreach ($brandProductsCategories as $category) {
             $categoriesArray[] = $category->getCategoryId();
         }
