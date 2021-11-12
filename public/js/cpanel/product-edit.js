@@ -352,7 +352,7 @@ const ProductEdit = {
       // if (JSON.stringify(this.countrySearch) !== this.originalCountrySearch) return true;
       // if (JSON.stringify(this.selectedCountryName) !== this.originalSelectedCountryName) return true;
       // if (JSON.stringify(this.brandSearch) !== this.originalBrandSearch) return true;
-      // if (JSON.stringify(this.product.description) !== this.originalProductDescription) return true;
+      if (JSON.stringify(this.product.description) !== this.originalProductDescription) return true;
       // if (JSON.stringify(this.product.weight) !== this.originalProductWeight) return true;
       // if (JSON.stringify(this.product.length) !== this.originalProductLength) return true;
       // if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
@@ -667,7 +667,6 @@ const ProductEdit = {
               this.selectedCountryId = this.product.country_id;
               this.selectedCountryName = this.product.country_name;
               this.countries = this.product.countries;
-              console.table(['описание жсон', this.originalProductDescription], ['описание текущее', this.product.description])
               if (this.product.images.length){
                 this.currentImg = this.product.images[0];
               }
