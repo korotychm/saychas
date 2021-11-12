@@ -347,18 +347,18 @@ const ProductEdit = {
   },
   computed: {
     isChanged () {
-      // if (JSON.stringify(this.product) !== this.originalData) return true;
-      // if (JSON.stringify(this.product.vendor_code) !== this.originalVendorCode) return true;
-      // if (JSON.stringify(this.countrySearch) !== this.originalCountrySearch) return true;
-      // if (JSON.stringify(this.selectedCountryName) !== this.originalSelectedCountryName) return true;
-      // if (JSON.stringify(this.brandSearch) !== this.originalBrandSearch) return true;
+      if (JSON.stringify(this.product) !== this.originalData) return true;
+      if (JSON.stringify(this.product.vendor_code) !== this.originalVendorCode) return true;
+      if (JSON.stringify(this.countrySearch) !== this.originalCountrySearch) return true;
+      if (JSON.stringify(this.selectedCountryName) !== this.originalSelectedCountryName) return true;
+      if (JSON.stringify(this.brandSearch) !== this.originalBrandSearch) return true;
       if (JSON.stringify(this.product.description) !== this.originalProductDescription) return true;
-      // if (JSON.stringify(this.product.weight) !== this.originalProductWeight) return true;
-      // if (JSON.stringify(this.product.length) !== this.originalProductLength) return true;
-      // if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
-      // if (JSON.stringify(this.product.height) !== this.originalProductHeigth) return true;
-      // if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
-      // if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
+      if (JSON.stringify(this.product.weight) !== this.originalProductWeight) return true;
+      if (JSON.stringify(this.product.length) !== this.originalProductLength) return true;
+      if (JSON.stringify(this.product.width) !== this.originalProductWidth) return true;
+      if (JSON.stringify(this.product.height) !== this.originalProductHeigth) return true;
+      if (JSON.stringify(...this.product.characteristics) !== this.originalProductCharactristic) return true;
+      if (JSON.stringify(this.categorySearch) !== this.originalCategorySearch) return true;
       return false;
     },
     filteredCategories(){
