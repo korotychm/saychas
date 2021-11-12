@@ -297,7 +297,7 @@ const ProductEdit = {
                         </svg>
                         <span>Вернуться</span>
                       </router-link>
-                      <button class="btn btn--primary" :class="{disabled: (!product.moderated && !product.processed) || isChanged}" @click="saveProduct(false)">Сохранить и отправить на модерацию</button>
+                      <button class="btn btn--primary" :class="{disabled: (!product.moderated && !product.processed) || !isChanged}" @click="saveProduct(false)">Сохранить и отправить на модерацию</button>
                     </div>
                   </div>
                 </div>
@@ -329,6 +329,7 @@ const ProductEdit = {
       showBrand: -1,
       showColor: -1,
       originalData: null,
+      originalBrandSearch: null,
       originalCategorySearch: null,
       originalSelectedCategoryId: null,
       originalSelectedCategoryName: null,
