@@ -22,7 +22,7 @@ class DadataServiceFactory implements FactoryInterface
         $config = $container->get('Config');
         
     
-        return new DadataService($config, $url, $token);
+        return new DadataService($config);
     }
 
 }

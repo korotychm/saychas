@@ -60,9 +60,19 @@
     color #fff
     background #dbdbdb
     font-weight bold
-    padding 5px 10px
-    border-radius 20px
+    padding 7px 10px
+    border-radius 25px
     margin 5px 5px 5px 0
+    &--link
+      border 2px solid var(--red)
+      background #fff
+      color var(--black)
+      transition .3s
+      cursor pointer
+      &:hover
+        @media (hover)
+          color #fff
+          background var(--red)
     &--canceled
       background var(--black)
     &--ready

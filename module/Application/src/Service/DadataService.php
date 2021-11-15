@@ -35,7 +35,7 @@ class DadataService
      */
     private $secret;
 
-    public function __construct($url, $token, $secret)
+    public function __construct($url, $token="", $secret="")
     {
         $this->url = $url;
         $this->token = $token;

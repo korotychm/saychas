@@ -1,10 +1,10 @@
+<?php if (!empty($countStors)) :?>
+
 <?php
 if ($countStors < 2) {
   $ordermerge = false;
 }
 ?>
-
-<?php if ($countStors) :?>
 
   <div class="cart__radio-group">
       <input name='ordermerge' value="0" type="radio" <?= (!$ordermerge) ? 'checked' : '' ?> id="delivery1" />

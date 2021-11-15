@@ -110,6 +110,11 @@ class ExternalCommunicationService
 
     ************************/
 
+    /**
+     * 
+     * @param array $content
+     * @return  array 
+     */
     public function sendBasketData($content)
     {
         $url = $this->config['parameters']['1c_request_links']['create_order'];
@@ -182,15 +187,22 @@ class ExternalCommunicationService
    
         
         return $return;
-       
-        
+    
     }
     
+    /**
+     * 
+     * @param array $content
+     * @param object $order
+     * @param int $userId
+     * @return array
+     */
     public function createClientOrder ($content, $order, $userId)
     {
         //$content['basketinfo'];
         $basketinfo = Json::encode($content['basketinfo']);
-        $deliveries = Json::encode($content['response']['delivery_info']);
+        //$deliveries = Json::encode($content['response']['delivery_info']);
+        $deliveries = Json::encode($content['response']['content']);
         $jsonNull = Json::encode([]);
         $orderId = $content['response']['order_id'];
     //    $order = ClientOrder::findFirstOrDefault(['order_id'=>$orderId]);
@@ -210,6 +222,17 @@ class ExternalCommunicationService
                 return ['result'=> false, 'description' => $ex->getMessage()];
         }
         
+    }
+    
+    /**
+     * 
+     * @param string $order_id
+     * @return sendCurlRequest
+     */
+    public function cancelClientOrder ($order_id)
+    {
+        $url = $this->config['parameters']['1c_request_links']['cancel_order'];
+        return $this->sendCurlRequest($url, ["order_id" => $order_id]);
     }
 
     /**

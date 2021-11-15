@@ -83,6 +83,7 @@ return [
                 ['actions' => ['updatePriceAndDiscount', ], 'allow' => '+administrator'],
                 ['actions' => ['getProductFile', ], 'allow' => '+administrator'],
                 ['actions' => ['sendProductFile', ], 'allow' => '+administrator'],
+                ['actions' => ['uploadProductFile', ], 'allow' => '+administrator'],
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
@@ -476,6 +477,17 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'send-product-file',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'upload-product-file'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/upload-product-file',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'upload-product-file',
                             ],
                         ],
                         // 'may_terminate' => true,
@@ -962,11 +974,13 @@ return [
             Controller\Plugin\AccessPlugin::class => Controller\Plugin\Factory\AccessPluginFactory::class,
             Controller\Plugin\CurrentUserPlugin::class => Controller\Plugin\Factory\CurrentUserPluginFactory::class,
             Controller\Plugin\ImagePathPlugin::class => Controller\Plugin\Factory\ImagePathPluginFactory::class,
+            Controller\Plugin\DocumentPathPlugin::class => Controller\Plugin\Factory\DocumentPathPluginFactory::class,
         ],
         'aliases' => [
             'access' => Controller\Plugin\AccessPlugin::class,
             'currentUser' => Controller\Plugin\CurrentUserPlugin::class,
             'imagePath' => Controller\Plugin\ImagePathPlugin::class,
+            'documentPath' => Controller\Plugin\DocumentPathPlugin::class,
         ],
     ],    
     'view_helpers' => [

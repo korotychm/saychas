@@ -1,6 +1,7 @@
+<?php use Application\Resource\Resource; ?>
 <section class="product-card__full-table" id="attributes">
-    <?php if (!empty($characteristics[0])):?>
-        <h2 class="product-card__section-heading">Характеристики</h2>
+    <?php if (!empty($characteristics) and !empty($characteristics[0])):?>
+    <h2 class="product-card__section-heading"><?= Resource::THE_CHARACTERISTICS?></h2>
 
         <table class="table">
           <?php

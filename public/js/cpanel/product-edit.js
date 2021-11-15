@@ -382,7 +382,7 @@ const ProductEdit = {
       let output = input;
       for (var i = 0; i < input.length; i++) {
             let c = input.charCodeAt(i);
-            if (c < 32 || c == 96 || (c > 255 && c < 1040) || (c > 1103 && c != 8470)) {
+            if ((c < 32 && c != 10) || c == 96 || (c > 255 && c < 1040) || (c > 1103 && c != 8470)) {
                 output = output.replace(input[i],'');
             }
       }

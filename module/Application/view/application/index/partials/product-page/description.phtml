@@ -1,7 +1,7 @@
 <section class="product-card__description">
     <?php if (!empty($description)) : ?>
-        <h2 class="product-card__section-heading">Описание</h2>
-        <div class="product-card__description-text <?=$description['if_spoiler'] ? '' : 'product-card__description-text--spoiler'?>">
+    <h2 class="product-card__section-heading"><?= Application\Resource\Resource::THE_DESCRIPTION ?></h2>
+        <div class="product-card__description-text <?= $description['if_spoiler'] ? '' : 'product-card__description-text--spoiler'?>">
            <?= $description['text'] ?>
         </div>
         <?php if (!$description['if_spoiler']): ?>

@@ -40,7 +40,13 @@ class CommonHelperFunctionsService
     public function updateLegalStores($json)
     {
         $url = $this->config['parameters']['1c_request_links']['get_store'];
-        $result = file_get_contents($url, false, stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]]));
+        
+        
+        try {
+            $result = file_get_contents($url, false, stream_context_create(['http' => ['method' => 'POST', 'header' => 'Content-type: application/json', 'content' => $json]]));
+        } catch (\Exception $e) {
+            return ["result" => false, "error" => "server time out. $e"];
+        }
         
         if (empty($result)) {
             return ["result" => false, "error" => "server time out"];
@@ -119,7 +125,7 @@ class CommonHelperFunctionsService
             $return[$product->getId()] = $item;
        }
        //$return["count"] = $count; 
-       return ["count" => $count,  "limit" => $limit,  "products" => $return];
+       return ["count" => $count,  "limit" => $limit,  "products" => $return ?? []];
     }
 
     /**

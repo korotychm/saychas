@@ -67,8 +67,8 @@ class BrandRepository extends Repository implements BrandRepositoryInterface
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s')",
-                    $row['id'], addslashes($row['title']), addslashes($row['description']), $row['image']);
+            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `url`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s', '%s')",
+                    $row['id'], mysql_real_escape_string($row['title']), mysql_real_escape_string($row['url']), mysql_real_escape_string($row['description']), $row['image']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

@@ -11,11 +11,14 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Json\Json;
+//use Laminas\Http\Cookies;
 use Laminas\View\Model\JsonModel;
 //use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Authentication\AuthenticationService;
 use Application\Resource\Resource;
 use Application\Helper\ArrayHelper;
+//use Application\Helper\CryptHelper;
+//use Laminas\Http\Headers;
 use Laminas\Escaper\Escaper;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Service\ImageHelperFunctionsService;
@@ -73,6 +76,7 @@ class ReviewController extends AbstractActionController
     public function setProductRatingAction()
     {
 
+        
         $reviewId = substr(md5(uniqid() . time()), 0, 36);
 
         $return = ["time_created" => time(), 'id' => $reviewId];
@@ -229,13 +233,14 @@ class ReviewController extends AbstractActionController
     {
         $reviews = Review::findAll(["where" => ["product_id" => $productId], "columns" => ["id"]])->toArray();
         $reviewsId = ArrayHelper::extractId($reviews, "id");
-        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId], "order" => ["id desc"], "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
+        $images = ReviewImage::findAll(['where' => ['review_id' => $reviewsId],  "columns"=> ["filename"], "group" =>   ["filename"],  "limit" => Resource::REVIEWS_IMAGE_GALLARY_LIMIT]);
 
+        $return =[];
         foreach ($images as $image) {
             $return[] = $image->getFilename();
         }
 
-        return $return;
+        return array_unique($return);
     }
 
     /**
@@ -247,8 +252,8 @@ class ReviewController extends AbstractActionController
     private function getValidRating($rating)
     {
         $patternRating = Resource::PRODUCT_RATING_VALUES;
-        //$rating = (int)$rating;
-        return !empty($patternRating[$rating]) ? $patternRating[$rating] : end($patternRating);
+        
+        return $patternRating[$rating] ?? end($patternRating);
     }
 
     /**
@@ -260,7 +265,6 @@ class ReviewController extends AbstractActionController
      */
     private function addReviewImage($files)
     {
-        
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
         $uploadPathThumbs = "public" . $this->imagePath("review_thumbnails") . "/";
         $resizeParams = Resource::REVIEW_IMAGE_RESIZE;

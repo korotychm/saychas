@@ -140,7 +140,7 @@ class User extends Entity
 
     public function getBasketData()
     {
-        $this->basket_data = self::$basketRepository->findAll(['where' => ['user_id' => $this->getId()]]);
+        $this->basket_data = self::$basketRepository->findAll(['where' => ['user_id' => $this->getId(), 'order_id' => 0 ]]);
         return $this->basket_data;
     }
 

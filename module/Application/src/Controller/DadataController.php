@@ -44,25 +44,22 @@ class DadataController extends AbstractActionController
         }
         
         $striptags = new StripTags();
-        //$post = $this->getRequest()->getPost();
-        //return new JsonModel([$post]);
         $address = $striptags->filter($post->query) ?? "";
-
-        if (strlen($address) < 3) {
-            return new JsonModel(["result" => false, 'error' => "address is very short"]);
-        }
-
+//        if (strlen($address) < 3) {
+//            return new JsonModel(["result" => false, 'error' => "address is very short"]);
+//        }
         $dadataApiParams = $this->config['parameters']['dadataApiParams'];
         $limit = $post->count ?? $dadataApiParams['limit'];
         $dadata = new DadataService($dadataApiParams['url'], $dadataApiParams['token'], $dadataApiParams['secret']);
-        $answer = $dadata->getDadata(["query" => $address, "count" => $limit]) ?? "[]";
+        $answer = $dadata->getDadata(["query" => $address, "count" => $limit]) ?? Json::encode(["result" => false, "error" => "dadata server not response" ]);
+        $return = array_merge(["result" => true], Json::decode($answer, Json::TYPE_ARRAY));
 
-        try {
-            $return = array_merge(["result" => true], Json::decode($answer, Json::TYPE_ARRAY));
-        } catch (\Throwable $ex) {
-
-            return new JsonModel(["result" => false, 'error' => $ex->getMessage(), ["query" => $address, "count" => $limit]]);
-        }
+//        try {
+//            $return = array_merge(["result" => true], Json::decode($answer, Json::TYPE_ARRAY));
+//        } catch (\Throwable $ex) {
+//
+//            return new JsonModel(["result" => false, 'error' => $ex->getMessage(), ["query" => $address, "count" => $limit]]);
+//        }
 
         return new JsonModel($return);
     }

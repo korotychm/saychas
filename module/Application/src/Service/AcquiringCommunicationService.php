@@ -8,9 +8,9 @@ use Laminas\Config\Config;
 use Laminas\Session\Container;
 use Laminas\Json\Json;
 //use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
-//use Application\Model\Entity;
+use Application\Helper\ArrayHelper;
 use Application\Model\Entity\Basket;
-//use Application\Model\Entity\HandbookRelatedProduct;
+use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
 
 /**
@@ -35,7 +35,7 @@ class AcquiringCommunicationService
         $this->productRepository = $productRepository;
         $this->tinkoffApiParams = $config['parameters']['TinkoffMerchantAPI'];
         $this->entityManager = $entityManager;
-        
+        $this->entityManager->initRepository(HandbookRelatedProduct::class);
         $this->entityManager->initRepository(Basket::class);
         
     }
@@ -162,17 +162,29 @@ class AcquiringCommunicationService
         return $return;
     }
     
-    public function returnProductsToBasket($orderId, $userId)
+    public function returnProductsToBasket($order_id, $userId)
     {
-        //return  ;
+       $orderProducts = Basket::findAll(["where" => ["order_id" => $order_id], "columns" =>["product_id"], "group"=>["product_id"] ])->toArray();  
+       $returnProduct = ArrayHelper::extractId($orderProducts);
+
+       foreach ($returnProduct as $productId){
+            
+            if (empty($productadd = HandbookRelatedProduct::findAll(['id' => $productId])->current())){
+                continue;
+            }
+            
+            if (empty($productaddPrice = $productadd->getPrice())){
+                continue;
+            }
+           
+            $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+            $basketItemTotal = (int) $basketItem->getTotal(); 
+            $basketItem->setUserId($userId)->setProductId($productId)->setPrice($productaddPrice)->setTotal($basketItemTotal + 1);
+            $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+            $returnedProduct[] = $productId;
+       }   
         
-        $basketSet = Basket::findAll(['where' => ['user_id' => $userId, 'order_id' => $orderId] ]);
-        foreach($basketSet as $basket) {
-            $productId =  $basket->getProductId();
-            $basket->setOrderId(0);
-            Basket::remove(['user_id' => $userId, 'product_id' => $productId,  'order_id' => 0]);
-            $basket->persist(['user_id' => $userId, 'product_id' => $productId,  'order_id' => 0]);
-        }/**/
+       return $returnedProduct ?? [];
     }
     
     /**
