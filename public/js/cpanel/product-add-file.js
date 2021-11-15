@@ -45,8 +45,8 @@ const ProductAddFile = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
-                     <div class="btn btn--primary" v-if="fileUploaded">
-                        <button>Обновить результат</button>
+                     <div v-if="fileUploaded" class="reload-result">
+                        <button class="btn btn--primary" >Обновить результат</button>
                     </div>
                 </div>
             </div>`,
