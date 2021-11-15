@@ -157,6 +157,7 @@ const ProductAddFile = {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => {
         showMessage('Файл загружен, ожидайте ответа')
+        this.fileUploaded = true;
         console.log(response)
       })
     },
@@ -174,7 +175,6 @@ const ProductAddFile = {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
             this.filePathMoz = response.data.filename;
-            this.fileUploaded = true;
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
             // console.log(this.filePath)
             // console.log('Файл',response);
