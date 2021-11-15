@@ -22,12 +22,12 @@ class UserAuthAdapterFactory implements FactoryInterface
         }
 
         $adapter = $container->get(AdapterInterface::class);
-        /** $userRepository = */ $container->get(UserRepository::class);
-        /** $userDataRepository = */ $container->get(UserDataRepository::class);
+        $userRepository = $container->get(UserRepository::class);
+//        $userDataRepository = $container->get(UserDataRepository::class);
         //$sessionContainer = $container->get(SessionContainer::class);
 
         return new UserAuthAdapter(
-//                $userRepository,
+                $userRepository,
 //                $sessionContainer,
                 $adapter
         );

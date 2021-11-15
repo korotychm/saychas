@@ -143,16 +143,16 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        /**/
+        
         $container = new Container();
         
         if ($container->signedUp != true) {
             if (!in_array($this->getRequest()->getUri()->getPath(), ['/signup', '/my-login']) ){
                 return $this->redirect()->toUrl('/my-login');
-            }    
+            }
         }
-        /**/
-        $userAuthAdapter = new UserAuthAdapter();
+        
+        $userAuthAdapter = new UserAuthAdapter($this->userRepository);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
      
@@ -161,25 +161,25 @@ class IndexController extends AbstractActionController
         }
         
         $response = parent::onDispatch($e);
-        $userId = $this->identity();
-        $user = $this->userRepository->find(['id' => $userId]);
-        //$userAddressHtml = $this->htmlProvider->writeUserAddress($user);
-        $userAddressArray = $this->htmlProvider->getUserAddresses($user, Resource::LIMIT_USER_ADDRESS_LIST);
-        $userInfo = $this->commonHelperFuncions->getUserInfo($user);
-        $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
-        $addressLegal = $userInfo["userAddress"] ??  false;
-        $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
-        // Return the response
-        $this->layout()->setVariables([
-            'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
-            'addressLegal' => $addressLegal,
-            'addresses' => $userAddressArray,
-            'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
-            'userLegal' => $userLegal,
-            'userinfo' => $userInfo,
-            'mainMenu' => $mainMenu,
-            'basketProductsCount' => $this->commonHelperFuncions->basketProductsCount($userId),
-        ]);
+//        $userId = $this->identity();
+//        $user = $this->userRepository->find(['id' => $userId]);
+//        //$userAddressHtml = $this->htmlProvider->writeUserAddress($user);
+//        $userAddressArray = $this->htmlProvider->getUserAddresses($user, Resource::LIMIT_USER_ADDRESS_LIST);
+//        $userInfo = $this->commonHelperFuncions->getUserInfo($user);
+//        $mainMenu = (!empty($mainMenu = Setting::find(['id' => 'main_menu']))) ? $mainMenu = $this->htmlProvider->getMainMenu($mainMenu) : [];
+//        $addressLegal = $userInfo["userAddress"] ??  false;
+//        $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
+//        // Return the response
+//        $this->layout()->setVariables([
+//            'categoryTree' => $this->categoryRepository->categoryFilteredTree(),
+//            'addressLegal' => $addressLegal,
+//            'addresses' => $userAddressArray,
+//            'addressesJson' => json_encode($userAddressArray, JSON_UNESCAPED_UNICODE),
+//            'userLegal' => $userLegal,
+//            'userinfo' => $userInfo,
+//            'mainMenu' => $mainMenu,
+//            'basketProductsCount' => $this->commonHelperFuncions->basketProductsCount($userId),
+//        ]);
         
         return $response;
     }
