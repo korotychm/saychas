@@ -1,6 +1,8 @@
 .reload-result {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .result-btn__container .btn--primary {
