@@ -162,6 +162,7 @@ const ProductAddFile = {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
             this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
+            console.log(this.filePath)
             // console.log('Файл',response);
           })
           .catch(error => {
