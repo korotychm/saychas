@@ -44,6 +44,10 @@ const ProductAddFile = {
                       <p>Загрузите заполненный файл.</p>
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
+                    <div class="product-add-file__files-download">
+                        <p v-if="checkBrowser">Ваша ссылка на скачивание <a href="" :download="filePathMoz"></a></p>
+                        <p v-else>Ваша ссылка на скачивание <a :href="filePath" :download="fileName"></a></p>
+                    </div>
                   </div>
                 </div>
             </div>`,
