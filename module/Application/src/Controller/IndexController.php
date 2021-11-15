@@ -242,7 +242,7 @@ class IndexController extends AbstractActionController
         $user = User::find(['id' => $userId]);
         $userPhone = (!empty($user)) ? $user->getPhone() : false ;
         
-        if (!$userPhone) {
+        if (empty($userPhone)) {
             return $this->unauthorizedLocation();
         }
         
@@ -268,7 +268,7 @@ class IndexController extends AbstractActionController
         $user = User::find(['id' => $userId]);
         $userPhone = (!empty($user)) ? $user->getPhone() : false ;
         
-        if (!$userPhone) {
+        if (empty($userPhone)) {
             return $this->unauthorizedLocation();
         }
         
