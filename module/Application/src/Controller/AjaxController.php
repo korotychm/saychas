@@ -553,8 +553,8 @@ class AjaxController extends AbstractActionController
         $columns = ['product_id', 'order_id', 'total'];
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
         foreach ($basket as $b) {
-            if (!empty($pId = $b->productId)) {
-                $product = $this->productRepository->find(['id' => $pId]);
+           
+            if (!empty($pId = $b->productId) and !empty($product = $this->productRepository->find(['id' => $pId]))) {
                 $return['products'][] = [
                     "id" => $pId,
                     "name" => $product->getTitle(),
