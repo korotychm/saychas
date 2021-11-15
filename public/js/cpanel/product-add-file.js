@@ -45,7 +45,7 @@ const ProductAddFile = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
-                     <div class="reload-result">
+                     <div class="btn btn--primary" v-if="fileUploaded">
                         <button>Обновить результат</button>
                     </div>
                 </div>
@@ -60,7 +60,8 @@ const ProductAddFile = {
       file: false,
       filePath: '',
       filePathMoz: '',
-      fileName: ''
+      fileName: '',
+      fileUploaded: false,
     }
   },
   computed: {
@@ -168,6 +169,7 @@ const ProductAddFile = {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
             this.filePathMoz = response.data.filename;
+            this.fileUploaded = true;
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
             // console.log(this.filePath)
             // console.log('Файл',response);
