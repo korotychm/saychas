@@ -275,6 +275,11 @@ class ProductController extends AbstractActionController
         // return new JsonModel(['file_name' => $newFileName]);
     }
     
+    public function getProductFileAnswerAction()
+    {
+        return new JsonModel(['banzaii' => 'vonzaii']);
+    }
+    
 
     /**
      * Update product
