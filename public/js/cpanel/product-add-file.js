@@ -47,7 +47,7 @@ const ProductAddFile = {
                   </div>
                 </div>
             </div>`,
-  data: function () {
+  data () {
     return {
       categories: [],
       categoriesFlat: [],
