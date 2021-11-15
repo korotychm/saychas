@@ -27,8 +27,9 @@ $(document).ready(function () {
         el: '#profile-order',
         data: {
           order: [],
-          products: [],
-          orderId: ''
+          providers: [],
+          orderId: '',
+          cancellingOrder: false
         },
         computed: {
           totalDeliveries(){
@@ -127,6 +128,21 @@ $(document).ready(function () {
             localedTime = ' в ' + orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
             return localedDate + localedTime;
           },
+          cancelOrder(){
+            this.cancellingOrder = true;
+            axios
+              .post('/cancel-client-order',
+                Qs.stringify({
+                  order_id : this.orderId
+              }))
+              .then(response => {
+                this.cancellingOrder = false;
+                console.log('cancel order',response);
+                if (response.data.result){
+                  location.reload();
+                }
+              });
+          },
           getOrder(){
             axios
               .post('/ajax-get-order-page',
@@ -136,7 +152,7 @@ $(document).ready(function () {
               .then(response => {
                 console.log(response);
                 this.order = response.data.order_info[0];
-                this.products = response.data.productsMap;
+                this.providers = response.data.providersMap;
                 console.log('заказ',this.order);
               });
           },

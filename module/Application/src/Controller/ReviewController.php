@@ -11,14 +11,14 @@ namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Json\Json;
-use Laminas\Http\Cookies;
+//use Laminas\Http\Cookies;
 use Laminas\View\Model\JsonModel;
 //use Laminas\Session\Container; // as SessionContainer;
 use Laminas\Authentication\AuthenticationService;
 use Application\Resource\Resource;
 use Application\Helper\ArrayHelper;
-use Application\Helper\CryptHelper;
-use Laminas\Http\Headers;
+//use Application\Helper\CryptHelper;
+//use Laminas\Http\Headers;
 use Laminas\Escaper\Escaper;
 use Application\Service\CommonHelperFunctionsService;
 use Application\Service\ImageHelperFunctionsService;
@@ -265,7 +265,6 @@ class ReviewController extends AbstractActionController
      */
     private function addReviewImage($files)
     {
-        
         $uploadPath = "public" . $this->imagePath("review_images") . "/";
         $uploadPathThumbs = "public" . $this->imagePath("review_thumbnails") . "/";
         $resizeParams = Resource::REVIEW_IMAGE_RESIZE;

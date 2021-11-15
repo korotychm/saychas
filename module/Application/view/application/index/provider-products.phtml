@@ -16,7 +16,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/providers.js'));
   <div class="catalog__wrap">
 
    <aside class="catalog__sidebar">
-    <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", [ "url" => "seller", "breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "category_id" => $this->category_id]) ?>
+    <?= $this->partial("/application/index/partials/brand/bread-crumbs-menu", [ "url" => "seller", "breadCrumbs" => $this->breadCrumbs, "id" => $this->id, "furl" => $this->url, "category_id" => $this->category_id]) ?>
    </aside>
 
     <div class="catalog__content" id="provider-page">

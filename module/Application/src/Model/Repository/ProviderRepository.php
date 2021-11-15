@@ -125,7 +125,8 @@ class ProviderRepository extends Repository implements ProviderRepositoryInterfa
         }
 
         foreach ($result['data'] as $row) {
-            $sql = sprintf("replace INTO `provider`( `id`, `title`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s' )", $row['id'], $row['title'], $row['description'], $row['image']);
+            $sql = sprintf("replace INTO `provider`( `id`, `title`, `url`, `description`, `image`) VALUES ( '%s', '%s', '%s', '%s', '%s' )", 
+            addslashes($row['id']), addslashes($row['title']), addslashes($row['url']), addslashes($row['description']), addslashes($row['image']));
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

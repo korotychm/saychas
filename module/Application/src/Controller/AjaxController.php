@@ -240,15 +240,7 @@ class AjaxController extends AbstractActionController
         if ($orders->count() < 1) {
             return new JsonModel(["result" => false]);
         }
-
         $return["order_list"] = $this->htmlProvider->orderList($orders);
-        $productMap = $this->getBasketProductMap($userId);
-
-        if ($productMap['result'] == false) {
-            return new JsonModel($productMap);
-        }
-
-        $return["productsMap"] = $productMap['products'];
 
         return new JsonModel($return);
     }
@@ -259,48 +251,47 @@ class AjaxController extends AbstractActionController
      * @param string $orderId
      * @return array
      */
-    private function getBasketProductMap($userId, $orderId = 0)
-    {
-        $products = [];
-        $where = new Where();
-        $where->equalTo('user_id', $userId);
+//    private function getBasketProductMap($userId, $orderId = 0)
+//    {
+//        $products = [];
+//        $where = new Where();
+//        $where->equalTo('user_id', $userId);
+//
+//        if ($orderId == 0) {
+//            //$where->notEqualTo('order_id', $orderId);
+//        } else {
+//            $where->equalTo('order_id', $orderId);
+//        }
+//
+//        $columns = ['product_id'];
+//        $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
+//        $providers = [];
+//        foreach ($userBasketHistory as $basketItem) {
+//            $product_id = $basketItem->getProductId();
+//            try {
+//                $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
+//                $products[$product_id] = ["image" => $product->receiveProductImages()->current()->getHttpUrl(), "title" => $product->getTitle()];
+//                $providers[] = $product->getProviderId();
+//            } catch (\Throwable $ex) {
+//                return ["result" => false, 'error' => $ex->getMessage()];
+//            }
+//        }
+//
+//        return empty($products) ? ["result" => false, "error" => "order $orderId have not basket products " . Json::encode(['where' => $where, 'columns' => $columns])] : ["result" => true, "products" => $products, "providers" => $providers];
+//    }
 
-        if ($orderId == 0) {
-            //$where->notEqualTo('order_id', $orderId);
-        } else {
-            $where->equalTo('order_id', $orderId);
-        }
-
-        $columns = ['product_id'];
-        $userBasketHistory = Basket::findAll(['where' => $where, 'columns' => $columns]);
-        $providers = [];
-        foreach ($userBasketHistory as $basketItem) {
-            $product_id = $basketItem->getProductId();
-            try {
-                $product = $this->handBookRelatedProductRepository->find(['id' => $product_id]);
-                $products[$product_id] = ["image" => $product->receiveProductImages()->current()->getHttpUrl(), "title" => $product->getTitle()];
-                $providers[] = $product->getProviderId();
-            } catch (\Throwable $ex) {
-                return ["result" => false, 'error' => $ex->getMessage()];
-            }
-        }
-       
-        return empty($products) ? ["result" => false, "error" => "order $orderId have not basket products " . Json::encode(['where' => $where, 'columns' => $columns])] : ["result" => true, "products" => $products, "providers"=>$providers];
-    }
-    
     private function getProvidersMap($providersIdArray)
     {
-        $providerMap = [];
+        //$providerMap = [];
         if (!empty($providersIdArray)) {
-            $providers = Provider::findAll(["where" =>["id" => $providersIdArray]]);
-                foreach ($providers as $provider){
-                    $providerMap[$provider->getId()] =  $provider->getImage();
-                }
+            $providers = Provider::findAll(["where" => ["id" => $providersIdArray]]);
+            foreach ($providers as $provider) {
+                $providerMap[$provider->getId()] = ["image" => $provider->getImage(), "title" => $provider->getTitle()];
+            }
         }
-        
-        return $providerMap;
+
+        return $providerMap ?? [];
     }
-    
 
     /**
      * @route /ajax-get-order-page
@@ -313,29 +304,33 @@ class AjaxController extends AbstractActionController
         $return["result"] = false;
         $post = $this->getRequest()->getPost();
         $return['order_id'] = $post->orderId;
-        //$return['order_id'] = "000000006";
-
         $order = ClientOrder::findAll(["where" => ['user_id' => $return['userId'], 'order_id' => $return['order_id']]]);
-//        if (empty($order)) {
-//
-//            return new JsonModel($return);
-//        }
         $return["order_info"] = $this->htmlProvider->orderList($order);
-
-        $productMap = $this->getBasketProductMap($userId, $return['order_id']);
-
-        if ($productMap['result'] == false) {
-            //return new JsonModel($productMap);
-            $productMap['products'] = [];
-           // $productMap['providers'] = [];
-        }
-        
-        $providersIdArray = $productMap['providers'] ?? [];
-        $return["providersMap"] = $this->getProvidersMap($providersIdArray);
-        $return["productsMap"] = $productMap['products'];
+        $providers = $this->getClientOrderProviders($return["order_info"][0]["deliveryInfo"]["delivery_info"]["deliveries"]);
+        $return["providersMap"] = $this->getProvidersMap($providers);
         $return["result"] = true;
 
         return new JsonModel($return);
+    }
+
+    private function getClientOrderProviders($deliveryes)
+    {
+        foreach ($deliveryes as $delivery) {
+            $requsitions[] = $delivery["requisitions"];
+        }
+        
+        if (empty($requsitions)) {
+            return [];
+        }
+
+        foreach ($requsitions as $requsition) {
+        
+            foreach ($requsition as $req) {
+                $providers[] = $req['provider_id'];
+            }
+        }
+
+        return $providers ?? [];
     }
 
     /**
@@ -518,6 +513,7 @@ class AjaxController extends AbstractActionController
      *  промежуточный скрипт для http://api4.searchbooster.io
      * @return json
      */
+
     public function searchBoosterApiAction()
     {
         $json = file_get_contents(str_replace("/get-search-booster-api", "", "http://api4.searchbooster.io" . $_SERVER["REQUEST_URI"]));
@@ -609,7 +605,7 @@ class AjaxController extends AbstractActionController
             return $this->getResponse()->setStatusCode(403);
         }
         $post = $this->getRequest()->getPost();
-        $timepoint = $post->timepoint ?? [0,0];
+        $timepoint = $post->timepoint ?? [0, 0];
         //$selectedtimepoint = [];
         $selectedtimepoint[0][$timepoint[0]] = " checked ";
         $selectedtimepoint[1][$timepoint[1]] = " checked ";
@@ -661,30 +657,30 @@ class AjaxController extends AbstractActionController
             $this->getResponse()->setStatusCode(403);
             return;
         }
-        
+
         $user = $this->userRepository->find(['id' => $userId]);
         $basketUser['phone'] = $user->getPhone();
         $basketUser['name'] = $user->getName();
         $userData = $user->getUserData();
-        
+
         if ($userData->count() > 0) {
             $basketUser['address'] = $userData->current()->getAddress();
         }
-        
+
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
         $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
         $cardInfo = '';
-        
+
         if ($post->cardinfo) {
             $userPaycards = UserPaycard::findAll(["where" => ["user_id" => $userId, "card_id" => $post->cardinfo]]);
             $cardUpdate = $userPaycards->current();
             $cardInfo = $cardUpdate->getPan();
             $cardUpdate->setTime(time())->persist(["user_id" => $userId, "card_id" => $post->cardinfo]);
         }
-        
+
         $row['basketUser'] = $basketUser;
         $row['ordermerge'] = $post->ordermerge;
         $row['priceDelevery'] = $param['hourPrice'];

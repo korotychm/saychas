@@ -629,7 +629,6 @@ return [
                         'controller' => Controller\ReceivingController::class,
                         'action' => 'receiveRepository',
                     ],
-                    //'repository' => \Application\Model\RepositoryInterface\ClientOrderRepositoryInterface::class,
                     'repository' => \Application\Model\Entity\ClientOrder::class,
                 ],
             ],
@@ -1437,6 +1436,7 @@ return [
         'exception_template' => 'error/index',
         'template_map' => [
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/blank' => __DIR__ . '/../view/layout/blank.phtml',
             'layout/error' => __DIR__ . '/../view/layout/errorLayout.phtml',
             'layout/preview' => __DIR__ . '/../view/layout/menu.phtml',
             'layout/mainpagenew' => __DIR__ . '/../view/layout/mainpagenew.phtml',

@@ -23,13 +23,11 @@ use ControlPanel\Service\RequisitionManager;
 
 class ClientOrderRepository extends Repository
 {
+
     protected const ORDER = 0;
-    
     protected const DELIVERY = 1;
-    
     protected const REQUISITION = 2;
-    
-     protected const ORDER_INFO = "update_order";
+    protected const ORDER_INFO = 3; //"update_order";
 
     /**
      * @var string
@@ -40,9 +38,7 @@ class ClientOrderRepository extends Repository
      * @var ClientOrder
      */
     protected ClientOrder $prototype;
-    
     protected AcquiringCommunicationService $acquiringService;
-    
     protected RequisitionManager $requisitionManager;
 
     /**
@@ -88,7 +84,6 @@ class ClientOrderRepository extends Repository
 
         return parent::persist($entity, $params, $hydrator);
     }
-    
 
     /**
      * Adds given client_order into it's repository
@@ -98,49 +93,48 @@ class ClientOrderRepository extends Repository
     public function replace1($content)
     {
         /** @var JSON $content */
-
         try {
             $result = Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
+
         $outOrder = null;
         $o = null;
-        array_walk($result['data'], function($order) use (&$outOrder, &$o){
+        array_walk($result['data'], function ($order) use (&$outOrder, &$o) {
             // do order
             $orderId = $order['order_id'];
             $orderStatus = $order['order_status'];
             $clientOrder = $this->find(['order_id' => $orderId]);
-            if(null == $clientOrder) {
+            if (null == $clientOrder) {
                 throw new RuntimeException('Order with specified order_id not found');
             }
             $clientOrder->setStatus($orderStatus);
-            
-            if(count($order['deliveries']) <= 0) {
+
+            if (count($order['deliveries']) <= 0) {
                 return;
             }
-            array_walk($order['deliveries'], function($delivery) use ($clientOrder) {
+            array_walk($order['deliveries'], function ($delivery) use ($clientOrder) {
                 // do delivery
                 $deliveryInfo = $clientOrder->getDeliveryInfo();
                 $di = json_decode($deliveryInfo, true);
-                foreach($di['deliveries'] as &$d) {
-                    if($d['delivery_id'] == $delivery['delivery_id']) {
+                foreach ($di['deliveries'] as &$d) {
+                    if ($d['delivery_id'] == $delivery['delivery_id']) {
                         $d['delivery_status'] = $delivery['delivery_status'];
                     }
                 }
                 $clientOrder->setDeliveryInfo(json_encode($di, true));
-                
-                if(count($delivery['requisitions']) <= 0) {
+
+                if (count($delivery['requisitions']) <= 0) {
                     return;
                 }
-                array_walk($delivery['requisitions'], function($requisition) use($delivery, $clientOrder, $di) {
+                array_walk($delivery['requisitions'], function ($requisition) use ($delivery, $clientOrder, $di) {
                     // do requisition
                     $deliveryInfo = $clientOrder->getDeliveryInfo();
                     $di = json_decode($deliveryInfo, true);
-                    foreach($di['deliveries'] as &$d) {
-                        foreach($d['requisitions'] as &$r) {
-                            if($r['requisition_id'] == $requisition['requisition_id']) {
+                    foreach ($di['deliveries'] as &$d) {
+                        foreach ($d['requisitions'] as &$r) {
+                            if ($r['requisition_id'] == $requisition['requisition_id']) {
                                 $r['requisition_status'] = $requisition['requisition_status'];
                             }
                         }
@@ -152,22 +146,18 @@ class ClientOrderRepository extends Repository
             $o = $order;
             $this->persist($clientOrder, ['order_id' => $orderId]);
         });
-
     }
-    
+
     private function cancelOrder($clientOrder)
     {
-        //mail('user@localhost', 'clientOrder = ', print_r($clientOrder->getPaymentInfo(), true));
-        //$this->acquiringService->addCustomerTinkoff($args);
         try {
-            $paymentInfo = Json::decode( $clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
-            //$deliveryInfo = Json::decode( $clientOrder->getDeliveryInfo(), Json::TYPE_ARRAY);
-            //mail("d.sizov@saychas.ru", "ordercancel.log", print_r($paymentInfo, true)); // лог на почту
-            if (!empty($paymentInfo["PaymentId"])){
-                    $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
-                    $tinkoffData = $this->acquiringService->cancelTinkoff($args);
-              //      mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
-                    return true;
+            $paymentInfo = Json::decode($clientOrder->getPaymentInfo(), Json::TYPE_ARRAY);
+
+            if (!empty($paymentInfo["PaymentId"])) {
+                $args = ["PaymentId" => $paymentInfo["PaymentId"], "TerminalKey" => $paymentInfo["TerminalKey"]];
+                $tinkoffData = $this->acquiringService->cancelTinkoff($args);
+                //      mail("d.sizov@saychas.ru", "ordercancel.log", print_r($tinkoffData, true)); // лог на почту
+                return true;
             }
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
@@ -175,14 +165,13 @@ class ClientOrderRepository extends Repository
         return false;
     }
 
-
     /**
      * Replace
-     * 
+     *
      * Example
-     * 
+     *
      *  [{"type":"0","order_id":"000000023","status":"0"},{"type":"0","order_id":"000000024","status":"1"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000090","status":"0"},{"type":"1","order_id":"000000024","delivery_id":"000000000000000088","status":"0"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000130","status":"1"},{"type":"2","order_id":"000000024","delivery_id":"000000000000000088","requisition_id":"000000000000000134","status":"1"}]
-     * 
+     *
      * @param type $content
      * @return type
      */
@@ -193,58 +182,75 @@ class ClientOrderRepository extends Repository
         } catch (\Laminas\Json\Exception\RuntimeException $e) {
             return ['result' => false, 'description' => $e->getMessage(), 'statusCode' => 400];
         }
-        
-        foreach($result['data'] as $item) {
-            
+
+        $description = "";
+
+        foreach ($result['data'] as $item) {
             $orderId = $item['order_id'];
-            
-            if(empty($clientOrder = $this->find(['order_id' => $orderId]))) {
+            if (empty($clientOrder = $this->find(['order_id' => $orderId]))) {
                 // throw new RuntimeException('Cannot find the order with given number');
-                return ['result' => true, 'description' => 'Cannot find the order with given number', 'statusCode' => 200];
+                $description .= "Cannot find the order with given number $orderId \r\n";
+                continue;
             }
-            
-            $orderCancel = Resource::ORDER_STATUS_CODE_CANCELED; 
-            
-            switch($item['type']) {
+
+            $orderCancel = Resource::ORDER_STATUS_CODE_CANCELED;
+
+            switch ($item['type']) {
                 case self::ORDER:
                 default:
                     $orderStatus = $item['status'];
+
                     if ($orderStatus == $orderCancel['id'] /**/) {
                         $this->cancelOrder($clientOrder);
                         $this->acquiringService->returnProductsToBasket($orderId, $clientOrder->getUserId());
                     }
+
                     $this->updateOrderStatus($orderId, $clientOrder, $orderStatus);
                     break;
-                case self::DELIVERY:
-                    $deliveryId = $item['delivery_id'];
-                    $deliveryStatus = $item['status'];
-                    $this->updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus);
-                    break;
+
+                /**
+                 * The following piece of code is commented out in order to
+                 * fix statuses problem raised up due to changes in 1c structure
+                 * The code below can be used later on
+                 */
+                /* case self::DELIVERY:
+                  $deliveryId = $item['delivery_id'];
+                  $deliveryStatus = $item['status'];
+                  $this->updateDeliveryStatus($orderId, $clientOrder, $deliveryId, $deliveryStatus);
+                  break;
+                  /* */
                 case self::REQUISITION:
-                    $deliveryId = $item['delivery_id'];
+                    //$deliveryId = $item['delivery_id'];
                     $requisitionId = $item['requisition_id'];
                     $requisitionStatus = $item['status'];
-                    $this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
+                    $this->requisitionManager->setRequisitionStatus($requisitionId, $requisitionStatus);
+                    //$this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
                     break;
+
                 case self::ORDER_INFO:
-                    $content = $item['content'];
+                    $content = Json::encode($item['content']);
                     $this->updateDeliveryInfo($orderId, $clientOrder, $content);
                     break;
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $description, 'statusCode' => 200];
     }
-    
-    
+
+    /**
+     *
+     * @param string $orderId
+     * @param object $clientOrder
+     * @param json $content
+     */
     private function updateDeliveryInfo($orderId, $clientOrder, $content)
     {
         $clientOrder->setDeliveryInfo($content);
-        $this->persist($clientOrder, ['order_id' => $orderId]);        
+        $this->persist($clientOrder, ['order_id' => $orderId]);
     }
-    
+
     /**
      * Update order status
-     * 
+     *
      * @param type $orderId
      * @param type $clientOrder
      * @param type $orderStatus
@@ -254,10 +260,10 @@ class ClientOrderRepository extends Repository
         $clientOrder->setStatus($orderStatus);
         $this->persist($clientOrder, ['order_id' => $orderId]);
     }
-    
+
     /**
      * Update delivery status
-     * 
+     *
      * @param type $orderId
      * @param type $clientOrder
      * @param type $deliveryId
@@ -267,8 +273,8 @@ class ClientOrderRepository extends Repository
     {
         $deliveryInfo = $clientOrder->getDeliveryInfo();
         $di = json_decode($deliveryInfo, true);
-        foreach($di['deliveries'] as &$d) {
-            if($d['delivery_id'] == $deliveryId) {
+        foreach ($di['deliveries'] as &$d) {
+            if ($d['delivery_id'] == $deliveryId) {
                 $d['delivery_status'] = $deliveryStatus;
             }
         }
@@ -276,10 +282,10 @@ class ClientOrderRepository extends Repository
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);
     }
-    
+
     /**
      * Update requisition status
-     * 
+     *
      * @param type $orderId
      * @param type $clientOrder
      * @param type $deliveryId
@@ -290,16 +296,18 @@ class ClientOrderRepository extends Repository
     {
         $deliveryInfo = $clientOrder->getDeliveryInfo();
         $di = json_decode($deliveryInfo, true);
-        foreach($di['deliveries'] as &$d) {
-            foreach($d['requisitions'] as &$r) {
-                if($d['delivery_id'] == $deliveryId) {
-                    if($r['requisition_id'] == $requisitionId) {
+
+        foreach ($di['deliveries'] as &$d) {
+            foreach ($d['requisitions'] as &$r) {
+                if ($d['delivery_id'] == $deliveryId) {
+                    if ($r['requisition_id'] == $requisitionId) {
                         $r['requisition_status'] = $requisitionStatus;
                         $this->requisitionManager->setRequisitionStatus($requisitionId, $requisitionStatus);
                     }
                 }
             }
         }
+
         $status = json_encode($di, true);
         $clientOrder->setDeliveryInfo($status);
         $this->persist($clientOrder, ['order_id' => $orderId]);

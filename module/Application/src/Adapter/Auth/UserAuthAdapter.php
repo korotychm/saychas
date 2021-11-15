@@ -12,8 +12,8 @@ use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
 //use Laminas\Authentication\Result;
 use Application\Adapter\Auth\UserAuthResult;
 use Application\Resource\Resource;
-//use Application\Model\Repository\UserRepository;
-//use Application\Model\Repository\UserDataRepository;
+use Application\Model\Repository\UserRepository;
+use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
 use Application\Helper\ArrayHelper;
 use Application\Helper\CryptHelper;
@@ -32,7 +32,7 @@ use Laminas\Session\Container; // as SessionContainer;
 class UserAuthAdapter implements AdapterInterface
 {
 
-//    private $userRepository;
+    private $userRepository;
     private ?DbAdapter $adapter;
 
 //    private $sessionContainer;
@@ -42,9 +42,9 @@ class UserAuthAdapter implements AdapterInterface
      *
      * @return void
      */
-    public function __construct(/* UserRepository $userRepository, */ /* SessionContainer $sessionContainer, */ ?DbAdapter $adapter = null, $identity = '', $credential = '')
+    public function __construct(UserRepository $userRepository, /* SessionContainer $sessionContainer, */ ?DbAdapter $adapter = null, $identity = '', $credential = '')
     {
-//        $this->userRepository = $userRepository;
+        $this->userRepository = $userRepository;
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
@@ -101,13 +101,14 @@ class UserAuthAdapter implements AdapterInterface
             $this->identity = $userId;
             $code = UserAuthResult::SUCCESS;
         } else {
-//            $user = $this->userRepository->find(['id' => $container->userIdentity]);
-            $user = User::find(['id' => $container->userIdentity]);
+            $user = $this->userRepository->find(['id' => $container->userIdentity]);
+//            $user = User::find(['id' => $container->userIdentity]);
 //            if(!$container->userOldIdentity) {
 //                throw new \Exception('Unexpected error: no data found for registered user');
 //            }
             if ($container->userOldIdentity && ($container->userIdentity != $container->userOldIdentity)) {
-                $oldUser = User::find(['id' => $container->userOldIdentity]);
+                //$oldUser = User::find(['id' => $container->userOldIdentity]);
+                $oldUser = $this->userRepository->find(['id' => $container->userOldIdentity]);
                 $this->updateUserData($oldUser, $container);
                 $this->updateBasketData($oldUser, $container);
             }
