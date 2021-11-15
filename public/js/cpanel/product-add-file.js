@@ -152,10 +152,10 @@ const ProductAddFile = {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => console.log(response))
     },
-    getFile(id) {
+    async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/get-product-file';
-      axios
+      await axios
         .post(requestUrl,Qs.stringify({
           data: {
             category_id: this.selectedCategoryId,
