@@ -144,11 +144,11 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
-    uploadFile () {
+    async uploadFile () {
       let file  = document.querySelector("#upload-file").files
       let formData = new FormData()
       formData.append('file', file[0]);
-      axios.post('/control-panel/upload-product-file', formData, {
+      await axios.post('/control-panel/upload-product-file', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => console.log(response))
     },
@@ -165,8 +165,9 @@ const ProductAddFile = {
           .then(response => {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
-            this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
-            console.log(this.filePath)
+            this.filePathMoz = response.data.filename;
+            // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
+            // console.log(this.filePath)
             // console.log('Файл',response);
           })
           .catch(error => {
