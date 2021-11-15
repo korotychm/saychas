@@ -150,7 +150,10 @@ const ProductAddFile = {
       formData.append('file', file[0]);
       await axios.post('/control-panel/upload-product-file', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
-      }).then(response => console.log(response))
+      }).then(response => {
+        showMessage('Файл загружен, ожидайте ответа')
+        console.log(response)
+      })
     },
     async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
