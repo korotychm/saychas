@@ -46,8 +46,8 @@ const ProductAddFile = {
                     </div>
                   </div>
                      <div class="">
-                        <p v-if="checkBrowser">Ваша ссылка на скачивание <a href="" :download="filePathMoz">{{fileName}</a></p>
-                        <p v-else>Ваша ссылка на скачивание <a :href="filePath" :download="fileName">{{fileName}}</a></p>
+                        <p v-if="checkBrowser && filePathMoz">Ваша ссылка на скачивание <a href="" :download="filePathMoz">{{fileName}}</a></p>
+                        <p v-else-if="filePath">Ваша ссылка на скачивание <a :href="filePath" :download="fileName">{{fileName}}</a></p>
                     </div>
                 </div>
             </div>`,
