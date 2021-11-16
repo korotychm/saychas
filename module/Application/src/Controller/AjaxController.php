@@ -532,10 +532,10 @@ class AjaxController extends AbstractActionController
 
             return $this->getResponse()->setStatusCode(403);
         }
-        $return = ["error" => true, "count" => 0];
+        //$return = ["error" => true, "count" => 0];
         $return['total'] = $return['count'] = 0;
         $post = $this->getRequest()->getPost();
-        if (!empty($return['productId'] = $productId = $post->product)) {
+        if (!empty($productId = $post->product)) {
             //$return['error'] = false;
             $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
             $basketItemTotal = (int) $basketItem->getTotal();
@@ -546,18 +546,19 @@ class AjaxController extends AbstractActionController
             $basketItem->setPrice($productaddPrice);
             $basketItem->setTotal($basketItemTotal + 1);
             $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-        }
+        }   
         $where = new Where();
         $where->equalTo('user_id', $userId);
         $where->equalTo('order_id', 0);
         $columns = ['product_id', 'order_id', 'total'];
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
         foreach ($basket as $b) {
-            if (!empty($pId = $b->productId)) {
-                $product = $this->productRepository->find(['id' => $pId]);
+           
+            if (!empty($pId = $b->productId) and !empty($product = $this->productRepository->find(['id' => $pId]))) {
                 $return['products'][] = [
                     "id" => $pId,
                     "name" => $product->getTitle(),
+                    "url" => $product->getUrl(),
                     "count" => $b->total,
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
                 ];

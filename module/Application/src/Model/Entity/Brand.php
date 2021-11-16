@@ -99,6 +99,7 @@ class Brand extends Entity
     {
         return $this->title;
     }
+
     /**
      * Set friendly URL.
      *

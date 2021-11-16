@@ -189,7 +189,7 @@ class Resource
     const REVIEW_MESSAGE_VALID_MIN_LENGHT = 4;
     const REVIEW_EMPTY_MEASSAGES_LIST = "У этого товара еще нет ни одного отзыва. Будьте первым!";
     const REVIEW_ADD_MEASSAGE_BUTTON =  "Оставить отзыв";
-    const REVIEW_THANKS =  "Спасибо, за отзыв!";
+    const REVIEW_THANKS =  "Спасибо за отзыв!";
     const REVIEW_MANUAL_LINK_TEXT = "Правила оформления отзывов →";
     const REVIEW_SORT_OPTIONS = [ 0=> "Сначала свежие", 1 => "Сначала хорошие", 2 => "Сначала отрицательные" ];
     const REVIEWER_VALID_ERROR_404 = "Войдите или зарегистрируйтесь, чтобы оставить отзыв";

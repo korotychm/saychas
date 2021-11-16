@@ -215,7 +215,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
     {
         $sql = new Sql($this->db);
 
-        $whereAppend = !empty($params['equal']) ? 'and pr.id = "' . $params['equal'] . '"' : '';
+        $whereAppend = !empty($params['equal']) ? 'and pr.url = "' . $params['equal'] . '"' : '';
 
         $w = new Where();
         if (!empty($params['in'])) {

@@ -65,6 +65,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     private $cache;
     
     private $categories;
+    
+    private $handbookRelatedProductRepository;
 
     /**
      * @param Adapter $db
@@ -80,7 +82,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
             Category $prototype,
             string $username,
             string $password,
-            $cache
+            $cache,
+            $handbookRelatedProductRepository
     )
     {
         $this->db = $db;
@@ -89,6 +92,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $this->username = $username;
         $this->password = $password;
         $this->cache = $cache;
+        $this->handbookRelatedProductRepository = $handbookRelatedProductRepository;
         
         $this->mclient = new \MongoDB\Client(
             'mongodb://saychas:saychas@localhost/saychas'
@@ -200,7 +204,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     {
        $param["columns"] = ["category_id"];
        //$param["group"] = ["category_id"];
-       $category = HandbookRelatedProduct::findAll($param)->toArray();
+       //$category = HandbookRelatedProduct::findAll($param)->toArray();
+       $category = $this->handbookRelatedProductRepository->findAll($param)->toArray();
        $categoryesId = ArrayHelper::extractId($category, "category_id");
         foreach ($categoryesId as $row) {
             $return[$row] = true;

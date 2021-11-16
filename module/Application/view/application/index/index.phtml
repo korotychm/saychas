@@ -33,11 +33,11 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
 <section class="section" style="display: none;">
     <div class="banners-carousel"><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a></div>
 </section>
-<div id="popular-brands" style="display: none;">
+<div id="popular-brands" style="display: none2;">
   <section class="section" v-if="length > 0">
       <h2 class="h2 section__heading">Популярные бренды</h2>
       <div class="brands-grid">
-        <a v-for="brand in brands" class="brands-grid__logo" :href="'/brand/'+brand.id" :alt="brand.title">
+        <a v-for="brand in brands" class="brands-grid__logo" :href="'/brand/'+brand.url" :alt="brand.title">
           <img :src="'/images/brand/'+brand.image" />
         </a>
       </div>

@@ -3,7 +3,7 @@
   <ul class="catalog__breadcrumbs nomargin ">
     <?php foreach ($breadCrumbs as $breadCrumb) : ?>
         <li class="<?= ($j==0) ? 'catalog__sidebar-heading':'' ?><?= (!empty($category_id) && $category_id == $breadCrumb[0]) ? "active" : "" ?>">
-          <a href="/<?=$url?>/<?=$id?><?=( $breadCrumb[0] ) ? "/".$breadCrumb[0] : "" ?>"><?= $breadCrumb[1] ?></a>
+          <a href="/<?=$url?>/<?=$furl?><?=( $breadCrumb[0] ) ? "/".$breadCrumb[0] : "" ?>"><?= $breadCrumb[1] ?></a>
         </li>
     <?php
     if (!$j): $j++; endif;
