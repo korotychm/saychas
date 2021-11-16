@@ -503,7 +503,7 @@ class HtmlProviderService
                 $providerId = $product->getProviderId();
                 $provider = $this->providerRepository->find(['id' => $providerId]);
                 $store = $provider->recieveStoresInList($legalStore);
-                $idStore = $store->getId();
+                $idStore = (!empty($store)) ? $store->getId() : 0;
                 $timeClose[$idStore] = $legalStoresArray[$idStore]['time_until_closing'];
             }
             
