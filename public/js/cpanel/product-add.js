@@ -665,6 +665,8 @@ const ProductAdd = {
                 if (response.data.result){
                   showMessage('Товар добавлен и отправлен на модерацию.');
                   router.replace('/products');
+                } else {
+                    showServicePopupWindow('Невозможно добавить товар', response.data.error_description_for_user);
                 }
             })
             .catch(error => {
