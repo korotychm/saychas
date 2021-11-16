@@ -130,10 +130,9 @@ class ExternalCommunicationService
             $productupdate[]=$id;
             //$coontent["delevery"][] = $store[$value['store']];
         }
-        //(надо вынести в resource)
-        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
         
-            $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
+        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
+        $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
         $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
         //$q = -1;
         while (list($key, $val) = each($store)) {
@@ -151,13 +150,12 @@ class ExternalCommunicationService
                 $delivery[$j][] = ["store" => $key, "products" => $val];
             }
         }
-        foreach ($delivery as $d)
-        {
+        
+        foreach ($delivery as $d){
             $deliveries[] = ["pickup" => false, "requisitions" => $d];
         }
         
-        foreach ($selfdeliv as $d)
-        {
+        foreach ($selfdeliv as $d){
             $deliveries[] = ["pickup" => true, "requisitions" => [$d]];
         }
         
@@ -169,8 +167,8 @@ class ExternalCommunicationService
 //                $deliv[] = $val;
 //        }
 //        //$content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
-        $content["deliveries"] =  $deliveries;
-        $return["deliveries"] = $content["deliveries"]; //; =  $deliveries;
+        $content["deliveries"] =  $return["deliveries"] = $deliveries;
+        //$return["deliveries"] = $content["deliveries"]; //; =  $deliveries;
         
         $return["delivery_price"] = $content['delivery_price'];
         //$return["delivery_price"] = ;

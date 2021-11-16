@@ -122,32 +122,39 @@ class HtmlProviderService
             $basketProducts[$basketItem->getProductId()] = ['price' => $basketItem->getPrice(), 'total' => $basketItem->getTotal(),];
         }
         while (list($key, $product) = each($param['postedProducts'])) { //
+           
             if (empty($basketProducts[$key])) {
                 $error["reloadUrl"] = "/user/orders";
                 return $error;
             }
+            
             if (empty($param["legalStore"][$product['store']])) {
                 $whatHappened['stores'][$product['store']][] = $key;
                 $return["result"] = false;
             }
+            
             $productRow = $this->productRepository->find(['id' => $key]);
             $price = (int) $productRow->receivePriceObject()->getPrice();
             $rest = $productRow->receiveRest($legalStoreKey);
+            
             if ($basketProducts[$key]["price"] != $price) {
                 $whatHappened['products'][$key]['oldprice'] = $basketProducts[$key]["price"];
                 $whatHappened['products'][$key]['price'] = $price;
                 $return["result"] = false;
             }
+            
             if ($basketProducts[$key]["total"] > $rest) {
                 $whatHappened['products'][$key]['oldrest'] = $basketProducts[$key]["total"];
                 $whatHappened['products'][$key]['rest'] = $rest;
                 $return["result"] = false;
             }
         }
+        
         if (!empty($whatHappened)) {
             $container->whatHappened = $whatHappened;
         }
         $return['test'] = [$whatHappened];
+        
         return $return;
     }
 
@@ -172,6 +179,7 @@ class HtmlProviderService
         if (empty($filters)) {
             return["error" => "errorId"];
         }
+        
         foreach ($filters as $row) {
             $row['val'] = explode(",", $row['val']);
             $row['val'] = array_unique($row['val']);
@@ -204,34 +212,34 @@ class HtmlProviderService
         }
         return $return ?? [];
     }
-    
+
     /**
      * 
      * @param array $row
      * @return array
      */
-    private function categoryFilterQueryParce ($row)
+    private function categoryFilterQueryParce($row)
     {
-            foreach ($row['val'] as $val) {
-                $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
-                $valuetext = $val;
-                if ($row['type'] == Resource:: CHAR_VALUE_REF) {
-                    $valuetext = $char->getTitle();
-                } elseif ($row['type'] == Resource::PROVIDER_REF) {
-                    $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                } elseif ($row['type'] == Resource::BRAND_REF) {
-                    $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
-                } elseif ($row['type'] == Resource::COLOR_REF) {
-                    $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
-                    $valuetext = [$color->getValue(), $color->getTitle()];
-                } elseif ($row['type'] == Resource::COUNTRY_REF) {
-                    $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
-                }
-                $chars[] = ["valueCode" => $val, "value" => $valuetext,];
+        foreach ($row['val'] as $val) {
+            $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
+            $valuetext = $val;
+            if ($row['type'] == Resource:: CHAR_VALUE_REF) {
+                $valuetext = $char->getTitle();
+            } elseif ($row['type'] == Resource::PROVIDER_REF) {
+                $valuetext = $this->providerRepository->findFirstOrDefault(['id' => $val])->getTitle();
+            } elseif ($row['type'] == Resource::BRAND_REF) {
+                $valuetext = $this->brandRepository->findFirstOrDefault(['id' => $val])->getTitle();
+            } elseif ($row['type'] == Resource::COLOR_REF) {
+                $color = $this->colorRepository->findFirstOrDefault(['id' => $val]);
+                $valuetext = [$color->getValue(), $color->getTitle()];
+            } elseif ($row['type'] == Resource::COUNTRY_REF) {
+                $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
             }
+            $chars[] = ["valueCode" => $val, "value" => $valuetext,];
+        }
         return $chars ?? [];
     }
-    
+
     /**
      * 
      * @param array $v
@@ -244,9 +252,9 @@ class HtmlProviderService
         if (empty($v) or!is_array($v)) {
             return;
         }
-        
+
         $value = [];
-        
+
         foreach ($v as $val) {
             if ($chType == Resource::BOOLEAN) {
                 $value[] = $val == 0 ? Resource::NO : Resource::YES;
@@ -266,13 +274,13 @@ class HtmlProviderService
             }
         }
 
-        return  !empty($value) ? join(", ", $value) : "";
+        return !empty($value) ? join(", ", $value) : "";
     }
 
     public function productPageService($filteredProducts)
     {
         $return = current($filteredProducts->toArray());
-         
+
         if ($return['discount'] > 0) {
             $return['oldPrice'] = $return['price'];
             $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discount'] / 100);
@@ -285,7 +293,7 @@ class HtmlProviderService
         $return['category_id'] = $return['parent_category_id'] ?? $return['category_id'];
         $provider = $this->providerRepository->findFirstOrDefault(['id' => $return['provider_id']]);
         $return["brand"] = ["title" => $return['brand_title'], "id" => $return['brand_id'], "image" => $this->brandRepository->findFirstOrDefault(['id' => $return["brand_id"]])->getImage(),];
-        $return["provider"] = ["id" => $provider->getId(), "image" => $provider->getImage(), "title" => $provider->getTitle(), 'url' => $provider->getUrl(), ];
+        $return["provider"] = ["id" => $provider->getId(), "image" => $provider->getImage(), "title" => $provider->getTitle(), 'url' => $provider->getUrl(),];
         $characteristicsArray = !empty($return['param_variable_list']) ? Json::decode($return['param_variable_list'], Json::TYPE_ARRAY) : [];
         $return["characteristics"] = $this->getCharsProductPage($characteristicsArray, $return['category_id']);
 
@@ -305,8 +313,8 @@ class HtmlProviderService
     private function getCharsProductPage($characteristicsArray, $categoryId)
     {
         if (!empty($characteristicsArray)) {
-
             $value = $v = ""; //exit ("<pre>".print_r($characteristicsArray, true)."</pre>");
+
             foreach ($characteristicsArray as $char) {
                 $ch = $this->characteristicRepository->findFirstOrDefault(['id' => $char['id'] . "-" . $categoryId]);
                 $chArray = $ch->getIsList();
@@ -321,7 +329,7 @@ class HtmlProviderService
                     $return[1][] = $char;
                 }
             }
-        } 
+        }
 
         return $return ?? [];
     }
@@ -341,6 +349,7 @@ class HtmlProviderService
         $addressData = $user->getUserData();
         if (!empty($addressData)) {
             $i = 0;  //индекс для лимита вывода адресов!
+            
             foreach ($addressData as $address) {
                 if ($i === 0) {
                     $return['address'] = ["id" => $address->getId(), "text" => $address->getAddress(), "geodata" => $address->getGeoData()];
@@ -366,7 +375,7 @@ class HtmlProviderService
         if (null == $user) {
             return [];
         }
-        
+
         $return['id'] = $user->getId();
         $return['userid'] = $user->getUserId();
         $return['name'] = $user->getName();
@@ -374,12 +383,12 @@ class HtmlProviderService
         $return['email'] = $user->getEmail();
         $userData = $user->getUserData();
         $usdat = $userData->current();
-        
+
         if (null != $usdat) {
             $return['userAddress'] = $usdat->getAddress(); //$container->userAddress;
             $return['userGeodata'] = $usdat->getGeoData();
         }
-        
+
         return $return;
     }
 
@@ -393,40 +402,48 @@ class HtmlProviderService
     {
         $products = $post->products;
         $storeAdress = [];
-       
+
         if (!empty($selfdelevery = $post->selfdelevery and $countSelfdelevery = count($selfdelevery))) {
             foreach ($selfdelevery as $providerinfo) {
                 $stores = Store::findAll(['where' => ['id' => $providerinfo]]);
                 $store = $stores->current();
                 $storeAdress[] = StringHelper::cutAddress($store->getAddress());
             }
-        }   else  {$countSelfdelevery = 0; }
-        
+        } else {
+            $countSelfdelevery = 0;
+        }
+
         $j = 0;
-        
+
         if (!empty($products)) {
+           
             while (list($p, $c) = each($products)) {
+                
                 if ($c["count"] <= 0) {
                     continue;
                 }
                 $product = $this->productRepository->find(['id' => $p]);
+                
                 if (null == $product) {
                     continue;
                 }
+                
                 if (!$price = (int) $product->receivePriceObject()->getPrice()) {
                     continue;
                 }
+                
                 $total += ($price * $c['count']);
                 $j += $c["count"];
+                
                 if ($providerId = $product->getProviderId()) {
                     $provider[$providerId] = 1;
                 }
             }
         }
-        
-        $countAllDelevery = !empty($provider) ? count($provider) : 0 ;
-        $countDelevery =  $countAllDelevery - $countSelfdelevery;
-        
+
+        $countAllDelevery = !empty($provider) ? count($provider) : 0;
+        $countDelevery = $countAllDelevery - $countSelfdelevery;
+
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
         } else {
@@ -435,6 +452,7 @@ class HtmlProviderService
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
+        
         $return["producttotal"] = $total ?? 0;
         $return["basketpricetotalall"] = $return["producttotal"];
         $return["productcount"] = $j ?? 0;
@@ -460,29 +478,35 @@ class HtmlProviderService
         $return = [];
         $timeDelevery3Hour = $timeDelevery1Hour = [];
         $products = $post->products;
+        
         if (!$selfdelevery = $post->selfdelevery) {
             $countSelfdelevery = 0;
         } else {
             $countSelfdelevery = count($selfdelevery);
         }
+        
         //return ['count' => print_r($products , true)];
         $container = new Container(Resource::SESSION_NAMESPACE);
+        
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
+        
         $legalStore = array_keys($container->legalStore);
         $legalStoresArray = (!empty($container->legalStoreArray)) ? $container->legalStoreArray : [];
 
         if ($products and!empty($products)) {
             $products = array_keys($products);
+        
             foreach ($products as $pId) {
                 $product = $this->productRepository->find(['id' => $pId]);
                 $providerId = $product->getProviderId();
                 $provider = $this->providerRepository->find(['id' => $providerId]);
                 $store = $provider->recieveStoresInList($legalStore);
-                $idStore = $store->getId();
+                $idStore = (!empty($store)) ? $store->getId() : 0;
                 $timeClose[$idStore] = $legalStoresArray[$idStore]['time_until_closing'];
             }
+            
             $return['timeClose'] = min($timeClose);
             $timeDelevery1Hour[] = [
                 "lable" => Resource::BASKET_SAYCHAS_title,
@@ -528,7 +552,7 @@ class HtmlProviderService
             $return["hourPrice"] = $return["countStors"] * $param["hourPrice"];
             $return["hour3Price"] = $return["countStors"] * $param['mergePrice'] + ceil($return["countStors"] / $param['mergecount']) * $param['mergePriceFirst'];
         }
-        
+
         return $return;
     }
 
@@ -549,10 +573,12 @@ class HtmlProviderService
                 $basketItem->setTotal($changes['rest']);
                 $persist = true;
             }
+            
             if ($changes['price'] > 0) {
                 $basketItem->setPrice($changes['price']);
                 $persist = true;
             }
+            
             if ($persist) {
                 $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
                 $j++;
@@ -575,12 +601,15 @@ class HtmlProviderService
         $productStoreId = null;
         $whatHappened = null;
         $container = new Container(Resource::SESSION_NAMESPACE);
+      
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
+        
         $legalStore = array_keys($container->legalStore);
         $legalStoresArray = $container->legalStoreArray;
         $item = [];
+        
         foreach ($basket as $b) {
             if ($pId = $b->productId) {
                 /** @var HandbookRelatedProduct */
@@ -594,28 +623,35 @@ class HtmlProviderService
                 $productStore = $productProvider->recieveStoresInList($legalStore);
                 $productAvailable = (null != $productStore);
                 unset($productStoreId);
+                
                 if ($rest) {
                     $availblechek[$productProviderId] = true;
                 }
+                
                 if ($productAvailable) {
                     $productStoreId = $productStore->getId();
+                    
                     if ($oldprice != $price) {
                         $whatHappened['products'][$pId]['oldprice'] = $oldprice;
                         $whatHappened['products'][$pId]['price'] = $price;
                     }
+                    
                     if ($count > $rest) {
                         $whatHappened['products'][$pId]['oldrest'] = $count;
                         $whatHappened['products'][$pId]['rest'] = $rest;
                         $count = $rest;
                     }
+                    
                     if ($count == 0 and 0 < $rest) {
                         $whatHappened['products'][$pId]['instock'] = $rest;
                     }
-                }//if ($rest) $countproducts +=$count ;
+                }
+                
                 if ($rest) {
                     $countproducts++;
                     $countprovider[$product->getProviderId()] = 1;
                 }
+                
                 $item[$product->getProviderId()][] = [
                     'id' => $pId,
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
@@ -629,6 +665,7 @@ class HtmlProviderService
                     'isFav' => $this->isInFavorites($pId, $userId),
                 ];
             }
+            
             if ($whatHappened) {
                 $container->whatHappened = $whatHappened;
             }
@@ -638,7 +675,7 @@ class HtmlProviderService
         }
 
 
-        $j=0;
+        $j = 0;
         while (list($prov, $prod) = each($item)) {
             $j++; //индекс  для управления сортировкой  магазинов по статусу доступности
             $provider = $this->providerRepository->find(['id' => $prov]);
@@ -652,6 +689,7 @@ class HtmlProviderService
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
                 $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
                 $timStoreOpen = $IntervalOpen + time();
+               
                 if (!$legalStoresArray[$idStore]['status']) {
                     //все работает
                     $provider_disable = false;
@@ -663,6 +701,7 @@ class HtmlProviderService
                     $provider_addressappend = StringHelper::cutAddress($provider_address);
                     $countprovider++;
                 } else {
+                
                     if ($IntervalOpen > 0) {
                         $returnprefix = $j;
                         //закрыт на ночь
@@ -685,6 +724,7 @@ class HtmlProviderService
                 $provider_address = $provider_worktime = $provider_timeclose = "";
                 $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
             }
+           
             $return["product"][$returnprefix] = [
                 "provider_id" => $provider_store_id ?? 0, //$prov,
                 "provider_main_id" => $prov,
