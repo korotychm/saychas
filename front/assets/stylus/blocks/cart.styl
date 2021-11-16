@@ -339,6 +339,7 @@
         margin-top 30px
         @media (max-width: 767px)
           margin-top 20px
+          width 100%
     > label
       font-size 19px
       display flex
@@ -694,6 +695,9 @@
     margin-bottom 20px
     @media (max-width: 767px)
       order 4
+      width 100%
+      display block
+      margin-bottom 10px !important
     &:first-of-type
       margin-bottom 45px
     &:last-child
@@ -707,6 +711,8 @@
       order 2
       width 100%
       margin-top -14px
+      @media (max-width: 767px)
+        display none
   &__heading
     flex-shrink 0
     font-size 20px
@@ -724,6 +730,11 @@
     border 2px solid var(--gray)
     border-radius 20px
     padding 20px 30px
+    @media (max-width: 767px)
+      width 100%
+      padding 20px 15px
+      margin-left 0
+      position relative
     &--notlegal
       background var(--gray)
     &-info
@@ -734,6 +745,8 @@
     font-size 20px
     font-weight bold
     margin-bottom: 7px
+    @media (max-width: 767px)
+      font-size 18px
   &__logout
     display flex
     align-items center
@@ -744,11 +757,18 @@
     cursor pointer
     text-decoration none
     color inherit
+    @media (max-width: 767px)
+      position absolute
+      right 15px
+      bottom 20px
+      font-size 16px
     svg
       color var(--gray)
       margin-right 7px
   &__phone
     font-size 20px
+    @media (max-width: 767px)
+      font-size 16px
   &__avatar
     width 65px
     height 65px
@@ -756,6 +776,10 @@
     background var(--gray)
     position relative
     margin-right 20px
+    @media (max-width: 767px)
+      width 50px
+      height 50px
+      margin-right 10px
     &-letter
       position absolute
       top 50%
@@ -782,6 +806,9 @@
     flex-shrink 0
     margin-left 5px
     position relative
+    @media (max-width: 767px)
+      width 100%
+      margin-left 0
     input
       display block
       width 100%
@@ -799,6 +826,10 @@
       position absolute
       left 0
       top 62px
+      @media (max-width: 767px)
+        position static
+        font-size 14px
+        margin-top 7px
       .error
         display block
         color var(--red)

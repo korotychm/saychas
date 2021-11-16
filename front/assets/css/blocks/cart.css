@@ -469,6 +469,7 @@
 @media (max-width: 767px) {
   .cart__radio p ~ .select {
     margin-top: 20px;
+    width: 100%;
   }
 }
 .cart__radio > label {
@@ -937,6 +938,9 @@
 @media (max-width: 767px) {
   .cart-delivery__item {
     order: 4;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px !important;
   }
 }
 .cart-delivery__item:first-of-type {
@@ -954,6 +958,11 @@
   order: 2;
   width: 100%;
   margin-top: -14px;
+}
+@media (max-width: 767px) {
+  .cart-delivery__item::before {
+    display: none;
+  }
 }
 .cart-delivery__heading {
   flex-shrink: 0;
@@ -974,6 +983,14 @@
   border-radius: 20px;
   padding: 20px 30px;
 }
+@media (max-width: 767px) {
+  .cart-delivery__user {
+    width: 100%;
+    padding: 20px 15px;
+    margin-left: 0;
+    position: relative;
+  }
+}
 .cart-delivery__user--notlegal {
   background: var(--gray);
 }
@@ -986,6 +1003,11 @@
   font-weight: bold;
   margin-bottom: 7px;
 }
+@media (max-width: 767px) {
+  .cart-delivery__name {
+    font-size: 18px;
+  }
+}
 .cart-delivery__logout {
   display: flex;
   align-items: center;
@@ -997,12 +1019,25 @@
   text-decoration: none;
   color: inherit;
 }
+@media (max-width: 767px) {
+  .cart-delivery__logout {
+    position: absolute;
+    right: 15px;
+    bottom: 20px;
+    font-size: 16px;
+  }
+}
 .cart-delivery__logout svg {
   color: var(--gray);
   margin-right: 7px;
 }
 .cart-delivery__phone {
   font-size: 20px;
+}
+@media (max-width: 767px) {
+  .cart-delivery__phone {
+    font-size: 16px;
+  }
 }
 .cart-delivery__avatar {
   width: 65px;
@@ -1011,6 +1046,13 @@
   background: var(--gray);
   position: relative;
   margin-right: 20px;
+}
+@media (max-width: 767px) {
+  .cart-delivery__avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
 }
 .cart-delivery__avatar-letter {
   position: absolute;
@@ -1042,6 +1084,12 @@
   margin-left: 5px;
   position: relative;
 }
+@media (max-width: 767px) {
+  .cart-delivery__input {
+    width: 100%;
+    margin-left: 0;
+  }
+}
 .cart-delivery__input input {
   display: block;
   width: 100%;
@@ -1060,6 +1108,13 @@
   position: absolute;
   left: 0;
   top: 62px;
+}
+@media (max-width: 767px) {
+  .cart-delivery__input p {
+    position: static;
+    font-size: 14px;
+    margin-top: 7px;
+  }
 }
 .cart-delivery__input p .error {
   display: block;
