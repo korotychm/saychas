@@ -330,45 +330,7 @@ const ProductAdd = {
       disableBtn: false
     }
   },
-  watch: {
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'product' (val) {
-      if (val) console.log('цукриукптукпготукпт')
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
-    'brandSearch' (val) {
-      if (val) this.disableBtn = false
-    },
 
-  },
   computed: {
     filteredCategories(){
       if (this.categorySearch == '') return false;
