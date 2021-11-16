@@ -2,11 +2,13 @@ section.catalog
   div.page-heading
     h1.h1 Мобильные телефоны 
       span 312 515 товаров
-    select.select.catalog__sort
-      option(selected,value="") Сначала свежие
-      option(value="") Сначала популярные
-      option(value="") Сначала дешевые
-      option(value="") Сначала дорогие
+    div.catalog__sort
+      button.catalog__filter-trigger
+      select.select.catalog__sort
+        option(selected,value="") Сначала свежие
+        option(value="") Сначала популярные
+        option(value="") Сначала дешевые
+        option(value="") Сначала дорогие
   div.catalog__wrap
     aside.catalog__sidebar
     

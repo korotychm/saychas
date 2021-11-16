@@ -80,6 +80,7 @@
   color: var(--black);
   transition: 0.3s;
   cursor: pointer;
+  text-decoration: none;
 }
 @media (hover) {
   .orders-history__status--link:hover {

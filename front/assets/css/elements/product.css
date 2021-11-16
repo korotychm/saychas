@@ -89,7 +89,7 @@
 }
 @media (max-width: 767px) {
   .product__title {
-    font-size: 12px;
+    font-size: 14px;
     margin: 15px 0 12px;
   }
 }
@@ -151,7 +151,7 @@
 }
 @media (max-width: 767px) {
   .product__price-current {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 .product__price-old {

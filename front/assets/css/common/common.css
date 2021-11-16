@@ -71,6 +71,11 @@ body {
     font-size: 36px;
   }
 }
+@media (max-width: 767px) {
+  .page-heading {
+    font-size: 28px;
+  }
+}
 .page-heading .h1 {
   font-size: inherit;
   font-weight: bold;
@@ -101,7 +106,8 @@ body {
 }
 @media (max-width: 767px) {
   .btn {
-    font-size: 12px;
+    font-size: 14px;
+    padding: 0 20px;
   }
 }
 .btn--primary {

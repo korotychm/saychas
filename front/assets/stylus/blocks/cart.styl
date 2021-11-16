@@ -72,29 +72,48 @@
   grid-template-columns minmax(0,11fr) minmax(0,5fr)
   grid-gap 30px
   padding-bottom 100px
+  @media (max-width: 767px)
+    display block
   .h2
     font-size 34px
     margin 0 0 25px
+    @media (max-width: 767px)
+      font-size 28px
+      margin 0 0 30px
   .checkbox
     margin 0
   &__all
     padding-left 40px
+    @media (max-width: 767px)
+      padding-left 0
   &__stores
     margin-top 25px
   &__checkbox
     margin-right 30px
     flex-shrink 0
     width 38px
+    @media (max-width: 767px)
+      margin-right 10px
+      margin-bottom 20px
+      order 1
     .check
       margin 0
   &__products
     margin 45px 0 0
     padding 0
     list-style none
+    @media (max-width: 767px)
+      border-top 3px dotted var(--gray)
+      margin-top 25px
   &__product
     display flex
     align-items center
     margin-bottom 40px
+    @media (max-width: 767px)
+      flex-wrap wrap
+      padding 20px 0
+      border-bottom 3px dotted var(--gray)
+      margin-bottom 0
     &-img
       width 65px
       height 65px
@@ -103,6 +122,12 @@
       justify-content center
       margin-right 30px
       flex-shrink 0
+      @media (max-width: 767px)
+        width 50px
+        height 50px
+        margin-right 10px
+        margin-bottom 20px
+        order 2
       img
         object-fit contain
         width 100%
@@ -113,6 +138,12 @@
       font-size 20px
       text-decoration none
       color inherit
+      @media (max-width: 767px)
+        width calc(100% - 120px)
+        margin-right 0
+        font-size 16px
+        margin-bottom 20px
+        order 3
     &-info
       width 300px
       flex-shrink 0
@@ -120,6 +151,10 @@
       display flex
       justify-content space-between
       align-items center
+      @media (max-width: 767px)
+        order 6
+        width calc(100% - 160px)
+        margin-right 0
     &-quantity
       display flex
       align-items center
@@ -128,6 +163,10 @@
       height 55px
       border-radius 55px
       padding 0 20px
+      @media (max-width: 767px)
+        width 90px
+        height 40px
+        padding 0 10px
       input
         width calc(100% - 30px)
         border none
@@ -136,6 +175,9 @@
         text-align center
         outline none
         -moz-appearance textfield
+        @media (max-width: 767px)
+          width calc(100% - 20px)
+          font-size 18px
         &::-webkit-outer-spin-button
         &::-webkit-inner-spin-button
           -webkit-appearance none
@@ -148,6 +190,9 @@
         width 15px
         height 15px
         position relative
+        @media (max-width: 767px)
+          width 12px
+          height 12px
         &::before
         &::after
           content ''
@@ -157,6 +202,8 @@
           background var(--red)
           position absolute
           top 7px
+          @media (max-width: 767px)
+            top 4px
         &::after
           transform rotate(90deg)
         &.cart__product-minus::after
@@ -171,13 +218,19 @@
       &-current
         font-size 24px
         font-weight bold
+        @media (max-width: 767px)
+          font-size 16px
       &-old
         color var(--gray2)
         text-decoration line-through
-        font-size 18px
+        font-size 20px
+        @media (max-width: 767px)
+          font-size 14px
     &-na
       font-size 20px
       font-weight 500
+      @media (max-width: 767px)
+        font-size 14px
     &-del
     &-wishlist
       width 16px
@@ -194,8 +247,15 @@
         display block
     &-wishlist
       margin-right 0
+      @media (max-width: 767px)
+        order 4
+        margin-left 64px
+        margin-right 25px
       &.active
         color var(--red)
+    &-del
+      @media (max-width: 767px)
+        order 5
     &--na
       .cart__product-title
       .cart__product-img
@@ -222,15 +282,43 @@
       font-size 16px
       padding-left 33px
 
+  &__mobile-radio-group
+    display none
+    @media (max-width: 767px)
+      display inline-flex
+      align-items center
+      height 50px
+      padding 5px
+      background var(--gray)
+      border-radius 50px
+      label
+        font-weight bold
+        font-size 16px
+        height 40px
+        border-radius 40px
+        padding 0 20px
+        display flex
+        align-items center
+        &.active
+          background var(--red)
+          color #fff
   &__radio
     width 50%
     flex-shrink 0
     padding 35px 30px
     border 2px solid var(--gray)
     position relative
+    @media (max-width: 767px)
+      display none
+      width 100% !important
+      border none
+      padding 0
+      margin 0 !important
     .custom-select
       width 345px !important
       margin-top 30px !important
+      @media (max-width: 767px)
+        margin-top 20px !important
     &:first-of-type
       border-top-left-radius 20px
       border-bottom-left-radius 20px
@@ -239,19 +327,27 @@
       margin-left -2px
       border-top-right-radius 20px
       border-bottom-right-radius 20px
+
     p
       color var(--gray2)
       font-size 16px
       line-height 1.375
       margin 0
+      @media (max-width: 767px)
+        font-size 14px
       ~ .select
         margin-top 30px
+        @media (max-width: 767px)
+          margin-top 20px
     > label
       font-size 19px
       display flex
       align-items center
       cursor pointer
       margin-bottom 20px
+      @media (max-width: 767px)
+        font-size 18px
+        margin-bottom 15px
       .accent
         padding 5px 12px
         background var(--red)
@@ -259,6 +355,8 @@
         border-radius 20px
     &-content
       padding-left 38px
+      @media (max-width: 767px)
+        padding-left 0
     &-check
       width 28px
       height 28px
@@ -268,16 +366,22 @@
       display flex
       align-items center
       justify-content center
+      @media (max-width: 767px)
+        display none
 
   &__radio-group
     display flex
     margin-top 40px
+    @media (max-width: 767px)
+      margin-top 30px
     input[type="radio"]
       display none
       &:checked
         + .cart__radio
           border-color var(--red)
           z-index 2
+          @media (max-width: 767px)
+            display block
         + .cart__radio .cart__radio-check::after
             content ''
             width 10px
@@ -292,11 +396,19 @@
     border 2px solid var(--gray)
     border-radius 20px
     margin-bottom 20px
+    @media (max-width: 767px)
+      padding 20px 0
+      border-radius 0
+      border none
+      border-top 2px solid var(--gray)
     &:last-child
       margin-bottom 0
     &-self-delivery
       margin-top 20px
       margin-left 163px
+      @media (max-width: 767px)
+        margin-left 0
+        display none
       &.disabled
         opacity .3
         pointer-events none
@@ -308,25 +420,38 @@
         &:first-child
           font-size 18px
           font-weight 500
+          @media (max-width: 767px)
+            font-size 16px
         &:last-child
           color var(--gray2)
           font-size 16px
           margin-top 5px
+          @media (max-width: 767px)
+            font-size 14px
     &-link
       margin-left 68px
       display flex
       align-items center
+      @media (max-width: 767px)
+        margin-left 0
+        padding-left 55px
+        margin-top 20px
       a
         color var(--red)
         font-size 18px
         text-decoration none
         font-weight 500
+        @media (max-width: 767px)
+          font-size 16px
         span
           display block
           color var(--gray2)
           font-size 16px
           font-weight normal
           margin-top 5px
+          @media (max-width: 767px)
+            font-size 12px
+            margin-top 1px
       &-plus
         margin-right 30px
         width 65px
@@ -334,6 +459,10 @@
         border-radius 50%
         border 2px dashed var(--gray)
         position relative
+        @media (max-width: 767px)
+          width 50px
+          height 50px
+          margin-right: 15px
         &::before
         &::after
           content ''
@@ -352,6 +481,10 @@
       align-items center
       position relative
       z-index 2
+      .cart__checkbox
+        @media (max-width: 767px)
+          display none
+          border-bottom 3px dotted var(--gray)
     &-logo
       width 160px
       height 65px
@@ -360,6 +493,10 @@
       justify-content center
       margin-right 30px
       flex-shrink 0
+      @media (max-width: 767px)
+        width 120px
+        height 45px
+        margin-right 20px
       img
         object-fit contain
         width 100%
@@ -391,8 +528,13 @@
           height 100%
     &-info
       font-size 16px
+      color var(--gray2)
+      @media (max-width: 767px)
+        font-size 12px
       p
         margin 0 0 5px
+        @media (max-width: 767px)
+          margin 0 0 3px
         &:last-of-type
           margin-bottom 0
     &-notice
@@ -400,6 +542,9 @@
       display flex
       justify-content space-between
       align-items center
+      .cart__store-del
+        @media (max-width: 767px)
+          display none
     &-closed
       height 55px
       font-size 20px
@@ -411,6 +556,11 @@
       font-weight 500
       padding-left 30px
       padding-right 10px
+      @media (max-width: 767px)
+        height 45px
+        font-size 14px
+        padding-left 15px
+        font-weight 500
       .question
         background #fff
         width 35px
@@ -424,6 +574,10 @@
         cursor pointer
         position relative
         margin-left 25px
+        @media (max-width: 767px)
+          width 25px
+          height 25px
+          margin-left 10px
         &__popup
           padding 30px 40px
           background #fff
@@ -477,6 +631,8 @@
   margin-top 30px
   padding-top 30px
 .cart-self-delivery
+  @media (max-width: 767px)
+    display none
   .cart__store-logo
     margin-bottom 10px
   &__subtitle
@@ -521,10 +677,23 @@
 .cart-delivery
   margin-top 30px
   padding-top 30px
+  @media (max-width: 767px)
+    display flex
+    flex-direction column
+    align-items flex-start
+    .h2
+      order 1
+    .cart__mobile-radio-group
+      order 2
+    .cart__radio-group
+      order 3
+      margin-bottom 30px
   &__item
     display flex
     align-items center
     margin-bottom 20px
+    @media (max-width: 767px)
+      order 4
     &:first-of-type
       margin-bottom 45px
     &:last-child

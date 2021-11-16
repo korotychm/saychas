@@ -81,14 +81,26 @@
   &__img-nav
     width 65px
     margin-right 30px
+    @media (max-width: 767px)
+      display none
   &__img
-    width calc(100% - 95px)
+    @media (max-width: 767px)
+      width 100%
+      .slick-slider
+        padding-bottom 60px
+        margin-bottom 30px
+        .slick-dots button
+          background var(--gray)
+        .slick-dots .slick-active button
+          background var(--red)
     > div
       position relative
       &::before
         content ''
         display block
         padding-top 100%
+        @media (max-width: 767px)
+          display none
   &__big-img
     position absolute
     width 100%
@@ -101,6 +113,11 @@
     display flex
     border-radius 20px
     overflow hidden
+    @media (max-width: 767px)
+      position relative
+      opacity 1
+      pointer-events auto
+      height calc(100vw - 30px)
     &.active
       opacity 1
       pointer-events auto
@@ -108,6 +125,11 @@
       object-fit contain
       width 100%
       height 100%
+
+  &__info
+    @media (max-width: 767px)
+      margin-bottom 50px
+      width 100%
 
   &__options
     &-item
@@ -151,6 +173,9 @@
       display flex
       justify-content center
       align-items center
+      @media (max-width: 767px)
+        width 120px
+        margin-left 0
       img
         object-fit contain
         width 100%
@@ -159,12 +184,16 @@
       color var(--red)
       text-decoration none
       font-weight 500
+      @media (max-width: 767px)
+        font-size 14px
   &__to-table
     color var(--red)
     text-decoration none
     font-weight bold
     display inline-block
     margin-top 10px
+    @media (max-width: 767px)
+      font-size 14px
   &__table
     list-style none
     margin 0
@@ -180,6 +209,8 @@
       font-weight 500
       margin-bottom 18px
       overflow hidden
+      @media (max-width: 767px)
+        font-size 12px
       &::before
         content '.....................................................................................................................'
         display block
@@ -189,6 +220,9 @@
         order 2
         width 100%
         margin-top -14px
+        @media (max-width: 767px)
+          font-size 20px
+          margin-top -6px
     &-th
     &-val
       background #fff
@@ -214,9 +248,15 @@
   h2.product-card__section-heading
     font-size 34px
     margin 0 0 30px
+    @media (max-width: 767px)
+      font-size 20px
+      margin 0 0 20px
   &__description
     grid-column span 3
     margin-bottom 30px
+    @media (max-width: 767px)
+      margin-top 50px
+      margin-bottom 50px
     &-toggle
       color var(--red)
       text-decoration none
@@ -226,12 +266,18 @@
       cursor pointer
       &::before
         content 'Развернуть описание ↓'
+      @media (max-width: 767px)
+        font-size 12px
     &-text
       font-size 18px
       position relative
+      @media (max-width: 767px)
+        font-size 12px
       &--spoiler
         max-height 110px
         overflow-y hidden
+        @media (max-width: 767px)
+          max-height 70px
         &::after
           content ''
           display block
@@ -259,25 +305,39 @@
 
   &__full-table
     grid-column span 3
+    @media (max-width: 767px)
+      width 100%
     a
       color var(--red)
       text-decoration none
     h3
       font-size 22px
       margin 25px 0 15px
+      @media (max-width: 767px)
+        font-size 14px
+        margin 10px 0 5px
+    table
+      @media (max-width: 767px)
+        width 100%
     tr
       display flex
       align-items center
       margin-bottom 5px
     td
       font-size 18px
+      @media (max-width: 767px)
+        font-size 12px
       &:first-child
         display flex
         align-items center
         width 570px
+        @media (max-width: 767px)
+          width 250px
         span
           flex-shrink 0
           padding-right 7px
+          @media (max-width: 767px)
+            max-width 160px
         .question
           margin-left 0
           margin-right 7px
@@ -292,11 +352,16 @@
           width 100%
           margin-top -7px
           margin-right 4px
+          @media (max-width: 767px)
+            font-size 20px
       &.table__heading
         width 100%
         &::after
           display none !important
 
+  &__files
+    @media (max-width: 767px)
+      display none
   &__file
     display flex
     align-items center
@@ -323,6 +388,8 @@
   margin-top 50px
   position relative
   grid-column span 4
+  @media (max-width: 767px)
+    display none
   .slick-arrow
     top 160px
   &__table
@@ -358,6 +425,9 @@
 
 .testimonials
   grid-column span 3
+  @media (max-width: 767px)
+    margin-top 50px
+    width 100%
   &__sort
     margin 50px 0 40px
     height 55px
@@ -389,8 +459,12 @@
       margin 0 7px
     .slick-prev
       left 44px
+      @media (max-width: 767px)
+        left 33px
     .slick-next
       right 43px
+      @media (max-width: 767px)
+        right 30px
     .slick-disabled
       opacity 0
       pointer-events none
@@ -403,44 +477,72 @@
     grid-gap 30px
     align-items flex-start
     margin-bottom 50px
+    @media (max-width: 767px)
+      grid-gap 20px
+      grid-template-columns minmax(0,50px) minmax(0,calc(100% - 50px))
+      margin-bottom 50px
     &:last-child
       margin-bottom 0
   &__store
     margin 0
     font-size 18px
     font-weight bold
+    @media (max-width: 767px)
+      font-size 14px
   &__answer
     padding-left 65px
     margin-top 30px
+    @media (max-width: 767px)
+      padding-left 30px
     &-heading
       display flex
       align-items center
       margin-bottom 20px
+      @media (max-width: 767px)
+        margin-left -70px
+        margin-bottom 10px
   &__heading
     display flex
     align-items center
     margin-bottom 15px
+    @media (max-width: 767px)
+      margin-bottom 10px
   &__name
     font-size 22px
     margin 0
     font-weight bold
+    @media (max-width: 767px)
+      font-size 16px
   &__info
     margin-left 30px
     color var(--gray2)
     font-size 18px
+    @media (max-width: 767px)
+      font-size 14px
+      &:nth-of-type(2)
+        display none
+
   &__text
     font-size 18px
     line-height 1.55
+    @media (max-width: 767px)
+      width calc(100% + 70px)
+      margin-left -70px
     p
       margin 0 0 10px
       font-size 18px
       line-height 1.55
+      @media (max-width: 767px)
+        font-size 14px
     .testimonials__photos
       display flex
       margin-top 25px
     .testimonials__photo
       width 85px
       margin-right 15px
+      @media (max-width: 767px)
+        width 65px
+        margin-right 10px
   &__grade
     display flex
     margin-bottom 25px
@@ -449,6 +551,9 @@
       margin-right 4px
       svg
         display block
+        @media (max-width: 767px)
+          width 14px
+          height 14px
       &.active
         color var(--red)
   &__avatar
@@ -487,6 +592,8 @@
   box-shadow 0px 5px 30px 0px rgba(66, 66, 66, 0.2)
   border-radius 20px
   text-align center
+  @media (max-width: 767px)
+    margin-top 50px
   &__info
     margin-bottom 40px
   &__grade
@@ -507,6 +614,7 @@
         border-radius 20px
   .btn
     width 100%
+    margin-top 30px
   &__item
     margin-bottom 24px
     display flex
@@ -563,6 +671,7 @@
   background #fff
   position relative
   padding 30px
+
   &__label
     position absolute
     top 10px
@@ -579,19 +688,27 @@
     display flex
     align-items center
     margin-bottom 20px
+    @media (max-width: 767px)
+      margin-bottom 15px
     &-current
       font-size 34px
       font-weight bold
       margin-right 15px
+      @media (max-width: 767px)
+        font-size 28px
     &-old
       color var(--gray2)
       text-decoration line-through
       font-size 24px
+      @media (max-width: 767px)
+        font-size 20px
   &__bonuses
     display flex
     align-items center
     font-size 18px
     margin-bottom 30px
+    @media (max-width: 767px)
+      font-size 16px
     span
       background var(--red)
       padding 4px 12px
@@ -603,6 +720,8 @@
     &-item
       display flex
       margin-top 35px
+      @media (max-width: 767px)
+        margin-top 25px
       svg
         color var(--red)
         margin-right 10px
@@ -611,6 +730,9 @@
         margin -3px 0 0
         font-size 20px
         font-weight normal
+        @media (max-width: 767px)
+          font-size 16px
+          font-weight 500
         b
           font-weight bold
       p
@@ -618,6 +740,8 @@
         font-size 16px
         color var(--gray2)
         margin-top 5px
+        @media (max-width: 767px)
+          font-size 12px
     &-price
       margin-left 12px
       font-weight 500
@@ -637,6 +761,8 @@
     font-size 18px
     cursor pointer
     transition .3s
+    @media (max-width: 767px)
+      font-size 16px
     &:hover
       @media (hover)
         color var(--red)
@@ -648,6 +774,8 @@
     margin 0 -29px
     background url(../img/ui/wave.png) repeat-x
     background-size contain
+    @media (max-width: 767px)
+      margin -10px -29px 0
 
 .review-form
   text-align left

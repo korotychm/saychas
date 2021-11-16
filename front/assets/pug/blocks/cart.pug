@@ -31,9 +31,8 @@ section
               div.cart__product-img
                 img(src="/images/products/product1.jpg")
               a(href="#").cart__product-title Смартфон Huawei P Smart 2021 4+128GB Crush Green
-              div
-                button.cart__product-del
-                  include ../../img/icons/icon.svg
+              button.cart__product-del
+                include ../../img/icons/icon.svg
               div.cart__product-info
                 div.cart__product-quantity
                   button.cart__product-minus.disabled
@@ -43,23 +42,20 @@ section
                   div.cart__product-price-current 17 990 ₽
                   div.cart__product-price-old 21 990 ₽
                   
-              div
-                button.cart__product-wishlist.active
-                  include ../../img/icons/icon.svg
+              button.cart__product-wishlist.active
+                include ../../img/icons/icon.svg
                 
             li.cart__product.cart__product--na
               div.cart__checkbox
               div.cart__product-img
                 img(src="/images/products/product1.jpg")
               a(href="#").cart__product-title Смартфон Huawei P Smart 2021 4+128GB Crush Green
-              div
-                button.cart__product-del
-                  include ../../img/icons/icon.svg
+              button.cart__product-del
+                include ../../img/icons/icon.svg
               div.cart__product-info
                 div.cart__product-na Товара нет в наличии
-              div
-                button.cart__product-wishlist.active
-                  include ../../img/icons/icon.svg
+              button.cart__product-wishlist.active
+                include ../../img/icons/icon.svg
                   
           div.cart__store-link
             a(href="#").cart__store-link-plus
@@ -95,13 +91,11 @@ section
               div.cart__product-img
                 img(src="/images/products/product1.jpg")
               a(href="#").cart__product-title Смартфон Huawei P Smart 2021 4+128GB Crush Green
-              div
-                button.cart__product-del
-                  include ../../img/icons/icon.svg
+              button.cart__product-del
+                include ../../img/icons/icon.svg
               div.cart__product-info
-              div
-                button.cart__product-wishlist.active
-                  include ../../img/icons/icon.svg
+              button.cart__product-wishlist.active
+                include ../../img/icons/icon.svg
                 
       div.cart-delivery
         h2.h2 Доставка
@@ -128,6 +122,9 @@ section
             button.cart-delivery__logout
               include ../../img/icons/icon.svg
               span Выйти
+        div.cart__mobile-radio-group
+          label(for="delivery1").active Быстрая
+          label(for="delivery2") Экономная
         div.cart__radio-group
           input(type="radio",name="delivery",checked)#delivery1
           div.cart__radio

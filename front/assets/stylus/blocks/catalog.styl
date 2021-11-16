@@ -1,7 +1,13 @@
 .catalog
+  .page-heading
+    @media (max-width: 767px)
+      flex-wrap wrap
+      margin-bottom 25px
   .page-heading .h1
     display flex
     align-items flex-end
+    @media (max-width: 767px)
+      font-size 24px
     span
       font-size 22px
       color var(--gray2)
@@ -10,14 +16,44 @@
       padding-bottom: 6px
       @media (max-width: 1599px)
         font-size 18px
+      @media (max-width: 767px)
+        display none
 
   &__wrap
     display grid
     grid-template-columns minmax(0,1fr) minmax(0,3fr)
     grid-gap 30px
+    @media (max-width: 767px)
+      display block
+
+  &__content
+    .section
+      @media (max-width: 767px)
+        padding-top 0
 
   &__sort
     width 350px
+    @media (max-width: 767px)
+      margin-top 20px
+      display flex
+      align-items center
+      justify-content space-between
+      .select
+        height 50px
+        margin-top 0
+
+  &__filter-trigger
+    display none
+    @media (max-width: 767px)
+      display block
+      margin-right 15px
+      flex-shrink 0
+      width 50px
+      height 50px
+      border-radius 50%
+      border 2px solid var(--red)
+      background url(../img/icons/icon-filter.svg) no-repeat center
+      background-size 50%
 
   &__breadcrumbs
     list-style none
@@ -70,6 +106,18 @@
     z-index 2
     background #fff
     padding-bottom 50px
+    @media (max-width: 767px)
+      display none
+      position fixed
+      width 100vw
+      top 0
+      left 0
+      padding 20px
+      z-index 99
+      overflow-y auto
+      &.active
+        display block
+
     &-heading
       font-size 22px !important
       font-weight bold
