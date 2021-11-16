@@ -527,7 +527,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     . "VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, 
                     addslashes($escaper->escapeHtml($product->title)),   
-                    md_substr(addslashes($escaper->escapeHtml($product->url)),0, 120 ), 
+                    mb_substr(addslashes($escaper->escapeHtml($product->url)),0, 120 ), 
                     addslashes($escaper->escapeHtml($product->description)), 
                     $product->vendor_code, addslashes($curr), 
                     addslashes($jsonCharacteristics), 
@@ -544,10 +544,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
+                //return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
+                $error.="{$e->getMessage()}\r\n";
+                continue;
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $error ?? '', 'statusCode' => 200];
     }
 
     /**
