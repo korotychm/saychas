@@ -527,11 +527,11 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                     . "VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
                     $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, 
                     addslashes($escaper->escapeHtml($product->title)),   
-                    addslashes($escaper->escapeHtml($product->url)), 
+                    md_substr(addslashes($escaper->escapeHtml($product->url)),0, 120 ), 
                     addslashes($escaper->escapeHtml($product->description)), 
                     $product->vendor_code, addslashes($curr), 
                     addslashes($jsonCharacteristics), 
-                    $product->brand_id, $product->vat);
+                    $product->brand_id, $product->vat );
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
             //if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
