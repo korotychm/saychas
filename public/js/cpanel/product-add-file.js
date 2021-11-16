@@ -45,9 +45,17 @@ const ProductAddFile = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
+                     <div v-if="fileUploaded" class="reload-result">
+                        <div class="result__container">
+                        
+                        </div>
+                        <div class="result-btn__container">
+                          <button class="btn btn--primary">Обновить результат</button>
+                        </div>
+                    </div>
                 </div>
             </div>`,
-  data: function () {
+  data () {
     return {
       categories: [],
       categoriesFlat: [],
@@ -57,7 +65,8 @@ const ProductAddFile = {
       file: false,
       filePath: '',
       filePathMoz: '',
-      fileName: ''
+      fileName: '',
+      fileUploaded: false,
     }
   },
   computed: {
@@ -140,27 +149,22 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
-    downloadFile(){
-      var link_url = document.createElement("a");
-      link_url.download = this.filePath.substring((this.filePath.lastIndexOf("/") + 1), this.filePath.length);
-      link_url.href = this.filePath;
-      document.body.appendChild(link_url);
-      link_url.click();
-      document.body.removeChild(link_url);
-      delete link_url;
-    },
-    uploadFile () {
+    async uploadFile () {
       let file  = document.querySelector("#upload-file").files
       let formData = new FormData()
       formData.append('file', file[0]);
-      axios.post('/control-panel/upload-product-file', formData, {
+      await axios.post('/control-panel/upload-product-file', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
-      }).then(response => console.log(response))
+      }).then(response => {
+        showMessage('Файл загружен, ожидайте ответа')
+        this.fileUploaded = true;
+        console.log(response)
+      })
     },
-    getFile(id) {
+    async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/get-product-file';
-      axios
+      await axios
         .post(requestUrl,Qs.stringify({
           data: {
             category_id: this.selectedCategoryId,
@@ -170,7 +174,9 @@ const ProductAddFile = {
           .then(response => {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
-            this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
+            this.filePathMoz = response.data.filename;
+            // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
+            // console.log(this.filePath)
             // console.log('Файл',response);
           })
           .catch(error => {

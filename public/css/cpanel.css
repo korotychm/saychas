@@ -1,0 +1,11 @@
+.reload-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.result-btn__container .btn--primary {
+    flex-shrink: 0;
+    margin-left: 10px;
+}

@@ -326,8 +326,48 @@ const ProductAdd = {
       deleteImages: [],
       errors: false,
       showBrand: -1,
-      showColor: -1
+      showColor: -1,
+      disableBtn: false
     }
+  },
+  watch: {
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'product' (val) {
+      if (val) console.log('цукриукптукпготукпт')
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+    'brandSearch' (val) {
+      if (val) this.disableBtn = false
+    },
+
   },
   computed: {
     filteredCategories(){
