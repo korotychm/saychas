@@ -197,7 +197,7 @@ class ProductController extends AbstractActionController
         return $res;
     }
 
-    private function canAddProduct(array &$product): bool
+    private function canAddProduct(array &$product): array
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
@@ -205,7 +205,8 @@ class ProductController extends AbstractActionController
         $result = $this->productManager->addServerDocument($credentials, $product);
         $product = $result['data']['data'];
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
-        return $res;
+        return ['result' => $res, 'error_description' => $result['data']['error_description'], 'error_description_for_user' => $result['data']['error_description_for_user']];
+        //return $res;
     }
 
     private function canDeleteProduct($params)
@@ -370,12 +371,14 @@ class ProductController extends AbstractActionController
         unset($product['color_id']);
         unset($product['country_id']);
         unset($product['del_images']);
-        if ($this->canAddProduct($product)) {
+        $res = $this->canAddProduct($product);
+        if ($res['result']) {
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true, 'data' => $product]);
         }
 
-        return new JsonModel(['result' => false]);
+        //return new JsonModel(['result' => false]);
+        return new JsonModel($res);
     }
 
     /**
