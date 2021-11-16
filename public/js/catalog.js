@@ -152,7 +152,7 @@ $(document).on('change','.range input[type="range"]',function(){
   console.log(minVal)
   console.log(maxVal)
   console.log(hidden)
-  if (minVal == +el.find('.range__left').val() && maxVal == +el.find('.range__right').val()){
+  if (minVal == +el.find('.range__left').attr('min').val() && maxVal == +el.find('.range__right').attr('max').val()){
     hidden.attr('disabled',true);
     console.log('Зашло в иф условие верно')
   } else {
