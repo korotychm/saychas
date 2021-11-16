@@ -149,14 +149,9 @@ $(document).on('change','.range input[type="range"]',function(){
       minVal = +el.find('.range__left').val(),
       maxVal = +el.find('.range__right').val(),
       hidden = el.find('.range__hidden');
-  console.log(minVal)
-  console.log(maxVal)
-  console.log(hidden)
   if (minVal == +el.find('.range__left').prop('min') && maxVal == +el.find('.range__right').prop('max')){
     hidden.attr('disabled',true);
-    console.log('Зашло в иф условие верно')
   } else {
-    console.log('Зашло в ЕЛС условие верно')
     hidden.attr('disabled',false);
   }
 
