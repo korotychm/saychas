@@ -537,7 +537,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
             }
         }
         return ['result' => true, 'description' => '', 'statusCode' => 200];
