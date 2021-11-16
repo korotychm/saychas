@@ -84,7 +84,7 @@ return [
                 ['actions' => ['getProductFile', ], 'allow' => '+administrator'],
                 ['actions' => ['sendProductFile', ], 'allow' => '+administrator'],
                 ['actions' => ['uploadProductFile', ], 'allow' => '+administrator'],
-                ['actions' => ['getProductFileAnswer', ], 'allow' => '+administrator'],                
+                ['actions' => ['getProductFileAnswer', ], 'allow' => '*'],// '+administrator'],                
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
