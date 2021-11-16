@@ -128,7 +128,7 @@ class AcquiringController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        $userAuthAdapter = new UserAuthAdapter(/* $this->userRepository *//* $this->sessionContainer */);
+        $userAuthAdapter = new UserAuthAdapter($this->userRepository/* $this->sessionContainer */);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
 

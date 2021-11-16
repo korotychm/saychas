@@ -611,7 +611,7 @@ class HtmlProviderService
         $item = [];
         
         foreach ($basket as $b) {
-            if ($pId = $b->productId) {
+            if ($pId = $b->productId and !empty($product = $this->productRepository->find(['id' => $pId]))) {
                 /** @var HandbookRelatedProduct */
                 $product = $this->productRepository->find(['id' => $pId]);
                 $oldprice = $b->price;
