@@ -118,6 +118,7 @@ const Products = {
         requestUrl = '/control-panel/show-products-from-cache';
       }
       const headers = { 'X-Requested-With': 'XMLHttpRequest' }
+      console.log(this.selectedFilters)
       console.log(          Qs.stringify({
         page_no : this.page_no,
         rows_per_page : this.rows_per_page,
