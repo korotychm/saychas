@@ -33,7 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a :href="filePath" download="test">Скачать файл</a>
+                      <a :href="filePath" :download="downloadFileName">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -63,9 +63,9 @@ const ProductAddFile = {
       selectedCategoryName: '',
       file: false,
       filePath: '',
-      filePathMoz: '',
       fileName: '',
       fileUploaded: false,
+      downloadFileName: ''
     }
   },
   computed: {
@@ -83,12 +83,6 @@ const ProductAddFile = {
       } else {
         return this.filePath ? this.filePath : ''
       }
-    },
-    checkBrowser () {
-      if (navigator.userAgent.toLowerCase().includes('firefox')) {
-        return true;
-      }
-      return false;
     },
   },
   methods: {
@@ -169,7 +163,6 @@ const ProductAddFile = {
             category_id: this.selectedCategoryId,
             query_type: 'product'
           }
-          // '/documents/P_00005/product/bl_product_000000006.xls'
         }),{headers})
           .then(response => {
             if (response.data.filename.includes('1CMEDIA')) {
@@ -177,11 +170,7 @@ const ProductAddFile = {
               this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
             }
             this.filePath = '/documents' + this.fileName;
-            this.filePathMoz = response.data.filename;
-            // console.log(productsDocumentPath)
-            // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
-            // console.log(this.filePath)
-            // console.log('Файл',response);
+            this.downloadFileName = this.fileName.split('/').pop()
           })
           .catch(error => {
             console.log(error)
