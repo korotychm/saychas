@@ -175,9 +175,12 @@ const Orders = {
         }
         let i = 0;
         for (order of this.orders){
+          console.log('Просто ордер', order)
           if (+order.status_id == '01'){
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
+            console.log('зис ордерс ай', this.orders[i])
+            console.log(deadline)
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
