@@ -198,6 +198,10 @@ class UserAuthAdapter implements AdapterInterface
 //            if(!$container->userOldIdentity) {
 //                throw new \Exception('Unexpected error: no data found for registered user');
 //            }
+        if (null == $user) {
+            $this->createUser($container);
+        }
+
         if ($container->userOldIdentity && ($container->userIdentity != $container->userOldIdentity)) {
             $oldUser = User::find(['id' => $container->userOldIdentity]);
             $this->updateUserData($oldUser, $container);
@@ -205,14 +209,6 @@ class UserAuthAdapter implements AdapterInterface
         }
 
         $this->identity = $container->userIdentity;
-
-        if (null == $user) {
-            unset($container->userIdentity);
-            setcookie(Resource::USER_COOKIE_NAME, "", time() - Resource::USER_COOKIE_TIME_LIVE, "/");
-            $this->authService->clearIdentity();
-            
-        }
-
         $code = UserAuthResult::SUCCESS;
 
         return new UserAuthResult($code, $this->identity);
