@@ -34,24 +34,6 @@ $(document).ready(function(){
     }
   });
 
-  $('.testimonials__photos--carousel').slick(
-    {
-      infinite: false,
-      slidesToShow: 5,
-      slidesToScroll: 1,
-      mobileFirst: true,
-      responsive: [
-        {
-          breakpoint: 768,
-          settings: {
-            slidesToShow: 10,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    }
-  );
-
 });
 
 $(document).on('click','.product-card__small-img',function(){

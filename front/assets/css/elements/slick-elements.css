@@ -22,9 +22,11 @@
   transition: 0.5s;
   cursor: pointer;
 }
-.slick-dots .slick-active button,
-.slick-dots button:hover {
-  background: var(--red);
+@media (hover) {
+  .slick-dots .slick-active button,
+  .slick-dots button:hover {
+    background: var(--red);
+  }
 }
 .slick-track {
   margin-left: 0;

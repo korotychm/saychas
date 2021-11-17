@@ -113,6 +113,7 @@
 @media (max-width: 767px) {
   .product__reviews {
     font-size: 11px;
+    min-height: 17px;
   }
 }
 .product__reviews-grade {
