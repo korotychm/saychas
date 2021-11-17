@@ -33,7 +33,6 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a href="" :download="filePathMoz" v-if="checkBrowser">Скачать файл</a>
                       <a :href="filePath" download="test" v-else>Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
@@ -174,10 +173,8 @@ const ProductAddFile = {
         }),{headers})
           .then(response => {
             if (response.data.filename.includes('1CMEDIA')) {
-              console.log('зашло в иф должно дальше работать')
               this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
               this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
-              console.log(this.fileName)
             }
             this.filePath = '/documents' + this.fileName;
             this.filePathMoz = response.data.filename;
