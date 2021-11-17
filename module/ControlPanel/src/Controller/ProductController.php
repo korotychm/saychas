@@ -280,9 +280,13 @@ class ProductController extends AbstractActionController
     {
         $request = $this->getRequest();
         $content = $request->getContent();
+        
+//        error_log(print_r($content, true), 1, 'alex@localhost');
+        
+        $result = $this->productManager->saveProductFileAnswer($content);
+        
         return new JsonModel($content);
     }
-    
 
     /**
      * Update product
