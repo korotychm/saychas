@@ -7,7 +7,6 @@
     padding-bottom: 75px;
     background: var(--gray);
     margin-bottom: 0;
-    display: none;
   }
 }
 .header__top {
@@ -642,6 +641,7 @@
 }
 @media (max-width: 767px) {
   .cats {
+    display: none;
     width: 100vw;
     margin-left: 0;
     left: 0;
