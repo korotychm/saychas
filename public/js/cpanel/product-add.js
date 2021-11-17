@@ -326,9 +326,11 @@ const ProductAdd = {
       deleteImages: [],
       errors: false,
       showBrand: -1,
-      showColor: -1
+      showColor: -1,
+      disableBtn: false
     }
   },
+
   computed: {
     filteredCategories(){
       if (this.categorySearch == '') return false;
