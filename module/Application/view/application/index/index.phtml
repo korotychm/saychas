@@ -7,11 +7,36 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
 
 <section>
     <div class="homeslider">
-        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
-        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
-        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
-        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
-        <div class="homeslider__slide"><img src="/images/homeslider/slide1.jpg" /></div>
+      <div class="homeslider__slide">
+          <picture>
+              <source srcset="/images/homeslider/slide1mob.jpg" media="(max-width: 767px)" />
+              <source srcset="/images/homeslider/slide1.jpg" /><img srcset="/images/homeslider/slide1.jpg" alt="" />
+          </picture>
+      </div>
+      <div class="homeslider__slide">
+          <picture>
+              <source srcset="/images/homeslider/slide1mob.jpg" media="(max-width: 767px)" />
+              <source srcset="/images/homeslider/slide1.jpg" /><img srcset="/images/homeslider/slide1.jpg" alt="" />
+          </picture>
+      </div>
+      <div class="homeslider__slide">
+          <picture>
+              <source srcset="/images/homeslider/slide1mob.jpg" media="(max-width: 767px)" />
+              <source srcset="/images/homeslider/slide1.jpg" /><img srcset="/images/homeslider/slide1.jpg" alt="" />
+          </picture>
+      </div>
+      <div class="homeslider__slide">
+          <picture>
+              <source srcset="/images/homeslider/slide1mob.jpg" media="(max-width: 767px)" />
+              <source srcset="/images/homeslider/slide1.jpg" /><img srcset="/images/homeslider/slide1.jpg" alt="" />
+          </picture>
+      </div>
+      <div class="homeslider__slide">
+          <picture>
+              <source srcset="/images/homeslider/slide1mob.jpg" media="(max-width: 767px)" />
+              <source srcset="/images/homeslider/slide1.jpg" /><img srcset="/images/homeslider/slide1.jpg" alt="" />
+          </picture>
+      </div>
     </div>
 </section>
 <div id="sale-products">
@@ -33,7 +58,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
 <section class="section" style="display: none;">
     <div class="banners-carousel"><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a><a href="#"><img src="/images/banners/banner1.jpg" /></a></div>
 </section>
-<div id="popular-brands" style="display: none2;">
+<div id="popular-brands" style="display: none;">
   <section class="section" v-if="length > 0">
       <h2 class="h2 section__heading">Популярные бренды</h2>
       <div class="brands-grid">

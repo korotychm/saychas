@@ -23,7 +23,16 @@ $(document).ready(function(){
           {
             infinite: true,
             slidesToShow: 4,
-            slidesToScroll: 4
+            slidesToScroll: 4,
+            responsive: [
+              {
+                breakpoint: 1267,
+                settings: {
+                  slidesToShow: 2,
+                  slidesToScroll: 2
+                }
+              }
+            ]
           }
         );
       }
@@ -77,7 +86,16 @@ $(document).ready(function(){
             {
               infinite: true,
               slidesToShow: 4,
-              slidesToScroll: 4
+              slidesToScroll: 4,
+              responsive: [
+                {
+                  breakpoint: 1267,
+                  settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                  }
+                }
+              ]
             }
           );
         }, 200);
