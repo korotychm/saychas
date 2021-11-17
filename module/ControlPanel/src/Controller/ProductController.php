@@ -278,20 +278,9 @@ class ProductController extends AbstractActionController
     
     public function getProductFileAnswerAction()
     {
-        $post = $this->getRequest()->getPost()->toArray();
         $request = $this->getRequest();
-        error_log("banzaii\n", 1, 'alex@localhost');
-        error_log(print_r($request, true), 1, 'alex@localhost');
-//        $answer = [
-//          "date" => "2021-11-15T12:35:32.976Z",
-//          "source_file" => "bl_product_000000006.xls",
-//          "provider_id" => "00005",
-//          "result_file" => "bl_product_000000006.xls",
-//          "query_type" => "new_product",
-//        ];
-
-//        return new JsonModel(['data' => $post]);
-        return new JsonModel($post);
+        $content = $request->getContent();
+        return new JsonModel($content);
     }
     
 
