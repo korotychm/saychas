@@ -89,8 +89,9 @@
 }
 @media (max-width: 767px) {
   .product__title {
-    font-size: 14px;
+    font-size: 12px;
     margin: 15px 0 12px;
+    min-height: 45px;
   }
 }
 .product__panel {
