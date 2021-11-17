@@ -33,8 +33,9 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a href="" :download="filePathMoz" v-if="checkBrowser">Скачать файл</a>
-                      <a :href="filePath" :download="fileName" v-else>Скачать файл</a>
+<!--                      <a href="" :download="filePathMoz" v-if="checkBrowser">Скачать файл</a>-->
+<!--                      <a :href="filePath" :download="fileName" v-else>Скачать файл</a>-->
+                      <a @click="saveData(filePath, fileName)"></a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -160,6 +161,17 @@ const ProductAddFile = {
         this.fileUploaded = true;
         console.log(response)
       })
+    },
+    saveData (blob, fileName) {
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+
+      var url = window.URL.createObjectURL(blob);
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
