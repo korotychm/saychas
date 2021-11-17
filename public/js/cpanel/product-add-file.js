@@ -170,12 +170,13 @@ const ProductAddFile = {
             category_id: this.selectedCategoryId,
             query_type: 'product'
           }
+          // '/documents/P_00005/product/bl_product_000000006.xls'
         }),{headers})
           .then(response => {
-            this.fileName = response.data.filename;
-            this.filePath = '/documents/P_00005/product/bl_product_000000006.xls';
+            this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '');
+            this.filePath = '/documents' + this.fileName;
             this.filePathMoz = response.data.filename;
-            console.log(productsDocumentPath)
+            // console.log(productsDocumentPath)
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
             // console.log(this.filePath)
             // console.log('Файл',response);
