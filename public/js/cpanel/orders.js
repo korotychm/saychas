@@ -187,7 +187,7 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
-              //this.getOrderStatus(order.id,i);
+              this.getOrderStatus(order.id,i);
             }
           }
           i++;
