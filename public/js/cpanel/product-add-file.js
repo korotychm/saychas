@@ -193,9 +193,10 @@ const ProductAddFile = {
             // console.log('Файл',response);
           })
           .catch(error => {
-            if (error.response.status == '403'){
-              location.reload();
-            }
+            console.log(error)
+            // if (error.response.status == '403'){
+            //   location.reload();
+            // }
           });
       this.file = true;
     },
