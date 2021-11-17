@@ -166,8 +166,9 @@ const ProductAddFile = {
       var a = document.createElement("a");
       document.body.appendChild(a);
       a.style = "display: none";
-
-      var url = window.URL.createObjectURL(blob);
+      let binaryData = [];
+      binaryData.push(blob)
+      var url = window.URL.createObjectURL(new Blob(binaryData, {type: "text/plain; encoding=utf8"}));
       a.href = url;
       a.download = fileName;
       a.click();
