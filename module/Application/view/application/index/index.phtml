@@ -2,7 +2,7 @@
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
-$this->inlineScript()->prependFile($this->basePath('/js/homepage.js'));
+$this->inlineScript()->prependFile($this->basePath('/js/homepage.js' . time()));
 ?>
 
 <section>
