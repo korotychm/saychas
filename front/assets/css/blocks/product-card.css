@@ -1,3 +1,8 @@
+@media (max-width: 767px) {
+  .zoomImg {
+    pointer-events: none;
+  }
+}
 .product-card {
   margin-bottom: 50px;
 }
