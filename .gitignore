@@ -21,3 +21,4 @@ public/images/*
 front/package-lock.json
 front/package.json
 front/gulpfile.js
+.vscode/launch.json
