@@ -1,6 +1,7 @@
 @media (max-width: 767px) {
   .zoomImg {
     pointer-events: none;
+    display: none !important;
   }
 }
 .product-card {
