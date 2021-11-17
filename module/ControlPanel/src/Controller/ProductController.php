@@ -197,7 +197,7 @@ class ProductController extends AbstractActionController
         return $res;
     }
 
-    private function canAddProduct(array &$product): bool
+    private function canAddProduct(array &$product): array
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
@@ -205,7 +205,8 @@ class ProductController extends AbstractActionController
         $result = $this->productManager->addServerDocument($credentials, $product);
         $product = $result['data']['data'];
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
-        return $res;
+        return ['result' => $res, 'error_description' => $result['data']['error_description'], 'error_description_for_user' => $result['data']['error_description_for_user']];
+        //return $res;
     }
 
     private function canDeleteProduct($params)
@@ -273,6 +274,24 @@ class ProductController extends AbstractActionController
         $this->getResponse()->setStatusCode(400);
         return new JsonModel(['result' => false, 'error_description' => 'error uploading document file', 'http_code' => 400]);
         // return new JsonModel(['file_name' => $newFileName]);
+    }
+    
+    public function getProductFileAnswerAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();
+        $request = $this->getRequest();
+        error_log("banzaii\n", 1, 'alex@localhost');
+        error_log(print_r($request, true), 1, 'alex@localhost');
+//        $answer = [
+//          "date" => "2021-11-15T12:35:32.976Z",
+//          "source_file" => "bl_product_000000006.xls",
+//          "provider_id" => "00005",
+//          "result_file" => "bl_product_000000006.xls",
+//          "query_type" => "new_product",
+//        ];
+
+//        return new JsonModel(['data' => $post]);
+        return new JsonModel($post);
     }
     
 
@@ -352,12 +371,14 @@ class ProductController extends AbstractActionController
         unset($product['color_id']);
         unset($product['country_id']);
         unset($product['del_images']);
-        if ($this->canAddProduct($product)) {
+        $res = $this->canAddProduct($product);
+        if ($res['result']) {
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true, 'data' => $product]);
         }
 
-        return new JsonModel(['result' => false]);
+        //return new JsonModel(['result' => false]);
+        return new JsonModel($res);
     }
 
     /**
