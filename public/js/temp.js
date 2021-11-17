@@ -151,7 +151,9 @@ $(document).ready(function(){
         this.getReviews()
       },
       mounted() {
-        zoomImg();
+        zoomImg({
+          touch: false
+        });
       },
       updated() {
         if (!this.reviewsImages){

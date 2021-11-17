@@ -6,7 +6,9 @@ function zoomImg() {
 
 $(document).ready(function(){
 
-  zoomImg();
+  zoomImg({
+    touch: false
+  });
 
   function productImgSliderInit(){
     $('.product-card__img > div').slick({
