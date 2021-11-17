@@ -6,6 +6,7 @@
 @media (max-width: 767px) {
   .products-carousel .slick-list {
     margin: -30px -10px;
+    overflow: hidden;
   }
 }
 .products-carousel .slick-list::before,
