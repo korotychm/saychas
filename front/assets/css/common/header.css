@@ -438,6 +438,9 @@
   .header__profile {
     display: none;
   }
+  .header__profile:nth-child(2) {
+    display: block;
+  }
 }
 .header__profile-popup {
   position: absolute;
