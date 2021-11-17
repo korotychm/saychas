@@ -29,7 +29,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                         <div class="orders-history__status" v-else-if="+delivery.delivery_status_id == 0">новая</div>
                         <div class="orders-history__status orders-history__status--progress" v-else-if="+delivery.delivery_status_id == 1">собирается</div>
                         <div class="orders-history__status orders-history__status--ready" v-else-if="+delivery.delivery_status_id == 2">доставляется</div>
-                        <div class="orders-history__status orders-history__status--deliveried" v-else-if="+delivery.delivery_status_id == 2">доставляется</div>
+                        <div class="orders-history__status orders-history__status--deliveried" v-else-if="+delivery.delivery_status_id == 3">доставлен</div>
                         <div class="orders-history__status" v-else >{{ delivery.delivery_status }}</div>
                         <!--
                         <div class="orders-history__status orders-history__status--progress"><span>Собирается</span></div>
