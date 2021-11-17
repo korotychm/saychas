@@ -189,6 +189,9 @@ const ProductAddFile = {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
             this.filePathMoz = response.data.filename;
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://saychas-p.saychas.office/control-panel#/product-add-file/public/documents/P_00005/product/1CMEDIADEV/Providers/P_00005/product/bl_product_000000006.xls')
+            xhr.send()
             // this.saveData(this.filePath, 'testText')
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
             // console.log(this.filePath)
