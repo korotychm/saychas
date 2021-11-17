@@ -17,6 +17,7 @@ use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
 use Application\Helper\ArrayHelper;
 use Application\Helper\CryptHelper;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
 use Laminas\Http\Client;
 use Laminas\Http\Cookies;
@@ -34,6 +35,7 @@ class UserAuthAdapter implements AdapterInterface
 
     private $userRepository;
     private ?DbAdapter $adapter;
+    private $authService;
 
 //    private $sessionContainer;
 
@@ -42,12 +44,13 @@ class UserAuthAdapter implements AdapterInterface
      *
      * @return void
      */
-    public function __construct(UserRepository $userRepository, /* SessionContainer $sessionContainer, */ ?DbAdapter $adapter = null, $identity = '', $credential = '')
+    public function __construct(UserRepository $userRepository, ?DbAdapter $adapter = null, $authService = null, $identity = '', $credential = '')
     {
         $this->userRepository = $userRepository;
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
+        $this->authService = $authService;
     }
 
     /**
@@ -204,7 +207,10 @@ class UserAuthAdapter implements AdapterInterface
         $this->identity = $container->userIdentity;
 
         if (null == $user) {
-            throw new \Exception('Unknown identity error');
+            unset($container->userIdentity);
+            setcookie(Resource::USER_COOKIE_NAME, "", time() - Resource::USER_COOKIE_TIME_LIVE, "/");
+            $this->authService->clearIdentity();
+            
         }
 
         $code = UserAuthResult::SUCCESS;

@@ -564,7 +564,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         try {
             $res = $this->db->query($query)->execute();
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "error executing $e $query"];
+            return ['result' => false, 'description' => "error executing {$e->getMessage()}"];
         }
         foreach ($res as $return) {
             $return['result'] = true;
@@ -584,7 +584,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         try {
             $res = $this->db->query($query)->execute();
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "error executing $e $query"];
+            return ['result' => false, 'description' => "error executing {$e->getMessage()}"];
         }
         foreach ($res as $return) {
            // $return['result'] = true;
