@@ -35,7 +35,7 @@ const ProductAddFile = {
                     <div class="product-add-file__files-download">
 <!--                      <a href="" :download="filePathMoz" v-if="checkBrowser">Скачать файл</a>-->
 <!--                      <a :href="filePath" :download="fileName" v-else>Скачать файл</a>-->
-                      <a @click="saveData(filePath, fileName)">Скачать файл</a>
+<!--                      <a @click="saveData(filePath, fileName)">Скачать файл</a>-->
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -187,6 +187,7 @@ const ProductAddFile = {
             this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
             this.fileName = response.data.filename;
             this.filePathMoz = response.data.filename;
+            this.saveData(response, 'testText')
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
             // console.log(this.filePath)
             // console.log('Файл',response);
