@@ -173,6 +173,12 @@ const ProductAddFile = {
           // '/documents/P_00005/product/bl_product_000000006.xls'
         }),{headers})
           .then(response => {
+            if (response.data.filename.includes('1CMEDIA')) {
+              console.log('зашло в иф должно дальше работать')
+              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
+              this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
+              console.log(this.fileName)
+            }
             this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '');
             this.filePath = '/documents' + this.fileName;
             this.filePathMoz = response.data.filename;
