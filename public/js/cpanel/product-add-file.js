@@ -175,11 +175,10 @@ const ProductAddFile = {
           .then(response => {
             if (response.data.filename.includes('1CMEDIA')) {
               console.log('зашло в иф должно дальше работать')
-              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
               this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
+              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
               console.log(this.fileName)
             }
-            this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '');
             this.filePath = '/documents' + this.fileName;
             this.filePathMoz = response.data.filename;
             // console.log(productsDocumentPath)
