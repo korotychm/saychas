@@ -173,7 +173,7 @@ const ProductAddFile = {
         }),{headers})
           .then(response => {
             this.fileName = response.data.filename;
-            this.filePath = '/' + productsDocumentPath + this.fileName;
+            this.filePath = '/' + productsDocumentPath + 'bl_product_000000006.xls';
             this.filePathMoz = response.data.filename;
             console.log(productsDocumentPath)
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
