@@ -211,7 +211,7 @@ const Orders = {
             if (minutes <= 0) {
               clearInterval(this.timerCustom)
             } else {
-              this.strTimer = `${Math.trunc(min)} : ${Math.trunc(sec)}`
+              this.strTimer = `${Math.trunc(minutes)} : ${Math.trunc(sec)}`
             }
         })
       },
