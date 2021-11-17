@@ -176,7 +176,7 @@ const ProductAddFile = {
       window.URL.revokeObjectURL(url);
     },
     async getFile(id) {
-      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
       await axios
         .post(requestUrl,Qs.stringify({
