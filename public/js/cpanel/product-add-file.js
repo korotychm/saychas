@@ -33,8 +33,7 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a href="" :download="filePathMoz" v-if="checkBrowser">Скачать файл</a>
-                      <a :href="filePath" :download="fileName" v-else>Скачать файл</a>
+                      <a :href="filePath" :download="downloadFileName">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -64,9 +63,9 @@ const ProductAddFile = {
       selectedCategoryName: '',
       file: false,
       filePath: '',
-      filePathMoz: '',
       fileName: '',
       fileUploaded: false,
+      downloadFileName: ''
     }
   },
   computed: {
@@ -84,12 +83,6 @@ const ProductAddFile = {
       } else {
         return this.filePath ? this.filePath : ''
       }
-    },
-    checkBrowser () {
-      if (navigator.userAgent.toLowerCase().includes('firefox')) {
-        return true;
-      }
-      return false;
     },
   },
   methods: {
@@ -162,7 +155,7 @@ const ProductAddFile = {
       })
     },
     async getFile(id) {
-      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
       await axios
         .post(requestUrl,Qs.stringify({
@@ -172,17 +165,18 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            this.filePath = window.location.href + '/' + productsDocumentPath + response.data.filename;
-            this.fileName = response.data.filename;
-            this.filePathMoz = response.data.filename;
-            // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
-            // console.log(this.filePath)
-            // console.log('Файл',response);
+            if (response.data.filename.includes('1CMEDIA')) {
+              this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
+              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
+            }
+            this.filePath = '/documents' + this.fileName;
+            this.downloadFileName = this.fileName.split('/').pop()
           })
           .catch(error => {
-            if (error.response.status == '403'){
-              location.reload();
-            }
+            console.log(error)
+            // if (error.response.status == '403'){
+            //   location.reload();
+            // }
           });
       this.file = true;
     },
