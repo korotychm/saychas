@@ -558,13 +558,14 @@ class ProductManager extends ListManager implements LoadableInterface
     
     public function saveProductFileAnswer($content)
     {
-        console_log('asdfasdf', 1, 'alex@localhost');
         
         $collection = $this->db->product_file_answers;
         
-        $collection->insertOne($content);
+        $c = \Laminas\Json\Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
         
-        return [];
+        $result = $collection->insertOne($c['data']);
+        
+        return ['result' => $result];
     }
     
     public function copyProductFile($content)
