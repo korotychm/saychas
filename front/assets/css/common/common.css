@@ -19,7 +19,7 @@ body {
 }
 @media (max-width: 767px) {
   .main {
-    overflow-x: hidden;
+    overflow: hidden;
     margin-top: 20px;
   }
 }
@@ -73,7 +73,7 @@ body {
 }
 @media (max-width: 767px) {
   .page-heading {
-    font-size: 28px;
+    font-size: 24px;
   }
 }
 .page-heading .h1 {
@@ -95,7 +95,7 @@ body {
   outline: none;
   cursor: pointer;
   font-weight: 600;
-  transition: 0.3s;
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s;
   padding: 0 25px;
 }
 @media (max-width: 1599px) {

@@ -223,6 +223,62 @@
 .filter__show-all::before {
   content: 'Показать все ↓';
 }
+@media (max-width: 767px) {
+  .filter {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    background: #fff;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
+  }
+  .filter.active {
+    display: block;
+  }
+}
+.filter__close-btn {
+  display: none;
+}
+@media (max-width: 767px) {
+  .filter__close-btn {
+    display: flex;
+  }
+}
+.filter__close {
+  display: none;
+}
+@media (max-width: 767px) {
+  .filter__close {
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 0;
+    font-size: 0;
+    display: block;
+    position: absolute;
+  }
+  .filter__close::before,
+  .filter__close::after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    display: block;
+    background: var(--red);
+    top: 14px;
+    left: 0;
+    transform: rotate(45deg);
+    position: absolute;
+  }
+  .filter__close::after {
+    transform: rotate(-45deg);
+  }
+}
 .filter__item {
   margin-top: 20px;
 }

@@ -1,4 +1,5 @@
 div.filter#filter
+  div.filter__close
   form
     //Категория
     input(type="hidden",name="category",:value="category_id")
@@ -86,3 +87,6 @@ div.filter#filter
             input(name="radio", type="radio")
             span.checkbox__check.checkbox__check--radio
             span.checkbox__value Доставка курьером
+            
+    div.filter__item
+      div.btn.btn--primary.filter__close-btn Применить

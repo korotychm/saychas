@@ -114,33 +114,34 @@ section.product-card
       a(href="#").anchor.product-card__to-table Все характеристики ↓
     
     div
-      div.panel
-        div.panel__label Хит
-        div.panel__price
-          div.panel__price-current 17 990 ₽
-          div.panel__price-old 21 990 ₽
-        div.panel__bonuses
-          <span>+179</span> сейбонов
-          div.question
-            div.question__icon ?
-        div.panel__zip
-        div.panel__delivery
-          div.panel__delivery-item
+      div.product-card__panel
+        div.panel
+          div.panel__trigger i
+          div.panel__label Хит
+          div.panel__price
+            div.panel__price-current 17 990 ₽
+            div.panel__price-old 21 990 ₽
+          div.panel__bonuses
+            <span>+179</span> сейбонов
+            div.question
+              div.question__icon ?
+          div.panel__zip
+          div.panel__delivery
+            div.panel__delivery-item
+              include ../../img/icons/icon.svg
+              div
+                h2 <b>Доставим за 1 час!</b> <span class="product-card__delivery-price">299 ₽</span>
+                p При заказе товаров из одного магазина
+            div.panel__delivery-item
+              include ../../img/icons/icon.svg
+              div
+                h2 Самовывоз из магазина <span class="product-card__delivery-price">299 ₽</span>
+                p Можете  забрать самостоятельно из ближайшего к вам магазина
+          div.panel__btn-group
+            button.btn.btn--primary В корзину
+          div.panel__to-wishlist
             include ../../img/icons/icon.svg
-            div
-              h2 <b>Доставим за 1 час!</b> <span class="product-card__delivery-price">299 ₽</span>
-              p При заказе товаров из одного магазина
-          div.panel__delivery-item
-            include ../../img/icons/icon.svg
-            div
-              h2 Самовывоз из магазина <span class="product-card__delivery-price">299 ₽</span>
-              p Можете  забрать самостоятельно из ближайшего к вам магазина
-        div.panel__btn-group
-          button.btn.btn--primary В корзину
-          button.btn.btn--secondary Купить сейчас
-        div.panel__to-wishlist
-          include ../../img/icons/icon.svg
-          span Добавить в избранное
+            span Добавить в избранное
       
       div.product-card__store
         div.product-card__store-logo

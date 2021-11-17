@@ -192,6 +192,48 @@
     content 'Показать все ↓'
 
 .filter
+  @media (max-width: 767px)
+    display none
+    position fixed
+    z-index 10
+    background #fff
+    top 0
+    left 0
+    width 100vw
+    height 100vh
+    overflow-y auto
+    padding 20px
+    &.active
+      display block
+  &__close-btn
+    display none
+    @media (max-width: 767px)
+      display flex
+  &__close
+    display none
+    @media (max-width: 767px)
+      top 15px
+      right 15px
+      width 30px
+      height 30px
+      border none
+      border-radius 0
+      font-size 0
+      display block
+      position absolute
+      &::before
+      &::after
+        content ''
+        width 100%
+        height 2px
+        display block
+        background var(--red)
+        top 14px
+        left 0
+        transform rotate(45deg)
+        position absolute
+      &::after
+        transform rotate(-45deg)
   &__item
     margin-top 20px
     &--boolean

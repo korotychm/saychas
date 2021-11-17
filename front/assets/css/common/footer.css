@@ -4,6 +4,11 @@
   color: #fff;
   margin-top: 50px;
 }
+@media (max-width: 767px) {
+  .footer {
+    padding-bottom: 40px;
+  }
+}
 .footer .container {
   max-width: 1490px;
   display: flex;

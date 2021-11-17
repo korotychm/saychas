@@ -135,6 +135,7 @@
                             <h2 class="catalog__sidebar-heading">Категории</h2><a href="#">Смартфоны</a><a href="#">Кнопочные телефоны</a><a href="#">Аксессуары</a><a href="#">Рации и прочие телефоны</a>
                         </nav>
                         <div class="filter" id="filter">
+                            <div class="filter__close"></div>
                             <form>
                                 <!--Категория--><input type="hidden" name="category" :value="category_id" />
                                 <!--Фильтр по цене-->
@@ -186,6 +187,9 @@
                                     <div class="filter__checkboxes">
                                         <div class="filter__scroll"><label class="checkbox checkbox--radio"><input name="radio" type="radio" /><span class="checkbox__check checkbox__check--radio"></span><span class="checkbox__value">Доставка курьером</span></label></div>
                                     </div>
+                                </div>
+                                <div class="filter__item">
+                                    <div class="btn btn--primary filter__close-btn">Применить</div>
                                 </div>
                             </form>
                         </div>

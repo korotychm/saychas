@@ -1,3 +1,6 @@
 $('.catalog__filter-trigger').click(function(){
-  $('.catalog__sidebar').addClass('active');
+  $('.filter').addClass('active');
+});
+$('.filter__close,.filter__close-btn').click(function(){
+  $('.filter').removeClass('active');
 });

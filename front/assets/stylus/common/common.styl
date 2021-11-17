@@ -30,7 +30,7 @@ body
 .main
   min-height calc(100vh - 600px)
   @media (max-width: 767px)
-    overflow-x: hidden
+    overflow: hidden
     margin-top 20px
 .container
   width 1490px
@@ -62,7 +62,7 @@ body
   @media (max-width: 1599px)
     font-size 36px
   @media (max-width: 767px)
-    font-size 28px
+    font-size 24px
   .h1
     font-size inherit
     font-weight bold
@@ -82,7 +82,7 @@ body
   outline none
   cursor pointer
   font-weight 600
-  transition .3s
+  transition color .3s, background-color .3s, border-color .3s
   padding 0 25px
   @media (max-width: 1599px)
     font-size 18px

@@ -199,6 +199,9 @@ section
         
       div.cart-payment
         h2.h2 Оплата
+        div.cart__mobile-radio-group
+          label(for="payment1").active Привязанная карта
+          label(for="payment2") Новая карта
         div.cart__radio-group
           input(type="radio",name="payment",checked)#payment1
           div.cart__radio
@@ -222,6 +225,7 @@ section
                 
     div.cart__right    
       div.panel.panel--cart
+        div.panel__trigger i
         div.panel__delivery
           div.panel__delivery-item
             include ../../img/icons/icon.svg

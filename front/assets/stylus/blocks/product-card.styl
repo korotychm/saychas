@@ -166,6 +166,8 @@
     display flex
     align-items center
     margin-top 35px
+    @media (max-width: 767px)
+      margin-top 0
     &-logo
       width 170px
       height 65px
@@ -671,7 +673,9 @@
   background #fff
   position relative
   padding 30px
-
+  @media (max-width: 767px)
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
   &__label
     position absolute
     top 10px
@@ -684,6 +688,8 @@
     border-radius 20px
     font-size 12px
     font-weight 700
+    @media (max-width: 767px)
+      display none
   &__price
     display flex
     align-items center
@@ -695,13 +701,13 @@
       font-weight bold
       margin-right 15px
       @media (max-width: 767px)
-        font-size 28px
+        font-size 24px
     &-old
       color var(--gray2)
       text-decoration line-through
       font-size 24px
       @media (max-width: 767px)
-        font-size 20px
+        font-size 18px
   &__bonuses
     display flex
     align-items center
@@ -864,3 +870,73 @@
         display block
       &:last-child
         display block
+
+.product-card__panel
+  .btn
+    width 100%
+  @media (max-width: 767px)
+    position fixed
+    bottom 0
+    left 0
+    z-index 10
+    width 100vw
+    .panel__trigger
+      position absolute
+      width 50px
+      height 50px
+      border-radius 50%
+      border 2px solid var(--gray)
+      display flex
+      right 15px
+      font-size 32px
+      font-weight bold
+      color var(--gray)
+      align-items center
+      justify-content center
+      &.active
+        top 15px
+        right 15px
+        width 30px
+        height 30px
+        border none
+        border-radius 0
+        font-size 0
+        &::before
+        &::after
+          content ''
+          width 100%
+          height 2px
+          display block
+          background var(--red)
+          top 14px
+          left 0
+          transform rotate(45deg)
+          position absolute
+        &::after
+          transform rotate(-45deg)
+    .panel__notice
+      display none
+    .panel:not(.active)
+      border-radius 0
+      display flex
+      align-items center
+      padding 15px 20px
+      .btn
+        width auto
+        margin-left 10px
+      .panel__btn-group
+        margin 0
+      .panel__bonuses
+      .panel__delivery
+      .panel__zip
+      .panel__table
+      .panel__to-wishlist
+        display none
+      .panel__price
+        display block
+        flex-shrink 0
+        margin 0
+      .panel__price-current
+        font-size 22px
+      .panel__price-old
+        font-size 16px

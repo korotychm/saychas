@@ -31,6 +31,8 @@
         color var(--red)
   .panel__zip
     margin 35px -29px
+    @media (max-width: 767px)
+      margin 25px -20px
   .panel__table
     margin-bottom 30px
   .panel__notice
@@ -46,6 +48,9 @@
     font-weight 500
     margin-bottom 18px
     overflow hidden
+    @media (max-width: 767px)
+      font-size 14px
+      margin-bottom 5px
     &-items-total
       display flex
       > div:nth-child(2)
@@ -66,6 +71,9 @@
       order 2
       width 100%
       margin-top -14px
+      @media (max-width: 767px)
+        font-size 20px
+        margin-top -5px
 
 .cart
   display grid
@@ -78,7 +86,7 @@
     font-size 34px
     margin 0 0 25px
     @media (max-width: 767px)
-      font-size 28px
+      font-size 24px
       margin 0 0 30px
   .checkbox
     margin 0
@@ -834,6 +842,13 @@
         display block
         color var(--red)
 
+.cart-payment
+  @media (max-width: 767px)
+    .cart__radio label
+      display none
+    .cart__radio-group
+      margin-top 15px
+
 @keyframes top-clip {
 	0%{}
 	50%{transform: translateY(21px);}
@@ -864,3 +879,71 @@
   display flex
   align-items center
   justify-content center
+
+.panel__trigger
+  display none
+
+.cart__right
+  @media (max-width: 767px)
+    position fixed
+    bottom 0
+    left 0
+    z-index 10
+    width 100vw
+    .panel__trigger
+      position absolute
+      width 50px
+      height 50px
+      border-radius 50%
+      border 2px solid var(--gray)
+      display flex
+      right 15px
+      font-size 32px
+      font-weight bold
+      color var(--gray)
+      align-items center
+      justify-content center
+      &.active
+        top 15px
+        right 15px
+        width 30px
+        height 30px
+        border none
+        border-radius 0
+        font-size 0
+        &::before
+        &::after
+          content ''
+          width 100%
+          height 2px
+          display block
+          background var(--red)
+          top 14px
+          left 0
+          transform rotate(45deg)
+          position absolute
+        &::after
+          transform rotate(-45deg)
+    .panel__notice
+      display none
+    .panel:not(.active)
+      border-radius 0
+      display flex
+      align-items center
+      padding 15px 20px
+      .btn
+        width auto
+        margin-left 10px
+      .panel__bonuses
+      .panel__delivery
+      .panel__zip
+      .panel__table
+        display none
+      .panel__price
+        display block
+        flex-shrink 0
+        margin 0
+      .panel__price-current
+        font-size 22px
+      .panel__price-old
+        font-size 16px

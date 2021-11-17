@@ -60,6 +60,8 @@
     margin 0
     padding 0
     margin-bottom 40px
+    @media (max-width: 767px)
+      display none
     a
       text-decoration none
       color inherit
@@ -90,6 +92,16 @@
 
   &__nav
     margin-bottom 40px
+    @media (max-width: 767px)
+      display flex
+      overflow-x auto
+      width calc(100% + 15px)
+      margin-bottom 25px
+      &::-webkit-scrollbar
+        display none
+    .catalog__sidebar-heading
+      @media (max-width: 767px)
+        display none
     a
       display block
       color inherit
@@ -99,25 +111,23 @@
       transition .5s
       @media (max-width: 1599px)
         font-size 18px
+      @media (max-width: 767px)
+        flex-shrink 0
+        margin-right 5px
+        padding 10px 15px
+        font-size 14px
+        border-radius 30px
+        background var(--gray)
       &:hover
-        color var(--red)
+        @media (hover)
+          color var(--red)
 
   &__sidebar
     z-index 2
     background #fff
     padding-bottom 50px
     @media (max-width: 767px)
-      display none
-      position fixed
-      width 100vw
-      top 0
-      left 0
-      padding 20px
-      z-index 99
-      overflow-y auto
-      &.active
-        display block
-
+      padding-bottom 0
     &-heading
       font-size 22px !important
       font-weight bold
