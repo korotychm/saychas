@@ -161,19 +161,6 @@ const ProductAddFile = {
         console.log(response)
       })
     },
-    saveData (blob, fileName) {
-      var a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style = "display: none";
-      let binaryData = [];
-      binaryData.push(blob)
-      console.log(binaryData)
-      var url = window.URL.createObjectURL(new Blob(binaryData, {type: "xml version= 1.0 encoding= utf-8"}));
-      a.href = url;
-      a.download = fileName;
-      a.click();
-      window.URL.revokeObjectURL(url);
-    },
     async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
@@ -188,8 +175,7 @@ const ProductAddFile = {
             this.filePath = '/' + productsDocumentPath;
             this.fileName = response.data.filename;
             this.filePathMoz = response.data.filename;
-
-            // this.saveData(this.filePath, 'testText')
+            console.log(productsDocumentPath)
             // this.filePathMoz = '/' + response.data.filename.replace(/^_/,'');
             // console.log(this.filePath)
             // console.log('Файл',response);
