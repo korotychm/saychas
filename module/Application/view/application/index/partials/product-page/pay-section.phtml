@@ -1,5 +1,6 @@
 <?php use Application\Resource\Resource; ?>
 <div>
+  <div class="product-card__panel">
     <div class="panel">
         <div class="panel__label">Хит</div>
         <div class="panel__price">
@@ -15,7 +16,7 @@
                 <div class="question__icon">?</div>
             </div>
         </div>
- 
+
  */?>   <div class="panel__zip"></div>
         <div class="panel__delivery">
            <div class="panel__delivery-item">
@@ -56,6 +57,7 @@
             <span><?= ($isFav) ? Resource::REMOVE_FROM_FAVORITES : Resource::ADD_TO_FAVORITES?></span>
         </div>
     </div>
+  </div>
 <?php if (false and $brand['id']):?><div class="product-card__store">
        <div class="product-card__store-logo">
             <img src="<?=$image_path_brand.'/'.$brand['image']?>" />
