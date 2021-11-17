@@ -455,6 +455,11 @@
   opacity: 0;
   pointer-events: none;
 }
+@media (max-width: 767px) {
+  .header__profile-popup {
+    display: none;
+  }
+}
 .header__profile-popup::before {
   content: '';
   width: 20px;
