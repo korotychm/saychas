@@ -194,12 +194,11 @@ class UserAuthAdapter implements AdapterInterface
      */
     private function authUser($container)
     {
-        $user = User::find(['id' => $container->userIdentity]);
 //            if(!$container->userOldIdentity) {
 //                throw new \Exception('Unexpected error: no data found for registered user');
 //            }
-        if (null == $user) {
-            $this->createUser($container);
+        if (empty($user = User::find(['id' => $container->userIdentity]))) {
+            return $this->createUser($container);
         }
 
         if ($container->userOldIdentity && ($container->userIdentity != $container->userOldIdentity)) {
