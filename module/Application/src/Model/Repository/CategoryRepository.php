@@ -494,16 +494,16 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
 
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`, `url`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u, '%s' )",
-                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order'], $row['url']);
+                    addslashes($row['title']), empty($row['parent_id']) ? '0' : $row['parent_id'], addslashes($row['description']), $row['id'], $row['icon'], $row['sort_order'], $row['url']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
+                    $error.="{$e->getMessage()}\r\n";
+                continue;
             }
         }
-        
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $error ?? '', 'statusCode' => 200];
     }
 
     /**
