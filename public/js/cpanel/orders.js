@@ -204,11 +204,7 @@ const Orders = {
         return this.orders[index].items.filter(item => item.qty_partner > 0).length;
       },
       calculatePrice(price,discount) {
-        return price - (price * discount / 100) / 100
-      },
-      totalPrice(order) {
-        // Рассчитать изначальную стоимость и стоимость, в зависимости от реального количества
-        return true
+        return price - (price * discount / 100)
       },
       getUnit(value) {
         if (value == 0) {
@@ -262,7 +258,7 @@ const Orders = {
         }
 
         let orderRequestData = JSON.parse(JSON.stringify(this.orders[index]).replace('id', 'id'));
-        console.log('save order response', orderRequestData);
+        console.log(orderRequestData);
 
         let requestUrl = '/control-panel/update-requisition';
         const headers = { 'X-Requested-With': 'XMLHttpRequest' }
