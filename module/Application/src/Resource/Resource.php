@@ -153,12 +153,12 @@ class Resource
     /*
      * Статус заказа
      */
-    const ORDER_STATUS_CODE_NEW         = ["id" => 0, "description" => "новый" ];
-    const ORDER_STATUS_CODE_REGISTRED   = ["id" => 1, "description" => "зарегистрирован" ];
-    const ORDER_STATUS_CODE_PACK        = ["id" => 2, "description" => "собирается" ];
-    const ORDER_STATUS_CODE_DELIVERY    = ["id" => 3, "description" => "доставляется" ];
-    const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 4, "description" => "доставлен" ];
-    const ORDER_STATUS_CODE_CANCELED    = ["id" => 5, "description" => "отменен" ];
+    const ORDER_STATUS_CODE_NEW         = ["id" => 0, "description" => "Новый" ];
+    const ORDER_STATUS_CODE_REGISTRED   = ["id" => 1, "description" => "Ожидаеет оплаты" ];
+    const ORDER_STATUS_CODE_PACK        = ["id" => 2, "description" => "Собирается" ];
+    const ORDER_STATUS_CODE_DELIVERY    = ["id" => 3, "description" => "Доставляется" ];
+    const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 4, "description" => "Доставлен" ];
+    const ORDER_STATUS_CODE_CANCELED    = ["id" => 5, "description" => "Отменен" ];
 
     /*
      * Статус доставки

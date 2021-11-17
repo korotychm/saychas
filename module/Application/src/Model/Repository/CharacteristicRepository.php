@@ -152,15 +152,18 @@ class CharacteristicRepository extends Repository implements CharacteristicRepos
 //            $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`, `is_main`, `is_mandatory`, `is_list`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s', %u, %u, %u)",
 //                    $row['id'], $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], $row['unit'], '', $row['is_main'], $row['is_mandatory'], $row['is_list']);
             $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `category_id`, `title`, `type`, `sort_order`, `filter`, `group`, `unit`, `description`, `is_main`, `is_mandatory`, `is_list`) VALUES ( '%s', '%s', '%s', %u, %u, %u, %u, '%s', '%s', %u, %u, %u)",
-                    implode('-', [$row['id'], $row['category_id']]), $row['category_id'], $row['title'], $row['type'], $row['sort_order'], $row['filter'], $row['group'], $row['unit'], '', $row['is_main'], $row['is_mandatory'], $row['is_list']);
+                    implode('-', [$row['id'], $row['category_id']]), $row['category_id'], 
+                    addslashes($row['title']), 
+                    $row['type'], $row['sort_order'], $row['filter'], $row['group'], $row['unit'], '', $row['is_main'], $row['is_mandatory'], $row['is_list']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                    $error.="{$e->getMessage()}\r\n";
+                continue;
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $error ?? '', 'statusCode' => 200];
     }
 
 }
