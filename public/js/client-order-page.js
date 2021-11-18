@@ -75,7 +75,11 @@ $(document).ready(function () {
                 if (response.data.result){
                   window.location.href = response.data.answer.PaymentURL;
                 } else {
-                  showServicePopupWindow('Ошибка оплаты', response.data.message, "");
+                  if (response.data.message){
+                    showServicePopupWindow('Ошибка оплаты', response.data.message, "");
+                  } else {
+                    showServicePopupWindow('Ошибка оплаты', 'Ошибка платежной системы', "");
+                  }
                 }
               });
           },
