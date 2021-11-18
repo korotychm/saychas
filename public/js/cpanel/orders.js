@@ -365,8 +365,8 @@ const Orders = {
                   this.filters = response.data.data.filters;
                   this.filtersCreated = true;
                 }
-                // this.setTime();
-                this.setDefaultTimer()
+                this.setTime();
+                // this.setDefaultTimer()
               }
             })
             .catch(error => {
