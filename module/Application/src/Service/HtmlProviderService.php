@@ -187,7 +187,8 @@ class HtmlProviderService
      */
     private function payPossible($return)
     {
-        if ($return['orderId'] != Resource::ORDER_STATUS_CODE_REGISTRED) {
+      $statusOk = Resource::ORDER_STATUS_CODE_REGISTRED
+        if ($return['orderId'] != $statusOk['id'] ) {
             return false;
         }
 
@@ -285,7 +286,7 @@ class HtmlProviderService
         $value = [];
 
         foreach ($v as $val) {
-            
+
             if ($chType == Resource::BOOLEAN) {
                 $value[] = $val == 0 ? Resource::NO : Resource::YES;
             } elseif ($chType == Resource::COUNTRY_REF) {
