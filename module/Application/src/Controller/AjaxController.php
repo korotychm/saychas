@@ -684,7 +684,7 @@ class AjaxController extends AbstractActionController
 
         $row['basketUser'] = $basketUser;
         $row['ordermerge'] = $post->ordermerge;
-        $row['priceDelevery'] = $param['hourPrice'];
+        //$row['priceDelevery'] = $param['hourPrice'];
         $row['priceDeleveryMerge'] = $param['mergePrice'];
         $row['priceDeleveryMergeFirst'] = $param['mergePriceFirst'];
         $row['addressDelevery'] = StringHelper::cutAddressCity($basketUser['address']);
@@ -791,7 +791,8 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * disabled
+     * disabled.  
+     * rating values provide 1c now
      *
      * @return  JsonModel
      */

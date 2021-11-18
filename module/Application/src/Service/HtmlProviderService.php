@@ -158,21 +158,49 @@ class HtmlProviderService
         return $return;
     }
 
+    /**
+     * 
+     * @param  object $orders
+     * @return array
+     */
     public function orderList($orders)
     {
         foreach ($orders as $order) {
+            $return = [];
             $return['orderId'] = $order->getOrderId();
             $return['orderStatus'] = $order->getStatus();
             $return['orderDate'] = $order->getDateCreated(); //date_created
             $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
             $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
             $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
+            $return['paymentPossible'] = $this->paymentPossible($return);
             $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
             $returns[] = $return;
         }
 
         return $returns ?? [];
     }
+    
+    /**
+     * 
+     * @param array $return
+     * @return boolean
+     */
+    private function paymentPossible ($return)
+    {
+        if ($return['orderId'] != Resource::ORDER_STATUS_CODE_NEW ){
+            return false;
+        }
+        
+        $payment_status = $return['paymentInfo']['Status'] ?? "NEW";
+        
+        if ($payment_status != "NEW") {
+            return false;
+        }
+        
+        return true;
+    }
+    
 
     public function getCategoryFilterJson($filters)
     {
@@ -446,9 +474,10 @@ class HtmlProviderService
 
         if (!$post->ordermerge) {
             $priceDelevery = $countDelevery * $param['hourPrice'];
+            //exit ($priceDelevery ."=". $countDelevery. "*".$param['hourPrice']);
         } else {
             $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
-            $priceDelevery = $countDelevery * $param['mergePrice'] + ceil($countDelevery / $param['mergecount']) * $param['mergePriceFirst'];
+            $priceDelevery = (ceil($countDelevery / $param['mergecount'])-1) * $param['mergePrice'] + $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
@@ -460,8 +489,8 @@ class HtmlProviderService
         $return["countSelfdelevery"] = $countSelfdelevery ?? 0;
         $return["priceDelevery"] = $priceDelevery ?? 0;
         $return["countDelevery"] = $countDelevery;
-        $return["countDeleveryText"] = $countDelevery;
-        $return["countDeleveryText"] .= ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
+        
+        $return["countDeleveryText"] .= $countDelevery . ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress ?? "";
 
         return $return;
@@ -550,7 +579,7 @@ class HtmlProviderService
             $return["select1hour"] = $timeDelevery1Hour;
             $return["select3hour"] = $timeDelevery3Hour;
             $return["hourPrice"] = $return["countStors"] * $param["hourPrice"];
-            $return["hour3Price"] = $return["countStors"] * $param['mergePrice'] + ceil($return["countStors"] / $param['mergecount']) * $param['mergePriceFirst'];
+            $return["hour3Price"] = $param['mergePriceFirst'] + (ceil($return["countStors"] / $param['mergecount']) - 1) * $param['mergePrice'];
         }
 
         return $return;
