@@ -285,6 +285,7 @@ class HtmlProviderService
         $value = [];
 
         foreach ($v as $val) {
+            
             if ($chType == Resource::BOOLEAN) {
                 $value[] = $val == 0 ? Resource::NO : Resource::YES;
             } elseif ($chType == Resource::COUNTRY_REF) {
