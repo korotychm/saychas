@@ -236,23 +236,16 @@ const Orders = {
           clearInterval(this.timer);
         }
         let i = 0;
-        let result = 0;
-            let deadline = this.calulateTime(result,this.deadline_new,this.deadline_new_last);
-            console.log(result)
         for (order of this.orders){
           if (+order.status_id == '01'){
-            console.log(deadline, 'эТ ДЕДЛАЙН')
-            result = order.date
+            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
-            order.deadline = deadline
-            console.log(deadline)
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
             Vue.set(this.orders[i],'deadline',deadline);
-            order.deadline = deadline
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
