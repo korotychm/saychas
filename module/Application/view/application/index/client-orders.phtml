@@ -96,7 +96,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                 </div>
                 <div class="order-btn-group">
                   <button v-if="order.payPossible" class="btn btn--primary order-pay-btn" @click="tinkoffPay(order.orderId)">Оплатить</button>
-                  <a class="btn btn--secondary" :href="'/user/order/' + order.orderId"><?= Resource::ORDER_MORE_INFO ?></a>
+                  <a class="btn btn--secondary" :href="'/user/order/' + order.orderId">Подробности<span v-if="!order.payPossible"> заказа</span></a>
                 </div>
             </div>
           </div>
