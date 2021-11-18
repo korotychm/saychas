@@ -242,6 +242,7 @@ const Orders = {
             console.log(deadline, 'эТ ДЕДЛАЙН')
             Vue.set(this.orders[i],'deadline',deadline);
             order.deadline = deadline
+            console.log(deadline)
             this.$set(order, 'deadline', deadline)
             let blabla = new Date;
             this.currentTime = +blabla;
