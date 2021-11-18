@@ -127,7 +127,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 </div>
                 <div>
                   <div class="order-btn-group">
-                    <button v-if="order.payPossible" class="btn btn--primary order-pay-btn" @click="tinkoffPay(order.orderId)">Оплатить</a>
+                    <button v-if="order.payPossible" class="btn btn--primary order-pay-btn" @click="tinkoffPay(order.orderId)">Оплатить</button>
                     <button v-if="canCancel" class="btn btn--secondary" :class="{'disabled' : cancellingOrder}" @click="cancelOrder">Отменить</button>
                   </div>
                   <div class="panel__notice" v-if="+order.orderStatus < 3">Вы можете отменить заказ, пока он ещё не собран. Если возникли проблемы с заказом — просто позвоните нам +7 (495) 445-04-55</div>
