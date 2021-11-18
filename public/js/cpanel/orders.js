@@ -145,8 +145,8 @@ const Orders = {
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
-          secondTimer: 11,
-          minutTimer: 20,
+          secondTimer: 59,
+          minutTimer: 19,
           penaltyTimer: null,
           penaltyTime: false,
         }
@@ -154,28 +154,31 @@ const Orders = {
     methods: {
       // Первый таймер сбора заказа
       setDefaultTimer () {
-        let date = new Date(1637163101 * 1000)
-        let startDate = new Date(1637163101 * 1000)
-        date.setMinutes(date.getMinutes() + 10)
-        let deadLine = date.getMinutes() - startDate.getMinutes()
-        this.minutTimer = deadLine
-        this.minutTimer = ('0' + this.minutTimer).slice(-2)
-        this.timer = setInterval (() => {
-          this.secondTimer--
-          this.secondTimer = ('0' + this.secondTimer).slice(-2)
-          if (this.secondTimer <= 0) {
-            this.secondTimer = 59
-            this.minutTimer--;
-            this.minutTimer = ('0' + this.minutTimer).slice(-2)
-            if (this.minutTimer < 0) {
-              clearInterval(this.timer);
-              this.minutTimer = '00';
-              this.secondTimer = '00';
-              this.penaltyTime = true;
-              this.setPenaltyTimer()
+        for (let order of this.orders) {
+
+          let date = new Date(1637163101 * 1000)
+          let startDate = new Date(1637163101 * 1000)
+          date.setMinutes(date.getMinutes() + 10)
+          let deadLine = date.getMinutes() - startDate.getMinutes()
+          order.minutTimer = deadLine
+          order.minutTimer = ('0' + order.minutTimer).slice(-2)
+          order.timer = setInterval (() => {
+            order.secondTimer--
+            order.secondTimer = ('0' + order.secondTimer).slice(-2)
+            if (order.secondTimer <= 0) {
+              order.secondTimer = 59
+              order.minutTimer--;
+              order.minutTimer = ('0' + order.minutTimer).slice(-2)
+              if (order.minutTimer < 0) {
+                clearInterval(order.timer);
+                order.minutTimer = '00';
+                order.secondTimer = '00';
+                order.penaltyTime = true;
+                order.setPenaltyTimer()
+              }
             }
-          }
-        }, 1000)
+          }, 1000)
+        }
       },
       //конец первого таймера
       // Таймер штрафного времени
