@@ -160,8 +160,10 @@ const Orders = {
           let startDate = new Date(1637163101 * 1000)
           date.setMinutes(date.getMinutes() + 10)
           let deadLine = date.getMinutes() - startDate.getMinutes()
-          order.minutTimer = deadLine
+          // order.minutTimer = deadLine
+         this.$set('order.minutTimer', deadLine)
           order.minutTimer = ('0' + order.minutTimer).slice(-2)
+          // this.$set('order.minutTimer', )
           order.timer = setInterval (() => {
             order.secondTimer--
             order.secondTimer = ('0' + order.secondTimer).slice(-2)
