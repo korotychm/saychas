@@ -241,7 +241,7 @@ const Orders = {
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             console.log(deadline, 'эТ ДЕДЛАЙН')
             Vue.set(this.orders[i],'deadline',deadline);
-            order.deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last)
+            order.deadline = deadline
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
@@ -263,6 +263,7 @@ const Orders = {
         }
         this.timer = setInterval(() => {
           this.checkTime();
+          console.log('тик так')
         }, 1000);
       },
       countProducts(index) {
