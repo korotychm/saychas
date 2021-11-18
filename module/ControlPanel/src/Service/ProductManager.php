@@ -556,6 +556,23 @@ class ProductManager extends ListManager implements LoadableInterface
         return ['result' => $result];
     }
     
+    public function saveProductFileAnswer($content)
+    {
+        
+        $collection = $this->db->product_file_answers;
+        
+        $c = \Laminas\Json\Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        
+        $result = $collection->insertOne($c['data']);
+        
+        return ['result' => $result];
+    }
+
+    public function getDownloadLinks()
+    {
+        return [];
+    }
+    
     public function copyProductFile($content)
     {
         $baseUrl = $this->config['parameters']['document_path']['base_url'];

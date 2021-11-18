@@ -197,7 +197,7 @@ class ProductController extends AbstractActionController
         return $res;
     }
 
-    private function canAddProduct(array &$product): bool
+    private function canAddProduct(array &$product): array
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
@@ -205,7 +205,8 @@ class ProductController extends AbstractActionController
         $result = $this->productManager->addServerDocument($credentials, $product);
         $product = $result['data']['data'];
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
-        return $res;
+        return ['result' => $res, 'error_description' => $result['data']['error_description'], 'error_description_for_user' => $result['data']['error_description_for_user']];
+        //return $res;
     }
 
     private function canDeleteProduct($params)
@@ -275,6 +276,25 @@ class ProductController extends AbstractActionController
         // return new JsonModel(['file_name' => $newFileName]);
     }
     
+    public function getProductFileAnswerAction()
+    {
+        $request = $this->getRequest();
+        $content = $request->getContent();
+        
+//        error_log(print_r($content, true), 1, 'alex@localhost');
+        
+        $result = $this->productManager->saveProductFileAnswer($content);
+        
+        return new JsonModel($content);
+    }
+
+    public function placeDownloadLinkAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $urls = $this->productManager->getDownloadLinks($identity['provider_id']);
+        $path = $this->documentPath('product', $identity['provider_id']);
+        return new JsonModel($urls);
+    }
 
     /**
      * Update product
@@ -352,12 +372,14 @@ class ProductController extends AbstractActionController
         unset($product['color_id']);
         unset($product['country_id']);
         unset($product['del_images']);
-        if ($this->canAddProduct($product)) {
+        $res = $this->canAddProduct($product);
+        if ($res['result']) {
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true, 'data' => $product]);
         }
 
-        return new JsonModel(['result' => false]);
+        //return new JsonModel(['result' => false]);
+        return new JsonModel($res);
     }
 
     /**
