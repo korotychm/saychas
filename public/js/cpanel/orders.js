@@ -144,7 +144,7 @@ const Orders = {
           deadline_new_last: 5,
           deadline_collect: 20,
           deadline_collect_last: 15,
-          currentTime: ''
+          currentTime: '',
         }
     },
     methods: {
