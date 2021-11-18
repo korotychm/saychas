@@ -46,7 +46,7 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                        
+                        <a :href="item" v-for="item of downloadUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
                           <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
@@ -65,7 +65,8 @@ const ProductAddFile = {
       filePath: '',
       fileName: '',
       fileUploaded: false,
-      downloadFileName: ''
+      downloadFileName: '',
+      downloadUrls: {},
     }
   },
   computed: {
@@ -160,7 +161,12 @@ const ProductAddFile = {
       await axios
           .get(requestUrl, {headers})
           .then(response => {
-            console.log(response[0])
+            this.downloadUrls = response.data.urls.map(item => {
+              return location.origin + '/' + item;
+            });
+            // this.downloadUrls.forEach(item =>  {
+            //   item = location.origin + item;
+            // })
           })
     },
     async getFile(id) {
