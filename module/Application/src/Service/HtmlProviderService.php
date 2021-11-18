@@ -187,7 +187,7 @@ class HtmlProviderService
      */
     private function payPossible($return)
     {
-      $statusOk = Resource::ORDER_STATUS_CODE_REGISTRED
+      $statusOk = Resource::ORDER_STATUS_CODE_REGISTRED;
         if ($return['orderId'] != $statusOk['id'] ) {
             return false;
         }
