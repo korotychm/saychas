@@ -156,9 +156,7 @@ class AcquiringController extends AbstractActionController
         if (empty($userInfo ['phone'])) {
             return new JsonModel(["result" => false, "message" => "error: user phone not found"]);
         }
-        $order = ClientOrder::find(["order_id" => $orderId, 
-            //"status" => 1
-            ]);
+        $order = ClientOrder::find(["order_id" => $orderId, "status" => 1]);
 
         if (empty($order)) {
             return new JsonModel(["result" => false, "message" => "Ошибка #01: Заказ $orderId сейчас не может быть оплачен"]);
