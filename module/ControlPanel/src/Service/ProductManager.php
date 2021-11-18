@@ -567,6 +567,11 @@ class ProductManager extends ListManager implements LoadableInterface
         
         return ['result' => $result];
     }
+
+    public function getDownloadLinks()
+    {
+        return [];
+    }
     
     public function copyProductFile($content)
     {

@@ -288,6 +288,14 @@ class ProductController extends AbstractActionController
         return new JsonModel($content);
     }
 
+    public function placeDownloadLinkAction()
+    {
+        $identity = $this->authService->getIdentity();
+        $urls = $this->productManager->getDownloadLinks($identity['provider_id']);
+        $path = $this->documentPath('product', $identity['provider_id']);
+        return new JsonModel($urls);
+    }
+
     /**
      * Update product
      * Send product data to 1c first and
