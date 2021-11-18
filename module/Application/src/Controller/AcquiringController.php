@@ -149,16 +149,27 @@ class AcquiringController extends AbstractActionController
         //$param['apiconfig'] = $this->config['parameters']['TinkoffMerchantAPI'];
         $container = new Container(Resource::SESSION_NAMESPACE);
         $userId = $container->userIdentity;
-        $orderId = $this->params()->fromRoute('order', '');
+        $orderId = //"000000018"; //
+                   $this->params()->fromRoute('order', '');
         $userInfo = $this->commonHelperFuncions->getUserInfo($this->userRepository->find(['id' => $userId]));
 
         if (empty($userInfo ['phone'])) {
             return new JsonModel(["result" => false, "message" => "error: user phone not found"]);
         }
-        $order = ClientOrder::find(["order_id" => $orderId, "status" => 1]);
+        $order = ClientOrder::find(["order_id" => $orderId, 
+            //"status" => 1
+            ]);
 
         if (empty($order)) {
-            return new JsonModel(["result" => false, "message" => "error: order " . $orderId . " can't be paid"]);
+            return new JsonModel(["result" => false, "message" => "Ошибка #01: Заказ $orderId сейчас не может быть оплачен"]);
+        }
+        
+        $payment = $order->getPaymentInfo() ?? "{}";
+        $payment_info = Json::decode($payment, Json::TYPE_ARRAY);
+        $payment_status = $payment_info['Status'] ?? "NEW";
+        
+        if ($payment_status != "NEW") {
+            return new JsonModel(["result" => false, "message" => "Ошибка #02: Заказ $orderId сейчас не может быть оплачен"]);
         }
 
         $basket_info = Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY);
@@ -168,7 +179,7 @@ class AcquiringController extends AbstractActionController
         $orderBasket = Basket::findAll(["where" => ['user_id' => $userId, 'order_id' => $orderId]]);
 
         if (empty($orderBasket)) {
-            return new JsonModel(["result" => false, "message" => "error: products of order not found ", ["where" => ['user_id' => $userId, 'order_id' => $orderId]]]);
+            return new JsonModel(["result" => false, "message" => "Ошибка #03: products of order not found ", ["where" => ['user_id' => $userId, 'order_id' => $orderId]]]);
         }
 
         $orderItems = $this->acquiringCommunication->getOrderItems($orderBasket);
@@ -243,7 +254,7 @@ class AcquiringController extends AbstractActionController
         $post["requestTinkoff"]["Amount"] = $amount;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         $post["requestTinkoff"]['SuccessURL'] = "https://saychas.ru/user/order/" . $orderId;
-        $post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/order/" . $orderId;
+        //$post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/orders" . $orderId;
         $order->setConfirmInfo($json);
         $order->persist(['order_id' => $orderId]);
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
@@ -257,9 +268,9 @@ class AcquiringController extends AbstractActionController
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         //$post["answerTinkoff"][]
-        $answer = ['result' => true, 'description' => 'ok'];
+        
 
-        return new JsonModel($answer);
+        return new JsonModel(['result' => true, 'description' => 'ok']);
     }
 
     /**
