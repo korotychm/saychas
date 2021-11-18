@@ -122,44 +122,43 @@ class HtmlProviderService
             $basketProducts[$basketItem->getProductId()] = ['price' => $basketItem->getPrice(), 'total' => $basketItem->getTotal(),];
         }
         while (list($key, $product) = each($param['postedProducts'])) { //
-           
             if (empty($basketProducts[$key])) {
                 $error["reloadUrl"] = "/user/orders";
                 return $error;
             }
-            
+
             if (empty($param["legalStore"][$product['store']])) {
                 $whatHappened['stores'][$product['store']][] = $key;
                 $return["result"] = false;
             }
-            
+
             $productRow = $this->productRepository->find(['id' => $key]);
             $price = (int) $productRow->receivePriceObject()->getPrice();
             $rest = $productRow->receiveRest($legalStoreKey);
-            
+
             if ($basketProducts[$key]["price"] != $price) {
                 $whatHappened['products'][$key]['oldprice'] = $basketProducts[$key]["price"];
                 $whatHappened['products'][$key]['price'] = $price;
                 $return["result"] = false;
             }
-            
+
             if ($basketProducts[$key]["total"] > $rest) {
                 $whatHappened['products'][$key]['oldrest'] = $basketProducts[$key]["total"];
                 $whatHappened['products'][$key]['rest'] = $rest;
                 $return["result"] = false;
             }
         }
-        
+
         if (!empty($whatHappened)) {
             $container->whatHappened = $whatHappened;
         }
         $return['test'] = [$whatHappened];
-        
+
         return $return;
     }
 
     /**
-     * 
+     *
      * @param  object $orders
      * @return array
      */
@@ -173,41 +172,40 @@ class HtmlProviderService
             $return['basketInfo'] = ($order->getBasketInfo()) ? Json::decode($order->getBasketInfo(), Json::TYPE_ARRAY) : [];
             $return['deliveryInfo'] = ($order->getDeliveryInfo()) ? Json::decode($order->getDeliveryInfo(), Json::TYPE_ARRAY) : [];
             $return['paymentInfo'] = ($order->getPaymentInfo()) ? Json::decode($order->getPaymentInfo(), Json::TYPE_ARRAY) : [];
-            $return['paymentPossible'] = $this->paymentPossible($return);
+            $return['payPossible'] = $this->payPossible($return);
             $return['totalBill'] = ($order->getConfirmInfo()) ? Json::decode($order->getConfirmInfo(), Json::TYPE_ARRAY) : [];
             $returns[] = $return;
         }
 
         return $returns ?? [];
     }
-    
+
     /**
-     * 
+     *
      * @param array $return
      * @return boolean
      */
-    private function paymentPossible ($return)
+    private function payPossible($return)
     {
-        if ($return['orderId'] != Resource::ORDER_STATUS_CODE_NEW ){
+        if ($return['orderId'] != Resource::ORDER_STATUS_CODE_NEW) {
             return false;
         }
-        
+
         $payment_status = $return['paymentInfo']['Status'] ?? "NEW";
-        
+
         if ($payment_status != "NEW") {
             return false;
         }
-        
+
         return true;
     }
-    
 
     public function getCategoryFilterJson($filters)
     {
         if (empty($filters)) {
             return["error" => "errorId"];
         }
-        
+
         foreach ($filters as $row) {
             $row['val'] = explode(",", $row['val']);
             $row['val'] = array_unique($row['val']);
@@ -242,7 +240,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param array $row
      * @return array
      */
@@ -269,7 +267,7 @@ class HtmlProviderService
     }
 
     /**
-     * 
+     *
      * @param array $v
      * @param int $chType
      * @return string
@@ -377,7 +375,7 @@ class HtmlProviderService
         $addressData = $user->getUserData();
         if (!empty($addressData)) {
             $i = 0;  //индекс для лимита вывода адресов!
-            
+
             foreach ($addressData as $address) {
                 if ($i === 0) {
                     $return['address'] = ["id" => $address->getId(), "text" => $address->getAddress(), "geodata" => $address->getGeoData()];
@@ -444,25 +442,25 @@ class HtmlProviderService
         $j = 0;
 
         if (!empty($products)) {
-           
+
             while (list($p, $c) = each($products)) {
-                
+
                 if ($c["count"] <= 0) {
                     continue;
                 }
                 $product = $this->productRepository->find(['id' => $p]);
-                
+
                 if (null == $product) {
                     continue;
                 }
-                
+
                 if (!$price = (int) $product->receivePriceObject()->getPrice()) {
                     continue;
                 }
-                
+
                 $total += ($price * $c['count']);
                 $j += $c["count"];
-                
+
                 if ($providerId = $product->getProviderId()) {
                     $provider[$providerId] = 1;
                 }
@@ -477,11 +475,11 @@ class HtmlProviderService
             //exit ($priceDelevery ."=". $countDelevery. "*".$param['hourPrice']);
         } else {
             $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
-            $priceDelevery = (ceil($countDelevery / $param['mergecount'])-1) * $param['mergePrice'] + $param['mergePriceFirst'];
+            $priceDelevery = (ceil($countDelevery / $param['mergecount']) - 1) * $param['mergePrice'] + $param['mergePriceFirst'];
             $countDelevery = ceil($countDelevery / $param['mergecount']);
             $countDelevery = ($countDelevery < 0) ? 0 : $countDelevery;
         }
-        
+
         $return["producttotal"] = $total ?? 0;
         $return["basketpricetotalall"] = $return["producttotal"];
         $return["productcount"] = $j ?? 0;
@@ -489,7 +487,7 @@ class HtmlProviderService
         $return["countSelfdelevery"] = $countSelfdelevery ?? 0;
         $return["priceDelevery"] = $priceDelevery ?? 0;
         $return["countDelevery"] = $countDelevery;
-        
+
         $return["countDeleveryText"] .= $countDelevery . ($countDelevery < 2 ) ? " доставка " : (($countDelevery > 1 and $countDelevery < 5) ? " доставки" : " доставок ");
         $return["storeAdress"] = $storeAdress ?? "";
 
@@ -507,26 +505,26 @@ class HtmlProviderService
         $return = [];
         $timeDelevery3Hour = $timeDelevery1Hour = [];
         $products = $post->products;
-        
+
         if (!$selfdelevery = $post->selfdelevery) {
             $countSelfdelevery = 0;
         } else {
             $countSelfdelevery = count($selfdelevery);
         }
-        
+
         //return ['count' => print_r($products , true)];
         $container = new Container(Resource::SESSION_NAMESPACE);
-        
+
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
-        
+
         $legalStore = array_keys($container->legalStore);
         $legalStoresArray = (!empty($container->legalStoreArray)) ? $container->legalStoreArray : [];
 
         if ($products and!empty($products)) {
             $products = array_keys($products);
-        
+
             foreach ($products as $pId) {
                 $product = $this->productRepository->find(['id' => $pId]);
                 $providerId = $product->getProviderId();
@@ -535,7 +533,7 @@ class HtmlProviderService
                 $idStore = (!empty($store)) ? $store->getId() : 0;
                 $timeClose[$idStore] = $legalStoresArray[$idStore]['time_until_closing'];
             }
-            
+
             $return['timeClose'] = min($timeClose);
             $timeDelevery1Hour[] = [
                 "lable" => Resource::BASKET_SAYCHAS_title,
@@ -602,12 +600,12 @@ class HtmlProviderService
                 $basketItem->setTotal($changes['rest']);
                 $persist = true;
             }
-            
+
             if ($changes['price'] > 0) {
                 $basketItem->setPrice($changes['price']);
                 $persist = true;
             }
-            
+
             if ($persist) {
                 $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
                 $j++;
@@ -630,17 +628,17 @@ class HtmlProviderService
         $productStoreId = null;
         $whatHappened = null;
         $container = new Container(Resource::SESSION_NAMESPACE);
-      
+
         if (empty($container->legalStore)) {
             $container->legalStore = [];
         }
-        
+
         $legalStore = array_keys($container->legalStore);
         $legalStoresArray = $container->legalStoreArray;
         $item = [];
-        
+
         foreach ($basket as $b) {
-            if ($pId = $b->productId and !empty($product = $this->productRepository->find(['id' => $pId]))) {
+            if ($pId = $b->productId and!empty($product = $this->productRepository->find(['id' => $pId]))) {
                 /** @var HandbookRelatedProduct */
                 $product = $this->productRepository->find(['id' => $pId]);
                 $oldprice = $b->price;
@@ -652,35 +650,35 @@ class HtmlProviderService
                 $productStore = $productProvider->recieveStoresInList($legalStore);
                 $productAvailable = (null != $productStore);
                 unset($productStoreId);
-                
+
                 if ($rest) {
                     $availblechek[$productProviderId] = true;
                 }
-                
+
                 if ($productAvailable) {
                     $productStoreId = $productStore->getId();
-                    
+
                     if ($oldprice != $price) {
                         $whatHappened['products'][$pId]['oldprice'] = $oldprice;
                         $whatHappened['products'][$pId]['price'] = $price;
                     }
-                    
+
                     if ($count > $rest) {
                         $whatHappened['products'][$pId]['oldrest'] = $count;
                         $whatHappened['products'][$pId]['rest'] = $rest;
                         $count = $rest;
                     }
-                    
+
                     if ($count == 0 and 0 < $rest) {
                         $whatHappened['products'][$pId]['instock'] = $rest;
                     }
                 }
-                
+
                 if ($rest) {
                     $countproducts++;
                     $countprovider[$product->getProviderId()] = 1;
                 }
-                
+
                 $item[$product->getProviderId()][] = [
                     'id' => $pId,
                     'image' => $this->productImageRepository->findFirstOrDefault(["product_id" => $pId])->getHttpUrl(),
@@ -694,7 +692,7 @@ class HtmlProviderService
                     'isFav' => $this->isInFavorites($pId, $userId),
                 ];
             }
-            
+
             if ($whatHappened) {
                 $container->whatHappened = $whatHappened;
             }
@@ -718,7 +716,7 @@ class HtmlProviderService
                 $infostore1c .= ($legalStoresArray[$idStore]['time_until_closing']) ? "<span class='blok mini'>заказать возможно до  " . date("Y.m.d H:i", $legalStoresArray[$idStore]['time_until_closing']) . "</span>" : "";
                 $IntervalOpen = $legalStoresArray[$idStore]['time_until_open'];
                 $timStoreOpen = $IntervalOpen + time();
-               
+
                 if (!$legalStoresArray[$idStore]['status']) {
                     //все работает
                     $provider_disable = false;
@@ -730,7 +728,7 @@ class HtmlProviderService
                     $provider_addressappend = StringHelper::cutAddress($provider_address);
                     $countprovider++;
                 } else {
-                
+
                     if ($IntervalOpen > 0) {
                         $returnprefix = $j;
                         //закрыт на ночь
@@ -753,7 +751,7 @@ class HtmlProviderService
                 $provider_address = $provider_worktime = $provider_timeclose = "";
                 $infostore1c = Resource::STORE_OUT_OF_RANGE_ALT;
             }
-           
+
             $return["product"][$returnprefix] = [
                 "provider_id" => $provider_store_id ?? 0, //$prov,
                 "provider_main_id" => $prov,
