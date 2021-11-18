@@ -236,25 +236,23 @@ const Orders = {
         if (this.$route.name != 'orders'){
           clearInterval(this.timer);
         }
-        // let i = 0;
-        for (let order of this.orders){
+        let i = 0;
+        for (order of this.orders){
           if (+order.status_id == '01'){
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
-            // this.$set(this.orders.indexOf(order),'deadline',deadline);
+            Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
-            order.deadline = deadline
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
-            // this.$set(this.orders.indexOf(order),'deadline',deadline);
-            order.deadline = deadline
+            Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
               //this.getOrderStatus(order.id,i);
             }
           }
-          // i++;
+          i++;
         }
       },
       setTime(){
