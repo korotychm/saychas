@@ -68,6 +68,7 @@ $(document).ready(function () {
         },
         methods: {
           tinkoffPay(orderId) {
+            orderId = '0000005';
             axios
               .post('/tinkoff/payment/' + orderId)
               .then(response => {
@@ -75,7 +76,8 @@ $(document).ready(function () {
                 if (response.data.result){
                   window.location.href = response.data.answer.PaymentURL;
                 } else {
-                  showServicePopupWindow('Ошибка', 'Не удалось совершить оплату', "")
+                  showServicePopupWindow('Ошибка', 'Не удалось совершить оплату', "");
+                  console.log('paymentError',response.data.result);
                 }
               });
           },
