@@ -206,6 +206,7 @@ const Orders = {
       },
       // конец штрафного таймера
       localedTime(ms){
+        console.log(ms)
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
         console.log(minutes + ":" + (seconds < 10 ? '0' : '') + seconds)
@@ -214,23 +215,20 @@ const Orders = {
       calulateTime(date,first,last){
         let current = (new Date().getTime() / 1000).toFixed();
         let deadline = +date + (first * 60 * 1000);
-        console.log('deadline', deadline)
-        console.log('current', current)
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60 * 1000);
           if (+current > new_deadline){
-            console.log('зашло в не понятный иф')
-            console.log(+current > new_deadline)
             return false;
           } else {
             //Вывод дополнительных минут
-            console.log('-' + this.localedTime(+current - deadline))
             return '-' + this.localedTime(+current - deadline);
           }
         } else {
           //Вывод первых минут
-          console.log(this.localedTime(deadline - +current))
-          return this.localedTime(deadline - +current);
+          console.log(deadline)
+          console.log(current)
+          console.log(this.localedTime(+deadline - +current))
+          return this.localedTime(+deadline - +current);
         }
       },
       checkTime(){
