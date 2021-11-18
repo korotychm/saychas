@@ -147,6 +147,22 @@ $(document).ready(function () {
       }
     },
     methods: {
+      tinkoffPay(orderId) {
+        axios
+          .post('/tinkoff/payment/' + orderId)
+          .then(response => {
+            console.log('tinkoff',response);
+            if (response.data.result){
+              window.location.href = response.data.answer.PaymentURL;
+            } else {
+              if (response.data.message){
+                showServicePopupWindow('Ошибка оплаты', response.data.message, "");
+              } else {
+                showServicePopupWindow('Ошибка оплаты', 'Ошибка платежной системы', "");
+              }
+            }
+          });
+      },
       totalItems(index){
         let itemsTotal = 0;
         for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
