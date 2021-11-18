@@ -213,7 +213,8 @@ const Orders = {
             } else {
               this.strTimer = `${Math.trunc(minutes)} : ${Math.trunc(sec)}`
             }
-        })
+            --
+        }, 1000)
       },
       countProducts(index) {
         return this.orders[index].items.filter(item => item.qty_partner > 0).length;
