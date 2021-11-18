@@ -292,7 +292,7 @@ class ProductController extends AbstractActionController
     public function placeDownloadLinkAction()
     {
         $identity = $this->authService->getIdentity();
-        var_dump($identity);
+        //var_dump($identity);
         //$urls = $this->productManager->getDownloadLinks($identity['provider_id']);
         //$path = $this->documentPath('product', $identity['provider_id']);
 
