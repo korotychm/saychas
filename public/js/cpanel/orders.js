@@ -234,12 +234,12 @@ const Orders = {
         for (order of this.orders){
           if (+order.status_id == '01'){
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
-            Vue.set(this.orders[i],'deadline',deadline);
+            this.$set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
-            Vue.set(this.orders[i],'deadline',deadline);
+            this.$set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
