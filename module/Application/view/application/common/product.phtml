@@ -9,7 +9,7 @@
       <img v-if="product.image" :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
       <img v-else src="/img/ui/nophoto.jpg" />
     </a>
-    <a class="product__title" :href="'/product/' + product.url">{{ product.title }}</a>
+    <a class="product__title" :href="'/product/' + product.url"><span v-html="product.title"></span></a>
     <div class="product__panel">
         <div class="product__reviews">
           <div class="product__reviews-grade" v-if="product.rating">
