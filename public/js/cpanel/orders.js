@@ -162,6 +162,7 @@ const Orders = {
           let deadLine = date.getMinutes() - startDate.getMinutes()
           order.minutTimer = deadLine
           order.minutTimer = ('0' + order.minutTimer).slice(-2)
+          order.secondTimer = 59;
           order.timer = setInterval (() => {
             order.secondTimer--
             order.secondTimer = ('0' + order.secondTimer).slice(-2)
