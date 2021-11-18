@@ -155,9 +155,8 @@ const Orders = {
       // Первый таймер сбора заказа
       setDefaultTimer () {
         for (let order of this.orders) {
-
-          let date = new Date(1637163101 * 1000)
-          let startDate = new Date(1637163101 * 1000)
+          let date = new Date(+order.date * 1000)
+          let startDate = new Date(+order.date  * 1000)
           date.setMinutes(date.getMinutes() + 10)
           let deadLine = date.getMinutes() - startDate.getMinutes()
           order.minutTimer = deadLine
