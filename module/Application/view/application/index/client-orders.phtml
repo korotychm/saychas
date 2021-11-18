@@ -6,7 +6,6 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
 <div class="page-heading">
     <h1 class="h1">История заказов</h1>
 </div>
-<?=date("Y-m-d H:i", time())?>
 <div class="profile-page">
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div id="client-orders">
