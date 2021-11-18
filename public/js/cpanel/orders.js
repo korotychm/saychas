@@ -238,6 +238,7 @@ const Orders = {
         let i = 0;
         let result = 0;
             let deadline = this.calulateTime(result,this.deadline_new,this.deadline_new_last);
+            console.log(result)
         for (order of this.orders){
           if (+order.status_id == '01'){
             console.log(deadline, 'эТ ДЕДЛАЙН')
