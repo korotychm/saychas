@@ -46,7 +46,7 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                        <a :href="location.origin + item" v-for="item of downloadUrls" >файл</a>
+                        <a :href="item" v-for="item of downloadUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
                           <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
@@ -162,6 +162,9 @@ const ProductAddFile = {
           .get(requestUrl, {headers})
           .then(response => {
             this.downloadUrls = response.data.urls;
+            this.downLoadUrls.forEach(item =>  {
+              item = location.origin + item;
+            })
           })
     },
     async getFile(id) {
