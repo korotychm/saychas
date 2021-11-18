@@ -249,6 +249,7 @@ class HtmlProviderService
         foreach ($row['val'] as $val) {
             $char = $this->characteristicValueRepository->findFirstOrDefault(['id' => $val]);
             $valuetext = $val;
+
             if ($row['type'] == Resource:: CHAR_VALUE_REF) {
                 $valuetext = $char->getTitle();
             } elseif ($row['type'] == Resource::PROVIDER_REF) {
@@ -261,8 +262,10 @@ class HtmlProviderService
             } elseif ($row['type'] == Resource::COUNTRY_REF) {
                 $valuetext = $this->countryRepository->findFirstOrDefault(['id' => $val])->getTitle(); /**/
             }
+
             $chars[] = ["valueCode" => $val, "value" => $valuetext,];
         }
+
         return $chars ?? [];
     }
 
