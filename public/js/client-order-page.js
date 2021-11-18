@@ -68,7 +68,6 @@ $(document).ready(function () {
         },
         methods: {
           tinkoffPay(orderId) {
-            orderId = '0000005';
             axios
               .post('/tinkoff/payment/' + orderId)
               .then(response => {
