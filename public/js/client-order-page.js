@@ -67,6 +67,18 @@ $(document).ready(function () {
           },
         },
         methods: {
+          tinkoffPay(orderId) {
+            axios
+              .post('/tinkoff/payment/' + orderId)
+              .then(response => {
+                console.log('tinkoff',response);
+                if (response.data.result){
+                  // переходим на страницу оплаты
+                } else {
+                  showServicePopupWindow('Ошибка', 'Не удалось совершить оплату', "")
+                }
+              });
+          },
           getTimePointText(ms,timepoint,merged = false) {
               //created - дата заказа
               let deliveryTime = 1; // если обычная доставка за час
