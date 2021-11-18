@@ -236,10 +236,12 @@ const Orders = {
           clearInterval(this.timer);
         }
         let i = 0;
+        let result = 0;
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
         for (order of this.orders){
           if (+order.status_id == '01'){
             console.log(deadline, 'эТ ДЕДЛАЙН')
+            result = order.date
             Vue.set(this.orders[i],'deadline',deadline);
             order.deadline = deadline
             console.log(deadline)
