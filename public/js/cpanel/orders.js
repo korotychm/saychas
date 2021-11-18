@@ -213,16 +213,20 @@ const Orders = {
       calulateTime(date,first,last){
         let current = new Date().getTime();
         let deadline = +date + (first * 60 * 1000);
+        console.log('deadline', deadline)
+        console.log('current', current)
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60 * 1000);
           if (+current > new_deadline){
             return false;
           } else {
             //Вывод дополнительных минут
+            console.log('-' + this.localedTime(+current - deadline))
             return '-' + this.localedTime(+current - deadline);
           }
         } else {
           //Вывод первых минут
+          console.log(this.localedTime(deadline - +current))
           return this.localedTime(deadline - +current);
         }
       },
@@ -237,8 +241,6 @@ const Orders = {
             // this.$set(this.orders.indexOf(order),'deadline',deadline);
             let blabla = new Date;
             order.deadline = deadline
-            console.log(order.deadline)
-            console.log(deadline)
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
