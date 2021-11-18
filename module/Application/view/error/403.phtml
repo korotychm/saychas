@@ -1,2 +1,10 @@
-<?php
-echo '403';
+
+<h1>Эта страница требует авторизации</h1>
+
+<?php if(empty($this->legalUser)) :?>
+  <script>
+      $(function () {
+          $('#usermodalwindow').fadeIn();
+      });
+  </script>
+<?php endif;
