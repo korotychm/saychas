@@ -218,6 +218,8 @@ const Orders = {
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60 * 1000);
           if (+current > new_deadline){
+            console.log('зашло в не понятный иф')
+            console.log(+current > new_deadline)
             return false;
           } else {
             //Вывод дополнительных минут
