@@ -238,6 +238,7 @@ const Orders = {
             let blabla = new Date;
             order.deadline = deadline
             console.log(order.deadline)
+            console.log(deadline)
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
