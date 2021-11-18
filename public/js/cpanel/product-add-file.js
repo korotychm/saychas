@@ -155,7 +155,7 @@ const ProductAddFile = {
       })
     },
     async checkFiles () {
-      const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/place-download-link';
       await axios
           .get(requestUrl, {headers})
