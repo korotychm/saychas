@@ -76,8 +76,7 @@ $(document).ready(function () {
                 if (response.data.result){
                   window.location.href = response.data.answer.PaymentURL;
                 } else {
-                  showServicePopupWindow('Ошибка', 'Не удалось совершить оплату', "");
-                  console.log('paymentError',response.data.description);
+                  showServicePopupWindow('Ошибка оплаты', response.data.message, "");
                 }
               });
           },
