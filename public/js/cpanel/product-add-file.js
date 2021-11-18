@@ -46,7 +46,7 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                        <a :href="hostb + item" v-for="item of downloadUrls" >файл</a>
+                        <a :href="location.origin + item" v-for="item of downloadUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
                           <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
@@ -67,7 +67,6 @@ const ProductAddFile = {
       fileUploaded: false,
       downloadFileName: '',
       downloadUrls: {},
-      hostb: ''
     }
   },
   computed: {
@@ -163,8 +162,6 @@ const ProductAddFile = {
           .get(requestUrl, {headers})
           .then(response => {
             this.downloadUrls = response.data.urls;
-            var url = $('script[data-main="my_embed_id"]').attr('src');
-            this.hostb = url.replace(/(\/\/.*?\/).*/g, '$1');
           })
     },
     async getFile(id) {
