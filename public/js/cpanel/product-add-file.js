@@ -162,7 +162,7 @@ const ProductAddFile = {
           .get(requestUrl, {headers})
           .then(response => {
             this.downloadUrls = response.data.urls;
-            this.downLoadUrls.forEach(item =>  {
+            this.downloadUrls.forEach(item =>  {
               item = location.origin + item;
             })
           })
