@@ -160,7 +160,7 @@ const ProductAddFile = {
       await axios
           .get(requestUrl, {headers})
           .then(response => {
-            console.log(response)
+            console.log(JSON.parse(response))
           })
     },
     async getFile(id) {
