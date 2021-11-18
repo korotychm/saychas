@@ -44,12 +44,12 @@ const ProductAddFile = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
-                     <div v-if="fileUploaded" class="reload-result">
+                     <div class="reload-result">
                         <div class="result__container">
                         
                         </div>
                         <div class="result-btn__container">
-                          <button class="btn btn--primary">Обновить результат</button>
+                          <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
                         </div>
                     </div>
                 </div>
@@ -153,6 +153,15 @@ const ProductAddFile = {
         this.fileUploaded = true;
         console.log(response)
       })
+    },
+    async checkFiles () {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let requestUrl = '/control-panel/place-download-link';
+      await axios
+          .get(requestUrl, {headers})
+          .then(response => {
+            console.log(response)
+          })
     },
     async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };

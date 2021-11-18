@@ -38,7 +38,7 @@
         "laminas/laminas-cache-storage-adapter-apc": "^1.0",
         "doctrine/orm": "*",
         "doctrine/dbal": "*",
-        "doctrine/migrations": "^3.2"
+        "doctrine/migrations": "^3.3"
       
     },
     "autoload": {
