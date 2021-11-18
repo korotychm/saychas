@@ -32,6 +32,14 @@ $(document).ready(function () {
           cancellingOrder: false
         },
         computed: {
+          canCancel(){
+            for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
+              if (+delivery.delivery_status_id > 1){
+                return false
+              }
+            }
+            return true
+          },
           totalDeliveries(){
             let deliveriesTotal = 0,
                 pickupsTotal = 0

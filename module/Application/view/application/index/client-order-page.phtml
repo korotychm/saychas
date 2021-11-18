@@ -25,12 +25,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                       <img v-else src="/img/ui/nophoto.jpg" />
                     </div>
                     <div class="orders-history__statuses">
-                        <div class="orders-history__status orders-history__status--canceled"v-if="+order.orderStatus == 5 || +delivery.delivery_status_id == 4">отменен</div>
-                        <div class="orders-history__status" v-else-if="+delivery.delivery_status_id == 0">новый</div>
-                        <div class="orders-history__status" v-else-if="+delivery.delivery_status_id == 1">зарегистрирован</div>
-                        <div class="orders-history__status orders-history__status--ready" v-else-if="+delivery.delivery_status_id == 2">доставляется</div>
+                        <div class="orders-history__status orders-history__status--deliveried" v-if="+delivery.delivery_status_id == 2">доставляется</div>
                         <div class="orders-history__status orders-history__status--deliveried" v-else-if="+delivery.delivery_status_id == 3">доставлен</div>
-                        <div class="orders-history__status" v-else >{{ delivery.delivery_status }}</div>
+                        <div class="orders-history__status orders-history__status--canceled" v-else-if="+delivery.delivery_status_id == 4">отменен</div>
+                        <div class="orders-history__status orders-history__status--ready" v-else>собирается</div>
                     </div>
                 </div>
                 <div class="profile-order__requisition-items">
@@ -130,7 +128,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                 <div>
                   <div class="order-btn-group">
                     <button v-if="order.payPossible" class="btn btn--primary order-pay-btn" @click="tinkoffPay(order.orderId)">Оплатить</a>
-                    <button v-if="+order.orderStatus < 3" class="btn btn--secondary" :class="{'disabled' : cancellingOrder}" @click="cancelOrder">Отменить</button>
+                    <button v-if="canCancel" class="btn btn--secondary" :class="{'disabled' : cancellingOrder}" @click="cancelOrder">Отменить</button>
                   </div>
                   <div class="panel__notice" v-if="+order.orderStatus < 3">Вы можете отменить заказ, пока он ещё не собран. Если возникли проблемы с заказом — просто позвоните нам +7 (495) 445-04-55</div>
                 </div>
