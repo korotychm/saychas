@@ -145,9 +145,63 @@ const Orders = {
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
+          secondTimer: 11,
+          minutTimer: 20,
+          penaltyTimer: null,
+          penaltyTime: false,
         }
     },
     methods: {
+      // Первый таймер сбора заказа
+      setDefaultTimer () {
+        let date = new Date(1637163101 * 1000)
+        let startDate = new Date(1637163101 * 1000)
+        date.setMinutes(date.getMinutes() + 10)
+        let deadLine = date.getMinutes() - startDate.getMinutes()
+        this.minutTimer = deadLine
+        this.minutTimer = ('0' + this.minutTimer).slice(-2)
+        this.timer = setInterval (() => {
+          this.secondTimer--
+          this.secondTimer = ('0' + this.secondTimer).slice(-2)
+          if (this.secondTimer <= 0) {
+            this.secondTimer = 59
+            this.minutTimer--;
+            this.minutTimer = ('0' + this.minutTimer).slice(-2)
+            if (this.minutTimer < 0) {
+              clearInterval(this.timer);
+              this.minutTimer = '00';
+              this.secondTimer = '00';
+              this.penaltyTime = true;
+              this.setPenaltyTimer()
+            }
+          }
+        }, 1000)
+      },
+      //конец первого таймера
+      // Таймер штрафного времени
+      setPenaltyTimer () {
+        this.minutTimer = 0;
+        this.secondTimer = 0;
+        this.secondTimer = ('0' + this.secondTimer).slice(-2)
+        this.minutTimer = ('0' + this.minutTimer).slice(-2)
+        this.pentalyTime = setInterval(() => {
+          this.minutTimer = ('0' + this.minutTimer).slice(-2)
+          this.secondTimer++
+          this.secondTimer = ('0' + this.secondTimer).slice(-2)
+          if (this.secondTimer > 59) {
+            this.secondTimer = 0
+            this.secondTimer = ('0' + this.secondTimer).slice(-2)
+            this.minutTimer++
+            this.minutTimer = ('0' + this.minutTimer).slice(-2)
+            if (this.minutTimer > 5) {
+              this.minutTimer = '05'
+              this.secondTimer = '00'
+              clearInterval(this.penaltyTimer);
+            }
+          }
+        }, 1000)
+      },
+      // конец штрафного таймера
       localedTime(ms){
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -307,7 +361,8 @@ const Orders = {
                   this.filters = response.data.data.filters;
                   this.filtersCreated = true;
                 }
-                this.setTime();
+                // this.setTime();
+                this.setDefaultTimer()
               }
             })
             .catch(error => {
