@@ -73,7 +73,7 @@ $(document).ready(function () {
               .then(response => {
                 console.log('tinkoff',response);
                 if (response.data.result){
-                  // переходим на страницу оплаты
+                  location.href(response.data.answer.PaymentURL);
                 } else {
                   showServicePopupWindow('Ошибка', 'Не удалось совершить оплату', "")
                 }
