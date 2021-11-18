@@ -307,7 +307,7 @@ class ProductController extends AbstractActionController
             ]
         ];
 
-        return new JsonModel($urls);
+        return new JsonModel($result);
     }
 
     /**
