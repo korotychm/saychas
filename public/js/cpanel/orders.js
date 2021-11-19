@@ -186,10 +186,10 @@ const Orders = {
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
-            if (!order.deadline){
-              console.log('deadline false, response to get order status')
-              this.getOrderStatus(order.id,i);
-            }
+          }
+          if (!order.deadline){
+            console.log('deadline false, response to get order status')
+            this.getOrderStatus(order.id,i);
           }
           i++;
         }
