@@ -1,9 +1,4 @@
-document.getElementsByClassName('basket-quantity-input')[0].oninput = function () {
-        var max = parseInt(this.max);
-        if (parseInt(this.value) > max) {
-            this.value = max;
-        }
-}
+
 
 function setTimepointText(loadinfo = false) {
     $.each($(".timepoint"), function (index, value) {
@@ -20,6 +15,15 @@ function setTimepointText(loadinfo = false) {
 }
 
 // Изменение количества товара в корзине
+
+$(document).on('change','.cart__product-quantity input',function(e){
+  if ($(this).val() > +$(this).attr('max')){
+    $(this).val(+$(this).attr('max'));
+  }
+  calculateBasketItem(productId);
+  loadPayInfo();
+}
+
 $(document).on('click','.cart__product-quantity button',function(e){
   e.preventDefault();
   $(this).parent().find('button').removeClass('disabled');

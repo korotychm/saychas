@@ -39,7 +39,7 @@
     <?php if($enable) :?>
       <div class="cart__product-quantity">
         <button class="cart__product-minus <?=($product['count']==1) ? 'disabled' : ''?>" data-step="-1"></button>
-        <input class="basket-quantity-input" type="number" data-product="<?=$product['id']?>" max="<?=$product['availble']?>" value="<?=$product['count']?>" id="countproduct-<?=$product['id']?>" />
+        <input type="number" data-product="<?=$product['id']?>" max="<?=$product['availble']?>" value="<?=$product['count']?>" id="countproduct-<?=$product['id']?>" />
         <button class="cart__product-plus" data-step="1"></button>
       </div>
       <div class="cart__product-price">
