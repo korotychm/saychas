@@ -187,7 +187,7 @@ const ProductAddFile = {
               console.log(response.data.filename)
             }
 
-            // this.filePath = '/documents' + this.fileName;
+            this.filePath = '/documents' + this.fileName;
             this.downloadFileName = this.fileName.split('/').pop()
           })
           .catch(error => {
