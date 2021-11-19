@@ -161,6 +161,7 @@ const Orders = {
           secondTimer: 59,
           minutTimer: 20,
         }
+        item.time = time;
         let deadLine;
         if (item.status_id == '01') {
           date.setMinutes(date.getMinutes() + 10)
