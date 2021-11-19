@@ -168,6 +168,7 @@ const Orders = {
           time.minutTimer = ('0' + time.minutTimer).slice(-2)
         }
         item.timer = setInterval(() => {
+          console.log('item', item)
           time.secondTimer--
           time.secondTimer = ('0' + time.secondTimer).slice(-2)
           if (time.secondTimer <= 0) {
