@@ -147,7 +147,7 @@ $(document).ready(function () {
       }
     },
     methods: {
-      orderDeliveriesStatuses(orderIndex) {
+      orderDeliveriesStatuses(index) {
         let collecting = 0,
             delivering = 0,
             delivered = 0,
