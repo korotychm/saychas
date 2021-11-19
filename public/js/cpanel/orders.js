@@ -154,6 +154,7 @@ const Orders = {
     methods: {
       // Первый таймер сбора заказа
       setDefaultTimer (item) {
+        console.log('зашло в метод', item)
         let date = new Date(item.date * 1000)
         let startDate = new Date(item.date * 1000)
         let time = {
@@ -167,7 +168,6 @@ const Orders = {
           time.minutTimer = deadLine;
           time.minutTimer = ('0' + time.minutTimer).slice(-2)
         }
-        console.log('зашло в метод', item)
         item.timer = setInterval(() => {
           console.log('item', item)
           time.secondTimer--
@@ -212,10 +212,8 @@ const Orders = {
       },
       // конец штрафного таймера
       localedTime(ms){
-        console.log(ms)
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
-        console.log(minutes + ":" + (seconds < 10 ? '0' : '') + seconds)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
@@ -231,9 +229,6 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
-          console.log(deadline)
-          console.log(current)
-          console.log(this.localedTime(+deadline - +current))
           return this.localedTime(+deadline - +current);
         }
       },
