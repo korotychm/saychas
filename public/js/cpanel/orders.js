@@ -146,12 +146,6 @@ const Orders = {
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
-          secondTimer: 59,
-          minutTimer: 19,
-          penaltyTimer: null,
-          penaltyTime: false,
-          orderDeadline: '',
-          diff: '',
         }
     },
     methods: {
