@@ -272,7 +272,7 @@ const Orders = {
         for (let order of this.orders){
           order.deadline = '00:00';
         }
-        this.checkTime()
+        // this.checkTime()
         this.timer = setInterval(() => {
           this.checkTime();
         }, 1000);
