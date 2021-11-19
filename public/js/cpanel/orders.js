@@ -150,6 +150,7 @@ const Orders = {
           minutTimer: 19,
           penaltyTimer: null,
           penaltyTime: false,
+          orderDeadline: ''
         }
     },
     methods: {
@@ -243,8 +244,11 @@ const Orders = {
             deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
+            console.log()
             console.log(deadline)
             console.log(order.deadline)
+            this.orderDeadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last)
+            console.log(this.orderDeadline)
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
