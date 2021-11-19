@@ -252,11 +252,13 @@ const Orders = {
             console.log(this.orderDeadline)
             let blabla = new Date;
             this.currentTime = +blabla;
+            return order
           } else if (+order.status_id == '02'){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
+              return order
             if (!order.deadline){
               //this.getOrderStatus(order.id,i);
             }
