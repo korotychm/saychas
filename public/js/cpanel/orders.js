@@ -216,6 +216,7 @@ const Orders = {
             seconds = ((ms % 60000) / 1000).toFixed(0);
         console.log(minutes)
         console.log(seconds)
+        console.log(ms)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
@@ -227,14 +228,10 @@ const Orders = {
             return false;
           } else {
             //Вывод дополнительных минут
-            console.log(+current)
-            console.log(deadline)
             return '-' + this.localedTime(+current - deadline);
           }
         } else {
           //Вывод первых минут
-          console.log(+current)
-          console.log(deadline)
           return this.localedTime(+deadline - +current);
         }
       },
