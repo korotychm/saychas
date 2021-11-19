@@ -231,7 +231,7 @@ const Orders = {
           console.log(deadline)
         } else {
           //Вывод первых минут
-          return this.localedTime(+deadline * 100 - +current * 1000);
+          return this.localedTime(+deadline - +current - 1000);
         }
       },
       checkTime(){
