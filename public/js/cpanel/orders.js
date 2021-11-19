@@ -212,8 +212,8 @@ const Orders = {
       },
       // конец штрафного таймера
       localedTime(ms){
-        let minutes = Math.floor(ms / 6000),
-            seconds = ((ms % 6000) / 100).toFixed(0);
+        let minutes = Math.floor(ms / 60000),
+            seconds = ((ms % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
