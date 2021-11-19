@@ -232,7 +232,7 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
-          let diff =+current - +deadline
+          let diff = (+deadline - +current)
           diff -= 1000
           return this.localedTime(diff);
         }
