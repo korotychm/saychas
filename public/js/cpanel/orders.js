@@ -336,7 +336,7 @@ const Orders = {
         this.getOrders();
       }
     },
-    created: function(){
+    mounted () {
       $('.main__loader').show();
       this.getOrders();
       this.setRequestInterval()
