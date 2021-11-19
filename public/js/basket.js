@@ -1,3 +1,10 @@
+document.getElementsByClassName('basket-quantity-input')[0].oninput = function () {
+        var max = parseInt(this.max);
+        if (parseInt(this.value) > max) {
+            this.value = max;
+        }
+}
+
 function setTimepointText(loadinfo = false) {
     $.each($(".timepoint"), function (index, value) {
         var rel = $(this).attr("rel");
