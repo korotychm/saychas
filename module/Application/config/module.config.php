@@ -1464,6 +1464,14 @@ return [
         ],
     ],
     'parameters' => [
+        'base_authorization' => [
+            'to_be_authorized' => [
+                'receiveRepository' => 'auth1',
+            ],
+            'credentials' => [
+                'auth1' => 'receiverepo:$apr1$xp52CuFN$2tFOlbQtOB.MzIcNqZGRt1',
+            ],
+        ],
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
