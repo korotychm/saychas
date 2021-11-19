@@ -372,7 +372,7 @@ function whatHappened(noclose = false) {
 
                 modalContent += '</ul>';
                 console.log ('modal', modalContent);
-                showAjaxErrorPopupWindow('Изменения в товарах', modalContent, '', noclose);
+                showServicePopupWindow('Изменения в товарах', modalContent, '', noclose);
             }
             return false;
         }
