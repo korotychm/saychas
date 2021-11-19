@@ -168,7 +168,7 @@ const Orders = {
           item.minutTimer = ('0' + item.minutTimer).slice(-2)
         }
         item.timer = setInterval(() => {
-          this.$set.(item, 'secondTimer', item.secondTimer--)
+          this.$set(item, 'secondTimer', item.secondTimer--)
           item.secondTimer = ('0' + item.secondTimer).slice(-2)
           if (item.secondTimer <= 0) {
             item.secondTimer = 59
