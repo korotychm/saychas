@@ -44,12 +44,12 @@ const ProductAddFile = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
-                     <div v-if="fileUploaded" class="reload-result">
+                     <div class="reload-result">
                         <div class="result__container">
-                        
+                        <a :href="item" v-for="item of downloadUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
-                          <button class="btn btn--primary">Обновить результат</button>
+                          <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,8 @@ const ProductAddFile = {
       filePath: '',
       fileName: '',
       fileUploaded: false,
-      downloadFileName: ''
+      downloadFileName: '',
+      downloadUrls: {},
     }
   },
   computed: {
@@ -154,6 +155,20 @@ const ProductAddFile = {
         console.log(response)
       })
     },
+    async checkFiles () {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let requestUrl = '/control-panel/place-download-link';
+      await axios
+          .get(requestUrl, {headers})
+          .then(response => {
+            this.downloadUrls = response.data.urls.map(item => {
+              return location.origin + '/' + item;
+            });
+            // this.downloadUrls.forEach(item =>  {
+            //   item = location.origin + item;
+            // })
+          })
+    },
     async getFile(id) {
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
@@ -165,10 +180,8 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            if (response.data.filename.includes('1CMEDIA')) {
-              this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
-              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
-            }
+            this.fileName = response.data.filename;
+            this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
             this.filePath = '/documents' + this.fileName;
             this.downloadFileName = this.fileName.split('/').pop()
           })

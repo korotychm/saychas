@@ -87,7 +87,7 @@ const Orders = {
                             <div class="orders__product-actual" v-if="order.status_id != '02' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
                             <div class="orders__product-count" v-if="order.status_id != '02' && product.qty_partner == product.qty"><b>{{ product.qty_partner }}</b> шт</div>
 
-                            <div class="orders__product-sum">{{ calculatePrice(product.price, product.discount).toLocaleString() }} ₽</div>
+                            <div class="orders__product-sum">{{ (calculatePrice(product.price, product.discount)/100).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
                               <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
@@ -103,7 +103,7 @@ const Orders = {
                             </div>
                         </div>
                     </div>
-                    <div class="td orders__btn" v-if="order.status_id == '01'">
+                    <div class="td orders__btn" v-if="order.status_id == '01'"> 
                       <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="order.status_id == '02'">
@@ -145,6 +145,7 @@ const Orders = {
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
+          expired: '',
         }
     },
     methods: {
@@ -176,7 +177,7 @@ const Orders = {
         let i = 0;
         for (order of this.orders){
           if (+order.status_id == '01'){
-            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            let deadline = this.calulateTime(order.date * 1000,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
@@ -186,15 +187,18 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
-              //this.getOrderStatus(order.id,i);
+              setTimeout(() => {
+                this.getOrderStatus(order.id,i);
+              }, 10000)
             }
           }
           i++;
         }
       },
+
       setTime(){
         for (order of this.orders){
-          order.deadline = '00:00';
+          // order.deadline = '00:00';
         }
         this.timer = setInterval(() => {
           this.checkTime();
@@ -234,15 +238,15 @@ const Orders = {
             .then(response => {
               if (response.data.result === true) {
                 console.log('Response from get-requisition-status',response.data);
-                this.orders[index].status = response.data.status;
-                this.orders[index].status_id = response.data.status_id;
+                this.orders[index - 1].status = response.data.status;
+                this.orders[index - 1].status_id = response.data.status_id;
               }
             })
             .catch(error => {
-              console.log(error.response)
-              if (error.response.status == '403'){
-                location.reload();
-              }
+              console.log(error)
+              // if (error.response.status == '403'){
+              //   location.reload();
+              // }
               $('.main__loader').hide();
             });
       },
@@ -308,6 +312,7 @@ const Orders = {
                   this.filtersCreated = true;
                 }
                 this.setTime();
+                // this.setDefaultTimer()
               }
             })
             .catch(error => {
@@ -328,7 +333,7 @@ const Orders = {
         this.getOrders();
       }
     },
-    created: function(){
+    mounted () {
       $('.main__loader').show();
       this.getOrders();
     },
