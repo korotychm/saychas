@@ -128,6 +128,33 @@ $(document).on('change','.cart__product .checkbox input',function(){
   loadPayInfo();
 });
 
+// Удалить все товары магазина
+$(document).on('click','.cart__store-del',function(){
+  var productId = [];
+  var storeBlock = $(this).parent().parent().parent();
+  storeBlock.find('.cart__products .cart__product').each(function(){
+    productId.push($(this).find('.cart__product-del').data('product'));
+  });
+  $.ajax({
+      beforeSend: function () {
+      },
+      url: "/ajax/del-from-basket",
+      type: 'POST',
+      cache: false,
+      data: {'productId': productId},
+      success: function (data) {
+          storeBlock.remove();
+          calculateBasketHeader();
+          loadPayInfo();
+          showBasket(0);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+          if (xhr.status !== 0) {
+              showAjaxErrorPopupWindow(xhr.status, thrownError);
+          }
+      }
+  });
+});
 // Удалить продукт
 $(document).on('click','.cart__product .cart__product-del',function(){
     var productId = $(this).data('product');
