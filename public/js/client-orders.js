@@ -147,6 +147,29 @@ $(document).ready(function () {
       }
     },
     methods: {
+      orderDeliveriesStatuses(orderIndex) {
+        let collecting = 0,
+            delivering = 0,
+            delivered = 0,
+            canceled = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          if (+delivery.delivery_status_id < 2){
+            collecting++;
+          } else if (+delivery.delivery_status_id == 2) {
+            delivering++;
+          } else if (+delivery.delivery_status_id == 3) {
+            delivered++;
+          } else if (+delivery.delivery_status_id == 4) {
+            canceled++;
+          }
+        }
+        return {
+          collecting,
+          delivering,
+          delivered,
+          canceled
+        }
+      },
       tinkoffPay(orderId) {
         axios
           .post('/tinkoff/payment/' + orderId)

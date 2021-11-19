@@ -9,17 +9,17 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
 <div class="profile-page">
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div id="client-orders">
-    <div v-if="preparedOrders.length" class="orders-history">
+    <div v-if="orders && preparedOrders.length" class="orders-history">
         <div v-for="(order,orderIndex) in preparedOrders" class="orders-history__item">
           <div class="orders-history__left">
             <div v-if="order.deliveryInfo.delivery_info.deliveries.length" class="orders-history__delivery">
               <div class="orders-history__delivery-item">
                   <h2><?=Resource::THE_DELIVERY ?></h2>
                   <div class="orders-history__statuses">
-                      <div class="orders-history__status">Собирается</div>
-                      <div class="orders-history__status orders-history__status--ready">Доставляется</div>
-                      <div class="orders-history__status orders-history__status--deliveried">Доставлен</div>
-                      <div class="orders-history__status orders-history__status--canceled">Отменен</div>
+                      <div class="orders-history__status" v-if="orderDeliveriesStatuses(orderIndex).collecting"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).collecting }}</span> cобирается</div>
+                      <div class="orders-history__status orders-history__status--ready" v-if="orderDeliveriesStatuses(orderIndex).delivering"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).delivering }}</span> в пути</div>
+                      <div class="orders-history__status orders-history__status--deliveried" v-if="orderDeliveriesStatuses(orderIndex).delivered"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).delivered }}</span> доставлен</div>
+                      <div class="orders-history__status orders-history__status--canceled" v-if="orderDeliveriesStatuses(orderIndex).canceled"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).canceled }}</span> отменен</div>
                   </div>
               </div>
               <div class="orders-history__text">
