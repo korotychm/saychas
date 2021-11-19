@@ -232,7 +232,7 @@ const Orders = {
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60);
           console.log(new_deadline)
-          if (+current > new_deadline){
+          if (+current > new_deadline * 1000){
             return false;
           } else {
             //Вывод дополнительных минут
