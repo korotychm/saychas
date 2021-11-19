@@ -158,34 +158,28 @@ const Orders = {
         console.log('зашло в метод', item)
         let date = new Date(item.date * 1000)
         let startDate = new Date(item.date * 1000)
-        let time = {
-          secondTimer: 59,
-          minutTimer: 20,
-        }
-        item.time = time;
+        item.secondTimer =  59
+        item.minutTimer = 20
         let deadLine;
         if (item.status_id == '01') {
           date.setMinutes(date.getMinutes() + 10)
           deadLine = date.getMinutes() - startDate.getMinutes()
-          time.minutTimer = deadLine;
-          time.minutTimer = ('0' + time.minutTimer).slice(-2)
-          item.time = time;
+          item.minutTimer = deadLine;
+          item.minutTimer = ('0' + item.minutTimer).slice(-2)
         }
         item.timer = setInterval(() => {
           console.log('item', item)
-          time.secondTimer--
-          time.secondTimer = ('0' + time.secondTimer).slice(-2)
-          if (time.secondTimer <= 0) {
-            time.secondTimer = 59
-            time.minutTimer--;
-            time.minutTimer = ('0' + time.minutTimer).slice(-2)
-            item.time = time;
-            if (time.minutTimer < 0) {
+          item.secondTimer--
+          item.secondTimer = ('0' + item.secondTimer).slice(-2)
+          if (item.secondTimer <= 0) {
+            item.secondTimer = 59
+            item.minutTimer--;
+            item.minutTimer = ('0' + item.minutTimer).slice(-2)
+            if (item.minutTimer < 0) {
               clearInterval(item.timer)
-              time.minutTimer = '00';
-              time.secondTimer = '00';
-              time.pentalyTime = true;
-              item.time = time;
+              item.minutTimer = '00';
+              item.secondTimer = '00';
+              item.pentalyTime = true;
               this.setPenaltyTimer()
             }
           }
