@@ -295,9 +295,9 @@ const Orders = {
       },
       getOrders() {
         let requestUrl = '/control-panel/show-requisitions';
-        if (this.filtersCreated) {
-         requestUrl = '/control-panel/show-requisitions-from-cache';
-        }
+        // if (this.filtersCreated) {
+        //  requestUrl = '/control-panel/show-requisitions-from-cache';
+        // }
         const headers = { 'X-Requested-With': 'XMLHttpRequest' }
         axios
           .post(requestUrl,
