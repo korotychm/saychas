@@ -214,7 +214,7 @@ const Orders = {
       localedTime(ms){
         ms = ms * 1000
         let minutes = Math.floor((ms / 60000)),
-            seconds = ((ms % 60000)).toFixed(0);
+            seconds = ((ms % 60000) / 1000).toFixed(0);
         console.log(minutes)
         console.log(seconds)
         console.log(ms)
