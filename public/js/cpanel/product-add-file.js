@@ -183,11 +183,9 @@ const ProductAddFile = {
             // if (response.data.filename.includes('1CMEDIA')) {
               this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
               // this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
-            console.log(response.data.filename.includes('1CMEDIA'))
-              console.log(response.data.filename)
             // }
 
-            this.filePath = '/documents' + '/' + this.fileName;
+            this.filePath = '/documents' + this.fileName;
             this.downloadFileName = this.fileName.split('/').pop()
           })
           .catch(error => {
