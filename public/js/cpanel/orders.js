@@ -232,7 +232,8 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
-          let diff = (+deadline - +current) - 1000
+          let diff =+current - +deadline
+          diff -= 1000
           return this.localedTime(diff);
         }
       },
