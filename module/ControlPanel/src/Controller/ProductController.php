@@ -285,15 +285,29 @@ class ProductController extends AbstractActionController
         
         $result = $this->productManager->saveProductFileAnswer($content);
         
-        return new JsonModel($content);
+        //return new JsonModel($content);
+        return new JsonModel(['result' => true]);
     }
 
     public function placeDownloadLinkAction()
     {
         $identity = $this->authService->getIdentity();
-        $urls = $this->productManager->getDownloadLinks($identity['provider_id']);
-        $path = $this->documentPath('product', $identity['provider_id']);
-        return new JsonModel($urls);
+        //var_dump($identity);
+        //$urls = $this->productManager->getDownloadLinks($identity['provider_id']);
+        //$path = $this->documentPath('product', $identity['provider_id']);
+
+        $result = [
+            'urls' => [
+                'control-panel/place-download-link1',
+                'control-panel/place-download-link2',
+                'control-panel/place-download-link3',
+                'control-panel/place-download-link4',
+                'control-panel/place-download-link5',
+                'control-panel/place-download-link6',
+            ]
+        ];
+
+        return new JsonModel($result);
     }
 
     /**
