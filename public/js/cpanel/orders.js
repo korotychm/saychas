@@ -213,6 +213,7 @@ const Orders = {
       localedTime(ms){
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
+        console.log(ms)
         console.log(minutes + ":" + (seconds < 10 ? '0' : '') + seconds)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
