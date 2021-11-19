@@ -310,7 +310,7 @@ function whatHappened(noclose = false) {
         success: function (data) {
             if (data.result) {
                 var modalContent = '<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products">';
-
+                console.log ('products',data.products);
                 for (var productId in data.products) {
 
                     var product = data.products[productId];
@@ -349,7 +349,7 @@ function whatHappened(noclose = false) {
                 }
 
                 //Магазины
-
+                console.log ('stores',data.products);
                 for (var storeId in data.stores) {
 
                     var logoSrc = $('#providerblok-' + storeId).find('.cart__store-logo img').attr('src');
@@ -371,15 +371,10 @@ function whatHappened(noclose = false) {
                 }
 
                 modalContent += '</ul>';
-
+                console.log ('modal', modalContent);
                 showAjaxErrorPopupWindow('Изменения в товарах', modalContent, '', noclose);
             }
             return false;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status !== 0) {
-                showAjaxErrorPopupWindow(xhr.status, thrownError);
-            }
         }
     });
 }

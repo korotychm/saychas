@@ -9,7 +9,6 @@ function showAjaxErrorPopupWindow (status, error){
 
 function showServicePopupWindow(title, body, footer = "", noclose = false)
 {
-    console.log('modal',title,body);
     $("#ServiceModalWindow .popup__close").removeClass('disabled');
     $("#ServiceModalWindow .popup__heading").html(title);
     $("#ServiceModalWindow #ServiceModalWraper").html(body);
