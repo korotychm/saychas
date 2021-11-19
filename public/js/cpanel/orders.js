@@ -237,8 +237,8 @@ const Orders = {
             .then(response => {
               if (response.data.result === true) {
                 console.log('Response from get-requisition-status',response.data);
-                this.orders[index - 1].status = response.data.status;
-                this.orders[index - 1].status_id = response.data.status_id;
+                this.orders[index].status = response.data.status;
+                this.orders[index].status_id = response.data.status_id;
               }
             })
             .catch(error => {
