@@ -309,9 +309,7 @@ function whatHappened(noclose = false) {
         cache: false,
         success: function (data) {
             if (data.result) {
-                $("#ServiceModalWindow .modal-title").html("Изменения в товарах");
-
-                $("#ServiceModalWindow #ServiceModalWraper").html('<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
+                var modalContent = '<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products">';
 
                 for (var productId in data.products) {
 
@@ -347,7 +345,7 @@ function whatHappened(noclose = false) {
                         productHtml += '</table></div>';
                     }
                     productHtml += '</li>';
-                    $('#ServiceModalWindow .changed-products').append(productHtml);
+                    modalContent += productHtml;
                 }
 
                 //Магазины
@@ -368,18 +366,14 @@ function whatHappened(noclose = false) {
                     storeHtml += '</div>';
                     storeHtml += '<div class="changed-products__status"><div class="changed-products__na">Магазин закрыт</div></div>';
                     storeHtml += '</li>';
-                    $('#ServiceModalWindow .changed-products').append(storeHtml);
+
+                    modalContent += storeHtml;
                 }
 
-                if (noclose) {
-                    $("#ServiceModalWindow .close").remove();
-                    $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
-                } else {
-                    $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
-                }
+                modalContent += '</ul>';
 
                 $("#ServiceModalWindow").modal("show");
-
+                showAjaxErrorPopupWindow ('Изменения в товарах',modalContent,'',noclose);
             }
             return false;
         },
