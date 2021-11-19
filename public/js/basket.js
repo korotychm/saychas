@@ -8,7 +8,6 @@ function setTimepointText(loadinfo = false) {
           settext =  $(this).find('.timepoint__option').eq(1).attr('rel');
         }
         $("#" + rel).val(settext + ", ");
-        console.log($("#" + rel).val());
     });
     if (loadinfo)
         loadPayInfo();
@@ -588,7 +587,6 @@ $(function () {
     });
 
     $(document).on('change', '.cart__radio-group > input', function () {
-        console.log('123');
         loadPayInfo();
     });
 
