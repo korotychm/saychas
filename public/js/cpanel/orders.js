@@ -225,10 +225,10 @@ const Orders = {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
-        let current = (new Date().getTime() / 1000).toFixed();
-        let deadline = +date + (first * 60 * 1000);
+        let current = (new Date().getTime()).toFixed();
+        let deadline = +date + (first * 60);
         if (+current > deadline){
-          let new_deadline = +date + ((first + last) * 60 * 1000);
+          let new_deadline = +date + ((first + last) * 60);
           if (+current > new_deadline){
             return false;
           } else {
@@ -238,7 +238,6 @@ const Orders = {
         } else {
           //Вывод первых минут
           this.diff = (+deadline - +current)
-          this.diff -= 1000
           return this.localedTime(this.diff);
         }
       },
