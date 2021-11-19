@@ -387,6 +387,17 @@ class ExternalCommunicationService
         $url = $this->config['parameters']['1c_request_links']['order_payment'];
         return $this->sendCurlRequest($url, $content);
     }
+    
+    /**
+     * 
+     * @param array $content
+     * @return array
+     */
+    public function sendCloudCacherBillInfo (array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['cloud_cacher_bill'];
+        return $this->sendCurlRequest($url, $content);
+    }
 
     /**
      * Login client
