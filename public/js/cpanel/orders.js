@@ -239,7 +239,7 @@ const Orders = {
         let deadline;
         console.log(deadline)
         // for (order of this.orders){
-          this.orders.forEach(order => {
+          this.orders = this.orders.map(order => {
           if (+order.status_id == '01'){
             // this.setDefaultTimer(order)
             deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
