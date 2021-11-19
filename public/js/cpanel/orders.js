@@ -227,6 +227,8 @@ const Orders = {
             //Вывод дополнительных минут
             return '-' + this.localedTime(+current - deadline);
           }
+          console.log(+current)
+          console.log(deadline)
         } else {
           //Вывод первых минут
           return this.localedTime(+deadline * 100 - +current * 1000);
