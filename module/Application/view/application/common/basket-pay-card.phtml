@@ -3,7 +3,7 @@
     <h2 class="h2">Способ оплаты</h2>
     <div class="cart__radio-group">
         <?php if(!empty($cardinfo)) :?>
-          <input type="radio" name='paycard' <?=(!isset($paycard) || $paycard != 0 )?"checked":""?> id="payment1" value="1" />
+          <input type="radio" name='paycard' <?=$paycard == null or $paycard == 1 )?"checked":""?> id="payment1" value="1" />
           <div class="cart__radio">
             <label for="payment1"><span class="cart__radio-check"></span><span><b><?=Resource::ORDER_MEMBER_PAYCARD_TITLE?></b></span></label>
               <div class="cart__radio-content">
