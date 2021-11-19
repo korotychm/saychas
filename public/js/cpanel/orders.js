@@ -243,10 +243,10 @@ const Orders = {
               }
             })
             .catch(error => {
-              console.log(error.response)
-              if (error.response.status == '403'){
-                location.reload();
-              }
+              console.log(error)
+              // if (error.response.status == '403'){
+              //   location.reload();
+              // }
               $('.main__loader').hide();
             });
       },
