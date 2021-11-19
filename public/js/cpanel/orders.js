@@ -217,6 +217,7 @@ const Orders = {
         // let seconds = ((ms % 60000) / 1000).toFixed(0);
         // console.log(ms)
         // console.log(minutes + ":" + (seconds < 10 ? '0' : '') + seconds)
+        console.log(minutes,':', seconds)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
