@@ -104,7 +104,6 @@ const Orders = {
                         </div>
                     </div>
                     <div class="td orders__btn" v-if="order.status_id == '01'"> 
-<!--         {{order.minutTimer}}:{{order.secondTimer}}            -->
                       <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="order.status_id == '02'">
