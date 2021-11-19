@@ -213,7 +213,7 @@ const Orders = {
       // конец штрафного таймера
       localedTime(ms){
         let minutes = Math.floor(ms / 60000),
-            seconds = ((ms % 60000) / 10000).toFixed(0);
+            seconds = ((ms % 60000) / 1000).toFixed(0);
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
@@ -229,7 +229,7 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
-          return this.localedTime(+deadline - +current);
+          return this.localedTime(+deadline - +current * 1000);
         }
       },
       checkTime(){
@@ -263,7 +263,6 @@ const Orders = {
         for (let order of this.orders){
           order.deadline = '00:00';
         }
-        // this.checkTime()
         this.timer = setInterval(() => {
           this.checkTime();
         }, 1000);
