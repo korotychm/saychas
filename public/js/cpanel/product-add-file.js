@@ -182,7 +182,7 @@ const ProductAddFile = {
           .then(response => {
             // if (response.data.filename.includes('1CMEDIA')) {
               this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
-              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
+              // this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
             console.log(response.data.filename.includes('1CMEDIA'))
               console.log(response.data.filename)
             // }
