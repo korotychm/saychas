@@ -319,8 +319,8 @@ function whatHappened(noclose = false) {
 
                     var productHtml = '<li class="changed-products__item">';
 
-                    var imgSrc = $('#basketrow-' + productId).find('.imageproduct img').attr('src');
-                    var title = $('#basketrow-' + productId).find('.titleproduct').text();
+                    var imgSrc = $('#basketrow-' + productId).find('.cart__product-img img').attr('src');
+                    var title = $('#basketrow-' + productId).find('.cart__product-title').text();
 
                     productHtml += '<div class="changed-products__img"><img src="' + imgSrc + '" alt=""></div>';
                     productHtml += '<div class="changed-products__title">' + title + '</div>';
@@ -354,7 +354,7 @@ function whatHappened(noclose = false) {
 
                 for (var storeId in data.stores) {
 
-                    var logoSrc = $('#providerblok-' + storeId).find('.brandlogo img').attr('src');
+                    var logoSrc = $('#providerblok-' + storeId).find('.cart__store-logo img').attr('src');
 
                     var storeHtml = '<li class="changed-products__item changed-products__item--store">';
                     storeHtml += '<div class="changed-products__store">';
