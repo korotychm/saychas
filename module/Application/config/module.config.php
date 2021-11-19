@@ -1246,6 +1246,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-callback-dev' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/tinkoff/developer',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action' => 'tinkoffCallbackDev',
+                    ],
+                ],
+            ],
             'tinkoff-redirect-success' => [
                 'type' => Literal::class,
                 'options' => [

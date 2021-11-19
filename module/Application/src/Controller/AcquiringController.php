@@ -370,6 +370,48 @@ class AcquiringController extends AbstractActionController
 
         return $this->returnResponseOk($postData);
     }
+    
+    public function tinkoffCallbackDevAction()
+    {
+        $jsonData = file_get_contents('php://input');
+        // mail("d.sizov@saychas.ru", "tinkoff.log", print_r($jsonData, true)); // лог на почту
+        //$postData = [];
+        if (!empty($jsonData)) {
+
+            try {
+                $postData = Json::decode($jsonData, Json::TYPE_ARRAY);
+            } catch (\Throwable $ex) {
+
+                return $this->returnResponseOk(["result" => false, 'error' => $ex->getMessage()]);
+            }
+        }
+
+        if ($postData["ErrorCode"] == "0") {
+
+            try {
+                $order = ClientOrder::find(["order_id" => $postData["OrderId"]]);
+                if (!empty($order)) {
+                    $order->setPaymentInfo($jsonData)->persist(["order_id" => $postData["OrderId"]]);
+                }
+                if (!empty($postData["CardId"]) and!empty($postData["OrderId"]) and!empty($postData["Pan"]) and!empty($clientOrder = ClientOrder::find(["order_id" => $postData["OrderId"]]))) {
+                    $postData['user'] = $userId = $clientOrder->getUserId();
+                    //if (!empty($postData["CardId"] ))) {
+                    UserPaycard::remove(['card_id' => $postData["CardId"], "user_id" => $userId]);
+                    $userPaycard = UserPaycard::findFirstOrDefault(['card_id' => $postData["CardId"], "user_id" => $userId]);
+                    $userPaycard->setUserId($userId)->setCardId($postData["CardId"])->setPan($postData["Pan"])->setTime(time())->persist(['card_id' => $postData["CardId"], "user_id" => $userId]);
+                    //}
+                }
+            } catch (\Throwable $ex) {
+                $postData = ["result" => false, 'error' => $ex->getMessage()];
+                return $this->returnResponseOk($postData);
+            }
+
+            $postData['answer_1с'] = $this->externalCommunication->sendOrderPaymentInfo($postData);
+        }
+
+        return $this->returnResponseOk($postData);
+    }
+    
 
     /**
      * 
