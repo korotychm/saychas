@@ -217,7 +217,7 @@ const Orders = {
             seconds = ((ms % 60000) / 1000).toFixed(0);
           if (seconds <= 0) {
             console.log('так пушка')
-            minutes--
+
           }
         console.log(minutes)
         console.log(seconds)
@@ -225,14 +225,11 @@ const Orders = {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
-        let current = (new Date().getTime()).toFixed();
-        let deadline = +date + (first * 60);
-        console.log(current)
-        console.log(deadline)
+        let current = (new Date().getTime() / 1000).toFixed();
+        let deadline = +date + (first * 60 * 1000);
         if (+current > deadline){
-          let new_deadline = +date + ((first + last) * 60);
-          console.log(new_deadline)
-          if (+current > new_deadline * 1000){
+          let new_deadline = +date + ((first + last) * 60 * 1000);
+          if (+current > new_deadline){
             return false;
           } else {
             //Вывод дополнительных минут
@@ -241,6 +238,7 @@ const Orders = {
         } else {
           //Вывод первых минут
           this.diff = (+deadline - +current)
+          this.diff -= 1000
           return this.localedTime(this.diff);
         }
       },
