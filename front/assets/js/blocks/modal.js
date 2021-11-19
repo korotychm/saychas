@@ -12,7 +12,7 @@ function showServicePopupWindow(title, body, footer = "", noclose = false)
     $("#ServiceModalWindow .popup__close").removeClass('disabled');
     $("#ServiceModalWindow .popup__heading").html(title);
     $("#ServiceModalWindow #ServiceModalWraper").html(body);
-    $("#ServiceModalWindow #ServiceModalWraper").append(footer);
+    $("#ServiceModalWindow #ServiceModalWraper").html(footer);
     if (noclose) {
         $("#ServiceModalWindow .popup__close").addClass('disabled');
     }
