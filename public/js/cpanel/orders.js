@@ -168,7 +168,6 @@ const Orders = {
           item.minutTimer = ('0' + item.minutTimer).slice(-2)
         }
         item.timer = setInterval(() => {
-          console.log('item', item)
           item.secondTimer--
           item.secondTimer = ('0' + item.secondTimer).slice(-2)
           if (item.secondTimer <= 0) {
@@ -260,9 +259,10 @@ const Orders = {
         for (let order of this.orders){
           order.deadline = '00:00';
         }
-        this.timer = setInterval(() => {
-          this.checkTime();
-        }, 1000);
+        this.checkTime()
+        // this.timer = setInterval(() => {
+        //   this.checkTime();
+        // }, 1000);
       },
       countProducts(index) {
         return this.orders[index].items.filter(item => item.qty_partner > 0).length;
