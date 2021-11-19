@@ -216,7 +216,6 @@ const Orders = {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
-        console.log(date,first, last)
         let current = (new Date().getTime() / 1000).toFixed();
         let deadline = +date + (first * 60 * 1000);
         if (+current > deadline){
@@ -229,6 +228,9 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
+          console.log(this.localedTime(+deadline - +current))
+          console.log(+deadline)
+          console.log(+current)
           return this.localedTime(+deadline - +current);
         }
       },
@@ -250,7 +252,7 @@ const Orders = {
             // this.setDefaultTimer(order)
             result = order.date
             console.log(result,' должно присвоить жеж')
-            let deadline  = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
             let blabla = new Date;
