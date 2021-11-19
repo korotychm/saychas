@@ -237,13 +237,18 @@ const Orders = {
           clearInterval(this.timer);
         }
         let i = 0;
-        let deadline;
-        console.log(deadline)
-        // for (order of this.orders){
-          this.orders.forEach(order => {
+
+          let result;
+          if (result) {
+            this.calulateTime(result,this.deadline_new,this.deadline_new_last);
+            console.log(this.calulateTime(result,this.deadline_new,this.deadline_new_last))
+          }
+          console.log(result)
+        for (order of this.orders){
+          // this.orders.forEach(order => {
           if (+order.status_id == '01'){
             // this.setDefaultTimer(order)
-            deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            let deadline  = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
             let blabla = new Date;
@@ -258,8 +263,8 @@ const Orders = {
             }
           }
           i++;
-        // }
-      })
+        }
+      // })
       },
       setTime(){
         for (let order of this.orders){
