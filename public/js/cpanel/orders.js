@@ -215,6 +215,10 @@ const Orders = {
         ms = ms * 1000
         let minutes = Math.floor((ms / 60000) / 1000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
+          if (seconds <= 0) {
+            console.log('так пушка')
+            minutes--
+          }
         console.log(minutes)
         console.log(seconds)
         console.log(ms)
