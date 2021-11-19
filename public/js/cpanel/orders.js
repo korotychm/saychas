@@ -216,6 +216,7 @@ const Orders = {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
+        console.log(date,first, last)
         let current = (new Date().getTime() / 1000).toFixed();
         let deadline = +date + (first * 60 * 1000);
         if (+current > deadline){
@@ -245,11 +246,6 @@ const Orders = {
             deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
-            console.log()
-            console.log(deadline)
-            console.log(order.deadline)
-            this.orderDeadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last)
-            console.log(this.orderDeadline)
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
