@@ -215,7 +215,7 @@ const Orders = {
         ms = ms * 1000
         let minutes = Math.floor((ms / 60000) / 1000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
-        let mins = Math.floor( ms / (1000*60) ),
+        let mins = Math.floor( ms / (10000*60) ),
             secs = Math.floor( ms / 1000 )
         // console.log(minutes)
         // console.log(seconds)
