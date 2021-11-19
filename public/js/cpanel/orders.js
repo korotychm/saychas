@@ -49,7 +49,7 @@ const Orders = {
                   <div class="td">Статус</div>
               </div>
               <div class="tbody">
-                <div class="tr orders__item" v-for="(order,index) in requestedOrders">
+                <div class="tr orders__item" v-for="(order,index) in orders">
                     <div class="td orders__store">{{ order.store }}</div>
                     <div class="td orders__order">{{ +order.id }}</div>
                     <div class="td orders__date">{{ localeDate(order.date) }}</div>
@@ -141,19 +141,13 @@ const Orders = {
           activeItem: null,
           currentQuantity: null,
           deadline_new: 10,
-          deadline_new_last: 6,
+          deadline_new_last: 5,
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
-          expired: false,
-          requestInterval: null,
+          expired: '',
         }
     },
-  computed: {
-    requestedOrders () {
-      return this.orders;
-    }
-  },
     methods: {
       localedTime(ms){
         let minutes = Math.floor(ms / 60000),
@@ -193,17 +187,15 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
             if (!order.deadline){
-              //this.getOrderStatus(order.id,i);
+              setTimeout(() => {
+                this.getOrderStatus(order.id,i);
+              }, 10000)
             }
           }
           i++;
         }
       },
-      setRequestInterval () {
-        this.requestInterval = setInterval(() => {
-          this.getOrders();
-        }, 10000)
-      },
+
       setTime(){
         for (order of this.orders){
           // order.deadline = '00:00';
@@ -344,7 +336,6 @@ const Orders = {
     mounted () {
       $('.main__loader').show();
       this.getOrders();
-      this.setRequestInterval()
     },
     updated: function(){
       $('.main__loader').hide();
