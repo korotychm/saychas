@@ -236,6 +236,7 @@ const Orders = {
         }
         let i = 0;
         let deadline;
+        console.log(deadline)
         for (order of this.orders){
           if (+order.status_id == '01'){
             // this.setDefaultTimer(order)
