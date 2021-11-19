@@ -155,79 +155,13 @@ const Orders = {
         }
     },
     methods: {
-      // Первый таймер сбора заказа
-      setDefaultTimer (item) {
-        console.log('зашло в метод', item)
-        let date = new Date(item.date * 1000)
-        let startDate = new Date(item.date * 1000)
-        item.secondTimer =  59
-        item.minutTimer = 20
-        let deadLine;
-        if (item.status_id == '01') {
-          date.setMinutes(date.getMinutes() + 10)
-          deadLine = date.getMinutes() - startDate.getMinutes()
-          item.minutTimer = deadLine;
-          item.minutTimer = ('0' + item.minutTimer).slice(-2)
-        }
-        item.timer = setInterval(() => {
-          this.$set(item, 'secondTimer', item.secondTimer--)
-          item.secondTimer = ('0' + item.secondTimer).slice(-2)
-          if (item.secondTimer <= 0) {
-            item.secondTimer = 59
-            item.minutTimer--;
-            item.minutTimer = ('0' + item.minutTimer).slice(-2)
-            if (item.minutTimer < 0) {
-              clearInterval(item.timer)
-              item.minutTimer = '00';
-              item.secondTimer = '00';
-              item.pentalyTime = true;
-              this.setPenaltyTimer()
-            }
-          }
-        }, 1000)
-      },
-      //конец первого таймера
-      // Таймер штрафного времени
-      setPenaltyTimer () {
-        this.minutTimer = 0;
-        this.secondTimer = 0;
-        this.secondTimer = ('0' + this.secondTimer).slice(-2)
-        this.minutTimer = ('0' + this.minutTimer).slice(-2)
-        this.pentalyTime = setInterval(() => {
-          this.minutTimer = ('0' + this.minutTimer).slice(-2)
-          this.secondTimer++
-          this.secondTimer = ('0' + this.secondTimer).slice(-2)
-          if (this.secondTimer > 59) {
-            this.secondTimer = 0
-            this.secondTimer = ('0' + this.secondTimer).slice(-2)
-            this.minutTimer++
-            this.minutTimer = ('0' + this.minutTimer).slice(-2)
-            if (this.minutTimer > 5) {
-              this.minutTimer = '05'
-              this.secondTimer = '00'
-              clearInterval(this.penaltyTimer);
-            }
-          }
-        }, 1000)
-      },
-      // конец штрафного таймера
-      pad (num) {
-        return num > 9 ? num : '0'+num;
-      },
       localedTime(ms){
-        ms = ms * 1000
-        let minutes = Math.floor((ms / 60000) / 1000),
+        let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
-        let mins = Math.floor( ms / (1000*60) ),
-            secs = Math.floor( ms / 1000 )
-        // console.log(minutes)
-        // console.log(seconds)
-        // console.log(ms)
-            console.log(mins ,secs)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
-        let current = (new Date().getTime() / 1000).toFixed();
+        let current = new Date().getTime();
         let deadline = +date + (first * 60 * 1000);
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60 * 1000);
@@ -239,9 +173,7 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
-          this.diff = (+deadline - +current)
-          this.diff -= 1000
-          return this.localedTime(this.diff);
+          return this.localedTime(deadline - +current);
         }
       },
       checkTime(){
@@ -250,13 +182,9 @@ const Orders = {
         }
         let i = 0;
         for (order of this.orders){
-          // this.orders.forEach(order => {
           if (+order.status_id == '01'){
-            // this.setDefaultTimer(order)
-            let deadline = this.calulateTime(order.date / 1000,this.deadline_new,this.deadline_new_last);
+            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
-            this.orderDeadline = order.date
-            this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == '02'){
@@ -270,16 +198,12 @@ const Orders = {
           }
           i++;
         }
-      // })
       },
       setTime(){
-        for (let order of this.orders){
+        for (order of this.orders){
           order.deadline = '00:00';
         }
         this.timer = setInterval(() => {
-          let current = (new Date().getTime() / 1000).toFixed();
-          let deadline = +this.orderDeadline + (this.deadline_new * 60 * 1000);
-          this.diff = +deadline - current
           this.checkTime();
         }, 1000);
       },
