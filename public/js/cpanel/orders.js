@@ -212,7 +212,7 @@ const Orders = {
       // конец штрафного таймера
       localedTime(dead, cur){
         let minutes = new Date(dead).getMinutes() - new Date(cur).getMinutes()
-        let seconds = new Date(dead).getSeconds() - new date(cur).getSeconds()
+        let seconds = new Date(dead).getSeconds() - new Date(cur).getSeconds()
         // let minutes = Math.floor(ms / 60000);
         // let seconds = ((ms % 60000) / 1000).toFixed(0);
         // console.log(ms)
