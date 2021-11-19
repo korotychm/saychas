@@ -220,6 +220,7 @@ const Orders = {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
+        this.diff -= 1000
         let current = (new Date().getTime() / 1000).toFixed();
         let deadline = +date + (first * 60 * 1000);
         if (+current > deadline){
