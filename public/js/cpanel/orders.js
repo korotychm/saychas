@@ -248,6 +248,7 @@ const Orders = {
           // this.orders.forEach(order => {
           if (+order.status_id == '01'){
             // this.setDefaultTimer(order)
+            result = order.date
             let deadline  = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
