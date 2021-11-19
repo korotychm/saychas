@@ -22,7 +22,7 @@ $(document).on('change','.cart__product-quantity input',function(e){
   }
   calculateBasketItem(productId);
   loadPayInfo();
-}
+});
 
 $(document).on('click','.cart__product-quantity button',function(e){
   e.preventDefault();
