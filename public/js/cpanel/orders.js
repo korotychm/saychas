@@ -215,13 +215,12 @@ const Orders = {
         ms = ms * 1000
         let minutes = Math.floor((ms / 60000) / 1000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
-          if (seconds <= 0) {
-            console.log('так пушка')
-
-          }
-        console.log(minutes)
-        console.log(seconds)
-        console.log(ms)
+        let mins = Math.floor( ms / (1000*60) ),
+            secs = Math.floor( ms / 1000 ),
+        // console.log(minutes)
+        // console.log(seconds)
+        // console.log(ms)
+            console.log(mins ,secs)
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
