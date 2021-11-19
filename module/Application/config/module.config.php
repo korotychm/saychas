@@ -1467,6 +1467,7 @@ return [
         'base_authorization' => [
             'to_be_authorized' => [
                 'receiveRepository' => 'auth1',
+                'get-product-file-answer' => 'auth1',
             ],
             'credentials' => [
                 'auth1' => 'receiverepo:$apr1$xp52CuFN$2tFOlbQtOB.MzIcNqZGRt1',
