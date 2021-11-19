@@ -372,7 +372,6 @@ function whatHappened(noclose = false) {
 
                 modalContent += '</ul>';
 
-                $("#ServiceModalWindow").modal("show");
                 showAjaxErrorPopupWindow ('Изменения в товарах',modalContent,'',noclose);
             }
             return false;
