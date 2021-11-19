@@ -237,7 +237,7 @@ const Orders = {
         let i = 0;
         for (order of this.orders){
           if (+order.status_id == '01'){
-            this.setDefaultTimer(order)
+            // this.setDefaultTimer(order)
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
@@ -260,9 +260,9 @@ const Orders = {
           order.deadline = '00:00';
         }
         this.checkTime()
-        // this.timer = setInterval(() => {
-        //   this.checkTime();
-        // }, 1000);
+        this.timer = setInterval(() => {
+          this.checkTime();
+        }, 1000);
       },
       countProducts(index) {
         return this.orders[index].items.filter(item => item.qty_partner > 0).length;
