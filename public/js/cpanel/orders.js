@@ -227,6 +227,8 @@ const Orders = {
       calulateTime(date,first,last){
         let current = (new Date().getTime()).toFixed();
         let deadline = +date + (first * 60);
+        console.log(current)
+        console.log(deadline)
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60);
           if (+current > new_deadline){
