@@ -372,7 +372,7 @@ function whatHappened(noclose = false) {
 
                 modalContent += '</ul>';
 
-                showAjaxErrorPopupWindow ('Изменения в товарах',modalContent,'',noclose);
+                showAjaxErrorPopupWindow('Изменения в товарах', modalContent, '', noclose);
             }
             return false;
         },
