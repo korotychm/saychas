@@ -167,6 +167,7 @@ const Orders = {
           time.minutTimer = deadLine;
           time.minutTimer = ('0' + time.minutTimer).slice(-2)
         }
+        console.log('зашло в метод', item)
         item.timer = setInterval(() => {
           console.log('item', item)
           time.secondTimer--
