@@ -220,8 +220,8 @@ const Orders = {
         let mins = Math.floor(diff / (1000*60) )
         let secs = Math.floor( diff / 1000)
 
-        let mm = mins - hours * 60
-        let ss = secs - mins * 60
+        let mm = +mins - +hours * 60
+        let ss = +secs - +mins * 60
         console.log(mm)
         console.log(ss)
         console.log(secs)
@@ -240,6 +240,8 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
+          this.newLocaledTime(+deadline - +current)
+
           return this.localedTime(+deadline - +current);
         }
       },
@@ -254,7 +256,6 @@ const Orders = {
             // this.setDefaultTimer(order)
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
-            this.newLocaledTime()
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
             let blabla = new Date;
             this.currentTime = +blabla;
