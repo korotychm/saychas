@@ -153,32 +153,36 @@ const Orders = {
     },
     methods: {
       // Первый таймер сбора заказа
-      setDefaultTimer () {
-        for (let order of this.orders) {
-          let date = new Date(+order.date * 1000)
-          let startDate = new Date(+order.date  * 1000)
-          date.setMinutes(date.getMinutes() + 10)
-          let deadLine = date.getMinutes() - startDate.getMinutes()
-          order.minutTimer = deadLine
-          order.minutTimer = ('0' + order.minutTimer).slice(-2)
-          order.secondTimer = 59;
-          order.timer = setInterval (() => {
-            order.secondTimer--
-            order.secondTimer = ('0' + order.secondTimer).slice(-2)
-            if (order.secondTimer <= 0) {
-              order.secondTimer = 59
-              order.minutTimer--;
-              order.minutTimer = ('0' + order.minutTimer).slice(-2)
-              if (order.minutTimer < 0) {
-                clearInterval(order.timer);
-                order.minutTimer = '00';
-                order.secondTimer = '00';
-                order.penaltyTime = true;
-                order.setPenaltyTimer()
-              }
-            }
-          }, 1000)
+      setDefaultTimer (item) {
+        let date = new Date(item.date * 1000)
+        let startDate = new Date(item.date * 1000)
+        let time = {
+          secondTimer: 59,
+          minutTimer: 20,
         }
+        let deadLine;
+        if (item.status_id == '01') {
+          date.setMinutes(date.getMinutes() + 10)
+          deadLine = date.getMinutes() - startDate.getMinutes()
+          time.minutTimer = deadLine;
+          time.minutTimer = ('0' + time.minutTimer).slice(-2)
+        }
+        item.timer = setInterval(() => {
+          time.secondTimer--
+          time.secondTimer = ('0' + time.secondTimer).slice(-2)
+          if (time.secondTimer <= 0) {
+            time.secondTimer = 59
+            time.minutTimer--;
+            time.minutTimer = ('0' + time.minutTimer).slice(-2)
+            if (time.minutTimer < 0) {
+              clearInterval(item.timer)
+              time.minutTimer = '00';
+              time.secondTimer = '00';
+              time.pentalyTime = true;
+              this.setPenaltyTimer()
+            }
+          }
+        }, 1000)
       },
       //конец первого таймера
       // Таймер штрафного времени
@@ -238,6 +242,7 @@ const Orders = {
         let i = 0;
         for (order of this.orders){
           if (+order.status_id == '01'){
+            this.setDefaultTimer(order)
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
@@ -261,7 +266,6 @@ const Orders = {
         }
         this.timer = setInterval(() => {
           this.checkTime();
-          console.log('тик так')
         }, 1000);
       },
       countProducts(index) {
