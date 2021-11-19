@@ -20,6 +20,7 @@ $(document).on('change','.cart__product-quantity input',function(e){
   if ($(this).val() > +$(this).attr('max')){
     $(this).val(+$(this).attr('max'));
   }
+  let productId = $(this).data('product');
   calculateBasketItem(productId);
   loadPayInfo();
 });
