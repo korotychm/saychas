@@ -21,7 +21,7 @@ $(document).on('change','.cart__product-quantity input',function(e){
     $(this).val(+$(this).attr('max'));
   }
   let productId = $(this).data('product');
-  $('.cart__checkbox input[data-product="' + productId + '"]').val(input.val());
+  $('.cart__checkbox input[data-product="' + productId + '"]').val($(this).val());
   calculateBasketItem(productId);
   loadPayInfo();
 });
