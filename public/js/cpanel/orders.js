@@ -150,7 +150,8 @@ const Orders = {
           minutTimer: 19,
           penaltyTimer: null,
           penaltyTime: false,
-          orderDeadline: ''
+          orderDeadline: '',
+          diff: '',
         }
     },
     methods: {
@@ -240,8 +241,8 @@ const Orders = {
           }
         } else {
           //Вывод первых минут
-          this.newLocaledTime(+deadline - +current)
-
+          this.newLocaledTime(this.diff)
+          this.diff -= 1000
           return this.localedTime(+deadline - +current);
         }
       },
