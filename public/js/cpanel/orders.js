@@ -212,6 +212,7 @@ const Orders = {
       },
       // конец штрафного таймера
       localedTime(ms){
+        ms = ms * 1000
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
         console.log(minutes)
@@ -220,7 +221,6 @@ const Orders = {
         return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
       },
       calulateTime(date,first,last){
-        this.diff -= 1000
         let current = (new Date().getTime() / 1000).toFixed();
         let deadline = +date + (first * 60 * 1000);
         if (+current > deadline){
@@ -249,6 +249,7 @@ const Orders = {
             // this.setDefaultTimer(order)
             let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
+            this.orderDeadline = order.date
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
             let blabla = new Date;
             this.currentTime = +blabla;
@@ -270,6 +271,9 @@ const Orders = {
           order.deadline = '00:00';
         }
         this.timer = setInterval(() => {
+          let current = (new Date().getTime() / 1000).toFixed();
+          let deadline = +this.orderDeadline + (this.deadline_new * 60 * 1000);
+          this.diff = +deadline - current
           this.checkTime();
         }, 1000);
       },
