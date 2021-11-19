@@ -141,10 +141,12 @@ const Orders = {
           activeItem: null,
           currentQuantity: null,
           deadline_new: 10,
-          deadline_new_last: 5,
+          deadline_new_last: 6,
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
+          expired: false,
+          requestInterval: null,
         }
     },
     methods: {
@@ -191,6 +193,11 @@ const Orders = {
           }
           i++;
         }
+      },
+      setRequestInterval () {
+        this.requestInterval = setInterval(() => {
+          this.getOrders();
+        }, 10000)
       },
       setTime(){
         for (order of this.orders){
@@ -332,6 +339,7 @@ const Orders = {
     created: function(){
       $('.main__loader').show();
       this.getOrders();
+      this.setRequestInterval()
     },
     updated: function(){
       $('.main__loader').hide();
