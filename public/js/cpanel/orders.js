@@ -231,6 +231,7 @@ const Orders = {
         console.log(deadline)
         if (+current > deadline){
           let new_deadline = +date + ((first + last) * 60);
+          console.log(new_deadline)
           if (+current > new_deadline){
             return false;
           } else {
