@@ -211,11 +211,14 @@ const Orders = {
         }, 1000)
       },
       // конец штрафного таймера
+      pad (num) {
+        return num > 9 ? num : '0'+num;
+      },
       localedTime(ms){
         ms = ms * 1000
         let minutes = Math.floor((ms / 60000) / 1000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
-        let mins = Math.floor( ms / (10000*60) ),
+        let mins = Math.floor( ms / (1000*60) ),
             secs = Math.floor( ms / 1000 )
         // console.log(minutes)
         // console.log(seconds)
@@ -250,7 +253,7 @@ const Orders = {
           // this.orders.forEach(order => {
           if (+order.status_id == '01'){
             // this.setDefaultTimer(order)
-            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+            let deadline = this.calulateTime(order.date / 1000,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             this.orderDeadline = order.date
             this.$set(order, 'deadline', this.calulateTime(order.date,this.deadline_new,this.deadline_new_last))
