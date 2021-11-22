@@ -169,17 +169,21 @@ class UserManager
                 return $user;
             }
         }
+        
         return null;
     }
 
     public function findOneUserObject($content)
     {
         $user = $this->findOne($content);
+        
         if (null == $user) {
             return null;
         }
+        
         $user['roles'] = implode(',', $user['roles']);
         $hydrator = new ClassMethodsHydrator();
+        
         return $hydrator->hydrate($user, new User());
     }
     
