@@ -1246,6 +1246,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-callback-dev' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/tinkoff/developer',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action' => 'tinkoffCallbackDev',
+                    ],
+                ],
+            ],
             'tinkoff-redirect-success' => [
                 'type' => Literal::class,
                 'options' => [
@@ -1464,6 +1474,18 @@ return [
         ],
     ],
     'parameters' => [
+        'base_authorization' => [
+            'to_be_authorized' => [
+                'receiveRepository' => 'auth1',
+                'tinkoffOrderBill' => 'auth1',
+                'get-product-file-answer' => 'auth1',
+            ],
+            'credentials' => [
+                'auth1' => 'receiverepo:$apr1$xp52CuFN$2tFOlbQtOB.MzIcNqZGRt1',
+                'cloud_kassir' => 'cloudcaher:MzIcNqZGRt1',
+                'tinkoff' => 'tinkoff:MzIcNqZGRt1',
+            ],
+        ],
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
@@ -1475,8 +1497,8 @@ return [
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
             'time_order_live' => 900, // время для оплаты заказа в сек.
-            'success_url' => 'https://z.saychas.ru/tinkoff/success',
-            'fail_url' => 'https://z.saychas.ru/tinkoff/error',
+            'success_url' => 'https://saychas.ru/tinkoff/success',
+            'fail_url' => 'https://saychas.ru/tinkoff/error',
         ],
         'dadataApiParams' => [
 //            'token' => '3e20e3f5d02f304085bfe70f9bb3d059b50aef0d',

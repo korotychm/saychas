@@ -147,6 +147,45 @@ $(document).ready(function () {
       }
     },
     methods: {
+      orderDeliveriesStatuses(index) {
+        let collecting = 0,
+            delivering = 0,
+            delivered = 0,
+            canceled = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          if (+delivery.delivery_status_id < 2){
+            collecting++;
+          } else if (+delivery.delivery_status_id == 2) {
+            delivering++;
+          } else if (+delivery.delivery_status_id == 3) {
+            delivered++;
+          } else if (+delivery.delivery_status_id == 4) {
+            canceled++;
+          }
+        }
+        return {
+          collecting,
+          delivering,
+          delivered,
+          canceled
+        }
+      },
+      tinkoffPay(orderId) {
+        axios
+          .post('/tinkoff/payment/' + orderId)
+          .then(response => {
+            console.log('tinkoff',response);
+            if (response.data.result){
+              window.location.href = response.data.answer.PaymentURL;
+            } else {
+              if (response.data.message){
+                showServicePopupWindow('Ошибка оплаты', response.data.message, "");
+              } else {
+                showServicePopupWindow('Ошибка оплаты', 'Ошибка платежной системы', "");
+              }
+            }
+          });
+      },
       totalItems(index){
         let itemsTotal = 0;
         for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){

@@ -35,6 +35,9 @@ use Laminas\ModuleManager\ModuleManager;
 
 use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
 
+use Laminas\Http\Header\Authorization;
+use Laminas\Http\Response;
+
 class Module
 {
 
@@ -86,8 +89,53 @@ class Module
         
     }
     
+    private function toBeAuthorized($actionName)
+    {
+        $config = $this->getConfig();
+        $elements = $config['parameters']['base_authorization']['to_be_authorized'];
+        $toBeAuthorized = array_keys($elements);
+        
+        return in_array($actionName, $toBeAuthorized);
+    }
+
+    private function isAuthorized($request, $actionName)
+    {
+        $headers = $request->getHeaders();
+        if ($headers->has('Authorization')) {
+            $header = $headers->get('Authorization');
+            $fieldValue = $header->getFieldValue();
+            list($a, $value) = explode(' ', $fieldValue);
+            $base = base64_decode($value, true);
+            
+            $config = $this->getConfig();
+            
+            $actions = $config['parameters']['base_authorization']['to_be_authorized'];
+            $credentials = $config['parameters']['base_authorization']['credentials'];
+            
+            $auth = $actions[$actionName];
+            
+
+            if ($credentials[$auth] == $base) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function onDispatch(MvcEvent $e)
     {
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $request = $serviceManager->get('Request');
+
+        $actionName = $e->getRouteMatch()->getParam('action', null);
+        
+        if ( $this->toBeAuthorized($actionName) && ( ! $this->isAuthorized($request, $actionName) ) ) {
+            $response = new Response();
+            $response->setStatusCode(401);
+
+            return $response;
+        }
 
         $viewModel = $e->getViewModel();
         $viewModel->setTemplate('layout/layout');

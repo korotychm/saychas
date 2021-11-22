@@ -382,9 +382,26 @@ class ExternalCommunicationService
      * @param array $content
      * @return array
      */
+    public function sendOrderPaymentDevInfo (array $content)
+    {
+        $url = "http://srv02:8000/SayChasDev/hs/site/order_payment"; //$this->config['parameters']['1c_request_links']['order_payment'];
+        return $this->sendCurlRequest($url, $content);
+    }
+    
     public function sendOrderPaymentInfo (array $content)
     {
         $url = $this->config['parameters']['1c_request_links']['order_payment'];
+        return $this->sendCurlRequest($url, $content);
+    }
+    
+    /**
+     * 
+     * @param array $content
+     * @return array
+     */
+    public function sendCloudCacherBillInfo (array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['cloud_cacher_bill'];
         return $this->sendCurlRequest($url, $content);
     }
 

@@ -21,7 +21,7 @@ if ($param and count($param)):
           </div>
         <?php endif; ?>
         <div class="cart__store-logo">
-          <img src="<?=$this->imagePath('provider')?>/<?=$provider['provider_logo']?>" title="<?=$provider['provider_name']?>" alt="Логотип <?=$provider['provider_name']?>" />
+          <img src="<?=$provider['provider_logo']?$this->imagePath('provider').'/'.$provider['provider_logo']:'/img/ui/nophoto.jpg'?>" title="<?=$provider['provider_name']?>" alt="Логотип <?=$provider['provider_name']?>" />
         </div>
         <?php if(!$provider['provider_disable']): ?>
           <div class="cart__store-info">
