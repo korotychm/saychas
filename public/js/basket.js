@@ -23,7 +23,7 @@ $(document).on('change','.cart__product-quantity input',function(e){
   } else {
     $(this).parent().find('.cart__product-plus').removeClass('disabled');
   }
-  if ($(this).val() < 1){
+  if ($(this).val() <= 1){
     $(this).val(1);
     $(this).parent().find('.cart__product-minus').addClass('disabled');
   } else {
