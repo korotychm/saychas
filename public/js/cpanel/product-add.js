@@ -533,7 +533,7 @@ const ProductAdd = {
             if (response.data.data === true) {
               location.reload();
             } else {
-              console.log(response);
+              console.log('Ответ после выбора категории',response);
               if (this.product.characteristics){
                 this.product.characteristics = response.data.answer.data.product.characteristics;
               } else {
@@ -554,7 +554,7 @@ const ProductAdd = {
             }
           })
           .catch(error => {
-            if (error.response.status == '403'){
+            if (error.response && error.response.status == '403'){
               location.reload();
             }
           });
