@@ -19,11 +19,14 @@ $(document).on('change','.cart__product-quantity input',function(e){
   if ($(this).val() > +$(this).attr('max')){
     $(this).val(+$(this).attr('max'));
     $(this).parent().find('.cart__product-plus').addClass('disabled');
-  } else if ($(this).val() < 1){
-    $(this).val(0);
+  } else {
+    $(this).parent().find('.cart__product-plus').removeClass('disabled');
+  }
+  if ($(this).val() <= 0){
+    $(this).val(1);
     $(this).parent().find('.cart__product-minus').addClass('disabled');
   } else {
-    $(this).parent().find('button').removeClass('disabled');
+    $(this).parent().find('.cart__product-minus').removeClass('disabled');
   }
   let productId = $(this).data('product');
   $('.cart__checkbox input[data-product="' + productId + '"]').val($(this).val());
