@@ -556,36 +556,39 @@ const ProductEdit = {
               })
               .then(response => {
                 if (categoryChange) {
-                  let product = response.data.answer.data.product;
-                  console.log(product);
-                  this.product.characteristics = product.characteristics;
-                  if (product.brand_id !== undefined){
-                    this.product.brand_id = product.brand_id;
-                    this.product.brand_name = product.brand_name;
+                  if (response.data.answer.data.result){
+                      let product = response.data.answer.data.product;
+                      console.log(product);
+                      this.product.characteristics = product.characteristics;
+                      if (product.brand_id !== undefined){
+                        this.product.brand_id = product.brand_id;
+                        this.product.brand_name = product.brand_name;
+                      } else {
+                        delete this.product.brand_id;
+                        delete this.product.brand_name;
+                      }
+                      if (product.country_id !== undefined){
+                        this.product.country_id = product.country_id;
+                        this.product.country_name = product.country_name;
+                      } else {
+                        delete this.product.country_id;
+                        delete this.product.country_name;
+                      }
+                      if (product.color_id !== undefined){
+                        this.product.color_id = product.color_id;
+                      } else {
+                        delete this.product.color_id;
+                      }
+                      if (product.characteristics){
+                        this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
+                        this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
+                      } else {
+                        this.showBrand = -1;
+                        this.showColor = -1;
+                      }
                   } else {
-                    delete this.product.brand_id;
-                    delete this.product.brand_name;
+                    showServicePopupWindow('Ошибка', response.data.answer.data.error_description_for_user);
                   }
-                  if (product.country_id !== undefined){
-                    this.product.country_id = product.country_id;
-                    this.product.country_name = product.country_name;
-                  } else {
-                    delete this.product.country_id;
-                    delete this.product.country_name;
-                  }
-                  if (product.color_id !== undefined){
-                    this.product.color_id = product.color_id;
-                  } else {
-                    delete this.product.color_id;
-                  }
-                  if (product.characteristics){
-                    this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
-                    this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
-                  } else {
-                    this.showBrand = -1;
-                    this.showColor = -1;
-                  }
-
                 } else {
                   if (response.data.result){
                     showMessage('Информация о товаре сохранена и отправлена на модерацию.');

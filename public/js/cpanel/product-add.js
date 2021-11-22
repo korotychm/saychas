@@ -534,23 +534,27 @@ const ProductAdd = {
               location.reload();
             } else {
               console.log('Ответ после выбора категории',response);
-              if (this.product.characteristics){
-                this.product.characteristics = response.data.answer.data.product.characteristics;
+              if (response.data.answer.data.result){
+                if (this.product.characteristics){
+                  this.product.characteristics = response.data.answer.data.product.characteristics;
+                } else {
+                  this.product = response.data.answer.data.product;
+                  this.product.images = [];
+                  this.countries = this.product.countries;
+                  this.brands = this.product.brands;
+                  this.product.vat = "Без НДС";
+                  this.product.brand_id = "";
+                  this.product.width = 0;
+                  this.product.height = 0;
+                  this.product.length = 0;
+                  this.product.weight = 0;
+                  console.log('Продукт',this.product);
+                }
+                this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+                this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               } else {
-                this.product = response.data.answer.data.product;
-                this.product.images = [];
-                this.countries = this.product.countries;
-                this.brands = this.product.brands;
-                this.product.vat = "Без НДС";
-                this.product.brand_id = "";
-                this.product.width = 0;
-                this.product.height = 0;
-                this.product.length = 0;
-                this.product.weight = 0;
-                console.log('Продукт',this.product);
+                showServicePopupWindow('Ошибка', response.data.answer.data.error_description_for_user);
               }
-              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
-              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {
