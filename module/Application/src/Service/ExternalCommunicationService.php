@@ -9,7 +9,7 @@ use Laminas\Config\Config;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Application\Model\Entity;
-//use Application\Model\Entity\ClientOrder;
+//use Application\Model\Entity\HandbookRelatedProduct;
 
 /**
  * Description of AcquiringCommunicationService
@@ -28,6 +28,7 @@ class ExternalCommunicationService
     public function __construct($config)
     {
         $this->config = $config;
+        
     }
 
     /**
@@ -119,13 +120,16 @@ class ExternalCommunicationService
     {
         $url = $this->config['parameters']['1c_request_links']['create_order'];
         $selfdeliv = $deliv = $delivery =[];
+       
         if (empty($content["products"])){
-            return false;
+            return ["response" => ["result" => false, "errorDescription" => "#404"]];
         }
 
         while (list($id, $value) = each($content["products"])) {
             $store[$value["store"]][] = [
-                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
+                $product = 
+                
+                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discount" => (int) $value["discount"], "full_price" =>  $value["full_price"]
             ];
             $productupdate[]=$id;
             //$coontent["delevery"][] = $store[$value['store']];
