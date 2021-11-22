@@ -35,9 +35,9 @@ $(document).on('change','.cart__product-quantity input',function(e){
   loadPayInfo();
 });
 
-$(document).on('click','.cart__product-quantity button',function(e){
+$(document).on('click','.cart__product-quantity .cart__product-btn',function(e){
   e.preventDefault();
-  $(this).parent().find('button').removeClass('disabled');
+  $(this).parent().find('.cart__product-btn').removeClass('disabled');
   let input = $(this).parent().find('input'),
       newVal = +input.val() + +$(this).data('step');
   if (newVal == 1 || newVal == input.attr('max')){
@@ -455,7 +455,7 @@ function checkBasketDataBeforeSend() {
                 sendBasketData();
             } else {
                 if (data.reload !== null) {
-                    location.href = data.reloadUrl;
+                    location.href = (data.reloadUrl)?data.reloadUrl:'/';
                     return false;
                 }
                 whatHappened(true);
