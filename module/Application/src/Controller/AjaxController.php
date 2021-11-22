@@ -543,6 +543,9 @@ class AjaxController extends AbstractActionController
             $basketItem->setProductId($productId);
             $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
             $productaddPrice = (int) $productadd->getPrice();
+            $productaddDiscount =  (int)$productadd->getDiscount();
+            $productaddPrice = $productaddPrice - $productaddPrice * $productaddDiscount / 100;
+            $basketItem->setDiscount($productaddDiscount);
             $basketItem->setPrice($productaddPrice);
             $basketItem->setTotal($basketItemTotal + 1);
             $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
@@ -590,6 +593,7 @@ class AjaxController extends AbstractActionController
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
         $basketItem->setTotal($productCount);
         $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
+        $productPrice = $productPrice - $productPrice * $product->getDiscount()/100;
         $return['totalNum'] = (int) $productPrice * $productCount;
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
         return new JsonModel($return);

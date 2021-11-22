@@ -129,23 +129,25 @@ class HtmlProviderService
 
             if (empty($param["legalStore"][$product['store']])) {
                 $whatHappened['stores'][$product['store']][] = $key;
-                $return["result"] = false;
+                $return = $error;
             }
 
             $productRow = $this->productRepository->find(['id' => $key]);
-            $price = (int) $productRow->receivePriceObject()->getPrice();
+            $price = $productRow->receivePriceObject()->getPrice();
+            $discount =  $productRow->receivePriceObject()->getDiscount();
+            $price = $price - $price * $discount / 100;
             $rest = $productRow->receiveRest($legalStoreKey);
 
             if ($basketProducts[$key]["price"] != $price) {
                 $whatHappened['products'][$key]['oldprice'] = $basketProducts[$key]["price"];
                 $whatHappened['products'][$key]['price'] = $price;
-                $return["result"] = false;
+                $return = $error;
             }
 
             if ($basketProducts[$key]["total"] > $rest) {
                 $whatHappened['products'][$key]['oldrest'] = $basketProducts[$key]["total"];
                 $whatHappened['products'][$key]['rest'] = $rest;
-                $return["result"] = false;
+                $return = $error;
             }
         }
 
@@ -462,6 +464,7 @@ class HtmlProviderService
                 if (!$price = (int) $product->receivePriceObject()->getPrice()) {
                     continue;
                 }
+                $price = $price - $price * $product->receivePriceObject()->getDiscount()/100;
 
                 $total += ($price * $c['count']);
                 $j += $c["count"];
@@ -646,8 +649,12 @@ class HtmlProviderService
             if ($pId = $b->productId and!empty($product = $this->productRepository->find(['id' => $pId]))) {
                 /** @var HandbookRelatedProduct */
                 $product = $this->productRepository->find(['id' => $pId]);
+                
                 $oldprice = $b->price;
+                
                 $price = (int) $product->receivePriceObject()->getPrice();
+                $discount = (int) $product->receivePriceObject()->getDiscount();
+                $price = $price - $price*$discount/100;
                 $rest = $product->receiveRest($legalStore);
                 $productProviderId = $product->getProviderId();
                 $productProvider = $this->providerRepository->find(['id' => $productProviderId]);
