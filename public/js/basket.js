@@ -16,6 +16,7 @@ function setTimepointText(loadinfo = false) {
 // Изменение количества товара в корзине
 
 $(document).on('change','.cart__product-quantity input',function(e){
+  console.log('change');
   if ($(this).val() > +$(this).attr('max')){
     $(this).val(+$(this).attr('max'));
     $(this).parent().find('.cart__product-plus').addClass('disabled');
