@@ -70,7 +70,7 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
             <div class="panel panel--cart panel--history">
                 <div class="panel__price">
                     <div class="panel__price-current">{{ Math.trunc(totalPrice(orderIndex).price + (order.basketInfo.delivery_price / 100)).toLocaleString() }} <?=Resource::CURRENCY_RUBL?></div>
-                    <div v-if="(order.total > order.oldtotal)" class="panel__price-old">{{ Math.trunc(totalPrice(orderIndex).oldprice + (order.basketInfo.delivery_price / 100)).toLocaleString() }} <?=Resource::CURRENCY_RUBL?></div>
+                    <div v-if="(totalPrice(orderIndex).oldprice > totalPrice(orderIndex).price)" class="panel__price-old">{{ Math.trunc(totalPrice(orderIndex).oldprice + (order.basketInfo.delivery_price / 100)).toLocaleString() }} <?=Resource::CURRENCY_RUBL?></div>
                 </div>
                 <div class="panel__delivery">
                     <div class="panel__delivery-item">
