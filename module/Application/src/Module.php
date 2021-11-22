@@ -128,6 +128,15 @@ class Module
         $serviceManager = $e->getApplication()->getServiceManager();
         $request = $serviceManager->get('Request');
 
+        $routeMatch = $e->getRouteMatch();
+        
+        if ( null == $routeMatch ) {
+            $response = new Response();
+            $response->setStatusCode(404);
+            
+            return $response;
+        }
+        
         $actionName = $e->getRouteMatch()->getParam('action', null);
         
         if ( $this->toBeAuthorized($actionName) && ( ! $this->isAuthorized($request, $actionName) ) ) {
