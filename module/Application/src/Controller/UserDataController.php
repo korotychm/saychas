@@ -289,6 +289,7 @@ class UserDataController extends AbstractActionController
              }
              
              $value['discount'] = $product->getDiscount();
+             $value['full_price'] = $product->getPrice();
              $products[$id] = $value;
              
          }      
@@ -300,7 +301,7 @@ class UserDataController extends AbstractActionController
         $orderset = $this->externalCommunicationService->sendBasketData($content, $param);
 
         if (!$orderset['response']['result']) {
-            return new JsonModel(["result" => false, "description" => [$content["products"], $orderset]]);
+            return new JsonModel(["result" => false, "description" => [$content["products"], $orderset['response']['errorDescription']]]);
         }
 
         $orderId = $orderset['response']['order_id'];

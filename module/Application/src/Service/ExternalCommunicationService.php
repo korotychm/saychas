@@ -129,7 +129,7 @@ class ExternalCommunicationService
             $store[$value["store"]][] = [
                 $product = 
                 
-                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discount" => (int) $value["discount"]
+                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discount" => (int) $value["discount"], "full_price" =>  $value["full_price"]
             ];
             $productupdate[]=$id;
             //$coontent["delevery"][] = $store[$value['store']];
