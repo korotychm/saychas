@@ -455,7 +455,7 @@ function checkBasketDataBeforeSend() {
                 sendBasketData();
             } else {
                 if (data.reload !== null) {
-                    location.href = data.reloadUrl;
+                    location.href = (data.reloadUrl)?data.reloadUrl:'/';
                     return false;
                 }
                 whatHappened(true);
