@@ -1491,8 +1491,10 @@ return [
             'password' => 'w48Es4562',
         ],
         'TinkoffMerchantAPI' => [
-            'terminal' => '1629956533317DEMO', //наш
-            'token' => '9mfca0gpenpfi4rb', //наш
+//            'terminal' => '1629956533317DEMO', //демо
+//            'token' => '9mfca0gpenpfi4rb', //демо
+            'terminal' => '1629956533317', //боевой
+            'token' => 'hf3pvoig10linlo1', //боевой
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
