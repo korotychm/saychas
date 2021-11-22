@@ -165,7 +165,7 @@ class UserManager
     {
         $users = $this->getAllUsers($content)['info'];
         foreach ($users as $user) {
-            if ($content['login'] === $user['login']) {
+            if (strtolower($content['login']) === strtolower($user['login'])) {
                 return $user;
             }
         }
