@@ -11,6 +11,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Laminas\Mvc\MvcEvent;
 use Laminas\Session\Container;
+use Laminas\Json\Json;
 
 class ProductController extends AbstractActionController
 {
@@ -389,7 +390,7 @@ class ProductController extends AbstractActionController
         $res = $this->canAddProduct($product);
         if ($res['result']) {
             $result = $this->productManager->replaceProduct($product);
-            return new JsonModel(['result' => true, 'data' => $product]);
+            return new JsonModel(['result' => true, 'data' => $product, $res]);
         }
 
         //return new JsonModel(['result' => false]);
