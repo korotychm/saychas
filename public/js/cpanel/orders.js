@@ -87,14 +87,14 @@ const Orders = {
                             <div class="orders__product-actual" v-if="order.status_id != '02' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
                             <div class="orders__product-count" v-if="order.status_id != '02' && product.qty_partner == product.qty"><b>{{ product.qty_partner }}</b> шт</div>
 
-                            <div class="orders__product-sum">{{ calculatePrice(product.price, product.discount).toLocaleString() }} ₽</div>
+                            <div class="orders__product-sum">{{ (calculatePrice(product.price, product.discount)/100).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
                               <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M13.352,4.166 L12.750,4.778 C12.591,4.938 12.334,4.938 12.175,4.778 L9.291,1.858 C9.133,1.699 9.133,1.440 9.291,1.280 L9.291,1.280 L9.901,0.663 C10.766,0.214 12.173,0.221 13.46,0.648 C13.51,0.653 13.56,0.659 13.61,0.663 L13.64,0.663 L13.352,0.955 C14.225,1.845 14.225,3.277 13.352,4.166 ZM11.312,6.241 L5.123,12.523 C4.715,12.938 4.199,13.226 3.635,13.355 L0.735,14.12 C0.404,14.83 0.78,13.871 0.7,13.537 C0.13,13.438 0.10,13.335 0.17,13.237 L0.842,10.394 C0.986,9.900 1.250,9.449 1.610,9.83 L7.860,2.741 C8.19,2.581 8.276,2.581 8.435,2.741 L11.312,5.662 C11.469,5.822 11.469,6.80 11.312,6.241 Z" />
                                 </svg>
                               </button>
-                              <button class="done" v-if="product.product_id === activeItem" @click="product.qty_partner = currentQuantity; activeItem = null;">
+                              <button class="done" v-if="product.product_id === activeItem" @click="product.qty_partner = currentQuantity; product.qty_fact = currentQuantity; activeItem = null;">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="15px">
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M3.343,6.720 L8.778,12.155 C9.363,12.741 9.363,13.691 8.778,14.276 C8.192,14.862 7.242,14.862 6.656,14.276 L1.221,8.842 C0.636,8.255 0.636,7.306 1.221,6.720 C1.807,6.134 2.757,6.134 3.343,6.720 Z"></path>
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M20.571,2.487 L9.519,13.540 C8.950,14.109 8.27,14.109 7.458,13.540 C6.889,12.970 6.889,12.47 7.458,11.479 L18.510,0.426 C19.80,0.142 20.2,0.142 20.571,0.426 C21.140,0.995 21.140,1.918 20.571,2.487 Z"></path>
@@ -140,71 +140,15 @@ const Orders = {
           activeOrder: null,
           activeItem: null,
           currentQuantity: null,
-          deadline_new: 10,
-          deadline_new_last: 5,
+          deadline_new: 1,
+          deadline_new_last: 1,
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
-          secondTimer: 59,
-          minutTimer: 19,
-          penaltyTimer: null,
-          penaltyTime: false,
+          expired: '',
         }
     },
     methods: {
-      // Первый таймер сбора заказа
-      setDefaultTimer () {
-        for (let order of this.orders) {
-          let date = new Date(+order.date * 1000)
-          let startDate = new Date(+order.date  * 1000)
-          date.setMinutes(date.getMinutes() + 10)
-          let deadLine = date.getMinutes() - startDate.getMinutes()
-          order.minutTimer = deadLine
-          order.minutTimer = ('0' + order.minutTimer).slice(-2)
-          order.secondTimer = 59;
-          order.timer = setInterval (() => {
-            order.secondTimer--
-            order.secondTimer = ('0' + order.secondTimer).slice(-2)
-            if (order.secondTimer <= 0) {
-              order.secondTimer = 59
-              order.minutTimer--;
-              order.minutTimer = ('0' + order.minutTimer).slice(-2)
-              if (order.minutTimer < 0) {
-                clearInterval(order.timer);
-                order.minutTimer = '00';
-                order.secondTimer = '00';
-                order.penaltyTime = true;
-                order.setPenaltyTimer()
-              }
-            }
-          }, 1000)
-        }
-      },
-      //конец первого таймера
-      // Таймер штрафного времени
-      setPenaltyTimer () {
-        this.minutTimer = 0;
-        this.secondTimer = 0;
-        this.secondTimer = ('0' + this.secondTimer).slice(-2)
-        this.minutTimer = ('0' + this.minutTimer).slice(-2)
-        this.pentalyTime = setInterval(() => {
-          this.minutTimer = ('0' + this.minutTimer).slice(-2)
-          this.secondTimer++
-          this.secondTimer = ('0' + this.secondTimer).slice(-2)
-          if (this.secondTimer > 59) {
-            this.secondTimer = 0
-            this.secondTimer = ('0' + this.secondTimer).slice(-2)
-            this.minutTimer++
-            this.minutTimer = ('0' + this.minutTimer).slice(-2)
-            if (this.minutTimer > 5) {
-              this.minutTimer = '05'
-              this.secondTimer = '00'
-              clearInterval(this.penaltyTimer);
-            }
-          }
-        }, 1000)
-      },
-      // конец штрафного таймера
       localedTime(ms){
         let minutes = Math.floor(ms / 60000),
             seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -232,26 +176,28 @@ const Orders = {
         }
         let i = 0;
         for (order of this.orders){
-          if (+order.status_id == '01'){
-            let deadline = this.calulateTime(order.date,this.deadline_new,this.deadline_new_last);
+          if (+order.status_id == 1){
+            let deadline = this.calulateTime(order.date * 1000,this.deadline_new,this.deadline_new_last);
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
-          } else if (+order.status_id == '02'){
+          } else if (+order.status_id == 2){
             let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
-            if (!order.deadline){
-              //this.getOrderStatus(order.id,i);
-            }
+          }
+          if (!order.deadline && +order.status_id < 3){
+            console.log('deadline false, response to get order status')
+            this.getOrderStatus(order.id,i);
           }
           i++;
         }
       },
+
       setTime(){
         for (order of this.orders){
-          order.deadline = '00:00';
+          // order.deadline = '00:00';
         }
         this.timer = setInterval(() => {
           this.checkTime();
@@ -296,10 +242,10 @@ const Orders = {
               }
             })
             .catch(error => {
-              console.log(error.response)
-              if (error.response.status == '403'){
-                location.reload();
-              }
+              console.log(error)
+              // if (error.response.status == '403'){
+              //   location.reload();
+              // }
               $('.main__loader').hide();
             });
       },
@@ -386,7 +332,7 @@ const Orders = {
         this.getOrders();
       }
     },
-    created: function(){
+    mounted () {
       $('.main__loader').show();
       this.getOrders();
     },

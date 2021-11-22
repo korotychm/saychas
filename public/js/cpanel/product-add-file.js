@@ -180,10 +180,8 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            if (response.data.filename.includes('1CMEDIA')) {
-              this.fileName = response.data.filename.replace('1CMEDIA/Providers', '')
-              this.fileName = response.data.filename.replace('1CMEDIADEV/Providers', '')
-            }
+            this.fileName = response.data.filename;
+            this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
             this.filePath = '/documents' + this.fileName;
             this.downloadFileName = this.fileName.split('/').pop()
           })
