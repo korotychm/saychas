@@ -204,8 +204,8 @@ $(document).ready(function () {
           for (requisition of delivery.requisitions){
             if (requisition.status_id != 5){ // Заявка не отменена
               for (product of requisition.items) {
-                price += product.price * product.qty_fact;
-                oldprice += product.full_price * product.qty_fact;
+                price += (product.price * product.qty_fact);
+                oldprice += (product.full_price * product.qty_fact);
               }
             }
           }
