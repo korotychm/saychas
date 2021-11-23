@@ -139,7 +139,7 @@ const PriceList = {
         fileName: '',
         fileName: '',
         filePath: '',
-          fileUploaded: false,
+        fileUploaded: false,
         downloadFileName: '',
         intermediatePath: '',
           downloadUrls: []
@@ -164,6 +164,9 @@ const PriceList = {
       async checkFiles () {
           const headers = { 'X-Requested-With': 'XMLHttpRequest' };
           let requestUrl = '/control-panel/place-download-link';
+          if (this.filePath) {
+              return;
+          }
           await axios
               .get(requestUrl, {headers})
               .then(response => {
