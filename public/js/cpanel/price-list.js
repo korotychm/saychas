@@ -126,7 +126,12 @@ const PriceList = {
         search: '',
         filtersCreated: false,
         showFileMenu: false,
-        downloadLink: ''
+        downloadLink: '',
+        fileName: '',
+        fileName: '',
+        filePath: '',
+        downloadFileName: '',
+        intermediatePath: '',
       }
   },
   methods: {
@@ -142,7 +147,11 @@ const PriceList = {
             }
           }),{headers})
           .then(response => {
-            this.downloadLink = response
+              this.fileName = response.data.filename;
+              this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
+              this.filePath = '/documents' + this.fileName;
+              this.downloadFileName = this.fileName.split('/').pop()
+              this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
           })
           .catch(error => {
             console.log(error)
