@@ -50,6 +50,16 @@ const PriceList = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
+                  <div class="reload-result">
+                      <div class="result__container">
+                      <ul v-for="item of downloadUrls" >
+                      <li><a :href="prefixer(item.result_file)" :download="item.result_file">{{item.result_file}}</a></li>
+                      </ul>
+                      </div>
+                      <div class="result-btn__container">
+                        <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
+                      </div>
+                  </div>
             </div>
         <div class="cp-container pricelist list" v-else>
           <div class="thead">
