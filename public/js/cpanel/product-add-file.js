@@ -172,9 +172,7 @@ const ProductAddFile = {
       await axios
           .get(requestUrl, {headers})
           .then(response => {
-            this.downloadUrls = response.data.urls.map(item => {
-              return location.origin + '/' + item;
-            });
+            this.downloadUrls = response.data.urls
             // this.downloadUrls.forEach(item =>  {
             //   item = location.origin + item;
             // })
