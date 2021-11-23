@@ -93,6 +93,7 @@ const ProductAddFile = {
   },
   methods: {
     prefixer (item) {
+      console.log(item)
       return '/documents' + item
     },
     flatCategories() {
