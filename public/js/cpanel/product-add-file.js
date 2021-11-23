@@ -65,6 +65,7 @@ const ProductAddFile = {
       selectedCategoryName: '',
       file: false,
       filePath: '',
+      intermediatePath: '',
       fileName: '',
       fileUploaded: false,
       downloadFileName: '',
@@ -73,7 +74,7 @@ const ProductAddFile = {
           {"result_file":"product_000000058_2021_10_19_1323.xls"},
           {"result_file":"product_000000006_2021_11_19_1605.xls"},
           {"result_file":"product_000000006_2021_11_19_1602.xls"}
-      ]
+      ],
     }
   },
   computed: {
@@ -193,6 +194,7 @@ const ProductAddFile = {
             this.fileName = response.data.filename;
             this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
             this.filePath = '/documents' + this.fileName;
+            this.intermediatePath = this.filePath.replace(this.downloadFileName, '')
             this.downloadFileName = this.fileName.split('/').pop()
           })
           .catch(error => {
