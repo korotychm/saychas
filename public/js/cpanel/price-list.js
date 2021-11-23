@@ -145,6 +145,9 @@ const PriceList = {
       }
   },
   methods: {
+      prefixer (item) {
+          return this.intermediatePath + item
+      },
       async checkFiles () {
           const headers = { 'X-Requested-With': 'XMLHttpRequest' };
           let requestUrl = '/control-panel/place-download-link';
