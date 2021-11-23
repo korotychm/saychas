@@ -36,7 +36,7 @@ const PriceList = {
           </div>
           
         </div>
-          <div class="product-add-file__files-upload">
+          <div class="cp-container">
             <input type="file" id="upload-file"> 
             <label for="upload-file">Загрузить файл</label> 
             <p>Загрузите заполненный файл.</p> 
