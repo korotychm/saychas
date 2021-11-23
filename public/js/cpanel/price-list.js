@@ -11,7 +11,7 @@ const PriceList = {
               </svg>
             </button>
           </form>
-          <div class="filter__select">
+          <div class="filter__select custom-disable">
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
