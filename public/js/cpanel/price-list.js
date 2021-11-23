@@ -164,9 +164,6 @@ const PriceList = {
       async checkFiles () {
           const headers = { 'X-Requested-With': 'XMLHttpRequest' };
           let requestUrl = '/control-panel/place-download-link';
-          if (this.filePath) {
-              return;
-          }
           await axios
               .get(requestUrl, {headers})
               .then(response => {
@@ -179,6 +176,9 @@ const PriceList = {
     async showMenuWithAjax () {
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
+        if (this.filePath) {
+            return;
+        }
       await axios
           .post(requestUrl,Qs.stringify({
             data: {
