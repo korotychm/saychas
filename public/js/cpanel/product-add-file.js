@@ -46,7 +46,8 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                        <a :href="prefixer(item.result_file)" :download="item.result_file" v-for="item of testUrls" >файл</a>
+                       <span>Первый вариант</span> <a :href="prefixer(item.result_file)" :download="item.result_file" v-for="item of testUrls" >файл</a>
+                       <span>Второй вариант(если первый не работает)</span> <a :href="secondPrefixer(item.result_file)" :download="item.result_file" v-for="item of testUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
                           <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
@@ -92,6 +93,9 @@ const ProductAddFile = {
     },
   },
   methods: {
+    secondPrefixer (item) {
+      return '/documents/' + item
+    },
     prefixer (item) {
       return '/documents/P_00005/product/' + item
     },
