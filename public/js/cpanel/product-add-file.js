@@ -93,8 +93,7 @@ const ProductAddFile = {
   },
   methods: {
     prefixer (item) {
-      console.log(item)
-      return '/documents/' + item
+      return '/documents/P_00005/product' + item
     },
     flatCategories() {
       let categoriesFlat = [];
