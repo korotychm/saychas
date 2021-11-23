@@ -46,7 +46,7 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                       <span>Первый вариант</span> <a :href="prefixer(item.result_file)" :download="item.result_file" v-for="item of testUrls" >файл</a>
+                       <span>Первый вариант</span> <a :href="prefixer(item.result_file)" :download="item.result_file" v-for="item of testUrls" >файл</a> <br>
                        <span>Второй вариант(если первый не работает)</span> <a :href="secondPrefixer(item.result_file)" :download="item.result_file" v-for="item of testUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
