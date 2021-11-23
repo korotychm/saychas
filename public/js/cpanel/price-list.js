@@ -32,11 +32,11 @@ const PriceList = {
 <!--            <a class="btn btn&#45;&#45;secondary disabled" href="#">Скачать список</a>-->
           </div>
           <div class="filter__btn">
-            <button class="btn btn--primary">Загрузить из файла</button>
+            <button class="btn btn--primary" @click="showFileMenu = !showFileMenu">Загрузить из файла</button>
           </div>
           
         </div>
-            <div class="cp-container">
+            <div class="cp-container" v-if="showFileMenu">
                 <div class="product-add-file__files">
                     <div class="product-add-file__files-download">
                       <a>Скачать файл</a>
@@ -124,7 +124,8 @@ const PriceList = {
           category_id: ''
         },
         search: '',
-        filtersCreated: false
+        filtersCreated: false,
+        showFileMenu: false
       }
   },
   methods: {
