@@ -177,6 +177,7 @@ const PriceList = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
         if (this.filePath) {
+            this.showFileMenu = !this.showFileMenu
             return;
         }
       await axios
