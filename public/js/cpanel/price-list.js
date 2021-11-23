@@ -36,7 +36,13 @@ const PriceList = {
           </div>
           
         </div>
-                <div class="product-add-file__files cp-container">
+            <div class="cp-container">
+                <div class="product-add-file__files">
+                    <div class="product-add-file__files-download">
+                      <a>Скачать файл</a>
+                      <p>Скачайте и заполните файл.</p>
+                      <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
+                    </div>
                     <div class="product-add-file__files-upload">
                       <input type="file" id="upload-file"/>
                       <label for="upload-file">Загрузить файл</label>
@@ -44,6 +50,7 @@ const PriceList = {
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
+            </div>
         <div class="cp-container pricelist list">
           <div class="thead">
             <div class="td"></div>
