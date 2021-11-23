@@ -69,7 +69,7 @@ const ProductAddFile = {
       downloadFileName: '',
       downloadUrls: {},
       testUrls:[
-          {"result_file":"product_000000006_2021_11_19_1607.xls"},
+          {"result_file":"product_000000058_2021_10_19_1323.xls"},
           {"result_file":"product_000000006_2021_11_19_1605.xls"},
           {"result_file":"product_000000006_2021_11_19_1602.xls"}
       ]
