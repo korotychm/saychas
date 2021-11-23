@@ -32,14 +32,14 @@ const PriceList = {
 <!--            <a class="btn btn&#45;&#45;secondary disabled" href="#">Скачать список</a>-->
           </div>
           <div class="filter__btn">
-            <button class="btn btn--primary" @click="showFileMenu = !showFileMenu">Загрузить из файла</button>
+            <button class="btn btn--primary" @click="showMenuWithAjax">Загрузить из файла</button>
           </div>
           
         </div>
             <div class="cp-container" v-if="showFileMenu">
                 <div class="product-add-file__files">
                     <div class="product-add-file__files-download">
-                      <a>Скачать файл</a>
+                      <a :href="downloadLink">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -125,10 +125,33 @@ const PriceList = {
         },
         search: '',
         filtersCreated: false,
-        showFileMenu: false
+        showFileMenu: false,
+        downloadLink: ''
       }
   },
   methods: {
+    async showMenuWithAjax () {
+
+      const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
+      let requestUrl = '/control-panel/get-product-file';
+      await axios
+          .post(requestUrl,Qs.stringify({
+            data: {
+              category_id: this.selectedCategoryId,
+              query_type: 'product'
+            }
+          }),{headers})
+          .then(response => {
+            this.downloadLink = response
+          })
+          .catch(error => {
+            console.log(error)
+            // if (error.response.status == '403'){
+            //   location.reload();
+            // }
+          });
+      this.showFileMenu = !this.showFileMenu
+    },
     checkDiscount(index) {
       if (this.products[index].discount === ''){
         this.products[index].discount = 0;
