@@ -39,7 +39,7 @@ const PriceList = {
             <div class="cp-container" v-if="showFileMenu">
                 <div class="product-add-file__files">
                     <div class="product-add-file__files-download">
-                      <a :href="downloadLink">Скачать файл</a>
+                      <a :href="filePath" :download="downloadFileName">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
@@ -126,7 +126,6 @@ const PriceList = {
         search: '',
         filtersCreated: false,
         showFileMenu: false,
-        downloadLink: '',
         fileName: '',
         fileName: '',
         filePath: '',
