@@ -96,7 +96,7 @@ const ProductAddFile = {
   },
   methods: {
     prefixer (item) {
-      return 'documents/P_00005/product/' + item
+      return this.intermediatePath + item
     },
     flatCategories() {
       let categoriesFlat = [];
