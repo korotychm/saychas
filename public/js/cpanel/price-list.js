@@ -34,14 +34,14 @@ const PriceList = {
           <div class="filter__btn">
             <button class="btn btn--primary">Загрузить список</button>
           </div>
+          
+        </div>
           <div class="product-add-file__files-upload">
             <input type="file" id="upload-file"> 
             <label for="upload-file">Загрузить файл</label> 
             <p>Загрузите заполненный файл.</p> 
             <p>Товары появятся на сайте после обработки.</p>
           </div>
-        </div>
-
         <div class="cp-container pricelist list">
           <div class="thead">
             <div class="td"></div>
