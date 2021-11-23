@@ -105,7 +105,7 @@ const PriceList = {
               </div>
           </div>
         </div>
-        <div class="pagination">
+        <div class="pagination" v-if="!showFileMenu">
           <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
         </div>
       </div>
