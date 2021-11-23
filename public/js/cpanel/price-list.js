@@ -137,7 +137,8 @@ const PriceList = {
       await axios
           .post(requestUrl,Qs.stringify({
             data: {
-              category_id: 'provider_id',
+              // category_id: 'provider_id',
+              provider_id: 'provider_id',
               query_type: 'price'
             }
           }),{headers})
