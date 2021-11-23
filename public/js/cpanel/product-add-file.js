@@ -194,8 +194,8 @@ const ProductAddFile = {
             this.fileName = response.data.filename;
             this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
             this.filePath = '/documents' + this.fileName;
-            this.intermediatePath = this.filePath.replace(this.downloadFileName, '')
             this.downloadFileName = this.fileName.split('/').pop()
+            this.intermediatePath = this.filePath.replace(this.downloadFileName, '')
           })
           .catch(error => {
             console.log(error)
