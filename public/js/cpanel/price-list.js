@@ -51,7 +51,7 @@ const PriceList = {
                     </div>
                   </div>
             </div>
-        <div class="cp-container pricelist list">
+        <div class="cp-container pricelist list" v-else>
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
@@ -131,7 +131,6 @@ const PriceList = {
   },
   methods: {
     async showMenuWithAjax () {
-
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
       await axios
