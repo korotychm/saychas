@@ -46,7 +46,7 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                        <a :href="item" v-for="item of downloadUrls" >файл</a>
+                        <a :href="prefixer(item)" :download="item" v-for="item of testUrls" >файл</a>
                         </div>
                         <div class="result-btn__container">
                           <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
@@ -67,6 +67,11 @@ const ProductAddFile = {
       fileUploaded: false,
       downloadFileName: '',
       downloadUrls: {},
+      testUrls:[
+          {"result_file":"product_000000006_2021_11_19_1607.xls"},
+          {"result_file":"product_000000006_2021_11_19_1605.xls"},
+          {"result_file":"product_000000006_2021_11_19_1602.xls"}
+      ]
     }
   },
   computed: {
@@ -87,6 +92,9 @@ const ProductAddFile = {
     },
   },
   methods: {
+    prefixer (item) {
+      return '/documents' + item
+    },
     flatCategories() {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
