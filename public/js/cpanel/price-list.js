@@ -44,7 +44,7 @@ const PriceList = {
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
                     <div class="product-add-file__files-upload">
-                      <input type="file" id="upload-file"/>
+                      <input type="file" id="upload-file" @change="uploadFile"/>
                       <label for="upload-file">Загрузить файл</label>
                       <p>Загрузите заполненный файл.</p>
                       <p>Товары появятся на сайте после обработки.</p>
@@ -139,6 +139,7 @@ const PriceList = {
         fileName: '',
         fileName: '',
         filePath: '',
+          fileUploaded: false,
         downloadFileName: '',
         intermediatePath: '',
           downloadUrls: []
@@ -147,6 +148,18 @@ const PriceList = {
   methods: {
       prefixer (item) {
           return this.intermediatePath + item
+      },
+      async uploadFile () {
+          let file  = document.querySelector("#upload-file").files
+          let formData = new FormData()
+          formData.append('file', file[0]);
+          await axios.post('/control-panel/upload-product-file', formData, {
+              headers: {'Content-Type': 'multipart/form-data'}
+          }).then(response => {
+              showMessage('Файл загружен, ожидайте ответа')
+              this.fileUploaded = true;
+              console.log(response)
+          })
       },
       async checkFiles () {
           const headers = { 'X-Requested-With': 'XMLHttpRequest' };
