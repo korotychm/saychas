@@ -295,17 +295,8 @@ class ProductController extends AbstractActionController
         //var_dump($identity);
         //$urls = $this->productManager->getDownloadLinks($identity['provider_id']);
         //$path = $this->documentPath('product', $identity['provider_id']);
-
-        $result = [
-            'urls' => [
-                'control-panel/place-download-link1',
-                'control-panel/place-download-link2',
-                'control-panel/place-download-link3',
-                'control-panel/place-download-link4',
-                'control-panel/place-download-link5',
-                'control-panel/place-download-link6',
-            ]
-        ];
+        
+        $result = $this->productManager->placeDownloadLink($identity['provider_id']);
 
         return new JsonModel($result);
     }
