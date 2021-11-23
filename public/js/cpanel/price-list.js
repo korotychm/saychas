@@ -3,7 +3,7 @@ const PriceList = {
     `<div>
       <div v-if="htmlContent" v-html="htmlContent"></div>
       <div v-else>
-        <div class="filter">
+        <div class="filter" :class="{'custom-disable': showFileMenu}">
           <form class="filter__search" @submit.prevent="loadPage()">
             <input class="input input--white" type="text" v-model="search" placeholder="Быстрый поиск" />
             <button>
@@ -11,7 +11,7 @@ const PriceList = {
               </svg>
             </button>
           </form>
-          <div class="filter__select custom-disable">
+          <div class="filter__select" :class="{'custom-disable': showFileMenu}">
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
