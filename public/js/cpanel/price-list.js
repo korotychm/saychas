@@ -141,9 +141,22 @@ const PriceList = {
         filePath: '',
         downloadFileName: '',
         intermediatePath: '',
+          downloadUrls: []
       }
   },
   methods: {
+      async checkFiles () {
+          const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+          let requestUrl = '/control-panel/place-download-link';
+          await axios
+              .get(requestUrl, {headers})
+              .then(response => {
+                  this.downloadUrls = response.data.urls
+                  // this.downloadUrls.forEach(item =>  {
+                  //   item = location.origin + item;
+                  // })
+              })
+      },
     async showMenuWithAjax () {
       const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
