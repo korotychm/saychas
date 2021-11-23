@@ -94,10 +94,10 @@ const ProductAddFile = {
   },
   methods: {
     secondPrefixer (item) {
-      return 'documents/' + item
+      return 'public/documents/' + item
     },
     prefixer (item) {
-      return 'documents/P_00005/product/' + item
+      return 'public/documents/P_00005/product/' + item
     },
     flatCategories() {
       let categoriesFlat = [];
