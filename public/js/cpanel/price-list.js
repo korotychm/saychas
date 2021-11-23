@@ -29,19 +29,26 @@ const PriceList = {
             </div>
           </div>
           <div class="filter__btn">
-            <a class="btn btn--secondary disabled" href="#">Скачать список</a>
+<!--            <a class="btn btn&#45;&#45;secondary disabled" href="#">Скачать список</a>-->
           </div>
           <div class="filter__btn">
-            <button class="btn btn--primary">Загрузить список</button>
+            <button class="btn btn--primary">Загрузить из файла</button>
           </div>
           
         </div>
-          <div class="cp-container">
-            <input type="file" id="upload-file"> 
-            <label for="upload-file">Загрузить файл</label> 
-            <p>Загрузите заполненный файл.</p> 
-            <p>Товары появятся на сайте после обработки.</p>
-          </div>
+                <div class="product-add-file__files">
+                    <div class="product-add-file__files-download">
+                      <a :href="filePath" :download="downloadFileName">Скачать файл</a>
+                      <p>Скачайте и заполните файл.</p>
+                      <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
+                    </div>
+                    <div class="product-add-file__files-upload">
+                      <input type="file" id="upload-file" @change="uploadFile"/>
+                      <label for="upload-file">Загрузить файл</label>
+                      <p>Загрузите заполненный файл.</p>
+                      <p>Товары появятся на сайте после обработки.</p>
+                    </div>
+                  </div>
         <div class="cp-container pricelist list">
           <div class="thead">
             <div class="td"></div>
