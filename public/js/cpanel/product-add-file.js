@@ -214,6 +214,9 @@ const ProductAddFile = {
     $('.main__loader').show();
     this.getCategories();
   },
+  mounted () {
+    useKeyboardEvents()
+  },
   updated: function(){
     $('.main__loader').hide();
   }

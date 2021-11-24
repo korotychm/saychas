@@ -178,3 +178,13 @@ function showMessage(message) {
     $('.cp-message').removeClass('active');
   }, 2500);
 }
+
+
+function useKeyboardEvents () {
+  let customDropdown = $('.custom-select__label')
+  if (customDropdown.classList.contains('active')) {
+    $(document).keydown(function (e){
+      console.log(e)
+    })
+  }
+}
