@@ -183,14 +183,16 @@ function showMessage(message) {
 function useKeyboardEvents () {
   let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
+    e.preventDefault()
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
         let customSelectDropdownLabels = customSelectDropdown.children().children()
+        console.log(customSelectDropdownLabels)
         let checkedInput = customSelectDropdownLabels.find('input:checked')
         console.log(e)
         if (e.keyCode === 40) {
-          checkedInput.parent().next().children('span').addClass('selected')
+          // checkedInput.parent().next().children('span').addClass('selected')
         }
         // console.log(checkedInput.parent())
         // checkedInput.parent()
