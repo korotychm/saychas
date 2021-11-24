@@ -182,6 +182,8 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
   let customDropdown = $('.custom-select__dropdown')
+  let $selected = $items.filter('.selected').removeClass('selected'),
+      $next;
   $(document).on( "keydown", function(e) {
     // e.preventDefault()
     // console.log($items)
@@ -192,16 +194,11 @@ function useKeyboardEvents () {
         let customSelectDropdown = $(e.target).next()
         let $items = customSelectDropdown.children().children().children('span')
         console.log($items)
-        let $selected = $items.filter('.selected').removeClass('selected'),
-            $next;
+
         if (!$selected.length) {
           $next = $items.eq(0);
-          console.log($selected.length)
-          console.log($next)
         } else {
           $next = $selected.is($items.last()) ? $items.eq(0) : $selected.next();
-          console.log($selected)
-          console.log($next)
         }
 
         $next.addClass('selected')
