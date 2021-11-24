@@ -187,7 +187,10 @@ function useKeyboardEvents () {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
         let customSelectDropdownLabels = customSelectDropdown.children().children()
-        console.log( customSelectDropdownLabels.find('input:checked') )
+        let checkedInput = customSelectDropdownLabels.find('input:checked')
+        console.log(e)
+        console.log(checkedInput.parent())
+        // checkedInput.parent()
         // console.log(customSelectDropdownLabels)
       }
       // console.log(e.target)
