@@ -141,7 +141,8 @@ const Inventory = {
         filePath: '',
         downloadFileName: '',
         intermediatePath: '',
-        showFileMenu: false
+        showFileMenu: false,
+        downloadUrls: []
       }
   },
   methods: {
