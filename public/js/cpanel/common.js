@@ -184,6 +184,7 @@ function useKeyboardEvents () {
   let customDropdown = $('.custom-select__label')
   console.log(customDropdown)
   if (customDropdown.hasClass('active')) {
+    console.log('зашло в условие')
     $(document).keydown(function (e){
       console.log(e)
     })
