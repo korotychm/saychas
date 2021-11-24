@@ -180,8 +180,10 @@ function showMessage(message) {
 }
 
 
-function useKeyboardEvents () {
+function useKeyboardEvents (e) {
   let customDropdown = $('.custom-select__dropdown')
+  let customSelectDropdown = $(e.target).next()
+  let $items = customSelectDropdown.children().children().children('span')
   let $selected = $items.filter('.selected').removeClass('selected'),
       $next;
   $(document).on( "keydown", function(e) {
@@ -191,8 +193,7 @@ function useKeyboardEvents () {
     // console.log(customSelectDropdownLabels)
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
-        let customSelectDropdown = $(e.target).next()
-        let $items = customSelectDropdown.children().children().children('span')
+
         console.log($items)
 
         if (!$selected.length) {
