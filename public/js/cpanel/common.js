@@ -199,8 +199,8 @@ function useKeyboardEvents (e) {
           $next = $items.eq(0);
         } else {
           $next = $selected.is($items.last()) ? $items.eq(0) : $selected.next();
+          console.log($next)
         }
-
         $next.addClass('selected')
         // console.log(e)
         if (e.keyCode === 40) {
