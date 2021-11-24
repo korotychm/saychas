@@ -183,9 +183,10 @@ function showMessage(message) {
 function useKeyboardEvents () {
   let customDropdown = $('.custom-select__label')
   $(document).on( "keydown", function(e) {
+    console.log(e)
     if (customDropdown.hasClass('active')) {
       console.log('зашло в условие')
-      console.log(e)
+
     }
   }),
   console.log(customDropdown)
