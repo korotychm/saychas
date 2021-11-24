@@ -196,9 +196,9 @@ function useKeyboardEvents (e) {
         console.log($items)
 
         if (!$selected.length) {
-          $next = $items.eq(0);
+          $next = $items.first();
         } else {
-          $next = $selected.is($items.last()) ? $items.eq(0) : $selected.next();
+          $next = $selected.is($items.last()) ? $items.first() : $selected.next();
           console.log($next)
         }
         $next.addClass('selected')
