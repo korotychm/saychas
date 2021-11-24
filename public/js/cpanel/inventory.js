@@ -148,6 +148,31 @@ const Inventory = {
       prefixer (item) {
           return this.intermediatePath + item
       },
+      async uploadFile () {
+          let file  = document.querySelector("#upload-file").files
+          let formData = new FormData()
+          formData.append('file', file[0]);
+          formData.append( 'query_type', 'price')
+          await axios.post('/control-panel/upload-product-file', formData, {
+              headers: {'Content-Type': 'multipart/form-data'}
+          }).then(response => {
+              showMessage('Файл загружен, ожидайте ответа')
+              this.fileUploaded = true;
+              console.log(response)
+          })
+      },
+      async checkFiles () {
+          const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+          let requestUrl = '/control-panel/place-download-link';
+          await axios
+              .get(requestUrl, {headers})
+              .then(response => {
+                  this.downloadUrls = response.data.urls
+                  // this.downloadUrls.forEach(item =>  {
+                  //   item = location.origin + item;
+                  // })
+              })
+      },
       async showMenuWithAjax () {
           const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
           let requestUrl = '/control-panel/get-product-file';
