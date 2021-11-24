@@ -198,7 +198,7 @@ function useKeyboardEvents (e) {
         if (!$selected.length) {
           $next = $items.first();
         } else {
-          $next = $selected.is($items.last()) ? $items.first() : $selected.next();
+          $next = $selected.is($items.last()) ? $items.first() : $selected.parent().next().children('span');
           console.log($next)
         }
         $next.addClass('selected')
