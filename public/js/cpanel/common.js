@@ -181,11 +181,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents (e) {
-  let customDropdown = $('.custom-select__dropdown')
-  let customSelectDropdown = $(e.target).next()
-  let $items = customSelectDropdown.children().children().children('span')
-  let $selected = $items.filter('.selected').removeClass('selected'),
-      $next;
+  // let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
     // e.preventDefault()
     // console.log($items)
@@ -193,7 +189,10 @@ function useKeyboardEvents (e) {
     // console.log(customSelectDropdownLabels)
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
-
+        let customSelectDropdown = $(e.target).next()
+        let $items = customSelectDropdown.children().children().children('span')
+        let $selected = $items.filter('.selected'),
+            $next;
         console.log($items)
 
         if (!$selected.length) {
@@ -214,7 +213,7 @@ function useKeyboardEvents (e) {
       }
       // console.log(e.target)
       // console.log(e.code)
-  }),
-  console.log(customDropdown)
+  })
+  // console.log(customDropdown)
 
 }
