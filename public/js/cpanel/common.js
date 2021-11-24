@@ -204,7 +204,7 @@ function useKeyboardEvents () {
         console.log(e)
         if (e.keyCode === 40) {
           // checkedInput.parent().next().children('span').addClass('selected')
-          e.preventDefault()
+          // e.preventDefault()
         }
         // console.log(checkedInput.parent())
         // checkedInput.parent()
