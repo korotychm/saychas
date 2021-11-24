@@ -184,16 +184,16 @@ function useKeyboardEvents () {
   let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
     // e.preventDefault()
+    // console.log($items)
+    // let checkedInput = customSelectDropdownLabels.find('input:checked')
+    // console.log(customSelectDropdownLabels)
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
-        let $items = customSelectDropdown.children().children('span')
-        // console.log($items)
-        // let checkedInput = customSelectDropdownLabels.find('input:checked')
-        // console.log(customSelectDropdownLabels)
+        let $items = customSelectDropdown.children().children().children('span')
+        console.log($items)
         let $selected = $items.filter('.selected').removeClass('selected'),
             $next;
-        // first time only when no selected exists, remove if you automatically select first one
         if (!$selected.length) {
           $next = $items.first();
           console.log($selected)
