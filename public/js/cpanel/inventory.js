@@ -115,7 +115,7 @@ const Inventory = {
               </div>
           </div>
         </div>
-        <div v-if="filtersCreated" class="pagination">
+        <div v-if="filtersCreated && !showFileMenu" class="pagination">
           <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
         </div>
       </div>
