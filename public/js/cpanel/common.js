@@ -184,7 +184,7 @@ function useKeyboardEvents () {
   let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
       if (e.target === document.querySelector('.custom-select__label')) {
-        console.log($(e.target).next($('.custom-select__dropdown').children().children()))
+        console.log($(e.target).next($('.custom-select__dropdown').children().children().children().children()))
       }
       // console.log(e.target)
       // console.log(e.code)
