@@ -141,6 +141,7 @@ const Inventory = {
         filePath: '',
         downloadFileName: '',
         intermediatePath: '',
+        showFileMenu: false
       }
   },
   methods: {
@@ -157,7 +158,8 @@ const Inventory = {
           await axios
               .post(requestUrl,Qs.stringify({
                   data: {
-                      query_type: 'stock_balance'
+                      query_type: 'stock_balance',
+                      store_id: this.selectedFilters.store_id
                   }
               }),{headers})
               .then(response => {
