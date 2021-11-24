@@ -196,10 +196,11 @@ const Inventory = {
               }),{headers})
               .then(response => {
                   this.fileName = response.data.filename;
-                  this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
+                  this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0);
                   this.filePath = '/documents' + this.fileName;
-                  this.downloadFileName = this.fileName.split('/').pop()
-                  this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
+                  this.downloadFileName = this.fileName.split('/').pop();
+                  this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '');
+                  this.checkFiles();
               })
               .catch(error => {
                   console.log(error)

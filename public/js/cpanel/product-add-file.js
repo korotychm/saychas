@@ -199,6 +199,7 @@ const ProductAddFile = {
             this.filePath = '/documents' + this.fileName;
             this.downloadFileName = this.fileName.split('/').pop()
             this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
+            this.checkFiles();
           })
           .catch(error => {
             console.log(error)
