@@ -187,7 +187,7 @@ function useKeyboardEvents () {
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
-        let customSelectDropdownLabels = customSelectDropdown.children().children()
+        let $items = customSelectDropdown.children().children()
         // let checkedInput = customSelectDropdownLabels.find('input:checked')
         // console.log(customSelectDropdownLabels)
         let $selected = $items.filter('.selected').removeClass('selected'),
