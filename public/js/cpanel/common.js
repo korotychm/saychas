@@ -189,7 +189,17 @@ function useKeyboardEvents () {
         let customSelectDropdown = $(e.target).next()
         let customSelectDropdownLabels = customSelectDropdown.children().children()
         // let checkedInput = customSelectDropdownLabels.find('input:checked')
-        console.log(customSelectDropdownLabels)
+        // console.log(customSelectDropdownLabels)
+        let $selected = $items.filter('.selected').removeClass('selected'),
+            $next;
+        // first time only when no selected exists, remove if you automatically select first one
+        if (!$selected.length) {
+          $next = $items.first();
+        } else {
+          $next = $selected.is($items.last()) ? $items.first() : $selected.next();
+        }
+
+        $next.addClass('selected')
         console.log(e)
         if (e.keyCode === 40) {
           // checkedInput.parent().next().children('span').addClass('selected')
