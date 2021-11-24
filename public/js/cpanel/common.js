@@ -183,7 +183,7 @@ function showMessage(message) {
 function useKeyboardEvents () {
   let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
-    e.preventDefault()
+    // e.preventDefault()
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
