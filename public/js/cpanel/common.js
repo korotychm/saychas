@@ -195,9 +195,9 @@ function useKeyboardEvents () {
             $next;
         // first time only when no selected exists, remove if you automatically select first one
         if (!$selected.length) {
-          $next = $items.first().children('span');
+          $next = $items.first();
         } else {
-          $next = $selected.is($items.last().children('span')) ? $items.first().children('span') : $selected.next();
+          $next = $selected.is($items.last()) ? $items.first() : $selected.next();
         }
 
         $next.addClass('selected')
