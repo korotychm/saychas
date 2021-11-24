@@ -182,7 +182,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
   let customDropdown = $('.custom-select__dropdown')
-  $(document).on( "keydown", function(e) {
+  $(document).on( "keydown",'ArrowUp ArrowDown', function(e) {
     if (e.target === document.querySelector('.custom-select__label')) {
       console.log('йцуйцууцйуцй')
     }
