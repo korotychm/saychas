@@ -245,13 +245,13 @@ class ProductController extends AbstractActionController
     
     public function uploadProductFileAction()
     {
-//        $post = $this->getRequest()->getPost()->toArray();
+        $post = $this->getRequest()->getPost()->toArray();
 //        $productId = $post['product_id'];
 //        $providerId = $post['provider_id'];
 
         $identity = $this->authService->getIdentity();
 
-        $uploadsDir = $documentPath = $this->documentPath('product', ['provider_id' => $identity['provider_id'] ]);
+        $uploadsDir = $documentPath = $this->documentPath($post['query_type'], ['provider_id' => $identity['provider_id'] ]);
 
         $error = $_FILES['file']['error'];
         if (UPLOAD_ERR_OK == $error) {
@@ -263,7 +263,7 @@ class ProductController extends AbstractActionController
             
             $identity = $this->authService->getIdentity();
             $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
-            $data = ['filename' => $newFileName, 'query_type' => 'product'];
+            $data = ['filename' => $newFileName, 'query_type' => $post['query_type']];
             $result = $this->productManager->uploadProductFile($credentials, $data);
             $res = $result['http_code'] === 200 && $result['data']['result'] === true;
             
@@ -453,7 +453,7 @@ class ProductController extends AbstractActionController
 
         $content = [
           "provider_id" => $identity['provider_id'],
-          "store_id" => '',
+          "store_id" => $post['data']['store_id'],
           "category_id" => $post['data']['category_id'],
           "query_type" => $post['data']['query_type'],
         ];
