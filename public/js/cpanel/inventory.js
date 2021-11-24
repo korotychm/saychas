@@ -7,7 +7,7 @@ const Inventory = {
         <span class="store-title"></span>
         <div class="filter">
           <div class="filter__select" style="width: 400px; margin: 0 10px 0 0;">
-            <div class="custom-select custom-select--radio">
+            <div class="custom-select custom-select--radio"  :class="{'custom-disable': showFileMenu}">
               <div class="custom-select__label input">Выберите магазин</div>
               <div class="custom-select__dropdown">
                 <div class="custom-select__dropdown-inner">
@@ -27,7 +27,7 @@ const Inventory = {
             </button>
           </form>
           <div v-if="filtersCreated" class="filter__select">
-            <div class="custom-select custom-select--radio">
+            <div class="custom-select custom-select--radio" :class="{'custom-disable': showFileMenu}">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
                 <div class="custom-select__dropdown-inner">
