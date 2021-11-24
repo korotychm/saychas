@@ -715,6 +715,9 @@ const ProductEdit = {
     $('.main__loader').show();
     this.getProduct();
   },
+  mounted () {
+    useKeyboardEvents()
+  },
   updated: function(){
     checkProductImagesSlider();
     setAllCustomSelects();
