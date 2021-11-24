@@ -171,7 +171,11 @@ const ProductAddFile = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/place-download-link';
       await axios
-          .get(requestUrl, {headers})
+          .post(requestUrl, Qs.stringify({
+            data: {
+              query_type: 'product',
+            }
+          }), {headers})
           .then(response => {
             this.downloadUrls = response.data.urls
             // this.downloadUrls.forEach(item =>  {
