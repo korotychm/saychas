@@ -190,7 +190,7 @@ function useKeyboardEvents () {
         let checkedInput = customSelectDropdownLabels.find('input:checked')
         console.log(e)
         if (e.keyCode === 40) {
-          console.log(checkedInput.parent().next())
+          checkedInput.parent().next().children('span').addClass('selected')
         }
         // console.log(checkedInput.parent())
         // checkedInput.parent()

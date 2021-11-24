@@ -14,3 +14,7 @@
     pointer-events: none;
     opacity: .5;
 }
+
+.custom-select__option > .selected {
+    background: var(--gray);
+}
