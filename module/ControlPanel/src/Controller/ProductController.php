@@ -453,7 +453,7 @@ class ProductController extends AbstractActionController
 
         $content = [
           "provider_id" => $identity['provider_id'],
-          "store_id" => '',
+          "store_id" => $post['data']['store_id'],
           "category_id" => $post['data']['category_id'],
           "query_type" => $post['data']['query_type'],
         ];
