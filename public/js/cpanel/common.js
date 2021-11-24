@@ -195,10 +195,10 @@ function useKeyboardEvents () {
         let $selected = $items.filter('.selected').removeClass('selected'),
             $next;
         if (!$selected.length) {
-          $next = $items.first();
+          $next = $items.eq(0);
           console.log($selected)
         } else {
-          $next = $selected.is($items.last()) ? $items.first() : $selected.next();
+          $next = $selected.is($items.last()) ? $items.eq(0) : $selected.next();
           console.log($selected)
         }
 
