@@ -187,9 +187,9 @@ function useKeyboardEvents () {
       if (e.target === document.querySelector('.custom-select__label')) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
-        // let customSelectDropdownLabels = customSelectDropdown.children().children()
+        let customSelectDropdownLabels = customSelectDropdown.children().children()
         // let checkedInput = customSelectDropdownLabels.find('input:checked')
-        console.log(customSelectDropdown)
+        console.log(customSelectDropdownLabels)
         console.log(e)
         if (e.keyCode === 40) {
           // checkedInput.parent().next().children('span').addClass('selected')
