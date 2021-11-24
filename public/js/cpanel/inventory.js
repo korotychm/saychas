@@ -43,9 +43,37 @@ const Inventory = {
               </div>
             </div>
           </div>
+          <div class="filter__btn" v-if="filtersCreated" >
+            <button class="btn btn--primary" @click="showMenuWithAjax">Загрузить из файла</button>
+          </div>
         </div>
         <!-- фильтр end -->
-        <div v-if="filtersCreated" class="cp-container products list inventory">
+         <div class="cp-container" v-if="showFileMenu">
+           <div class="product-add-file__files">
+               <div class="product-add-file__files-download">
+                 <a :href="filePath" :download="downloadFileName">Скачать файл</a>
+                 <p>Скачайте и заполните файл.</p>
+                 <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
+               </div>
+               <div class="product-add-file__files-upload">
+                 <input type="file" id="upload-file" @change="uploadFile"/>
+                 <label for="upload-file">Загрузить файл</label>
+                 <p>Загрузите заполненный файл.</p>
+                 <p>Товары появятся на сайте после обработки.</p>
+               </div>
+             </div>
+             <div class="reload-result">
+                 <div class="result__container">
+                 <ul v-for="item of downloadUrls" >
+                 <li><a :href="prefixer(item.result_file)" :download="item.result_file">{{item.result_file}}</a></li>
+                 </ul>
+                 </div>
+                 <div class="result-btn__container">
+                   <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
+                 </div>
+             </div>
+            </div>
+        <div v-if="filtersCreated && !showFileMenu" class="cp-container products list inventory">
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
@@ -108,10 +136,45 @@ const Inventory = {
         },
         search: '',
         filtersCreated: false,
-        products: {}
+        products: {},
+        fileName: '',
+        filePath: '',
+        downloadFileName: '',
+        intermediatePath: '',
       }
   },
   methods: {
+      prefixer (item) {
+          return this.intermediatePath + item
+      },
+      async showMenuWithAjax () {
+          const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
+          let requestUrl = '/control-panel/get-product-file';
+          if (this.filePath) {
+              this.showFileMenu = !this.showFileMenu
+              return;
+          }
+          await axios
+              .post(requestUrl,Qs.stringify({
+                  data: {
+                      query_type: 'stock_balance'
+                  }
+              }),{headers})
+              .then(response => {
+                  this.fileName = response.data.filename;
+                  this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
+                  this.filePath = '/documents' + this.fileName;
+                  this.downloadFileName = this.fileName.split('/').pop()
+                  this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
+              })
+              .catch(error => {
+                  console.log(error)
+                  // if (error.response.status == '403'){
+                  //   location.reload();
+                  // }
+              });
+          this.showFileMenu = !this.showFileMenu
+      },
     setTitle(title){
       $('.store-title').html('');
       $('.store-title').html(' - ' + title);

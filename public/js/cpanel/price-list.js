@@ -153,7 +153,6 @@ const PriceList = {
           let formData = new FormData()
           formData.append('file', file[0]);
           formData.append( 'query_type', 'price')
-          console.log(formData)
           await axios.post('/control-panel/upload-product-file', formData, {
               headers: {'Content-Type': 'multipart/form-data'}
           }).then(response => {
