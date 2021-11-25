@@ -184,9 +184,10 @@ function radioHandler () {
 }
 
 function useKeyboardEvents () {
-  document.querySelectorAll('input[type="radio"]').addEventListener('change', function (e) {
-    console.log(e)
-  })
+  console.log(document.querySelectorAll('input[type="radio"]'))
+  // document.querySelectorAll('input[type="radio"]').addEventListener('change', function (e) {
+  //   console.log(e)
+  // })
   document.addEventListener('keydown', function(e) {
         if (e.keyCode === 13) {
           e.preventDefault()
