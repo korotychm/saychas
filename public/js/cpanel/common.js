@@ -181,19 +181,14 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  // let customDropdown = $('.custom-select__dropdown')
-  // console.log($('.active').children('.custom-select__dropdown').children().children())
 
-  // if (e.target === document.querySelector('.custom-select__label')) {
-  //   let customSelectDropdown = $(e.target).next()
-  // let $items = customSelectDropdown.children().children().children('span')
-    function selectItem (item) {
-      if (item) item.siblings('input[type="radio"]').checked = true;
-    }
   $(document).on( "keydown", function(e) {
         if (e.keyCode === 13) {
           e.preventDefault()
           $('.selected').siblings().prop('checked', true)
+          function submitItem (func) {
+            func()
+          }
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
