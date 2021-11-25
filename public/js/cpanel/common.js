@@ -183,9 +183,9 @@ function showMessage(message) {
 function useKeyboardEvents () {
   // let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
-    console.log(e)
+    // console.log(e)
      if ($('.custom-select--radio').hasClass('active')) {
-       console.log($('.active').children('.custom-select__dropdown').children().children())
+       // console.log($('.active').children('.custom-select__dropdown').children().children())
 
       // if (e.target === document.querySelector('.custom-select__label')) {
         let customSelectDropdown = $(e.target).next()
