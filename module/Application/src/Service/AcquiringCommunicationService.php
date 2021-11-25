@@ -142,9 +142,10 @@ class AcquiringCommunicationService
         $return['Amount'] = 0;
          foreach ($data as $basketItem) {
             $total = (int) $basketItem->getTotal();
-            $oldprice = $basketItem->getPrice();
-            $discount = $basketItem->getDiscount() ?? 0;
-            $price = ($oldprice - $oldprice * $discount / 100);
+            //$oldprice = $basketItem->getPrice();
+            //$discount = $basketItem->getDiscount() ?? 0;
+            //$price = ($oldprice - $oldprice * $discount / 100);
+            $price = $basketItem->getPrice();
             $productId = $basketItem->getProductId();
             $product = $this->productRepository->find(['id' => $productId]);
             $vatValue = (int) $product->getVat();
