@@ -186,7 +186,6 @@ function useKeyboardEvents () {
         if (e.keyCode === 13) {
           e.preventDefault()
           $('.selected').siblings().prop('checked', true)
-
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
@@ -201,7 +200,6 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -213,10 +211,6 @@ function useKeyboardEvents () {
           $next.addClass('selected')
         }
       }
-    return function submitItem (func) {
-      func()
-    }
   })
-
 
 }
