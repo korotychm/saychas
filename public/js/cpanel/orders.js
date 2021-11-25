@@ -67,8 +67,9 @@ const Orders = {
                         <div class="orders__sum">
                           <span>на сумму</span>
                           <div>
-                            <div class="orders__sum--initial">{{ order.requisition_sum.toLocaleString() }} ₽</div>
-                            <div class="orders__sum--fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--initial" v-if="+order.requisition_sum < +order.requisition_sum_fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--fact" v-if="order.requisition_sum_fact">{{ order.requisition_sum_fact.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--fact" v-else>{{ order.requisition_sum.toLocaleString() }} ₽</div>
                           </div>
                         </div>
                     </div>
@@ -93,7 +94,7 @@ const Orders = {
                             <div class="orders__product-actual" v-if="order.status_id != '02' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
                             <div class="orders__product-count" v-if="order.status_id != '02' && product.qty_partner == product.qty"><b>{{ product.qty_partner }}</b> шт</div>
 
-                            <div class="orders__product-sum"><span style="font-size: 12px">по</span> {{ (product.price/100).toLocaleString() }} ₽</div>
+                            <div class="orders__product-sum"><span style="font-size: 12px; font-weight: 400;">по</span> {{ (product.price/100).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
                               <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
