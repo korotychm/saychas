@@ -204,7 +204,7 @@ function useKeyboardEvents () {
         if (e.keyCode === 	38) {
           e.preventDefault()
           if (!$selected.length) {
-            $next = $items.parent().last().children('span');
+            $next = $items.parent().first().children('span');
             console.log($next)
           } else {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
