@@ -180,19 +180,14 @@ function showMessage(message) {
 }
 
 
-function useKeyboardEvents (e) {
+function useKeyboardEvents () {
   // let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
-    // e.preventDefault()
-    // console.log($items)
-    // let checkedInput = customSelectDropdownLabels.find('input:checked')
-    // console.log(customSelectDropdownLabels)
+    console.log(e)
       if (e.target === document.querySelector('.custom-select__label')) {
-        // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
         let $items = customSelectDropdown.children().children().children('span')
         if (e.keyCode === 40) {
-          // checkedInput.parent().next().children('span').addClass('selected')
           e.preventDefault()
           let $selected = $items.filter('.selected').removeClass('selected'),
               $next;
@@ -203,13 +198,8 @@ function useKeyboardEvents (e) {
           }
           $next.addClass('selected')
         }
-        // console.log(checkedInput.parent())
-        // checkedInput.parent()
-        // console.log(customSelectDropdownLabels)
       }
-      // console.log(e.target)
-      // console.log(e.code)
   })
-  // console.log(customDropdown)
+
 
 }
