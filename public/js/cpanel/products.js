@@ -170,7 +170,7 @@ const Products = {
         e.preventDefault()
         // $('.selected').siblings().prop('checked', true)
         // document.querySelector('.selected').previousElementSibling.checked = true;
-        this.$refs.forEach(item => item.checked = true)
+        this.$refs.rc.forEach(item => item.checked = true)
       }
       let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
       let $selected = $items.filter('.selected').removeClass('selected')
