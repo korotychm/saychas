@@ -111,11 +111,6 @@ const Products = {
         filtersCreated: false
       }
   },
-  watch: {
-    'selectedFilters.brand_id' (value) {
-      console.log(value)
-    }
-  },
   methods: {
     getProducts() {
       let requestUrl = '/control-panel/show-products';
@@ -163,6 +158,7 @@ const Products = {
       this.page_no = index;
       this.getProducts();
       console.log(event)
+      useKeyboardEvents()
     }
   },
   created: function(){
@@ -170,7 +166,7 @@ const Products = {
     this.getProducts();
   },
   mounted () {
-    useKeyboardEvents()
+
   },
   updated: function(){
     $('.main__loader').hide();
