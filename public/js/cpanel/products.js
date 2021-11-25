@@ -165,7 +165,37 @@ const Products = {
     this.getProducts();
   },
   mounted () {
-    useKeyboardEvents()
+    document.addEventListener('keydown', function(e) {
+      if (e.keyCode === 13) {
+        e.preventDefault()
+        // $('.selected').siblings().prop('checked', true)
+        document.querySelector('.selected').previousElementSibling.checked = true;
+      }
+      let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
+      let $selected = $items.filter('.selected').removeClass('selected')
+      let $next;
+
+      if ($('.custom-select--radio').hasClass('active')) {
+        if (e.keyCode === 40) {
+          e.preventDefault()
+          if (!$selected.length) {
+            $next = $items.parent().first().children('span');
+          } else {
+            $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
+          }
+          $next.addClass('selected')
+        }
+        if (e.keyCode === 	38) {
+          e.preventDefault()
+          if (!$selected.length) {
+            $next = $items.parent().last().children('span');
+          } else {
+            $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
+          }
+          $next.addClass('selected')
+        }
+      }
+    })
   },
   updated: function(){
     $('.main__loader').hide();
