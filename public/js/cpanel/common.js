@@ -191,16 +191,24 @@ function useKeyboardEvents () {
         let customSelectDropdown = $(e.target).next()
         // let $items = customSelectDropdown.children().children().children('span')
        let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
-        if (e.keyCode === 40) {
-          e.preventDefault()
           let $selected = $items.filter('.selected').removeClass('selected'),
               $next;
+        if (e.keyCode === 40) {
+          e.preventDefault()
           if (!$selected.length) {
             $next = $items.parent().first().children('span');
           } else {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
+        }
+        if (e.keyCode === 	38) {
+          e.preventDefault()
+          if (!$selected.length) {
+            $next = $items.parent().last().children('span');
+          } else {
+            $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().next().children('span');
+          }
         }
       }
   })
