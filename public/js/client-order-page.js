@@ -46,7 +46,7 @@ $(document).ready(function () {
               for (requisition of delivery.requisitions){
                 if (requisition.status_id != 6){ // Заявка не отменена
                   for (product of requisition.items) {
-                    total++;
+                    total += product.qty_fact;
                   }
                 }
               }
