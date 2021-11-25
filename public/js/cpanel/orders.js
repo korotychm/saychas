@@ -67,7 +67,7 @@ const Orders = {
                         <div class="orders__sum">
                           <span>на сумму</span>
                           <div>
-                            <div class="orders__sum--initial" v-if="+order.requisition_sum < +order.requisition_sum_fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--initial" v-if="+order.requisition_sum > +order.requisition_sum_fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
                             <div class="orders__sum--fact" v-if="order.requisition_sum_fact">{{ order.requisition_sum_fact.toLocaleString() }} ₽</div>
                             <div class="orders__sum--fact" v-else>{{ order.requisition_sum.toLocaleString() }} ₽</div>
                           </div>
