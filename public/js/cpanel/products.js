@@ -111,6 +111,11 @@ const Products = {
         filtersCreated: false
       }
   },
+  watch: {
+    'selectedFilters.brand_id' (value) {
+      console.log(value)
+    }
+  },
   methods: {
     getProducts() {
       let requestUrl = '/control-panel/show-products';
