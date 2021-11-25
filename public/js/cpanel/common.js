@@ -191,21 +191,17 @@ function useKeyboardEvents (e) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
         let $items = customSelectDropdown.children().children().children('span')
-        let $selected = $items.filter('.selected').removeClass('selected'),
-            $next;
-        console.log($items)
-
-        if (!$selected.length) {
-          $next = $items.parent().first().children('span');
-        } else {
-          $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
-          console.log($next)
-        }
-        $next.addClass('selected')
-        // console.log(e)
         if (e.keyCode === 40) {
           // checkedInput.parent().next().children('span').addClass('selected')
-          // e.preventDefault()
+          e.preventDefault()
+          let $selected = $items.filter('.selected').removeClass('selected'),
+              $next;
+          if (!$selected.length) {
+            $next = $items.parent().first().children('span');
+          } else {
+            $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
+          }
+          $next.addClass('selected')
         }
         // console.log(checkedInput.parent())
         // checkedInput.parent()
