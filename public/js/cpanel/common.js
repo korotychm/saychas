@@ -210,6 +210,9 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
         }
+        if (e.keyCode === 13) {
+          $next.siblings().checked = true;
+        }
       }
   })
 
