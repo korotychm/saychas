@@ -211,9 +211,10 @@ function useKeyboardEvents () {
           $next.addClass('selected')
         }
         if (e.keyCode === 13) {
-          $next.siblings('input[type="radio"]').checked = true;
+          e.preventDefault()
           console.log($next.siblings('input[type="radio"]'))
           console.log($next)
+          $next.siblings('input[type="radio"]').checked = true;
         }
       }
   })
