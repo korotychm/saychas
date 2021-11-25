@@ -224,10 +224,12 @@ class ClientOrderRepository extends Repository
                     $requisitionId = $item['requisition_id'];
                     $requisitionStatus = $item['status'];
                     $this->requisitionManager->setRequisitionStatus($requisitionId, $requisitionStatus);
+                    $this->requisitionManager->setRequisitionSum($requisitionId, $item['requisition_sum'], $item['requisition_sum_fact']);
                     //$this->updateRequisitionStatus($orderId, $clientOrder, $deliveryId, $requisitionId, $requisitionStatus);
                     break;
 
                 case self::ORDER_INFO:
+
                     $content = Json::encode($item['content']);
                     $this->updateDeliveryInfo($orderId, $clientOrder, $content);
                     break;
