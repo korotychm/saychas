@@ -64,7 +64,13 @@ const Orders = {
                           <div class="orders__count-initial" v-if="countProducts(index).initial > countProducts(index).fact"><b>{{ countProducts(index).initial }}</b></div>
                           <div class="orders__count-actual"><b>{{ countProducts(index).fact }}</b> {{ getUnit(countProducts(index).fact) }}</div>
                         </div>
-                        <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
+                        <div class="orders__sum">
+                          <span>на сумму</span>
+                          <div>
+                            <div class="orders__sum--initial">{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                          </div>
+                        </div>
                     </div>
                     <div class="td orders__full" v-show="activeOrder === order.id || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
@@ -110,7 +116,8 @@ const Orders = {
                       <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else>
-                      <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
+                      <div class="orders__ready-date" v-if="order.status_id != '06'">Собран {{ localeDate(order.status_date) }}</div>
+                      <div class="orders__ready-date" v-if="order.status_id == '06'">Отменен {{ localeDate(order.status_date) }}</div>
                       <button class="btn btn--gray" v-if="activeOrder !== order.id" @click="activeOrder = order.id">Подробнее</button>
                       <button class="btn btn--gray active" v-if="activeOrder === order.id" @click="activeOrder = null">Скрыть</button>
                     </div>
