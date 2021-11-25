@@ -137,7 +137,8 @@ class RequisitionController extends AbstractActionController
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
         unset($requisition['_id']);
         if ($res) {
-            $this->requisitionManager->replaceRequisition($requisition);
+            // $this->requisitionManager->replaceRequisition($requisition);
+            $this->requisitionManager->replaceRequisition($result['data']);
         }
 
         $answer = [
@@ -145,6 +146,7 @@ class RequisitionController extends AbstractActionController
             'result' => $result['data']['result'],
             'error_description' => $result['data']['error_description'],
             'error_description_for_user' => $result['data']['error_description_for_user'],
+            'data' => $result['data'],
         ];
 
         return new JsonModel($answer);
