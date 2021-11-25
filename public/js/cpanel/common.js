@@ -187,7 +187,7 @@ function useKeyboardEvents () {
           e.preventDefault()
           $('.selected').siblings().prop('checked', true)
           console.log($('.selected').siblings())
-          this.$forceUpdate()
+          vm.$forceUpdate()
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
