@@ -207,7 +207,7 @@ function useKeyboardEvents () {
             $next = $items.parent().last().children('span');
             console.log($next)
           } else {
-            $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().next().children('span');
+            $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
             console.log($next)
           }
         }
