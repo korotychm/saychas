@@ -9,3 +9,8 @@
     flex-shrink: 0;
     margin-left: 10px;
 }
+
+.custom-disable {
+    pointer-events: none;
+    opacity: .5;
+}

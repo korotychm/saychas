@@ -7,7 +7,7 @@ const Inventory = {
         <span class="store-title"></span>
         <div class="filter">
           <div class="filter__select" style="width: 400px; margin: 0 10px 0 0;">
-            <div class="custom-select custom-select--radio">
+            <div class="custom-select custom-select--radio"  :class="{'custom-disable': showFileMenu}">
               <div class="custom-select__label input">Выберите магазин</div>
               <div class="custom-select__dropdown">
                 <div class="custom-select__dropdown-inner">
@@ -19,7 +19,7 @@ const Inventory = {
               </div>
             </div>
           </div>
-          <form v-if="filtersCreated" class="filter__search" @submit.prevent="loadPage()">
+          <form v-if="filtersCreated" class="filter__search" @submit.prevent="loadPage()" style="display: none">
             <input class="input input--white" type="text" v-model="search" placeholder="Быстрый поиск" />
             <button>
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="27px"><path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M24.696,26.998 C24.362,26.998 24.34,26.865 23.797,26.632 L18.232,21.156 L17.955,21.327 C16.78,22.481 13.927,23.91 11.736,23.91 C5.264,23.91 0.0,17.911 0.0,11.545 C0.0,5.177 5.264,0.1 11.736,0.1 C18.208,0.1 23.473,5.177 23.473,11.545 C23.473,14.370 22.408,17.101 20.475,19.233 L20.217,19.519 L25.623,24.836 C25.869,25.78 26.2,25.397 25.999,25.734 C25.995,26.70 25.853,26.386 25.600,26.625 C25.357,26.865 25.30,26.998 24.696,26.998 ZM11.736,2.527 C6.682,2.527 2.570,6.572 2.570,11.545 C2.570,16.517 6.682,20.562 11.736,20.562 C16.774,20.562 20.874,16.517 20.874,11.545 C20.874,6.572 16.774,2.527 11.736,2.527 Z" />
@@ -27,7 +27,7 @@ const Inventory = {
             </button>
           </form>
           <div v-if="filtersCreated" class="filter__select">
-            <div class="custom-select custom-select--radio">
+            <div class="custom-select custom-select--radio" :class="{'custom-disable': showFileMenu}">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
                 <div class="custom-select__dropdown-inner">
@@ -43,9 +43,37 @@ const Inventory = {
               </div>
             </div>
           </div>
+          <div class="filter__btn" v-if="filtersCreated" >
+            <button class="btn btn--primary" @click="showMenuWithAjax">Загрузить из файла</button>
+          </div>
         </div>
         <!-- фильтр end -->
-        <div v-if="filtersCreated" class="cp-container products list inventory">
+         <div class="cp-container" v-if="showFileMenu">
+           <div class="product-add-file__files">
+               <div class="product-add-file__files-download">
+                 <a :href="filePath" :download="downloadFileName">Скачать файл</a>
+                 <p>Скачайте и заполните файл.</p>
+                 <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
+               </div>
+               <div class="product-add-file__files-upload">
+                 <input type="file" id="upload-file" @change="uploadFile"/>
+                 <label for="upload-file">Загрузить файл</label>
+                 <p>Загрузите заполненный файл.</p>
+                 <p>Товары появятся на сайте после обработки.</p>
+               </div>
+             </div>
+             <div class="reload-result">
+                 <div class="result__container">
+                 <ul v-for="item of downloadUrls" >
+                 <li><a :href="prefixer(item.result_file)" :download="item.result_file">{{item.result_file}}</a></li>
+                 </ul>
+                 </div>
+                 <div class="result-btn__container">
+                   <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
+                 </div>
+             </div>
+            </div>
+        <div v-if="filtersCreated && !showFileMenu" class="cp-container products list inventory">
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
@@ -87,7 +115,7 @@ const Inventory = {
               </div>
           </div>
         </div>
-        <div v-if="filtersCreated" class="pagination">
+        <div v-if="filtersCreated && !showFileMenu" class="pagination">
           <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
         </div>
       </div>
@@ -108,10 +136,80 @@ const Inventory = {
         },
         search: '',
         filtersCreated: false,
-        products: {}
+        products: {},
+        fileName: '',
+        filePath: '',
+        downloadFileName: '',
+        intermediatePath: '',
+        showFileMenu: false,
+        downloadUrls: [],
+        fileUploaded: false
       }
   },
   methods: {
+      prefixer (item) {
+          return this.intermediatePath + item
+      },
+      async uploadFile () {
+          let file  = document.querySelector("#upload-file").files
+          let formData = new FormData()
+          formData.append('file', file[0]);
+          formData.append( 'query_type', 'stock_balance')
+          formData.append( 'store_id', this.selectedFilters.store_id)
+          await axios.post('/control-panel/upload-product-file', formData, {
+              headers: {'Content-Type': 'multipart/form-data'}
+          }).then(response => {
+              showMessage('Файл загружен, ожидайте ответа')
+              this.fileUploaded = true;
+              console.log(response)
+          })
+      },
+      async checkFiles () {
+          const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+          let requestUrl = '/control-panel/place-download-link';
+          await axios
+              .post(requestUrl, Qs.stringify({
+                  data: {
+                      query_type: 'stock_balance',
+                  }
+              }), {headers})
+              .then(response => {
+                  this.downloadUrls = response.data.urls
+                  // this.downloadUrls.forEach(item =>  {
+                  //   item = location.origin + item;
+                  // })
+              })
+      },
+      async showMenuWithAjax () {
+          const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
+          let requestUrl = '/control-panel/get-product-file';
+          if (this.filePath) {
+              this.showFileMenu = !this.showFileMenu
+              return;
+          }
+          await axios
+              .post(requestUrl,Qs.stringify({
+                  data: {
+                      query_type: 'stock_balance',
+                      store_id: this.selectedFilters.store_id
+                  }
+              }),{headers})
+              .then(response => {
+                  this.fileName = response.data.filename;
+                  this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0);
+                  this.filePath = '/documents' + this.fileName;
+                  this.downloadFileName = this.fileName.split('/').pop();
+                  this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '');
+                  this.checkFiles();
+              })
+              .catch(error => {
+                  console.log(error)
+                  // if (error.response.status == '403'){
+                  //   location.reload();
+                  // }
+              });
+          this.showFileMenu = !this.showFileMenu
+      },
     setTitle(title){
       $('.store-title').html('');
       $('.store-title').html(' - ' + title);

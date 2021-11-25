@@ -279,6 +279,14 @@ class ProductManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
+    public function placeDownloadLink(string $providerId, string $queryType) : array
+    {
+        $collection = $this->db->product_file_answers;
+        $result = $collection->find(['provider_id' => $providerId, 'query_type' => $queryType], ['projection' => ['_id' => 0, 'result_file' => 1,], 'sort' => ['date' => -1], 'limit' => 3])->toArray();
+        return ['urls' => $result];
+
+    }
+    
     public function getHandbooks()
     {
         return [

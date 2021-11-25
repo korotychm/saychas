@@ -46,7 +46,9 @@ const ProductAddFile = {
                   </div>
                      <div class="reload-result">
                         <div class="result__container">
-                        <a :href="item" v-for="item of downloadUrls" >файл</a>
+                        <ul v-for="item of downloadUrls" >
+                        <li><a :href="prefixer(item.result_file)" :download="item.result_file">{{item.result_file}}</a></li>
+                        </ul>
                         </div>
                         <div class="result-btn__container">
                           <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
@@ -63,10 +65,16 @@ const ProductAddFile = {
       selectedCategoryName: '',
       file: false,
       filePath: '',
+      intermediatePath: '',
       fileName: '',
       fileUploaded: false,
       downloadFileName: '',
       downloadUrls: {},
+      testUrls:[
+          {"result_file":"product_000000058_2021_10_19_1323.xls"},
+          {"result_file":"product_000000006_2021_11_19_1605.xls"},
+          {"result_file":"product_000000006_2021_11_19_1602.xls"}
+      ],
     }
   },
   computed: {
@@ -87,6 +95,9 @@ const ProductAddFile = {
     },
   },
   methods: {
+    prefixer (item) {
+      return this.intermediatePath + item
+    },
     flatCategories() {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
@@ -147,6 +158,7 @@ const ProductAddFile = {
       let file  = document.querySelector("#upload-file").files
       let formData = new FormData()
       formData.append('file', file[0]);
+      formData.append( 'query_type', 'product')
       await axios.post('/control-panel/upload-product-file', formData, {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(response => {
@@ -159,11 +171,13 @@ const ProductAddFile = {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
       let requestUrl = '/control-panel/place-download-link';
       await axios
-          .get(requestUrl, {headers})
+          .post(requestUrl, Qs.stringify({
+            data: {
+              query_type: 'product',
+            }
+          }), {headers})
           .then(response => {
-            this.downloadUrls = response.data.urls.map(item => {
-              return location.origin + '/' + item;
-            });
+            this.downloadUrls = response.data.urls
             // this.downloadUrls.forEach(item =>  {
             //   item = location.origin + item;
             // })
@@ -184,6 +198,8 @@ const ProductAddFile = {
             this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
             this.filePath = '/documents' + this.fileName;
             this.downloadFileName = this.fileName.split('/').pop()
+            this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
+            this.checkFiles();
           })
           .catch(error => {
             console.log(error)
