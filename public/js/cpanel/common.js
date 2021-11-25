@@ -186,10 +186,11 @@ function useKeyboardEvents () {
     console.log(e)
      if ($('.custom-select--radio').hasClass('active')) {
        console.log($('.active').children('.custom-select__dropdown').children().children())
-     }
-      if (e.target === document.querySelector('.custom-select__label')) {
+
+      // if (e.target === document.querySelector('.custom-select__label')) {
         let customSelectDropdown = $(e.target).next()
-        let $items = customSelectDropdown.children().children().children('span')
+        // let $items = customSelectDropdown.children().children().children('span')
+       let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         if (e.keyCode === 40) {
           e.preventDefault()
           let $selected = $items.filter('.selected').removeClass('selected'),
