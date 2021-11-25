@@ -87,7 +87,7 @@ const Orders = {
                             <div class="orders__product-actual" v-if="order.status_id != '02' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
                             <div class="orders__product-count" v-if="order.status_id != '02' && product.qty_partner == product.qty"><b>{{ product.qty_partner }}</b> шт</div>
 
-                            <div class="orders__product-sum">{{ (calculatePrice(product.price, product.discount)/100).toLocaleString() }} ₽</div>
+                            <div class="orders__product-sum"><span style="font-size: 12px">по</span> {{ (product.price/100).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
                               <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
@@ -140,8 +140,8 @@ const Orders = {
           activeOrder: null,
           activeItem: null,
           currentQuantity: null,
-          deadline_new: 1,
-          deadline_new_last: 1,
+          deadline_new: 10,
+          deadline_new_last: 5,
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
@@ -205,9 +205,6 @@ const Orders = {
       },
       countProducts(index) {
         return this.orders[index].items.filter(item => item.qty_partner > 0).length;
-      },
-      calculatePrice(price,discount) {
-        return price - (price * discount / 100)
       },
       getUnit(value) {
         if (value == 0) {
