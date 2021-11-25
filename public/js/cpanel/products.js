@@ -21,7 +21,7 @@ const Products = {
                     <span>Все категории</span>
                   </label>
                   <label v-for="category in filters.categories" class="custom-select__option">
-                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model.lazy="selectedFilters.category_id" @change="loadPage()" />
                     <span>{{category[1]}}</span>
                   </label>
                 </div>
@@ -139,7 +139,6 @@ const Products = {
               }
               console.log(response.data);
               console.log(this.products);
-              useKeyboardEvents()
             }
           })
           .catch(error => {
@@ -159,7 +158,6 @@ const Products = {
       this.page_no = index;
       this.getProducts();
       console.log(event)
-
     }
   },
   created: function(){
@@ -167,7 +165,7 @@ const Products = {
     this.getProducts();
   },
   mounted () {
-
+    useKeyboardEvents()
   },
   updated: function(){
     $('.main__loader').hide();
