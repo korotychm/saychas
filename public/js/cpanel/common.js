@@ -193,8 +193,8 @@ function useKeyboardEvents () {
   $(document).on( "keydown", function(e) {
         if (e.keyCode === 13) {
           e.preventDefault()
-          console.log($('.selected').siblings())
           $('.selected').siblings('input[type="radio"]').checked = true;
+          console.log($('.selected').siblings())
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
