@@ -139,6 +139,7 @@ const Products = {
               }
               console.log(response.data);
               console.log(this.products);
+              useKeyboardEvents()
             }
           })
           .catch(error => {
@@ -158,7 +159,7 @@ const Products = {
       this.page_no = index;
       this.getProducts();
       console.log(event)
-      useKeyboardEvents()
+
     }
   },
   created: function(){
