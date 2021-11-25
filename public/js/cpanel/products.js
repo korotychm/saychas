@@ -163,6 +163,9 @@ const Products = {
     $('.main__loader').show();
     this.getProducts();
   },
+  mounted () {
+    useKeyboardEvents()
+  },
   updated: function(){
     $('.main__loader').hide();
   }
