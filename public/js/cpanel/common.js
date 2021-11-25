@@ -186,7 +186,7 @@ function useKeyboardEvents () {
         if (e.keyCode === 13) {
           e.preventDefault()
           $('.selected').siblings().prop('checked', true)
-          function submitItem (func) {
+         export function submitItem (func) {
             func()
           }
         }
