@@ -210,6 +210,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
             console.log($next)
           }
+          $next.addClass('selected')
         }
       }
   })
