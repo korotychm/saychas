@@ -191,7 +191,7 @@ function useKeyboardEvents (e) {
         // console.log($(e.target).next())
         let customSelectDropdown = $(e.target).next()
         let $items = customSelectDropdown.children().children().children('span')
-        let $selected = $items.filter('.selected'),
+        let $selected = $items.filter('.selected').removeClass('selected'),
             $next;
         console.log($items)
 
