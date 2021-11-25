@@ -207,7 +207,6 @@ const Orders = {
         let initial = 0,
             fact = 0;
         for (let item of this.orders[index].items){
-          console.log(item);
           initial += +item.qty;
           fact += +item.qty_partner;
         }
