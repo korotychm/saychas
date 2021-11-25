@@ -182,7 +182,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-  $(document).on( "keydown", function(e) {
+  document.addEventListener('keydown', function(e) {
         if (e.keyCode === 13) {
           e.preventDefault()
           // $('.selected').siblings().prop('checked', true)
