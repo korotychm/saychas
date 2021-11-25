@@ -187,11 +187,11 @@ function useKeyboardEvents () {
   // if (e.target === document.querySelector('.custom-select__label')) {
   //   let customSelectDropdown = $(e.target).next()
   // let $items = customSelectDropdown.children().children().children('span')
-  $(document).on( "keydown", function(e) {
-     if ($('.custom-select--radio').hasClass('active')) {
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
         let $next;
+  $(document).on( "keydown", function(e) {
+     if ($('.custom-select--radio').hasClass('active')) {
         if (e.keyCode === 40) {
           e.preventDefault()
           if (!$selected.length) {
