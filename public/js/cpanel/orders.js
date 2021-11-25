@@ -61,8 +61,8 @@ const Orders = {
                             </div>
                         </div>
                         <div class="orders__count">
-                          <div class="orders__count-initial" v-if="order.items.length > countProducts(index)"><b>{{ order.items.length }}</b></div>
-                          <div class="orders__count-actual"><b>{{ countProducts(index) }}</b> {{ getUnit(countProducts(index)) }}</div>
+                          <div class="orders__count-initial" v-if="countProducts(index).initial > countProducts(index).fact"><b>{{ countProducts(index).initial }}</b></div>
+                          <div class="orders__count-actual"><b>{{ countProducts(index).fact }}</b> {{ getUnit(countProducts(index).fact) }}</div>
                         </div>
                         <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
                     </div>
@@ -204,7 +204,16 @@ const Orders = {
         }, 1000);
       },
       countProducts(index) {
-        return this.orders[index].items.filter(item => item.qty_partner > 0).length;
+        let initial = 0,
+            fact = 0;
+        for (let item in this.orders[index].items){
+          initial += +item.qty;
+          fact += +item.qty_partner;
+        }
+        return {
+          initial,
+          fact
+        }
       },
       getUnit(value) {
         if (value == 0) {
