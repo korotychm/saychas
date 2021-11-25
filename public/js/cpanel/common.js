@@ -187,10 +187,11 @@ function useKeyboardEvents () {
   // if (e.target === document.querySelector('.custom-select__label')) {
   //   let customSelectDropdown = $(e.target).next()
   // let $items = customSelectDropdown.children().children().children('span')
+  $(document).on( "keydown", function(e) {
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
         let $next;
-  $(document).on( "keydown", function(e) {
+
      if ($('.custom-select--radio').hasClass('active')) {
         if (e.keyCode === 40) {
           e.preventDefault()
@@ -200,6 +201,12 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
+          if (e.keyCode === 13) {
+            e.preventDefault()
+            console.log($next)
+            console.log($next.siblings('input[type="radio"]'))
+            $next.siblings('input[type="radio"]').checked = true;
+          }
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -209,12 +216,12 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-        }
         if (e.keyCode === 13) {
           e.preventDefault()
           console.log($next)
           console.log($next.siblings('input[type="radio"]'))
           $next.siblings('input[type="radio"]').checked = true;
+        }
         }
       }
   })
