@@ -186,7 +186,7 @@ function useKeyboardEvents () {
         if (e.keyCode === 13) {
           e.preventDefault()
           // $('.selected').siblings().prop('checked', true)
-          document.querySelector('input[type="radio"]').checked = !document.querySelector('input[type="radio"]').checked
+          document.querySelector('input[type="radio"]').checked = true;
           console.log($('.selected').siblings())
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
