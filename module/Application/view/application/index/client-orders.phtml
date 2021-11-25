@@ -74,9 +74,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
                 </div>
                 <div class="panel__delivery">
                     <div class="panel__delivery-item">
-                        <div class="panel__order-status panel__order-status--delivering" v-if="+order.orderStatus == 4"></div>
-                        <div class="panel__order-status panel__order-status--delivered" v-else-if="+order.orderStatus == 5"></div>
-                        <div class="panel__order-status panel__order-status--cancelled" v-else-if="+order.orderStatus == 6"></div>
+                        <div class="panel__order-status panel__order-status--delivering" v-if="+order.orderStatus == 3"></div>
+                        <div class="panel__order-status panel__order-status--delivered" v-else-if="+order.orderStatus == 4"></div>
+                        <div class="panel__order-status panel__order-status--cancelled" v-else-if="+order.orderStatus == 5"></div>
                         <div class="panel__order-status panel__order-status--collecting" v-else></div>
                         <div>
                             <h2><a :href="'/user/order/' + order.orderId "><?= Resource::THE_ORDER_NUM ?> {{ order.orderId }}</a></h2>
