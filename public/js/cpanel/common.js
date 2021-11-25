@@ -186,9 +186,7 @@ function useKeyboardEvents () {
         if (e.keyCode === 13) {
           e.preventDefault()
           $('.selected').siblings().prop('checked', true)
-         export function submitItem (func) {
-            func()
-          }
+
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
@@ -213,14 +211,11 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-        // if (e.keyCode === 13) {
-        //   e.preventDefault()
-        //   console.log($next)
-        //   console.log($next.siblings('input[type="radio"]'))
-        //   $next.siblings('input[type="radio"]').checked = true;
-        // }
         }
       }
+    return function submitItem (func) {
+      func()
+    }
   })
 
 
