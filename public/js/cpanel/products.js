@@ -21,7 +21,7 @@ const Products = {
                     <span>Все категории</span>
                   </label>
                   <label v-for="category in filters.categories" class="custom-select__option">
-                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model.lazy="selectedFilters.category_id" @change="loadPage()" />
+                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" ref="rc" v-model="selectedFilters.category_id" @change="loadPage()" />
                     <span>{{category[1]}}</span>
                   </label>
                 </div>
@@ -169,7 +169,8 @@ const Products = {
       if (e.keyCode === 13) {
         e.preventDefault()
         // $('.selected').siblings().prop('checked', true)
-        document.querySelector('.selected').previousElementSibling.checked = true;
+        // document.querySelector('.selected').previousElementSibling.checked = true;
+        this.$refs.forEach(item => item.checked = true)
       }
       let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
       let $selected = $items.filter('.selected').removeClass('selected')
