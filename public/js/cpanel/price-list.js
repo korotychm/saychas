@@ -34,7 +34,7 @@ const PriceList = {
           <div class="filter__btn">
             <button class="btn btn--primary" @click="showMenuWithAjax">Загрузить из файла</button>
           </div>
-          
+
         </div>
             <div class="cp-container" v-if="showFileMenu">
                 <div class="product-add-file__files">
@@ -88,7 +88,7 @@ const PriceList = {
                   <div class="td">
                     <div v-if="+product.discount > 0" class="pricelist__oldprice">{{ product.price.toLocaleString() }} ₽</div>
                     <div v-if="+product.discount > 0" class="pricelist__price">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</div>
-                    <div v-else class="pricelist__price">{{ product.price }} ₽</div>
+                    <div v-else class="pricelist__price">{{ Math.round(+product.price) }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
                     <div class="pricelist__popup-category">{{ product.category_name }}</div>
@@ -106,8 +106,8 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3 v-if="product.discount">{{ (+product.price * (100 - +product.discount) / 100).toLocaleString() }} ₽</h3>
-                        <h3 v-else> {{ +product.price.toLocaleString() }} ₽</h3>
+                        <h3 v-if="product.discount">{{ Math.round(+product.price * (100 - +product.discount) / 100).toLocaleString() }} ₽</h3>
+                        <h3 v-else> {{ Math.round(+product.price).toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
