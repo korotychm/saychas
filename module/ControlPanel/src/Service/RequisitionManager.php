@@ -411,6 +411,15 @@ class RequisitionManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
+    public function setRequisitionSum($id, $requisitionSum, $requisitionSumFact)
+    {
+        $collection = $this->db->{$this->collectionName};
+        $updateResult = $collection->updateOne(['id' => $id],
+                ['$set' => ['requisition_sum' => $requisitionSum, 'requisition_sum_fact' => $requisitionSumFact ]]);
+        
+        return $updateResult;
+    }
+
     public function getRequisitionStatus($id)
     {
         $requisition = $this->find(['id' => $id]);
