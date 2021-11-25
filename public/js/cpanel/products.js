@@ -154,10 +154,10 @@ const Products = {
             $('.main__loader').hide();
           });
     },
-    loadPage(index = 1) {
+    loadPage(index = 1, e) {
       this.page_no = index;
       this.getProducts();
-      console.log('сработать должно')
+      console.log(e)
     }
   },
   created: function(){
