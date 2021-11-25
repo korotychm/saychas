@@ -157,6 +157,7 @@ const Products = {
     loadPage(index = 1) {
       this.page_no = index;
       this.getProducts();
+      console.log('сработать должно')
     }
   },
   created: function(){
