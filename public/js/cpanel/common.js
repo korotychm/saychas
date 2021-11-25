@@ -184,6 +184,10 @@ function useKeyboardEvents () {
   // let customDropdown = $('.custom-select__dropdown')
   $(document).on( "keydown", function(e) {
     console.log(e)
+     if ($('.custom-select--radio').hasClass('active')) {
+       console.log('qweqweqeqw')
+       console.log(e.target)
+     }
       if (e.target === document.querySelector('.custom-select__label')) {
         let customSelectDropdown = $(e.target).next()
         let $items = customSelectDropdown.children().children().children('span')
