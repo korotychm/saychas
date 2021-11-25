@@ -61,10 +61,17 @@ const Orders = {
                             </div>
                         </div>
                         <div class="orders__count">
-                          <div class="orders__count-initial" v-if="order.items.length > countProducts(index)"><b>{{ order.items.length }}</b></div>
-                          <div class="orders__count-actual"><b>{{ countProducts(index) }}</b> {{ getUnit(countProducts(index)) }}</div>
+                          <div class="orders__count-initial" v-if="countProducts(index).initial > countProducts(index).fact"><b>{{ countProducts(index).initial }}</b></div>
+                          <div class="orders__count-actual"><b>{{ countProducts(index).fact }}</b> {{ getUnit(countProducts(index).fact) }}</div>
                         </div>
-                        <div class="orders__sum">на сумму<span>{{ order.requisition_sum.toLocaleString() }} ₽</span></div>
+                        <div class="orders__sum">
+                          <span>на сумму</span>
+                          <div>
+                            <div class="orders__sum--initial" v-if="+order.requisition_sum > +order.requisition_sum_fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--fact" v-if="order.requisition_sum_fact">{{ order.requisition_sum_fact.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--fact" v-else>{{ order.requisition_sum.toLocaleString() }} ₽</div>
+                          </div>
+                        </div>
                     </div>
                     <div class="td orders__full" v-show="activeOrder === order.id || order.status_id == '02'">
                         <div class="orders__product" v-for="product in order.items" :class="{'orders__product--zero' : (product.qty_partner == 0)}">
@@ -87,7 +94,7 @@ const Orders = {
                             <div class="orders__product-actual" v-if="order.status_id != '02' && product.qty_partner < product.qty"><b>{{ product.qty_partner }}</b> шт</div>
                             <div class="orders__product-count" v-if="order.status_id != '02' && product.qty_partner == product.qty"><b>{{ product.qty_partner }}</b> шт</div>
 
-                            <div class="orders__product-sum">{{ (calculatePrice(product.price, product.discount)/100).toLocaleString() }} ₽</div>
+                            <div class="orders__product-sum"><span style="font-size: 12px; font-weight: 400;">по</span> {{ (product.price/100).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
                               <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
@@ -110,7 +117,8 @@ const Orders = {
                       <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else>
-                      <div class="orders__ready-date" v-if="order.status_id != '05'">Собран {{ localeDate(order.status_date) }}</div>
+                      <div class="orders__ready-date" v-if="order.status_id != '06'">Собран {{ localeDate(order.status_date) }}</div>
+                      <div class="orders__ready-date" v-if="order.status_id == '06'">Отменен {{ localeDate(order.status_date) }}</div>
                       <button class="btn btn--gray" v-if="activeOrder !== order.id" @click="activeOrder = order.id">Подробнее</button>
                       <button class="btn btn--gray active" v-if="activeOrder === order.id" @click="activeOrder = null">Скрыть</button>
                     </div>
@@ -140,8 +148,8 @@ const Orders = {
           activeOrder: null,
           activeItem: null,
           currentQuantity: null,
-          deadline_new: 1,
-          deadline_new_last: 1,
+          deadline_new: 10,
+          deadline_new_last: 5,
           deadline_collect: 20,
           deadline_collect_last: 15,
           currentTime: '',
@@ -204,10 +212,16 @@ const Orders = {
         }, 1000);
       },
       countProducts(index) {
-        return this.orders[index].items.filter(item => item.qty_partner > 0).length;
-      },
-      calculatePrice(price,discount) {
-        return price - (price * discount / 100)
+        let initial = 0,
+            fact = 0;
+        for (let item of this.orders[index].items){
+          initial += +item.qty;
+          fact += +item.qty_partner;
+        }
+        return {
+          initial,
+          fact
+        }
       },
       getUnit(value) {
         if (value == 0) {
