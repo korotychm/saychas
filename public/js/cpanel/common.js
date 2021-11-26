@@ -188,7 +188,10 @@ function useKeyboardEvents () {
 
     if (e.keyCode === 9) {
       if (document.activeElement === document.querySelector('.custom-select__label')) {
-        document.querySelector('.custom-select__label').classList.add('active')
+        if (document.querySelector('.custom-select__label').parentElement.classList.contains('active')) {
+          document.querySelector('.custom-select__label').parentElement.classList.remove('active')
+        }
+        document.querySelector('.custom-select__label').parentElement.classList.add('active')
       }
       setTimeout(() => {
         console.log(document.activeElement)
