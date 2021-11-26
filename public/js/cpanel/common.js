@@ -184,13 +184,19 @@ function showMessage(message) {
 function useKeyboardEvents () {
   $('.custom-select__label').attr('tabindex', 1)
   document.addEventListener('keydown', function(e) {
-        if (e.keyCode === 13) {
-          e.preventDefault()
-          $('.selected').siblings().trigger('click')
-        }
-        let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
-        let $selected = $items.filter('.selected').removeClass('selected')
-        let $next;
+
+
+    if (e.keyCode === 13) {
+      if ($('.custom-select--radio').hasClass('active')) {
+        console.log('работает')
+        e.preventDefault()
+        $('.selected').siblings().trigger('click')
+      }
+
+    }
+    let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
+    let $selected = $items.filter('.selected').removeClass('selected')
+    let $next;
 
      if ($('.custom-select--radio').hasClass('active')) {
         if (e.keyCode === 40) {
