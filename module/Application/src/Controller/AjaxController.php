@@ -60,6 +60,7 @@ use Laminas\Db\Sql\Where;
 //use Throwable;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
+use Application\Helper\MathHelper;
 
 class AjaxController extends AbstractActionController
 {
@@ -544,7 +545,7 @@ class AjaxController extends AbstractActionController
             $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
             $productaddPrice = (int) $productadd->getPrice();
             $productaddDiscount = (int) $productadd->getDiscount();
-            $productaddPrice = $productaddPrice - $productaddPrice * $productaddDiscount / 100;
+            $productaddPrice = MathHelper::roundRealPrice($productaddPrice, $productaddDiscount); //$productaddPrice - $productaddPrice * $productaddDiscount / 100;
             $basketItem->setDiscount($productaddDiscount);
             $basketItem->setPrice($productaddPrice);
             $basketItem->setTotal($basketItemTotal + 1);
@@ -593,7 +594,7 @@ class AjaxController extends AbstractActionController
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
         $basketItem->setTotal($productCount);
         $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-        $productPrice = $productPrice - $productPrice * $product->getDiscount() / 100;
+        $productPrice = MathHelper::roundRealPrice($productPrice, $product->getDiscount()); 
         $return['totalNum'] = (int) $productPrice * $productCount;
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
         return new JsonModel($return);

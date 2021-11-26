@@ -30,7 +30,7 @@ use Application\Model\RepositoryInterface\ProductImageRepositoryInterface;
 use Application\Model\Entity\Store;
 use Application\Model\Entity\Basket;
 use Application\Model\Entity\ProductFavorites;
-//use Application\Helper\ArrayHelper;
+use Application\Helper\MathHelper;
 use Application\Helper\StringHelper;
 
 class HtmlProviderService
@@ -135,7 +135,7 @@ class HtmlProviderService
             $productRow = $this->productRepository->find(['id' => $key]);
             $price = $productRow->receivePriceObject()->getPrice();
             $discount =  $productRow->receivePriceObject()->getDiscount();
-            $price = $price - $price * $discount / 100;
+            $price = MathHelper::roundRealPrice($price, $discount);// $price - $price * $discount / 100;
             $rest = $productRow->receiveRest($legalStoreKey);
 
             if ($basketProducts[$key]["price"] != $price) {
@@ -316,7 +316,7 @@ class HtmlProviderService
 
         if ($return['discount'] > 0) {
             $return['oldPrice'] = $return['price'];
-            $return['price'] = $return['oldPrice'] - ($return['oldPrice'] * $return['discount'] / 100);
+            $return['price'] = MathHelper::roundRealPrice($return['oldPrice'], $return['discount']); 
         }
 
         $return['price_formated'] = number_format(($return['price'] / 100), 0, "", "&nbsp;");
@@ -464,7 +464,7 @@ class HtmlProviderService
                 if (!$price = (int) $product->receivePriceObject()->getPrice()) {
                     continue;
                 }
-                $price = $price - $price * $product->receivePriceObject()->getDiscount()/100;
+                $price = MathHelper::roundRealPrice($price, $product->receivePriceObject()->getDiscount()); // - $price * /100;
 
                 $total += ($price * $c['count']);
                 $j += $c["count"];
@@ -654,7 +654,7 @@ class HtmlProviderService
                 
                 $price = (int) $product->receivePriceObject()->getPrice();
                 $discount = (int) $product->receivePriceObject()->getDiscount();
-                $price = $price - $price*$discount/100;
+                $price = MathHelper::roundRealPrice($price, $discount);
                 $rest = $product->receiveRest($legalStore);
                 $productProviderId = $product->getProviderId();
                 $productProvider = $this->providerRepository->find(['id' => $productProviderId]);

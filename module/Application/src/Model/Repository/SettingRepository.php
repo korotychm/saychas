@@ -85,7 +85,7 @@ class SettingRepository extends Repository implements SettingRepositoryInterface
             return ['result' => false, 'error_description' => $e->getMessage(), 'statusCode' => 400];
         }
 
-        if (empty($data = $result['data']) or!is_array($data)) {
+        if (empty($data = $result['data']) || !is_array($data)) {
             return ['result' => false, 'error_description' => 'data is empty', 'statusCode' => 400];
         }
 

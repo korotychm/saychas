@@ -99,7 +99,11 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
         //$stmt = $sql->prepareStatementForSqlObject($select);
         $queryString = $sql->buildSqlString($select);
         
-        return $this->db->query($queryString)->execute()->current();        
+        $return = $this->db->query($queryString)->execute()->current();        
+        $return["minprice"] = floor($return["minprice"]/100) * 100;
+        $return["maxprice"] = ceil($return["maxprice"]/100) * 100;
+        //exit (print_r($return));
+        return $return;
         
      }
 
