@@ -288,7 +288,8 @@ const Orders = {
                 location.reload();
               } else {
                 console.log('Response from update-requisition',response.data);
-                this.orders[index] = JSON.parse(JSON.stringify(response.data.data));
+                let updatedOrder = JSON.parse(JSON.stringify(response.data.data));
+                Vue.set(this.orders, index, updatedOrder);
               }
             })
             .catch(error => {
