@@ -165,7 +165,7 @@ const Products = {
     this.getProducts();
   },
   mounted () {
-
+    useKeyboardEvents()
   },
   updated: function(){
     $('.main__loader').hide();
