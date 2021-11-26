@@ -188,6 +188,7 @@ function useKeyboardEvents () {
     if (e.keyCode === 9) {
       console.log(document.activeElement)
       if ($('.custom-select__label').parent().hasClass('active')) {
+        console.log($('.custom-select__label'))
         $('.custom-select__label').parent().parent().next().children().addClass('active')
         $('.custom-select__label').parent().removeClass('active')
 
