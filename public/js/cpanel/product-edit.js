@@ -593,7 +593,9 @@ const ProductEdit = {
                 } else {
                   if (response.data.result){
                     showMessage('Информация о товаре сохранена и отправлена на модерацию.');
-                    //router.replace('/products');
+                    router.replace('/products');
+                  } else {
+                    showServicePopupWindow('Невозможно сохранить товар', response.data.error_description_for_user);
                   }
                 }
               })
