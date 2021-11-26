@@ -186,13 +186,13 @@ function radioHandler () {
 
 
 Vue.directive('keyboard', {
-  inserted () {
+  inserted (el) {
     console.log(document.querySelectorAll('input[type="radio"]'))
     // document.querySelectorAll('input[type="radio"]').addEventListener('change', function (e) {
     //   console.log(e)
     // })
     document.addEventListener('keydown', function(e) {
-      console.log(this)
+      console.log(el)
       if (e.keyCode === 13) {
         e.preventDefault()
         $('.selected').siblings().prop('checked', true)
