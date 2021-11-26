@@ -155,7 +155,7 @@ class RequisitionController extends AbstractActionController
     public function getRequisitionStatusAction()
     {
         $post = $this->getRequest()->getPost()->toArray();
-        $status = $this->requisitionManager->getRequisitionStatus($post['id']);
+	$status = $this->requisitionManager->getRequisitionStatus($post['id']);
         
         if(false == $status['result']) {
             $answer = [

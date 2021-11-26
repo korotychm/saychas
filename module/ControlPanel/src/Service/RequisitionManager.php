@@ -435,8 +435,8 @@ class RequisitionManager extends ListManager implements LoadableInterface
     public function replaceRequisition($requisition)
     {
         $collection = $this->db->{$this->collectionName};
-        $updateResult = $collection->updateOne(['id' => $requisition['id']],
-                ['$set' => ['status_id' => $requisition['status_id'], 'status' => $requisition['status'], 'requisition_sum' => $requisition['requisition_sum'], 'requisition_sum_fact' => $requisition['requisition_sum_fact'], 'items' => $requisition['items'] ]]);
+        $updateResult = $collection->updateOne(['id' => $requisition['data']['id']],
+                ['$set' => ['status_id' => $requisition['data']['status_id'], 'status' => $requisition['data']['status'], 'requisition_sum' => $requisition['data']['requisition_sum'], 'requisition_sum_fact' => $requisition['data']['requisition_sum_fact'], 'items' => $requisition['data']['items'] ]]);
 
         return $updateResult;
     }

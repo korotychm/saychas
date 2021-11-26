@@ -68,7 +68,7 @@ const Orders = {
                           <span>на сумму</span>
                           <div>
                             <div class="orders__sum--initial" v-if="+order.requisition_sum > +order.requisition_sum_fact">{{ order.requisition_sum.toLocaleString() }} ₽</div>
-                            <div class="orders__sum--fact" v-if="order.requisition_sum_fact">{{ order.requisition_sum_fact.toLocaleString() }} ₽</div>
+                            <div class="orders__sum--fact" v-if="order.requisition_sum_fact !== null">{{ order.requisition_sum_fact.toLocaleString() }} ₽</div>
                             <div class="orders__sum--fact" v-else>{{ order.requisition_sum.toLocaleString() }} ₽</div>
                           </div>
                         </div>
@@ -96,12 +96,12 @@ const Orders = {
 
                             <div class="orders__product-sum"><span style="font-size: 12px; font-weight: 400;">по</span> {{ (product.price/100).toLocaleString() }} ₽</div>
                             <div class="orders__product-edit" v-if="order.status_id == '02'">
-                              <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner">
+                              <button v-if="product.product_id !== activeItem" @click="activeItem = product.product_id; currentQuantity = product.qty_partner; disabledSaveOrder = order.id;">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="14px">
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M13.352,4.166 L12.750,4.778 C12.591,4.938 12.334,4.938 12.175,4.778 L9.291,1.858 C9.133,1.699 9.133,1.440 9.291,1.280 L9.291,1.280 L9.901,0.663 C10.766,0.214 12.173,0.221 13.46,0.648 C13.51,0.653 13.56,0.659 13.61,0.663 L13.64,0.663 L13.352,0.955 C14.225,1.845 14.225,3.277 13.352,4.166 ZM11.312,6.241 L5.123,12.523 C4.715,12.938 4.199,13.226 3.635,13.355 L0.735,14.12 C0.404,14.83 0.78,13.871 0.7,13.537 C0.13,13.438 0.10,13.335 0.17,13.237 L0.842,10.394 C0.986,9.900 1.250,9.449 1.610,9.83 L7.860,2.741 C8.19,2.581 8.276,2.581 8.435,2.741 L11.312,5.662 C11.469,5.822 11.469,6.80 11.312,6.241 Z" />
                                 </svg>
                               </button>
-                              <button class="done" v-if="product.product_id === activeItem" @click="product.qty_partner = currentQuantity; product.qty_fact = currentQuantity; activeItem = null;">
+                              <button class="done" v-if="product.product_id === activeItem" @click="product.qty_partner = currentQuantity; product.qty_fact = currentQuantity; activeItem = null; disabledSaveOrder = 0;">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="15px">
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M3.343,6.720 L8.778,12.155 C9.363,12.741 9.363,13.691 8.778,14.276 C8.192,14.862 7.242,14.862 6.656,14.276 L1.221,8.842 C0.636,8.255 0.636,7.306 1.221,6.720 C1.807,6.134 2.757,6.134 3.343,6.720 Z"></path>
                                   <path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M20.571,2.487 L9.519,13.540 C8.950,14.109 8.27,14.109 7.458,13.540 C6.889,12.970 6.889,12.47 7.458,11.479 L18.510,0.426 C19.80,0.142 20.2,0.142 20.571,0.426 C21.140,0.995 21.140,1.918 20.571,2.487 Z"></path>
@@ -114,7 +114,7 @@ const Orders = {
                       <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="order.status_id == '02'">
-                      <button class="btn btn--primary" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
+                      <button class="btn btn--primary" :class="{'disabled':(disabledSaveOrder == order.id)}" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else>
                       <div class="orders__ready-date" v-if="order.status_id != '06'">Собран {{ localeDate(order.status_date) }}</div>
@@ -126,7 +126,9 @@ const Orders = {
               </div>
           </div>
           <div class="pagination">
-            <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
+            <a v-if="pages > 10" @click="loadPage(page_no - 1)" :class="{'custom-disable': page_no <= 1}"><</a>
+            <a v-for="index in paginator" :class="{active : (index == page_no), 'dot-disable': (index === '...')}" @click="loadPage(index)">{{ index }}</a>
+            <a v-if="pages > 10" @click="loadPage(page_no + 1)" :class="{'custom-disable': page_no >= pages}">></a>
           </div>
       </div>
     </div>`,
@@ -154,7 +156,39 @@ const Orders = {
           deadline_collect_last: 15,
           currentTime: '',
           expired: '',
+          disabledSaveOrder: null
         }
+    },
+    computed: {
+      paginator () {
+        let promt = []
+        let result = []
+        if (this.pages > 10) {
+          for (let i = 1; i <= this.pages; i++) {
+            promt.push(i)
+          }
+          if (this.page_no <= 4) {
+              result.push(...promt.slice(0, 5))
+              result.push('...')
+              result.push(...promt.slice(-1))
+          } else if (this.page_no >= promt.length - 3) {
+              result.push(...promt.slice(0, 1))
+              result.push('...')
+              result.push(...promt.slice(-5))
+          } else {
+              result.push(...promt.slice(0, 1))
+              result.push('...')
+              result.push(...promt.filter(item => {
+                console.log(item)
+                return item === this.page_no -2 || item === this.page_no -1 || item === this.page_no || item === this.page_no + 1 || item === this.page_no + 2
+              }))
+              result.push('...')
+              result.push(...promt.slice(-1))
+          }
+          return result
+        }
+        return this.pages
+      }
     },
     methods: {
       localedTime(ms){
@@ -190,7 +224,7 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == 2){
-            let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
+            let deadline = this.calulateTime(order.status_date * 1000,this.deadline_collect,this.deadline_collect_last);
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
@@ -264,8 +298,6 @@ const Orders = {
             });
       },
       saveOrder(index,status) {
-        let dateObject = new Date();
-        this.orders[index].status_date = +dateObject;
         this.orders[index].status_id = status;
         let statuses = this.filters.statuses;
         for (item of statuses){
@@ -287,6 +319,10 @@ const Orders = {
                 location.reload();
               } else {
                 console.log('Response from update-requisition',response.data);
+                this.orders[index].requisition_sum_fact = response.data.data.data.requisition_sum_fact;
+                this.orders[index].status_id = response.data.data.data.status_id;
+                this.orders[index].status = response.data.data.data.status;
+                this.orders[index].status_date = response.data.data.data.status_date;
               }
             })
             .catch(error => {
