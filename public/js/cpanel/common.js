@@ -209,17 +209,17 @@ function useKeyboardEvents () {
       if (document.activeElement === customLabel) {
         customLabel.parentNode.classList.add('active')
       }
-      if ($('.custom-select--radio').hasClass('active')) {
-        console.log('работает')
-        e.preventDefault()
-        $('.selected').siblings().trigger('click')
-      } else {
-        console.log($('.custom-select--radio').is(":focus"))
-        console.log(document.activeElement)
-        $('.custom-select--radio').on('focus', function (){
-          console.log($(this))
-        })
-      }
+      // if ($('.custom-select--radio').hasClass('active')) {
+      //   console.log('работает')
+      //   e.preventDefault()
+      //   $('.selected').siblings().trigger('click')
+      // } else {
+      //   console.log($('.custom-select--radio').is(":focus"))
+      //   console.log(document.activeElement)
+      //   $('.custom-select--radio').on('focus', function (){
+      //     console.log($(this))
+      //   })
+      // }
 
     }
     let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
