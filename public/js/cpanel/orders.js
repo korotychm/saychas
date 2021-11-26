@@ -265,8 +265,6 @@ const Orders = {
             });
       },
       saveOrder(index,status) {
-        let dateObject = new Date();
-        this.orders[index].status_date = +dateObject;
         this.orders[index].status_id = status;
         let statuses = this.filters.statuses;
         for (item of statuses){
@@ -288,8 +286,10 @@ const Orders = {
                 location.reload();
               } else {
                 console.log('Response from update-requisition',response.data);
-                let updatedOrder = JSON.parse(JSON.stringify(response.data.data));
-                Vue.set(this.orders, index, updatedOrder);
+                this.orders[index].requisition_sum_fact = response.data.data.requisition_sum_fact;
+                this.orders[index].status_id = response.data.data.status_id;
+                this.orders[index].status = response.data.data.status;
+                this.orders[index].status_date = response.data.data.status_date;
               }
             })
             .catch(error => {
