@@ -213,14 +213,13 @@ function useKeyboardEvents () {
         e.preventDefault()
         $('.selected').siblings().trigger('click')
         $('.custom-select--radio').removeClass('active')
+      } else {
+        console.log($('.custom-select--radio').is(":focus"))
+        console.log(document.activeElement)
+        $('.custom-select--radio').on('focus', function (){
+          console.log($(this))
+        })
       }
-        // else {
-      //   console.log($('.custom-select--radio').is(":focus"))
-      //   console.log(document.activeElement)
-      //   $('.custom-select--radio').on('focus', function (){
-      //     console.log($(this))
-      //   })
-      // }
 
     }
     let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
