@@ -189,6 +189,7 @@ function useKeyboardEvents () {
           $('.selected').siblings().trigger('click')
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
+        $items.attr('tabindex', 1)
         let $selected = $items.filter('.selected').removeClass('selected')
         let $next;
 
