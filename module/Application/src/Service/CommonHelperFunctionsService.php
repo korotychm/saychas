@@ -121,7 +121,7 @@ class CommonHelperFunctionsService
             $item['reserve'] = $product->receiveRest($store);
             $item['rating'] = $product->getRating();
             $item['reviews'] = $product->getReviews();
-            $item['url'] = $product->getUrl()."/{$item['discount']}/{$item['oldPrice']}";
+            $item['url'] = $product->getUrl();//."/{$item['discount']}/{$item['oldPrice']}";
             $return[$product->getId()] = $item;
        }
        //$return["count"] = $count; 

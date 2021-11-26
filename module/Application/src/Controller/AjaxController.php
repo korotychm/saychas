@@ -367,7 +367,7 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
 
-        if (empty($user) or empty($user->getPhone())) {
+        if (empty($user) || empty($user->getPhone())) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
@@ -447,7 +447,7 @@ class AjaxController extends AbstractActionController
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
 
-        if (empty($user) or empty($user->getPhone())) {
+        if (empty($user) || empty($user->getPhone())) {
             return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/",]);
         }
 
@@ -588,7 +588,7 @@ class AjaxController extends AbstractActionController
             return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         }
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-        if (null == $product or!$productPrice = (int) $product->getPrice() or!$productCount = (int) $post->count or $productCount < 1) {
+        if (null == $product or!$productPrice = (int) $product->getPrice() || !$productCount = (int) $post->count or $productCount < 1) {
             return new JsonModel(["error" => true, "errorMessage" => "product price error"]);
         }
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
@@ -677,7 +677,7 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
-        $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
+        $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] || ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
         $cardInfo = '';
 
         if ($post->cardinfo) {

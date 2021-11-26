@@ -143,7 +143,7 @@ class IndexController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
-        
+
         $container = new Container();
 
         if ($container->signedUp != true) {
@@ -151,7 +151,7 @@ class IndexController extends AbstractActionController
                 return $this->redirect()->toUrl('/my-login');
             }
         }
-        
+
         $userAuthAdapter = new UserAuthAdapter($this->userRepository);
         $result = $this->authService->authenticate($userAuthAdapter);
         $code = $result->getCode();
@@ -181,7 +181,7 @@ class IndexController extends AbstractActionController
 //            'mainMenu' => $mainMenu,
 //            'basketProductsCount' => $this->commonHelperFuncions->basketProductsCount($userId),
 //        ]);
-        
+
         return $response;
     }
 
@@ -241,8 +241,8 @@ class IndexController extends AbstractActionController
 //        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        $userPhone = (!empty($user)) ? $user->getPhone() : false ;
-        
+        $userPhone = (!empty($user)) ? $user->getPhone() : false;
+
         if (empty($userPhone)) {
             return $this->unauthorizedLocation();
         }
@@ -267,13 +267,13 @@ class IndexController extends AbstractActionController
 //        }
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
-        $userPhone = (!empty($user)) ? $user->getPhone() : false ;
-        
+        $userPhone = (!empty($user)) ? $user->getPhone() : false;
+
         if (empty($userPhone)) {
             return $this->unauthorizedLocation();
         }
 
-        if (empty($orderId = $this->params()->fromRoute('id', '')) or null == $order = ClientOrder::find(['user_id' => $userId, 'order_id' => $orderId])) {
+        if (empty($orderId = $this->params()->fromRoute('id', '')) || null == $order = ClientOrder::find(['user_id' => $userId, 'order_id' => $orderId])) {
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('/user/orders');
         }
@@ -378,7 +378,7 @@ class IndexController extends AbstractActionController
         $product_url = $this->params()->fromRoute('id', '');
         $params['equal'] = $product_url;
 
-        if (empty($product_url) or empty($products = $this->productRepository->filterProductsByStores($params)) or $products->count() < 1) {
+        if (empty($product_url) || empty($products = $this->productRepository->filterProductsByStores($params)) || $products->count() < 1) {
             return $this->responseError404();
         }
 
@@ -428,7 +428,7 @@ class IndexController extends AbstractActionController
 
         $category_url = $this->params()->fromRoute('id', '');
 
-        if (empty($category_url) or empty($category = $this->categoryRepository->findCategory(['url' => $category_url]))) {
+        if (empty($category_url) || empty($category = $this->categoryRepository->findCategory(['url' => $category_url]))) {
             //exit (print_r(['url' => $category_url]));
             $this->getResponse()->setStatusCode(301);
             return $this->redirect()->toRoute('home');
