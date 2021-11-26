@@ -191,6 +191,8 @@ function useKeyboardEvents () {
         console.log('работает')
         e.preventDefault()
         $('.selected').siblings().trigger('click')
+      } else {
+        $('.custom-select--radio').removeClass('active')
       }
 
     }
