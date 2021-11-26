@@ -195,8 +195,7 @@ function useKeyboardEvents () {
       // }
       let currentDrop = $('.custom-select__label')
       if (currentDrop.parent().hasClass('active')) {
-        console.log(currentDrop)
-        currentDrop.parent().parent().next().children().addClass('active')
+        // currentDrop.parent().parent().next().children().addClass('active')
         currentDrop.parent().removeClass('active')
       }
     }
@@ -206,11 +205,11 @@ function useKeyboardEvents () {
         $('.selected').siblings().trigger('click')
         $('.custom-select--radio').removeClass('active')
       } else {
-        console.log($('.custom-select--radio').is(":focus"))
+        // console.log($('.custom-select--radio').is(":focus"))
         document.activeElement.parentNode.classList.add('active')
-        $('.custom-select--radio').on('focus', function (){
-          console.log($(this))
-        })
+        // $('.custom-select--radio').on('focus', function (){
+        //   console.log($(this))
+        // })
       }
 
     }
