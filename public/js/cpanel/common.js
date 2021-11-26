@@ -182,7 +182,7 @@ function showMessage(message) {
 function radioHandler () {
 
 }
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js';
+
 function useKeyboardEvents () {
   console.log(document.querySelectorAll('input[type="radio"]'))
   // document.querySelectorAll('input[type="radio"]').addEventListener('change', function (e) {
