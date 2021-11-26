@@ -114,7 +114,7 @@ const Orders = {
                       <button class="btn btn--primary" @click="saveOrder(index,'02')">Приступить к сборке<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else-if="order.status_id == '02'">
-                      <button class="btn btn--primary" :class="'disabled':(disabledSaveOrder == order.id)" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
+                      <button class="btn btn--primary" :class="{'disabled':(disabledSaveOrder == order.id)}" @click="saveOrder(index,'03')">Собран<span :key="currentTime" v-if="order.deadline">{{ order.deadline }}</span></button>
                     </div>
                     <div class="td orders__btn" v-else>
                       <div class="orders__ready-date" v-if="order.status_id != '06'">Собран {{ localeDate(order.status_date) }}</div>
