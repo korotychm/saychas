@@ -187,28 +187,20 @@ function useKeyboardEvents () {
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
-      if (document.activeElement === document.querySelector('.custom-select__label')) {
-        if (document.querySelector('.custom-select__label').parentElement.classList.contains('active')) {
-          document.querySelector('.custom-select__label').parentElement.classList.remove('active')
-        }
-        document.querySelector('.custom-select__label').parentElement.classList.add('active')
-      }
-      setTimeout(() => {
-        console.log(document.activeElement)
-      }, 1000)
+      // if (document.activeElement === document.querySelector('.custom-select__label')) {
+      //   if (document.querySelector('.custom-select__label').parentElement.classList.contains('active')) {
+      //     document.querySelector('.custom-select__label').parentElement.classList.remove('active')
+      //   }
+      //   document.querySelector('.custom-select__label').parentElement.classList.add('active')
+      // }
       let currentDrop = $('.custom-select__label')
       if (currentDrop.parent().hasClass('active')) {
         console.log(currentDrop)
         currentDrop.parent().parent().next().children().addClass('active')
         currentDrop.parent().removeClass('active')
-
       }
     }
-    // let customLabel = document.querySelector('.custom-select__label')
     if (e.keyCode === 13) {
-      // if (document.activeElement === customLabel) {
-      //   customLabel.parentNode.classList.add('active')
-      // }
       if ($('.custom-select--radio').hasClass('active')) {
         e.preventDefault()
         $('.selected').siblings().trigger('click')
