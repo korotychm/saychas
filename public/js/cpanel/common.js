@@ -188,6 +188,7 @@ function useKeyboardEvents () {
   // document.querySelectorAll('input[type="radio"]').addEventListener('change', function (e) {
   //   console.log(e)
   // })
+  console.log(Vue)
   document.addEventListener('keydown', function(e) {
         if (e.keyCode === 13) {
           e.preventDefault()
