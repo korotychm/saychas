@@ -188,6 +188,7 @@ function useKeyboardEvents () {
   document.addEventListener('keydown', function(e) {
     if (e.keyCode === 9) {
       console.log(document.activeElement)
+      console.log($('.custom-select__label'))
     }
 
     if (e.keyCode === 13) {
