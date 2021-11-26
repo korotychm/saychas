@@ -187,6 +187,9 @@ function useKeyboardEvents () {
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
+      if (document.activeElement === document.querySelector('.custom-select__label')) {
+        document.querySelector('.custom-select__label').classList.add('active')
+      }
       setTimeout(() => {
         console.log(document.activeElement)
       }, 1000)
