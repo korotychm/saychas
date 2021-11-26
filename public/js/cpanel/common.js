@@ -195,7 +195,7 @@ Vue.directive('keyboard', {
       if (e.keyCode === 13) {
         e.preventDefault()
         // $('.selected').siblings().prop('checked', true)
-        // document.querySelector('.selected').previousElementSibling.checked = true;
+        document.querySelector('.selected').previousElementSibling.checked = true;
       }
       let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
       let $selected = $items.filter('.selected').removeClass('selected')
