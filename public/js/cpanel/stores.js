@@ -128,6 +128,7 @@ const Stores = {
   created: function(){
     $('.main__loader').show();
     this.getStores();
+    useKeyboardEvents()
   },
   updated: function(){
     $('.main__loader').hide();
