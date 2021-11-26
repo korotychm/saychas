@@ -121,8 +121,12 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 //        $this->mclient->saychas->$tableName->insertMany($result['data']);
         
         foreach ($result/*['data']*/ as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `provider_id`, `discount`) VALUES ( '%s', '%s', %u, '%s', %u, %u, '%s', %u)",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['old_price'], $row['provider_id'], $row['discount']);
+            
+            $new_price = (int)($row['price'] - $row['price'] * $row['discount']/100 );
+            $sql = sprintf("replace INTO `price`
+                    (`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `new_price`, `provider_id`, `discount`) 
+                    VALUES ( '%s', '%s', %u, '%s', %u, %u, %u, '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['reserve'], addslashes($row['unit']), $row['price'], $row['old_price'], $new_price, $row['provider_id'], $row['discount']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
