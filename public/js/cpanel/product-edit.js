@@ -542,7 +542,7 @@ const ProductEdit = {
             length: this.product.length,
             weight: this.product.weight
           }
-          console.log(request);
+          console.log('Request to '+requestUrl,request);
           axios
             .post(requestUrl,
               Qs.stringify({
@@ -555,6 +555,7 @@ const ProductEdit = {
                 headers
               })
               .then(response => {
+                console.log('Response from'+requestUrl,response.data);
                 if (categoryChange) {
                   if (response.data.answer.data.result){
                       let product = response.data.answer.data.product;
@@ -593,6 +594,8 @@ const ProductEdit = {
                   if (response.data.result){
                     showMessage('Информация о товаре сохранена и отправлена на модерацию.');
                     router.replace('/products');
+                  } else {
+                    showServicePopupWindow('Невозможно сохранить товар', response.data.error_description_for_user);
                   }
                 }
               })
