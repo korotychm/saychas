@@ -204,11 +204,11 @@ function useKeyboardEvents () {
 
       }
     }
-    let customLabel = document.querySelector('.custom-select__label')
+    // let customLabel = document.querySelector('.custom-select__label')
     if (e.keyCode === 13) {
-      if (document.activeElement === customLabel) {
-        customLabel.parentNode.classList.add('active')
-      }
+      // if (document.activeElement === customLabel) {
+      //   customLabel.parentNode.classList.add('active')
+      // }
       if ($('.custom-select--radio').hasClass('active')) {
         e.preventDefault()
         $('.selected').siblings().trigger('click')
