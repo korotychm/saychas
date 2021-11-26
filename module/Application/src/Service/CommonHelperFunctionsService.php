@@ -11,6 +11,7 @@ use Application\Resource\Resource;
 use Application\Model\Entity\ProductFavorites;
 use Application\Model\Entity\Basket;
 use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
+use Application\Helper\MathHelper;
 
 /**
  * Description of CommonHelperFunctionsService
@@ -99,12 +100,10 @@ class CommonHelperFunctionsService
         $legalStores = $container->legalStore;
         
         foreach ($products as $product) {
-            $item = ['title' => $product->getTitle(), 'oldPrice' => 0, 'price' => $product->getPrice(), 'discont' => $product->getDiscount(), 'isFav' => $this->isInFavorites($product->getId(), $userId)];
-        
-            if ($item['discont'] > 0) {
-                $item['oldPrice'] = $item['price'];
-                $item['price'] = $item['oldPrice'] - ($item['oldPrice'] * $item['discont'] / 100);
-            }
+            $item = ['title' => $product->getTitle(),  'discount' => $product->getDiscount(), 'isFav' => $this->isInFavorites($product->getId(), $userId)];
+    
+            $item['oldPrice'] = $product->getPrice();
+            $item['price'] = MathHelper::roundRealPrice($item['oldPrice'], $item['discount']); 
             
             $strs = $product->getProvider()->getStores();
             $item['available'] = false;
@@ -122,7 +121,7 @@ class CommonHelperFunctionsService
             $item['reserve'] = $product->receiveRest($store);
             $item['rating'] = $product->getRating();
             $item['reviews'] = $product->getReviews();
-            $item['url'] = $product->getUrl();
+            $item['url'] = $product->getUrl()."/{$item['discount']}/{$item['oldPrice']}";
             $return[$product->getId()] = $item;
        }
        //$return["count"] = $count; 

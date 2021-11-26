@@ -249,7 +249,7 @@ class AcquiringController extends AbstractActionController
 
         $post["requestTinkoff"]["Receipt"]["Items"][] = $this->addDeliveryItem($post["post1C"]["amount_delevery"]);
         $amount += $post["post1C"]["amount_delevery"];
-        $post["requestTinkoff"]["Amount"] = $amount;
+        $post["requestTinkoff"]["Amount"] = round( $amount / 100 ) * 100;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         $post["requestTinkoff"]['SuccessURL'] = "https://saychas.ru/user/order/" . $orderId;
         //$post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/orders" . $orderId;

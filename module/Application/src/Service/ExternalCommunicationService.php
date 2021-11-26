@@ -70,47 +70,6 @@ class ExternalCommunicationService
         return $this->sendCurlRequest($url, $param);
     }
     
-    
-    
-    
-    /***********************
-    
-    
-     $store[$value["store"]][] = [
-                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
-            ];
-            $productupdate[]=$id;
-            //$coontent["delevery"][] = $store[$value['store']];
-        }
-        //(надо вынести в resource)
-        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
-
-        $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
-        $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
-        //$q = -1;
-        while (list($key, $val) = each($store)) {
-            $i++;
-            //$selfdelevery = false;
-            if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
-
-                $selfdeliv[] = ["store" => $key, "products" => $val];
-            } else {
-                if ($i < $limit) {
-                    $i = 1;
-                    $j++;
-                }
-                $delivery[$j][] = ["store" => $key, "products" => $val];
-            }
-        }
-
-        if (!empty($delivery)) {
-            while (list($key, $val) = each($delivery))
-                $deliv[] = $val;
-        }
-        $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] ,"selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
-
-    ************************/
-
     /**
      * 
      * @param array $content
