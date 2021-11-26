@@ -92,15 +92,15 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
-        $columns = ["minprice" =>  new \Laminas\Db\Sql\Expression(" MIN(`price`) "),  "maxprice" =>  new \Laminas\Db\Sql\Expression(" MAX(`price`) "), ];
+        $columns = ["minprice" =>  new \Laminas\Db\Sql\Expression(" MIN(`new_price`) "),  "maxprice" =>  new \Laminas\Db\Sql\Expression(" MAX(`price`) "), ];
         $select->columns($columns);
         //$select->columns(['price']);
         $select->where(['product_id' => $products]);
-        
         //$stmt = $sql->prepareStatementForSqlObject($select);
-        
         $queryString = $sql->buildSqlString($select);
-        return  $this->db->query($queryString)->execute()->current();        
+        
+        return $this->db->query($queryString)->execute()->current();        
+        
      }
 
     /**
