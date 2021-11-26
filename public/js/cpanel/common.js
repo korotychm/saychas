@@ -215,7 +215,7 @@ function useKeyboardEvents () {
         $('.custom-select--radio').removeClass('active')
       } else {
         console.log($('.custom-select--radio').is(":focus"))
-        console.log(document.activeElement)
+        document.activeElement.parentNode.classList.add('active')
         $('.custom-select--radio').on('focus', function (){
           console.log($(this))
         })
