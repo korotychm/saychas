@@ -192,6 +192,7 @@ Vue.directive('keyboard', {
     //   console.log(e)
     // })
     document.addEventListener('keydown', function(e) {
+      console.log(this)
       if (e.keyCode === 13) {
         e.preventDefault()
         $('.selected').siblings().prop('checked', true)
