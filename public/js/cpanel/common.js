@@ -187,8 +187,10 @@ function useKeyboardEvents () {
   document.addEventListener('keydown', function(e) {
     if (e.keyCode === 9) {
       console.log(document.activeElement)
-      console.log($('.custom-select__label'))
-    }
+      if ($('.custom-select__labe').parent().hasClass('active')) {
+        console.log('пушка')
+      }
+    }l
 
     if (e.keyCode === 13) {
       if ($('.custom-select--radio').hasClass('active')) {
