@@ -53,9 +53,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
             <div class="panel panel--cart panel--history"><input class="orders-history__detailed-trigger" type="checkbox" checked="checked" id="orders-detailed" />
                 <div class="panel__delivery">
                     <div class="panel__delivery-item">
-                        <div class="panel__order-status panel__order-status--delivering" v-if="+order.orderStatus == 4"></div>
-                        <div class="panel__order-status panel__order-status--delivered" v-else-if="+order.orderStatus == 5"></div>
-                        <div class="panel__order-status panel__order-status--cancelled" v-else-if="+order.orderStatus == 6"></div>
+                        <div class="panel__order-status panel__order-status--delivering" v-if="+order.orderStatus == 3"></div>
+                        <div class="panel__order-status panel__order-status--delivered" v-else-if="+order.orderStatus == 4"></div>
+                        <div class="panel__order-status panel__order-status--cancelled" v-else-if="+order.orderStatus == 5"></div>
                         <div class="panel__order-status panel__order-status--collecting" v-else></div>
                         <div>
                             <h2>Заказ №{{ order.orderId }}</h2>
