@@ -183,7 +183,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-  $('.custom-select__label').attr('tabindex', 0)
+  $('.custom-select__label').attr('tabindex', 1)
   document.addEventListener('keydown', function(e) {
     if (e.keyCode === 9) {
       console.log(document.activeElement)
