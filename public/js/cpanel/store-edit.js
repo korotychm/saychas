@@ -453,6 +453,7 @@ const StoreEdit = {
   created: function(){
     $('.main__loader').show();
     this.getStore();
+    useKeyboardEvents()
   },
   updated: function(){
     setAllCustomSelects();
