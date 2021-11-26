@@ -193,7 +193,9 @@ function useKeyboardEvents () {
         $('.selected').siblings().trigger('click')
       } else {
         console.log($('.custom-select--radio').is(":focus"))
-        console.log($('.custom-select--radio'))
+        $('.custom-select--radio').on('focus', function (){
+          console.log($(this))
+        })
       }
 
     }
