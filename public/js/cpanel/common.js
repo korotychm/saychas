@@ -188,7 +188,9 @@ function useKeyboardEvents () {
     if (e.keyCode === 9) {
       console.log(document.activeElement)
       if ($('.custom-select__label').parent().hasClass('active')) {
-        console.log('пушка')
+        $('.custom-select__label').parent().parent().next().children().addClass('active')
+        $('.custom-select__label').parent().removeClass('active')
+
       }
     }
 
