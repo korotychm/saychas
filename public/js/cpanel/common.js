@@ -182,6 +182,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
+  console.log(document.activeElement)
   $('.custom-select__label').attr('tabindex', 0)
   document.addEventListener('keydown', function(e) {
 
@@ -193,6 +194,7 @@ function useKeyboardEvents () {
         $('.selected').siblings().trigger('click')
       } else {
         console.log($('.custom-select--radio').is(":focus"))
+        console.log(document.activeElement)
         $('.custom-select--radio').on('focus', function (){
           console.log($(this))
         })
