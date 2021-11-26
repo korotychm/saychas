@@ -208,7 +208,7 @@ function useKeyboardEvents () {
     if (e.keyCode === 13) {
       if (document.activeElement === customLabel) {
         customLabel.classList.add('active')
-        console.log(customLabel)
+        console.log(customLabel.parentNode)
       }
       if ($('.custom-select--radio').hasClass('active')) {
         console.log('работает')
