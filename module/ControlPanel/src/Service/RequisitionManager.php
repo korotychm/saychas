@@ -436,7 +436,7 @@ class RequisitionManager extends ListManager implements LoadableInterface
     {
         $collection = $this->db->{$this->collectionName};
         $updateResult = $collection->updateOne(['id' => $requisition['id']],
-                ['$set' => ['status_id' => $requisition['status_id'], 'status' => $requisition['status'], 'items' => $requisition['items'] ]]);
+                ['$set' => ['status_id' => $requisition['status_id'], 'status' => $requisition['status'], 'requisition_sum' => $requisition['requisition_sum'], 'requisition_sum_fact' => $requisition['requisition_sum_fact'], 'items' => $requisition['items'] ]]);
 
         return $updateResult;
     }
