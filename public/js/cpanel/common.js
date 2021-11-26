@@ -182,7 +182,7 @@ function showMessage(message) {
 function radioHandler () {
 
 }
-
+import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js';
 function useKeyboardEvents () {
   console.log(document.querySelectorAll('input[type="radio"]'))
   // document.querySelectorAll('input[type="radio"]').addEventListener('change', function (e) {
@@ -192,7 +192,7 @@ function useKeyboardEvents () {
         if (e.keyCode === 13) {
           e.preventDefault()
           // $('.selected').siblings().prop('checked', true)
-          document.querySelector('.selected').previousElementSibling.checked = true;
+          // document.querySelector('.selected').previousElementSibling.checked = true;
         }
         let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
         let $selected = $items.filter('.selected').removeClass('selected')
