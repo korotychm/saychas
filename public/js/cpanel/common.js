@@ -182,10 +182,12 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  console.log(document.activeElement)
+
   $('.custom-select__label').attr('tabindex', 0)
   document.addEventListener('keydown', function(e) {
-
+    if (e.keyCode === 9) {
+      console.log(document.activeElement)
+    }
 
     if (e.keyCode === 13) {
       if ($('.custom-select--radio').hasClass('active')) {
