@@ -542,7 +542,7 @@ const ProductEdit = {
             length: this.product.length,
             weight: this.product.weight
           }
-          console.log('Request',request);
+          console.log('Request to '+requestUrl,request);
           axios
             .post(requestUrl,
               Qs.stringify({
@@ -555,7 +555,7 @@ const ProductEdit = {
                 headers
               })
               .then(response => {
-                console.log('Response',response.data);
+                console.log('Response from'+requestUrl,response.data);
                 if (categoryChange) {
                   if (response.data.answer.data.result){
                       let product = response.data.answer.data.product;
@@ -593,7 +593,7 @@ const ProductEdit = {
                 } else {
                   if (response.data.result){
                     showMessage('Информация о товаре сохранена и отправлена на модерацию.');
-                    router.replace('/products');
+                    //router.replace('/products');
                   }
                 }
               })
