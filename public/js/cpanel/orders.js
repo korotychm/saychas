@@ -191,14 +191,14 @@ const Orders = {
             let blabla = new Date;
             this.currentTime = +blabla;
           } else if (+order.status_id == 2){
-            let deadline = this.calulateTime(order.status_date,this.deadline_collect,this.deadline_collect_last);
+            let deadline = this.calulateTime(order.status_date * 1000,this.deadline_collect,this.deadline_collect_last);
             Vue.set(this.orders[i],'deadline',deadline);
             let blabla = new Date;
             this.currentTime = +blabla;
           }
           if (!order.deadline && +order.status_id < 3){
             console.log('deadline false, response to get order status')
-            //this.getOrderStatus(order.id,i);
+            this.getOrderStatus(order.id,i);
           }
           i++;
         }
@@ -265,8 +265,6 @@ const Orders = {
             });
       },
       saveOrder(index,status) {
-        let dateObject = new Date();
-        this.orders[index].status_date = +dateObject;
         this.orders[index].status_id = status;
         let statuses = this.filters.statuses;
         for (item of statuses){
