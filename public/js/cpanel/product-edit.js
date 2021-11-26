@@ -716,7 +716,7 @@ const ProductEdit = {
     this.getProduct();
   },
   mounted () {
-    useKeyboardEvents()
+
   },
   updated: function(){
     checkProductImagesSlider();

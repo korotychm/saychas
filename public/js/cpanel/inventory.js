@@ -337,7 +337,6 @@ const Inventory = {
   },
   mounted: function(){
     this.getStores();
-    useKeyboardEvents()
     $('.main__loader').hide();
   }
 }

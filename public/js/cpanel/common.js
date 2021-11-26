@@ -228,3 +228,5 @@ function useKeyboardEvents () {
   })
 
 }
+
+useKeyboardEvents()

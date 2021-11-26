@@ -438,7 +438,7 @@ const StoreAdd = {
     }
   },
   created: function(){
-    useKeyboardEvents()
+
     $('.main__loader').show();
   },
   mounted: function(){

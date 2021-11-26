@@ -335,7 +335,7 @@ const Orders = {
     mounted () {
       $('.main__loader').show();
       this.getOrders();
-      useKeyboardEvents()
+
     },
     updated: function(){
       $('.main__loader').hide();

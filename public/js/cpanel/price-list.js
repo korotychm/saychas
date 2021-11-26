@@ -317,7 +317,6 @@ const PriceList = {
   created: function(){
     $('.main__loader').show();
     this.getProducts();
-    useKeyboardEvents()
   },
   updated: function(){
     $('.main__loader').hide();
