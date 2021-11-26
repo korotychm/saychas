@@ -192,7 +192,7 @@ function useKeyboardEvents () {
         e.preventDefault()
         $('.selected').siblings().trigger('click')
       } else {
-        console.log($('.custom-select--radio'))
+        console.log($('.custom-select--radio').hasFocus())
       }
 
     }
