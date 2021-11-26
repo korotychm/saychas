@@ -21,7 +21,7 @@ const Products = {
                     <span>Все категории</span>
                   </label>
                   <label v-for="category in filters.categories" class="custom-select__option">
-                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" />
+                    <input type="radio" :checked="(category[0] === selectedFilters.category_id)" :value="category[0]" name="category_filter" v-model="selectedFilters.category_id" @change="loadPage()" v-keyboard />
                     <span>{{category[1]}}</span>
                   </label>
                 </div>
@@ -165,7 +165,7 @@ const Products = {
     this.getProducts();
   },
   mounted () {
-    useKeyboardEvents()
+    // useKeyboardEvents()
   },
   updated: function(){
     $('.main__loader').hide();
