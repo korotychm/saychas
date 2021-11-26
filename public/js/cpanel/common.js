@@ -187,15 +187,8 @@ function useKeyboardEvents () {
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
-      // if (document.activeElement === document.querySelector('.custom-select__label')) {
-      //   if (document.querySelector('.custom-select__label').parentElement.classList.contains('active')) {
-      //     document.querySelector('.custom-select__label').parentElement.classList.remove('active')
-      //   }
-      //   document.querySelector('.custom-select__label').parentElement.classList.add('active')
-      // }
       let currentDrop = $('.custom-select__label')
       if (currentDrop.parent().hasClass('active')) {
-        // currentDrop.parent().parent().next().children().addClass('active')
         currentDrop.parent().removeClass('active')
       }
     }
@@ -205,13 +198,8 @@ function useKeyboardEvents () {
         $('.selected').siblings().trigger('click')
         $('.custom-select--radio').removeClass('active')
       } else {
-        // console.log($('.custom-select--radio').is(":focus"))
         document.activeElement.parentNode.classList.add('active')
-        // $('.custom-select--radio').on('focus', function (){
-        //   console.log($(this))
-        // })
       }
-
     }
     let $items =  $('.active').children('.custom-select__dropdown').children().children().children('span')
     let $selected = $items.filter('.selected').removeClass('selected')
