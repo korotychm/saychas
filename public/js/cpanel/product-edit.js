@@ -542,7 +542,7 @@ const ProductEdit = {
             length: this.product.length,
             weight: this.product.weight
           }
-          console.log(request);
+          console.log('Request',request);
           axios
             .post(requestUrl,
               Qs.stringify({
@@ -555,6 +555,7 @@ const ProductEdit = {
                 headers
               })
               .then(response => {
+                console.log('Response',response.data);
                 if (categoryChange) {
                   if (response.data.answer.data.result){
                       let product = response.data.answer.data.product;
