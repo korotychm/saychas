@@ -186,6 +186,7 @@ function scrollTo(element) {
   let y = position.top;
   console.log(position)
   console.log(y)
+  return y
 }
 
 function useKeyboardEvents () {
@@ -234,7 +235,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           customSelectDropDownY += 17.25
           scrollTo($next)
-          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          $('.custom-select__dropdown-inner').scrollTop(scrollTo($next))
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -245,8 +246,8 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY -= 17.25
-          scrollTo($next)
-          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+
+          $('.custom-select__dropdown-inner').scrollTop(scrollTo($next))
         }
       }
   })
