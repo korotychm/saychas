@@ -179,19 +179,29 @@ function showMessage(message) {
   }, 2500);
 }
 
-function scrollTo(element) {
-  console.log(element)
-  let position = element.position()
-  let x = position.left;
-  let y = position.top;
-  console.log(position)
-  console.log(y)
-  return y
-}
-
 function useKeyboardEvents () {
 
-    let customSelectDropDownY = 0;
+    $(document).on('click','.custom-select__label', function () {
+      var currElmModelAttr = $(this).attr('data-model-attr');
+      var $this = $(this);
+      var input = $('<input />', {
+        'type': 'text',
+        'name': currElmModelAttr,
+        'style': 'width:100px',
+        'class': 'datePicker',
+        'value': $(this).text()
+      });
+      $(this).replaceWith(input);
+      input.datepicker({
+        onSelect: function (date) {
+          $this.text(date);
+          input.replaceWith($this);
+          console.log(date);
+        }
+      })
+    })
+
+    // let customSelectDropDownY = 0;
 
   document.addEventListener('keydown', function(e) {
 
@@ -236,8 +246,7 @@ function useKeyboardEvents () {
           let y = position.top
           $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
-          customSelectDropDownY += 17.25
-          scrollTo($next)
+          // customSelectDropDownY += 17.25
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -250,8 +259,7 @@ function useKeyboardEvents () {
           let y = position.top
           $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
-          customSelectDropDownY -= 17.25
-
+          // customSelectDropDownY -= 17.25
         }
       }
   })
