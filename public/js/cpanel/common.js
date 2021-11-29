@@ -228,6 +228,7 @@ function useKeyboardEvents () {
       if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes').hasClass('active')) {
         e.preventDefault()
         $('.selected').siblings().trigger('click')
+        $('.selected').removeClass('selected')
         $('.custom-select--radio').removeClass('active')
       } else {
         document.activeElement.parentNode.classList.add('active')
