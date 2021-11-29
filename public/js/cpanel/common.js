@@ -225,7 +225,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top -  $('.custom-select__dropdown-inner').clientHeight)
+          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top -  $('.custom-select__dropdown-inner').innerHeight())
           console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
@@ -238,7 +238,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top - $('.custom-select__dropdown-inner').clientHeight)
+          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top - $('.custom-select__dropdown-inner').innerHeight())
           console.log($next[0].getBoundingClientRect())
         }
       }
