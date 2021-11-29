@@ -197,8 +197,8 @@ function useKeyboardEvents () {
       }
     }
     if (e.keyCode === 13) {
-      console.log(document.activeElement.attributes.for.textContent)
-      if(document.activeElement.attributes.for.textContent === 'additional-attributes') {
+      // console.log(document.activeElement.attributes.for.textContent)
+      if(document.activeElement.attributes && document.activeElement.attributes.for.textContent === 'additional-attributes') {
         $(document.activeElement).trigger('click')
       }
       if(document.activeElement.className === 'boolean') {
