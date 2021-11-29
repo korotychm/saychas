@@ -224,8 +224,8 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().y)
-          console.log($next[0].getBoundingClientRect())
+          // $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().y)
+          // console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -238,7 +238,7 @@ function useKeyboardEvents () {
           customSelectDropDownY -= 60
           $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
-          console.log()
+          console.log(customSelectDropDownY)
         }
       }
   })
