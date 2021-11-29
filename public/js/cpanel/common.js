@@ -231,7 +231,7 @@ function useKeyboardEvents () {
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
-            $('.custom-select__dropdown-inner').scrollTop(relativePos - 218)
+            $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 218)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -247,7 +247,7 @@ function useKeyboardEvents () {
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
-          $('.custom-select__dropdown-inner').scrollTop(relativePos - 218)
+          $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 218)
         }
       }
   })
