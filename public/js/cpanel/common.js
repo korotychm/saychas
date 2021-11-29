@@ -211,6 +211,7 @@ function useKeyboardEvents () {
     function qwe (){
 
     $(".custom-select__dropdown-inner").scroll(function(){
+      console.log($(this))
       if( $(".selected").last().offset().top <= ( $(this).offset().top + $(this).height() ) ){
         console.log('в этом говне работает')
         $(".log").text("Fire event!");
