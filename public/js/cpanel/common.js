@@ -183,7 +183,6 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
   let customSelectDropDownY = 42
-  let scrollBottom = document.querySelector('.selected').scrollHeight - document.querySelector('.custom-select__dropdown-inner').scrollTop - document.querySelector('.custom-select__dropdown-inner').clientHeight;
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
@@ -224,9 +223,9 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY += 21
+          customSelectDropDownY += 30
           // let scrollBottom = document.querySelector('.selected').scrollHeight - document.querySelector('.custom-select__dropdown-inner').scrollTop - document.querySelector('.custom-select__dropdown-inner').clientHeight;
-          $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
           console.log(scrollBottom)
         }
@@ -238,9 +237,9 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY -= 21
+          customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
           console.log(scrollBottom)
         }
