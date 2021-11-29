@@ -224,8 +224,9 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY += 30
-          // let scrollBottom = document.querySelector('.selected').scrollHeight - document.querySelector('.custom-select__dropdown-inner').scrollTop - document.querySelector('.custom-select__dropdown-inner').clientHeight;
-          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          if ($next[0].getBoundingClientRect().top === 300) {
+            $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          }
           console.log($next[0].getBoundingClientRect())
           console.log(scrollBottom)
         }
