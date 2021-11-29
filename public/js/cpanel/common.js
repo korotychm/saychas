@@ -225,19 +225,13 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY += $next[0].getBoundingClientRect().top
           var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
               childrenPos = document.querySelector('.selected').getBoundingClientRect(),
               relativePos = {};
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
-          // if (customSelectDropDownY > 400) {
-          //   $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
-          // }
-          // $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
-          // console.log(customSelectDropDownY)
-          // console.log($next[0].getBoundingClientRect())
+            $('.custom-select__dropdown-inner').scrollTop(relativePos - 218)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -247,12 +241,13 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY -= $next[0].getBoundingClientRect().top
-            // if (customSelectDropDownY > 400) {
-            //   $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
-            // }
-          console.log(customSelectDropDownY)
-          console.log($next[0].getBoundingClientRect())
+          var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+              childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+              relativePos = {};
+
+          relativePos.top = childrenPos.top - parentPos.top
+          console.log(relativePos)
+          $('.custom-select__dropdown-inner').scrollTop(relativePos - 218)
         }
       }
   })
