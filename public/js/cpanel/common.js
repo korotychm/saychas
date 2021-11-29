@@ -241,7 +241,7 @@ function useKeyboardEvents () {
           const element = document.querySelector('.selected');
           const y = element.getBoundingClientRect().top
 
-          document.querySelector('.custom-select__dropdown-inner').scrollTo(0, 800, {queue:true});
+          document.querySelector('.custom-select__dropdown-inner').scrollTo(800, 0, {queue:true});
         }
       }
   })
