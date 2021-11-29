@@ -184,7 +184,7 @@ function showMessage(message) {
 function useKeyboardEvents () {
 
   $('.custom-select__label').attr('tabindex', 0)
-  $('.boolean').attr('tabindex', 0)
+  $('.boolean__check').attr('tabindex', 1)
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
