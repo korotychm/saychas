@@ -33,6 +33,7 @@ $(document).ready(function () {
         },
         computed: {
           canCancel(){
+            if (+this.order.orderStatus == 5) return false;
             for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               if (+delivery.delivery_status_id > 1){
                 return false
