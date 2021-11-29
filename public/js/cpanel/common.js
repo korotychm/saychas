@@ -223,11 +223,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          const yOffset = -10;
-          const element = document.querySelector('.selected');
-          const y = element.getBoundingClientRect().top
-
-          document.querySelector('.custom-select__dropdown-inner').scrollTo(0, 800, {queue:true});
+          console.log($next)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -237,10 +233,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          var myElement = $next
-          var topPos = myElement.offsetTop;
-          document.querySelector('.custom-select__dropdown-inner').scrollTop = topPos
-          // document.querySelector('.custom-select__dropdown-inner').scrollTo(800, 0, {queue:true});
+            console.log($next)
         }
       }
   })
