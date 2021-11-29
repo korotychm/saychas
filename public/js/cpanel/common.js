@@ -195,8 +195,10 @@ function useKeyboardEvents () {
       }
     }
     if (e.keyCode === 13) {
-      console.log(document.activeElement)
-        document.activeElement.trigger('click')
+      console.log(document.activeElement.attributes)
+      // if(document.activeElement.attributes[0] === ) {
+      //   document.activeElement.trigger('click')
+      // }
       if(document.activeElement.className === 'boolean') {
         // $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop('checked'))
         $(document.activeElement).children('input').trigger('click')
