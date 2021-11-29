@@ -279,6 +279,14 @@ class ProductManager extends ListManager implements LoadableInterface
         return $updateResult;
     }
     
+    public function placeDownloadLink(string $providerId, string $queryType) : array
+    {
+        $collection = $this->db->product_file_answers;
+        $result = $collection->find(['provider_id' => $providerId, 'query_type' => $queryType], ['projection' => ['_id' => 0, 'result_file' => 1,], 'sort' => ['date' => -1], 'limit' => 3])->toArray();
+        return ['urls' => $result];
+
+    }
+    
     public function getHandbooks()
     {
         return [
@@ -556,6 +564,23 @@ class ProductManager extends ListManager implements LoadableInterface
         return ['result' => $result];
     }
     
+    public function saveProductFileAnswer($content)
+    {
+        
+        $collection = $this->db->product_file_answers;
+        
+        $c = \Laminas\Json\Json::decode($content, \Laminas\Json\Json::TYPE_ARRAY);
+        
+        $result = $collection->insertOne($c['data']);
+        
+        return ['result' => $result];
+    }
+
+    public function getDownloadLinks()
+    {
+        return [];
+    }
+    
     public function copyProductFile($content)
     {
         $baseUrl = $this->config['parameters']['document_path']['base_url'];
@@ -595,6 +620,13 @@ class ProductManager extends ListManager implements LoadableInterface
     {
         $url = $this->config['parameters']['1c_provider_links']['lk_upload_file'];
         $result = $this->curlRequestManager->sendCurlRequest($url, $content);
+        return $result;
+    }
+
+    public function uploadProductFile($headers, $content)
+    {
+        $url = $this->config['parameters']['1c_provider_links']['lk_upload_file'];
+        $result = $this->curlRequestManager->sendCurlRequestWithCredentials($url, ['data' => $content], $headers);
         return $result;
     }
 

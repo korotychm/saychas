@@ -71,6 +71,7 @@ class Module implements ConfigProviderInterface
             $controllerName != \Application\Controller\AcquiringController::class &&
             $controllerName != \Application\Controller\ReviewController::class &&
             $controllerName != \Application\Controller\DadataController::class &&
+            $controllerName != \ControlPanel\Controller\ProductController::class &&
             $controllerName != \Application\Controller\ProductCardsController::class
                 ) {
             

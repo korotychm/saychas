@@ -58,7 +58,9 @@ const Stores = {
         </div>
       </div>
       <div class="pagination">
-        <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
+        <a v-if="pages > 10" @click="loadPage(page_no - 1)" :class="{'custom-disable': page_no <= 1}"><</a>
+        <a v-for="index in paginator" :class="{active : (index == page_no), 'dot-disable': (index === '...')}" @click="loadPage(index)">{{ index }}</a>
+        <a v-if="pages > 10" @click="loadPage(page_no + 1)" :class="{'custom-disable': page_no >= pages}">></a>
       </div>
     </div>
   </div>`,
@@ -76,6 +78,37 @@ const Stores = {
       search: '',
       filtersCreated: false,
       responsedata: ''
+    }
+  },
+  computed: {
+    paginator () {
+      let promt = []
+      let result = []
+      if (this.pages > 10) {
+        for (let i = 1; i <= this.pages; i++) {
+          promt.push(i)
+        }
+        if (this.page_no <= 4) {
+            result.push(...promt.slice(0, 5))
+            result.push('...')
+            result.push(...promt.slice(-1))
+        } else if (this.page_no >= promt.length - 3) {
+            result.push(...promt.slice(0, 1))
+            result.push('...')
+            result.push(...promt.slice(-5))
+        } else {
+            result.push(...promt.slice(0, 1))
+            result.push('...')
+            result.push(...promt.filter(item => {
+              console.log(item)
+              return item === this.page_no -2 || item === this.page_no -1 || item === this.page_no || item === this.page_no + 1 || item === this.page_no + 2
+            }))
+            result.push('...')
+            result.push(...promt.slice(-1))
+        }
+        return result
+      }
+      return this.pages
     }
   },
   methods: {

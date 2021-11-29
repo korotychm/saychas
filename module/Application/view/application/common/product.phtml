@@ -9,7 +9,7 @@
       <img v-if="product.image" :src="'<?= $this->imagePath('product').'/' ?>' + product.image" />
       <img v-else src="/img/ui/nophoto.jpg" />
     </a>
-    <a class="product__title" :href="'/product/' + product.url">{{ product.title }}</a>
+    <a class="product__title" :href="'/product/' + product.url"><span v-html="product.title"></span></a>
     <div class="product__panel">
         <div class="product__reviews">
           <div class="product__reviews-grade" v-if="product.rating">
@@ -32,8 +32,8 @@
         </div>
     </div>
     <div class="product__price">
-        <div class="product__price-current">{{ (product.price / 100).toLocaleString() }} ₽</div>
-        <div v-if="product.oldPrice && product.oldPrice != product.price" class="product__price-old">{{ (product.oldPrice / 100).toLocaleString() }} ₽</div>
+        <div class="product__price-current">{{ Math.trunc(product.price / 100).toLocaleString() }} ₽</div>
+        <div v-if="product.oldPrice && product.oldPrice != product.price" class="product__price-old">{{ Math.trunc(product.oldPrice / 100).toLocaleString() }} ₽</div>
     </div>
     <div class="product__tocart" v-if="product.price">
       <button class="btn btn--primary paybutton" :rel="name">В корзину</button>

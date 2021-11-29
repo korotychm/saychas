@@ -33,27 +33,48 @@ const ProductAddFile = {
                   </div>
                   <div class="product-add-file__files" v-if="file">
                     <div class="product-add-file__files-download">
-                      <a href="#">Скачать файл</a>
+                      <a :href="filePath" :download="downloadFileName">Скачать файл</a>
                       <p>Скачайте и заполните файл.</p>
                       <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
                     </div>
                     <div class="product-add-file__files-upload">
-                      <input type="file" id="upload-file"/>
+                      <input type="file" id="upload-file" @change="uploadFile"/>
                       <label for="upload-file">Загрузить файл</label>
                       <p>Загрузите заполненный файл.</p>
                       <p>Товары появятся на сайте после обработки.</p>
                     </div>
                   </div>
+                     <div class="reload-result">
+                        <div class="result__container">
+                        <ul v-for="item of downloadUrls" >
+                        <li><a :href="prefixer(item.result_file)" :download="item.result_file">{{item.result_file}}</a></li>
+                        </ul>
+                        </div>
+                        <div class="result-btn__container">
+                          <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
+                        </div>
+                    </div>
                 </div>
             </div>`,
-  data: function () {
+  data () {
     return {
       categories: [],
       categoriesFlat: [],
       categorySearch: '',
       selectedCategoryId: '',
       selectedCategoryName: '',
-      file: false
+      file: false,
+      filePath: '',
+      intermediatePath: '',
+      fileName: '',
+      fileUploaded: false,
+      downloadFileName: '',
+      downloadUrls: {},
+      testUrls:[
+          {"result_file":"product_000000058_2021_10_19_1323.xls"},
+          {"result_file":"product_000000006_2021_11_19_1605.xls"},
+          {"result_file":"product_000000006_2021_11_19_1602.xls"}
+      ],
     }
   },
   computed: {
@@ -64,9 +85,19 @@ const ProductAddFile = {
         return (category.name.toLowerCase().includes(this.categorySearch.toLowerCase()))
       })
       return categories;
-    }
+    },
+    removeSting() {
+      if(this.checkBrowser) {
+        return this.filePath.replace(window.location.href, '')
+      } else {
+        return this.filePath ? this.filePath : ''
+      }
+    },
   },
   methods: {
+    prefixer (item) {
+      return this.intermediatePath + item
+    },
     flatCategories() {
       let categoriesFlat = [];
       function iterateArray(array, parent) {
@@ -123,10 +154,39 @@ const ProductAddFile = {
         this.getFile(id);
       }
     },
-    getFile(id) {
+    async uploadFile () {
+      let file  = document.querySelector("#upload-file").files
+      let formData = new FormData()
+      formData.append('file', file[0]);
+      formData.append( 'query_type', 'product')
+      await axios.post('/control-panel/upload-product-file', formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(response => {
+        showMessage('Файл загружен, ожидайте ответа')
+        this.fileUploaded = true;
+        console.log(response)
+      })
+    },
+    async checkFiles () {
       const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      let requestUrl = '/control-panel/place-download-link';
+      await axios
+          .post(requestUrl, Qs.stringify({
+            data: {
+              query_type: 'product',
+            }
+          }), {headers})
+          .then(response => {
+            this.downloadUrls = response.data.urls
+            // this.downloadUrls.forEach(item =>  {
+            //   item = location.origin + item;
+            // })
+          })
+    },
+    async getFile(id) {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
       let requestUrl = '/control-panel/get-product-file';
-      axios
+      await axios
         .post(requestUrl,Qs.stringify({
           data: {
             category_id: this.selectedCategoryId,
@@ -134,15 +194,21 @@ const ProductAddFile = {
           }
         }),{headers})
           .then(response => {
-            console.log('Файл',response);
+            this.fileName = response.data.filename;
+            this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
+            this.filePath = '/documents' + this.fileName;
+            this.downloadFileName = this.fileName.split('/').pop()
+            this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
+            this.checkFiles();
           })
           .catch(error => {
-            if (error.response.status == '403'){
-              location.reload();
-            }
+            console.log(error)
+            // if (error.response.status == '403'){
+            //   location.reload();
+            // }
           });
       this.file = true;
-    }
+    },
   },
   created: function(){
     $('.main__loader').show();

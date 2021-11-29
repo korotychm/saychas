@@ -1,3 +1,21 @@
+.panel__order-status {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.panel__order-status--collecting {
+  background: var(--gray);
+}
+.panel__order-status--cancelled {
+  background: var(--black);
+}
+.panel__order-status--delivering {
+  background: var(--red);
+}
+.panel__order-status--delivered {
+  background: var(--green);
+}
 .order-btn-group {
   display: flex;
 }
@@ -50,17 +68,23 @@
   display: flex;
   align-items: center;
 }
-.profile-order__requisition-head span {
+.profile-order__requisition-head > span {
   margin-right: 30px;
 }
 .profile-order__requisition-logo {
   margin-right: 30px;
 }
 .profile-order__requisition-logo img {
-  display: block;
-  width: 160px;
-  height: auto;
+  width: auto;
+  height: 60px;
 }
 .profile-order__requisition-items {
   margin-top: 30px;
+}
+.profile-order__requisition .product-tr__wishlist {
+  display: none;
+}
+.profile-order__requisition .product-tr__price {
+  width: 150px;
+  margin-right: 0;
 }

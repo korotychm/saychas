@@ -65,6 +65,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     private $cache;
     
     private $categories;
+    
+    private $handbookRelatedProductRepository;
 
     /**
      * @param Adapter $db
@@ -80,7 +82,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
             Category $prototype,
             string $username,
             string $password,
-            $cache
+            $cache,
+            $handbookRelatedProductRepository
     )
     {
         $this->db = $db;
@@ -89,6 +92,7 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
         $this->username = $username;
         $this->password = $password;
         $this->cache = $cache;
+        $this->handbookRelatedProductRepository = $handbookRelatedProductRepository;
         
         $this->mclient = new \MongoDB\Client(
             'mongodb://saychas:saychas@localhost/saychas'
@@ -200,7 +204,8 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
     {
        $param["columns"] = ["category_id"];
        //$param["group"] = ["category_id"];
-       $category = HandbookRelatedProduct::findAll($param)->toArray();
+       //$category = HandbookRelatedProduct::findAll($param)->toArray();
+       $category = $this->handbookRelatedProductRepository->findAll($param)->toArray();
        $categoryesId = ArrayHelper::extractId($category, "category_id");
         foreach ($categoryesId as $row) {
             $return[$row] = true;
@@ -489,16 +494,16 @@ class CategoryRepository /*extends Repository*/ implements CategoryRepositoryInt
 
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `category`(`title`, `parent_id`, `description`, `id`, `icon`, `sort_order`, `url`) VALUES ( '%s', '%s', '%s', '%s', '%s', %u, '%s' )",
-                    $row['title'], empty($row['parent_id']) ? '0' : $row['parent_id'], $row['description'], $row['id'], $row['icon'], $row['sort_order'], $row['url']);
+                    addslashes($row['title']), empty($row['parent_id']) ? '0' : $row['parent_id'], addslashes($row['description']), $row['id'], $row['icon'], $row['sort_order'], $row['url']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
+                    $error.="{$e->getMessage()}\r\n";
+                continue;
             }
         }
-        
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $error ?? '', 'statusCode' => 200];
     }
 
     /**

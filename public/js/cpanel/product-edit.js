@@ -50,7 +50,7 @@ const ProductEdit = {
                           <input class="input checktext" type="text" v-model="product.vendor_code" @input="checkText('vendor_code')" />
                       </div>
                       <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
-                          <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
+                          <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства</h2>
                             <div class="search-select">
                                 <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                 <div class="search-select__suggestions">
@@ -393,7 +393,7 @@ const ProductEdit = {
       }
     },
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.product.title  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
@@ -556,36 +556,39 @@ const ProductEdit = {
               })
               .then(response => {
                 if (categoryChange) {
-                  let product = response.data.answer.data.product;
-                  console.log(product);
-                  this.product.characteristics = product.characteristics;
-                  if (product.brand_id !== undefined){
-                    this.product.brand_id = product.brand_id;
-                    this.product.brand_name = product.brand_name;
+                  if (response.data.answer.data.result){
+                      let product = response.data.answer.data.product;
+                      console.log(product);
+                      this.product.characteristics = product.characteristics;
+                      if (product.brand_id !== undefined){
+                        this.product.brand_id = product.brand_id;
+                        this.product.brand_name = product.brand_name;
+                      } else {
+                        delete this.product.brand_id;
+                        delete this.product.brand_name;
+                      }
+                      if (product.country_id !== undefined){
+                        this.product.country_id = product.country_id;
+                        this.product.country_name = product.country_name;
+                      } else {
+                        delete this.product.country_id;
+                        delete this.product.country_name;
+                      }
+                      if (product.color_id !== undefined){
+                        this.product.color_id = product.color_id;
+                      } else {
+                        delete this.product.color_id;
+                      }
+                      if (product.characteristics){
+                        this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
+                        this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
+                      } else {
+                        this.showBrand = -1;
+                        this.showColor = -1;
+                      }
                   } else {
-                    delete this.product.brand_id;
-                    delete this.product.brand_name;
+                    showServicePopupWindow('Ошибка', response.data.answer.data.error_description_for_user);
                   }
-                  if (product.country_id !== undefined){
-                    this.product.country_id = product.country_id;
-                    this.product.country_name = product.country_name;
-                  } else {
-                    delete this.product.country_id;
-                    delete this.product.country_name;
-                  }
-                  if (product.color_id !== undefined){
-                    this.product.color_id = product.color_id;
-                  } else {
-                    delete this.product.color_id;
-                  }
-                  if (product.characteristics){
-                    this.showBrand = product.characteristics.findIndex(x => x.id === '000000003');
-                    this.showColor = product.characteristics.findIndex(x => x.id === '000000004');
-                  } else {
-                    this.showBrand = -1;
-                    this.showColor = -1;
-                  }
-
                 } else {
                   if (response.data.result){
                     showMessage('Информация о товаре сохранена и отправлена на модерацию.');

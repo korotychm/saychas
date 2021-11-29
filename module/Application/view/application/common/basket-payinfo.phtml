@@ -65,7 +65,7 @@
                 <div>Товары (<span id="basketproductcount"><?=$productcount?></span>)</div>
                 <div class="panel__tr-items-total">
                     <div><?=number_format(((int)$producttotal/100), 0, ',', '&nbsp;')?> ₽</div>
-                    <?php if ($basketoldpricetotal && $basketoldpricetotal > 0):?>
+                    <?php if (!empty($basketoldpricetotal) && $basketoldpricetotal > 0):?>
                       <div><?=$basketoldpricetotal?> ₽</div>
                     <?php endif; ?>
                 </div>

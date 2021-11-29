@@ -6,6 +6,7 @@ namespace Application\Model\Factory;
 
 use Interop\Container\ContainerInterface;
 use Application\Model\Entity\Category;
+use Application\Model\Entity\HandbookRelatedProduct;
 use Application\Model\Repository\CategoryRepository;
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Hydrator\ReflectionHydrator;
@@ -27,6 +28,8 @@ class CategoryRepositoryFactory implements FactoryInterface
         $adp = $container->get('Application\Db\WriteAdapter');
         
         $cache = $container->get('FilesystemCache');
+        
+        $handbookRelatedProduct = $container->get(\Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface::class);
 
         return new CategoryRepository(
                 $adapter,
@@ -34,7 +37,8 @@ class CategoryRepositoryFactory implements FactoryInterface
                 new Category('', 0, 0, null, null),
                 $config['parameters']['1c_auth']['username'],
                 $config['parameters']['1c_auth']['password'],
-                $cache
+                $cache,
+                $handbookRelatedProduct
         );
     }
 

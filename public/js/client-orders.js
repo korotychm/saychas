@@ -34,8 +34,6 @@ $(document).ready(function () {
       preparedOrders() {
         let orders = this.orders;
         for (order of orders){
-          order.deliveryProducts = [];
-          order.pickupProducts = [];
           order.total = 0;
           order.oldtotal = 0;
           order.count = 0;
@@ -47,21 +45,23 @@ $(document).ready(function () {
           }
           order.timeLocaled = orderDate.toLocaleTimeString('ru-RU', {hour: "numeric", minute: "numeric"});
 
-          order.deliveryInfo.pickup = order.deliveryInfo.delivery_info.deliveries;
-          order.deliveryInfo.pickup = order.deliveryInfo.pickup.filter((delivery) => {
-            return (delivery.pickup == true)
-          })
+          // order.deliveryInfo.pickup = JSON.parse(JSON.stringify(order.deliveryInfo.delivery_info.deliveries));
+          // order.deliveryInfo.pickup = order.deliveryInfo.pickup.filter((delivery) => {
+          //   return (delivery.pickup == true)
+          // })
 
-          order.deliveryInfo.delivery_info.deliveries = order.deliveryInfo.delivery_info.deliveries.filter((delivery) => {
-            return (delivery.pickup == false)
-          })
 
-          let pickupCount = order.deliveryInfo.pickup.length;
-          if (pickupCount == 1){
-            order.pickupUnit = 'магазина';
-          } else {
-            order.pickupUnit = 'магазинов';
-          }
+          // order.deliveryInfo.delivery_info.deliveries = JSON.parse(JSON.stringify(order.deliveryInfo.delivery_info.deliveries));
+          // order.deliveryInfo.delivery_info.deliveries = order.deliveryInfo.delivery_info.deliveries.filter((delivery) => {
+          //   return (delivery.pickup == false)
+          // })
+
+          // let pickupCount = order.deliveryInfo.pickup.length;
+          // if (pickupCount == 1){
+          //   order.pickupUnit = 'магазина';
+          // } else {
+          //   order.pickupUnit = 'магазинов';
+          // }
 
           let deliveryCount = order.deliveryInfo.delivery_info.deliveries.length;
           if (deliveryCount == 1){
@@ -147,6 +147,74 @@ $(document).ready(function () {
       }
     },
     methods: {
+      orderDeliveriesStatuses(index) {
+        let collecting = 0,
+            delivering = 0,
+            delivered = 0,
+            canceled = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          if (+delivery.delivery_status_id < 2){
+            collecting++;
+          } else if (+delivery.delivery_status_id == 2) {
+            delivering++;
+          } else if (+delivery.delivery_status_id == 3) {
+            delivered++;
+          } else if (+delivery.delivery_status_id == 4) {
+            canceled++;
+          }
+        }
+        return {
+          collecting,
+          delivering,
+          delivered,
+          canceled
+        }
+      },
+      tinkoffPay(orderId) {
+        axios
+          .post('/tinkoff/payment/' + orderId)
+          .then(response => {
+            console.log('tinkoff',response);
+            if (response.data.result){
+              window.location.href = response.data.answer.PaymentURL;
+            } else {
+              if (response.data.message){
+                showServicePopupWindow('Ошибка оплаты', response.data.message, "");
+              } else {
+                showServicePopupWindow('Ошибка оплаты', 'Ошибка платежной системы', "");
+              }
+            }
+          });
+      },
+      totalItems(index){
+        let itemsTotal = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          for (requisition of delivery.requisitions){
+            for (product of requisition.items){
+              itemsTotal++;
+            }
+          }
+        }
+        return itemsTotal
+      },
+      totalPrice(index){
+        let price = 0,
+            oldprice = 0;
+        for (delivery of this.preparedOrders[index].deliveryInfo.delivery_info.deliveries){
+          for (requisition of delivery.requisitions){
+            if (requisition.status_id != 5){ // Заявка не отменена
+              for (product of requisition.items) {
+                price += (product.price * product.qty_fact);
+                oldprice += (product.full_price * product.qty_fact);
+              }
+            }
+          }
+        }
+        return {
+          price: price / 100,
+          oldprice: oldprice / 100
+        }
+      },
       getClientOrders() {
         axios
           .post('/ajax-get-order-list')

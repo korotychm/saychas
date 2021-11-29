@@ -149,6 +149,11 @@ $(document).on('change','.range input[type="range"]',function(){
       minVal = +el.find('.range__left').val(),
       maxVal = +el.find('.range__right').val(),
       hidden = el.find('.range__hidden');
+  if (minVal == +el.find('.range__left').prop('min') && maxVal == +el.find('.range__right').prop('max')){
+    hidden.attr('disabled',true);
+  } else {
+    hidden.attr('disabled',false);
+  }
 
   if (el.hasClass('range--price')){
     hidden.val((minVal * 100) + ';' + (maxVal * 100));

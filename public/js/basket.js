@@ -1,3 +1,5 @@
+
+
 function setTimepointText(loadinfo = false) {
     $.each($(".timepoint"), function (index, value) {
         var rel = $(this).attr("rel");
@@ -6,16 +8,36 @@ function setTimepointText(loadinfo = false) {
           settext =  $(this).find('.timepoint__option').eq(1).attr('rel');
         }
         $("#" + rel).val(settext + ", ");
-        console.log($("#" + rel).val());
     });
     if (loadinfo)
         loadPayInfo();
 }
 
 // Изменение количества товара в корзине
-$(document).on('click','.cart__product-quantity button',function(e){
+
+$(document).on('change','.cart__product-quantity input',function(e){
+  console.log('change');
+  if ($(this).val() >= +$(this).attr('max')){
+    $(this).val(+$(this).attr('max'));
+    $(this).parent().find('.cart__product-plus').addClass('disabled');
+  } else {
+    $(this).parent().find('.cart__product-plus').removeClass('disabled');
+  }
+  if ($(this).val() <= 1){
+    $(this).val(1);
+    $(this).parent().find('.cart__product-minus').addClass('disabled');
+  } else {
+    $(this).parent().find('.cart__product-minus').removeClass('disabled');
+  }
+  let productId = $(this).data('product');
+  $('.cart__checkbox input[data-product="' + productId + '"]').val($(this).val());
+  calculateBasketItem(productId);
+  loadPayInfo();
+});
+
+$(document).on('click','.cart__product-quantity .cart__product-btn',function(e){
   e.preventDefault();
-  $(this).parent().find('button').removeClass('disabled');
+  $(this).parent().find('.cart__product-btn').removeClass('disabled');
   let input = $(this).parent().find('input'),
       newVal = +input.val() + +$(this).data('step');
   if (newVal == 1 || newVal == input.attr('max')){
@@ -109,6 +131,33 @@ $(document).on('change','.cart__product .checkbox input',function(){
   loadPayInfo();
 });
 
+// Удалить все товары магазина
+$(document).on('click','.cart__store-del',function(){
+  var productId = [];
+  var storeBlock = $(this).parent().parent().parent();
+  storeBlock.find('.cart__products .cart__product').each(function(){
+    productId.push($(this).find('.cart__product-del').data('product'));
+  });
+  $.ajax({
+      beforeSend: function () {
+      },
+      url: "/ajax/del-from-basket",
+      type: 'POST',
+      cache: false,
+      data: {'productId': productId},
+      success: function (data) {
+          storeBlock.remove();
+          calculateBasketHeader();
+          loadPayInfo();
+          showBasket(0);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+          if (xhr.status !== 0) {
+              showAjaxErrorPopupWindow(xhr.status, thrownError);
+          }
+      }
+  });
+});
 // Удалить продукт
 $(document).on('click','.cart__product .cart__product-del',function(){
     var productId = $(this).data('product');
@@ -264,18 +313,16 @@ function whatHappened(noclose = false) {
         cache: false,
         success: function (data) {
             if (data.result) {
-                $("#ServiceModalWindow .modal-title").html("Изменения в товарах");
-
-                $("#ServiceModalWindow #ServiceModalWraper").html('<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products"></ul>');
-
+                var modalContent = '<p class="changed-products__subtitle">Пока вас не было, произошли следующие изменения в товарах:</p><ul class="changed-products">';
+                console.log ('products',data.products);
                 for (var productId in data.products) {
 
                     var product = data.products[productId];
 
                     var productHtml = '<li class="changed-products__item">';
 
-                    var imgSrc = $('#basketrow-' + productId).find('.imageproduct img').attr('src');
-                    var title = $('#basketrow-' + productId).find('.titleproduct').text();
+                    var imgSrc = $('#basketrow-' + productId).find('.cart__product-img img').attr('src');
+                    var title = $('#basketrow-' + productId).find('.cart__product-title').text();
 
                     productHtml += '<div class="changed-products__img"><img src="' + imgSrc + '" alt=""></div>';
                     productHtml += '<div class="changed-products__title">' + title + '</div>';
@@ -302,14 +349,14 @@ function whatHappened(noclose = false) {
                         productHtml += '</table></div>';
                     }
                     productHtml += '</li>';
-                    $('#ServiceModalWindow .changed-products').append(productHtml);
+                    modalContent += productHtml;
                 }
 
                 //Магазины
-
+                console.log ('stores',data.products);
                 for (var storeId in data.stores) {
 
-                    var logoSrc = $('#providerblok-' + storeId).find('.brandlogo img').attr('src');
+                    var logoSrc = $('#providerblok-' + storeId).find('.cart__store-logo img').attr('src');
 
                     var storeHtml = '<li class="changed-products__item changed-products__item--store">';
                     storeHtml += '<div class="changed-products__store">';
@@ -323,25 +370,15 @@ function whatHappened(noclose = false) {
                     storeHtml += '</div>';
                     storeHtml += '<div class="changed-products__status"><div class="changed-products__na">Магазин закрыт</div></div>';
                     storeHtml += '</li>';
-                    $('#ServiceModalWindow .changed-products').append(storeHtml);
+
+                    modalContent += storeHtml;
                 }
 
-                if (noclose) {
-                    $("#ServiceModalWindow .close").remove();
-                    $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="location.reload()">Буду иметь в виду</div>');
-                } else {
-                    $("#ServiceModalWindow .modal-footer").html('<button class="changed-products__btn formsendbutton" onclick="$(`#ServiceModalWindow`).modal(`hide`)">Буду иметь в виду</div>');
-                }
-
-                $("#ServiceModalWindow").modal("show");
-
+                modalContent += '</ul>';
+                console.log ('modal', modalContent);
+                showServicePopupWindow('Изменения в товарах', modalContent, '', noclose);
             }
             return false;
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status !== 0) {
-                showAjaxErrorPopupWindow(xhr.status, thrownError);
-            }
         }
     });
 }
@@ -418,7 +455,7 @@ function checkBasketDataBeforeSend() {
                 sendBasketData();
             } else {
                 if (data.reload !== null) {
-                    location.href = data.reloadUrl;
+                    location.href = (data.reloadUrl)?data.reloadUrl:'/';
                     return false;
                 }
                 whatHappened(true);
@@ -542,7 +579,6 @@ $(function () {
     });
 
     $(document).on('change', '.cart__radio-group > input', function () {
-        console.log('123');
         loadPayInfo();
     });
 

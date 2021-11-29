@@ -1246,6 +1246,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-callback-dev' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/tinkoff/developer',
+                    'defaults' => [
+                        'controller' => Controller\AcquiringController::class,
+                        'action' => 'tinkoffCallbackDev',
+                    ],
+                ],
+            ],
             'tinkoff-redirect-success' => [
                 'type' => Literal::class,
                 'options' => [
@@ -1263,6 +1273,16 @@ return [
                     'defaults' => [
                         'controller' => Controller\AcquiringController::class,
                         'action' => 'tinkoffError',
+                    ],
+                ],
+            ],
+            'tinkoff-redirect' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/tinkoff/pay-result',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'tinkoffPayResult',
                     ],
                 ],
             ],
@@ -1436,11 +1456,13 @@ return [
         'exception_template' => 'error/index',
         'template_map' => [
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/blank' => __DIR__ . '/../view/layout/blank.phtml',
             'layout/error' => __DIR__ . '/../view/layout/errorLayout.phtml',
             'layout/preview' => __DIR__ . '/../view/layout/menu.phtml',
             'layout/mainpagenew' => __DIR__ . '/../view/layout/mainpagenew.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/403' => __DIR__ . '/../view/error/403.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ],
         'template_path_stack' => [
@@ -1462,19 +1484,45 @@ return [
         ],
     ],
     'parameters' => [
+        'base_authorization' => [
+            'to_be_authorized' => [
+                'receiveRepository' => 'auth1',
+                'tinkoffOrderBill' => 'auth1',
+                'get-product-file-answer' => 'auth1',
+            ],
+            'credentials' => [
+                'auth1' => 'receiverepo:$apr1$xp52CuFN$2tFOlbQtOB.MzIcNqZGRt1',
+                'cloud_kassir' => 'cloudcaher:MzIcNqZGRt1',
+                'tinkoff' => 'tinkoff:MzIcNqZGRt1',
+            ],
+        ],
         '1c_auth' => [
             'username' => 'administrator',
             'password' => 'w48Es4562',
         ],
         'TinkoffMerchantAPI' => [
-            'terminal' => '1629956533317DEMO', //наш
-            'token' => '9mfca0gpenpfi4rb', //наш
+            'terminal' => '1629956533317DEMO', //демо
+            'token' => '9mfca0gpenpfi4rb', //демо
+//            'terminal' => '1629956533317', //боевой
+//            'token' => 'hf3pvoig10linlo1', //боевой
             'api_url' => 'https://securepay.tinkoff.ru/v2/',
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
             'time_order_live' => 900, // время для оплаты заказа в сек.
-            'success_url' => 'https://z.saychas.ru/tinkoff/success',
-            'fail_url' => 'https://z.saychas.ru/tinkoff/error',
+            'success_url' => 'https://saychas.ru/tinkoff/success',
+            'fail_url' => 'https://saychas.ru/tinkoff/error',
+        ],
+         'TinkoffMerchantAPIProduction' => [
+//            'terminal' => '1629956533317DEMO', //демо
+//            'token' => '9mfca0gpenpfi4rb', //демо
+            'terminal' => '1629956533317', //боевой
+            'token' => 'hf3pvoig10linlo1', //боевой
+            'api_url' => 'https://securepay.tinkoff.ru/v2/',
+            'company_email' => 'd.sizov@saychas.ru',
+            'company_taxation' => 'osn',
+            'time_order_live' => 900, // время для оплаты заказа в сек.
+            'success_url' => 'https://saychas.ru/tinkoff/success',
+            'fail_url' => 'https://saychas.ru/tinkoff/error',
         ],
         'dadataApiParams' => [
 //            'token' => '3e20e3f5d02f304085bfe70f9bb3d059b50aef0d',

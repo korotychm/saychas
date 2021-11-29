@@ -165,21 +165,25 @@ class UserManager
     {
         $users = $this->getAllUsers($content)['info'];
         foreach ($users as $user) {
-            if ($content['login'] === $user['login']) {
+            if (strtolower($content['login']) === strtolower($user['login'])) {
                 return $user;
             }
         }
+        
         return null;
     }
 
     public function findOneUserObject($content)
     {
         $user = $this->findOne($content);
+        
         if (null == $user) {
             return null;
         }
+        
         $user['roles'] = implode(',', $user['roles']);
         $hydrator = new ClassMethodsHydrator();
+        
         return $hydrator->hydrate($user, new User());
     }
     

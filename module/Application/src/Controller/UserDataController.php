@@ -281,12 +281,27 @@ class UserDataController extends AbstractActionController
     {
         $content = $this->getRequest()->getPost()->toArray();
         //return new JsonModel($content);
+        
+         while (list($id, $value) = each($content["products"])) {
+            
+             if (empty($product = HandbookRelatedProduct::findAll(["where"=>["id" => $id ]])->current())){
+                 continue;
+             }
+             
+             $value['discount'] = $product->getDiscount();
+             $value['full_price'] = $product->getPrice();
+             $products[$id] = $value;
+             
+         }      
+         $content["products"] =  $products ?? [];  
+         reset($content["products"]);
+        
         $userId = $this->identity();
         $param = (!empty($delivery_params = Setting::find(['id' => 'delivery_params']))) ? Json::decode($delivery_params->getValue(), Json::TYPE_ARRAY) : [];
         $orderset = $this->externalCommunicationService->sendBasketData($content, $param);
 
         if (!$orderset['response']['result']) {
-            return new JsonModel(["result" => false, "description" => $orderset['response']['errorDescription']]);
+            return new JsonModel(["result" => false, "description" => [$content["products"], $orderset['response']['errorDescription']]]);
         }
 
         $orderId = $orderset['response']['order_id'];
@@ -489,7 +504,7 @@ class UserDataController extends AbstractActionController
         $return['sendingPhoneFormated'] = $return['phone'] = (!empty($post->userPhone)) ? $post->userPhone : $userAutSession['phone'];
         $return['sendingPhone'] = ($return['phone']) ? StringHelper::phoneToNum($return['phone']) : "";
 
-        if (!$userAutSession['phone'] and (empty($return['sendingPhone']) or strlen($return['sendingPhone']) < 11)) {
+        if (!$userAutSession['phone'] and (empty($return['sendingPhone']) || strlen($return['sendingPhone']) < 11)) {
             $return['error']['phone'] = Resource::ERROR_INPUT_PHONE_MESSAGE;
             return $this->userModalView($return);
         }
@@ -558,7 +573,7 @@ class UserDataController extends AbstractActionController
         $userAutSession['usermail'] = $post->userMail ?? '';
         $container->userAutSession = $userAutSession;
 
-        if (empty($userAutSession['username']) or strlen($userAutSession['username']) < 3) {
+        if (empty($userAutSession['username']) || strlen($userAutSession['username']) < 3) {
             $return['error']['username'] = Resource::ERROR_SEND_USERNAME_MESSAGE;
             return $this->userModalView($return);
         }

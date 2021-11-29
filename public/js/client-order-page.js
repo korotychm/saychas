@@ -32,6 +32,27 @@ $(document).ready(function () {
           cancellingOrder: false
         },
         computed: {
+          canCancel(){
+            for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
+              if (+delivery.delivery_status_id > 1){
+                return false
+              }
+            }
+            return true
+          },
+          totalItems(){
+            let total = 0;
+            for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
+              for (requisition of delivery.requisitions){
+                if (requisition.status_id != 6){ // Заявка не отменена
+                  for (product of requisition.items) {
+                    total += product.qty_fact;
+                  }
+                }
+              }
+            }
+            return total;
+          },
           totalDeliveries(){
             let deliveriesTotal = 0,
                 pickupsTotal = 0
@@ -52,10 +73,10 @@ $(document).ready(function () {
                 oldprice = 0;
             for (delivery of this.order.deliveryInfo.delivery_info.deliveries){
               for (requisition of delivery.requisitions){
-                if (requisition.status_id != 5){ // Заявка не отменена
+                if (requisition.status_id != 6){ // Заявка не отменена
                   for (product of requisition.items) {
-                    price += ((product.price - product.price * product.discount / 100) * product.qty_fact);
-                    oldprice += (product.price * product.qty_fact);
+                    price += (product.price * product.qty_fact);
+                    oldprice += (product.full_price * product.qty_fact);
                   }
                 }
               }
@@ -67,6 +88,22 @@ $(document).ready(function () {
           },
         },
         methods: {
+          tinkoffPay(orderId) {
+            axios
+              .post('/tinkoff/payment/' + orderId)
+              .then(response => {
+                console.log('tinkoff',response);
+                if (response.data.result){
+                  window.location.href = response.data.answer.PaymentURL;
+                } else {
+                  if (response.data.message){
+                    showServicePopupWindow('Ошибка оплаты', response.data.message, "");
+                  } else {
+                    showServicePopupWindow('Ошибка оплаты', 'Ошибка платежной системы', "");
+                  }
+                }
+              });
+          },
           getTimePointText(ms,timepoint,merged = false) {
               //created - дата заказа
               let deliveryTime = 1; // если обычная доставка за час

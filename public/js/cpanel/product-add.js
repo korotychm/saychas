@@ -39,7 +39,7 @@ const ProductAdd = {
                                         <input class="input" type="text" v-model="product.vendor_code" @input="checkText('vendor_code')" />
                                     </div>
                                     <div v-if="(product.country_id !== undefined)" class="product__attribute  product__attribute--short">
-                                        <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства <span class="required">*</span></h2>
+                                        <h2 :class="{'input-error' : (!selectedCountryName && errors)}">Страна производства</h2>
                                           <div class="search-select">
                                               <input class="input search-select__input" type="text" value="product.country_name" v-model="countrySearch" @focusout="checkCountry()" />
                                               <div class="search-select__suggestions">
@@ -326,9 +326,11 @@ const ProductAdd = {
       deleteImages: [],
       errors: false,
       showBrand: -1,
-      showColor: -1
+      showColor: -1,
+      disableBtn: false
     }
   },
+
   computed: {
     filteredCategories(){
       if (this.categorySearch == '') return false;
@@ -377,7 +379,7 @@ const ProductAdd = {
       }
     },
     checkRequired(){
-      if (!this.selectedCategoryName || !this.product.vendor_code || !this.selectedCountryName || !this.product.title  || !this.product.description || !this.product.images.length){
+      if (!this.selectedCategoryName || !this.product.vendor_code || !this.product.title  || !this.product.description || !this.product.images.length){
         return true;
       }
       return false;
@@ -531,28 +533,32 @@ const ProductAdd = {
             if (response.data.data === true) {
               location.reload();
             } else {
-              console.log(response);
-              if (this.product.characteristics){
-                this.product.characteristics = response.data.answer.data.product.characteristics;
+              console.log('Ответ после выбора категории',response);
+              if (response.data.answer.data.result){
+                if (this.product.characteristics){
+                  this.product.characteristics = response.data.answer.data.product.characteristics;
+                } else {
+                  this.product = response.data.answer.data.product;
+                  this.product.images = [];
+                  this.countries = this.product.countries;
+                  this.brands = this.product.brands;
+                  this.product.vat = "Без НДС";
+                  this.product.brand_id = "";
+                  this.product.width = 0;
+                  this.product.height = 0;
+                  this.product.length = 0;
+                  this.product.weight = 0;
+                  console.log('Продукт',this.product);
+                }
+                this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
+                this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
               } else {
-                this.product = response.data.answer.data.product;
-                this.product.images = [];
-                this.countries = this.product.countries;
-                this.brands = this.product.brands;
-                this.product.vat = "Без НДС";
-                this.product.brand_id = "";
-                this.product.width = 0;
-                this.product.height = 0;
-                this.product.length = 0;
-                this.product.weight = 0;
-                console.log('Продукт',this.product);
+                showServicePopupWindow('Ошибка', response.data.answer.data.error_description_for_user);
               }
-              this.showBrand = this.product.characteristics.findIndex(x => x.id === '000000003');
-              this.showColor = this.product.characteristics.findIndex(x => x.id === '000000004');
             }
           })
           .catch(error => {
-            if (error.response.status == '403'){
+            if (error.response && error.response.status == '403'){
               location.reload();
             }
           });
@@ -625,6 +631,8 @@ const ProductAdd = {
                 if (response.data.result){
                   showMessage('Товар добавлен и отправлен на модерацию.');
                   router.replace('/products');
+                } else {
+                    showServicePopupWindow('Невозможно добавить товар', response.data.error_description_for_user);
                 }
             })
             .catch(error => {

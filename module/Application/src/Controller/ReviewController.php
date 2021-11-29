@@ -92,7 +92,7 @@ class ReviewController extends AbstractActionController
 
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $user_id]));
 
-        if (empty($return["user_name"] = $userInfo['name']) or empty($return["user_id"] = $userInfo['userid'])) {
+        if (empty($return["user_name"] = $userInfo['name']) || empty($return["user_id"] = $userInfo['userid'])) {
             return $this->getResponse()->setStatusCode(403);
         }
 
@@ -129,7 +129,7 @@ class ReviewController extends AbstractActionController
 
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $user_id]));
 
-        if (empty($return["user_name"] = $userInfo['name']) or empty($return["user_id"] = $userInfo['userid'])) {
+        if (empty($return["user_name"] = $userInfo['name']) || empty($return["user_id"] = $userInfo['userid'])) {
             return $this->getResponse()->setStatusCode(403);
         }
 
@@ -138,7 +138,7 @@ class ReviewController extends AbstractActionController
 
         if (!empty($files['files'])) {
 
-            if (empty($return["user_message"] = $escaper->escapeHtml(trim($this->getRequest()->getPost()->reviewMessage))) or strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
+            if (empty($return["user_message"] = $escaper->escapeHtml(trim($this->getRequest()->getPost()->reviewMessage))) || strlen($return["user_message"]) < Resource::REVIEW_MESSAGE_VALID_MIN_LENGHT) {
                 return new JsonModel(["result" => false, "description" => Resource::REVIEW_MESSAGE_VALID_ERROR]);
             }
 

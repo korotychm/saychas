@@ -523,8 +523,15 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
             $this->saveProductCharacteristics($prods);
 
             $escaper = new Escaper('utf-8');
-            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `parent_category_id`, `title`, `url`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
-                    $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, $escaper->escapeHtml($product->title),   $escaper->escapeHtml($product->url), $escaper->escapeHtml($product->description), $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id, $product->vat);
+            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `parent_category_id`, `title`, `url`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id`, `vat` ) "
+                    . "VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
+                    $product->id, $product->provider_id, $product->category_id, $product->parent_category_id, 
+                    addslashes($escaper->escapeHtml($product->title)),   
+                    mb_substr(addslashes($escaper->escapeHtml($product->url)),0, 120 ), 
+                    addslashes($escaper->escapeHtml($product->description)), 
+                    $product->vendor_code, addslashes($curr), 
+                    addslashes($jsonCharacteristics), 
+                    $product->brand_id, $product->vat );
 //            $sql = sprintf("replace INTO `product`( `id`, `provider_id`, `category_id`, `title`, `description`, `vendor_code`, `param_value_list`, `param_variable_list`, `brand_id` ) VALUES ( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )",
 //                    $product->id, $product->provider_id, $product->category_id, $product->title, $product->description, $product->vendor_code, $curr, $jsonCharacteristics, $product->brand_id);
             //if($product->id == '000000000016' || $product->id == '000000000036' || $product->id == '000000000003') {
@@ -537,10 +544,12 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                //return ['result' => false, 'description' => "$e error executing $sql", 'statusCode' => 418];
+                $error.="{$e->getMessage()}\r\n";
+                continue;
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $error ?? '', 'statusCode' => 200];
     }
 
     /**
@@ -555,7 +564,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         try {
             $res = $this->db->query($query)->execute();
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "error executing $e $query"];
+            return ['result' => false, 'description' => "error executing {$e->getMessage()}"];
         }
         foreach ($res as $return) {
             $return['result'] = true;
@@ -575,7 +584,7 @@ class ProductRepository extends Repository implements ProductRepositoryInterface
         try {
             $res = $this->db->query($query)->execute();
         } catch (InvalidQueryException $e) {
-            return ['result' => false, 'description' => "error executing $e $query"];
+            return ['result' => false, 'description' => "error executing {$e->getMessage()}"];
         }
         foreach ($res as $return) {
            // $return['result'] = true;

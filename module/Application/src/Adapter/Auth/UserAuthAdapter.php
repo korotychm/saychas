@@ -12,11 +12,12 @@ use Laminas\Db\Adapter\AdapterInterface as DbAdapter;
 //use Laminas\Authentication\Result;
 use Application\Adapter\Auth\UserAuthResult;
 use Application\Resource\Resource;
-//use Application\Model\Repository\UserRepository;
-//use Application\Model\Repository\UserDataRepository;
+use Application\Model\Repository\UserRepository;
+use Application\Model\Repository\UserDataRepository;
 use Application\Model\Entity\User;
 use Application\Helper\ArrayHelper;
 use Application\Helper\CryptHelper;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
 use Laminas\Http\Client;
 use Laminas\Http\Cookies;
@@ -32,8 +33,9 @@ use Laminas\Session\Container; // as SessionContainer;
 class UserAuthAdapter implements AdapterInterface
 {
 
-//    private $userRepository;
+    private $userRepository;
     private ?DbAdapter $adapter;
+    private $authService;
 
 //    private $sessionContainer;
 
@@ -42,12 +44,13 @@ class UserAuthAdapter implements AdapterInterface
      *
      * @return void
      */
-    public function __construct(/* UserRepository $userRepository, */ /* SessionContainer $sessionContainer, */ ?DbAdapter $adapter = null, $identity = '', $credential = '')
+    public function __construct(UserRepository $userRepository, ?DbAdapter $adapter = null, $authService = null, $identity = '', $credential = '')
     {
-//        $this->userRepository = $userRepository;
+        $this->userRepository = $userRepository;
         $this->adapter = $adapter;
         $this->identity = $identity;
         $this->credential = $credential;
+        $this->authService = $authService;
     }
 
     /**
@@ -101,13 +104,14 @@ class UserAuthAdapter implements AdapterInterface
             $this->identity = $userId;
             $code = UserAuthResult::SUCCESS;
         } else {
-//            $user = $this->userRepository->find(['id' => $container->userIdentity]);
-            $user = User::find(['id' => $container->userIdentity]);
+            $user = $this->userRepository->find(['id' => $container->userIdentity]);
+//            $user = User::find(['id' => $container->userIdentity]);
 //            if(!$container->userOldIdentity) {
 //                throw new \Exception('Unexpected error: no data found for registered user');
 //            }
             if ($container->userOldIdentity && ($container->userIdentity != $container->userOldIdentity)) {
-                $oldUser = User::find(['id' => $container->userOldIdentity]);
+                //$oldUser = User::find(['id' => $container->userOldIdentity]);
+                $oldUser = $this->userRepository->find(['id' => $container->userOldIdentity]);
                 $this->updateUserData($oldUser, $container);
                 $this->updateBasketData($oldUser, $container);
             }
@@ -190,10 +194,13 @@ class UserAuthAdapter implements AdapterInterface
      */
     private function authUser($container)
     {
-        $user = User::find(['id' => $container->userIdentity]);
 //            if(!$container->userOldIdentity) {
 //                throw new \Exception('Unexpected error: no data found for registered user');
 //            }
+        if (empty($user = User::find(['id' => $container->userIdentity]))) {
+            return $this->createUser($container);
+        }
+
         if ($container->userOldIdentity && ($container->userIdentity != $container->userOldIdentity)) {
             $oldUser = User::find(['id' => $container->userOldIdentity]);
             $this->updateUserData($oldUser, $container);
@@ -201,11 +208,6 @@ class UserAuthAdapter implements AdapterInterface
         }
 
         $this->identity = $container->userIdentity;
-
-        if (null == $user) {
-            throw new \Exception('Unknown identity error');
-        }
-
         $code = UserAuthResult::SUCCESS;
 
         return new UserAuthResult($code, $this->identity);

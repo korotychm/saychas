@@ -5,13 +5,13 @@ const PriceList = {
       <div v-else>
         <div class="filter">
           <form class="filter__search" @submit.prevent="loadPage()">
-            <input class="input input--white" type="text" v-model="search" placeholder="Быстрый поиск" />
+            <input class="input input--white" type="text" v-model="search" placeholder="Быстрый поиск"  :class="{'custom-disable': showFileMenu}"/>
             <button>
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26px" height="27px"><path fill-rule="evenodd" fill="rgb(255, 75, 45)" d="M24.696,26.998 C24.362,26.998 24.34,26.865 23.797,26.632 L18.232,21.156 L17.955,21.327 C16.78,22.481 13.927,23.91 11.736,23.91 C5.264,23.91 0.0,17.911 0.0,11.545 C0.0,5.177 5.264,0.1 11.736,0.1 C18.208,0.1 23.473,5.177 23.473,11.545 C23.473,14.370 22.408,17.101 20.475,19.233 L20.217,19.519 L25.623,24.836 C25.869,25.78 26.2,25.397 25.999,25.734 C25.995,26.70 25.853,26.386 25.600,26.625 C25.357,26.865 25.30,26.998 24.696,26.998 ZM11.736,2.527 C6.682,2.527 2.570,6.572 2.570,11.545 C2.570,16.517 6.682,20.562 11.736,20.562 C16.774,20.562 20.874,16.517 20.874,11.545 C20.874,6.572 16.774,2.527 11.736,2.527 Z" />
               </svg>
             </button>
           </form>
-          <div class="filter__select">
+          <div class="filter__select" :class="{'custom-disable': showFileMenu}">
             <div class="custom-select custom-select--radio">
               <div class="custom-select__label input">Все категории</div>
               <div class="custom-select__dropdown">
@@ -29,14 +29,39 @@ const PriceList = {
             </div>
           </div>
           <div class="filter__btn">
-            <a class="btn btn--secondary disabled" href="#">Скачать список</a>
+<!--            <a class="btn btn&#45;&#45;secondary disabled" href="#">Скачать список</a>-->
           </div>
           <div class="filter__btn">
-            <a class="btn btn--primary disabled">Загрузить список</a>
+            <button class="btn btn--primary" @click="showMenuWithAjax">Загрузить из файла</button>
           </div>
-        </div>
 
-        <div class="cp-container pricelist list">
+        </div>
+            <div class="cp-container" v-if="showFileMenu">
+                <div class="product-add-file__files">
+                    <div class="product-add-file__files-download">
+                      <a :href="filePath" :download="downloadFileName">Скачать файл</a>
+                      <p>Скачайте и заполните файл.</p>
+                      <p>Чем больше полей заполните - тем легче пользователям будет найти ваш товар.</p>
+                    </div>
+                    <div class="product-add-file__files-upload">
+                      <input type="file" id="upload-file" @change="uploadFile"/>
+                      <label for="upload-file">Загрузить файл</label>
+                      <p>Загрузите заполненный файл.</p>
+                      <p>Товары появятся на сайте после обработки.</p>
+                    </div>
+                  </div>
+                  <div class="reload-result">
+                      <div class="result__container">
+                      <ul v-for="item of downloadUrls" >
+                      <li><a :href="prefixer(item.result_file)" :download="item.result_file">{{item.result_file}}</a></li>
+                      </ul>
+                      </div>
+                      <div class="result-btn__container">
+                        <button class="btn btn--primary" @click="checkFiles">Обновить результат</button>
+                      </div>
+                  </div>
+            </div>
+        <div class="cp-container pricelist list" v-else>
           <div class="thead">
             <div class="td"></div>
             <div class="td">Наименование</div>
@@ -61,9 +86,9 @@ const PriceList = {
                   </div>
                   <div class="td pricelist__discount"><span v-if="product.discount!==''">{{ product.discount }}</span><span v-else>0</span>%</div>
                   <div class="td">
-                    <div v-if="+product.discount > 0" class="pricelist__oldprice">{{ product.price.toLocaleString() }} ₽</div>
-                    <div v-if="+product.discount > 0" class="pricelist__price">{{ (product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</div>
-                    <div v-else class="pricelist__price">{{ product.price }} ₽</div>
+                    <div v-if="+product.discount > 0" class="pricelist__oldprice">{{ Math.round(+product.price).toLocaleString() }} ₽</div>
+                    <div v-if="+product.discount > 0" class="pricelist__price">{{ Math.round(product.price * (100 - product.discount) / 100).toLocaleString() }} ₽</div>
+                    <div v-else class="pricelist__price">{{ Math.round(+product.price) }} ₽</div>
                   </div>
                   <div class="pricelist__popup">
                     <div class="pricelist__popup-category">{{ product.category_name }}</div>
@@ -81,8 +106,8 @@ const PriceList = {
                     <div class="pricelist__popup-right">
                       <div class="pricelist__popup-total">
                         <p>Итого<br> с учетом скидки</p>
-                        <h3 v-if="product.discount">{{ (+product.price * (100 - +product.discount) / 100).toLocaleString() }} ₽</h3>
-                        <h3 v-else> {{ +product.price.toLocaleString() }} ₽</h3>
+                        <h3 v-if="product.discount">{{ Math.round(+product.price * (100 - +product.discount) / 100).toLocaleString() }} ₽</h3>
+                        <h3 v-else> {{ Math.round(+product.price).toLocaleString() }} ₽</h3>
                       </div>
                       <button class="btn btn--primary" @click="saveProduct(index)">Применить</button>
                     </div>
@@ -91,7 +116,9 @@ const PriceList = {
           </div>
         </div>
         <div class="pagination">
-          <a v-for="index in pages" :class="{active : (index == page_no)}" @click="loadPage(index)">{{ index }}</a>
+          <a v-if="pages > 10" @click="loadPage(page_no - 1)" :class="{'custom-disable': page_no <= 1}"><</a>
+          <a v-for="index in paginator" :class="{active : (index == page_no), 'dot-disable': (index === '...')}" @click="loadPage(index)">{{ index }}</a>
+          <a v-if="pages > 10" @click="loadPage(page_no + 1)" :class="{'custom-disable': page_no >= pages}">></a>
         </div>
       </div>
     </div>`,
@@ -109,10 +136,111 @@ const PriceList = {
           category_id: ''
         },
         search: '',
-        filtersCreated: false
+        filtersCreated: false,
+        showFileMenu: false,
+        fileName: '',
+        filePath: '',
+        fileUploaded: false,
+        downloadFileName: '',
+        intermediatePath: '',
+          downloadUrls: []
       }
   },
+  computed: {
+    paginator () {
+      let promt = []
+      let result = []
+      if (this.pages > 10) {
+        for (let i = 1; i <= this.pages; i++) {
+          promt.push(i)
+        }
+        if (this.page_no <= 4) {
+            result.push(...promt.slice(0, 5))
+            result.push('...')
+            result.push(...promt.slice(-1))
+        } else if (this.page_no >= promt.length - 3) {
+            result.push(...promt.slice(0, 1))
+            result.push('...')
+            result.push(...promt.slice(-5))
+        } else {
+            result.push(...promt.slice(0, 1))
+            result.push('...')
+            result.push(...promt.filter(item => {
+              console.log(item)
+              return item === this.page_no -2 || item === this.page_no -1 || item === this.page_no || item === this.page_no + 1 || item === this.page_no + 2
+            }))
+            result.push('...')
+            result.push(...promt.slice(-1))
+        }
+        return result
+      }
+      return this.pages
+    }
+  },
   methods: {
+      prefixer (item) {
+          return this.intermediatePath + item
+      },
+      async uploadFile () {
+          let file  = document.querySelector("#upload-file").files
+          let formData = new FormData()
+          formData.append('file', file[0]);
+          formData.append( 'query_type', 'price')
+          await axios.post('/control-panel/upload-product-file', formData, {
+              headers: {'Content-Type': 'multipart/form-data'}
+          }).then(response => {
+              showMessage('Файл загружен, ожидайте ответа')
+              this.fileUploaded = true;
+              console.log(response)
+          })
+      },
+      async checkFiles () {
+          const headers = { 'X-Requested-With': 'XMLHttpRequest' };
+          let requestUrl = '/control-panel/place-download-link';
+          await axios
+              .post(requestUrl, Qs.stringify({
+                  data: {
+                      query_type: 'price',
+                  }
+              }), {headers})
+              .then(response => {
+                  this.downloadUrls = response.data.urls
+                  // this.downloadUrls.forEach(item =>  {
+                  //   item = location.origin + item;
+                  // })
+              })
+      },
+    async showMenuWithAjax () {
+      const headers = { 'X-Requested-With': 'XMLHttpRequest', 'Content-Disposition': 'attachment' };
+      let requestUrl = '/control-panel/get-product-file';
+        if (this.filePath) {
+            this.showFileMenu = !this.showFileMenu
+            return;
+        }
+      await axios
+          .post(requestUrl,Qs.stringify({
+            data: {
+              // category_id: '',
+              // provider_id: 'provider_id',
+              query_type: 'price'
+            }
+          }),{headers})
+          .then(response => {
+              this.fileName = response.data.filename;
+              this.fileName = this.fileName.substr(this.fileName.indexOf('/P_') + 0)
+              this.filePath = '/documents' + this.fileName;
+              this.downloadFileName = this.fileName.split('/').pop()
+              this.intermediatePath = this.filePath.replace(this.fileName.split('/').pop(), '')
+              this.checkFiles();
+          })
+          .catch(error => {
+            console.log(error)
+            // if (error.response.status == '403'){
+            //   location.reload();
+            // }
+          });
+      this.showFileMenu = !this.showFileMenu
+    },
     checkDiscount(index) {
       if (this.products[index].discount === ''){
         this.products[index].discount = 0;

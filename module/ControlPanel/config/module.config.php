@@ -84,6 +84,8 @@ return [
                 ['actions' => ['getProductFile', ], 'allow' => '+administrator'],
                 ['actions' => ['sendProductFile', ], 'allow' => '+administrator'],
                 ['actions' => ['uploadProductFile', ], 'allow' => '+administrator'],
+                ['actions' => ['getProductFileAnswer', ], 'allow' => '*'],// '+administrator'],     
+                ['actions' => ['placeDownloadLink', ], 'allow' => '+administrator'],           
                 
 //                ['actions' => ['deleteProductImage', ], 'allow' => '+developer'],
                 ['actions' => ['requestCategoryCharacteristics', ], 'allow' => '+administrator'],
@@ -488,6 +490,30 @@ return [
                             'defaults' => [
                                 'controller' => \ControlPanel\Controller\ProductController::class,
                                 'action' => 'upload-product-file',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    'get-product-file-answer'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get-product-file-answer',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'get-product-file-answer',
+                            ],
+                        ],
+                        // 'may_terminate' => true,
+                    ],
+                    
+                    //placeDownloadLink
+                    'place-download-link'  => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/place-download-link',
+                            'defaults' => [
+                                'controller' => \ControlPanel\Controller\ProductController::class,
+                                'action' => 'place-download-link',
                             ],
                         ],
                         // 'may_terminate' => true,

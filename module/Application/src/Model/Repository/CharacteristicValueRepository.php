@@ -72,15 +72,16 @@ class CharacteristicValueRepository extends Repository implements Characteristic
 
         foreach ($result['data'] as $row) {
             $sql = sprintf("replace INTO `{$this->tableName}`(`id`, `title`, `characteristic_id`) VALUES ( '%s', '%s', '%s')",
-                    $row['id'], $row['title'], $row['characteristic_id']);
+                    $row['id'], addslashes($row['title']), $row['characteristic_id']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();
             } catch (InvalidQueryException $e) {
-                return ['result' => false, 'description' => "error executing $sql", 'statusCode' => 418];
+                    $error.="{$e->getMessage()}\r\n";
+                continue;
             }
         }
-        return ['result' => true, 'description' => '', 'statusCode' => 200];
+        return ['result' => true, 'description' => $error ?? '', 'statusCode' => 200];
     }
 
 }

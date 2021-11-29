@@ -197,7 +197,7 @@ class ProductController extends AbstractActionController
         return $res;
     }
 
-    private function canAddProduct(array &$product): bool
+    private function canAddProduct(array &$product): array
     {
         $identity = $this->authService->getIdentity();
         $isTest = 'false';
@@ -205,7 +205,8 @@ class ProductController extends AbstractActionController
         $result = $this->productManager->addServerDocument($credentials, $product);
         $product = $result['data']['data'];
         $res = $result['http_code'] === 200 && $result['data']['result'] === true;
-        return $res;
+        return ['result' => $res, 'error_description' => $result['data']['error_description'], 'error_description_for_user' => $result['data']['error_description_for_user']];
+        //return $res;
     }
 
     private function canDeleteProduct($params)
@@ -244,24 +245,62 @@ class ProductController extends AbstractActionController
     
     public function uploadProductFileAction()
     {
-//        $post = $this->getRequest()->getPost()->toArray();
+        $post = $this->getRequest()->getPost()->toArray();
 //        $productId = $post['product_id'];
 //        $providerId = $post['provider_id'];
 
         $identity = $this->authService->getIdentity();
 
-        $uploadsDir = $documentPath = $this->documentPath('product', ['provider_id' => $identity['provider_id'] ]);
+        $uploadsDir = $documentPath = $this->documentPath($post['query_type'], ['provider_id' => $identity['provider_id'] ]);
 
         $error = $_FILES['file']['error'];
         if (UPLOAD_ERR_OK == $error) {
             $newFileName = $_FILES['file']['name'];
             $tmpName = $_FILES['file']['tmp_name'];
             $result = move_uploaded_file($tmpName, "$uploadsDir/$newFileName");
+            // file moved from tmp to permanent location
+            // we now need to inform 1C about uploading the file
+            
+            $identity = $this->authService->getIdentity();
+            $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
+            $data = ['filename' => $newFileName, 'query_type' => $post['query_type']];
+            $result = $this->productManager->uploadProductFile($credentials, $data);
+            $res = $result['http_code'] === 200 && $result['data']['result'] === true;
+            
+            $this->getResponse()->setStatusCode($result['http_code']);
+            return new JsonModel(['result' => true, 'error_description' => '', 'http_code' => $result['http_code']]);
         }
 
-        return new JsonModel(['file_name' => $newFileName]);
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel(['result' => false, 'error_description' => 'error uploading document file', 'http_code' => 400]);
+        // return new JsonModel(['file_name' => $newFileName]);
     }
     
+    public function getProductFileAnswerAction()
+    {
+        $request = $this->getRequest();
+        $content = $request->getContent();
+        
+//        error_log(print_r($content, true), 1, 'alex@localhost');
+        
+        $result = $this->productManager->saveProductFileAnswer($content);
+        
+        //return new JsonModel($content);
+        return new JsonModel(['result' => true]);
+    }
+
+    public function placeDownloadLinkAction()
+    {
+        $post = $this->getRequest()->getPost()->toArray();        
+        $identity = $this->authService->getIdentity();
+        //var_dump($identity);
+        //$urls = $this->productManager->getDownloadLinks($identity['provider_id']);
+        //$path = $this->documentPath('product', $identity['provider_id']);
+        
+        $result = $this->productManager->placeDownloadLink($identity['provider_id'], $post['data']['query_type']);
+
+        return new JsonModel($result);
+    }
 
     /**
      * Update product
@@ -339,12 +378,14 @@ class ProductController extends AbstractActionController
         unset($product['color_id']);
         unset($product['country_id']);
         unset($product['del_images']);
-        if ($this->canAddProduct($product)) {
+        $res = $this->canAddProduct($product);
+        if ($res['result']) {
             $result = $this->productManager->replaceProduct($product);
             return new JsonModel(['result' => true, 'data' => $product]);
         }
 
-        return new JsonModel(['result' => false]);
+        //return new JsonModel(['result' => false]);
+        return new JsonModel($res);
     }
 
     /**
@@ -413,28 +454,28 @@ class ProductController extends AbstractActionController
 
         $content = [
           "provider_id" => $identity['provider_id'],
-          "store_id" => '',
+          "store_id" => $post['data']['store_id'],
           "category_id" => $post['data']['category_id'],
           "query_type" => $post['data']['query_type'],
         ];
         
         /** To be removed */
-        $content = [
-//          "provider_id" => $identity['provider_id'],
-          "store_id" => '',
-          "category_id" => '000000006',
-          "query_type" => 'product',
-        ];
+//        $content = [
+////          "provider_id" => $identity['provider_id'],
+//          "store_id" => '',
+//          "category_id" => '000000006',
+//          "query_type" => 'product',
+//        ];
 
         $credentials = ['partner_id: ' . $identity['provider_id'], 'login: ' . $identity['login'], 'is_test: false'];
         //$result = $this->productManager->getProductFile($content);
         $result = $this->productManager->getProductFile($credentials, $content);
 
-        if(false == $result['result']) {
-            return new JsonModel(['result' => $result['result'], 'filename' => '', 'error_description' => $result['error_description'], 'http_code' => $result['http_code']]);
+        if(false == $result['data']['result']) {
+            return new JsonModel(['result' => $result['data']['result'], 'filename' => '', 'error_description' => $result['data']['error_description'], 'http_code' => $result['http_code']]);
         }
 
-        return new JsonModel(['result' => $result['result'], 'filename' => $result['filename'], 'result' => $result['result'], 'error_description' => '', 'http_code' => '200' ]);
+        return new JsonModel(['result' => $result['data']['result'], 'filename' => $result['data']['filename'], 'error_description' => '', 'http_code' => '200' ]);
     }
 
     /**

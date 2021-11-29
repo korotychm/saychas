@@ -1,21 +1,11 @@
 <?php
 
-// src\Service\Factory\ImageHelperFunctionsService.php
+// src\Service\Factory\DadataService.php
 
 namespace Application\Service;
 
-//use Laminas\Config\Config;
-//use Laminas\Json\Json;
-//use Laminas\Session\Container;
-//use Application\Resource\Resource;
-//use Application\Model\Entity\ReviewImage;
-//use Application\Model\Entity\ProductFavorites;
-//use Application\Model\Entity\Basket;
-//use Application\Model\RepositoryInterface\HandbookRelatedProductRepositoryInterface;
-
 /**
- * Description of DadataService
- *
+ * DadataService
  */
 class DadataService
 {
@@ -35,7 +25,7 @@ class DadataService
      */
     private $secret;
 
-    public function __construct($url, $token="", $secret="")
+    public function __construct($url, $token = "", $secret = "")
     {
         $this->url = $url;
         $this->token = $token;

@@ -1,7 +1,22 @@
+.panel__order-status
+  width 18px
+  height 18px
+  border-radius 50%
+  margin-right 10px
+  &--collecting
+    background var(--gray)
+  &--cancelled
+    background var(--black)
+  &--delivering
+    background var(--red)
+  &--delivered
+    background var(--green)
+
 .order-btn-group
   display: flex
   .btn:nth-child(2)
     margin-left 15px
+
 .page-heading__back
   width 55px
   height 55px
@@ -41,13 +56,20 @@
       font-weight bold
       display flex
       align-items center
-      span
+      > span
         margin-right 30px
     &-logo
       margin-right 30px
       img
-        display block
-        width 160px
-        height auto
+        width: auto
+        height: 60px
     &-items
       margin-top 30px
+
+
+.profile-order__requisition
+  .product-tr__wishlist
+    display none
+  .product-tr__price
+    width 150px
+    margin-right 0

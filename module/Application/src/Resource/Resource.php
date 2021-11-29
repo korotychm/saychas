@@ -153,12 +153,12 @@ class Resource
     /*
      * Статус заказа
      */
-    const ORDER_STATUS_CODE_NEW         = ["id" => 0, "description" => "новый" ];
-    const ORDER_STATUS_CODE_REGISTRED   = ["id" => 1, "description" => "зарегистрирован" ];
-    const ORDER_STATUS_CODE_PACK        = ["id" => 2, "description" => "собирается" ];
-    const ORDER_STATUS_CODE_DELIVERY    = ["id" => 3, "description" => "доставляется" ];
-    const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 4, "description" => "доставлен" ];
-    const ORDER_STATUS_CODE_CANCELED    = ["id" => 5, "description" => "отменен" ];
+    const ORDER_STATUS_CODE_NEW         = ["id" => 0, "description" => "Новый" ];
+    const ORDER_STATUS_CODE_REGISTRED   = ["id" => 1, "description" => "Ожидаеет оплаты" ];
+    const ORDER_STATUS_CODE_PACK        = ["id" => 2, "description" => "Собирается" ];
+    const ORDER_STATUS_CODE_DELIVERY    = ["id" => 3, "description" => "Доставляется" ];
+    const ORDER_STATUS_CODE_CONFIRMED   = ["id" => 4, "description" => "Доставлен" ];
+    const ORDER_STATUS_CODE_CANCELED    = ["id" => 5, "description" => "Отменен" ];
 
     /*
      * Статус доставки
@@ -189,7 +189,7 @@ class Resource
     const REVIEW_MESSAGE_VALID_MIN_LENGHT = 4;
     const REVIEW_EMPTY_MEASSAGES_LIST = "У этого товара еще нет ни одного отзыва. Будьте первым!";
     const REVIEW_ADD_MEASSAGE_BUTTON =  "Оставить отзыв";
-    const REVIEW_THANKS =  "Спасибо, за отзыв!";
+    const REVIEW_THANKS =  "Спасибо за отзыв!";
     const REVIEW_MANUAL_LINK_TEXT = "Правила оформления отзывов →";
     const REVIEW_SORT_OPTIONS = [ 0=> "Сначала свежие", 1 => "Сначала хорошие", 2 => "Сначала отрицательные" ];
     const REVIEWER_VALID_ERROR_404 = "Войдите или зарегистрируйтесь, чтобы оставить отзыв";

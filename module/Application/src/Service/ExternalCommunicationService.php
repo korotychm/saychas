@@ -9,7 +9,7 @@ use Laminas\Config\Config;
 use Laminas\Json\Json;
 use Laminas\Json\Exception\RuntimeException as LaminasJsonRuntimeException;
 //use Application\Model\Entity;
-//use Application\Model\Entity\ClientOrder;
+//use Application\Model\Entity\HandbookRelatedProduct;
 
 /**
  * Description of AcquiringCommunicationService
@@ -28,6 +28,7 @@ class ExternalCommunicationService
     public function __construct($config)
     {
         $this->config = $config;
+        
     }
 
     /**
@@ -69,47 +70,6 @@ class ExternalCommunicationService
         return $this->sendCurlRequest($url, $param);
     }
     
-    
-    
-    
-    /***********************
-    
-    
-     $store[$value["store"]][] = [
-                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
-            ];
-            $productupdate[]=$id;
-            //$coontent["delevery"][] = $store[$value['store']];
-        }
-        //(надо вынести в resource)
-        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
-
-        $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
-        $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
-        //$q = -1;
-        while (list($key, $val) = each($store)) {
-            $i++;
-            //$selfdelevery = false;
-            if ($content['selfdelevery'] and in_array($key, $content['selfdelevery'])) {
-
-                $selfdeliv[] = ["store" => $key, "products" => $val];
-            } else {
-                if ($i < $limit) {
-                    $i = 1;
-                    $j++;
-                }
-                $delivery[$j][] = ["store" => $key, "products" => $val];
-            }
-        }
-
-        if (!empty($delivery)) {
-            while (list($key, $val) = each($delivery))
-                $deliv[] = $val;
-        }
-        $content["deliveries"] = [ "delivery_price"=>$content['delivery_price'] ,"selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
-
-    ************************/
-
     /**
      * 
      * @param array $content
@@ -119,21 +79,23 @@ class ExternalCommunicationService
     {
         $url = $this->config['parameters']['1c_request_links']['create_order'];
         $selfdeliv = $deliv = $delivery =[];
+       
         if (empty($content["products"])){
-            return false;
+            return ["response" => ["result" => false, "errorDescription" => "#404"]];
         }
 
         while (list($id, $value) = each($content["products"])) {
             $store[$value["store"]][] = [
-                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discont" => (int) $value["discont"]
+                $product = 
+                
+                "id" => $id, "count" => $value["count"], "price" => $value["price"], "discount" => (int) $value["discount"], "full_price" =>  $value["full_price"]
             ];
             $productupdate[]=$id;
             //$coontent["delevery"][] = $store[$value['store']];
         }
-        //(надо вынести в resource)
-        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
         
-            $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
+        $limit = ($content["ordermerge"]) ? 1 : 4; //лимит счетчика для наполнения  массива магазинов в доставке 
+        $i = 1; // счетчик индекса массива для добавления элеметнтов  для обычной доставки
         $j = 0; //счетчик индекса массива для добавления элеметнтов  для объедененной доставки 
         //$q = -1;
         while (list($key, $val) = each($store)) {
@@ -151,13 +113,12 @@ class ExternalCommunicationService
                 $delivery[$j][] = ["store" => $key, "products" => $val];
             }
         }
-        foreach ($delivery as $d)
-        {
+        
+        foreach ($delivery as $d){
             $deliveries[] = ["pickup" => false, "requisitions" => $d];
         }
         
-        foreach ($selfdeliv as $d)
-        {
+        foreach ($selfdeliv as $d){
             $deliveries[] = ["pickup" => true, "requisitions" => [$d]];
         }
         
@@ -169,8 +130,8 @@ class ExternalCommunicationService
 //                $deliv[] = $val;
 //        }
 //        //$content["deliveries"] = ["selfdelivery" => $selfdeliv, 'delivery' => $deliv,];
-        $content["deliveries"] =  $deliveries;
-        $return["deliveries"] = $content["deliveries"]; //; =  $deliveries;
+        $content["deliveries"] =  $return["deliveries"] = $deliveries;
+        //$return["deliveries"] = $content["deliveries"]; //; =  $deliveries;
         
         $return["delivery_price"] = $content['delivery_price'];
         //$return["delivery_price"] = ;
@@ -384,9 +345,26 @@ class ExternalCommunicationService
      * @param array $content
      * @return array
      */
+    public function sendOrderPaymentDevInfo (array $content)
+    {
+        $url = "http://srv02:8000/SayChasDev/hs/site/order_payment"; //$this->config['parameters']['1c_request_links']['order_payment'];
+        return $this->sendCurlRequest($url, $content);
+    }
+    
     public function sendOrderPaymentInfo (array $content)
     {
         $url = $this->config['parameters']['1c_request_links']['order_payment'];
+        return $this->sendCurlRequest($url, $content);
+    }
+    
+    /**
+     * 
+     * @param array $content
+     * @return array
+     */
+    public function sendCloudCacherBillInfo (array $content)
+    {
+        $url = $this->config['parameters']['1c_request_links']['cloud_cacher_bill'];
         return $this->sendCurlRequest($url, $content);
     }
 

@@ -17,7 +17,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" v-model="rangeprice.currentMin" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :min="rangeprice.minprice / 100" :max="rangeprice.maxprice / 100" v-model="rangeprice.currentMax" /></div>
                 </div>
-                <input type="hidden" class="range__hidden" name="priceRange" :value="(rangeprice.currentMin * 100) + ';' + (rangeprice.currentMax * 100)" @input="getProducts">
+                <input type="hidden" class="range__hidden" disabled name="priceRange" :value="(rangeprice.currentMin * 100) + ';' + (rangeprice.currentMax * 100)" @input="getProducts">
             </div>
         </div>
         <div class="filter__item" v-for="filter in filters" :key="filter.id" :class="{ 'filter__item--boolean' : filter.type == 3}" :style="{ display: (filter.type == 2 && filter.max == filter.min) ? 'none' : 'block' }">
@@ -35,7 +35,7 @@
                     <div><input class="tooltip tooltip-from" type="number" :min="filter.min" :max="filter.max" :step="filter.step" v-model="filter.currentMin" /></div>
                     <div><input class="tooltip tooltip-to" type="number" :min="filter.min" :max="filter.max" :step="filter.step" v-model="filter.currentMax" /></div>
                 </div>
-                <input type="hidden" class="range__hidden" :name="'characteristics[' + filter.id + '][]'" :value="filter.currentMin + ';' + filter.currentMax" @input="getProducts">
+                <input type="hidden" class="range__hidden" disabled :name="'characteristics[' + filter.id + '][]'" :value="filter.currentMin + ';' + filter.currentMax" @input="getProducts">
             </div>
             <!-- Тип вкл-выкл-->
             <label class="boolean" v-if="filter.type==3">
