@@ -241,7 +241,7 @@ function useKeyboardEvents () {
 
      if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes').hasClass('active')) {
         if (e.keyCode === 40) {
-          e.preventDefault()
+          // e.preventDefault()
           if (!$selected.length) {
             $next = $items.parent().first().children('span');
           } else {
@@ -255,7 +255,7 @@ function useKeyboardEvents () {
           // customSelectDropDownY += 17.25
         }
         if (e.keyCode === 	38) {
-          e.preventDefault()
+          // e.preventDefault()
           if (!$selected.length) {
             $next = $items.parent().last().children('span');
           } else {
