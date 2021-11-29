@@ -46,7 +46,7 @@ class ArrayHelper
             foreach ($elements[$parentId] as $element) {
                 //exit (print_r($element['id']));
                 $LegalTree = self::LegalTree($elements, $element['id'], $categoriesHasProduct);
-                if (!empty($categoriesHasProduct[$element['id']]) or $LegalTree) {
+                if (!empty($categoriesHasProduct[$element['id']]) || $LegalTree) {
                     $children = self::filterTree($elements, $element['id'], $categoriesHasProduct);
                     $element['children'] = $children;
                     $return[] = $element;
