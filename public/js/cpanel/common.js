@@ -232,10 +232,10 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
+          $('.custom-select__dropdown-inner').scrollTop(scrollTo($next))
           $next.addClass('selected')
           customSelectDropDownY += 17.25
           scrollTo($next)
-          $('.custom-select__dropdown-inner').scrollTop(scrollTo($next))
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -244,10 +244,10 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
+          $('.custom-select__dropdown-inner').scrollTop(scrollTo($next))
           $next.addClass('selected')
           customSelectDropDownY -= 17.25
 
-          $('.custom-select__dropdown-inner').scrollTop(scrollTo($next))
         }
       }
   })
