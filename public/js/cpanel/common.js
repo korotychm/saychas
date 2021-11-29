@@ -187,7 +187,6 @@ function useKeyboardEvents () {
       var input = $('<input />', {
         'type': 'text',
         'name': currElmModelAttr,
-        'style': 'width:100px',
         'class': 'custom-select__label input',
         'value': $(this).text()
       });
