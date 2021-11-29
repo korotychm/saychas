@@ -196,7 +196,7 @@ function useKeyboardEvents () {
     }
     if (e.keyCode === 13) {
       if(document.activeElement.className === 'boolean') {
-        console.log($(document.activeElement).children('input'))
+        $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop())
       }
       if ($('.custom-select--radio').hasClass('active')) {
         e.preventDefault()
