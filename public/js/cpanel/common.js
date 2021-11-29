@@ -231,7 +231,7 @@ function useKeyboardEvents () {
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
-            $('.custom-select__dropdown-inner').scrollTop(relativePos.top)
+            $('.custom-select__dropdown-inner').scrollTop(relativePos.top - $('.custom-select__dropdown-inner').innerHeight())
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -247,7 +247,7 @@ function useKeyboardEvents () {
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
-          $('.custom-select__dropdown-inner').scrollTop(relativePos.top)
+          $('.custom-select__dropdown-inner').scrollTop(relativePos.top - $('.custom-select__dropdown-inner').innerHeight())
         }
       }
   })
