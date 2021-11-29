@@ -181,30 +181,30 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-    $(document).on('click','.custom-select--radio', function () {
-      $(this).addClass('active')
-      let input = document.createElement('input')
-      // input.placeholder = this.selectedValue;
-      input.classList.add('custom-select__label')
-      input.classList.add('input')
-      let div = document.querySelector(".custom-select__label")
-      div.replaceWith(input)
-      input.focus()
-      input.oninput = function () {
-        let filter, div, span, i;
-        div = document.querySelector(".custom-select__dropdown-inner");
-        span = div.getElementsByTagName("span");
-        filter = input.value.toUpperCase();
-        for (i = 0; i < span.length; i++) {
-          let  txtValue = span[i].textContent || span[i].innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            span[i].style.display = "";
-          } else {
-            span[i].style.display = "none";
-          }
-        }
-      }
-    })
+    // $(document).on('click','.custom-select--radio', function () {
+    //   $(this).addClass('active')
+    //   let input = document.createElement('input')
+    //   input.value = 'Все категории'
+    //   input.classList.add('custom-select__label')
+    //   input.classList.add('input')
+    //   let div = document.querySelector(".custom-select__label")
+    //   div.replaceWith(input)
+    //   input.focus()
+    //   input.oninput = function () {
+    //     let filter, div, span, i;
+    //     div = document.querySelector(".custom-select__dropdown-inner");
+    //     span = div.getElementsByTagName("span");
+    //     filter = input.value.toUpperCase();
+    //     for (i = 0; i < span.length; i++) {
+    //       let  txtValue = span[i].textContent || span[i].innerText;
+    //       if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    //         span[i].style.display = "";
+    //       } else {
+    //         span[i].style.display = "none";
+    //       }
+    //     }
+    //   }
+    // })
 
     // let customSelectDropDownY = 0;
 
