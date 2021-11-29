@@ -228,7 +228,7 @@ function useKeyboardEvents () {
             console.log('зашло сюда')
             $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           }
-          console.log($next[0].getBoundingClientRect())
+          console.log(customSelectDropDownY)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
