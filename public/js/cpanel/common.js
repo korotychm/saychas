@@ -192,13 +192,6 @@ function useKeyboardEvents () {
         'value': $(this).text()
       });
       $(this).replaceWith(input);
-      input.datepicker({
-        onSelect: function (date) {
-          $this.text(date);
-          input.replaceWith($this);
-          console.log(date);
-        }
-      })
     })
 
     // let customSelectDropDownY = 0;
