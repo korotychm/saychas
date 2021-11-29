@@ -267,7 +267,7 @@ function useKeyboardEvents () {
           let position = $next.position()
           let y = position.top
           console.log(position)
-          $('.custom-select__dropdown-inner').children('.selected')[0].scrollIntoView()
+          document.querySelector('.selected').scrollIntoView()
           // $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
 
@@ -283,7 +283,7 @@ function useKeyboardEvents () {
           let position = $next.position()
           let y = position.top
           console.log(position)
-          $('.custom-select__dropdown-inner').children('.selected')[0].scrollIntoView()
+          document.querySelector('.selected').scrollIntoView()
           // $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
 
