@@ -183,7 +183,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-    let qwe;
+    let customSelectDropDownY = 250;
 
   document.addEventListener('keydown', function(e) {
       qwe = document.querySelector('.selected')
@@ -225,9 +225,11 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          // customSelectDropDownY -= 30
-
-          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
+          customSelectDropDownY += 42
+          if (customSelectDropDownY > 400) {
+            $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          }
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
@@ -239,9 +241,10 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          // customSelectDropDownY -= 30
-
-          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
+          customSelectDropDownY -= 42
+            // if (customSelectDropDownY > 400) {
+            //   $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+            // }
           console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
