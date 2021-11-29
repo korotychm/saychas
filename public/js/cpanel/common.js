@@ -188,7 +188,7 @@ function useKeyboardEvents () {
         'type': 'text',
         'name': currElmModelAttr,
         'style': 'width:100px',
-        'class': 'datePicker',
+        'class': 'custom-select__label input',
         'value': $(this).text()
       });
       $(this).replaceWith(input);
