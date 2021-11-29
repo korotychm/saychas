@@ -223,7 +223,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY += 30
+          customSelectDropDownY += 42
           if (customSelectDropDownY > 300) {
             console.log('зашло сюда')
             $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
