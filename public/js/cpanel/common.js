@@ -223,7 +223,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          $next[0].scrollIntoView()
+          $next[0].scrollIntoView({block: "center", behavior: "smooth"})
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -233,7 +233,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          $next[0].scrollIntoView()
+          $next[0].scrollIntoView({block: "center", behavior: "smooth"})
         }
       }
   })
