@@ -206,25 +206,6 @@ function useKeyboardEvents () {
     //   }
     // })
 
-    // let customSelectDropDownY = 0;
-
-    function qwe (){
-
-    // $(".custom-select__dropdown-inner").scroll(function(){
-    //   console.log($(this))
-    //   if( $(".selected").last().offset().top <= ( $(this).offset().top + $(this).height() ) ){
-    //     console.log('в этом говне работает')
-    //
-    //     $(".log").text("Fire event!");
-    //   }
-    //   else{
-    //     console.log('в другом говне работает')
-    //     $(".log").text("");
-    //   }
-    // });
-
-  }
-
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
@@ -264,18 +245,9 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
-
           $next.addClass('selected')
           var target = document.querySelector(".selected");
           target.parentNode.parentNode.scrollTop = target.offsetTop;
-          console.log(target)
-          console.log(target.parentNode.parentNode.scrollTop)
-          // if ($('.custom-select--checkboxes').hasClass('active')) {
-          //   let target
-          //   document.querySelector('.selected').scrollIntoView()
-          // }
-
-          // customSelectDropDownY += 17.25
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -284,21 +256,12 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
-
           $next.addClass('selected')
           var target = document.querySelector(".selected");
           target.parentNode.parentNode.scrollTop = target.offsetTop;
-          console.log(target)
-          console.log(target.parentNode.parentNode.scrollTop)
-          // if ($('.custom-select--checkboxes').hasClass('active')) {
-          //   document.querySelector('.selected').scrollIntoView()
-          // }
-
-          // customSelectDropDownY -= 17.25
         }
       }
   })
-
 }
 
 useKeyboardEvents()
