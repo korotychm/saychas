@@ -225,13 +225,13 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
-              childrenPos = document.querySelector('.selected').getBoundingClientRect(),
-              relativePos = {};
-
-          relativePos.top = childrenPos.top - parentPos.top
-          console.log(relativePos)
-            $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 174)
+          // var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+          //     childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+          //     relativePos = {};
+          //
+          // relativePos.top = childrenPos.top - parentPos.top
+          //   $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 174)
+          sideScroll()
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -241,13 +241,15 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
-              childrenPos = document.querySelector('.selected').getBoundingClientRect(),
-              relativePos = {};
-
-          relativePos.top = childrenPos.top - parentPos.top
-          console.log(relativePos)
-          $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 174)
+          $('.custom-select__dropdown-inner').on('scroll', function () {
+            console.log('qweqwewq')
+          })
+          // var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+          //     childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+          //     relativePos = {};
+          //
+          // relativePos.top = childrenPos.top - parentPos.top
+          // $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 174)
         }
       }
   })
