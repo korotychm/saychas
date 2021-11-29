@@ -282,6 +282,24 @@ class IndexController extends AbstractActionController
 
         return new ViewModel(['title' => "Заказ №" . $orderInfo[0]['orderId'] . "", 'orderDate' => strftime('%c', (int) $orderInfo[0]['orderDate']), "orderInfo" => $this->htmlProvider->orderList([$order])[0],]);
     }
+    
+    public function tinkoffPayResultAction()
+    {
+//        $container = new Container();
+//        if ($container->signedUp != true) {
+//            return $this->redirect()->toUrl('/my-login');
+//        }
+        $userId = $this->identity();
+        $user = User::find(['id' => $userId]);
+        $userPhone = (!empty($user)) ? $user->getPhone() : false;
+        $post = $this->getRequest()->getQuery() ?? [];
+        if (empty($userPhone)) {
+            return $this->unauthorizedLocation();
+        }
+
+        
+        return new ViewModel(['data' => Json::encode($post), 'title' => "Результат оплаты"]);
+    }
 
     /**
      * Basket page
