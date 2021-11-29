@@ -246,7 +246,7 @@ class AcquiringController extends AbstractActionController
         $userId = $order->getUserId();
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
         $post["requestTinkoff"] = $this->buildTinkoffArgs($orderId, $userInfo);
-        //unset($post["requestTinkoff"]["OrderId"], $post["requestTinkoff"]["Description"], $post["requestTinkoff"]["CustomerKey"]);
+        unset($post["requestTinkoff"]["OrderId"], $post["requestTinkoff"]["Description"], $post["requestTinkoff"]["CustomerKey"]);
 
         foreach ($post["post1C"]["products"] as $item) {
             $item["Tax"] = ($item["Tax"] == null ) ? "none" : "vat" . $item["Tax"];
