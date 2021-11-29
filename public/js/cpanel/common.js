@@ -234,7 +234,7 @@ function useKeyboardEvents () {
           }
           let position = $next.position()
           let y = position.top
-          $('.custom-select__dropdown-inner').scrollTop(y)
+          $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
           customSelectDropDownY += 17.25
           scrollTo($next)
@@ -248,7 +248,7 @@ function useKeyboardEvents () {
           }
           let position = $next.position()
           let y = position.top
-          $('.custom-select__dropdown-inner').scrollTop(y)
+          $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
           customSelectDropDownY -= 17.25
 
