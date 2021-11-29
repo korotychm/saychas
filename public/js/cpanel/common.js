@@ -246,7 +246,7 @@ function useKeyboardEvents () {
           //     relativePos = {};
           //
           // relativePos.top = childrenPos.top - parentPos.top
-          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top())
+          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top)
         }
       }
   })
