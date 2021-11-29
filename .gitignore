@@ -23,3 +23,6 @@ front/package.json
 front/gulpfile.js
 .vscode/launch.json
 public/documents
+documents
+.vscode/launch.json
+public/documents
