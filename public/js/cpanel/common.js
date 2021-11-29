@@ -223,9 +223,9 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY -= 30
+          // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner')[0].scrollIntoView(customSelectDropDownY)
+          $('.custom-select__dropdown-inner')[0].scrollTop($next[0].getBoundingClientRect().top)
           console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
@@ -236,9 +236,9 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY -= 30
+          // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner')[0].scrollIntoView(customSelectDropDownY)
+          $('.custom-select__dropdown-inner')[0].scrollTop($next[0].getBoundingClientRect().top)
           console.log($next[0].getBoundingClientRect())
         }
       }
