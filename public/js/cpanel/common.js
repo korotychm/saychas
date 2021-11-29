@@ -188,6 +188,7 @@ function useKeyboardEvents () {
 
     if (e.keyCode === 9) {
       let currentDrop = $('.custom-select__label')
+      console.log(document.activeElement)
       if (currentDrop.parent().hasClass('active')) {
         currentDrop.parent().removeClass('active')
       }
