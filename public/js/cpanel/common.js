@@ -223,6 +223,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
+          $next[0].scrollIntoView()
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
