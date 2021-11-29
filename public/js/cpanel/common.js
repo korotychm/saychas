@@ -186,7 +186,12 @@ function useKeyboardEvents () {
     let customSelectDropDownY = 250;
 
   document.addEventListener('keydown', function(e) {
-      qwe = document.querySelector('.selected')
+    var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+        childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+        relativePos = {};
+
+    relativePos.top = childrenPos.top - parentPos.top
+    console.log(relativePos)
     if (e.keyCode === 9) {
       $('.boolean').attr('tabindex', 0);
       $('.custom-select__label').attr('tabindex', 0)
