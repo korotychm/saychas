@@ -182,7 +182,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  console.log(Vue)
+  console.log(new Vue)
   $('.custom-select__label').attr('tabindex', 0)
   $('.boolean__check').attr('tabindex', 1)
   document.addEventListener('keydown', function(e) {
