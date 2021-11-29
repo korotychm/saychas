@@ -231,12 +231,11 @@ const Orders = {
           }
           if (!order.deadline && +order.status_id < 3){
             console.log('deadline false, response to get order status')
-            //this.getOrderStatus(order.id,i);
+            this.getOrderStatus(order.id,i);
           }
           i++;
         }
       },
-
       setTime(){
         for (order of this.orders){
           // order.deadline = '00:00';

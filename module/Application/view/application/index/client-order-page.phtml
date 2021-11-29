@@ -25,9 +25,9 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-order-page.js'));
                       <img v-else src="/img/ui/nophoto.jpg" />
                     </div>
                     <div class="orders-history__statuses">
-                        <div class="orders-history__status orders-history__status--ready" v-if="+delivery.delivery_status_id == 2">в пути</div>
+                        <div class="orders-history__status orders-history__status--canceled" v-if="+delivery.delivery_status_id == 4 || +order.orderStatus == 5">отменен</div>
+                        <div class="orders-history__status orders-history__status--ready" v-else-if="+delivery.delivery_status_id == 2">в пути</div>
                         <div class="orders-history__status orders-history__status--deliveried" v-else-if="+delivery.delivery_status_id == 3">доставлен</div>
-                        <div class="orders-history__status orders-history__status--canceled" v-else-if="+delivery.delivery_status_id == 4">отменен</div>
                         <div class="orders-history__status" v-else>собирается</div>
                     </div>
                 </div>

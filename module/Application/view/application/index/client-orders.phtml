@@ -16,10 +16,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
               <div class="orders-history__delivery-item">
                   <h2><?=Resource::THE_DELIVERY ?></h2>
                   <div class="orders-history__statuses">
-                      <div class="orders-history__status" v-if="orderDeliveriesStatuses(orderIndex).collecting"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).collecting }}</span> cобирается</div>
-                      <div class="orders-history__status orders-history__status--ready" v-if="orderDeliveriesStatuses(orderIndex).delivering"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).delivering }}</span> в пути</div>
-                      <div class="orders-history__status orders-history__status--deliveried" v-if="orderDeliveriesStatuses(orderIndex).delivered"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).delivered }}</span> доставлен</div>
-                      <div class="orders-history__status orders-history__status--canceled" v-if="orderDeliveriesStatuses(orderIndex).canceled"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).canceled }}</span> отменен</div>
+                      <div class="orders-history__status orders-history__status--canceled" v-if="orderDeliveriesStatuses(orderIndex).canceled || +order.orderStatus == 5"><span v-if="order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).canceled }}</span> отменен</div>
+                      <div class="orders-history__status" v-if="orderDeliveriesStatuses(orderIndex).collecting"><span v-if="+order.orderStatus != 5 && order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).collecting }}</span> cобирается</div>
+                      <div class="orders-history__status orders-history__status--ready" v-if="orderDeliveriesStatuses(orderIndex).delivering"><span v-if="+order.orderStatus != 5 && order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).delivering }}</span> в пути</div>
+                      <div class="orders-history__status orders-history__status--deliveried" v-if="orderDeliveriesStatuses(orderIndex).delivered"><span v-if="+order.orderStatus != 5 && order.deliveryInfo.delivery_info.deliveries.length > 1">{{ orderDeliveriesStatuses(orderIndex).delivered }}</span> доставлен</div>
                   </div>
               </div>
               <div class="orders-history__text">
