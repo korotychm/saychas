@@ -181,37 +181,19 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-  function filterFunction() {
-    var input, filter, div, span, i;
-    input = document.querySelector(".custom-select__label");
-    filter = input.value.toUpperCase();
-    div = document.querySelector(".custom-select__dropdown-inner");
-    span = div.getElementsByTagName("span");
-    for (i = 0; i < span.length; i++) {
-      let  txtValue = span[i].textContent || span[i].innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        span[i].style.display = "";
-      } else {
-        span[i].style.display = "none";
-        console.log(span[i])
-        console.log(txtValue)
-      }
-    }
-  }
-
     $(document).on('click','.custom-select--radio', function () {
       let input = document.createElement('input')
-      input.placeholder = this.selectedValue;
+      // input.placeholder = this.selectedValue;
       input.classList.add('custom-select__label')
       input.classList.add('input')
       let div = document.querySelector(".custom-select__label")
       div.replaceWith(input)
       input.focus()
       input.oninput = function () {
-        let input, filter, div, span, i;
-        filter = input.value.toUpperCase();
+        let filter, div, span, i;
         div = document.querySelector(".custom-select__dropdown-inner");
         span = div.getElementsByTagName("span");
+        filter = input.value.toUpperCase();
         for (i = 0; i < span.length; i++) {
           let  txtValue = span[i].textContent || span[i].innerText;
           if (txtValue.toUpperCase().indexOf(filter) > -1) {
