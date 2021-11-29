@@ -231,7 +231,7 @@ function useKeyboardEvents () {
           //
           // relativePos.top = childrenPos.top - parentPos.top
           //   $('.custom-select__dropdown-inner').scrollTop(relativePos.top - 174)
-          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top())
+          $('.custom-select__dropdown-inner').scrollTop($('.selected').offset().top)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
