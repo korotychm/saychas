@@ -188,6 +188,7 @@ function useKeyboardEvents () {
 
     if (e.keyCode === 9) {
       $('.boolean').attr('tabindex', 0)
+      $('.custom-select__label').attr('tabindex', 0)
       let currentDrop = $('.custom-select__label')
       // console.log(document.activeElement)
       if (currentDrop.parent().hasClass('active')) {
