@@ -181,7 +181,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-    $(document).on('click','.custom-select__label', function () {
+    $(document).on('click','.custom-select custom-select--radio', function () {
       var currElmModelAttr = $(this).attr('data-model-attr');
       var $this = $(this);
       var input = $('<input />', {
