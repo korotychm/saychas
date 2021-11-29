@@ -231,7 +231,7 @@ function useKeyboardEvents () {
           //     relativePos = {};
           //
           // relativePos.top = childrenPos.top - parentPos.top
-          $('.custom-select__dropdown-inner').scrollTop(qwe)
+          $('.custom-select__dropdown-inner').scrollTop(218 - qwe)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -247,7 +247,7 @@ function useKeyboardEvents () {
           //     relativePos = {};
           //
           // relativePos.top = childrenPos.top - parentPos.top
-          $('.custom-select__dropdown-inner').scrollTop(qwe)
+          $('.custom-select__dropdown-inner').scrollTop(218 - qwe)
         }
       }
   })
