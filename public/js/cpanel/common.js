@@ -228,7 +228,7 @@ function useKeyboardEvents () {
           let scrollBottom = $('.custom-select__dropdown-inner').scrollHeight - $('.custom-select__dropdown-inner').scrollTop - $('.custom-select__dropdown-inner').clientHeight;
           $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
           console.log($next[0].getBoundingClientRect())
-          console.log(customSelectDropDownY)
+          console.log(scrollBottom)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -242,7 +242,7 @@ function useKeyboardEvents () {
           let scrollBottom = $('.custom-select__dropdown-inner').scrollHeight - $('.custom-select__dropdown-inner').scrollTop - $('.custom-select__dropdown-inner').clientHeight;
           $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
           console.log($next[0].getBoundingClientRect())
-          console.log(customSelectDropDownY)
+          console.log(scrollBottom)
         }
       }
   })
