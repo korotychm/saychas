@@ -177,6 +177,8 @@ $(document).ready(function () {
                 console.log('cancel order',response);
                 if (response.data.result){
                   location.reload();
+                } else {
+                  showServicePopupWindow('Ошибка', response.data.errorDescription, "");
                 }
               });
           },
