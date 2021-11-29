@@ -223,12 +223,10 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY += 42
-          if (customSelectDropDownY > 300) {
-            console.log('зашло сюда')
-            $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
-          }
-          console.log(customSelectDropDownY)
+          customSelectDropDownY -= 30
+
+          $('.custom-select__dropdown-inner')[0].scrollIntoView(customSelectDropDownY)
+          console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
