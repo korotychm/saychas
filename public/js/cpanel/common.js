@@ -232,7 +232,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          $next.scrollIntoView()
+          $next[0].scrollIntoView()
         }
       }
   })
