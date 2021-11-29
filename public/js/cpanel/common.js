@@ -182,19 +182,22 @@ function showMessage(message) {
 function useKeyboardEvents () {
 
     $(document).on('click','.custom-select--radio', function () {
-      // var currElmModelAttr = $(this).attr('data-model-attr');
-      console.log($(this))
-      $(this).addClass('active')
-      // var $this = $(this);
+      if ($(this).hasClass('active')) {
+        // var currElmModelAttr = $(this).attr('data-model-attr');
+        console.log($(this))
+        $(this).addClass('active')
+        // var $this = $(this);
 
-      var input = $('<input />', {
-        'type': 'text',
-        // 'name': currElmModelAttr,
-        'class': 'custom-select__label input',
-        'value': $(this).text()
-      });
-      $(this).children('.custom-select__label').replaceWith(input);
-      input.focus()
+        var input = $('<input />', {
+          'type': 'text',
+          // 'name': currElmModelAttr,
+          'class': 'custom-select__label input',
+          'value': $(this).text()
+        });
+        $(this).children('.custom-select__label').replaceWith(input);
+        input.focus()
+      }
+
     })
 
     // let customSelectDropDownY = 0;
