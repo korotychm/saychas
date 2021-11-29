@@ -241,8 +241,8 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          $('.custom-select__dropdown-inner').on('scroll', function () {
-            console.log('qweqwewq')
+          $('.custom-select__dropdown-inner').scroll(function () {
+            console.log('qwessqq')
           })
           // var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
           //     childrenPos = document.querySelector('.selected').getBoundingClientRect(),
