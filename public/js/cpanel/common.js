@@ -195,6 +195,7 @@ function useKeyboardEvents () {
       }
     }
     if (e.keyCode === 13) {
+      console.log(document.activeElement)
       if(document.activeElement === $('label[for="additional-attributes"]')) {
         console.log('трататтата')
       }
