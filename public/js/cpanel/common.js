@@ -225,7 +225,8 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY += 21
-          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          let scrollBottom = $('.custom-select__dropdown-inner').scrollHeight - $('.custom-select__dropdown-inner').scrollTop - $('.custom-select__dropdown-inner').clientHeight;
+          $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
           console.log($next[0].getBoundingClientRect())
           console.log(customSelectDropDownY)
         }
@@ -238,7 +239,8 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY -= 21
-          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          let scrollBottom = $('.custom-select__dropdown-inner').scrollHeight - $('.custom-select__dropdown-inner').scrollTop - $('.custom-select__dropdown-inner').clientHeight;
+          $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
           console.log($next[0].getBoundingClientRect())
           console.log(customSelectDropDownY)
         }
