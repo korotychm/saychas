@@ -227,7 +227,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
+          $('.custom-select__dropdown-inner').scrollTop(qwe[0].getBoundingClientRect().top)
           console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
@@ -240,7 +240,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
+          $('.custom-select__dropdown-inner').scrollTop(qwe[0].getBoundingClientRect().top)
           console.log($next[0].getBoundingClientRect())
         }
       }
