@@ -208,6 +208,19 @@ function useKeyboardEvents () {
 
     // let customSelectDropDownY = 0;
 
+  $(document).ready(function(){
+
+    $(".scroll").scroll(function(){
+      if( $(".target").offset().top <= ( $(this).offset().top + $(this).height() ) ){
+        $(".log").text("Fire event!");
+      }
+      else{
+        $(".log").text("");
+      }
+    });
+
+  });
+
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
