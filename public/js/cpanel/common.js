@@ -181,6 +181,22 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
+  function filterFunction() {
+    var input, filter,  span, i;
+    input = document.querySelector(".custom-select__label");
+    filter = input.value.toUpperCase();
+    div = document.querySelector(".custom-select__dropdown-inner");
+    span = div.getElementsByTagName("span");
+    for (i = 0; i < span.length; i++) {
+      txtValue = span[i].textContent || span[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        span[i].style.display = "";
+      } else {
+        span[i].style.display = "none";
+      }
+    }
+  }
+
     $(document).on('click','.custom-select--radio', function () {
       if ($(this).hasClass('active')) {
         // var currElmModelAttr = $(this).attr('data-model-attr');
