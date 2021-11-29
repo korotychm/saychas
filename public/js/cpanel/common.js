@@ -268,6 +268,8 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           var target = document.querySelector(".selected");
           target.parentNode.parentNode.scrollTop = target.offsetTop;
+          console.log(target)
+          console.log(target.parentNode.parentNode.scrollTop)
           // if ($('.custom-select--checkboxes').hasClass('active')) {
           //   let target
           //   document.querySelector('.selected').scrollIntoView()
@@ -286,6 +288,8 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           var target = document.querySelector(".selected");
           target.parentNode.parentNode.scrollTop = target.offsetTop;
+          console.log(target)
+          console.log(target.parentNode.parentNode.scrollTop)
           // if ($('.custom-select--checkboxes').hasClass('active')) {
           //   document.querySelector('.selected').scrollIntoView()
           // }
