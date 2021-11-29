@@ -184,6 +184,7 @@ function useKeyboardEvents () {
     $(document).on('click','.custom-select--radio', function () {
       // var currElmModelAttr = $(this).attr('data-model-attr');
       console.log($(this))
+      $(this).addClass('active')
       // var $this = $(this);
 
       var input = $('<input />', {
