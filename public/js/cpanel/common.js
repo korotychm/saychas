@@ -182,7 +182,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  let customSelectDropDownY = 42
+  let customSelectDropDownY = $next[0].getBoundingClientRect().top
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
@@ -225,7 +225,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().top)
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
@@ -238,7 +238,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().top)
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
         }
       }
