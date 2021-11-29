@@ -258,8 +258,6 @@ class AcquiringController extends AbstractActionController
         $amount += $post["post1C"]["amount_delevery"];
         $post["requestTinkoff"]["Amount"] = round( $amount / 100 ) * 100;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
-        $post["requestTinkoff"]['SuccessURL'] = "https://saychas.ru/user/order/" . $orderId;
-        //$post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/orders" . $orderId;
         $order->setConfirmInfo($json);
         $order->persist(['order_id' => $orderId]);
         $post["answerTinkoff"] = $this->acquiringCommunication->confirmTinkoff($post["requestTinkoff"]);
@@ -272,9 +270,7 @@ class AcquiringController extends AbstractActionController
 
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
-        //$post["answerTinkoff"][]
         
-
         return new JsonModel(['result' => true, 'description' => 'ok']);
     }
 

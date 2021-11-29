@@ -271,7 +271,7 @@ return [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/catalog[/:id]',
-                'constraints' => [
+                    'constraints' => [
                         'id' => '.*?',
                     ],
                     'defaults' => [
@@ -380,7 +380,6 @@ return [
                     ],
                 ],
             ],
-            
             'cancel-client-order' => [
                 'type' => Segment::class,
                 'options' => [
@@ -1301,7 +1300,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-//            Controller\IndexController::class => InvokableFactory::class,
+//          Controller\IndexController::class => InvokableFactory::class,
             Controller\IndexController::class => IndexControllerFactory::class,
             Controller\MyTestController::class => MyTestControllerFactory::class,
             Controller\UserDataController::class => UserDataControllerFactory::class,
@@ -1512,7 +1511,7 @@ return [
             'success_url' => 'https://saychas.ru/tinkoff/success',
             'fail_url' => 'https://saychas.ru/tinkoff/error',
         ],
-         'TinkoffMerchantAPIProduction' => [
+        'TinkoffMerchantAPIProduction' => [
 //            'terminal' => '1629956533317DEMO', //демо
 //            'token' => '9mfca0gpenpfi4rb', //демо
             'terminal' => '1629956533317', //боевой
@@ -1521,8 +1520,8 @@ return [
             'company_email' => 'd.sizov@saychas.ru',
             'company_taxation' => 'osn',
             'time_order_live' => 900, // время для оплаты заказа в сек.
-            'success_url' => 'https://saychas.ru/tinkoff/success',
-            'fail_url' => 'https://saychas.ru/tinkoff/error',
+            'success_url' => 'https://saychas.ru/tinkoff/pay-result',
+            'fail_url' => 'https://saychas.ru/tinkoff/pay-result',
         ],
         'dadataApiParams' => [
 //            'token' => '3e20e3f5d02f304085bfe70f9bb3d059b50aef0d',
