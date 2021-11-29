@@ -214,7 +214,7 @@ function useKeyboardEvents () {
     let $selected = $items.filter('.selected').removeClass('selected')
     let $next;
 
-     if ($('.custom-select--radio').hasClass('active')) {
+     if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes')) {
         if (e.keyCode === 40) {
           e.preventDefault()
           if (!$selected.length) {
@@ -223,6 +223,8 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
+          console.log($next)
+          console.log($selected)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
