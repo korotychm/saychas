@@ -225,7 +225,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY += 27
+          customSelectDropDownY += 27.25
           $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
         }
         if (e.keyCode === 	38) {
@@ -236,7 +236,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY -= 27
+          customSelectDropDownY -= 27.25
           $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
         }
       }
