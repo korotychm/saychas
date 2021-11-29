@@ -202,7 +202,7 @@ function useKeyboardEvents () {
       if(document.activeElement.className === 'boolean') {
         $(document.activeElement).children('input').trigger('click')
       }
-      if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes')) {
+      if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes').hasClass('active')) {
         e.preventDefault()
         $('.selected').siblings().trigger('click')
         $('.custom-select--radio').removeClass('active')
@@ -214,7 +214,7 @@ function useKeyboardEvents () {
     let $selected = $items.filter('.selected').removeClass('selected')
     let $next;
 
-     if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes')) {
+     if ($('.custom-select--radio').hasClass('active') || $('.custom-select--checkboxes').hasClass('active')) {
         if (e.keyCode === 40) {
           e.preventDefault()
           if (!$selected.length) {
