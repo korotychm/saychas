@@ -184,10 +184,10 @@ function showMessage(message) {
 function useKeyboardEvents () {
 
   $('.custom-select__label').attr('tabindex', 0)
+  $('.boolean').children('input').attr('tabindex', 0)
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
-      console.log($('.boolean').children('input'))
       let currentDrop = $('.custom-select__label')
       // console.log(document.activeElement)
       if (currentDrop.parent().hasClass('active')) {
