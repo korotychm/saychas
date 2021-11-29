@@ -224,8 +224,8 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY += 10
-          $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().top)
+          customSelectDropDownY += $next[0].getBoundingClientRect()
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
           console.log(customSelectDropDownY)
         }
@@ -237,8 +237,8 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          customSelectDropDownY -= 10
-          $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().top)
+          customSelectDropDownY -= $next[0].getBoundingClientRect()
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
           console.log(customSelectDropDownY)
         }
