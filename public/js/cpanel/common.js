@@ -224,8 +224,10 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          // $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().y)
-          // console.log($next[0].getBoundingClientRect())
+          customSelectDropDownY += 60
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          console.log($next[0].getBoundingClientRect())
+          console.log(customSelectDropDownY)
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
