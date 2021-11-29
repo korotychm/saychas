@@ -196,11 +196,10 @@ function useKeyboardEvents () {
     }
     if (e.keyCode === 13) {
       console.log(document.activeElement)
-      if(document.activeElement === $('label[for="additional-attributes"]')) {
-        console.log('трататтата')
-      }
+        document.activeElement.trigger('click')
       if(document.activeElement.className === 'boolean') {
-        $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop('checked'))
+        // $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop('checked'))
+        $(document.activeElement).children('input').trigger('click')
       }
       if ($('.custom-select--radio').hasClass('active')) {
         e.preventDefault()
