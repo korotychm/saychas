@@ -187,6 +187,7 @@ function useKeyboardEvents () {
       // input.placeholder = this.selectedValue;
       input.classList.add('custom-select__label')
       input.classList.add('input')
+      input.type = "hidden"
       let div = document.querySelector(".custom-select__label")
       div.replaceWith(input)
       input.focus()
