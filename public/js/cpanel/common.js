@@ -186,12 +186,7 @@ function useKeyboardEvents () {
     let customSelectDropDownY = 250;
 
   document.addEventListener('keydown', function(e) {
-    var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
-        childrenPos = document.querySelector('.selected').getBoundingClientRect(),
-        relativePos = {};
 
-    relativePos.top = childrenPos.top - parentPos.top
-    console.log(relativePos)
     if (e.keyCode === 9) {
       $('.boolean').attr('tabindex', 0);
       $('.custom-select__label').attr('tabindex', 0)
@@ -231,12 +226,18 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY += $next[0].getBoundingClientRect().top
-          if (customSelectDropDownY > 400) {
-            $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
-          }
-          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
-          console.log(customSelectDropDownY)
-          console.log($next[0].getBoundingClientRect())
+          var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+              childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+              relativePos = {};
+
+          relativePos.top = childrenPos.top - parentPos.top
+          console.log(relativePos)
+          // if (customSelectDropDownY > 400) {
+          //   $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          // }
+          // $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
+          // console.log(customSelectDropDownY)
+          // console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
