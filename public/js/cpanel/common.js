@@ -266,9 +266,12 @@ function useKeyboardEvents () {
           }
 
           $next.addClass('selected')
-          if ($('.custom-select--checkboxes').hasClass('active')) {
-            document.querySelector('.selected').scrollIntoView()
-          }
+          var target = document.querySelector(".selected");
+          target.parentNode.parentNode.scrollTop = target.offsetTop;
+          // if ($('.custom-select--checkboxes').hasClass('active')) {
+          //   let target
+          //   document.querySelector('.selected').scrollIntoView()
+          // }
 
           // customSelectDropDownY += 17.25
         }
@@ -281,9 +284,11 @@ function useKeyboardEvents () {
           }
 
           $next.addClass('selected')
-          if ($('.custom-select--checkboxes').hasClass('active')) {
-            document.querySelector('.selected').scrollIntoView()
-          }
+          var target = document.querySelector(".selected");
+          target.parentNode.parentNode.scrollTop = target.offsetTop;
+          // if ($('.custom-select--checkboxes').hasClass('active')) {
+          //   document.querySelector('.selected').scrollIntoView()
+          // }
 
           // customSelectDropDownY -= 17.25
         }
