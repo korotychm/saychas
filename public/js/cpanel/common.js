@@ -223,8 +223,7 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          console.log($next)
-          console.log($selected)
+          $next.focus()
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
