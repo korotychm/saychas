@@ -240,7 +240,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollIntoView()(customSelectDropDownY)
+          $('.custom-select__dropdown-inner')[0].scrollIntoView(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
         }
       }
