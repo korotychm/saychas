@@ -228,6 +228,7 @@ function useKeyboardEvents () {
           // customSelectDropDownY -= 30
 
           $('.custom-select__dropdown-inner').scrollTop(qwe[0].getBoundingClientRect().top)
+          console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
         if (e.keyCode === 	38) {
@@ -241,6 +242,7 @@ function useKeyboardEvents () {
           // customSelectDropDownY -= 30
 
           $('.custom-select__dropdown-inner').scrollTop(qwe[0].getBoundingClientRect().top)
+          console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
       }
