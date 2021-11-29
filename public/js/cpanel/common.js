@@ -182,6 +182,7 @@ function showMessage(message) {
 function useKeyboardEvents () {
 
     $(document).on('click','.custom-select--radio', function () {
+      $(this).addClass('active')
       let input = document.createElement('input')
       // input.placeholder = this.selectedValue;
       input.classList.add('custom-select__label')
