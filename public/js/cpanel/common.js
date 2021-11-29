@@ -183,7 +183,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-    let customSelectDropDownY = 250;
+    let customSelectDropDownY = 0;
 
   document.addEventListener('keydown', function(e) {
 
