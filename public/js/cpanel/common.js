@@ -267,7 +267,6 @@ function useKeyboardEvents () {
 
           $next.addClass('selected')
           if ($('.custom-select--checkboxes').hasClass('active')) {
-            console.log('зашло')
             document.querySelector('.selected').scrollIntoView()
           }
 
@@ -283,7 +282,6 @@ function useKeyboardEvents () {
 
           $next.addClass('selected')
           if ($('.custom-select--checkboxes').hasClass('active')) {
-            console.log('зашло')
             document.querySelector('.selected').scrollIntoView()
           }
 
