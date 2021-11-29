@@ -266,7 +266,9 @@ function useKeyboardEvents () {
           }
 
           $next.addClass('selected')
-          document.querySelector('.selected').scrollIntoView()
+          if ($('.custom-select--checkboxes').hasClass('active')) {
+            document.querySelector('.selected').scrollIntoView()
+          }
 
           // customSelectDropDownY += 17.25
         }
@@ -279,7 +281,9 @@ function useKeyboardEvents () {
           }
 
           $next.addClass('selected')
-          document.querySelector('.selected').scrollIntoView()
+          if ($('.custom-select--checkboxes').hasClass('active')) {
+            document.querySelector('.selected').scrollIntoView()
+          }
 
           // customSelectDropDownY -= 17.25
         }
