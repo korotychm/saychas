@@ -227,7 +227,7 @@ function useKeyboardEvents () {
           const element = document.querySelector('.selected');
           const y = element.getBoundingClientRect().top
 
-          document.querySelector('.custom-select__dropdown-inner').scrollTo({top: y, behavior: 'smooth'});
+          document.querySelector('.custom-select__dropdown-inner').scrollTo(0, 800, {queue:true});
         }
         if (e.keyCode === 	38) {
           e.preventDefault()
@@ -241,7 +241,7 @@ function useKeyboardEvents () {
           const element = document.querySelector('.selected');
           const y = element.getBoundingClientRect().top
 
-          document.querySelector('.custom-select__dropdown-inner').scrollTo({top: y, behavior: 'smooth'});
+          document.querySelector('.custom-select__dropdown-inner').scrollTo(0, 800, {queue:true});
         }
       }
   })
