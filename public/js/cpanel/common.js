@@ -182,6 +182,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
+  let customSelectDropDownY = 0
 
   document.addEventListener('keydown', function(e) {
 
@@ -234,8 +235,10 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          $('.custom-select__dropdown-inner').scrollTop($next[0].getBoundingClientRect().y)
+          customSelectDropDownY -= 60
+          $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           console.log($next[0].getBoundingClientRect())
+          console.log()
         }
       }
   })
