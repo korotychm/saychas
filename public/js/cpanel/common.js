@@ -182,7 +182,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  let customSelectDropDownY = document.querySelector('.selected').getBoundingClientRect().top
+    let customSelectDropDownY = document.querySelector('.selected').getBoundingClientRect().top;
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
