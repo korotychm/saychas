@@ -182,8 +182,7 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  // $('.custom-select__label').attr('tabindex', 0)
-  // $('.additional-attributes').attr('tabindex', 0)
+
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
@@ -197,7 +196,6 @@ function useKeyboardEvents () {
       }
     }
     if (e.keyCode === 13) {
-      // console.log(document.activeElement.attributes.for.textContent)
       if(document.activeElement.attributes.for && document.activeElement.attributes.for.textContent === 'additional-attributes') {
         $(document.activeElement).trigger('click')
       }
