@@ -182,12 +182,12 @@ function showMessage(message) {
 
 
 function useKeyboardEvents () {
-  console.log(new Vue)
   $('.custom-select__label').attr('tabindex', 0)
-  $('.boolean__check').attr('tabindex', 1)
+
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
+      $('.boolean__check').attr('tabindex', 1)
       let currentDrop = $('.custom-select__label')
       // console.log(document.activeElement)
       if (currentDrop.parent().hasClass('active')) {
