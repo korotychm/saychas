@@ -210,17 +210,18 @@ function useKeyboardEvents () {
 
     function qwe (){
 
-    $(".custom-select__dropdown-inner").scroll(function(){
-      console.log($(this))
-      if( $(".selected").last().offset().top <= ( $(this).offset().top + $(this).height() ) ){
-        console.log('в этом говне работает')
-        $(".log").text("Fire event!");
-      }
-      else{
-        console.log('в другом говне работает')
-        $(".log").text("");
-      }
-    });
+    // $(".custom-select__dropdown-inner").scroll(function(){
+    //   console.log($(this))
+    //   if( $(".selected").last().offset().top <= ( $(this).offset().top + $(this).height() ) ){
+    //     console.log('в этом говне работает')
+    //
+    //     $(".log").text("Fire event!");
+    //   }
+    //   else{
+    //     console.log('в другом говне работает')
+    //     $(".log").text("");
+    //   }
+    // });
 
   }
 
@@ -266,9 +267,10 @@ function useKeyboardEvents () {
           let position = $next.position()
           let y = position.top
           console.log(position)
-          $('.custom-select__dropdown-inner').scrollTop(y + 17)
+          $('.custom-select__dropdown-inner').children('.selected')[0].scrollIntoView()
+          // $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
-          qwe()
+
           // customSelectDropDownY += 17.25
         }
         if (e.keyCode === 	38) {
@@ -281,9 +283,10 @@ function useKeyboardEvents () {
           let position = $next.position()
           let y = position.top
           console.log(position)
-          $('.custom-select__dropdown-inner').scrollTop(y + 17)
+          $('.custom-select__dropdown-inner').children('.selected')[0].scrollIntoView()
+          // $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
-          qwe()
+
           // customSelectDropDownY -= 17.25
         }
       }
