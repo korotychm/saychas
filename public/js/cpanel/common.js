@@ -197,7 +197,7 @@ function useKeyboardEvents () {
     if (e.keyCode === 13) {
       console.log(document.activeElement.attributes.for.textContent)
       if(document.activeElement.attributes.for.textContent === 'additional-attributes') {
-        document.activeElement.trigger('click')
+        $(document.activeElement).trigger('click')
       }
       if(document.activeElement.className === 'boolean') {
         // $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop('checked'))
