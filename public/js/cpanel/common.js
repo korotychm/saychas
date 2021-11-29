@@ -227,7 +227,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top - 171)
+          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
           console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
@@ -241,7 +241,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top - 171)
+          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
           console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
