@@ -235,6 +235,13 @@ class AcquiringController extends AbstractActionController
         $json = file_get_contents('php://input');
         $post["post1C"] = Json::decode($json, Json::TYPE_ARRAY);
         $orderId = $post["post1C"]["order_id"];
+        
+        if (empty($payment_id = $post["post1C"]["payment_id"])){
+            
+            return new JsonModel(['result' => true, 'description' => 'paymet_id не установлен, платеж не может быть пождтвержден']);
+                    
+        }
+        
         $order = ClientOrder::find(['order_id' => $orderId]);
         $userId = $order->getUserId();
         $userInfo = $this->commonHelperFuncions->getUserInfo(User::find(["id" => $userId]));
@@ -249,7 +256,7 @@ class AcquiringController extends AbstractActionController
 
         $post["requestTinkoff"]["Receipt"]["Items"][] = $this->addDeliveryItem($post["post1C"]["amount_delevery"]);
         $amount += $post["post1C"]["amount_delevery"];
-        $post["requestTinkoff"]["Amount"] = $amount;
+        $post["requestTinkoff"]["Amount"] = round( $amount / 100 ) * 100;
         $post["requestTinkoff"]["PaymentId"] = $post["post1C"]["payment_id"];
         $post["requestTinkoff"]['SuccessURL'] = "https://saychas.ru/user/order/" . $orderId;
         //$post["requestTinkoff"]['FailURL'] = "https://saychas.ru/user/orders" . $orderId;

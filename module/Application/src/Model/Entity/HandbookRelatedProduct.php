@@ -253,6 +253,13 @@ class HandbookRelatedProduct extends Entity
      * @var int
      */
     protected $old_price;
+    
+    /**
+     * Product new_price from joined price table
+     *
+     * @var int
+     */
+    protected $new_price;
 
     /**
      * Product rest
@@ -361,6 +368,28 @@ class HandbookRelatedProduct extends Entity
         return $this;
     }
 
+    /**
+     * Set new_price.
+     * 
+     * @param int $newPrice
+     * @return $this
+     */
+    public function setNewPrice($newPrice)
+    {
+        $this->old_price = $newPrice;
+        return $this;
+    }
+    
+    /**
+     * Get new_price
+     * 
+     * @return int
+     */
+    public function getNewPrice()
+    {
+        return $this->new_price;
+    }
+    
     /**
      * Get discount from one-to-one joined discount table
      *

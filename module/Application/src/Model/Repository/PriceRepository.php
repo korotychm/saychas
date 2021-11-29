@@ -92,15 +92,19 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
     {
         $sql = new Sql($this->db);
         $select = $sql->select($this->tableName);
-        $columns = ["minprice" =>  new \Laminas\Db\Sql\Expression(" MIN(`price`) "),  "maxprice" =>  new \Laminas\Db\Sql\Expression(" MAX(`price`) "), ];
+        $columns = ["minprice" =>  new \Laminas\Db\Sql\Expression(" MIN(`new_price`) "),  "maxprice" =>  new \Laminas\Db\Sql\Expression(" MAX(`price`) "), ];
         $select->columns($columns);
         //$select->columns(['price']);
         $select->where(['product_id' => $products]);
-        
         //$stmt = $sql->prepareStatementForSqlObject($select);
-        
         $queryString = $sql->buildSqlString($select);
-        return  $this->db->query($queryString)->execute()->current();        
+        
+        $return = $this->db->query($queryString)->execute()->current();        
+        $return["minprice"] = floor($return["minprice"]/100) * 100;
+        $return["maxprice"] = ceil($return["maxprice"]/100) * 100;
+        //exit (print_r($return));
+        return $return;
+        
      }
 
     /**
@@ -121,8 +125,12 @@ class PriceRepository extends Repository implements PriceRepositoryInterface
 //        $this->mclient->saychas->$tableName->insertMany($result['data']);
         
         foreach ($result/*['data']*/ as $row) {
-            $sql = sprintf("replace INTO `price`(`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `provider_id`, `discount`) VALUES ( '%s', '%s', %u, '%s', %u, %u, '%s', %u)",
-                    $row['product_id'], $row['store_id'], $row['reserve'], $row['unit'], $row['price'], $row['old_price'], $row['provider_id'], $row['discount']);
+            
+            $new_price = (int)($row['price'] - $row['price'] * $row['discount']/100 );
+            $sql = sprintf("replace INTO `price`
+                    (`product_id`, `store_id`, `reserve`, `unit`, `price`, `old_price`, `new_price`, `provider_id`, `discount`) 
+                    VALUES ( '%s', '%s', %u, '%s', %u, %u, %u, '%s', %u)",
+                    $row['product_id'], $row['store_id'], $row['reserve'], addslashes($row['unit']), $row['price'], $row['old_price'], $new_price, $row['provider_id'], $row['discount']);
             try {
                 $query = $this->db->query($sql);
                 $query->execute();

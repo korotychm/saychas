@@ -15,7 +15,6 @@ use Laminas\Mvc\MvcEvent;
 //use Laminas\Session\Config\SessionConfig;
 //use Laminas\Session\Container;
 //use Laminas\Session\Validator;
-
 use Laminas\Authentication\AuthenticationService;
 use Application\Adapter\Auth\UserAuthAdapter;
 //use Application\Model\Entity\User;
@@ -24,18 +23,13 @@ use Laminas\View\Resolver\TemplateMapResolver;
 //use Application\Service\CommonHelperFunctionsService;
 use Application\Resource\Resource;
 //use Laminas\Mvc\Controller\AbstractActionController;
-
-use Laminas\EventManager\EventInterface as Event;
-use Laminas\ModuleManager\ModuleManager;
-
+//use Laminas\EventManager\EventInterface as Event;
+//use Laminas\ModuleManager\ModuleManager;
 //use ControlPanel\Listener\LayoutListener;
 //use Laminas\Mvc\Controller\AbstractActionController;
-
 //use Application\ConfigProvider;
-
-use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
-
-use Laminas\Http\Header\Authorization;
+//use Application\Model\RepositoryInterface\CategoryRepositoryInterface;
+//use Laminas\Http\Header\Authorization;
 use Laminas\Http\Response;
 
 class Module
@@ -57,44 +51,42 @@ class Module
 //           ),
 //        );
 //   }
-    
-    /**
-    public function init(ModuleManager $moduleManager)
-    {
-        // Remember to keep the init() method as lightweight as possible
-        $events = $moduleManager->getEventManager();
-        $events->attach('loadModules.post', [$this, 'modulesLoaded']);
-    }
-    
-    public function modulesLoaded(Event $e)
-    {
-        // This method is called once all modules are loaded.
-        $moduleManager = $e->getTarget();
-        $name = $e->getName();
-        $loadedModules = $moduleManager->getLoadedModules();
 
-        // To get the configuration from another module named 'FooModule'
-        $config = $moduleManager->getModule('Application')->getConfig();
-    }
-    */
-    
+    /**
+      public function init(ModuleManager $moduleManager)
+      {
+      // Remember to keep the init() method as lightweight as possible
+      $events = $moduleManager->getEventManager();
+      $events->attach('loadModules.post', [$this, 'modulesLoaded']);
+      }
+
+      public function modulesLoaded(Event $e)
+      {
+      // This method is called once all modules are loaded.
+      $moduleManager = $e->getTarget();
+      $name = $e->getName();
+      $loadedModules = $moduleManager->getLoadedModules();
+
+      // To get the configuration from another module named 'FooModule'
+      $config = $moduleManager->getModule('Application')->getConfig();
+      }
+     */
     public function onBootstrap(MvcEvent $e)
     {
         $app = $e->getApplication();
 
         $eventManager = $app->getEventManager();
-        
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this,'onDispatch'), 100);
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this,'onDispatch'), 100);
-        
+
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatch'), 100);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'onDispatch'), 100);
     }
-    
+
     private function toBeAuthorized($actionName)
     {
         $config = $this->getConfig();
         $elements = $config['parameters']['base_authorization']['to_be_authorized'];
         $toBeAuthorized = array_keys($elements);
-        
+
         return in_array($actionName, $toBeAuthorized);
     }
 
@@ -106,14 +98,13 @@ class Module
             $fieldValue = $header->getFieldValue();
             list($a, $value) = explode(' ', $fieldValue);
             $base = base64_decode($value, true);
-            
+
             $config = $this->getConfig();
-            
+
             $actions = $config['parameters']['base_authorization']['to_be_authorized'];
             $credentials = $config['parameters']['base_authorization']['credentials'];
-            
+
             $auth = $actions[$actionName];
-            
 
             if ($credentials[$auth] == $base) {
                 return true;
@@ -128,48 +119,42 @@ class Module
         $serviceManager = $e->getApplication()->getServiceManager();
         $request = $serviceManager->get('Request');
 
-        $routeMatch = $e->getRouteMatch();
-        
-        if ( null == $routeMatch ) {
-            $response = new Response();
-            $response->setStatusCode(404);
-            
-            return $response;
-        }
-        
-        $actionName = $e->getRouteMatch()->getParam('action', null);
-        
-        if ( $this->toBeAuthorized($actionName) && ( ! $this->isAuthorized($request, $actionName) ) ) {
-            $response = new Response();
-            $response->setStatusCode(401);
-
-            return $response;
-        }
-
-        $viewModel = $e->getViewModel();
-        $viewModel->setTemplate('layout/layout');
-        
-        //$controller = $e->getTarget();
-
+//        $routeMatch = $e->getRouteMatch();
+//
+//        if ( null == $routeMatch ) {
+//            $response = new Response();
+//            $response->setStatusCode(404);
+//
+//            return $response;
+//        }
+//
+//        $actionName = $e->getRouteMatch()->getParam('action', null);
+//
+//        if ( $this->toBeAuthorized($actionName) && ( ! $this->isAuthorized($request, $actionName) ) ) {
+//            $response = new Response();
+//            $response->setStatusCode(401);
+//
+//            return $response;
+//        }
+ //     $controller = $e->getTarget();
         $userRepository = $e->getApplication()->getServiceManager()->get(\Application\Model\Repository\UserRepository::class);
         $userAuthAdapter = new UserAuthAdapter($userRepository);
         $authService = $e->getApplication()->getServiceManager()->get(AuthenticationService::class);
         $result = $authService->authenticate($userAuthAdapter);
         //$code = $result->getCode();
         $userId = $result->getIdentity();
-        
         $categoryRepository = $e->getApplication()->getServiceManager()->get(\Application\Model\RepositoryInterface\CategoryRepositoryInterface::class);
         $commonHelperFuncions = $e->getApplication()->getServiceManager()->get(\Application\Service\CommonHelperFunctionsService::class);
         $htmlProvider = $e->getApplication()->getServiceManager()->get(\Application\Service\HtmlProviderService::class);
         $setting = $e->getApplication()->getServiceManager()->get(\Application\Model\Entity\Setting::class);
-
         $user = $userRepository->find(['id' => $userId]);
         $userInfo = $commonHelperFuncions->getUserInfo($user);
         $mainMenu = (!empty($mainMenu = $setting->find(['id' => 'main_menu']))) ? $mainMenu = $htmlProvider->getMainMenu($mainMenu) : [];
-        $addressLegal = $userInfo["userAddress"] ??  false;
+        $addressLegal = $userInfo["userAddress"] ?? false;
         $userLegal = ($userInfo["userid"] and $userInfo["phone"]) ? true : false;
         $userAddressArray = $htmlProvider->getUserAddresses($user, Resource::LIMIT_USER_ADDRESS_LIST);
-
+        $viewModel = $e->getViewModel();
+        $viewModel->setTemplate('layout/layout');
         $viewModel->setVariables([
             'categoryTree' => $categoryRepository->categoryFilteredTree(),
             'addressLegal' => $addressLegal,
@@ -180,9 +165,25 @@ class Module
             'mainMenu' => $mainMenu,
             'basketProductsCount' => $commonHelperFuncions->basketProductsCount($userId),
         ]);
-      
-    }
 
+        $routeMatch = $e->getRouteMatch();
+
+        if (null == $routeMatch) {
+            $response = new Response();
+            $response->setStatusCode(404);
+
+            return $response;
+        }
+
+        $actionName = $e->getRouteMatch()->getParam('action', null);
+
+        if ($this->toBeAuthorized($actionName) && (!$this->isAuthorized($request, $actionName) )) {
+            $response = new Response();
+            $response->setStatusCode(401);
+
+            return $response;
+        }
+    }
 
 //    public function bootstrapSession(MvcEvent $e)
 //    {
@@ -234,7 +235,6 @@ class Module
 //            $chain->attach('session.validate', array($validator, 'isValid'));
 //        }
 //    }
-
 //    public function getServiceConfig()
 //    {
 //        return [
@@ -284,17 +284,7 @@ class Module
 //            ],
 //        ];
 //    }
-
 }
-
-
-
-
-
-
-
-
-
 
 /** @var TemplateMapResolver $templateMapResolver */
 //        $templateMapResolver = $app->getServiceManager()->get(
@@ -306,7 +296,7 @@ class Module
 //        $listener->attach($app->getEventManager());
 
 //        $serviceManager = $app->getServiceManager();
-//        $sharedManager = $app->getEventManager()->getSharedManager();        
+//        $sharedManager = $app->getEventManager()->getSharedManager();
 
 
 
@@ -317,15 +307,15 @@ class Module
 
 //        $eventManager = $event->getApplication()->getEventManager();
 //        $sharedEventManager = $eventManager->getSharedManager();
-//        // Register the event listener method. 
-//        $sharedEventManager->attach(AbstractActionController::class, 
+//        // Register the event listener method.
+//        $sharedEventManager->attach(AbstractActionController::class,
 //                MvcEvent::EVENT_DISPATCH, [$this, 'onDispatch'], 100);
-        
+
 //        $eventManager = $e->getApplication()->getEventManager();
 //        $moduleRouteListener = new ModuleRouteListener();
 //        $moduleRouteListener->attach($eventManager);
 //        $this->bootstrapSession($e);
-        
+
 
 //        $controllerName = $e->getRouteMatch()->getParam('controller', null);
 //        $routeMatch = $e->getRouteMatch();
@@ -333,9 +323,9 @@ class Module
 //        $routeUrl = $e->getRouteMatch()->getParam('url', null);
 //        $actionName = $e->getRouteMatch()->getParam('action', null);
 //        $actionName = str_replace('-', '', lcfirst(ucwords($actionName, '-')));
-        
+
         //$authManager = $e->getApplication()->getServiceManager()->get(AuthManager::class);
-        
+
 //        $container = new Container();
 //        $signUp = $container->signUp;
 

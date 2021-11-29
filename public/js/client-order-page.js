@@ -46,7 +46,7 @@ $(document).ready(function () {
               for (requisition of delivery.requisitions){
                 if (requisition.status_id != 6){ // Заявка не отменена
                   for (product of requisition.items) {
-                    total++;
+                    total += product.qty_fact;
                   }
                 }
               }
@@ -177,6 +177,8 @@ $(document).ready(function () {
                 console.log('cancel order',response);
                 if (response.data.result){
                   location.reload();
+                } else {
+                  showServicePopupWindow('Ошибка', response.data.errorDescription, "");
                 }
               });
           },

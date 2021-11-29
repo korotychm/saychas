@@ -60,6 +60,7 @@ use Laminas\Db\Sql\Where;
 //use Throwable;
 use Application\Helper\ArrayHelper;
 use Application\Helper\StringHelper;
+use Application\Helper\MathHelper;
 
 class AjaxController extends AbstractActionController
 {
@@ -138,7 +139,7 @@ class AjaxController extends AbstractActionController
     /**
      * return Top brands
      *
-     * @route /ajax-get-brands-top
+     * url:  /ajax-get-brands-top
      * @return JSON
      */
     public function getBrandsTopAction()
@@ -160,7 +161,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-get-basket-json
+     * url:  /ajax-get-basket-json
      * @return JsonModel
      */
     public function ajaxGetBasketJsonAction()
@@ -188,7 +189,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax/del-from-basket
+     * url:  /ajax/del-from-basket
      * @return JsonModel
      */
     public function delFromBasketAction()
@@ -204,7 +205,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-get-category-filters
+     * url:  /ajax-get-category-filters
      * @return JsonModel
      */
     public function getJsonCategoryFiltersAction()
@@ -227,7 +228,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-get-order-list
+     * url:  /ajax-get-order-list
      * @return JsonModel
      */
     public function getUserOrderListAction()
@@ -294,7 +295,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-get-order-page
+     * url:  /ajax-get-order-page
      * @return JsonModel
      */
     public function getUserOrderPageAction()
@@ -318,13 +319,13 @@ class AjaxController extends AbstractActionController
         foreach ($deliveryes as $delivery) {
             $requsitions[] = $delivery["requisitions"];
         }
-        
+
         if (empty($requsitions)) {
             return [];
         }
 
         foreach ($requsitions as $requsition) {
-        
+
             foreach ($requsition as $req) {
                 $providers[] = $req['provider_id'];
             }
@@ -334,7 +335,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-check-order-status
+     * url:  /ajax-check-order-status
      * @return JsonModel
      */
     public function checkOrderStatusAction()
@@ -356,7 +357,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /user-delete-address
+     * url:  /user-delete-address
      * @return JsonModel
      */
     public function ajaxUserDeleteAddressAction()
@@ -366,7 +367,7 @@ class AjaxController extends AbstractActionController
         $return['userId'] = $userId = $container->userIdentity;
         $user = User::find(['id' => $userId]);
 
-        if (empty($user) or empty($user->getPhone())) {
+        if (empty($user) || empty($user->getPhone())) {
             $this->getResponse()->setStatusCode(403);
             return;
         }
@@ -380,7 +381,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /user-set-default-address
+     * url:  /user-set-default-address
      * @return JsonModel
      */
     public function ajaxUserSetDefaultAddressAction()
@@ -416,7 +417,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-basket-changed
+     * url:  /ajax-basket-changed
      * @return JsonModel
      */
     public function ajaxBasketChangedAction()
@@ -438,7 +439,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-basket-check-before-send
+     * url:  /ajax-basket-check-before-send
      * @return JsonModel
      */
     public function basketCheckBeforeSendAction()
@@ -446,7 +447,7 @@ class AjaxController extends AbstractActionController
         $userId = $this->identity();
         $user = User::find(['id' => $userId]);
 
-        if (empty($user) or empty($user->getPhone())) {
+        if (empty($user) || empty($user->getPhone())) {
             return new JsonModel(["result" => false, "reload" => true, "reloadUrl" => "/",]);
         }
 
@@ -471,7 +472,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax/add-to-favorites
+     * url:  /ajax/add-to-favorites
      * @return JsonModel
      */
     public function addToFavoritesAction()
@@ -491,7 +492,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax/remove-from-favorites
+     * url:  /ajax/remove-from-favorites
      * @return JsonModel
      */
     public function removeFromFavoritesAction()
@@ -543,21 +544,21 @@ class AjaxController extends AbstractActionController
             $basketItem->setProductId($productId);
             $productadd = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
             $productaddPrice = (int) $productadd->getPrice();
-            $productaddDiscount =  (int)$productadd->getDiscount();
-            $productaddPrice = $productaddPrice - $productaddPrice * $productaddDiscount / 100;
+            $productaddDiscount = (int) $productadd->getDiscount();
+            $productaddPrice = MathHelper::roundRealPrice($productaddPrice, $productaddDiscount); //$productaddPrice - $productaddPrice * $productaddDiscount / 100;
             $basketItem->setDiscount($productaddDiscount);
             $basketItem->setPrice($productaddPrice);
             $basketItem->setTotal($basketItemTotal + 1);
             $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-        }   
+        }
         $where = new Where();
         $where->equalTo('user_id', $userId);
         $where->equalTo('order_id', 0);
         $columns = ['product_id', 'order_id', 'total'];
         $basket = Basket::findAll(['where' => $where, 'columns' => $columns]);
         foreach ($basket as $b) {
-           
-            if (!empty($pId = $b->productId) and !empty($product = $this->productRepository->find(['id' => $pId]))) {
+
+            if (!empty($pId = $b->productId) and!empty($product = $this->productRepository->find(['id' => $pId]))) {
                 $return['products'][] = [
                     "id" => $pId,
                     "name" => $product->getTitle(),
@@ -574,7 +575,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax/calculate-basket-item
+     * url:  /ajax/calculate-basket-item
      * @return JsonModel
      */
     public function calculateBasketItemAction()
@@ -587,20 +588,20 @@ class AjaxController extends AbstractActionController
             return new JsonModel(["error" => true, "errorMessage" => "product not found"]);
         }
         $product = $this->handBookRelatedProductRepository->findAll(['where' => ['id' => $productId]])->current();
-        if (null == $product or!$productPrice = (int) $product->getPrice() or!$productCount = (int) $post->count or $productCount < 1) {
+        if (null == $product or!$productPrice = (int) $product->getPrice() || !$productCount = (int) $post->count or $productCount < 1) {
             return new JsonModel(["error" => true, "errorMessage" => "product price error"]);
         }
         $basketItem = Basket::findFirstOrDefault(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
         $basketItem->setTotal($productCount);
         $basketItem->persist(['user_id' => $userId, 'product_id' => $productId, 'order_id' => "0"]);
-        $productPrice = $productPrice - $productPrice * $product->getDiscount()/100;
+        $productPrice = MathHelper::roundRealPrice($productPrice, $product->getDiscount()); 
         $return['totalNum'] = (int) $productPrice * $productCount;
         $return['totalFomated'] = number_format($return['totalNum'] / 100, 0, ',', '&nbsp;');
         return new JsonModel($return);
     }
 
     /**
-     * @route /ajax-basket-order-merge
+     * url:  /ajax-basket-order-merge
      * @return ViewModel
      */
     public function basketOrderMergeAction()
@@ -628,7 +629,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-basket-pay-card-info
+     * url:  /ajax-basket-pay-card-info
      * @return ViewModel
      */
     public function basketPayCardInfoAction()
@@ -653,7 +654,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-basket-pay-info
+     * url:  /ajax-basket-pay-info
      * @return ViewModel
      */
     public function basketPayInfoAction()
@@ -676,7 +677,7 @@ class AjaxController extends AbstractActionController
         $post = $this->getRequest()->getPost();
         $row = $this->htmlProvider->basketPayInfoData($post, $param);
         $timeDelevery = (!$post->ordermerge) ? $post->timepointtext1 : $post->timepointtext3;
-        $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] or ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
+        $row['payEnable'] = ($row['producttotal'] > 0 and ($row['countSelfdelevery'] || ($row['countDelevery'] /* and $timeDelevery */))) ? true : false;
         $cardInfo = '';
 
         if ($post->cardinfo) {
@@ -713,7 +714,7 @@ class AjaxController extends AbstractActionController
 //    }
 
     /**
-     * @route /ajax-get-legal-store
+     * url:  /ajax-get-legal-store
      * @return JsonModel
      */
     public function ajaxGetLegalStoreAction()
@@ -744,7 +745,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-add-user-address
+     * url:  /ajax-add-user-address
      * @return JsonModel
      */
     public function ajaxAddUserAddressAction()
@@ -777,7 +778,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * @route /ajax-set-user-address
+     * url:  /ajax-set-user-address
      * @return JsonModel
      */
     public function ajaxSetUserAddressAction()
@@ -795,7 +796,7 @@ class AjaxController extends AbstractActionController
     }
 
     /**
-     * disabled.  
+     * disabled.
      * rating values provide 1c now
      *
      * @return  JsonModel
