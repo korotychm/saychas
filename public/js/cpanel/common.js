@@ -182,16 +182,17 @@ function showMessage(message) {
 function useKeyboardEvents () {
 
     $(document).on('click','.custom-select--radio', function () {
-      var currElmModelAttr = $(this).attr('data-model-attr');
+      // var currElmModelAttr = $(this).attr('data-model-attr');
       console.log($(this))
-      var $this = $(this);
+      // var $this = $(this);
+
       var input = $('<input />', {
         'type': 'text',
-        'name': currElmModelAttr,
+        // 'name': currElmModelAttr,
         'class': 'custom-select__label input',
         'value': $(this).text()
       });
-      $(this).replaceWith(input);
+      $(this).children('.custom-select__label').replaceWith(input);
     })
 
     // let customSelectDropDownY = 0;
