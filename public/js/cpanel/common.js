@@ -193,6 +193,7 @@ function useKeyboardEvents () {
         'value': $(this).text()
       });
       $(this).children('.custom-select__label').replaceWith(input);
+      input.focus()
     })
 
     // let customSelectDropDownY = 0;
