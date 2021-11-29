@@ -179,7 +179,14 @@ function showMessage(message) {
   }, 2500);
 }
 
-
+function scrollTo(element) {
+  console.log(element)
+  let position = element.position()
+  let x = position.left;
+  let y = position.top;
+  console.log(position)
+  console.log(y)
+}
 
 function useKeyboardEvents () {
 
@@ -226,6 +233,7 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY += 27.25
+          scrollTo($next)
           $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
         }
         if (e.keyCode === 	38) {
@@ -237,6 +245,7 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY -= 27.25
+          scrollTo($next)
           $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
         }
       }
