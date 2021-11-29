@@ -117,11 +117,11 @@ class CommonHelperFunctionsService
             }
             
             $image = $product->receiveFirstImageObject();
-            $item['image'] = (!empty($image)) ? $image->getHttpUrl() : null; //Resource::DEFAULT_IMAGE;
+            $item['image'] = (!empty($image)) ? $image->getHttpUrl() : null; 
             $item['reserve'] = $product->receiveRest($store);
             $item['rating'] = $product->getRating();
             $item['reviews'] = $product->getReviews();
-            $item['url'] = $product->getUrl()."/{$item['discount']}/{$item['oldPrice']}";
+            $item['url'] = $product->getUrl();
             $return[$product->getId()] = $item;
        }
        //$return["count"] = $count; 

@@ -61,7 +61,6 @@ class CryptHelper
         $iv = str_repeat("z", $ivlen);
         
         if ($encryptIt) {
-            
             $newText = openssl_encrypt($text, $encryptType, $password, OPENSSL_RAW_DATA,  $iv );
         } else {
             $newText = openssl_decrypt($text, $encryptType, $password, OPENSSL_RAW_DATA,  $iv );

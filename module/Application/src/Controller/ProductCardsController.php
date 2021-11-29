@@ -231,13 +231,13 @@ class ProductCardsController extends AbstractActionController
     {
         $inChars = array_keys($characteristics);
         $legalProducts = $this->getFiltredProductsId(['characteristic_id' => $inChars]);
-        
+
         while (list($key, $value) = each($characteristics)) {
 
-            if (empty($value) or empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {
+            if (empty($value) || empty($found = ProductCharacteristic::find(['characteristic_id' => $key]))) {
                 continue;
             }
-            
+
             $filterWhere = $this->getWhereForCharType($key, $value, $found);
             $groupChars[] = $key;
             $legalProducts = array_intersect($legalProducts, $this->getFiltredProductsId($filterWhere));

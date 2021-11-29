@@ -58,6 +58,11 @@ class Price extends Entity
     /**
      * @var int
      */
+    protected $new_price;
+    
+    /**
+     * @var int
+     */
     protected $discount;
 
     /**
@@ -231,6 +236,27 @@ class Price extends Entity
         return $this->old_price;
     }
     
+    /**
+     * Set new_price.
+     * 
+     * @param int $newPrice
+     * @return $this
+     */
+    public function setNewPrice($newPrice)
+    {
+        $this->old_price = $newPrice;
+        return $this;
+    }
+    
+    /**
+     * Get new_price
+     * 
+     * @return int
+     */
+    public function getNewPrice()
+    {
+        return $this->new_price;
+    }
     /**
      * Set discount
      * 
