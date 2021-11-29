@@ -200,7 +200,6 @@ function useKeyboardEvents () {
         $(document.activeElement).trigger('click')
       }
       if(document.activeElement.className === 'boolean') {
-        // $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop('checked'))
         $(document.activeElement).children('input').trigger('click')
       }
       if ($('.custom-select--radio').hasClass('active')) {
