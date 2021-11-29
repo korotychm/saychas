@@ -224,7 +224,7 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY += 30
-          if (customSelectDropDownY === 300) {
+          if (customSelectDropDownY > 300) {
             console.log('зашло сюда')
             $('.custom-select__dropdown-inner').scrollTop(customSelectDropDownY)
           }
