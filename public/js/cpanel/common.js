@@ -183,7 +183,7 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
   let customSelectDropDownY = 42
-
+  let scrollBottom = document.querySelector('.selected').scrollHeight - document.querySelector('.custom-select__dropdown-inner').scrollTop - document.querySelector('.custom-select__dropdown-inner').clientHeight;
   document.addEventListener('keydown', function(e) {
 
     if (e.keyCode === 9) {
@@ -239,7 +239,7 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           customSelectDropDownY -= 21
-          let scrollBottom = document.querySelector('.selected').scrollHeight - document.querySelector('.custom-select__dropdown-inner').scrollTop - document.querySelector('.custom-select__dropdown-inner').clientHeight;
+
           $('.custom-select__dropdown-inner').scrollTop(scrollBottom)
           console.log($next[0].getBoundingClientRect())
           console.log(scrollBottom)
