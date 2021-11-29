@@ -208,7 +208,7 @@ function useKeyboardEvents () {
 
     // let customSelectDropDownY = 0;
 
-  $(document).ready(function(){
+    function qwe (){
 
     $(".custom-select__dropdown-inner").scroll(function(){
       console.log('зашло работает')
@@ -220,7 +220,7 @@ function useKeyboardEvents () {
       }
     });
 
-  });
+  }
 
   document.addEventListener('keydown', function(e) {
 
@@ -266,6 +266,7 @@ function useKeyboardEvents () {
           console.log(position)
           $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
+          qwe()
           // customSelectDropDownY += 17.25
         }
         if (e.keyCode === 	38) {
@@ -280,6 +281,7 @@ function useKeyboardEvents () {
           console.log(position)
           $('.custom-select__dropdown-inner').scrollTop(y + 17)
           $next.addClass('selected')
+          qwe()
           // customSelectDropDownY -= 17.25
         }
       }
