@@ -247,6 +247,7 @@ function useKeyboardEvents () {
           //     relativePos = {};
           //
           // relativePos.top = childrenPos.top - parentPos.top
+          console.log(qwe)
           $('.custom-select__dropdown-inner').scrollTop(218 - qwe)
         }
       }
