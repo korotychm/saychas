@@ -211,11 +211,12 @@ function useKeyboardEvents () {
     function qwe (){
 
     $(".custom-select__dropdown-inner").scroll(function(){
-      console.log('зашло работает')
       if( $(".selected").last().offset().top <= ( $(this).offset().top + $(this).height() ) ){
+        console.log('в этом говне работает')
         $(".log").text("Fire event!");
       }
       else{
+        console.log('в другом говне работает')
         $(".log").text("");
       }
     });
