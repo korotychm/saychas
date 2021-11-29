@@ -210,8 +210,8 @@ function useKeyboardEvents () {
 
   $(document).ready(function(){
 
-    $(".scroll").scroll(function(){
-      if( $(".target").offset().top <= ( $(this).offset().top + $(this).height() ) ){
+    $(".custom-select__dropdown-inner").scroll(function(){
+      if( $(".selected").last().offset().top <= ( $(this).offset().top + $(this).height() ) ){
         $(".log").text("Fire event!");
       }
       else{
