@@ -195,6 +195,9 @@ function useKeyboardEvents () {
       }
     }
     if (e.keyCode === 13) {
+      if(document.activeElement === $('label[for="additional-attributes"]')) {
+        console.log('трататтата')
+      }
       if(document.activeElement.className === 'boolean') {
         $(document.activeElement).children('input').prop('checked', !$(document.activeElement).children('input').prop('checked'))
       }
