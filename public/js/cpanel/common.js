@@ -186,9 +186,7 @@ function useKeyboardEvents () {
     let customSelectDropDownY = 250;
 
   document.addEventListener('keydown', function(e) {
-    var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
-        childrenPos = document.querySelector('.selected').getBoundingClientRect(),
-        relativePos = {};
+
     if (e.keyCode === 9) {
       $('.boolean').attr('tabindex', 0);
       $('.custom-select__label').attr('tabindex', 0)
@@ -227,9 +225,9 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
           $next.addClass('selected')
-          // var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
-          //     childrenPos = document.querySelector('.selected').getBoundingClientRect(),
-          //     relativePos = {};
+          var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+              childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+              relativePos = {};
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
@@ -243,7 +241,9 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-
+          var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
+              childrenPos = document.querySelector('.selected').getBoundingClientRect(),
+              relativePos = {};
 
           relativePos.top = childrenPos.top - parentPos.top
           console.log(relativePos)
