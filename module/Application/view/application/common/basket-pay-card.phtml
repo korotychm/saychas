@@ -2,6 +2,10 @@
 <div class="cart-payment">
     <h2 class="h2">Способ оплаты</h2>
     <?php $paycard = $paycard ?? 1 ?>
+
+    <?='$paycard '.$paycard.'<br>'?>
+    <?='$cardinfo '.$cardinfo.'<br>'?>
+
     <div class="cart__radio-group">
         <?php if(!empty($cardinfo)) :?>
           <input type="radio" name='paycard' <?= $paycard ?"checked":""?> id="payment1" value="1" />
