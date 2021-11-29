@@ -224,7 +224,7 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           const yOffset = -10;
-          const element = $next;
+          const element = document.querySelector('.selected');
           const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
           window.scrollTo({top: y, behavior: 'smooth'});
@@ -238,7 +238,7 @@ function useKeyboardEvents () {
           }
           $next.addClass('selected')
           const yOffset = -10;
-          const element = $next;
+          const element = document.querySelector('.selected');
           const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
           window.scrollTo({top: y, behavior: 'smooth'});
