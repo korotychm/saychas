@@ -195,7 +195,7 @@ function useKeyboardEvents () {
       }
     }
     if (e.keyCode === 13) {
-      console.log(document.activeElement.attributes)
+      console.log(document.activeElement.attributes.for.textContent)
       // if(document.activeElement.attributes[0] === ) {
       //   document.activeElement.trigger('click')
       // }
