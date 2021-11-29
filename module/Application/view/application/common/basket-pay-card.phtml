@@ -4,7 +4,7 @@
     <?php $paycard = $paycard ?? 1 ?>
 
     <?='$paycard '.$paycard.'<br>'?>
-    <?='$cardinfo '.$cardinfo.'<br>'?>
+    <?='$cardinfo '.print_r($cardinfo).'<br>'?>
 
     <div class="cart__radio-group">
         <?php if(!empty($cardinfo)) :?>
@@ -12,7 +12,6 @@
           <div class="cart__radio">
             <label for="payment1"><span class="cart__radio-check"></span><span><b><?=Resource::ORDER_MEMBER_PAYCARD_TITLE?></b></span></label>
               <div class="cart__radio-content">
-
                 <select name="cardinfo" class="select">
                     <?php foreach ($cardinfo as $card):?>
                       <option value="<?=strip_tags($card["id"])?>" <?=($default == $card["id"])?"selected":""?> ><?=$card["pan"]?></option>
