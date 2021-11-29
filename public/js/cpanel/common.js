@@ -183,10 +183,10 @@ function showMessage(message) {
 
 function useKeyboardEvents () {
 
-    let qwe = $('.selected')
+    let qwe;
 
   document.addEventListener('keydown', function(e) {
-
+      qwe = document.querySelector('.selected')
     if (e.keyCode === 9) {
       $('.boolean').attr('tabindex', 0);
       $('.custom-select__label').attr('tabindex', 0)
@@ -227,7 +227,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(qwe[0].getBoundingClientRect().top)
+          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
           console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
@@ -241,7 +241,7 @@ function useKeyboardEvents () {
           $next.addClass('selected')
           // customSelectDropDownY -= 30
 
-          $('.custom-select__dropdown-inner').scrollTop(qwe[0].getBoundingClientRect().top)
+          $('.custom-select__dropdown-inner').scrollTop(qwe.getBoundingClientRect().top)
           console.log(qwe)
           console.log($next[0].getBoundingClientRect())
         }
