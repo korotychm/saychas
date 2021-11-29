@@ -264,10 +264,7 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
-          let position = $next.position()
-          let y = position.top
-          console.log(position)
-          // $('.custom-select__dropdown-inner').scrollTop(y + 17)
+
           $next.addClass('selected')
           document.querySelector('.selected').scrollIntoView()
 
@@ -280,10 +277,7 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
-          let position = $next.position()
-          let y = position.top
-          console.log(position)
-          // $('.custom-select__dropdown-inner').scrollTop(y + 17)
+
           $next.addClass('selected')
           document.querySelector('.selected').scrollIntoView()
 
