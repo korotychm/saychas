@@ -1276,6 +1276,16 @@ return [
                     ],
                 ],
             ],
+            'tinkoff-redirect' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route' => '/tinkoff/pay-result',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action' => 'tinkoffPayResult',
+                    ],
+                ],
+            ],
             'dadata-get-hints' => [
                 'type' => Literal::class,
                 'options' => [
