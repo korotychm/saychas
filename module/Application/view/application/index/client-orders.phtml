@@ -10,9 +10,10 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
   <?= $this->partial("/application/index/partials/user/user-menu", ["auth" => $this->auth]) ?>
   <div id="client-orders">
     <div v-if="orders && preparedOrders.length" class="orders-history">
-        <div v-for="(order,orderIndex) in preparedOrders" class="orders-history__item">
+        <template v-for="(order,orderIndex) in preparedOrders">
+        <div v-if="order.deliveryInfo.delivery_info.deliveries" class="orders-history__item">
           <div class="orders-history__left">
-            <div v-if="order.deliveryInfo.delivery_info.deliveries" class="orders-history__delivery">
+            <div class="orders-history__delivery">
               <div class="orders-history__delivery-item">
                   <h2><?=Resource::THE_DELIVERY ?></h2>
                   <div class="orders-history__statuses">
@@ -99,8 +100,8 @@ $this->inlineScript()->prependFile($this->basePath('/js/client-orders.js'));
             </div>
           </div>
 
-
         </div>
+        </template>
     </div>
   </div>
 </div>
