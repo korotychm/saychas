@@ -237,11 +237,10 @@ function useKeyboardEvents () {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
           $next.addClass('selected')
-          const yOffset = -10;
-          const element = document.querySelector('.selected');
-          const y = element.getBoundingClientRect().top
-
-          document.querySelector('.custom-select__dropdown-inner').scrollTo(800, 0, {queue:true});
+          var myElement = $next
+          var topPos = myElement.offsetTop;
+          document.querySelector('.custom-select__dropdown-inner').scrollTop = topPos
+          // document.querySelector('.custom-select__dropdown-inner').scrollTo(800, 0, {queue:true});
         }
       }
   })
