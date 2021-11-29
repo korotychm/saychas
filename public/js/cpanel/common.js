@@ -224,8 +224,8 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().last().children('span')) ? $items.parent().first().children('span') : $selected.parent().next().children('span');
           }
-          let qwe = $('.selected').offset().top
           $next.addClass('selected')
+          let qwe = $('.selected').offset().top
           // var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
           //     childrenPos = document.querySelector('.selected').getBoundingClientRect(),
           //     relativePos = {};
@@ -240,8 +240,8 @@ function useKeyboardEvents () {
           } else {
             $next = $selected.is($items.parent().first().children('span')) ? $items.parent().last().children('span') : $selected.parent().prev().children('span');
           }
-          let qwe = $('.selected').offset().top
           $next.addClass('selected')
+          let qwe = $('.selected').offset().top
           // var parentPos = document.querySelector('.custom-select__dropdown-inner').getBoundingClientRect(),
           //     childrenPos = document.querySelector('.selected').getBoundingClientRect(),
           //     relativePos = {};
